@@ -1,0 +1,343 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddDistance" xml:space="preserve">
+    <value>Entfernung hinzufügen</value>
+  </data>
+  <data name="AdjustedPace" xml:space="preserve">
+    <value>Angepasstes Tempo (min/{0})</value>
+  </data>
+  <data name="AdjustedSpeed" xml:space="preserve">
+    <value>Angepasste Geschwindigkeit ({0}/h)</value>
+  </data>
+  <data name="AdjustedTime" xml:space="preserve">
+    <value>Angepasste Zeit</value>
+  </data>
+  <data name="AdjustedVDOT" xml:space="preserve">
+    <value>Angepasste VDOT</value>
+  </data>
+  <data name="Distance" xml:space="preserve">
+    <value>Entfernung</value>
+  </data>
+  <data name="DistanceMeters" xml:space="preserve">
+    <value>Entfernung (meter)</value>
+  </data>
+  <data name="DistancesUsed" xml:space="preserve">
+    <value>Entfernung</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Dauer</value>
+  </data>
+  <data name="EasyAerobicZone" xml:space="preserve">
+    <value>Aerobe Trainingsphase</value>
+  </data>
+  <data name="EndOfPart" xml:space="preserve">
+    <value>Ende von Teil ({0})</value>
+  </data>
+  <data name="EstimatedPace" xml:space="preserve">
+    <value>Abgeschätztes Tempo (min/{0})</value>
+  </data>
+  <data name="EstimatedSpeed" xml:space="preserve">
+    <value>Abgeschätzte Geschwindigkeit (min/{0})</value>
+  </data>
+  <data name="EstimatedTime" xml:space="preserve">
+    <value>Abgeschätzte Zeit</value>
+  </data>
+  <data name="HighAerobicZone" xml:space="preserve">
+    <value>Anaerobe Trainingsphase</value>
+  </data>
+  <data name="HighScorePluginIntegration" xml:space="preserve">
+    <value>High Score plugin Integration</value>
+  </data>
+  <data name="IntervalSplitTimes" xml:space="preserve">
+    <value>Intervall der Split Zeiten</value>
+  </data>
+  <data name="k10Pace" xml:space="preserve">
+    <value>10 (min/{0})</value>
+  </data>
+  <data name="k10Speed" xml:space="preserve">
+    <value>10k ({0}/h)</value>
+  </data>
+  <data name="k5Pace" xml:space="preserve">
+    <value>5k (min/{0})</value>
+  </data>
+  <data name="k5Speed" xml:space="preserve">
+    <value>5k ({0}/h)</value>
+  </data>
+  <data name="Marathon" xml:space="preserve">
+    <value>Marathon</value>
+  </data>
+  <data name="Mile" xml:space="preserve">
+    <value>Mile</value>
+  </data>
+  <data name="MilePace" xml:space="preserve">
+    <value>Mile (min/{0})</value>
+  </data>
+  <data name="MileSpeed" xml:space="preserve">
+    <value>Mile ({0}/h)</value>
+  </data>
+  <data name="ModAerobicZone" xml:space="preserve">
+    <value>Moderate aerobe Trainingsphase</value>
+  </data>
+  <data name="NoMaxHR" xml:space="preserve">
+    <value>Bitte wechseln Sie zur Sportler Ansicht und ergänzen dort Ihre maximale Herzfrequenz um das Ergebnis zu sehen.</value>
+  </data>
+  <data name="Pace" xml:space="preserve">
+    <value>Tempo (min/{0})</value>
+  </data>
+  <data name="PaceForTempoRuns" xml:space="preserve">
+    <value>Tempo für Sprints</value>
+  </data>
+  <data name="PaceForTempoRuns_label" xml:space="preserve">
+    <value>Tempo für sprints von 20 bis 60 Minuten bei VDOT {0:0.0}</value>
+  </data>
+  <data name="PaceRunNotification" xml:space="preserve">
+    <value>20 min Lauf ist an der Laktat Tempo Schwelle - Das Tempo von längeren Läufen
+ist angepasst um richtige Intensität zu erhalten.</value>
+  </data>
+  <data name="PercentMaxHR" xml:space="preserve">
+    <value>%max Herzfrequenz.</value>
+  </data>
+  <data name="PositiveNumber" xml:space="preserve">
+    <value>Die Distanz muss eine positive Zahl sein.</value>
+  </data>
+  <data name="PPHS1" xml:space="preserve">
+    <value>Performance Predictor - High Score Hochrechnung einer Aktivität.</value>
+  </data>
+  <data name="PPHS2" xml:space="preserve">
+    <value>Performance Predictor - High Score Hochrechnung von {0} Aktivitäten.</value>
+  </data>
+  <data name="PredictedTime" xml:space="preserve">
+    <value>Berechnete Zeit</value>
+  </data>
+  <data name="PredictionModel" xml:space="preserve">
+    <value>Berechnungsmodell</value>
+  </data>
+  <data name="PredictionResults" xml:space="preserve">
+    <value>Berechnungsergebnisse</value>
+  </data>
+  <data name="ProcDistUsed" xml:space="preserve">
+    <value>% der Distanz zur berechneten Zeit</value>
+  </data>
+  <data name="ProjectedTemperatureImpact" xml:space="preserve">
+    <value>Prognostizierte negative Auswirkungen der hohen Temperaturen auf {0:0.00} {1} Zeit</value>
+  </data>
+  <data name="ProjectedWeight" xml:space="preserve">
+    <value>Prognostiziertes Gewicht (kg)</value>
+  </data>
+  <data name="ProjectedWeightImpact" xml:space="preserve">
+    <value>Prognostizierte Auswirkung von Gewicht auf {0:0.00} {1} Zeit</value>
+  </data>
+  <data name="Recovery" xml:space="preserve">
+    <value>Erholung</value>
+  </data>
+  <data name="RemoveDistance" xml:space="preserve">
+    <value>Entferne Distanz</value>
+  </data>
+  <data name="ResetAllSettings" xml:space="preserve">
+    <value>Zurücksetzen aller Einstellungen…</value>
+  </data>
+  <data name="ResetAllSettingsWarning" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie alle Einstellungen zurücksetzen möchten? Dies kann nicht widerrufen werden.</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="SetWeight" xml:space="preserve">
+    <value>Bitte wechseln Sie zur Sportler Ansicht und ergänzen dort Ihr Gewicht um das Ergebnis zu sehen.</value>
+  </data>
+  <data name="ShortLowerCaseKilometer" xml:space="preserve">
+    <value>k</value>
+  </data>
+  <data name="ShortLowerCaseMinutes" xml:space="preserve">
+    <value>min</value>
+  </data>
+  <data name="ShowPace" xml:space="preserve">
+    <value>Tempo</value>
+  </data>
+  <data name="ShowSpeed" xml:space="preserve">
+    <value>Geschwindigkeit</value>
+  </data>
+  <data name="Speed" xml:space="preserve">
+    <value>Geschwindigkeit ({0}/h)</value>
+  </data>
+  <data name="StartOfPart" xml:space="preserve">
+    <value>Start von Teil ({0})</value>
+  </data>
+  <data name="Temperature" xml:space="preserve">
+    <value>Temperatur</value>
+  </data>
+  <data name="TemperatureImpact" xml:space="preserve">
+    <value>Temperatur Auswirkung</value>
+  </data>
+  <data name="TemperatureNotification" xml:space="preserve">
+    <value>Die Performance ist nicht beeinträchtigt, bei 16° C oder weniger.</value>
+  </data>
+  <data name="TimePrediction" xml:space="preserve">
+    <value>Zeitberechnung</value>
+  </data>
+  <data name="Training" xml:space="preserve">
+    <value>Training</value>
+  </data>
+  <data name="TrainRaceHR" xml:space="preserve">
+    <value>Train / Rennen HF.</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Einheit</value>
+  </data>
+  <data name="Use" xml:space="preserve">
+    <value>Gebrauch</value>
+  </data>
+  <data name="UsedActivityStartDate" xml:space="preserve">
+    <value>Aktuelles Start-Datum der Aktivität</value>
+  </data>
+  <data name="UsedActivityStartTime" xml:space="preserve">
+    <value>Aktuelle Start-Zeit der Aktivität</value>
+  </data>
+  <data name="UsedLengthOfActivity" xml:space="preserve">
+    <value>Verwendete Länge der Aktivität</value>
+  </data>
+  <data name="UsedTimeOfActivity" xml:space="preserve">
+    <value>Verwendete Zeit der Aktivität</value>
+  </data>
+  <data name="Velocity" xml:space="preserve">
+    <value>Geschwindigkeit</value>
+  </data>
+  <data name="ViewInChart" xml:space="preserve">
+    <value>Grafikdarstellung</value>
+  </data>
+  <data name="ViewInTable" xml:space="preserve">
+    <value>Tabellendarstellung</value>
+  </data>
+  <data name="VO2MaxVDOT" xml:space="preserve">
+    <value>% VO2 max: {0:0.0}%, VDOT: {1:0.0}</value>
+  </data>
+  <data name="Webpage" xml:space="preserve">
+    <value>Performance Predictor Plugin Webseite</value>
+  </data>
+  <data name="WeighImpact" xml:space="preserve">
+    <value>Gewicht Auswirkung</value>
+  </data>
+  <data name="WeightNotification" xml:space="preserve">
+    <value>Geschätzte Zeiten und Tempos sind + / - 2 Sekunden pro Meile.</value>
+  </data>
+  <data name="ZoneDistance" xml:space="preserve">
+    <value>Zone / Distanz</value>
+  </data>
+</root>

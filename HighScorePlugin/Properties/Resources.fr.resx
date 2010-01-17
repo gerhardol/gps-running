@@ -1,0 +1,474 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Ajouter</value>
+  </data>
+  <data name="And" xml:space="preserve">
+    <value>et</value>
+  </data>
+  <data name="AverageHR" xml:space="preserve">
+    <value>FC. Moy.</value>
+  </data>
+  <data name="BiggestElevationDifference" xml:space="preserve">
+    <value>Plus grande différence de dénivelé</value>
+  </data>
+  <data name="BoundsMaximal" xml:space="preserve">
+    <value>maximal</value>
+  </data>
+  <data name="BoundsMinimal" xml:space="preserve">
+    <value>minimal</value>
+  </data>
+  <data name="BPMFrom" xml:space="preserve">
+    <value>BPM (de)</value>
+  </data>
+  <data name="BPMTo" xml:space="preserve">
+    <value>BPM (à)</value>
+  </data>
+  <data name="CannotAddToDistances" xml:space="preserve">
+    <value>Ne peut être ajouté aux distances</value>
+  </data>
+  <data name="CannotAddToElevations" xml:space="preserve">
+    <value>Ne peut être ajouté aux dénivelés</value>
+  </data>
+  <data name="CannotAddToHRZones" xml:space="preserve">
+    <value>Ne peut être ajouté aux rythmes cardiaques. Les valeurs de début et de fin du BPM doivent être un nombre positif, et la fin doit être plus petite que le début.</value>
+  </data>
+  <data name="CannotAddToPaceZones" xml:space="preserve">
+    <value>Ne peut être ajouté aux allures. Les allures doivent être au format mm:ss et l'allure maximum doit être plus rapide que l'allure minimum</value>
+  </data>
+  <data name="CannotAddToSpeedZones" xml:space="preserve">
+    <value>Ne peut être ajouté aux vitesses. Les vitesses doivent êtres des valeurs positives, et la vitesse minimale doit être plus faible que la vitesse maximale.</value>
+  </data>
+  <data name="CannotAddToTimes" xml:space="preserve">
+    <value>Ne peut être ajouté aux durées</value>
+  </data>
+  <data name="CopyTable" xml:space="preserve">
+    <value>Copier la table dans le presse-papier</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Distance" xml:space="preserve">
+    <value>Distance</value>
+  </data>
+  <data name="Distances" xml:space="preserve">
+    <value>Distances</value>
+  </data>
+  <data name="DomDistance" xml:space="preserve">
+    <value>distance</value>
+  </data>
+  <data name="DomElevation" xml:space="preserve">
+    <value>dénivelé</value>
+  </data>
+  <data name="DomTime" xml:space="preserve">
+    <value>durée</value>
+  </data>
+  <data name="Elevation" xml:space="preserve">
+    <value>Dénivelé</value>
+  </data>
+  <data name="Elevations" xml:space="preserve">
+    <value>Dénivelés</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>Fin</value>
+  </data>
+  <data name="Find" xml:space="preserve">
+    <value>Chercher</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>De</value>
+  </data>
+  <data name="Goal" xml:space="preserve">
+    <value>Objectif</value>
+  </data>
+  <data name="HadManualEnteredData" xml:space="preserve">
+    <value>possède des données entrées manuellement</value>
+  </data>
+  <data name="HadNoStartTime" xml:space="preserve">
+    <value>ne possède pas d'heure de début</value>
+  </data>
+  <data name="HourShort" xml:space="preserve">
+    <value>h</value>
+  </data>
+  <data name="HR" xml:space="preserve">
+    <value>Fréquence Cardiaque (BPM)</value>
+  </data>
+  <data name="HRAndSpeedZones" xml:space="preserve">
+    <value>Paliers de Fréquence Cardiaque et de Vitesse</value>
+  </data>
+  <data name="HRZone" xml:space="preserve">
+    <value>Paliers de FC</value>
+  </data>
+  <data name="HRZones" xml:space="preserve">
+    <value>Paliers de Fréquence Cardiaque</value>
+  </data>
+  <data name="HS1" xml:space="preserve">
+    <value>Records pour une activité</value>
+  </data>
+  <data name="HS2" xml:space="preserve">
+    <value>Records pour {0} activités</value>
+  </data>
+  <data name="HSV1" xml:space="preserve">
+    <value>Affichage des records pour {0} activités</value>
+  </data>
+  <data name="HSV2" xml:space="preserve">
+    <value>Affichage des records pour une activité</value>
+  </data>
+  <data name="HSV3" xml:space="preserve">
+    <value>Affichage des records pour aucune activité</value>
+  </data>
+  <data name="IgnoredActivities" xml:space="preserve">
+    <value>{0} activités ignorées</value>
+  </data>
+  <data name="IgnoreManualEnteredBox" xml:space="preserve">
+    <value>Ignorer les activités ayant des données entrées manuellement</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Localisation</value>
+  </data>
+  <data name="LongestDistanceTraveled" xml:space="preserve">
+    <value>Plus grande distance parcourue</value>
+  </data>
+  <data name="LongestTimeSpent" xml:space="preserve">
+    <value>Plus grande durée effectuée</value>
+  </data>
+  <data name="LowerCaseAnd" xml:space="preserve">
+    <value>et</value>
+  </data>
+  <data name="LowerCaseGraph" xml:space="preserve">
+    <value>graphique</value>
+  </data>
+  <data name="LowerCaseMaximal" xml:space="preserve">
+    <value>maximal</value>
+  </data>
+  <data name="LowerCaseMinimal" xml:space="preserve">
+    <value>minimal</value>
+  </data>
+  <data name="LowerCasePace" xml:space="preserve">
+    <value>allure</value>
+  </data>
+  <data name="LowerCaseSpeed" xml:space="preserve">
+    <value>vitesse</value>
+  </data>
+  <data name="LowerCaseTable" xml:space="preserve">
+    <value>table</value>
+  </data>
+  <data name="Meters" xml:space="preserve">
+    <value>mètres</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="NoResultsForSettings" xml:space="preserve">
+    <value>Pas de résultat pour ces critères</value>
+  </data>
+  <data name="NothingToDisplay" xml:space="preserve">
+    <value>Rien à afficher pour ces critères</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="OnADistanceOf" xml:space="preserve">
+    <value>sur une distance de</value>
+  </data>
+  <data name="OnAnElevationOf" xml:space="preserve">
+    <value>sur un dénivelé de </value>
+  </data>
+  <data name="OnATimeOfHours" xml:space="preserve">
+    <value>sur une durée de {0} heures</value>
+  </data>
+  <data name="OnATimeOfMinutes" xml:space="preserve">
+    <value>sur une durée de {0} minutes</value>
+  </data>
+  <data name="OnATimeOfSeconds" xml:space="preserve">
+    <value>sur une durée de {0} secondes</value>
+  </data>
+  <data name="Pace" xml:space="preserve">
+    <value>Allure min/{0}</value>
+  </data>
+  <data name="Pace2" xml:space="preserve">
+    <value>Allure (min/{0})</value>
+  </data>
+  <data name="PaceFormat" xml:space="preserve">
+    <value>min/{0}</value>
+  </data>
+  <data name="PaceLabelFrom" xml:space="preserve">
+    <value>mm:ss/min (de)</value>
+  </data>
+  <data name="PaceLabelTo" xml:space="preserve">
+    <value>mm:ss/min (à)</value>
+  </data>
+  <data name="PaceZones" xml:space="preserve">
+    <value>Paliers d'allure</value>
+  </data>
+  <data name="PerSpecified" xml:space="preserve">
+    <value>selon les </value>
+  </data>
+  <data name="Question" xml:space="preserve">
+    <value>Question ?</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Réinitialiser...</value>
+  </data>
+  <data name="ResetAllSettings" xml:space="preserve">
+    <value>Réinitialiser tout les paramètres...</value>
+  </data>
+  <data name="ResetAllSettingsWarning" xml:space="preserve">
+    <value>Etes vous sûr de vouloir supprimer les paramètres actuels pour revenir aux paramètres par défaut ?</value>
+  </data>
+  <data name="ResetDistancesWarning" xml:space="preserve">
+    <value>Etes vous sûr de vouloir supprimer les distances actuelles pour revenir aux valeurs par défaut ?</value>
+  </data>
+  <data name="ResetElevationsWarning" xml:space="preserve">
+    <value>Etes vous sûr de vouloir supprimer les altitudes actuelles pour revenir aux valeurs par défaut ?</value>
+  </data>
+  <data name="ResetHRZonesWarning" xml:space="preserve">
+    <value>Etes vous sûr de vouloir supprimer les Fréquences Cardiaques actuelles pour revenir aux valeurs par défaut ?</value>
+  </data>
+  <data name="ResetPaceZonesWarning" xml:space="preserve">
+    <value>Etes vous sûr de vouloir supprimer les Paliers d'allure actuels pour revenir aux valeurs par défaut ?</value>
+  </data>
+  <data name="ResetTimesWarning" xml:space="preserve">
+    <value>Etes vous sûr de vouloir supprimer les durées actuelles pour revenir aux valeurs par défaut ?</value>
+  </data>
+  <data name="Seconds" xml:space="preserve">
+    <value>secondes</value>
+  </data>
+  <data name="ShortestDistanceTraveled" xml:space="preserve">
+    <value>Distance la plus courte parcourue</value>
+  </data>
+  <data name="ShortestTimeSpent" xml:space="preserve">
+    <value>Durée la plus courte effectuée</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Afficher</value>
+  </data>
+  <data name="SmallestElevationDifference" xml:space="preserve">
+    <value>Plus petite différence de dénivelé</value>
+  </data>
+  <data name="SomeHours" xml:space="preserve">
+    <value>{0} heures</value>
+  </data>
+  <data name="SomeMinutes" xml:space="preserve">
+    <value>{0} minutes</value>
+  </data>
+  <data name="SomeSeconds" xml:space="preserve">
+    <value>{0} secondes</value>
+  </data>
+  <data name="Speed" xml:space="preserve">
+    <value>Vitesse {0}/h</value>
+  </data>
+  <data name="Speed2" xml:space="preserve">
+    <value>Vitesse ({0}/h)</value>
+  </data>
+  <data name="SpeedFormat" xml:space="preserve">
+    <value>{0}/h</value>
+  </data>
+  <data name="SpeedLabelFrom" xml:space="preserve">
+    <value>{0}/h de</value>
+  </data>
+  <data name="SpeedLabelTo" xml:space="preserve">
+    <value>{0}/h à</value>
+  </data>
+  <data name="SpeedZone" xml:space="preserve">
+    <value>Paliers de vitesse</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Début</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Durée</value>
+  </data>
+  <data name="TimeFormat" xml:space="preserve">
+    <value>hh:mm:ss</value>
+  </data>
+  <data name="TimeHours" xml:space="preserve">
+    <value>Durée (heures)</value>
+  </data>
+  <data name="Times" xml:space="preserve">
+    <value>Durée</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>A</value>
+  </data>
+  <data name="UnitCentimeter" xml:space="preserve">
+    <value>Centimètre</value>
+  </data>
+  <data name="UnitCentimeterShort" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="UnitFoot" xml:space="preserve">
+    <value>Pieds</value>
+  </data>
+  <data name="UnitFootShort" xml:space="preserve">
+    <value>ft</value>
+  </data>
+  <data name="UnitInch" xml:space="preserve">
+    <value>Pouce</value>
+  </data>
+  <data name="UnitInchShort" xml:space="preserve">
+    <value>in</value>
+  </data>
+  <data name="UnitKilometer" xml:space="preserve">
+    <value>Kilomètre</value>
+  </data>
+  <data name="UnitKilometerShort" xml:space="preserve">
+    <value>km</value>
+  </data>
+  <data name="UnitMeter" xml:space="preserve">
+    <value>Mètre</value>
+  </data>
+  <data name="UnitMeterShort" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="UnitMile" xml:space="preserve">
+    <value>Miles</value>
+  </data>
+  <data name="UnitMileShort" xml:space="preserve">
+    <value>mi</value>
+  </data>
+  <data name="UnitYard" xml:space="preserve">
+    <value>Yard</value>
+  </data>
+  <data name="UnitYardShort" xml:space="preserve">
+    <value>yd</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Attention</value>
+  </data>
+  <data name="Webpage" xml:space="preserve">
+    <value>Page internet du plugin High score</value>
+  </data>
+  <data name="WithAHRBetween" xml:space="preserve">
+    <value>avec une Fréquence Cardiaque comprise entre {0} et {1} BPM</value>
+  </data>
+  <data name="WithAPaceBetween" xml:space="preserve">
+    <value>avec une allure comprise entre {0} min/{1} et {2} min/{3} </value>
+  </data>
+  <data name="WithASpeedBetween" xml:space="preserve">
+    <value>avec une vitesse comprise entre {0} {1}/h et {2} {3}/h</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+</root>
