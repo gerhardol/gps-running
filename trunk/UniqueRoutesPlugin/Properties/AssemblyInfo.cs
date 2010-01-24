@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SportTracks Unique Routes Plugin")]
 [assembly: AssemblyDescription("Works on a single activity. It finds all activities with a similar GPS route. It is possible to specify how similar two routes must be before the plugin judge that they are the same route.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Kristian Bisgaard Lassen")]
+[assembly: AssemblyCompany("Kristian Helkjaer Lassen")]
 [assembly: AssemblyProduct("SportTracks Unique Routes Plugin")]
-[assembly: AssemblyCopyright("Copyright © 2007-2008")]
+[assembly: AssemblyCopyright("Copyright © 2007-2008, 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.2.2.0")]
-[assembly: AssemblyFileVersion("1.2.2.0")]
+[assembly: AssemblyVersion("1.9.7.0")]
+[assembly: AssemblyFileVersion("1.9.7.0")]

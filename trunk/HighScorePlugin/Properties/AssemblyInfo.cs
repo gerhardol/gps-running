@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SportTracks High Score Plugin")]
 [assembly: AssemblyDescription("Calculates high scores over various pairs of the parameters distance, time, elevation, heart rate and speed zones. The plugin works on a single activity as well as multiple activities.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Kristian Bisgaard Lassen")]
+[assembly: AssemblyCompany("Kristian Helkjaer Lassen")]
 [assembly: AssemblyProduct("SportTracks High Score Plugin")]
-[assembly: AssemblyCopyright("Copyright © 2007 - 2008")]
+[assembly: AssemblyCopyright("Copyright © 2007 - 2008, 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.4.2.0")]
-[assembly: AssemblyFileVersion("1.4.2.0")]
+[assembly: AssemblyVersion("1.9.7.0")]
+[assembly: AssemblyFileVersion("1.9.7.0")]

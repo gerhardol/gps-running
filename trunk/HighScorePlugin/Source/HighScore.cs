@@ -183,7 +183,7 @@ namespace SportTracksHighScorePlugin.Source
             //pad(pulse);
             //pad(speed);
 
-            int test = 0;
+            //int test = 0;
 
             for (int i = 0; i < goals.Count; i++)
             {
