@@ -643,6 +643,7 @@ namespace SportTracksTRIMPPlugin.Source
 
             #region INotifyDataChanged Members
 
+#pragma warning disable 67
             public event NotifyDataChangedEventHandler DataChanged;
 
             public bool QueueEvents

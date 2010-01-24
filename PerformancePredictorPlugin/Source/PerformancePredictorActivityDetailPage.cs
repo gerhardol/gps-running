@@ -104,6 +104,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
 
         #region INotifyPropertyChanged Members
 
+#pragma warning disable 67
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
         #endregion
