@@ -18,37 +18,21 @@ The way it goes about evaluating if two activities are similar it tests if the t
 <p>
 	The settings for the plugin are shown below, and it is here you specify when the plugin should identify two routes as being identical.
 	</p>
-	<center>
-	  <a href="images/plugins/uniqueroutes/Settings.png">
-	    <img src="images/plugins/uniqueroutes/thumbs/Settings.jpg" alt=""/>
-	  </a>
-	</center>
+	  [http://gps-running.googlecode.com/svn/wiki/images/plugins/uniqueroutes/Settings.png]
 <p>
 	The plugin is activitated by selecting it from the activity
 	detail view.
 </p>
-	<center>
-	  <a href="images/plugins/uniqueroutes/ActivityDetailView.png">
-	    <img src="images/plugins/uniqueroutes/thumbs/ActivityDetailView.jpg" alt=""/>
-	  </a>
-	</center>
+	[http://gps-running.googlecode.com/svn/wiki/images/plugins/uniqueroutes/ActivityDetailView.png]
 <p>
 	Once the plugin is activated you can calculate similar routes
 	by pressing the button.
 </p>
-	<center>
-	  <a href="images/plugins/uniqueroutes/Calculate.png">
-	    <img src="images/plugins/uniqueroutes/thumbs/Calculate.jpg" alt=""/>
-	  </a>
-	</center>
+	[http://gps-running.googlecode.com/svn/wiki/images/plugins/uniqueroutes/Calculate.png]
 <p>
 	The results are shown in table as shown below. If you have any of the Accumulated Summary, High Score, Overlay, or TRIMP plugins installed you can use them on the results. 
 </p>
-	<center>
-	  <a href="images/plugins/uniqueroutes/Results.png">
-	    <img src="images/plugins/uniqueroutes/thumbs/Results.jpg" alt=""/>
-	  </a>
-	</center>
+	[http://gps-running.googlecode.com/svn/wiki/images/plugins/uniqueroutes/Results.png]
 	<br/>
 	<h1>Caveats</h1>
 
@@ -57,6 +41,7 @@ The way it goes about evaluating if two activities are similar it tests if the t
 	    It is not possible to select a group of GPS points on the map and apply the plugin on a subsection of an activitys route.
 	  </li>
 	</ul>
+	
 ===Feedback===
 
 For feedback please use the thread for this plugin at !SportTracks forum [http://www.zonefivesoftware.com/SportTracks/Forums/viewforum.php?f=32 here].

@@ -37,35 +37,34 @@ Besides predicting times the plugin also give suggestions regards to training. T
 <p>
 Go to the activity detail view and select the Performance Predictor plugin from the menu as shown in this figure:
 </p>
-<div class="image"><a href="images/plugins/performancepredictor/ActivityDetailView.png"><img src="images/plugins/performancepredictor/thumbs/ActivityDetailView.jpg" alt=""/></a></div>
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/ActivityDetailView.png]
 
 <p>
 Here is a couple of images of the plugin in action:
 </p>
 
-<div class="image"><a href="images/plugins/performancepredictor/TimePredictionChart.png"><img src="images/plugins/performancepredictor/thumbs/TimePredictionChart.jpg" alt=""/></a></div>
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TimePredictionChart.png]
 <br/>
-<div class="image"><a href="images/plugins/performancepredictor/TimePredictionTable.png"><img src="images/plugins/performancepredictor/thumbs/TimePredictionTable.jpg" alt=""/></a></div>
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TimePredictionTable.png]
 <p>Training suggestions:</p>
-<div class="image"><a href="images/plugins/performancepredictor/Training.png"><img src="images/plugins/performancepredictor/thumbs/Training.jpg" alt=""/></a></div>
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/Training.png]
 <br/>
-<div class="image"><a href="images/plugins/performancepredictor/TrainingInterval.png"><img src="images/plugins/performancepredictor/thumbs/TrainingInterval.jpg" alt=""/></a></div>
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TrainingInterval.png]
 <br/>
-<div class="image"><a href="images/plugins/performancepredictor/TrainingTemperatureImpact.png"><img src="images/plugins/performancepredictor/thumbs/TrainingTemperatureImpact.jpg" alt=""/></a></div>
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TrainingTemperatureImpact.png]
 <br/>
-<div class="image"><a href="images/plugins/performancepredictor/TrainingTempoPace.png"><img src="images/plugins/performancepredictor/thumbs/TrainingTempoPace.jpg" alt=""/></a></div>
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TrainingTempoPace.png]
 <br/>
-<div class="image"><a href="images/plugins/performancepredictor/TrainingWeightImpact.png"><img src="images/plugins/performancepredictor/thumbs/TrainingWeightImpact.jpg" alt=""/></a></div>
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TrainingWeightImpact.png]
 <p>Edit function:</p>
-<div class="image"><a href="images/plugins/performancepredictor/EditFunction.png"><img src="images/plugins/performancepredictor/thumbs/EditFunction.jpg" alt=""/></a></div>
 <br/>
-<div class="image"><a href="images/plugins/performancepredictor/EditFunctionResults.png"><img src="images/plugins/performancepredictor/thumbs/EditFunctionResults.jpg" alt=""/></a></div>
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/EditFunctionResults.png]
 
 <p>
 It is possibe to add and remove the distances that the plugin use in its calculation by going to the settings panel for the Performance Predictor plugin as shown in this figure:
 </p>
 
-<div class="image"><a href="images/plugins/performancepredictor/Settings.png"><img src="images/plugins/performancepredictor/thumbs/Settings.jpg" alt=""/></a></div>
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/Settings.png]
 
 ===Feedback===
 

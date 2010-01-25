@@ -47,7 +47,7 @@ You don't need to specify each problem and then get the plugin to calculate it f
 <p>
 A good place to start when using this plugin is by looking at the settings. These can be found in the settings view under the <i>High Score</i> entry. Here you will see the five different categories of things (distance, time, elevation, heart rate, pace/speed zone) that the plugin uses to find the best solutions. By default the plugin comes with a wide range of settings which you may remove or add parts to if they do not suit you, and the plugin will use these updated values instead. Below is the settings panel.
 </p>
-	  [images/plugins/highscore/Settings.png]
+	  [http://gps-running.googlecode.com/svn/wiki/images/plugins/highscore/Settings.png]
 	  
 	<p>
 	  It is possible to see high scores for a single activity in the
@@ -58,9 +58,7 @@ A good place to start when using this plugin is by looking at the settings. Thes
 	  select the entry High Score.
 	</p>
 
-	<center>
-	    [images/plugins/highscore/ActivityDetailSummary.png]
-	      [images/plugins/highscore/thumbs/ActivityDetailSummary.jpg]
+	[http://gps-running.googlecode.com/svn/wiki/images/plugins/highscore/ActivityDetailSummary.png]
 		  	
 	<p>
 	  When you have selected the High Score plugin in the activity
@@ -78,8 +76,7 @@ A good place to start when using this plugin is by looking at the settings. Thes
 	  corresponds to. 
 	</p>
 
-	  [images/plugins/highscore/ActivityDetailHighScore.png]
-	      [images/plugins/highscore/thumbs/ActivityDetailHighScore.jpg]
+	 [http://gps-running.googlecode.com/svn/wiki/images/plugins/highscore/ActivityDetailHighScore.png]
 		  <p>
 	To use the High Score plugin on multiple activities go to the
 	activity report view and select some activities. Then you press
@@ -89,14 +86,12 @@ A good place to start when using this plugin is by looking at the settings. Thes
 	plugin the results for the selected activities will be computed.
 </p>
 	  [images/plugins/highscore/ActivityReport.png]
-	      [images/plugins/highscore/thumbs/ActivityReport.jpg]
 		  
 <p>
 	When you have selected some activities and applied the High Score
 	plugin you will see a dialog similar to the one shown below.
 </p>
 	  [images/plugins/highscore/ActivityReportHighScore.png]
-	      [images/plugins/highscore/thumbs/ActivityReportHighScore.jpg]
 		  
 	<h1>Caveats</h1>
 
