@@ -1,4 +1,5 @@
 #summary Accumulated Summary User's Guide
+#labels Featured
 
 ===What does it do?===
 
