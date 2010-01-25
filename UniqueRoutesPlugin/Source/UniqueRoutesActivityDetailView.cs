@@ -125,7 +125,6 @@ namespace SportTracksUniqueRoutesPlugin.Source
             InitializeComponent();
             correctLanguage();
             doUpdate = true;
-            Settings.dontSave = true;
             this.Activity = activity;
             this.Resize += new EventHandler(UniqueRoutesActivityDetailView_Resize);
             progressBar.Size = new Size(summaryView.Size.Width, progressBar.Height);
@@ -205,7 +204,6 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
             setCategoryLabel();
             doUpdate = false;
-            Settings.dontSave = false;
         }
 
         private void correctUI(IList<Control> comp)

@@ -173,7 +173,6 @@ namespace SportTracksOverlayPlugin.Source
                                                          movingAverage.Location.X + movingAverage.Size.Width),
                                                 panel.Location.X + panel.Size.Width), chart.Location.Y);
             dontUpdate = true;
-            Settings.dontSave = true;
             series2activity = new Dictionary<ChartDataSeries,IActivity>();
             series2boxes = new Dictionary<ChartDataSeries, CheckBox>(); 
             application = Plugin.GetApplication();
@@ -211,7 +210,6 @@ namespace SportTracksOverlayPlugin.Source
             chart.SelectData += new ChartBase.SelectDataHandler(chart_SelectData);
             chart.Click += new EventHandler(chart_Click);
             dontUpdate = false;
-            Settings.dontSave = false;
             updateChart();
             if (showDialog)
             {

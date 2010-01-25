@@ -31,7 +31,11 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
 
         public Guid Id
         {
-            get { return new Guid(Properties.Resources.AccumulatedSummaryGuid); }
+            get
+            {
+                Plugin plugin = new SportTracksAccumulatedSummaryPlugin.Plugin();
+                return plugin.Id;
+            }
         }
 
         public IList<ISettingsPage> SubPages

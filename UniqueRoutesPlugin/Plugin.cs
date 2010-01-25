@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2007, 2008 Kristian Bisgaard Lassen
+Copyright (C) 2007, 2008 Kristian Bisgaard Lassen 
 Copyright (C) 2010 Kristian Helkjaer Lassen
 
 This library is free software; you can redistribute it and/or
@@ -15,13 +15,13 @@ Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public
 License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
-
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 
 using ZoneFiveSoftware.Common.Visuals.Fitness;
+using SportTracksUniqueRoutesPlugin.Source;
 
 namespace SportTracksUniqueRoutesPlugin
 {
@@ -35,9 +35,14 @@ namespace SportTracksUniqueRoutesPlugin
             set { application = value; }
         }
 
+        public static IApplication GetApplication()
+        {
+            return application;
+        }
+
         public Guid Id
         {
-            get { return new Guid(SportTracksUniqueRoutesPlugin.Properties.Resources.UniqueRoutesGuid); }
+            get { return new Guid("{5c630517-46c4-478d-89d6-a8a6ca6337db}"); }
         }
 
         public string Name
@@ -45,28 +50,35 @@ namespace SportTracksUniqueRoutesPlugin
             get { return "Unique Routes Plugin"; }
         }
 
-        public void ReadOptions(XmlDocument xmlDoc, XmlNamespaceManager nsmgr, XmlElement pluginNode)
-        {
-        }
-
         public string Version
         {
             get { return GetType().Assembly.GetName().Version.ToString(3); }
         }
 
+        public void ReadOptions(XmlDocument xmlDoc, XmlNamespaceManager nsmgr, XmlElement pluginNode)
+        {
+            String attr;
+            attr = pluginNode.GetAttribute(xmlTags.Verbose);
+            if (attr.Length > 0) { Verbose = XmlConvert.ToInt16(attr); }
+
+            Settings.ReadOptions(xmlDoc, nsmgr, pluginNode);
+        }
+
         public void WriteOptions(XmlDocument xmlDoc, XmlElement pluginNode)
         {
+            Settings.WriteOptions(xmlDoc, pluginNode);
         }
 
         #endregion
-
-        public static IApplication GetApplication()
-        {
-            return application;
-        }
 
         #region Private members
+        private class xmlTags
+        {
+            public const string Verbose = "Verbose";
+        }
         private static IApplication application;
         #endregion
+
+        public static int Verbose = 0;  //Only changed in xml file
     }
 }

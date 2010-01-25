@@ -21,8 +21,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Data.Fitness;
-using SportTracksHighScorePlugin;
-using SportTracksHighScorePlugin.Source;
+using SportTracksAccumulatedSummaryPlugin;
+using SportTracksAccumulatedSummaryPlugin.Source;
 using ZoneFiveSoftware.Common.Visuals;
 using SportTracksAccumulatedSummaryPlugin.Properties;
 

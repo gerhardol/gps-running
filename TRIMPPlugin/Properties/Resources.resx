@@ -196,9 +196,6 @@
   <data name="TotalTRIMP" xml:space="preserve">
     <value>Total TRIMP is {0}.</value>
   </data>
-  <data name="TRIMPGuid" xml:space="preserve">
-    <value>{F4C8F7D6-B4A5-4E69-9205-48044356D3CF}</value>
-  </data>
   <data name="UnitCentimeter" xml:space="preserve">
     <value>Centimeter</value>
   </data>

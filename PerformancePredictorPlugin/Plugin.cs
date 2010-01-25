@@ -17,11 +17,14 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using System.Drawing;
 
 using ZoneFiveSoftware.Common.Visuals.Fitness;
+using SportTracksPerformancePredictorPlugin.Source;
 
 namespace SportTracksPerformancePredictorPlugin
 {
@@ -35,9 +38,13 @@ namespace SportTracksPerformancePredictorPlugin
             set { application = value; }
         }
 
+        public static IApplication GetApplication()
+        {
+            return application;
+        }
         public Guid Id
         {
-            get { return new Guid(SportTracksPerformancePredictorPlugin.Properties.Resources.PerformancePredictorGuid); }
+            get { return new Guid("{0AA49FDF-ADA0-4522-9488-A698A7E197AA}"); }
         }
 
         public string Name
@@ -45,28 +52,35 @@ namespace SportTracksPerformancePredictorPlugin
             get { return "Performance Predictor Plugin"; }
         }
 
-        public void ReadOptions(XmlDocument xmlDoc, XmlNamespaceManager nsmgr, XmlElement pluginNode)
-        {
-        }
-
         public string Version
         {
             get { return GetType().Assembly.GetName().Version.ToString(3); }
         }
 
+        public void ReadOptions(XmlDocument xmlDoc, XmlNamespaceManager nsmgr, XmlElement pluginNode)
+        {
+            String attr;
+            attr = pluginNode.GetAttribute(xmlTags.Verbose);
+            if (attr.Length > 0) { Verbose = XmlConvert.ToInt16(attr); }
+
+            Settings.ReadOptions(xmlDoc, nsmgr, pluginNode);
+        }
+
         public void WriteOptions(XmlDocument xmlDoc, XmlElement pluginNode)
         {
+            Settings.WriteOptions(xmlDoc, pluginNode);
         }
 
         #endregion
-
-        public static IApplication GetApplication()
-        {
-            return application;
-        }
 
         #region Private members
+        private class xmlTags
+        {
+            public const string Verbose = "Verbose";
+        }
         private static IApplication application;
         #endregion
+
+        public static int Verbose = 0;  //Only changed in xml file
     }
 }

@@ -31,73 +31,108 @@ namespace SportTracksTRIMPPlugin.Source
 {
     class Settings
     {
-        private static readonly String prefsPath;
-
-        private static Size windowSize;
-        public static Size WindowSize
+        static Settings()
         {
-            get { return windowSize; }
-            set
-            {
-                windowSize = value;
-                save();
-            }
+            defaults();
         }
 
         private static bool useMaxHR;
         public static bool UseMaxHR
         {
             get { return useMaxHR; }
-            set
-            {
-                useMaxHR = value;
-                save();
-            }
+            set { useMaxHR = value; }
         }
 
         private static int startZone;
         public static int StartZone
         {
             get { return startZone; }
-            set
-            {
-                startZone = value;
-                save();
-            }
+            set { startZone = value; }
         }
 
         private static IList<double> factors;
         public static IList<double> Factors
         {
             get { return factors; }
-            set
-            {
-                factors = value;
-                save();
-            }
+            set { factors = value; }
         }
 
-        public static void reset()
+        private static Size windowSize;
+        public static Size WindowSize
         {
-            windowSize = new Size(800, 600);
+            get { return windowSize; }
+            set { windowSize = value; }
+        }
+
+        public static void defaults()
+        {
             startZone = 50;
             factors = new double[] { 1, 1.1, 1.2, 2.2, 4.5 };
             useMaxHR = true;
+            windowSize = new Size(800, 600);
         }
-        
-        static Settings()
+
+        public static void ReadOptions(XmlDocument xmlDoc, XmlNamespaceManager nsmgr, XmlElement pluginNode)
         {
-            prefsPath = Environment.GetEnvironmentVariable("APPDATA") + "/TRIMPPlugin/preferences.xml";
-            if (!load())
+            String attr, attr2;
+
+            attr = pluginNode.GetAttribute(xmlTags.settingsVersion);
+            if (attr.Length > 0) { settingsVersion = (Int16)XmlConvert.ToInt16(attr); }
+            if (0 == settingsVersion)
             {
-                Directory.CreateDirectory(Environment.GetEnvironmentVariable("APPDATA") + "/TRIMPPlugin/");
-                reset();
-                save();
+                // No settings in Preferences.System found, try read old files
+                load();
             }
+
+            attr = pluginNode.GetAttribute(xmlTags.startZone);
+            if (attr.Length > 0) { startZone = XmlConvert.ToInt32(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.factors);
+            if (attr.Length > 0) { factors = parseFactors(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.useMaxHR);
+            if (attr.Length > 0) { useMaxHR = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.viewWidth);
+            attr2 = pluginNode.GetAttribute(xmlTags.viewHeight);
+            if (attr.Length > 0 && attr2.Length > 0)
+            {
+                windowSize = new Size(XmlConvert.ToInt16(attr), XmlConvert.ToInt16(attr2));
+            }
+        }
+
+        public static void WriteOptions(XmlDocument xmlDoc, XmlElement pluginNode)
+        {
+            pluginNode.SetAttribute(xmlTags.settingsVersion, XmlConvert.ToString(settingsVersionCurrent));
+
+            pluginNode.SetAttribute(xmlTags.startZone, XmlConvert.ToString(startZone));
+            String str = "";
+            foreach (double factor in factors)
+            {
+                str += factor + " ";
+            }
+            pluginNode.SetAttribute(xmlTags.factors, str);
+            pluginNode.SetAttribute(xmlTags.useMaxHR, XmlConvert.ToString(useMaxHR));
+            pluginNode.SetAttribute(xmlTags.viewWidth, XmlConvert.ToString(windowSize.Width));
+            pluginNode.SetAttribute(xmlTags.viewHeight, XmlConvert.ToString(windowSize.Height));
+        }
+
+        private static int settingsVersion = 0; //default when not existing
+        private const int settingsVersionCurrent = 1;
+
+        private class xmlTags
+        {
+            public const string settingsVersion = "settingsVersion";
+            public const string startZone = "startZone";
+            public const string factors = "factors";
+            public const string useMaxHR = "useMaxHR";
+
+            public const string viewWidth = "viewWidth";
+            public const string viewHeight = "viewHeight";
         }
 
         private static bool load()
         {
+            //Backwards compatibility, read old preferences file
+            String prefsPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar + "TRIMPPlugin" + Path.DirectorySeparatorChar + "preferences.xml";
+
             if (!File.Exists(prefsPath)) return false;
             XmlDocument document = new XmlDocument();
             XmlReader reader = new XmlTextReader(prefsPath);
@@ -141,45 +176,6 @@ namespace SportTracksTRIMPPlugin.Source
             return d;
         }
 
-        private static bool saving = false;
-
-        public static void save()
-        {
-            if (saving) return;
-            saving = true;
-            XmlDocument document = new XmlDocument();
-            XmlElement root = document.CreateElement("trimp");
-            document.AppendChild(root);
-
-            XmlElement resultSetupElm = document.CreateElement("view");
-            root.AppendChild(resultSetupElm);
-            resultSetupElm.SetAttribute("viewWidth", windowSize.Width.ToString());
-            resultSetupElm.SetAttribute("viewHeight", windowSize.Height.ToString());
-            resultSetupElm.SetAttribute("startZone", startZone.ToString());
-            resultSetupElm.SetAttribute("useMaxHR", useMaxHR.ToString(NumberFormatInfo.InvariantInfo));
-            String str = "";
-            foreach (double factor in factors)
-            {
-                str += factor + " ";
-            }
-            resultSetupElm.SetAttribute("factors", str);
-
-            //StringWriter xmlString = new StringWriter();
-            //XmlTextWriter writer2 = new XmlTextWriter(xmlString);
-            XmlTextWriter writer = new XmlTextWriter(prefsPath, Encoding.UTF8);
-            writer.Formatting = Formatting.Indented;
-            writer.Indentation = 3;
-            writer.IndentChar = ' ';
-            document.WriteContentTo(writer);
-            //document.WriteContentTo(writer2);
-            writer.Close();
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(null, null);
-            }
-            saving = false;
-        }
-
         public static double convertFrom(double p, Length.Units metric)
         {
             switch (metric)
@@ -217,12 +213,6 @@ namespace SportTracksTRIMPPlugin.Source
                 s += "0";
             return String.Format("{0:0." + s + "}", p);
         }
-
-        #region INotifyPropertyChanged Members
-
-        public static event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
 
         public static String translateUnit(Length.Units unit)
         {

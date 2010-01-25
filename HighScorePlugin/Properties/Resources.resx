@@ -204,9 +204,6 @@
   <data name="HadNoStartTime" xml:space="preserve">
     <value>had no start time</value>
   </data>
-  <data name="HighScoreGuid" xml:space="preserve">
-    <value>{4B84E5C0-EC2B-4C0C-8B8E-3FAEB09F74C6}</value>
-  </data>
   <data name="HourShort" xml:space="preserve">
     <value>h</value>
   </data>

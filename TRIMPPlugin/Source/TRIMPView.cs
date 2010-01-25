@@ -80,7 +80,6 @@ namespace SportTracksTRIMPPlugin.Source
             updateTable();
             SizeChanged += new EventHandler(TRIMPView_SizeChanged);
             contextMenuTable.ItemClicked += new ToolStripItemClickedEventHandler(contextMenuTable_Click);
-            Settings.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(Settings_PropertyChanged);
             if (showDialog)
             {
                 form = new Form();
@@ -631,7 +630,11 @@ namespace SportTracksTRIMPPlugin.Source
 
             public string ReferenceId
             {
-                get { return Properties.Resources.TRIMPGuid; }
+                get
+                {
+                    Plugin plugin = new SportTracksTRIMPPlugin.Plugin();
+                    return plugin.Id.ToString();
+                }
             }
 
             public IList<INamedLowHighZone> Zones
