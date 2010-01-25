@@ -1,0 +1,72 @@
+#summary Performance Predictor User's Guide
+
+<h1>What does it do?</h1>
+<p>
+Ever wondered after running a killer race, how well you would perform at other distances. This plugin does this by using various models. So far the plugin implements the Dave Cameron and Pete Riegel models to predict your performance, but I expect to add more.
+</p>
+<p>
+The Dave Cameron model works as follows:
+</p>
+<div class="image"><img src="images/plugins/performancepredictor/davecameron.png" alt=""/></div>
+
+<p>
+Here d<sub>old</sub> and t<sub>old</sub> both refer to the race you use as input to the model; i.e., the distance and time of the race. By selecting d<sub>new</sub> at various distances we can calculate the predicted time at these distances t<sub>new</sub>. 
+</p>
+
+<p>
+Once you have understood the Dave Cameron model, it should be easy understand the Pete Riegel model as well:
+</p>
+
+<div class="image"><img src="images/plugins/performancepredictor/peteriegel.png" alt=""/></div>
+
+<p>
+You may think that these models seem arbitrary, but they do, however, fit to a certain extent, in my experience. If you are interested in analysis of your best performances this sort of plugin should definitly also be a part of your SportTracks plugin setup.
+</p>
+
+<p>It is possible to use this plugin in conjunction with the High Score plugin. The way it works is that for each distance you are interested in seeing the predicted time, this plugin finds all sub parts of activities that are X percentages of the distance. For example, if percentage is 40% the Performance Predictor plugin will use the High Score plugin to find the fastest 4k part of a track to predict a time for a 10k race. Similary, for a 40k race it would find the fastest 10k subpart of  a track.</p>
+
+<h3>Training</h3>
+
+<p>
+Besides predicting times the plugin also give suggestions regards to training. These suggestions are based on Jack Daniels's training philosophies. Currently, the plugin suggests training paces, pace for tempo races, interval split times, temperature impact, and weight impact. 
+</p>
+
+<br/>
+
+<h1>How do I use it?</h1>
+<p>
+Go to the activity detail view and select the Performance Predictor plugin from the menu as shown in this figure:
+</p>
+<div class="image"><a href="images/plugins/performancepredictor/ActivityDetailView.png"><img src="images/plugins/performancepredictor/thumbs/ActivityDetailView.jpg" alt=""/></a></div>
+
+<p>
+Here is a couple of images of the plugin in action:
+</p>
+
+<div class="image"><a href="images/plugins/performancepredictor/TimePredictionChart.png"><img src="images/plugins/performancepredictor/thumbs/TimePredictionChart.jpg" alt=""/></a></div>
+<br/>
+<div class="image"><a href="images/plugins/performancepredictor/TimePredictionTable.png"><img src="images/plugins/performancepredictor/thumbs/TimePredictionTable.jpg" alt=""/></a></div>
+<p>Training suggestions:</p>
+<div class="image"><a href="images/plugins/performancepredictor/Training.png"><img src="images/plugins/performancepredictor/thumbs/Training.jpg" alt=""/></a></div>
+<br/>
+<div class="image"><a href="images/plugins/performancepredictor/TrainingInterval.png"><img src="images/plugins/performancepredictor/thumbs/TrainingInterval.jpg" alt=""/></a></div>
+<br/>
+<div class="image"><a href="images/plugins/performancepredictor/TrainingTemperatureImpact.png"><img src="images/plugins/performancepredictor/thumbs/TrainingTemperatureImpact.jpg" alt=""/></a></div>
+<br/>
+<div class="image"><a href="images/plugins/performancepredictor/TrainingTempoPace.png"><img src="images/plugins/performancepredictor/thumbs/TrainingTempoPace.jpg" alt=""/></a></div>
+<br/>
+<div class="image"><a href="images/plugins/performancepredictor/TrainingWeightImpact.png"><img src="images/plugins/performancepredictor/thumbs/TrainingWeightImpact.jpg" alt=""/></a></div>
+<p>Edit function:</p>
+<div class="image"><a href="images/plugins/performancepredictor/EditFunction.png"><img src="images/plugins/performancepredictor/thumbs/EditFunction.jpg" alt=""/></a></div>
+<br/>
+<div class="image"><a href="images/plugins/performancepredictor/EditFunctionResults.png"><img src="images/plugins/performancepredictor/thumbs/EditFunctionResults.jpg" alt=""/></a></div>
+
+<p>
+It is possibe to add and remove the distances that the plugin use in its calculation by going to the settings panel for the Performance Predictor plugin as shown in this figure:
+</p>
+
+<div class="image"><a href="images/plugins/performancepredictor/Settings.png"><img src="images/plugins/performancepredictor/thumbs/Settings.jpg" alt=""/></a></div>
+
+===Feedback===
+
+For feedback please use the thread for this plugin at !SportTracks forum [http://www.zonefivesoftware.com/SportTracks/Forums/viewforum.php?f=30 here].

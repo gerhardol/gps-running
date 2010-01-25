@@ -8,11 +8,11 @@
 
 Go to the activity report view. Select a collection of activities by either holding down control and select some activities individually, or holding down shift and select a list of activities by first select the start activity and second select the end activity. The figure below shows a situation where a list of five activities have been chosen.
 
-[http://gpsrunning.nicolajsen.nl/images/plugins/accumulatedsummary/ActivityReportEdit.png]
+[images/plugins/accumulatedsummary/ActivityReportEdit.png]
 
 After selecting the activities use the accumulated summary plugin in the edit activity menu, and you get will see a window such as the one shown below.
 
-[http://gpsrunning.nicolajsen.nl/images/plugins/accumulatedsummary/AccumulatedSummary.png]
+[images/plugins/accumulatedsummary/AccumulatedSummary.png]
 
 ===Feedback===
 

@@ -1,0 +1,62 @@
+#summary Unique Routes User's Guide
+
+<h1>What does it do?</h1>
+
+<p>
+When you run outside it really matters what route you take if want to make a personal record. This is why it does not always make sense to compare, e.g., two 5k run on two different routes if one route is very hilly and the other is not. And worse, it may not make sense to compare two activities that cover the same route but are in the opposite direction. For example a route such as A -> B -> C (the route from A to C via B) may be more difficult than a route that cover the same points but are in the opposite direction; C -> B -> A. For example, running a route with a long slow ascend that ends with a sharp descent are often (that is what I experience) different in difficulty than the route that start with a sharp ascend and ends with a long slow descend. Therefore, manually trying weeding out all the routes that are similar to some activity that you are considering in SportTracks is - and I think you agree - very tidious.
+</p>
+<p>
+So what is that this plugin does? It finds, for some activity, any activities with routes that are similar to that activity. This way you can get an overview of all the activities that you consider. 
+</p>
+<p>
+The way it goes about evaluating if two activities are similar it tests if the two respective GPS tracks are close to each other. You may wonder what is meant by <i>close to each other</i>. Since GPS devices are not perfect we may expect that two routes, even though we know they are similar, may be dissimilar locally, due to error GPS measurements. Therefore it is possible to state in the settings for the plugin that two routes are similar even though some <i>X</i> percent of the routes are not.
+</p>
+
+
+<h1>How do I use it?</h1>
+
+<p>
+	The settings for the plugin are shown below, and it is here you specify when the plugin should identify two routes as being identical.
+	</p>
+	<center>
+	  <a href="images/plugins/uniqueroutes/Settings.png">
+	    <img src="images/plugins/uniqueroutes/thumbs/Settings.jpg" alt=""/>
+	  </a>
+	</center>
+<p>
+	The plugin is activitated by selecting it from the activity
+	detail view.
+</p>
+	<center>
+	  <a href="images/plugins/uniqueroutes/ActivityDetailView.png">
+	    <img src="images/plugins/uniqueroutes/thumbs/ActivityDetailView.jpg" alt=""/>
+	  </a>
+	</center>
+<p>
+	Once the plugin is activated you can calculate similar routes
+	by pressing the button.
+</p>
+	<center>
+	  <a href="images/plugins/uniqueroutes/Calculate.png">
+	    <img src="images/plugins/uniqueroutes/thumbs/Calculate.jpg" alt=""/>
+	  </a>
+	</center>
+<p>
+	The results are shown in table as shown below. If you have any of the Accumulated Summary, High Score, Overlay, or TRIMP plugins installed you can use them on the results. 
+</p>
+	<center>
+	  <a href="images/plugins/uniqueroutes/Results.png">
+	    <img src="images/plugins/uniqueroutes/thumbs/Results.jpg" alt=""/>
+	  </a>
+	</center>
+	<br/>
+	<h1>Caveats</h1>
+
+	<ul>
+	  <li>
+	    It is not possible to select a group of GPS points on the map and apply the plugin on a subsection of an activitys route.
+	  </li>
+	</ul>
+===Feedback===
+
+For feedback please use the thread for this plugin at !SportTracks forum [http://www.zonefivesoftware.com/SportTracks/Forums/viewforum.php?f=32 here].
