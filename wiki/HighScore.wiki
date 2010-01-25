@@ -85,15 +85,15 @@ A good place to start when using this plugin is by looking at the settings. Thes
 	"Edit activity" button is pressed. When you select the High Score
 	plugin the results for the selected activities will be computed.
 </p>
-	  [images/plugins/highscore/ActivityReport.png]
+	  [http://gps-running.googlecode.com/svn/wiki/images/plugins/highscore/ActivityReport.png]
 		  
 <p>
 	When you have selected some activities and applied the High Score
 	plugin you will see a dialog similar to the one shown below.
 </p>
-	  [images/plugins/highscore/ActivityReportHighScore.png]
+	  [http://gps-running.googlecode.com/svn/wiki/images/plugins/highscore/ActivityReportHighScore.png]
 		  
-	<h1>Caveats</h1>
+	===Caveats===
 
 	<ul>
 	  <li>
