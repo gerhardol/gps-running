@@ -1,0 +1,19 @@
+#summary Accumulated Summary User's Guide
+
+===What does it do?===
+
+!SportTracks has a very nice way of displaying a single activity: You can see how much time you spend on an activity, your average heart rate, speed or pace, and many more things. Unfortunately it is not possible to get the same kind of information for a collection of activities, and this is what this plugin try to fix. In other words, we want a plugin that allow use to select a collection of activities and see e.g. the total time spend (i.e. the sum of times of the activities), the total time spend in each heart rate zone, the total distance traveled and so on.
+
+===How do I use it?===
+
+Go to the activity report view. Select a collection of activities by either holding down control and select some activities individually, or holding down shift and select a list of activities by first select the start activity and second select the end activity. The figure below shows a situation where a list of five activities have been chosen.
+
+[http://gpsrunning.nicolajsen.nl/images/plugins/accumulatedsummary/ActivityReportEdit.png]
+
+After selecting the activities use the accumulated summary plugin in the edit activity menu, and you get will see a window such as the one shown below.
+
+[http://gpsrunning.nicolajsen.nl/images/plugins/accumulatedsummary/AccumulatedSummary.png]
+
+===Feedback===
+
+For feedback please use the thread for this plugin at !SportTracks forum [http://www.zonefivesoftware.com/SportTracks/Forums/viewforum.php?f=34 here].
