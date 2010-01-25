@@ -31,7 +31,10 @@ namespace SportTracksPerformancePredictorPlugin.Source
 
         public Guid Id
         {
-            get { return new Guid(Properties.Resources.PerformancePredictorGuid); }
+            get {
+                Plugin plugin = new SportTracksPerformancePredictorPlugin.Plugin();
+                return plugin.Id;
+            }
         }
 
         public IList<ISettingsPage> SubPages

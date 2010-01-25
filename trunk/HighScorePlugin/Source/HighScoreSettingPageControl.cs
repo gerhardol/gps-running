@@ -229,7 +229,6 @@ namespace SportTracksHighScorePlugin.Source
                 {
                     Settings.distances.Add(distance, true);
                     populateDistanceList();
-                    Settings.save();
                 }
             }
             catch (Exception) 
@@ -244,7 +243,6 @@ namespace SportTracksHighScorePlugin.Source
             {
                 Settings.distances.RemoveAt(distanceBox.SelectedIndex);
                 populateDistanceList();
-                Settings.save();
             }
         }
 
@@ -266,7 +264,6 @@ namespace SportTracksHighScorePlugin.Source
                         {
                             Settings.times.Add(seconds, new TimeSpan(hh, mm, ss));
                             populateTimeList();
-                            Settings.save();
                         }
                     }
                 }
@@ -283,7 +280,6 @@ namespace SportTracksHighScorePlugin.Source
             {
                 Settings.times.RemoveAt(timeBox.SelectedIndex);
                 populateTimeList();
-                Settings.save();
             }
         }
 
@@ -297,7 +293,6 @@ namespace SportTracksHighScorePlugin.Source
                 {
                     Settings.elevations.Add(elevation, true);
                     populateElevationList();
-                    Settings.save();
                 }
             }
             catch (Exception)
@@ -319,8 +314,7 @@ namespace SportTracksHighScorePlugin.Source
         {
             if (dialog.answer)
             {
-                Settings.reset();
-                Settings.save();
+                Settings.defaults();
                 populateLists();
             }
         }
@@ -334,7 +328,6 @@ namespace SportTracksHighScorePlugin.Source
                 if (min < 0 || max < 0 || min > max) throw new Exception();
                 Settings.addPulse(min, max);
                 populatePulseList();
-                Settings.save();
             }
             catch (Exception)
             {
@@ -351,7 +344,6 @@ namespace SportTracksHighScorePlugin.Source
                 double max = double.Parse(values[1]);
                 Settings.pulseZones[min].Remove(max);
                 populatePulseList();
-                Settings.save();
             }
         }
 
@@ -384,7 +376,6 @@ namespace SportTracksHighScorePlugin.Source
                 if (min <= 0 || max <= 0 || max <= min) throw new Exception();
                 Settings.addSpeed(min, max);
                 populateSpeedList();
-                Settings.save();
             }
             catch (Exception)
             {
@@ -402,7 +393,6 @@ namespace SportTracksHighScorePlugin.Source
             {
                 Settings.speedZones[speedZoneIndex[index][0]].Remove(speedZoneIndex[index][1]);
                 populateSpeedList();
-                Settings.save();
             }
         }
 
@@ -418,7 +408,6 @@ namespace SportTracksHighScorePlugin.Source
             if (dialog.answer)
             {
                 Settings.resetDistances();
-                Settings.save();
                 populateDistanceList();
             }
         }
@@ -435,7 +424,6 @@ namespace SportTracksHighScorePlugin.Source
             if (dialog.answer)
             {
                 Settings.resetTimes();
-                Settings.save();
                 populateTimeList();
             }
         }
@@ -452,7 +440,6 @@ namespace SportTracksHighScorePlugin.Source
             if (dialog.answer)
             {
                 Settings.resetElevations();
-                Settings.save();
                 populateElevationList();
             }
         }
@@ -469,7 +456,6 @@ namespace SportTracksHighScorePlugin.Source
             if (dialog.answer)
             {
                 Settings.resetPulseZones();
-                Settings.save();
                 populatePulseList();
             }
         }
@@ -486,7 +472,6 @@ namespace SportTracksHighScorePlugin.Source
             if (dialog.answer)
             {
                 Settings.resetSpeedZones();
-                Settings.save();
                 populateSpeedList();
             }
         }
@@ -497,7 +482,6 @@ namespace SportTracksHighScorePlugin.Source
             {
                 Settings.elevations.RemoveAt(elevationBox.SelectedIndex);
                 populateElevationList();
-                Settings.save();
             }
         }
 

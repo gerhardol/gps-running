@@ -27,58 +27,12 @@ using System.Globalization;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using SportTracksAccumulatedSummaryPlugin.Properties;
 
-namespace SportTracksHighScorePlugin.Source
+namespace SportTracksAccumulatedSummaryPlugin.Source
 {
     class Settings
     {
-        private static readonly String prefsPath;
-
-        private static Size windowSize;
-        public static Size WindowSize
-        {
-            get { return windowSize; }
-            set
-            {
-                windowSize = value;
-                save();
-            }
-        }
-
-        public static void reset()
-        {
-            windowSize = new Size(800, 600);
-        }
-        
         static Settings()
         {
-            prefsPath = Environment.GetEnvironmentVariable("APPDATA") + "/AccumulatedSummaryPlugin/preferences.xml";
-            if (!load())
-            {
-                Directory.CreateDirectory(Environment.GetEnvironmentVariable("APPDATA") + "/AccumulatedSummary/");
-                reset();
-            }
-        }
-
-        private static bool load()
-        {
-            if (!File.Exists(prefsPath)) return false;
-            XmlDocument document = new XmlDocument();
-            XmlReader reader = new XmlTextReader(prefsPath);
-            document.Load(reader);
-            try
-            {
-                XmlNode elm = document.ChildNodes[0]["view"];
-                windowSize = new Size(int.Parse(elm.Attributes["viewWidth"].Value),
-                                                    int.Parse(elm.Attributes["viewHeight"].Value));
-            }
-            catch (Exception ex)
-            {
-                reader.Close();
-                new WarningDialog("Error reading settings for AccumulatedSummary plugin - will use default settings. " + ex.ToString());
-                return false;
-            }
-            reader.Close();
-            return true;
         }
 
         public static double parseDouble(string p)
@@ -86,36 +40,6 @@ namespace SportTracksHighScorePlugin.Source
             //if (!p.Contains(".")) p += ".0";
             double d = double.Parse(p, NumberFormatInfo.InvariantInfo);
             return d;
-        }
-
-        public static void save()
-        {
-            XmlDocument document = new XmlDocument();
-            XmlElement root = document.CreateElement("accumulatedSummary");
-            document.AppendChild(root);
-
-            XmlElement resultSetupElm = document.CreateElement("view");
-            root.AppendChild(resultSetupElm);
-            resultSetupElm.SetAttribute("viewWidth", windowSize.Width.ToString());
-            resultSetupElm.SetAttribute("viewHeight", windowSize.Height.ToString());
-
-            //StringWriter xmlString = new StringWriter();
-            //XmlTextWriter writer2 = new XmlTextWriter(xmlString);
-            XmlTextWriter writer = new XmlTextWriter(prefsPath, Encoding.UTF8);
-            writer.Formatting = Formatting.Indented;
-            writer.Indentation = 3;
-            writer.IndentChar = ' ';
-            document.WriteContentTo(writer);
-            //document.WriteContentTo(writer2);
-            writer.Close();
-            //writer2.Close();
-
-            //String text = xmlString.ToString();
-
-            //Plugin.GetApplication().Logbook.SetExtensionText(new Guid(Properties.Resources.HighScoreGuid),
-            //                                                    null);
-            //Plugin.GetApplication().Logbook.SetExtensionText(new Guid(Properties.Resources.HighScoreGuid),
-            //                                                    text);
         }
 
         public static double convertFrom(double p, Length.Units metric)

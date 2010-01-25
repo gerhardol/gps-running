@@ -31,7 +31,11 @@ namespace SportTracksTRIMPPlugin.Source
 
         public Guid Id
         {
-            get { return new Guid(SportTracksTRIMPPlugin.Properties.Resources.TRIMPGuid); }
+            get
+            {
+                Plugin plugin = new SportTracksTRIMPPlugin.Plugin();
+                return plugin.Id;
+            }
         }
 
         public IList<ISettingsPage> SubPages

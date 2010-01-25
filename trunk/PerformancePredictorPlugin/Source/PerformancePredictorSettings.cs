@@ -84,8 +84,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             dialog.ShowDialog();
             if (dialog.answer)
             {
-                Settings.reset();
-                Settings.save();
+                Settings.defaults();
                 updateList();
             }
         }
@@ -99,7 +98,6 @@ namespace SportTracksPerformancePredictorPlugin.Source
                 Length.Units unit = (Length.Units)Enum.Parse(typeof(Length.Units), (String)unitBox.SelectedItem);
                 Settings.addDistance(d, unit, false);
                 updateList();
-                Settings.save();
             }
             catch (Exception)
             {
@@ -113,7 +111,6 @@ namespace SportTracksPerformancePredictorPlugin.Source
             {
                 Settings.removeDistance(distanceList.SelectedIndex);
                 updateList();
-                Settings.save();
             }
         }
 

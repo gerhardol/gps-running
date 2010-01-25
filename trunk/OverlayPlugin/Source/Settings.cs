@@ -31,7 +31,10 @@ namespace SportTracksOverlayPlugin.Source
 {
     class Settings
     {
-        private static readonly String prefsPath;
+        static Settings()
+        {
+            defaults();
+        }
 
         private static bool autoZoom;
         public static bool AutoZoom
@@ -40,7 +43,6 @@ namespace SportTracksOverlayPlugin.Source
             set
             {
                 autoZoom = value;
-                save();
             }
         }
 
@@ -51,7 +53,6 @@ namespace SportTracksOverlayPlugin.Source
             set
             {
                 showHeartRate = value;
-                save();
             }
         }
 
@@ -62,7 +63,6 @@ namespace SportTracksOverlayPlugin.Source
             set
             {
                 showPace = value;
-                save();
             }
         }
 
@@ -73,7 +73,6 @@ namespace SportTracksOverlayPlugin.Source
             set
             {
                 showSpeed = value;
-                save();
             }
         }
 
@@ -84,7 +83,6 @@ namespace SportTracksOverlayPlugin.Source
             set
             {
                 showPower = value;
-                save();
             }
         }
 
@@ -95,7 +93,6 @@ namespace SportTracksOverlayPlugin.Source
             set
             {
                 showCadence = value;
-                save();
             }
         }
 
@@ -106,7 +103,6 @@ namespace SportTracksOverlayPlugin.Source
             set
             {
                 showElevation = value;
-                save();
             }
         }
 
@@ -117,7 +113,6 @@ namespace SportTracksOverlayPlugin.Source
             set
             {
                 showCategoryAverage = value;
-                save();
             }
         }
 
@@ -128,7 +123,6 @@ namespace SportTracksOverlayPlugin.Source
             set
             {
                 showMovingAverage = value;
-                save();
             }
         }
 
@@ -139,7 +133,6 @@ namespace SportTracksOverlayPlugin.Source
             set
             {
                 movingAverageLength = value;
-                save();
             }
         }
 
@@ -150,7 +143,6 @@ namespace SportTracksOverlayPlugin.Source
             set
             {
                 movingAverageTime = value;
-                save();
             }
         }
 
@@ -161,26 +153,24 @@ namespace SportTracksOverlayPlugin.Source
             set
             {
                 showTime = value;
-                save();
             }
         }
 
-        private static Size windowSize;
+        private static Size windowSize; //viewWidth, viewHeight in xml
         public static Size WindowSize
         {
             get { return windowSize; }
             set
             {
                 windowSize = value;
-                save();
             }
         }
 
-        public static bool dontSave = false;
+        private static int settingsVersion = 0;
+        private const int settingsVersionCurrent = 1;
 
-        public static void reset()
+        public static void defaults()
         {
-            windowSize = new Size(800, 600);
             showHeartRate = true;
             showPace = false;
             showSpeed = false;
@@ -193,20 +183,100 @@ namespace SportTracksOverlayPlugin.Source
             movingAverageTime = 0;
             autoZoom = true;
             showTime = true;
+            windowSize = new Size(800, 600);
         }
-        
-        static Settings()
+
+        public static void ReadOptions(XmlDocument xmlDoc, XmlNamespaceManager nsmgr, XmlElement pluginNode)
         {
-            prefsPath = Environment.GetEnvironmentVariable("APPDATA") + "/OverlayPlugin/preferences.xml";
-            if (!load())
+            String attr, attr2;
+
+            attr = pluginNode.GetAttribute(xmlTags.settingsVersion);
+            if (attr.Length > 0) { settingsVersion = (Int16)XmlConvert.ToInt16(attr); }
+            if (0 == settingsVersion)
             {
-                Directory.CreateDirectory(Environment.GetEnvironmentVariable("APPDATA") + "/OverlayPlugin/");
-                reset();
+                // No settings in Preferences.System found, try read old files
+                load();
+            }
+
+            attr = pluginNode.GetAttribute(xmlTags.showHeartRate);
+            if (attr.Length > 0) { showHeartRate = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.showPace);
+            if (attr.Length > 0) { showPace = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.showSpeed);
+            if (attr.Length > 0) { showSpeed = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.showPower);
+            if (attr.Length > 0) { showPower = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.showCadence);
+            if (attr.Length > 0) { showCadence = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.showElevation);
+            if (attr.Length > 0) { showElevation = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.showCategoryAverage);
+            if (attr.Length > 0) { showCategoryAverage = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.showMovingAverage);
+            if (attr.Length > 0) { showMovingAverage = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.movingAverageLength);
+            if (attr.Length > 0) { movingAverageLength = XmlConvert.ToInt16(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.movingAverageTime);
+            if (attr.Length > 0) { movingAverageTime = XmlConvert.ToInt16(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.autoZoom);
+            if (attr.Length > 0) { autoZoom = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.showTime);
+            if (attr.Length > 0) { showTime = XmlConvert.ToBoolean(attr); }
+
+            attr = pluginNode.GetAttribute(xmlTags.viewWidth);
+            attr2 = pluginNode.GetAttribute(xmlTags.viewHeight);
+            if (attr.Length > 0 && attr2.Length > 0)
+            {
+                windowSize = new Size(XmlConvert.ToInt16(attr), XmlConvert.ToInt16(attr2));
             }
         }
 
+        public static void WriteOptions(XmlDocument xmlDoc, XmlElement pluginNode)
+        {
+            pluginNode.SetAttribute(xmlTags.settingsVersion, XmlConvert.ToString(settingsVersionCurrent));
+
+            pluginNode.SetAttribute(xmlTags.showHeartRate, XmlConvert.ToString(showHeartRate));
+            pluginNode.SetAttribute(xmlTags.showPace, XmlConvert.ToString(showPace));
+            pluginNode.SetAttribute(xmlTags.showSpeed, XmlConvert.ToString(showSpeed));
+            pluginNode.SetAttribute(xmlTags.showPower, XmlConvert.ToString(showPower));
+            pluginNode.SetAttribute(xmlTags.showCadence, XmlConvert.ToString(showCadence));
+            pluginNode.SetAttribute(xmlTags.showElevation, XmlConvert.ToString(showElevation));
+            pluginNode.SetAttribute(xmlTags.showCategoryAverage, XmlConvert.ToString(showCategoryAverage));
+            pluginNode.SetAttribute(xmlTags.showMovingAverage, XmlConvert.ToString(showMovingAverage));
+            pluginNode.SetAttribute(xmlTags.movingAverageLength, XmlConvert.ToString(movingAverageLength));
+            pluginNode.SetAttribute(xmlTags.movingAverageTime, XmlConvert.ToString(movingAverageTime));
+            pluginNode.SetAttribute(xmlTags.autoZoom, XmlConvert.ToString(autoZoom));
+            pluginNode.SetAttribute(xmlTags.showTime, XmlConvert.ToString(showTime));
+
+            pluginNode.SetAttribute(xmlTags.viewWidth, XmlConvert.ToString(windowSize.Width));
+            pluginNode.SetAttribute(xmlTags.viewHeight, XmlConvert.ToString(windowSize.Height));
+        }
+
+        private class xmlTags
+        {
+            public const string settingsVersion = "settingsVersion";
+
+            public const string showHeartRate = "showHeartRate";
+            public const string showPace = "showPace";
+            public const string showSpeed = "showSpeed";
+            public const string showPower = "showPower";
+            public const string showCadence = "showCadence";
+            public const string showElevation = "showElevation";
+            public const string showCategoryAverage = "showCategoryAverage";
+            public const string showMovingAverage = "showMovingAverage";
+            public const string movingAverageLength = "movingAverageLength";
+            public const string movingAverageTime = "movingAverageTime";
+            public const string autoZoom = "autoZoom";
+            public const string showTime = "showTime";
+            public const string viewWidth = "viewWidth";
+            public const string viewHeight = "viewHeight";
+        }
+        
         private static bool load()
         {
+            //Backwards compatibility, read old preferences file
+            String prefsPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar + "OverlayPlugin" + Path.DirectorySeparatorChar + "preferences.xml";
+
             if (!File.Exists(prefsPath)) return false;
             XmlDocument document = new XmlDocument();
             XmlReader reader = new XmlTextReader(prefsPath);
@@ -228,7 +298,6 @@ namespace SportTracksOverlayPlugin.Source
                 movingAverageLength = parseDouble(elm.Attributes["movingAverageLength"].Value);
                 movingAverageTime = parseDouble(elm.Attributes["movingAverageTime"].Value);
                 autoZoom = bool.Parse(elm.Attributes["autoZoom"].Value);
-
             }
             catch (Exception)
             {
@@ -244,49 +313,6 @@ namespace SportTracksOverlayPlugin.Source
             //if (!p.Contains(".")) p += ".0";
             double d = double.Parse(p, NumberFormatInfo.InvariantInfo);
             return d;
-        }
-
-        public static void save()
-        {
-            if (dontSave) return;
-            XmlDocument document = new XmlDocument();
-            XmlElement root = document.CreateElement("overlay");
-            document.AppendChild(root);
-
-            XmlElement resultSetupElm = document.CreateElement("view");
-            root.AppendChild(resultSetupElm);
-            resultSetupElm.SetAttribute("viewWidth", windowSize.Width.ToString());
-            resultSetupElm.SetAttribute("viewHeight", windowSize.Height.ToString());
-            resultSetupElm.SetAttribute("showHeartRate", showHeartRate.ToString());
-            resultSetupElm.SetAttribute("showPace", showPace.ToString());
-            resultSetupElm.SetAttribute("showSpeed", showSpeed.ToString());
-            resultSetupElm.SetAttribute("showPower", showPower.ToString());
-            resultSetupElm.SetAttribute("showCadence", showCadence.ToString());
-            resultSetupElm.SetAttribute("showElevation", showElevation.ToString());
-            resultSetupElm.SetAttribute("showTime", showTime.ToString());
-            resultSetupElm.SetAttribute("showCategoryAverage", showCategoryAverage.ToString());
-            resultSetupElm.SetAttribute("showMovingAverage", showMovingAverage.ToString());
-            resultSetupElm.SetAttribute("movingAverageTime", movingAverageTime.ToString());
-            resultSetupElm.SetAttribute("movingAverageLength", movingAverageLength.ToString());
-            resultSetupElm.SetAttribute("autoZoom", autoZoom.ToString());
-
-            //StringWriter xmlString = new StringWriter();
-            //XmlTextWriter writer2 = new XmlTextWriter(xmlString);
-            XmlTextWriter writer = new XmlTextWriter(prefsPath, Encoding.UTF8);
-            writer.Formatting = Formatting.Indented;
-            writer.Indentation = 3;
-            writer.IndentChar = ' ';
-            document.WriteContentTo(writer);
-            //document.WriteContentTo(writer2);
-            writer.Close();
-            //writer2.Close();
-
-            //String text = xmlString.ToString();
-
-            //Plugin.GetApplication().Logbook.SetExtensionText(new Guid(Properties.Resources.HighScoreGuid),
-            //                                                    null);
-            //Plugin.GetApplication().Logbook.SetExtensionText(new Guid(Properties.Resources.HighScoreGuid),
-            //                                                    text);
         }
 
         public static double convertFrom(double p, Length.Units metric)

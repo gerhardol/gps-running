@@ -23,7 +23,7 @@ using System.Xml;
 
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 
-namespace SportTracksHighScorePlugin
+namespace SportTracksAccumulatedSummaryPlugin
 {
     class Plugin : IPlugin
     {
@@ -35,9 +35,14 @@ namespace SportTracksHighScorePlugin
             set { application = value; }
         }
 
+        public static IApplication GetApplication()
+        {
+            return application;
+        }
+
         public Guid Id
         {
-            get { return new Guid(SportTracksAccumulatedSummaryPlugin.Properties.Resources.AccumulatedSummaryGuid); }
+            get { return new Guid("{859F81F4-8272-4183-BA53-FDF1DD809FD6}"); }
         }
 
         public string Name
@@ -45,13 +50,16 @@ namespace SportTracksHighScorePlugin
             get { return "Accumulated Summary Plugin"; }
         }
 
-        public void ReadOptions(XmlDocument xmlDoc, XmlNamespaceManager nsmgr, XmlElement pluginNode)
-        {
-        }
-
         public string Version
         {
             get { return GetType().Assembly.GetName().Version.ToString(3); }
+        }
+
+        public void ReadOptions(XmlDocument xmlDoc, XmlNamespaceManager nsmgr, XmlElement pluginNode)
+        {
+            String attr;
+            attr = pluginNode.GetAttribute(xmlTags.Verbose);
+            if (attr.Length > 0) { Verbose = XmlConvert.ToInt16(attr); }
         }
 
         public void WriteOptions(XmlDocument xmlDoc, XmlElement pluginNode)
@@ -60,13 +68,15 @@ namespace SportTracksHighScorePlugin
 
         #endregion
 
-        public static IApplication GetApplication()
-        {
-            return application;
-        }
-
         #region Private members
+        private class xmlTags
+        {
+            public const string Verbose = "Verbose";
+        }
         private static IApplication application;
         #endregion
+        
+        public static int Verbose = 0;  //Only changed in xml file
+        
     }
 }

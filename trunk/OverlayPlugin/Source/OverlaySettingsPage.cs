@@ -31,7 +31,10 @@ namespace SportTracksOverlayPlugin.Source
 
         public Guid Id
         {
-            get { return new Guid(SportTracksOverlayPlugin.Properties.Resources.Overlay); }
+            get {
+                Plugin plugin = new SportTracksOverlayPlugin.Plugin();
+                return plugin.Id;
+            }
         }
 
         public IList<ISettingsPage> SubPages

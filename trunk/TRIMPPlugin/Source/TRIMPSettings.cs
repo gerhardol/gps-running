@@ -184,7 +184,6 @@ namespace SportTracksTRIMPPlugin.Source
             {
                 double newFactor = Settings.parseDouble((string)cellValue);
                 Settings.Factors[e.RowIndex] = newFactor;
-                Settings.save();
             }
             catch (Exception)
             { }
@@ -210,8 +209,7 @@ namespace SportTracksTRIMPPlugin.Source
         {
             if (dialog.answer)
             {
-                Settings.reset();
-                Settings.save();
+                Settings.defaults();
                 reset();
             }
         }

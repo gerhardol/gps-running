@@ -32,7 +32,11 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
         public Guid Id
         {
-            get { return new Guid(Resources.UniqueRoutesGuid); }
+            get
+            {
+                Plugin plugin = new SportTracksUniqueRoutesPlugin.Plugin();
+                return plugin.Id;
+            }
         }
 
         public IList<ISettingsPage> SubPages

@@ -22,6 +22,7 @@ using System.Text;
 using System.Xml;
 
 using ZoneFiveSoftware.Common.Visuals.Fitness;
+using SportTracksTRIMPPlugin.Source;
 
 namespace SportTracksTRIMPPlugin
 {
@@ -35,9 +36,14 @@ namespace SportTracksTRIMPPlugin
             set { application = value; }
         }
 
+        public static IApplication GetApplication()
+        {
+            return application;
+        }
+
         public Guid Id
         {
-            get { return new Guid(SportTracksTRIMPPlugin.Properties.Resources.TRIMPGuid); }
+            get { return new Guid("{F4C8F7D6-B4A5-4E69-9205-48044356D3CF}"); }
         }
 
         public string Name
@@ -45,28 +51,36 @@ namespace SportTracksTRIMPPlugin
             get { return "TRIMP Plugin"; }
         }
 
-        public void ReadOptions(XmlDocument xmlDoc, XmlNamespaceManager nsmgr, XmlElement pluginNode)
-        {
-        }
-
         public string Version
         {
             get { return GetType().Assembly.GetName().Version.ToString(3); }
         }
 
+        public void ReadOptions(XmlDocument xmlDoc, XmlNamespaceManager nsmgr, XmlElement pluginNode)
+        {
+            String attr;
+            attr = pluginNode.GetAttribute(xmlTags.Verbose);
+            if (attr.Length > 0) { Verbose = XmlConvert.ToInt16(attr); }
+
+            Settings.ReadOptions(xmlDoc, nsmgr, pluginNode);
+        }
+
         public void WriteOptions(XmlDocument xmlDoc, XmlElement pluginNode)
         {
+            Settings.WriteOptions(xmlDoc, pluginNode);
         }
 
         #endregion
-
-        public static IApplication GetApplication()
-        {
-            return application;
-        }
 
         #region Private members
+        private class xmlTags
+        {
+            public const string Verbose = "Verbose";
+        }
         private static IApplication application;
+
         #endregion
+
+        public static int Verbose = 0;  //Only changed in xml file
     }
 }

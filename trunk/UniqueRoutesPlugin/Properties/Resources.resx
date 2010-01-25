@@ -225,9 +225,6 @@
   <data name="Time" xml:space="preserve">
     <value>Time</value>
   </data>
-  <data name="UniqueRoutesGuid" xml:space="preserve">
-    <value>{5c630517-46c4-478d-89d6-a8a6ca6337db}</value>
-  </data>
   <data name="UnitCentimeter" xml:space="preserve">
     <value>Centimeter</value>
   </data>

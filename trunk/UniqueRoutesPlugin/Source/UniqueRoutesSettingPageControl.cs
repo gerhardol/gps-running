@@ -151,8 +151,6 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
         private void resetSettings_Click(object sender, EventArgs e)
         {
-            Settings.reset();
-            Settings.save();
             presentSettings();
         }
 

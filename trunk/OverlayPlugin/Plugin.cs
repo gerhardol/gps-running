@@ -22,6 +22,7 @@ using System.Text;
 using System.Xml;
 
 using ZoneFiveSoftware.Common.Visuals.Fitness;
+using SportTracksOverlayPlugin.Source;
 
 namespace SportTracksOverlayPlugin
 {
@@ -35,9 +36,14 @@ namespace SportTracksOverlayPlugin
             set { application = value; }
         }
 
+        public static IApplication GetApplication()
+        {
+            return application;
+        }
+
         public Guid Id
         {
-            get { return new Guid(SportTracksOverlayPlugin.Properties.Resources.Overlay); }
+            get { return new Guid("{489FD22A-DB13-49DB-A77C-57E45CB1D049}"); }
         }
 
         public string Name
@@ -45,28 +51,38 @@ namespace SportTracksOverlayPlugin
             get { return "Overlay Plugin"; }
         }
 
-        public void ReadOptions(XmlDocument xmlDoc, XmlNamespaceManager nsmgr, XmlElement pluginNode)
-        {
-        }
-
         public string Version
         {
             get { return GetType().Assembly.GetName().Version.ToString(3); }
         }
 
+        public void ReadOptions(XmlDocument xmlDoc, XmlNamespaceManager nsmgr, XmlElement pluginNode)
+        {
+            String attr;
+            attr = pluginNode.GetAttribute(xmlTags.Verbose);
+            if (attr.Length > 0) { Verbose = XmlConvert.ToInt16(attr); }
+
+            Settings.ReadOptions(xmlDoc, nsmgr, pluginNode);
+        }
+
         public void WriteOptions(XmlDocument xmlDoc, XmlElement pluginNode)
         {
+            pluginNode.SetAttribute(xmlTags.Verbose, XmlConvert.ToString(Verbose));
+
+            Settings.WriteOptions(xmlDoc, pluginNode);
         }
 
         #endregion
-
-        public static IApplication GetApplication()
-        {
-            return application;
-        }
 
         #region Private members
         private static IApplication application;
+
+        private class xmlTags
+        {
+            public const string Verbose = "Verbose";
+        }
         #endregion
+
+        public static int Verbose = 0;  //Only changed in xml file
     }
 }

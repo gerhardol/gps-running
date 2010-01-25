@@ -32,7 +32,11 @@ namespace SportTracksHighScorePlugin.Source
 
         public Guid Id
         {
-            get { return new Guid(Resources.HighScoreGuid); }
+            get
+            {
+                Plugin plugin = new SportTracksHighScorePlugin.Plugin();
+                return plugin.Id;
+            }
         }
 
         public IList<ISettingsPage> SubPages

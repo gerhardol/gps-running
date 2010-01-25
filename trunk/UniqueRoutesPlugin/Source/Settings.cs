@@ -1,6 +1,7 @@
 /*
-Copyright (C) 2007, 2008 Kristian Bisgaard Lassen
+Copyright (C) 2007, 2008 Kristian Bisgaard Lassen 
 Copyright (C) 2010 Kristian Helkjaer Lassen
+Copyright (C) 2010 Gerhard Olsson 
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -33,191 +34,181 @@ namespace SportTracksUniqueRoutesPlugin.Source
 {
     class Settings
     {
-        public readonly static String prefsPath;
-
-        public readonly static Type accumulatedSummary,highScore,overlay,
-            trimp;
+        public readonly static Type accumulatedSummary,highScore,overlay,trimp;
+        static Settings()
+        {
+            accumulatedSummary = getPlugin("AccumulatedSummary", "SportTracksAccumulatedSummaryPlugin.Source.AccumulatedSummaryView");
+            highScore = getPlugin("HighScore", "SportTracksHighScorePlugin.Source.HighScoreViewer");
+            overlay = getPlugin("Overlay", "SportTracksOverlayPlugin.Source.OverlayView");
+            trimp = getPlugin("TRIMP", "SportTracksTRIMPPlugin.Source.TRIMPView");
+            defaults();
+        }
 
         private static String selectedPlugin;
         public static String SelectedPlugin
         {
             get { return selectedPlugin; }
-            set
-            {
-                selectedPlugin = value;
-                save();
-            }
+            set { selectedPlugin = value; }
         }
 
         private static IActivityCategory selectedCategory;
         public static IActivityCategory SelectedCategory
         {
             get { return selectedCategory; }
-            set
-            {
-                selectedCategory = value;
-                save();
-            }
+            set { selectedCategory = value; }
         }
 
         private static double errorMargin;
         public static double ErrorMargin
         {
             get { return errorMargin; }
-            set
-            {
-                errorMargin = value;
-                save();
-            }
+            set { errorMargin = value; }
         }
 
         private static int bandwidth;
         public static int Bandwidth
         {
             get { return bandwidth; }
-            set
-            {
-                bandwidth = value;
-                save();
-            }
+            set { bandwidth = value; }
         }
 
         private static bool hasDirection;
         public static bool HasDirection
         {
             get { return hasDirection; }
-            set
-            {
-                hasDirection = value;
-                save();
-            }
-        }
-
-        private static Size windowSize;
-        public static Size WindowSize
-        {
-            get { return windowSize; }
-            set
-            {
-                windowSize = value;
-                save();
-            }
+            set { hasDirection = value; }
         }
 
         private static double ignoreBeginning;
         public static double IgnoreBeginning
         {
             get { return ignoreBeginning; }
-            set
-            {
-                ignoreBeginning = value;
-                save();
-            }
+            set { ignoreBeginning = value; }
         }
 
         private static double ignoreEnd;
         public static double IgnoreEnd
         {
             get { return ignoreEnd; }
-            set
-            {
-                ignoreEnd = value;
-                save();
-            }
+            set { ignoreEnd = value; }
         }
 
         private static bool selectAll;
         public static bool SelectAll
         {
             get { return selectAll; }
-            set
-            {
-                selectAll = value;
-                save();
-            }
+            set { selectAll = value; }
         }
 
         private static bool showPace;
         public static bool ShowPace
         {
             get { return showPace; }
-            set
-            {
-                showPace = value;
-                save();
-            }
+            set { showPace = value; }
         }
 
-        public static bool dontSave = false;
-
-        public static void reset()
+        private static Size windowSize; //viewWidth, viewHeight in xml
+        public static Size WindowSize
         {
+            get { return windowSize; }
+            set { windowSize = value; }
+        }
+
+        public static void defaults()
+        {
+            selectedPlugin = "";
+            selectedCategory = null;
             errorMargin = 0.1;
             bandwidth = 40;
             hasDirection = false;
             ignoreBeginning = 0;
             ignoreEnd = 0;
-            windowSize = new Size(800, 600);
             selectAll = true;
-            selectedPlugin = "";
-            selectedCategory = null;
-            save();
+            windowSize = new Size(800, 600);
         }
 
-        static Settings()
+        public static void ReadOptions(XmlDocument xmlDoc, XmlNamespaceManager nsmgr, XmlElement pluginNode)
         {
-            prefsPath = Environment.GetEnvironmentVariable("APPDATA") + "/UniqueRoutesPlugin/preferences.xml";
-            if (!load())
+            String attr, attr2;
+
+            attr = pluginNode.GetAttribute(xmlTags.settingsVersion);
+            if (attr.Length > 0) { settingsVersion = (Int16)XmlConvert.ToInt16(attr); }
+            if (0 == settingsVersion)
             {
-                Directory.CreateDirectory(Environment.GetEnvironmentVariable("APPDATA") + "/UniqueRoutesPlugin/");
-                reset();
+                // No settings in Preferences.System found, try read old files
+                load();
             }
-            accumulatedSummary = getPlugin("AccumulatedSummary", "SportTracksAccumulatedSummaryPlugin.Source.AccumulatedSummaryView");
-            highScore = getPlugin("HighScore","SportTracksHighScorePlugin.Source.HighScoreViewer");
-            overlay = getPlugin("Overlay", "SportTracksOverlayPlugin.Source.OverlayView");
-            trimp = getPlugin("TRIMP", "SportTracksTRIMPPlugin.Source.TRIMPView");
+
+            attr = pluginNode.GetAttribute(xmlTags.selectedPlugin);
+            if (attr.Length > 0) { selectedPlugin = attr; }
+            attr = pluginNode.GetAttribute(xmlTags.selectedCategory);
+            if (attr.Length > 0) { selectedCategory = parseCategory(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.errorMargin);
+            if (attr.Length > 0) { errorMargin = (float)XmlConvert.ToDouble(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.bandwidth);
+            if (attr.Length > 0) { bandwidth = XmlConvert.ToInt16(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.hasDirection);
+            if (attr.Length > 0) { hasDirection = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.ignoreBeginning);
+            if (attr.Length > 0) { ignoreBeginning = (float)XmlConvert.ToDouble(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.ignoreEnd);
+            if (attr.Length > 0) { ignoreEnd = (float)XmlConvert.ToDouble(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.selectAll);
+            if (attr.Length > 0) { selectAll = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.showPace);
+            if (attr.Length > 0) { showPace = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.viewWidth);
+            attr2 = pluginNode.GetAttribute(xmlTags.viewHeight);
+            if (attr.Length > 0 && attr2.Length > 0)
+            {
+                windowSize = new Size(XmlConvert.ToInt16(attr), XmlConvert.ToInt16(attr2));
+            }
         }
 
-        private static Type getPlugin(string plugin, string klass)
+        public static void WriteOptions(XmlDocument xmlDoc, XmlElement pluginNode)
         {
-            try
-            {
-                String pluginPath = Directory.GetCurrentDirectory();
-                while (pluginPath != null && !pluginPath.EndsWith("Plugins"))
-                {
-                    DirectoryInfo parent = Directory.GetParent(pluginPath);
-                    if (parent != null)
-                        pluginPath = parent.FullName;
-                    else pluginPath = null;
-                }
-                String path = null;
-                if (pluginPath != null)
-                    path = getPath(plugin,pluginPath);
-                else
-                    path = getPath(plugin,Directory.GetCurrentDirectory() + "/Plugins/");
-                Assembly assembly = Assembly.LoadFrom(path);
-                return assembly.GetType(klass);
-            }
-            catch (Exception) { }
-            return null;
+            pluginNode.SetAttribute(xmlTags.settingsVersion, XmlConvert.ToString(settingsVersionCurrent));
+
+            pluginNode.SetAttribute(xmlTags.selectedPlugin, selectedPlugin);
+            pluginNode.SetAttribute(xmlTags.selectedCategory, printFullCategoryPath(selectedCategory));
+            pluginNode.SetAttribute(xmlTags.errorMargin, XmlConvert.ToString(errorMargin));
+            pluginNode.SetAttribute(xmlTags.bandwidth, XmlConvert.ToString(bandwidth));
+            pluginNode.SetAttribute(xmlTags.hasDirection, XmlConvert.ToString(hasDirection));
+            pluginNode.SetAttribute(xmlTags.ignoreBeginning, XmlConvert.ToString(ignoreBeginning));
+            pluginNode.SetAttribute(xmlTags.ignoreEnd, XmlConvert.ToString(ignoreEnd));
+            pluginNode.SetAttribute(xmlTags.selectAll, XmlConvert.ToString(selectAll));
+            pluginNode.SetAttribute(xmlTags.showPace, XmlConvert.ToString(showPace));
+            pluginNode.SetAttribute(xmlTags.viewWidth, XmlConvert.ToString(windowSize.Width));
+            pluginNode.SetAttribute(xmlTags.viewHeight, XmlConvert.ToString(windowSize.Height));
         }
 
-        private static string getPath(string plugin, string pluginPath)
+        private static int settingsVersion = 0; //default when not existing
+        private const int settingsVersionCurrent = 1;
+
+        private class xmlTags
         {
-            String path = pluginPath + "/" + plugin + "Plugin.dll";
-            if (File.Exists(path))
-                return path;
-            foreach (String sub in Directory.GetDirectories(pluginPath))
-            {
-                path = getPath(plugin,sub);
-                if (path != null)
-                    return path;
-            }
-            return null;
+            public const string settingsVersion = "settingsVersion";
+            public const string Verbose = "Verbose";
+
+            public const string selectedPlugin = "selectedPlugin";
+            public const string selectedCategory = "selectedCategory";
+            public const string errorMargin = "errorMargin";
+            public const string bandwidth = "bandwidth";
+            public const string hasDirection = "hasDirection";
+            public const string ignoreBeginning = "ignoreBeginning";
+            public const string ignoreEnd = "ignoreEnd";
+            public const string selectAll = "selectAll";
+            public const string showPace = "showPace";
+
+            public const string viewWidth = "viewWidth";
+            public const string viewHeight = "viewHeight";
         }
-                
+
         private static bool load()
         {
+            //Backwards compatibility, read old preferences file
+            String prefsPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar + "UniqueRoutesPlugin" + Path.DirectorySeparatorChar + "preferences.xml";
+
             if (!File.Exists(prefsPath)) return false;
             XmlDocument document = new XmlDocument();
             XmlReader reader = new XmlTextReader(prefsPath);
@@ -227,13 +218,13 @@ namespace SportTracksUniqueRoutesPlugin.Source
                 XmlNode elm = document.ChildNodes[0]["view"];
                 windowSize = new Size(int.Parse(elm.Attributes["viewWidth"].Value),
                                                     int.Parse(elm.Attributes["viewHeight"].Value));
-                errorMargin = parseDouble(elm.Attributes["errorMargin"].Value);
+                errorMargin = SportTracksUniqueRoutesPlugin.Source.Settings.parseDouble(elm.Attributes["errorMargin"].Value);
                 bandwidth = int.Parse(elm.Attributes["bandwidth"].Value);
                 hasDirection = bool.Parse(elm.Attributes["hasDirection"].Value);
                 if (elm.Attributes["ignoreBeginning"] != null)
-                    ignoreBeginning = parseDouble(elm.Attributes["ignoreBeginning"].Value);
+                    ignoreBeginning = SportTracksUniqueRoutesPlugin.Source.Settings.parseDouble(elm.Attributes["ignoreBeginning"].Value);
                 if (elm.Attributes["ignoreEnd"] != null)
-                    ignoreEnd = parseDouble(elm.Attributes["ignoreEnd"].Value);
+                    ignoreEnd = SportTracksUniqueRoutesPlugin.Source.Settings.parseDouble(elm.Attributes["ignoreEnd"].Value);
                 selectAll = bool.Parse(elm.Attributes["selectAll"].Value);
                 selectedCategory = parseCategory(elm.Attributes["selectedCategory"].Value);
                 selectedPlugin = elm.Attributes["selectedPlugin"].Value;
@@ -247,14 +238,48 @@ namespace SportTracksUniqueRoutesPlugin.Source
             return true;
         }
 
+        private static Type getPlugin(string plugin, string klass)
+        {
+            try
+            {
+                //List the assemblies in the current application domain
+                AppDomain currentDomain = AppDomain.CurrentDomain;
+                Assembly[] assems = currentDomain.GetAssemblies();
+
+                foreach (Assembly assem in assems)
+                {
+                    AssemblyName assemName = new AssemblyName((assem.FullName));
+                    if (assemName.Name.Equals(plugin + "Plugin"))
+                    {
+                        return assem.GetType(klass);
+                    }
+                }
+            }
+            catch (Exception) { }
+            return null;
+        }
+
+        private static string printFullCategoryPath(IActivityCategory selectedCategory)
+        {
+            String str = "";
+            bool first = true;
+            while (selectedCategory != null)
+            {
+                if (first) first = false;
+                else str = "|" + str;
+                str = selectedCategory.Name + str;
+                selectedCategory = selectedCategory.Parent;
+            }
+            return str;
+        }
         private static IActivityCategory parseCategory(string p)
         {
             if (p.Equals("")) return null;
             string[] ps = p.Split('|');
-            return getCategory(ps, 0,Plugin.GetApplication().Logbook.ActivityCategories);
+            return SportTracksUniqueRoutesPlugin.Source.Settings.getCategory(ps, 0, Plugin.GetApplication().Logbook.ActivityCategories);
         }
-
-        private static IActivityCategory getCategory(string[] ps, int p, IList<IActivityCategory> iList)
+     
+        public static IActivityCategory getCategory(string[] ps, int p, IList<IActivityCategory> iList)
         {
             if (iList == null) return null;
             foreach (IActivityCategory category in iList)
@@ -270,68 +295,12 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
             return null;
         }
-
+ 
         public static double parseDouble(string p)
         {
             //if (!p.Contains(".")) p += ".0";
             double d = double.Parse(p, NumberFormatInfo.InvariantInfo);
             return d;
-        }
-
-        public static void save()
-        {
-            if (dontSave) return;
-            if (PropertyChanged != null)
-                PropertyChanged.Invoke(null, null);
-            XmlDocument document = new XmlDocument();
-            XmlElement root = document.CreateElement("uniqueRoutes");
-            document.AppendChild(root);
-
-            XmlElement resultSetupElm = document.CreateElement("view");
-            root.AppendChild(resultSetupElm);
-            resultSetupElm.SetAttribute("errorMargin", errorMargin.ToString(NumberFormatInfo.InvariantInfo));
-            resultSetupElm.SetAttribute("bandwidth", bandwidth.ToString(NumberFormatInfo.InvariantInfo));
-            resultSetupElm.SetAttribute("hasDirection", hasDirection.ToString());
-            resultSetupElm.SetAttribute("ignoreBeginning", ignoreBeginning.ToString());
-            resultSetupElm.SetAttribute("ignoreEnd", ignoreEnd.ToString());
-            resultSetupElm.SetAttribute("viewWidth", windowSize.Width.ToString());
-            resultSetupElm.SetAttribute("viewHeight", windowSize.Height.ToString());
-            resultSetupElm.SetAttribute("selectAll", selectAll.ToString());
-            resultSetupElm.SetAttribute("selectedCategory", printFullPath(selectedCategory));
-            resultSetupElm.SetAttribute("selectedPlugin", selectedPlugin);
-            resultSetupElm.SetAttribute("showPace", showPace.ToString());
-
-            //StringWriter xmlString = new StringWriter();
-            //XmlTextWriter writer2 = new XmlTextWriter(xmlString);
-            XmlTextWriter writer = new XmlTextWriter(prefsPath, Encoding.UTF8);
-            writer.Formatting = Formatting.Indented;
-            writer.Indentation = 3;
-            writer.IndentChar = ' ';
-            document.WriteContentTo(writer);
-            //document.WriteContentTo(writer2);
-            writer.Close();
-            //writer2.Close();
-
-            //String text = xmlString.ToString();
-
-            //Plugin.GetApplication().Logbook.SetExtensionText(new Guid(Properties.Resources.HighScoreGuid),
-            //                                                    null);
-            //Plugin.GetApplication().Logbook.SetExtensionText(new Guid(Properties.Resources.HighScoreGuid),
-            //                                                    text);
-        }
-
-        private static string printFullPath(IActivityCategory selectedCategory)
-        {
-            String str = "";
-            bool first = true;
-            while (selectedCategory != null)
-            {
-                if (first) first = false;
-                else str = "|" + str;
-                str = selectedCategory.Name + str;
-                selectedCategory = selectedCategory.Parent;
-            }
-            return str;
         }
 
         public static double convertFrom(double p, Length.Units metric)
@@ -393,12 +362,6 @@ namespace SportTracksUniqueRoutesPlugin.Source
             for (int i = 0; i < decimals; i++) s += "0";
             return String.Format("{0:0." + s + "}", p);
         }
-
-        #region INotifyPropertyChanged Members
-
-        public static event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
 
         public static String translateUnit(Length.Units unit)
         {

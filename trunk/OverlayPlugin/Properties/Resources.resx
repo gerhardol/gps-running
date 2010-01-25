@@ -184,9 +184,6 @@
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
-  <data name="Overlay" xml:space="preserve">
-    <value>{489FD22A-DB13-49DB-A77C-57E45CB1D049}</value>
-  </data>
   <data name="Pace" xml:space="preserve">
     <value>Pace (min/{0})</value>
   </data>
