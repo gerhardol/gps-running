@@ -1,4 +1,5 @@
 #summary High Score User's Guide
+#labels Featured
 
 ===How does it work?===
 

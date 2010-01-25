@@ -1,4 +1,5 @@
 #summary Overlay User's Guide
+#labels Featured
 
 ===What does it do?===
 

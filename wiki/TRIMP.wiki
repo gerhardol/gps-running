@@ -1,4 +1,5 @@
 #summary TRIMP User's Guide
+#labels Featured
 
 Note: You may want to take a look at the [http://www.zonefivesoftware.com/SportTracks/Plugins/plugin_detail.php?id=103 Training Load] plugin instead.
 That plugin does not only calculate TRIMP, but also Training Load, that allows for better analysis.
