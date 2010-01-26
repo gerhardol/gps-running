@@ -147,7 +147,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(new ProcessStartInfo("IExplore",
-                "http://gpsrunning.nicolajsen.nl/?path=SportTracks%2FUnique%20Routes"));
+                "http://code.google.com/p/gps-running/wiki/UniqueRoutes"));
         }
 
         private void resetSettings_Click(object sender, EventArgs e)

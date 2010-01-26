@@ -42,7 +42,7 @@ namespace SportTracksOverlayPlugin.Source
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(new ProcessStartInfo("IExplore",
-                "http://gpsrunning.nicolajsen.nl/?path=SportTracks%2FOverlay"));
+                "http://code.google.com/p/gps-running/wiki/Overlay"));
         }
     }
 }
