@@ -173,7 +173,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             attr = pluginNode.GetAttribute(xmlTags.model);
             if (attr.Length > 0) { model = (PredictionModel)Enum.Parse(typeof(PredictionModel), attr); }
             attr = pluginNode.GetAttribute(xmlTags.distances);
-            if (attr.Length > 0) { parseDistances(attr); }
+            if (attr.Length > 0) { distances = parseDistances(attr.Split(';')); }
 
             attr = pluginNode.GetAttribute(xmlTags.viewWidth);
             attr2 = pluginNode.GetAttribute(xmlTags.viewHeight);
@@ -315,22 +315,20 @@ namespace SportTracksPerformancePredictorPlugin.Source
                 time.Minutes, time.Seconds);
         }
 
-        private static void parseDistances(string s)
+        private static SortedList<double, SortedList<Length.Units, bool>> parseDistances(string[] p)
         {
+            SortedList<double, SortedList<Length.Units, bool>> dlist = new SortedList<double, SortedList<Length.Units, bool>>();
+            foreach (String s in p)
+            {
                 string[] split = s.Split(' ');
                 double distance = parseDouble(split[0]);
                 Length.Units unit = (Length.Units)Enum.Parse(typeof(Length.Units), split[1]);
                 bool userDefined = bool.Parse(split[2]);
                 SortedList<Length.Units, bool> list = new SortedList<Length.Units, bool>();
                 list.Add(unit, userDefined);
-                distances.Add(distance, list);
-        }
-        private static void parseDistances(string[] p)
-        {
-            foreach (String s in p)
-            {
-                parseDistances(s);
+                dlist.Add(distance, list);
             }
+            return dlist;
         }
 
         public static double parseDouble(string p)
