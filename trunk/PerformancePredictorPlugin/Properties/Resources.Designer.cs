@@ -204,15 +204,6 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to h.
-        /// </summary>
-        internal static string HourShort {
-            get {
-                return ResourceManager.GetString("HourShort", resourceCulture);
-            }
-        }
-        
         internal static System.Drawing.Bitmap Image_16_PerformancePredictor {
             get {
                 object obj = ResourceManager.GetObject("Image_16_PerformancePredictor", resourceCulture);
@@ -289,15 +280,6 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mile.
-        /// </summary>
-        internal static string Mile {
-            get {
-                return ResourceManager.GetString("Mile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Mile (min/{0}).
         /// </summary>
         internal static string MilePace {
@@ -312,15 +294,6 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         internal static string MileSpeed {
             get {
                 return ResourceManager.GetString("MileSpeed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to min.
-        /// </summary>
-        internal static string MinuteShort {
-            get {
-                return ResourceManager.GetString("MinuteShort", resourceCulture);
             }
         }
         
@@ -541,24 +514,6 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to k.
-        /// </summary>
-        internal static string ShortLowerCaseKilometer {
-            get {
-                return ResourceManager.GetString("ShortLowerCaseKilometer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to min.
-        /// </summary>
-        internal static string ShortLowerCaseMinutes {
-            get {
-                return ResourceManager.GetString("ShortLowerCaseMinutes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Pace.
         /// </summary>
         internal static string ShowPace {
@@ -654,132 +609,6 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         internal static string Unit {
             get {
                 return ResourceManager.GetString("Unit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Centimeter.
-        /// </summary>
-        internal static string UnitCentimeter {
-            get {
-                return ResourceManager.GetString("UnitCentimeter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to cm.
-        /// </summary>
-        internal static string UnitCentimeterShort {
-            get {
-                return ResourceManager.GetString("UnitCentimeterShort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Foot.
-        /// </summary>
-        internal static string UnitFoot {
-            get {
-                return ResourceManager.GetString("UnitFoot", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ft.
-        /// </summary>
-        internal static string UnitFootShort {
-            get {
-                return ResourceManager.GetString("UnitFootShort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Inch.
-        /// </summary>
-        internal static string UnitInch {
-            get {
-                return ResourceManager.GetString("UnitInch", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to in.
-        /// </summary>
-        internal static string UnitInchShort {
-            get {
-                return ResourceManager.GetString("UnitInchShort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Kilometer.
-        /// </summary>
-        internal static string UnitKilometer {
-            get {
-                return ResourceManager.GetString("UnitKilometer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to km.
-        /// </summary>
-        internal static string UnitKilometerShort {
-            get {
-                return ResourceManager.GetString("UnitKilometerShort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Meter.
-        /// </summary>
-        internal static string UnitMeter {
-            get {
-                return ResourceManager.GetString("UnitMeter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to m.
-        /// </summary>
-        internal static string UnitMeterShort {
-            get {
-                return ResourceManager.GetString("UnitMeterShort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Mile.
-        /// </summary>
-        internal static string UnitMile {
-            get {
-                return ResourceManager.GetString("UnitMile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to mi.
-        /// </summary>
-        internal static string UnitMileShort {
-            get {
-                return ResourceManager.GetString("UnitMileShort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Yard.
-        /// </summary>
-        internal static string UnitYard {
-            get {
-                return ResourceManager.GetString("UnitYard", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to yd.
-        /// </summary>
-        internal static string UnitYardShort {
-            get {
-                return ResourceManager.GetString("UnitYardShort", resourceCulture);
             }
         }
         

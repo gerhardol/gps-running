@@ -24,8 +24,8 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Data.Fitness;
-using System.Reflection;
 using ZoneFiveSoftware.Common.Data.Measurement;
+using System.Reflection;
 using SportTracksPerformancePredictorPlugin.Properties;
 
 namespace SportTracksPerformancePredictorPlugin.Source
@@ -329,11 +329,11 @@ namespace SportTracksPerformancePredictorPlugin.Source
             {
                 set.Columns.Add(String.Format(Resources.Speed,Settings.DistanceUnitShort), typeof(double));
             }
-            string[] durations = new string[] { "20 " + Resources.ShortLowerCaseMinutes, "25 " + Resources.ShortLowerCaseMinutes,
-                "30 "+Resources.ShortLowerCaseMinutes, "35 "+Resources.ShortLowerCaseMinutes, 
-                "40 "+Resources.ShortLowerCaseMinutes, "45 "+Resources.ShortLowerCaseMinutes, 
-                "50 "+Resources.ShortLowerCaseMinutes, "55 "+Resources.ShortLowerCaseMinutes, 
-                "60 "+Resources.ShortLowerCaseMinutes };
+            string[] durations = new string[] { "20 " + Time.TimeRange.Minute, "25 " + Time.TimeRange.Minute,
+                "30 "+Time.TimeRange.Minute, "35 "+Time.TimeRange.Minute, 
+                "40 "+Time.TimeRange.Minute, "45 "+Time.TimeRange.Minute, 
+                "50 "+Time.TimeRange.Minute, "55 "+Time.TimeRange.Minute, 
+                "60 "+Time.TimeRange.Minute };
             double vdot = getVdot(activity);
             TimeSpan pace = getTrainingPace(vdot,0.93);
             TimeSpan[] paces = new TimeSpan[] {
@@ -428,14 +428,14 @@ namespace SportTracksPerformancePredictorPlugin.Source
             result[4] = Resources.ModAerobicZone;
             result[5] = Resources.HighAerobicZone;
             result[6] = Resources.Marathon;
-            result[7] = "1/2 "+Resources.Marathon;
-            result[8] = "15"+Resources.ShortLowerCaseKilometer;
-            result[9] = "12" + Resources.ShortLowerCaseKilometer;
-            result[10] = "10" + Resources.ShortLowerCaseKilometer;
-            result[11] = "8" + Resources.ShortLowerCaseKilometer;
-            result[12] = "5" + Resources.ShortLowerCaseKilometer;
-            result[13] = "3" + Resources.ShortLowerCaseKilometer;
-            result[14] = Resources.Mile;
+            result[7] = "1/2 " + Resources.Marathon;
+            result[8] = "15" + Length.LabelAbbr(Length.Units.Kilometer);
+            result[9] = "12" + Length.LabelAbbr(Length.Units.Kilometer);
+            result[10] = "10" + Length.LabelAbbr(Length.Units.Kilometer);
+            result[11] = "8" + Length.LabelAbbr(Length.Units.Kilometer);
+            result[12] = "5" + Length.LabelAbbr(Length.Units.Kilometer);
+            result[13] = "3" + Length.LabelAbbr(Length.Units.Kilometer);
+            result[14] = Length.LabelAbbr(Length.Units.Mile);
             return result;
         }
 

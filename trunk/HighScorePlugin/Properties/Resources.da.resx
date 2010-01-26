@@ -189,9 +189,6 @@
   <data name="HadNoStartTime" xml:space="preserve">
     <value>havde ingen start tid</value>
   </data>
-  <data name="HourShort" xml:space="preserve">
-    <value>t</value>
-  </data>
   <data name="HR" xml:space="preserve">
     <value>Puls (BPM)</value>
   </data>
@@ -254,12 +251,6 @@
   </data>
   <data name="LowerCaseTable" xml:space="preserve">
     <value>tabel</value>
-  </data>
-  <data name="Meters" xml:space="preserve">
-    <value>meter</value>
-  </data>
-  <data name="MinuteShort" xml:space="preserve">
-    <value>min</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>Nej</value>
@@ -339,9 +330,6 @@
   <data name="ResetTimesWarning" xml:space="preserve">
     <value>Er du sikker på at du vil fjerne de nuværende tider og bruge standard tiderne?</value>
   </data>
-  <data name="Seconds" xml:space="preserve">
-    <value>sekunder</value>
-  </data>
   <data name="ShortestDistanceTraveled" xml:space="preserve">
     <value>Korteste tilbagelagt afstand</value>
   </data>
@@ -398,48 +386,6 @@
   </data>
   <data name="To" xml:space="preserve">
     <value>Til</value>
-  </data>
-  <data name="UnitCentimeter" xml:space="preserve">
-    <value>Centimeter</value>
-  </data>
-  <data name="UnitCentimeterShort" xml:space="preserve">
-    <value>cm</value>
-  </data>
-  <data name="UnitFoot" xml:space="preserve">
-    <value>Fod</value>
-  </data>
-  <data name="UnitFootShort" xml:space="preserve">
-    <value>fod</value>
-  </data>
-  <data name="UnitInch" xml:space="preserve">
-    <value>Tomme</value>
-  </data>
-  <data name="UnitInchShort" xml:space="preserve">
-    <value>tomme</value>
-  </data>
-  <data name="UnitKilometer" xml:space="preserve">
-    <value>Kilometer</value>
-  </data>
-  <data name="UnitKilometerShort" xml:space="preserve">
-    <value>km</value>
-  </data>
-  <data name="UnitMeter" xml:space="preserve">
-    <value>Meter</value>
-  </data>
-  <data name="UnitMeterShort" xml:space="preserve">
-    <value>m</value>
-  </data>
-  <data name="UnitMile" xml:space="preserve">
-    <value>Mil</value>
-  </data>
-  <data name="UnitMileShort" xml:space="preserve">
-    <value>mi</value>
-  </data>
-  <data name="UnitYard" xml:space="preserve">
-    <value>Yard</value>
-  </data>
-  <data name="UnitYardShort" xml:space="preserve">
-    <value>yd</value>
   </data>
   <data name="Warning" xml:space="preserve">
     <value>Advarsel</value>

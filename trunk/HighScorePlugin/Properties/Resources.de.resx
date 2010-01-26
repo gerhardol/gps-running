@@ -267,9 +267,6 @@
   <data name="LowerCaseTable" xml:space="preserve">
     <value>Tabelle</value>
   </data>
-  <data name="Meters" xml:space="preserve">
-    <value>Meter</value>
-  </data>
   <data name="No" xml:space="preserve">
     <value>Keine Start Zeit</value>
   </data>
@@ -350,9 +347,6 @@
   </data>
   <data name="ResetTimesWarning" xml:space="preserve">
     <value>Wollen Sie wirklich die aktuellen Zeiten löschen und zurück zu den Standard Zeiten?</value>
-  </data>
-  <data name="Seconds" xml:space="preserve">
-    <value>Sekunden</value>
   </data>
   <data name="ShortestDistanceTraveled" xml:space="preserve">
     <value>Kürzeste zurückgelegte Distanz</value>

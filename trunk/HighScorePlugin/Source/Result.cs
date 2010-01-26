@@ -68,7 +68,7 @@ namespace SportTracksHighScorePlugin.Source
 
         public override String ToString()
         {
-            return String.Format("{0} : {1} {3}, {2} {4}", Goal.ToString(), MeterEnd - MeterEnd, Seconds,Resources.Meters,Resources.Seconds);
+            return String.Format("{0} : {1} {3}, {2} {4}", Goal.ToString(), MeterEnd - MeterEnd, Seconds,Length.LabelPlural(Length.Units.Meter),Time.LabelPlural(Time.TimeRange.Second));
         }
     }
 }

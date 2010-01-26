@@ -477,7 +477,7 @@ namespace SportTracksOverlayPlugin.Source
             else
             {
                 chart.XAxis.Formatter = new Formatter.SecondsToTime();
-                chart.XAxis.Label = Resources.Minutes;
+                chart.XAxis.Label = Time.LabelPlural(Time.TimeRange.Minute);
             }
             if (Settings.ShowHeartRate)
             {
@@ -1067,7 +1067,7 @@ namespace SportTracksOverlayPlugin.Source
             }
             else
             {
-                movingAverageLabel.Text = Resources.Seconds;
+                movingAverageLabel.Text = Time.Label(Time.TimeRange.Second);
                 maBox.Text = Settings.MovingAverageTime.ToString();
             }
             maBox.Enabled = Settings.ShowMovingAverage;
