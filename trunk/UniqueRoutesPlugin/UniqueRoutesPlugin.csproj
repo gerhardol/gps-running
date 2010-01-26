@@ -1,7 +1,7 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <StartAction>Program</StartAction>
-    <StartProgram>C:\Program Files\Zone Five Software\SportTracks 2.0\SportTracks.exe</StartProgram>
+    <StartProgram>C:\Program Files\Zone Five Software\SportTracks 2.1\SportTracks.exe</StartProgram>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
