@@ -165,9 +165,6 @@
   <data name="HighScorePluginIntegration" xml:space="preserve">
     <value>High Score plugin integration</value>
   </data>
-  <data name="HourShort" xml:space="preserve">
-    <value>h</value>
-  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Image_16_PerformancePredictor" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Image_16_PerformancePredictor.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -196,26 +193,17 @@
   <data name="Marathon" xml:space="preserve">
     <value>Marathon</value>
   </data>
-  <data name="Mile" xml:space="preserve">
-    <value>Mile</value>
-  </data>
   <data name="MilePace" xml:space="preserve">
     <value>Mile (min/{0})</value>
   </data>
   <data name="MileSpeed" xml:space="preserve">
     <value>Mile ({0}/h)</value>
   </data>
-  <data name="MinuteShort" xml:space="preserve">
-    <value>min</value>
-  </data>
   <data name="ModAerobicZone" xml:space="preserve">
     <value>Mod aerobic zone</value>
   </data>
   <data name="NoMaxHR" xml:space="preserve">
     <value>Please go the athlete view and set your maximal heart rate to see the results.</value>
-  </data>
-  <data name="NoSeedActivity" xml:space="preserve">
-    <value>No seed activity</value>
   </data>
   <data name="Pace" xml:space="preserve">
     <value>Pace (min/{0})</value>
@@ -280,12 +268,6 @@
   <data name="SetWeight" xml:space="preserve">
     <value>Please go to the athlete view and set your weight to see the results.</value>
   </data>
-  <data name="ShortLowerCaseKilometer" xml:space="preserve">
-    <value>k</value>
-  </data>
-  <data name="ShortLowerCaseMinutes" xml:space="preserve">
-    <value>min</value>
-  </data>
   <data name="ShowPace" xml:space="preserve">
     <value>Pace</value>
   </data>
@@ -315,51 +297,6 @@
   </data>
   <data name="TrainRaceHR" xml:space="preserve">
     <value>Train / race HR.</value>
-  </data>
-  <data name="Unit" xml:space="preserve">
-    <value>Unit</value>
-  </data>
-  <data name="UnitCentimeter" xml:space="preserve">
-    <value>Centimeter</value>
-  </data>
-  <data name="UnitCentimeterShort" xml:space="preserve">
-    <value>cm</value>
-  </data>
-  <data name="UnitFoot" xml:space="preserve">
-    <value>Foot</value>
-  </data>
-  <data name="UnitFootShort" xml:space="preserve">
-    <value>ft</value>
-  </data>
-  <data name="UnitInch" xml:space="preserve">
-    <value>Inch</value>
-  </data>
-  <data name="UnitInchShort" xml:space="preserve">
-    <value>in</value>
-  </data>
-  <data name="UnitKilometer" xml:space="preserve">
-    <value>Kilometer</value>
-  </data>
-  <data name="UnitKilometerShort" xml:space="preserve">
-    <value>km</value>
-  </data>
-  <data name="UnitMeter" xml:space="preserve">
-    <value>Meter</value>
-  </data>
-  <data name="UnitMeterShort" xml:space="preserve">
-    <value>m</value>
-  </data>
-  <data name="UnitMile" xml:space="preserve">
-    <value>Mile</value>
-  </data>
-  <data name="UnitMileShort" xml:space="preserve">
-    <value>mi</value>
-  </data>
-  <data name="UnitYard" xml:space="preserve">
-    <value>Yard</value>
-  </data>
-  <data name="UnitYardShort" xml:space="preserve">
-    <value>yd</value>
   </data>
   <data name="Use" xml:space="preserve">
     <value>Use</value>
@@ -399,5 +336,11 @@
   </data>
   <data name="ZoneDistance" xml:space="preserve">
     <value>Zone / distance</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="NoSeedActivity" xml:space="preserve">
+    <value>No seed activity</value>
   </data>
 </root>

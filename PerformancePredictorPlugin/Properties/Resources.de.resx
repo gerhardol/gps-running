@@ -183,9 +183,6 @@
   <data name="Marathon" xml:space="preserve">
     <value>Marathon</value>
   </data>
-  <data name="Mile" xml:space="preserve">
-    <value>Mile</value>
-  </data>
   <data name="MilePace" xml:space="preserve">
     <value>Mile (min/{0})</value>
   </data>
@@ -261,12 +258,6 @@ ist angepasst um richtige Intensität zu erhalten.</value>
   </data>
   <data name="SetWeight" xml:space="preserve">
     <value>Bitte wechseln Sie zur Sportler Ansicht und ergänzen dort Ihr Gewicht um das Ergebnis zu sehen.</value>
-  </data>
-  <data name="ShortLowerCaseKilometer" xml:space="preserve">
-    <value>k</value>
-  </data>
-  <data name="ShortLowerCaseMinutes" xml:space="preserve">
-    <value>min</value>
   </data>
   <data name="ShowPace" xml:space="preserve">
     <value>Tempo</value>

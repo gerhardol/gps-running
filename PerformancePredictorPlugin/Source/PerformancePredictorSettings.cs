@@ -45,7 +45,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             label2.Text = Resources.ProcDistUsed;
             foreach (Length.Units s in Enum.GetValues(typeof(Length.Units)))
             {
-                unitBox.Items.Add(Settings.translateUnit(s));
+                unitBox.Items.Add(Length.Label(s));
             }
             unitBox.SelectedItem = Settings.DistanceUnit;
             updateList();

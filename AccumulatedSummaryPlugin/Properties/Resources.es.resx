@@ -159,17 +159,11 @@
   <data name="Hours" xml:space="preserve">
     <value>hh:</value>
   </data>
-  <data name="HourShort" xml:space="preserve">
-    <value>h </value>
-  </data>
   <data name="Jogging" xml:space="preserve">
     <value>Trotar</value>
   </data>
   <data name="Minutes" xml:space="preserve">
     <value>mm:</value>
-  </data>
-  <data name="MinuteShort" xml:space="preserve">
-    <value>min </value>
   </data>
   <data name="NoutofM" xml:space="preserve">
     <value>{0} de {1} actividades usadas</value>
@@ -191,48 +185,6 @@
   </data>
   <data name="Time" xml:space="preserve">
     <value>Tiempo ({0})</value>
-  </data>
-  <data name="UnitCentimeter" xml:space="preserve">
-    <value>Centímetro </value>
-  </data>
-  <data name="UnitCentimeterShort" xml:space="preserve">
-    <value>cm </value>
-  </data>
-  <data name="UnitFoot" xml:space="preserve">
-    <value>Pie </value>
-  </data>
-  <data name="UnitFootShort" xml:space="preserve">
-    <value>ft </value>
-  </data>
-  <data name="UnitInch" xml:space="preserve">
-    <value>Pulgada </value>
-  </data>
-  <data name="UnitInchShort" xml:space="preserve">
-    <value>in </value>
-  </data>
-  <data name="UnitKilometer" xml:space="preserve">
-    <value>Kilómetro </value>
-  </data>
-  <data name="UnitKilometerShort" xml:space="preserve">
-    <value>km </value>
-  </data>
-  <data name="UnitMeter" xml:space="preserve">
-    <value>Metro </value>
-  </data>
-  <data name="UnitMeterShort" xml:space="preserve">
-    <value>m </value>
-  </data>
-  <data name="UnitMile" xml:space="preserve">
-    <value>Milla </value>
-  </data>
-  <data name="UnitMileShort" xml:space="preserve">
-    <value>mi </value>
-  </data>
-  <data name="UnitYard" xml:space="preserve">
-    <value>Yarda </value>
-  </data>
-  <data name="UnitYardShort" xml:space="preserve">
-    <value>yd </value>
   </data>
   <data name="Walking" xml:space="preserve">
     <value>Caminar</value>

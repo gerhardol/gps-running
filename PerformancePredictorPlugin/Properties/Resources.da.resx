@@ -165,9 +165,6 @@
   <data name="HighScorePluginIntegration" xml:space="preserve">
     <value>High Score plugin integration</value>
   </data>
-  <data name="HourShort" xml:space="preserve">
-    <value>t</value>
-  </data>
   <data name="IntervalSplitTimes" xml:space="preserve">
     <value>Interval split tider</value>
   </data>
@@ -186,17 +183,11 @@
   <data name="Marathon" xml:space="preserve">
     <value>Marathon</value>
   </data>
-  <data name="Mile" xml:space="preserve">
-    <value>Mile</value>
-  </data>
   <data name="MilePace" xml:space="preserve">
     <value>Mile (min/{0})</value>
   </data>
   <data name="MileSpeed" xml:space="preserve">
     <value>Mile ({0}/t)</value>
-  </data>
-  <data name="MinuteShort" xml:space="preserve">
-    <value>min</value>
   </data>
   <data name="ModAerobicZone" xml:space="preserve">
     <value>Moderat aerobic zone</value>
@@ -270,12 +261,6 @@
   <data name="SetWeight" xml:space="preserve">
     <value>Gå til Udøver-view og sæt din vægt for at se resultaterne.</value>
   </data>
-  <data name="ShortLowerCaseKilometer" xml:space="preserve">
-    <value>k</value>
-  </data>
-  <data name="ShortLowerCaseMinutes" xml:space="preserve">
-    <value>min</value>
-  </data>
   <data name="ShowPace" xml:space="preserve">
     <value>Pace</value>
   </data>
@@ -308,48 +293,6 @@
   </data>
   <data name="Unit" xml:space="preserve">
     <value>Enhed</value>
-  </data>
-  <data name="UnitCentimeter" xml:space="preserve">
-    <value>Centimeter</value>
-  </data>
-  <data name="UnitCentimeterShort" xml:space="preserve">
-    <value>cm</value>
-  </data>
-  <data name="UnitFoot" xml:space="preserve">
-    <value>fod</value>
-  </data>
-  <data name="UnitFootShort" xml:space="preserve">
-    <value>fod</value>
-  </data>
-  <data name="UnitInch" xml:space="preserve">
-    <value>Tomme</value>
-  </data>
-  <data name="UnitInchShort" xml:space="preserve">
-    <value>tomme</value>
-  </data>
-  <data name="UnitKilometer" xml:space="preserve">
-    <value>Kilometer</value>
-  </data>
-  <data name="UnitKilometerShort" xml:space="preserve">
-    <value>km</value>
-  </data>
-  <data name="UnitMeter" xml:space="preserve">
-    <value>Meter</value>
-  </data>
-  <data name="UnitMeterShort" xml:space="preserve">
-    <value>m</value>
-  </data>
-  <data name="UnitMile" xml:space="preserve">
-    <value>Mil</value>
-  </data>
-  <data name="UnitMileShort" xml:space="preserve">
-    <value>mi</value>
-  </data>
-  <data name="UnitYard" xml:space="preserve">
-    <value>Yard</value>
-  </data>
-  <data name="UnitYardShort" xml:space="preserve">
-    <value>yd</value>
   </data>
   <data name="Use" xml:space="preserve">
     <value>Brug</value>

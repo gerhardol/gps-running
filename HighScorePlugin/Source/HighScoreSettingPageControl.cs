@@ -24,6 +24,7 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Data.Fitness;
+using ZoneFiveSoftware.Common.Data.Measurement;
 using System.Diagnostics;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Data.GPS;
@@ -97,7 +98,7 @@ namespace SportTracksHighScorePlugin.Source
         {
             String paceType = String.Format(Resources.PaceFormat,Settings.DistanceUnitShort);
             paceTypeBox.Items.Add(paceType);
-            paceTypeBox.Items.Add(Settings.DistanceUnitShort + "/"+Resources.HourShort);
+            paceTypeBox.Items.Add(Settings.DistanceUnitShort + "/"+Time.Label(Time.TimeRange.Hour));
             paceTypeBox.SelectedItem = paceType;
             setPaceLabel();
             distanceLabel.Text = Settings.DistanceUnit;

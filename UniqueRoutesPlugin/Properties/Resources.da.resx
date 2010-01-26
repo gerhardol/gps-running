@@ -171,12 +171,6 @@
   <data name="IncludeOnlyCategory" xml:space="preserve">
     <value>Inkluder kun aktiviteter i kategorien '{0}' i søgningen</value>
   </data>
-  <data name="LowerCasePace" xml:space="preserve">
-    <value>pace</value>
-  </data>
-  <data name="Meters" xml:space="preserve">
-    <value>meter</value>
-  </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>

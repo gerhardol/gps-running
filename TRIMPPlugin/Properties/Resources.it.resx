@@ -129,9 +129,6 @@
   <data name="Graph" xml:space="preserve">
     <value>Grafico</value>
   </data>
-  <data name="HourShort" xml:space="preserve">
-    <value>h</value>
-  </data>
   <data name="HR" xml:space="preserve">
     <value>Frequenza Cardiaca (BPM)</value>
   </data>
@@ -140,9 +137,6 @@
   </data>
   <data name="IgnoredActivity" xml:space="preserve">
     <value>una attività ignorata perché non ha la traccia delle frequenze cardiache</value>
-  </data>
-  <data name="MinuteShort" xml:space="preserve">
-    <value>min</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
@@ -191,48 +185,6 @@
   </data>
   <data name="TotalTRIMP" xml:space="preserve">
     <value>Il TRIMP totale è {0}.</value>
-  </data>
-  <data name="UnitCentimeter" xml:space="preserve">
-    <value>Centimetri</value>
-  </data>
-  <data name="UnitCentimeterShort" xml:space="preserve">
-    <value>cm</value>
-  </data>
-  <data name="UnitFoot" xml:space="preserve">
-    <value>Piedi</value>
-  </data>
-  <data name="UnitFootShort" xml:space="preserve">
-    <value>ft</value>
-  </data>
-  <data name="UnitInch" xml:space="preserve">
-    <value>Pollici</value>
-  </data>
-  <data name="UnitInchShort" xml:space="preserve">
-    <value>in</value>
-  </data>
-  <data name="UnitKilometer" xml:space="preserve">
-    <value>Chilometri</value>
-  </data>
-  <data name="UnitKilometerShort" xml:space="preserve">
-    <value>km</value>
-  </data>
-  <data name="UnitMeter" xml:space="preserve">
-    <value>Metri</value>
-  </data>
-  <data name="UnitMeterShort" xml:space="preserve">
-    <value>m</value>
-  </data>
-  <data name="UnitMile" xml:space="preserve">
-    <value>Miglio</value>
-  </data>
-  <data name="UnitMileShort" xml:space="preserve">
-    <value>mi</value>
-  </data>
-  <data name="UnitYard" xml:space="preserve">
-    <value>Yarda</value>
-  </data>
-  <data name="UnitYardShort" xml:space="preserve">
-    <value>yd</value>
   </data>
   <data name="Use" xml:space="preserve">
     <value>Usa</value>

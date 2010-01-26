@@ -150,9 +150,6 @@
   <data name="MAToolTip" xml:space="preserve">
     <value>Auf 0 setzen für einen Durchschnitt vom Beginn einer Aktivität</value>
   </data>
-  <data name="Minutes" xml:space="preserve">
-    <value>Minuten</value>
-  </data>
   <data name="No" xml:space="preserve">
     <value>Nein</value>
   </data>
@@ -182,9 +179,6 @@
   </data>
   <data name="Question" xml:space="preserve">
     <value>Frage?</value>
-  </data>
-  <data name="Seconds" xml:space="preserve">
-    <value>Sekunden</value>
   </data>
   <data name="Speed" xml:space="preserve">
     <value>Geschwindigkeit ({0}/h)</value>

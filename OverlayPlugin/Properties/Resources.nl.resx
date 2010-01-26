@@ -144,20 +144,11 @@
   <data name="Elevation_label" xml:space="preserve">
     <value>Hoogte</value>
   </data>
-  <data name="HourShort" xml:space="preserve">
-    <value>u</value>
-  </data>
   <data name="HR" xml:space="preserve">
     <value>Hartslag</value>
   </data>
   <data name="MAToolTip" xml:space="preserve">
     <value>Stel in op 0 voor gemiddelde vanaf begin activiteit</value>
-  </data>
-  <data name="Minutes" xml:space="preserve">
-    <value>Minuten</value>
-  </data>
-  <data name="MinuteShort" xml:space="preserve">
-    <value>min</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>Neen</value>
@@ -189,9 +180,6 @@
   <data name="Question" xml:space="preserve">
     <value>Vraag?</value>
   </data>
-  <data name="Seconds" xml:space="preserve">
-    <value>Seconden</value>
-  </data>
   <data name="Speed" xml:space="preserve">
     <value>Snelheid ({0}/u)</value>
   </data>
@@ -200,48 +188,6 @@
   </data>
   <data name="Time" xml:space="preserve">
     <value>Tijd</value>
-  </data>
-  <data name="UnitCentimeter" xml:space="preserve">
-    <value>Centimeter</value>
-  </data>
-  <data name="UnitCentimeterShort" xml:space="preserve">
-    <value>cm</value>
-  </data>
-  <data name="UnitFoot" xml:space="preserve">
-    <value>Voet</value>
-  </data>
-  <data name="UnitFootShort" xml:space="preserve">
-    <value>ft</value>
-  </data>
-  <data name="UnitInch" xml:space="preserve">
-    <value>Inch</value>
-  </data>
-  <data name="UnitInchShort" xml:space="preserve">
-    <value>in</value>
-  </data>
-  <data name="UnitKilometer" xml:space="preserve">
-    <value>Kilometer</value>
-  </data>
-  <data name="UnitKilometerShort" xml:space="preserve">
-    <value>km</value>
-  </data>
-  <data name="UnitMeter" xml:space="preserve">
-    <value>Meter</value>
-  </data>
-  <data name="UnitMeterShort" xml:space="preserve">
-    <value>m</value>
-  </data>
-  <data name="UnitMile" xml:space="preserve">
-    <value>Mijl</value>
-  </data>
-  <data name="UnitMileShort" xml:space="preserve">
-    <value>mi</value>
-  </data>
-  <data name="UnitYard" xml:space="preserve">
-    <value>Yard</value>
-  </data>
-  <data name="UnitYardShort" xml:space="preserve">
-    <value>yd</value>
   </data>
   <data name="Warning" xml:space="preserve">
     <value>Waarschuwing</value>

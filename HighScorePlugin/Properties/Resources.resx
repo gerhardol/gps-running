@@ -129,12 +129,6 @@
   <data name="BiggestElevationDifference" xml:space="preserve">
     <value>Biggest elevation difference</value>
   </data>
-  <data name="BoundsMaximal" xml:space="preserve">
-    <value>maximal</value>
-  </data>
-  <data name="BoundsMinimal" xml:space="preserve">
-    <value>minimal</value>
-  </data>
   <data name="BPMFrom" xml:space="preserve">
     <value>BPM from</value>
   </data>
@@ -171,15 +165,6 @@
   <data name="Distances" xml:space="preserve">
     <value>Distances</value>
   </data>
-  <data name="DomDistance" xml:space="preserve">
-    <value>distance</value>
-  </data>
-  <data name="DomElevation" xml:space="preserve">
-    <value>elevation</value>
-  </data>
-  <data name="DomTime" xml:space="preserve">
-    <value>time</value>
-  </data>
   <data name="Elevation" xml:space="preserve">
     <value>Elevation</value>
   </data>
@@ -203,9 +188,6 @@
   </data>
   <data name="HadNoStartTime" xml:space="preserve">
     <value>had no start time</value>
-  </data>
-  <data name="HourShort" xml:space="preserve">
-    <value>h</value>
   </data>
   <data name="HR" xml:space="preserve">
     <value>Heart rate (BPM)</value>
@@ -279,9 +261,6 @@
   </data>
   <data name="LowerCaseTable" xml:space="preserve">
     <value>table</value>
-  </data>
-  <data name="Meters" xml:space="preserve">
-    <value>meters</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
@@ -361,9 +340,6 @@
   <data name="ResetTimesWarning" xml:space="preserve">
     <value>Are you sure you want to delete the current times and return to default times?</value>
   </data>
-  <data name="Seconds" xml:space="preserve">
-    <value>seconds</value>
-  </data>
   <data name="ShortestDistanceTraveled" xml:space="preserve">
     <value>Shortest distance traveled</value>
   </data>
@@ -421,48 +397,6 @@
   <data name="To" xml:space="preserve">
     <value>To</value>
   </data>
-  <data name="UnitCentimeter" xml:space="preserve">
-    <value>Centimeter</value>
-  </data>
-  <data name="UnitCentimeterShort" xml:space="preserve">
-    <value>cm</value>
-  </data>
-  <data name="UnitFoot" xml:space="preserve">
-    <value>Foot</value>
-  </data>
-  <data name="UnitFootShort" xml:space="preserve">
-    <value>ft</value>
-  </data>
-  <data name="UnitInch" xml:space="preserve">
-    <value>Inch</value>
-  </data>
-  <data name="UnitInchShort" xml:space="preserve">
-    <value>in</value>
-  </data>
-  <data name="UnitKilometer" xml:space="preserve">
-    <value>Kilometer</value>
-  </data>
-  <data name="UnitKilometerShort" xml:space="preserve">
-    <value>km</value>
-  </data>
-  <data name="UnitMeter" xml:space="preserve">
-    <value>Meter</value>
-  </data>
-  <data name="UnitMeterShort" xml:space="preserve">
-    <value>m</value>
-  </data>
-  <data name="UnitMile" xml:space="preserve">
-    <value>Mile</value>
-  </data>
-  <data name="UnitMileShort" xml:space="preserve">
-    <value>mi</value>
-  </data>
-  <data name="UnitYard" xml:space="preserve">
-    <value>Yard</value>
-  </data>
-  <data name="UnitYardShort" xml:space="preserve">
-    <value>yd</value>
-  </data>
   <data name="Warning" xml:space="preserve">
     <value>Warning</value>
   </data>
@@ -480,5 +414,14 @@
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
+  </data>
+  <data name="DomDistance" xml:space="preserve">
+    <value>distance</value>
+  </data>
+  <data name="DomElevation" xml:space="preserve">
+    <value>elevation</value>
+  </data>
+  <data name="DomTime" xml:space="preserve">
+    <value>time</value>
   </data>
 </root>

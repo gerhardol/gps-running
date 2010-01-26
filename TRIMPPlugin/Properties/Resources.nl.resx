@@ -129,9 +129,6 @@
   <data name="Graph" xml:space="preserve">
     <value>Grafiek</value>
   </data>
-  <data name="HourShort" xml:space="preserve">
-    <value>u</value>
-  </data>
   <data name="HR" xml:space="preserve">
     <value>Hartslag (BPM)</value>
   </data>
@@ -152,9 +149,6 @@
   </data>
   <data name="NoSelectedActivities" xml:space="preserve">
     <value>Geen activiteit geselecteerd.</value>
-  </data>
-  <data name="NumberOfZones" xml:space="preserve">
-    <value />
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
@@ -191,48 +185,6 @@
   </data>
   <data name="TotalTRIMP" xml:space="preserve">
     <value>Totaal TRIMP is {0}.</value>
-  </data>
-  <data name="UnitCentimeter" xml:space="preserve">
-    <value>Centimeter</value>
-  </data>
-  <data name="UnitCentimeterShort" xml:space="preserve">
-    <value>cm</value>
-  </data>
-  <data name="UnitFoot" xml:space="preserve">
-    <value>Voet</value>
-  </data>
-  <data name="UnitFootShort" xml:space="preserve">
-    <value>ft</value>
-  </data>
-  <data name="UnitInch" xml:space="preserve">
-    <value>Inch</value>
-  </data>
-  <data name="UnitInchShort" xml:space="preserve">
-    <value>in</value>
-  </data>
-  <data name="UnitKilometer" xml:space="preserve">
-    <value>Kilometer</value>
-  </data>
-  <data name="UnitKilometerShort" xml:space="preserve">
-    <value>km</value>
-  </data>
-  <data name="UnitMeter" xml:space="preserve">
-    <value>Meter</value>
-  </data>
-  <data name="UnitMeterShort" xml:space="preserve">
-    <value>m</value>
-  </data>
-  <data name="UnitMile" xml:space="preserve">
-    <value>Mijl</value>
-  </data>
-  <data name="UnitMileShort" xml:space="preserve">
-    <value>mi</value>
-  </data>
-  <data name="UnitYard" xml:space="preserve">
-    <value>Yard</value>
-  </data>
-  <data name="UnitYardShort" xml:space="preserve">
-    <value>yd</value>
   </data>
   <data name="Use" xml:space="preserve">
     <value>Gebruik</value>

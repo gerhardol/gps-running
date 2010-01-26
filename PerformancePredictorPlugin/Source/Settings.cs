@@ -355,26 +355,11 @@ namespace SportTracksPerformancePredictorPlugin.Source
 
         public static event System.ComponentModel.PropertyChangedEventHandler DistanceChanged;
 
-        public static String translateUnit(Length.Units unit)
-        {
-            switch (unit)
-            {
-                case Length.Units.Centimeter: return Resources.UnitCentimeter;
-                case Length.Units.Foot: return Resources.UnitFoot;
-                case Length.Units.Inch: return Resources.UnitInch;
-                case Length.Units.Kilometer: return Resources.UnitKilometer;
-                case Length.Units.Meter: return Resources.UnitMeter;
-                case Length.Units.Mile: return Resources.UnitMile;
-                case Length.Units.Yard: return Resources.UnitYard;
-            }
-            return null;
-        }
-
         public static String DistanceUnit
         {
             get
             {
-                return translateUnit(Plugin.GetApplication().SystemPreferences.DistanceUnits);
+                return Length.Label(Plugin.GetApplication().SystemPreferences.DistanceUnits);
             }
         }
 
@@ -382,30 +367,15 @@ namespace SportTracksPerformancePredictorPlugin.Source
         {
             get
             {
-                return translateUnit(Plugin.GetApplication().SystemPreferences.ElevationUnits);
+                return Length.Label(Plugin.GetApplication().SystemPreferences.ElevationUnits);
             }
-        }
-
-        public static String translateUnitShort(Length.Units unit)
-        {
-            switch (unit)
-            {
-                case Length.Units.Centimeter: return Resources.UnitCentimeterShort;
-                case Length.Units.Foot: return Resources.UnitFootShort;
-                case Length.Units.Inch: return Resources.UnitInchShort;
-                case Length.Units.Kilometer: return Resources.UnitKilometerShort;
-                case Length.Units.Meter: return Resources.UnitMeterShort;
-                case Length.Units.Mile: return Resources.UnitMileShort;
-                case Length.Units.Yard: return Resources.UnitYardShort;
-            }
-            return null;
         }
 
         public static String DistanceUnitShort
         {
             get
             {
-                return translateUnitShort(Plugin.GetApplication().SystemPreferences.DistanceUnits);
+                return Length.LabelAbbr(Plugin.GetApplication().SystemPreferences.DistanceUnits);
             }
         }
 
@@ -413,7 +383,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
         {
             get
             {
-                return translateUnitShort(Plugin.GetApplication().SystemPreferences.ElevationUnits);
+                return Length.LabelAbbr(Plugin.GetApplication().SystemPreferences.ElevationUnits);
             }
         }
     }

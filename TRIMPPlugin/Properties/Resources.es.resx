@@ -129,9 +129,6 @@
   <data name="Graph" xml:space="preserve">
     <value>Gráfica</value>
   </data>
-  <data name="HourShort" xml:space="preserve">
-    <value>h </value>
-  </data>
   <data name="HR" xml:space="preserve">
     <value>Ritmo cardiaco (LPM)</value>
   </data>
@@ -140,12 +137,6 @@
   </data>
   <data name="IgnoredActivity" xml:space="preserve">
     <value>Se ignora una actividad ya que no cuenta con datos de RC</value>
-  </data>
-  <data name="Key" xml:space="preserve">
-    <value>Valor</value>
-  </data>
-  <data name="MinuteShort" xml:space="preserve">
-    <value>min </value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
@@ -171,12 +162,6 @@
   <data name="Question" xml:space="preserve">
     <value>Pregunta?</value>
   </data>
-  <data name="rate" xml:space="preserve">
-    <value>track.</value>
-  </data>
-  <data name="rate1" xml:space="preserve">
-    <value>track.</value>
-  </data>
   <data name="ResetAllSettings" xml:space="preserve">
     <value>Restaurar todas las configuraciones…</value>
   </data>
@@ -200,48 +185,6 @@
   </data>
   <data name="TotalTRIMP" xml:space="preserve">
     <value>TRIMP Total {0}.</value>
-  </data>
-  <data name="UnitCentimeter" xml:space="preserve">
-    <value>Centímetro </value>
-  </data>
-  <data name="UnitCentimeterShort" xml:space="preserve">
-    <value>cm </value>
-  </data>
-  <data name="UnitFoot" xml:space="preserve">
-    <value>Pie </value>
-  </data>
-  <data name="UnitFootShort" xml:space="preserve">
-    <value>ft </value>
-  </data>
-  <data name="UnitInch" xml:space="preserve">
-    <value>Pulgada </value>
-  </data>
-  <data name="UnitInchShort" xml:space="preserve">
-    <value>in </value>
-  </data>
-  <data name="UnitKilometer" xml:space="preserve">
-    <value>Kilómetro </value>
-  </data>
-  <data name="UnitKilometerShort" xml:space="preserve">
-    <value>km </value>
-  </data>
-  <data name="UnitMeter" xml:space="preserve">
-    <value>Metro </value>
-  </data>
-  <data name="UnitMeterShort" xml:space="preserve">
-    <value>m </value>
-  </data>
-  <data name="UnitMile" xml:space="preserve">
-    <value>Milla </value>
-  </data>
-  <data name="UnitMileShort" xml:space="preserve">
-    <value>mi </value>
-  </data>
-  <data name="UnitYard" xml:space="preserve">
-    <value>Yarda </value>
-  </data>
-  <data name="UnitYardShort" xml:space="preserve">
-    <value>yd </value>
   </data>
   <data name="Use" xml:space="preserve">
     <value>Usar</value>

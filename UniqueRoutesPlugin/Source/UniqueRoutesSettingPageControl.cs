@@ -28,6 +28,7 @@ using System.Diagnostics;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Data.GPS;
 using ZoneFiveSoftware.Common.Data;
+using ZoneFiveSoftware.Common.Data.Measurement;
 using System.Collections;
 using System.IO;
 using System.Xml;
@@ -70,10 +71,10 @@ namespace SportTracksUniqueRoutesPlugin.Source
             precedeControl(label5, ignoreBeginningBox);
             label8.Text = Resources.IgnoreEndOfRoute + ":";
             precedeControl(label8, ignoreEndBox);
-            metricLabel.Text = Resources.Meters;
+            metricLabel.Text = Length.LabelPlural(Length.Units.Meter);
             label4.Text = Resources.Percent;
-            beginningLabel.Text = Resources.Meters;
-            endLabel.Text = Resources.Meters;
+            beginningLabel.Text = Length.LabelPlural(Length.Units.Meter);
+            endLabel.Text = Length.LabelPlural(Length.Units.Meter);
         }
 
         void UniqueRoutesSettingPageControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
