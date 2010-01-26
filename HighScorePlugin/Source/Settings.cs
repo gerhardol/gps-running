@@ -240,6 +240,7 @@ namespace SportTracksHighScorePlugin.Source
             attr = pluginNode.GetAttribute(xmlTags.distances);
             if (attr.Length > 0)
             {
+                distances.Clear();
                 String[] values = attr.Split(';');
                 foreach (String distance in values)
                 {
@@ -249,6 +250,7 @@ namespace SportTracksHighScorePlugin.Source
             attr = pluginNode.GetAttribute(xmlTags.times);
             if (attr.Length > 0)
             {
+                times.Clear();
                 String[] values = attr.Split(';');
                 foreach (String value in values)
                 {
@@ -262,6 +264,7 @@ namespace SportTracksHighScorePlugin.Source
             attr = pluginNode.GetAttribute(xmlTags.elevations);
             if (attr.Length > 0)
             {
+                elevations.Clear();
                 String[] values = attr.Split(';');
                 foreach (String elevation in values)
                 {
@@ -271,6 +274,7 @@ namespace SportTracksHighScorePlugin.Source
             attr = pluginNode.GetAttribute(xmlTags.pulseZones);
             if (attr.Length > 0)
             {
+                pulseZones.Clear();
                 String[] values = attr.Split(';');
                 foreach (String value in values)
                 {
@@ -295,6 +299,7 @@ namespace SportTracksHighScorePlugin.Source
             attr = pluginNode.GetAttribute(xmlTags.speedZones);
             if (attr.Length > 0)
             {
+                speedZones.Clear();
                 String[] values = attr.Split(';');
                 foreach (String value in values)
                 {

@@ -90,6 +90,7 @@ namespace SportTracksTRIMPPlugin.Source
             if (attr.Length > 0) { factors = parseFactors(attr); }
             attr = pluginNode.GetAttribute(xmlTags.useMaxHR);
             if (attr.Length > 0) { useMaxHR = XmlConvert.ToBoolean(attr); }
+
             attr = pluginNode.GetAttribute(xmlTags.viewWidth);
             attr2 = pluginNode.GetAttribute(xmlTags.viewHeight);
             if (attr.Length > 0 && attr2.Length > 0)
