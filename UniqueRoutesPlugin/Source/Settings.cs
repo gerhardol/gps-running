@@ -52,9 +52,18 @@ namespace SportTracksUniqueRoutesPlugin.Source
         }
 
         private static IActivityCategory selectedCategory;
+        private static string categoryTmpStr = null;
         public static IActivityCategory SelectedCategory
         {
-            get { return selectedCategory; }
+            get
+            {
+                if (null == selectedCategory)
+                {
+                    //Race problem at startup: Application is not directly accessible, save temp string
+                    selectedCategory = parseCategory(categoryTmpStr);
+                }
+                return selectedCategory;
+            }
             set { selectedCategory = value; }
         }
 
@@ -276,7 +285,19 @@ namespace SportTracksUniqueRoutesPlugin.Source
         {
             if (p.Equals("")) return null;
             string[] ps = p.Split('|');
-            return SportTracksUniqueRoutesPlugin.Source.Settings.getCategory(ps, 0, Plugin.GetApplication().Logbook.ActivityCategories);
+            IActivityCategory cat = null;
+            if (null == Plugin.GetApplication().Logbook)
+            {
+                if (null == categoryTmpStr)
+                {
+                    categoryTmpStr = p;
+                }
+            }
+            else
+            {
+                cat = SportTracksUniqueRoutesPlugin.Source.Settings.getCategory(ps, 0, Plugin.GetApplication().Logbook.ActivityCategories);
+            }
+            return cat;
         }
      
         public static IActivityCategory getCategory(string[] ps, int p, IList<IActivityCategory> iList)
