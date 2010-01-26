@@ -494,7 +494,7 @@ namespace SportTracksHighScorePlugin.Source
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(new ProcessStartInfo("IExplore",
-                "http://gpsrunning.nicolajsen.nl/?path=SportTracks/High+Score"));
+                "http://code.google.com/p/gps-running/wiki/HighScore"));
         }
 
     }

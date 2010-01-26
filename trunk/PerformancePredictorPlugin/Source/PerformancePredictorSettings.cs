@@ -75,7 +75,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(new ProcessStartInfo("IExplore",
-                "http://gpsrunning.nicolajsen.nl/?path=SportTracks/Performance+Predictor"));
+                "http://code.google.com/p/gps-running/wiki/PerformancePredictor"));
         }
 
         private void resetSettings_Click(object sender, EventArgs e)
