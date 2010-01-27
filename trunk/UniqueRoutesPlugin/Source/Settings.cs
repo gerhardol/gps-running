@@ -283,15 +283,13 @@ namespace SportTracksUniqueRoutesPlugin.Source
         }
         private static IActivityCategory parseCategory(string p)
         {
-            if (p.Equals("")) return null;
+            if (p == null || p.Equals("")) return null;
             string[] ps = p.Split('|');
             IActivityCategory cat = null;
             if (null == Plugin.GetApplication().Logbook)
             {
-                if (null == categoryTmpStr)
-                {
-                    categoryTmpStr = p;
-                }
+                //Cannot parse right now, save value for later
+                categoryTmpStr = p;
             }
             else
             {
