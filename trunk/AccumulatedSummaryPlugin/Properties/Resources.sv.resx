@@ -123,15 +123,6 @@
   <data name="AS2" xml:space="preserve">
     <value>Sammanlagd översikt av {0} aktiviteter</value>
   </data>
-  <data name="Ascending" xml:space="preserve">
-    <value>Stigning</value>
-  </data>
-  <data name="AverageHR" xml:space="preserve">
-    <value>Medelpuls</value>
-  </data>
-  <data name="Calories" xml:space="preserve">
-    <value>Kalorier</value>
-  </data>
   <data name="Climb" xml:space="preserve">
     <value>Stigning/Lutning ({0})</value>
   </data>
@@ -139,37 +130,22 @@
     <value>Stigningszoner</value>
   </data>
   <data name="Days" xml:space="preserve">
-    <value>dd:</value>
-  </data>
-  <data name="Descending" xml:space="preserve">
-    <value>Lutning</value>
-  </data>
-  <data name="Distance" xml:space="preserve">
-    <value>Distans</value>
-  </data>
-  <data name="FastestsPace" xml:space="preserve">
-    <value>Snabbast tempo</value>
-  </data>
-  <data name="FastestsSpeed" xml:space="preserve">
-    <value>Snabbast hastighet</value>
+    <value>dd</value>
   </data>
   <data name="HeartRateZones" xml:space="preserve">
     <value>Pulszoner (BPM) ({0})</value>
   </data>
   <data name="Hours" xml:space="preserve">
-    <value>hh:</value>
+    <value>hh</value>
   </data>
   <data name="Jogging" xml:space="preserve">
     <value>Joggning</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>mm:</value>
+    <value>mm</value>
   </data>
   <data name="NoutofM" xml:space="preserve">
     <value>{0} av {1} aktiviteter använda</value>
-  </data>
-  <data name="Pace" xml:space="preserve">
-    <value>Tempo (min/{0})</value>
   </data>
   <data name="Running" xml:space="preserve">
     <value>Löpning</value>
@@ -177,14 +153,8 @@
   <data name="Seconds" xml:space="preserve">
     <value>ss</value>
   </data>
-  <data name="Speed" xml:space="preserve">
-    <value>Hastighet ({0}/h)</value>
-  </data>
   <data name="SpeedZones" xml:space="preserve">
     <value>Hastighetszoner</value>
-  </data>
-  <data name="Time" xml:space="preserve">
-    <value>Tid ({0})</value>
   </data>
   <data name="Walking" xml:space="preserve">
     <value>Gång</value>

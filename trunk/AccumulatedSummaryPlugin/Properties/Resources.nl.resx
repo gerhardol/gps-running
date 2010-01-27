@@ -123,15 +123,6 @@
   <data name="AS2" xml:space="preserve">
     <value>Geaccumuleerde Samenvatting van {0} activiteiten</value>
   </data>
-  <data name="Ascending" xml:space="preserve">
-    <value>Stijgend</value>
-  </data>
-  <data name="AverageHR" xml:space="preserve">
-    <value>Gemiddelde Hartslag</value>
-  </data>
-  <data name="Calories" xml:space="preserve">
-    <value>Calorieën</value>
-  </data>
   <data name="Climb" xml:space="preserve">
     <value>Hoogte omhoog/omlaag ({0})</value>
   </data>
@@ -139,37 +130,22 @@
     <value>Hoogtezones</value>
   </data>
   <data name="Days" xml:space="preserve">
-    <value>dd:</value>
-  </data>
-  <data name="Descending" xml:space="preserve">
-    <value>Dalend</value>
-  </data>
-  <data name="Distance" xml:space="preserve">
-    <value>Afstand</value>
-  </data>
-  <data name="FastestsPace" xml:space="preserve">
-    <value>Hoogste Tempo</value>
-  </data>
-  <data name="FastestsSpeed" xml:space="preserve">
-    <value>Hoogste snelheid ({0}/h)</value>
+    <value>dd</value>
   </data>
   <data name="HeartRateZones" xml:space="preserve">
     <value>Hartslagzones (BPM) ({0})</value>
   </data>
   <data name="Hours" xml:space="preserve">
-    <value>uu:</value>
+    <value>uu</value>
   </data>
   <data name="Jogging" xml:space="preserve">
     <value>Jogging</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>mm:</value>
+    <value>mm</value>
   </data>
   <data name="NoutofM" xml:space="preserve">
     <value>{0} van {1} activiteiten gebruikt</value>
-  </data>
-  <data name="Pace" xml:space="preserve">
-    <value>Tempo (min/{0})</value>
   </data>
   <data name="Running" xml:space="preserve">
     <value>Hardlopend</value>
@@ -177,14 +153,8 @@
   <data name="Seconds" xml:space="preserve">
     <value>ss</value>
   </data>
-  <data name="Speed" xml:space="preserve">
-    <value>Snelheid ({0}/u)</value>
-  </data>
   <data name="SpeedZones" xml:space="preserve">
     <value>Snelheidzones</value>
-  </data>
-  <data name="Time" xml:space="preserve">
-    <value>Tijd ({0})</value>
   </data>
   <data name="Walking" xml:space="preserve">
     <value>Wandelend</value>

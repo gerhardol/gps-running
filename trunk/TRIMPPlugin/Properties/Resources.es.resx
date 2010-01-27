@@ -120,26 +120,17 @@
   <data name="CurrentRestAndMax" xml:space="preserve">
     <value>RC en reposo actual: {0} LPM. RC Máximo: {1} LPM.</value>
   </data>
-  <data name="Date" xml:space="preserve">
-    <value>Fecha</value>
-  </data>
   <data name="Factor" xml:space="preserve">
     <value>Factor</value>
   </data>
   <data name="Graph" xml:space="preserve">
     <value>Gráfica</value>
   </data>
-  <data name="HR" xml:space="preserve">
-    <value>Ritmo cardiaco (LPM)</value>
-  </data>
   <data name="IgnoredActivities" xml:space="preserve">
     <value>Se ignoraron {0} actividades ya que no cuentan con datos de RC.  </value>
   </data>
   <data name="IgnoredActivity" xml:space="preserve">
     <value>Se ignora una actividad ya que no cuenta con datos de RC</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
   </data>
   <data name="NoRestOrMaxHR" xml:space="preserve">
     <value>No existe RC máximo o en reposo en la Bitácora.\n el plugin no puede calcular nada mientras no sean configurados en .\n para configurarlos vaya a la vista de Atleta.</value>
@@ -149,15 +140,6 @@
   </data>
   <data name="NumberOfZones" xml:space="preserve">
     <value>Número de zonas:</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="PercHRReserve" xml:space="preserve">
-    <value>% RC reservado</value>
-  </data>
-  <data name="PercMaxHR" xml:space="preserve">
-    <value>% RC máx..</value>
   </data>
   <data name="Question" xml:space="preserve">
     <value>Pregunta?</value>
@@ -180,28 +162,13 @@
   <data name="T2" xml:space="preserve">
     <value>TRIMP de {0} actividades</value>
   </data>
-  <data name="TimeMinutes" xml:space="preserve">
-    <value>Tiempo (min.)</value>
-  </data>
   <data name="TotalTRIMP" xml:space="preserve">
     <value>TRIMP Total {0}.</value>
   </data>
   <data name="Use" xml:space="preserve">
     <value>Usar</value>
   </data>
-  <data name="UseHRReserve" xml:space="preserve">
-    <value>Ritmo cardiaco reservado</value>
-  </data>
-  <data name="UseMaxHR" xml:space="preserve">
-    <value>Máximo de ritmo cardiaco</value>
-  </data>
   <data name="Warning" xml:space="preserve">
     <value>Advertencia</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Si</value>
-  </data>
-  <data name="ZoneMaxHR" xml:space="preserve">
-    <value>Zona (% RC máx..)</value>
   </data>
 </root>

@@ -120,17 +120,11 @@
   <data name="CurrentRestAndMax" xml:space="preserve">
     <value>Huidige rusthartslag : {0} BPM. Maximale hartslag : {1} BPM.</value>
   </data>
-  <data name="Date" xml:space="preserve">
-    <value>Datum</value>
-  </data>
   <data name="Factor" xml:space="preserve">
     <value>Factor</value>
   </data>
   <data name="Graph" xml:space="preserve">
     <value>Grafiek</value>
-  </data>
-  <data name="HR" xml:space="preserve">
-    <value>Hartslag (BPM)</value>
   </data>
   <data name="IgnoredActivities" xml:space="preserve">
     <value>{0} activiteiten genegeerd wegens ontbreken hartslaggegevens. </value>
@@ -141,23 +135,11 @@
   <data name="MinuteShort" xml:space="preserve">
     <value>min</value>
   </data>
-  <data name="No" xml:space="preserve">
-    <value>Neen</value>
-  </data>
   <data name="NoRestOrMaxHR" xml:space="preserve">
     <value>Geen rusthartsalg of maximale hartslag in logboek.\nDe plugin kan niet werken alvorens een mximale hartslag is ingevoerd.\nGa naar atleet scherm om deze in te stellen.</value>
   </data>
   <data name="NoSelectedActivities" xml:space="preserve">
     <value>Geen activiteit geselecteerd.</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
-  </data>
-  <data name="PercHRReserve" xml:space="preserve">
-    <value>%HR. reserve</value>
-  </data>
-  <data name="PercMaxHR" xml:space="preserve">
-    <value>%max HR.</value>
   </data>
   <data name="Question" xml:space="preserve">
     <value>Vraag?</value>
@@ -180,28 +162,13 @@
   <data name="T2" xml:space="preserve">
     <value>TRIMP van {0} activiteiten</value>
   </data>
-  <data name="TimeMinutes" xml:space="preserve">
-    <value>Tijd (min)</value>
-  </data>
   <data name="TotalTRIMP" xml:space="preserve">
     <value>Totaal TRIMP is {0}.</value>
   </data>
   <data name="Use" xml:space="preserve">
     <value>Gebruik</value>
   </data>
-  <data name="UseHRReserve" xml:space="preserve">
-    <value>Hartslagreserve</value>
-  </data>
-  <data name="UseMaxHR" xml:space="preserve">
-    <value>Max hartslag</value>
-  </data>
   <data name="Warning" xml:space="preserve">
     <value>Waarschuwing</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Ja</value>
-  </data>
-  <data name="ZoneMaxHR" xml:space="preserve">
-    <value>Zone (%max HF.)</value>
   </data>
 </root>

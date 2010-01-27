@@ -123,15 +123,6 @@
   <data name="AS2" xml:space="preserve">
     <value>Resoconto di {0} attività</value>
   </data>
-  <data name="Ascending" xml:space="preserve">
-    <value>Salita</value>
-  </data>
-  <data name="AverageHR" xml:space="preserve">
-    <value>Frequenza Cardiaca Media</value>
-  </data>
-  <data name="Calories" xml:space="preserve">
-    <value>Calorie</value>
-  </data>
   <data name="Climb" xml:space="preserve">
     <value>Salita/Discesa ({0})</value>
   </data>
@@ -141,35 +132,20 @@
   <data name="Days" xml:space="preserve">
     <value>Giorni</value>
   </data>
-  <data name="Descending" xml:space="preserve">
-    <value>Discesa</value>
-  </data>
-  <data name="Distance" xml:space="preserve">
-    <value>Distanza</value>
-  </data>
-  <data name="FastestsPace" xml:space="preserve">
-    <value>Ritmo più veloce</value>
-  </data>
-  <data name="FastestsSpeed" xml:space="preserve">
-    <value>Velocità più elevata ({0}/h)</value>
-  </data>
   <data name="HeartRateZones" xml:space="preserve">
     <value>Zone di Frequenza Cardiaca (BPM) ({0})</value>
   </data>
   <data name="Hours" xml:space="preserve">
-    <value>Ore:</value>
+    <value>Ore</value>
   </data>
   <data name="Jogging" xml:space="preserve">
     <value>Jogging</value>
   </data>
   <data name="Minutes" xml:space="preserve">
-    <value>min:</value>
+    <value>min</value>
   </data>
   <data name="NoutofM" xml:space="preserve">
     <value>{0} su {1} attività utilizzate</value>
-  </data>
-  <data name="Pace" xml:space="preserve">
-    <value>Ritmo (min/{0})</value>
   </data>
   <data name="Running" xml:space="preserve">
     <value>Corsa</value>
@@ -177,14 +153,8 @@
   <data name="Seconds" xml:space="preserve">
     <value>sec</value>
   </data>
-  <data name="Speed" xml:space="preserve">
-    <value>Velocità ({0}/h)</value>
-  </data>
   <data name="SpeedZones" xml:space="preserve">
     <value>Zone di Velocità</value>
-  </data>
-  <data name="Time" xml:space="preserve">
-    <value>Tempo ({0})</value>
   </data>
   <data name="Walking" xml:space="preserve">
     <value>Cammino</value>

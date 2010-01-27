@@ -27,6 +27,7 @@ using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Chart;
 using ZoneFiveSoftware.Common.Data;
 using ZoneFiveSoftware.Common.Data.Fitness;
+using ZoneFiveSoftware.Common.Data.Measurement;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Collections;
@@ -110,9 +111,19 @@ namespace SportTracksTRIMPPlugin.Source
         {
             tabControl1.TabPages[0].Text = Resources.Summary;
             tabControl1.TabPages[1].Text = Resources.Graph;
-            dataGridView1.Columns[0].HeaderText = Resources.ZoneMaxHR;
-            dataGridView1.Columns[1].HeaderText = Resources.HR;
-            dataGridView1.Columns[2].HeaderText = Resources.TimeMinutes;
+            if (Settings.UseMaxHR)
+            {
+                dataGridView1.Columns[0].HeaderText = CommonResources.Text.LabelZone + " (" + CommonResources.Text.LabelPercentOfMax + ")";
+            }
+            else
+            {
+                dataGridView1.Columns[0].HeaderText = CommonResources.Text.LabelZone + " (" + CommonResources.Text.LabelPercentOfReserve + ")"; ;
+            }
+
+            dataGridView1.Columns[1].HeaderText = CommonResources.Text.LabelHeartRate;
+            //string minuteStr = "min"; // ZoneFiveSoftware.Common.Data.Measurement.Time.Label(ZoneFiveSoftware.Common.Data.Measurement.Time.TimeRange.Minute)
+            //dataGridView1.Columns[2].HeaderText = CommonResources.Text.LabelTime + " (" + minuteStr + ")";
+            dataGridView1.Columns[2].HeaderText = CommonResources.Text.LabelTime;
         }
 
         private void contextMenuTable_Click(object sender, EventArgs e)
@@ -285,10 +296,10 @@ namespace SportTracksTRIMPPlugin.Source
                 tableChart.DataSeries.Add(trimpSeries);
                 if (Settings.UseMaxHR)
                 {
-                    tableChart.XAxis.Label = Resources.PercMaxHR;
+                    tableChart.XAxis.Label = CommonResources.Text.LabelPercentOfMax; 
                 } else
                 {
-                    tableChart.XAxis.Label = Resources.PercHRReserve;
+                    tableChart.XAxis.Label = CommonResources.Text.LabelPercentOfReserve;
                 }
                 tableChart.YAxis.Label = "TRIMP";
                 //                tableChart.YAxisRight[0].Label = "Minutes";
@@ -354,7 +365,7 @@ namespace SportTracksTRIMPPlugin.Source
                     DateTime startTime = dailyTrimps.Keys[0];
                     chartBase.XAxis.Formatter = new Formatter.DaysToDate(startTime);
                     chartBase.XAxis.OriginValue = 0;
-                    chartBase.XAxis.Label = Resources.Date;
+                    chartBase.XAxis.Label = CommonResources.Text.LabelDate;
                     chartBase.YAxis.Label = "TRIMP";
                     int index = 0;
                     foreach (DateTime dateTime in dailyTrimps.Keys)

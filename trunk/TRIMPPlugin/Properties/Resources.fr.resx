@@ -120,26 +120,17 @@
   <data name="CurrentRestAndMax" xml:space="preserve">
     <value>Fréquence Cardiaque de réserve actuelle : {0} BPM. Fréquence Cardiaque maximale : {1} BPM.</value>
   </data>
-  <data name="Date" xml:space="preserve">
-    <value>Date</value>
-  </data>
   <data name="Factor" xml:space="preserve">
     <value>Facteur</value>
   </data>
   <data name="Graph" xml:space="preserve">
     <value>Graphique</value>
   </data>
-  <data name="HR" xml:space="preserve">
-    <value>FC (BPM)</value>
-  </data>
   <data name="IgnoredActivities" xml:space="preserve">
     <value>{0} activités ont été ignorées car elles ne possédaient pas de données cardiaques.</value>
   </data>
   <data name="IgnoredActivity" xml:space="preserve">
     <value>Une activité a été ignorée car elle ne possédait pas de données cardiaques.</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>Non</value>
   </data>
   <data name="NoRestOrMaxHR" xml:space="preserve">
     <value>Pas de Fréquence Cardiaque Maximale ou de réserve dans le journal de bord.\n Le module ne fera rien le temps qu'aucune valeur cardiaque maximale n'aura été saisie. \n Pour saisir cette valeur, consultez le profil de l'athlète.</value>
@@ -149,15 +140,6 @@
   </data>
   <data name="NumberOfZones" xml:space="preserve">
     <value>Nombre de Paliers :</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
-  </data>
-  <data name="PercHRReserve" xml:space="preserve">
-    <value>% FC. réserve</value>
-  </data>
-  <data name="PercMaxHR" xml:space="preserve">
-    <value>% FC. max</value>
   </data>
   <data name="Question" xml:space="preserve">
     <value>Question ?</value>
@@ -180,28 +162,13 @@
   <data name="T2" xml:space="preserve">
     <value>TRIMP de {0} activités</value>
   </data>
-  <data name="TimeMinutes" xml:space="preserve">
-    <value>Durée (min) </value>
-  </data>
   <data name="TotalTRIMP" xml:space="preserve">
     <value>Le TRIMP total est  {0}. </value>
   </data>
   <data name="Use" xml:space="preserve">
     <value>Utiliser</value>
   </data>
-  <data name="UseHRReserve" xml:space="preserve">
-    <value>Fréquence Cardiaque de réserve</value>
-  </data>
-  <data name="UseMaxHR" xml:space="preserve">
-    <value>Fréquence Cardiaque Maximale</value>
-  </data>
   <data name="Warning" xml:space="preserve">
     <value>Attention</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Oui</value>
-  </data>
-  <data name="ZoneMaxHR" xml:space="preserve">
-    <value>Palier (%FC.max)</value>
   </data>
 </root>

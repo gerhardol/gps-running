@@ -120,26 +120,17 @@
   <data name="CurrentRestAndMax" xml:space="preserve">
     <value>Frequenza cardiaca a riposo: {0} BPM. Frequenza Cardiaca Massima: {1} BPM.</value>
   </data>
-  <data name="Date" xml:space="preserve">
-    <value>Data</value>
-  </data>
   <data name="Factor" xml:space="preserve">
     <value>Fattore</value>
   </data>
   <data name="Graph" xml:space="preserve">
     <value>Grafico</value>
   </data>
-  <data name="HR" xml:space="preserve">
-    <value>Frequenza Cardiaca (BPM)</value>
-  </data>
   <data name="IgnoredActivities" xml:space="preserve">
     <value>{0} attività ignorate perché non hanno la traccia delle frequenze cardiache</value>
   </data>
   <data name="IgnoredActivity" xml:space="preserve">
     <value>una attività ignorata perché non ha la traccia delle frequenze cardiache</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
   </data>
   <data name="NoRestOrMaxHR" xml:space="preserve">
     <value>manca la frequenza cardiaca a riposo o la massima nel logbook. \n il plugin non può compiere alcun calcolo fino a che tali valori non saranno impostati. \n per impostare i valori vai nella voce: Selezionare Vista,  atleta</value>
@@ -149,15 +140,6 @@
   </data>
   <data name="NumberOfZones" xml:space="preserve">
     <value>Numero di Zone</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
-  </data>
-  <data name="PercHRReserve" xml:space="preserve">
-    <value>Frequenza cardiaca di riserva</value>
-  </data>
-  <data name="PercMaxHR" xml:space="preserve">
-    <value>Frequenza Cardiaca Massima</value>
   </data>
   <data name="Question" xml:space="preserve">
     <value>Domande</value>
@@ -180,28 +162,13 @@
   <data name="T2" xml:space="preserve">
     <value>TRIMP di {0} attività</value>
   </data>
-  <data name="TimeMinutes" xml:space="preserve">
-    <value>Tempo (min)</value>
-  </data>
   <data name="TotalTRIMP" xml:space="preserve">
     <value>Il TRIMP totale è {0}.</value>
   </data>
   <data name="Use" xml:space="preserve">
     <value>Usa</value>
   </data>
-  <data name="UseHRReserve" xml:space="preserve">
-    <value>Frequenza cardiaca di riserva</value>
-  </data>
-  <data name="UseMaxHR" xml:space="preserve">
-    <value>Frequenza Cardiaca Massima</value>
-  </data>
   <data name="Warning" xml:space="preserve">
     <value>Attenzione</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Si</value>
-  </data>
-  <data name="ZoneMaxHR" xml:space="preserve">
-    <value>Zona (% max freq. Card.)</value>
   </data>
 </root>

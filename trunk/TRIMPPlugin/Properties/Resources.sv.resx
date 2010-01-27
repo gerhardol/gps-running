@@ -120,26 +120,17 @@
   <data name="CurrentRestAndMax" xml:space="preserve">
     <value>Nuvarande vilopuls: {0} Maxpuls: {1}.</value>
   </data>
-  <data name="Date" xml:space="preserve">
-    <value>Datum</value>
-  </data>
   <data name="Factor" xml:space="preserve">
     <value>Faktor</value>
   </data>
   <data name="Graph" xml:space="preserve">
     <value>Diagram</value>
   </data>
-  <data name="HR" xml:space="preserve">
-    <value>Puls</value>
-  </data>
   <data name="IgnoredActivities" xml:space="preserve">
     <value>Ignorerade {0} aktiviteter som inte hade något pulsspår.</value>
   </data>
   <data name="IgnoredActivity" xml:space="preserve">
     <value>Ignorerade en aktivitet för den inte hade något pulsspår.</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>Nej</value>
   </data>
   <data name="NoRestOrMaxHR" xml:space="preserve">
     <value>Ingen vilo eller maxpuls i logboken.\nPluginet kommer inte göra något före maxpuls är satt.\nFör att göra detta gå till Användare vyn.</value>
@@ -149,15 +140,6 @@
   </data>
   <data name="NumberOfZones" xml:space="preserve">
     <value>Antal zoner:</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="PercHRReserve" xml:space="preserve">
-    <value>%pulsreserv</value>
-  </data>
-  <data name="PercMaxHR" xml:space="preserve">
-    <value>%maxpuls</value>
   </data>
   <data name="Question" xml:space="preserve">
     <value>Fråga?</value>
@@ -180,28 +162,13 @@
   <data name="T2" xml:space="preserve">
     <value>TRIMP för {0} aktiviteter</value>
   </data>
-  <data name="TimeMinutes" xml:space="preserve">
-    <value>Tid (min)</value>
-  </data>
   <data name="TotalTRIMP" xml:space="preserve">
     <value>Total TRIMP är {0}.</value>
   </data>
   <data name="Use" xml:space="preserve">
     <value>Använd</value>
   </data>
-  <data name="UseHRReserve" xml:space="preserve">
-    <value>Pulsreserv</value>
-  </data>
-  <data name="UseMaxHR" xml:space="preserve">
-    <value>Maxpuls</value>
-  </data>
   <data name="Warning" xml:space="preserve">
     <value>Varning</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Ja</value>
-  </data>
-  <data name="ZoneMaxHR" xml:space="preserve">
-    <value>Zon (%maxpuls)</value>
   </data>
 </root>
