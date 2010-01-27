@@ -1,72 +1,55 @@
 #summary Performance Predictor User's Guide
 #labels Featured
 
-<h1>What does it do?</h1>
-<p>
+===What does it do?===
 Ever wondered after running a killer race, how well you would perform at other distances. This plugin does this by using various models. So far the plugin implements the Dave Cameron and Pete Riegel models to predict your performance, but I expect to add more.
-</p>
-<p>
+
 The Dave Cameron model works as follows:
-</p>
-<div class="image"><img src="images/plugins/performancepredictor/davecameron.png" alt=""/></div>
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/davecameron.png]
 
-<p>
 Here d<sub>old</sub> and t<sub>old</sub> both refer to the race you use as input to the model; i.e., the distance and time of the race. By selecting d<sub>new</sub> at various distances we can calculate the predicted time at these distances t<sub>new</sub>. 
-</p>
 
-<p>
 Once you have understood the Dave Cameron model, it should be easy understand the Pete Riegel model as well:
-</p>
 
-<div class="image"><img src="images/plugins/performancepredictor/peteriegel.png" alt=""/></div>
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/peteriegel.png]
 
-<p>
 You may think that these models seem arbitrary, but they do, however, fit to a certain extent, in my experience. If you are interested in analysis of your best performances this sort of plugin should definitly also be a part of your SportTracks plugin setup.
-</p>
 
-<p>It is possible to use this plugin in conjunction with the High Score plugin. The way it works is that for each distance you are interested in seeing the predicted time, this plugin finds all sub parts of activities that are X percentages of the distance. For example, if percentage is 40% the Performance Predictor plugin will use the High Score plugin to find the fastest 4k part of a track to predict a time for a 10k race. Similary, for a 40k race it would find the fastest 10k subpart of  a track.</p>
+It is possible to use this plugin in conjunction with the High Score plugin. The way it works is that for each distance you are interested in seeing the predicted time, this plugin finds all sub parts of activities that are X percentages of the distance. For example, if percentage is 40% the Performance Predictor plugin will use the High Score plugin to find the fastest 4k part of a track to predict a time for a 10k race. Similary, for a 40k race it would find the fastest 10k subpart of  a track.
 
-<h3>Training</h3>
-
-<p>
+===Training===
 Besides predicting times the plugin also give suggestions regards to training. These suggestions are based on Jack Daniels's training philosophies. Currently, the plugin suggests training paces, pace for tempo races, interval split times, temperature impact, and weight impact. 
-</p>
 
-<br/>
-
-<h1>How do I use it?</h1>
-<p>
+===How do I use it?===
 Go to the activity detail view and select the Performance Predictor plugin from the menu as shown in this figure:
-</p>
+
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/ActivityDetailView.png]
 
-<p>
 Here is a couple of images of the plugin in action:
-</p>
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TimePredictionChart.png]
-<br/>
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TimePredictionTable.png]
-<p>Training suggestions:</p>
+
+===Training suggestions:===
+
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/Training.png]
-<br/>
+
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TrainingInterval.png]
-<br/>
+
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TrainingTemperatureImpact.png]
-<br/>
+
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TrainingTempoPace.png]
-<br/>
+
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TrainingWeightImpact.png]
-<p>Edit function:</p>
-<br/>
+
+===Edit function:===
+
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/EditFunctionResults.png]
 
-<p>
 It is possibe to add and remove the distances that the plugin use in its calculation by going to the settings panel for the Performance Predictor plugin as shown in this figure:
-</p>
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/Settings.png]
 
 ===Feedback===
-
+For patches, bugreports or feature suggestions, use the Google Code issue list.
 For feedback please use the thread for this plugin at !SportTracks forum [http://www.zonefivesoftware.com/SportTracks/Forums/viewforum.php?f=30 here].
