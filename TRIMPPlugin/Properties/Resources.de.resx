@@ -126,17 +126,11 @@
   <data name="Graph" xml:space="preserve">
     <value>Graphik</value>
   </data>
-  <data name="HR" xml:space="preserve">
-    <value>Herzfrequenz (BPM)</value>
-  </data>
   <data name="IgnoredActivities" xml:space="preserve">
     <value>{0} Aktivitäten wurden ignoriert, da ohne Herzfreqzuenz.</value>
   </data>
   <data name="IgnoredActivity" xml:space="preserve">
     <value>Eine Aktivität wurde ignoriert, da keine Herzfrequenzdaten vorhanden sind.</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>Nein</value>
   </data>
   <data name="NoRestOrMaxHR" xml:space="preserve">
     <value>Kein Ruhepuls oder kein Maximalpuls im Logbuch vorhanden. Das Plugin funktioniert nur bei festgelegtem Maximal- und Ruhepuls. Legen Sie bitte diese(n) in der Ansicht "Sportler" fest.</value>
@@ -146,15 +140,6 @@
   </data>
   <data name="NumberOfZones" xml:space="preserve">
     <value>Anzahl der Zonen:</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
-  </data>
-  <data name="PercHRReserve" xml:space="preserve">
-    <value>%Herzfrequenzreserve</value>
-  </data>
-  <data name="PercMaxHR" xml:space="preserve">
-    <value>%max Herzfrequenz</value>
   </data>
   <data name="Question" xml:space="preserve">
     <value>Frage?</value>
@@ -177,28 +162,13 @@
   <data name="T2" xml:space="preserve">
     <value>TRIMP für {0} Aktivitäten</value>
   </data>
-  <data name="TimeMinutes" xml:space="preserve">
-    <value>Zeit (min)</value>
-  </data>
   <data name="TotalTRIMP" xml:space="preserve">
     <value>Total TRIMP ist {0}</value>
   </data>
   <data name="Use" xml:space="preserve">
     <value>Gebrauch</value>
   </data>
-  <data name="UseHRReserve" xml:space="preserve">
-    <value>Herzfrequenz Reserve</value>
-  </data>
-  <data name="UseMaxHR" xml:space="preserve">
-    <value>Maximalpuls</value>
-  </data>
   <data name="Warning" xml:space="preserve">
     <value>Warnung</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Ja</value>
-  </data>
-  <data name="ZoneMaxHR" xml:space="preserve">
-    <value>Zone (%max HR.)</value>
   </data>
 </root>

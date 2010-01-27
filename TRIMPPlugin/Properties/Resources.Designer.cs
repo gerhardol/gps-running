@@ -70,15 +70,6 @@ namespace SportTracksTRIMPPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date.
-        /// </summary>
-        internal static string Date {
-            get {
-                return ResourceManager.GetString("Date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Factor.
         /// </summary>
         internal static string Factor {
@@ -93,15 +84,6 @@ namespace SportTracksTRIMPPlugin.Properties {
         internal static string Graph {
             get {
                 return ResourceManager.GetString("Graph", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Heart rate (BPM).
-        /// </summary>
-        internal static string HR {
-            get {
-                return ResourceManager.GetString("HR", resourceCulture);
             }
         }
         
@@ -145,15 +127,6 @@ namespace SportTracksTRIMPPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No.
-        /// </summary>
-        internal static string No {
-            get {
-                return ResourceManager.GetString("No", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to No resting or no maximal heart rate in the logbook.\nThe plugin will not do anything before a maximal heart rate is set.\nTo set this go to the athlete view..
         /// </summary>
         internal static string NoRestOrMaxHR {
@@ -177,33 +150,6 @@ namespace SportTracksTRIMPPlugin.Properties {
         internal static string NumberOfZones {
             get {
                 return ResourceManager.GetString("NumberOfZones", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ok.
-        /// </summary>
-        internal static string Ok {
-            get {
-                return ResourceManager.GetString("Ok", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to %HR. reserve.
-        /// </summary>
-        internal static string PercHRReserve {
-            get {
-                return ResourceManager.GetString("PercHRReserve", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to %max HR..
-        /// </summary>
-        internal static string PercMaxHR {
-            get {
-                return ResourceManager.GetString("PercMaxHR", resourceCulture);
             }
         }
         
@@ -271,15 +217,6 @@ namespace SportTracksTRIMPPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Time (min).
-        /// </summary>
-        internal static string TimeMinutes {
-            get {
-                return ResourceManager.GetString("TimeMinutes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Total TRIMP is {0}..
         /// </summary>
         internal static string TotalTRIMP {
@@ -298,47 +235,11 @@ namespace SportTracksTRIMPPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Heart rate reserve.
-        /// </summary>
-        internal static string UseHRReserve {
-            get {
-                return ResourceManager.GetString("UseHRReserve", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Max heart rate.
-        /// </summary>
-        internal static string UseMaxHR {
-            get {
-                return ResourceManager.GetString("UseMaxHR", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Warning.
         /// </summary>
         internal static string Warning {
             get {
                 return ResourceManager.GetString("Warning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Yes.
-        /// </summary>
-        internal static string Yes {
-            get {
-                return ResourceManager.GetString("Yes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Zone (%max HR.).
-        /// </summary>
-        internal static string ZoneMaxHR {
-            get {
-                return ResourceManager.GetString("ZoneMaxHR", resourceCulture);
             }
         }
     }

@@ -320,7 +320,8 @@ namespace SportTracksPerformancePredictorPlugin.Source
         {
             paceTempoLabel.Text = String.Format(Resources.PaceForTempoRuns_label, getVdot(activity));
             DataTable set = new DataTable();
-            set.Columns.Add(Resources.Duration);
+            string minuteStr = "min"; // ZoneFiveSoftware.Common.Data.Measurement.Time.Label(ZoneFiveSoftware.Common.Data.Measurement.Time.TimeRange.Minute)
+            set.Columns.Add(Resources.Duration + " ("+minuteStr+")");
             if (Settings.ShowPace)
             {
                 set.Columns.Add(String.Format(Resources.Pace,Settings.DistanceUnitShort));
@@ -329,11 +330,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             {
                 set.Columns.Add(String.Format(Resources.Speed,Settings.DistanceUnitShort), typeof(double));
             }
-            string[] durations = new string[] { "20 " + Time.TimeRange.Minute, "25 " + Time.TimeRange.Minute,
-                "30 "+Time.TimeRange.Minute, "35 "+Time.TimeRange.Minute, 
-                "40 "+Time.TimeRange.Minute, "45 "+Time.TimeRange.Minute, 
-                "50 "+Time.TimeRange.Minute, "55 "+Time.TimeRange.Minute, 
-                "60 "+Time.TimeRange.Minute };
+            string[] durations = new string[] { "20", "25", "30", "35", "40", "45", "50", "55", "60" };
             double vdot = getVdot(activity);
             TimeSpan pace = getTrainingPace(vdot,0.93);
             TimeSpan[] paces = new TimeSpan[] {

@@ -120,26 +120,17 @@
   <data name="CurrentRestAndMax" xml:space="preserve">
     <value>Nuværende hvilepulse: {0} BPM. Makspuls: {1} BPM.</value>
   </data>
-  <data name="Date" xml:space="preserve">
-    <value>Dato</value>
-  </data>
   <data name="Factor" xml:space="preserve">
     <value>Faktor</value>
   </data>
   <data name="Graph" xml:space="preserve">
     <value>Graf</value>
   </data>
-  <data name="HR" xml:space="preserve">
-    <value>Puls (BPM)</value>
-  </data>
   <data name="IgnoredActivities" xml:space="preserve">
     <value>Ignorerede {0} aktiviteter som ikke havde noget pulsspor</value>
   </data>
   <data name="IgnoredActivity" xml:space="preserve">
     <value>Ignorerede én aktivitet da den ikke havde noget pulsspor.</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>Nej</value>
   </data>
   <data name="NoRestOrMaxHR" xml:space="preserve">
     <value>Ingen hvile eller ingen makspuls i logbogen. Pluginet virker ikke før hvile- og makspuls er indtastet. Gå til Udøver-viewet for at sætte dette.</value>
@@ -149,15 +140,6 @@
   </data>
   <data name="NumberOfZones" xml:space="preserve">
     <value>Antal zoner:</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
-  </data>
-  <data name="PercHRReserve" xml:space="preserve">
-    <value>%pulsreserve</value>
-  </data>
-  <data name="PercMaxHR" xml:space="preserve">
-    <value>%maxpuls</value>
   </data>
   <data name="Question" xml:space="preserve">
     <value>Spørgsmål</value>
@@ -180,28 +162,13 @@
   <data name="T2" xml:space="preserve">
     <value>TRIMP af {0} aktiviteter</value>
   </data>
-  <data name="TimeMinutes" xml:space="preserve">
-    <value>Tid (min)</value>
-  </data>
   <data name="TotalTRIMP" xml:space="preserve">
     <value>Total TRIMP er {0}.</value>
   </data>
   <data name="Use" xml:space="preserve">
     <value>Brug:</value>
   </data>
-  <data name="UseHRReserve" xml:space="preserve">
-    <value>Pulsreserve</value>
-  </data>
-  <data name="UseMaxHR" xml:space="preserve">
-    <value>Makspuls</value>
-  </data>
   <data name="Warning" xml:space="preserve">
     <value>Advarsel</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Ja</value>
-  </data>
-  <data name="ZoneMaxHR" xml:space="preserve">
-    <value>Zone (%makspuls)</value>
   </data>
 </root>

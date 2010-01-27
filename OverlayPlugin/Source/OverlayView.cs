@@ -477,7 +477,7 @@ namespace SportTracksOverlayPlugin.Source
             else
             {
                 chart.XAxis.Formatter = new Formatter.SecondsToTime();
-                chart.XAxis.Label = Time.LabelPlural(Time.TimeRange.Minute);
+                chart.XAxis.Label = CommonResources.Text.LabelTime;
             }
             if (Settings.ShowHeartRate)
             {

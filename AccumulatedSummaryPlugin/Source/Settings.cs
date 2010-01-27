@@ -25,6 +25,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using ZoneFiveSoftware.Common.Data.Measurement;
+using ZoneFiveSoftware.Common.Visuals;
 using SportTracksAccumulatedSummaryPlugin.Properties;
 
 namespace SportTracksAccumulatedSummaryPlugin.Source
@@ -71,14 +72,6 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
             return String.Format("{0:0.000}", p);
         }
 
-        public static String DistanceUnit
-        {
-            get
-            {
-                return Length.Label(Plugin.GetApplication().SystemPreferences.DistanceUnits);
-            }
-        }
-
         public static String ElevationUnit
         {
             get
@@ -86,15 +79,6 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
                 return Length.Label(Plugin.GetApplication().SystemPreferences.ElevationUnits);
             }
         }
-
-        public static String DistanceUnitShort
-        {
-            get
-            {
-                return Length.LabelAbbr(Plugin.GetApplication().SystemPreferences.DistanceUnits);
-            }
-        }
-
         public static String ElevationUnitShort
         {
             get
@@ -102,5 +86,85 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
                 return Length.LabelAbbr(Plugin.GetApplication().SystemPreferences.ElevationUnits);
             }
         }
+
+        //Limit distance to units where we have pace/speed labels
+        private static Length.Units getDistUnit()
+        {
+            Length.Units distUnit = Plugin.GetApplication().SystemPreferences.DistanceUnits;
+            if (distUnit.Equals(Length.Units.Foot) || distUnit.Equals(Length.Units.Inch) ||
+                distUnit.Equals(Length.Units.Mile) || distUnit.Equals(Length.Units.Yard))
+            {
+                distUnit = Length.Units.Mile;
+            }
+            else
+            {
+                distUnit = Length.Units.Kilometer;
+            }
+            return distUnit;
+        }
+        public static String DistanceUnit
+        {
+            get
+            { 
+                return Length.Label(getDistUnit());
+            }
+        }
+
+        public static String DistanceUnitShort
+        {
+            get
+            {
+                return Length.LabelAbbr(getDistUnit());
+            }
+        }
+
+        public static String PaceUnit
+        {
+            get
+            {
+                String unit;
+                if (getDistUnit().Equals(Length.Units.Mile))
+                {
+                    unit = CommonResources.Text.LabelMinPerMile;
+                }
+                else
+                {
+                    unit = CommonResources.Text.LabelMinPerKm;
+                }
+                return unit;
+            }
+        }
+        public static String SpeedUnit
+        {
+            get
+            {
+                String unit;
+                if (getDistUnit().Equals(Length.Units.Mile))
+                {
+                    unit = CommonResources.Text.LabelMilePerHour;
+                }
+                else
+                {
+                    unit = CommonResources.Text.LabelKmPerHour;
+                }
+                return unit;
+            }
+        }
+
+        //Convert pace/speed from system type (m/s) to used value
+
+        // distance unit per hour
+        public static double getSpeed(double speedMS)
+        {
+            return convertFromDistance(60 * 60 * speedMS);
+        }
+
+        public static TimeSpan getPace(double speedMS)
+        {
+            double pace = 1 / convertFromDistance(speedMS);
+            return new TimeSpan(0, (int)Math.Floor(pace / 60),
+                (int)(pace - Math.Floor(pace / 60)*60));
+        }
+
     }
 }

@@ -27,6 +27,7 @@ using System.Diagnostics;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using SportTracksTRIMPPlugin;
 using SportTracksTRIMPPlugin.Source;
+using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Chart;
 using SportTracksTRIMPPlugin.Properties;
 
@@ -55,10 +56,10 @@ namespace SportTracksTRIMPPlugin.Source
             label1.Text = Resources.NumberOfZones;
             label2.Text = Resources.StartZone;
             label4.Text = Resources.Use;
-            useMaxHR.Text = Resources.UseMaxHR;
-            useHRReserve.Text = Resources.UseHRReserve;
-            dataGridView1.Columns[0].HeaderText = Resources.ZoneMaxHR;
-            dataGridView1.Columns[1].HeaderText = Resources.HR;
+            useMaxHR.Text = CommonResources.Text.LabelPercentOfMax;
+            useHRReserve.Text = CommonResources.Text.LabelPercentOfReserve;
+            dataGridView1.Columns[0].HeaderText = CommonResources.Text.LabelPercentOfMax; //Placeholder, set in fillTableAndGraph()
+            dataGridView1.Columns[1].HeaderText = CommonResources.Text.LabelHeartRate + " (" + CommonResources.Text.LabelBPM + ')';
             dataGridView1.Columns[2].HeaderText = Resources.Factor;
             correctUI(new Control[] { label4, useMaxHR });
             label1.Location = new Point(numberOfZones.Location.X - label1.Size.Width - 5,
@@ -119,13 +120,13 @@ namespace SportTracksTRIMPPlugin.Source
             chartBase.XAxis.OriginValue = 0;
             if (Settings.UseMaxHR)
             {
-                chartBase.XAxis.Label = Resources.PercMaxHR;
-                dataGridView1.Columns[0].HeaderText = Resources.PercMaxHR;
+                chartBase.XAxis.Label = CommonResources.Text.LabelZone + " (" + CommonResources.Text.LabelPercentOfMax+")";
+                dataGridView1.Columns[0].HeaderText = CommonResources.Text.LabelPercentOfMax;
             }
             else
             {
-                chartBase.XAxis.Label = Resources.PercHRReserve;
-                dataGridView1.Columns[0].HeaderText = Resources.PercHRReserve;
+                chartBase.XAxis.Label = CommonResources.Text.LabelZone + " (" + CommonResources.Text.LabelPercentOfReserve + ")"; ;
+                dataGridView1.Columns[0].HeaderText = CommonResources.Text.LabelPercentOfReserve;
             }
             chartBase.YAxis.Label = Resources.Factor;
             int index = 0;

@@ -123,15 +123,6 @@
   <data name="AS2" xml:space="preserve">
     <value>Accumulated Summary - Kumulierte Zusammenfassung von {0} Aktivitäten</value>
   </data>
-  <data name="Ascending" xml:space="preserve">
-    <value>Anstieg</value>
-  </data>
-  <data name="AverageHR" xml:space="preserve">
-    <value>Durchschnittliche Herzfrequenz</value>
-  </data>
-  <data name="Calories" xml:space="preserve">
-    <value>Kalorien</value>
-  </data>
   <data name="Climb" xml:space="preserve">
     <value>Steigung +/- ({0})</value>
   </data>
@@ -140,18 +131,6 @@
   </data>
   <data name="Days" xml:space="preserve">
     <value>Tage</value>
-  </data>
-  <data name="Descending" xml:space="preserve">
-    <value>Gefälle</value>
-  </data>
-  <data name="Distance" xml:space="preserve">
-    <value>Entfernung</value>
-  </data>
-  <data name="FastestsPace" xml:space="preserve">
-    <value>Schnellstes Tempo</value>
-  </data>
-  <data name="FastestsSpeed" xml:space="preserve">
-    <value>Schnellste Geschwindigkeit ({0}/h)</value>
   </data>
   <data name="HeartRateZones" xml:space="preserve">
     <value>Herzfrequenzbereiche (BPM) ({0})</value>
@@ -168,23 +147,14 @@
   <data name="NoutofM" xml:space="preserve">
     <value>{0} von {1} Aktivitäten</value>
   </data>
-  <data name="Pace" xml:space="preserve">
-    <value>Tempo (min/{0})</value>
-  </data>
   <data name="Running" xml:space="preserve">
     <value>Laufen</value>
   </data>
   <data name="Seconds" xml:space="preserve">
     <value>Sekunden</value>
   </data>
-  <data name="Speed" xml:space="preserve">
-    <value>Geschwindigkeit ({0}/h)</value>
-  </data>
   <data name="SpeedZones" xml:space="preserve">
     <value>Geschwindigkeitszonen</value>
-  </data>
-  <data name="Time" xml:space="preserve">
-    <value>Zeit ({0})</value>
   </data>
   <data name="Walking" xml:space="preserve">
     <value>Gehen</value>

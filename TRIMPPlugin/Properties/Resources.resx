@@ -120,17 +120,11 @@
   <data name="CurrentRestAndMax" xml:space="preserve">
     <value>Current rest heart rate: {0} BPM. Maximal heart rate: {1} BPM.</value>
   </data>
-  <data name="Date" xml:space="preserve">
-    <value>Date</value>
-  </data>
   <data name="Factor" xml:space="preserve">
     <value>Factor</value>
   </data>
   <data name="Graph" xml:space="preserve">
     <value>Graph</value>
-  </data>
-  <data name="HR" xml:space="preserve">
-    <value>Heart rate (BPM)</value>
   </data>
   <data name="IgnoredActivities" xml:space="preserve">
     <value>Ignored {0} activities that did not have a heart rate track.</value>
@@ -148,9 +142,6 @@
   <data name="Image_32_TRIMP" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Image_32_TRIMP.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
-  </data>
   <data name="NoRestOrMaxHR" xml:space="preserve">
     <value>No resting or no maximal heart rate in the logbook.\nThe plugin will not do anything before a maximal heart rate is set.\nTo set this go to the athlete view.</value>
   </data>
@@ -159,15 +150,6 @@
   </data>
   <data name="NumberOfZones" xml:space="preserve">
     <value>Number of zones:</value>
-  </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
-  </data>
-  <data name="PercHRReserve" xml:space="preserve">
-    <value>%HR. reserve</value>
-  </data>
-  <data name="PercMaxHR" xml:space="preserve">
-    <value>%max HR.</value>
   </data>
   <data name="Question" xml:space="preserve">
     <value>Question?</value>
@@ -190,28 +172,13 @@
   <data name="T2" xml:space="preserve">
     <value>TRIMP of {0} activities</value>
   </data>
-  <data name="TimeMinutes" xml:space="preserve">
-    <value>Time (min)</value>
-  </data>
   <data name="TotalTRIMP" xml:space="preserve">
     <value>Total TRIMP is {0}.</value>
   </data>
   <data name="Use" xml:space="preserve">
     <value>Use</value>
   </data>
-  <data name="UseHRReserve" xml:space="preserve">
-    <value>Heart rate reserve</value>
-  </data>
-  <data name="UseMaxHR" xml:space="preserve">
-    <value>Max heart rate</value>
-  </data>
   <data name="Warning" xml:space="preserve">
     <value>Warning</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
-  </data>
-  <data name="ZoneMaxHR" xml:space="preserve">
-    <value>Zone (%max HR.)</value>
   </data>
 </root>

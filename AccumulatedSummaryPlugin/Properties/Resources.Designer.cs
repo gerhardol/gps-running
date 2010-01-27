@@ -79,33 +79,6 @@ namespace SportTracksAccumulatedSummaryPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ascending.
-        /// </summary>
-        internal static string Ascending {
-            get {
-                return ResourceManager.GetString("Ascending", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Average heart rate.
-        /// </summary>
-        internal static string AverageHR {
-            get {
-                return ResourceManager.GetString("AverageHR", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Calories.
-        /// </summary>
-        internal static string Calories {
-            get {
-                return ResourceManager.GetString("Calories", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Climb up/down ({0}).
         /// </summary>
         internal static string Climb {
@@ -129,42 +102,6 @@ namespace SportTracksAccumulatedSummaryPlugin.Properties {
         internal static string Days {
             get {
                 return ResourceManager.GetString("Days", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Descending.
-        /// </summary>
-        internal static string Descending {
-            get {
-                return ResourceManager.GetString("Descending", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Distance.
-        /// </summary>
-        internal static string Distance {
-            get {
-                return ResourceManager.GetString("Distance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fastest pace.
-        /// </summary>
-        internal static string FastestsPace {
-            get {
-                return ResourceManager.GetString("FastestsPace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Fastests speed ({0}/h).
-        /// </summary>
-        internal static string FastestsSpeed {
-            get {
-                return ResourceManager.GetString("FastestsSpeed", resourceCulture);
             }
         }
         
@@ -235,15 +172,6 @@ namespace SportTracksAccumulatedSummaryPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pace (min/{0}).
-        /// </summary>
-        internal static string Pace {
-            get {
-                return ResourceManager.GetString("Pace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Running.
         /// </summary>
         internal static string Running {
@@ -262,29 +190,11 @@ namespace SportTracksAccumulatedSummaryPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Speed ({0}/h).
-        /// </summary>
-        internal static string Speed {
-            get {
-                return ResourceManager.GetString("Speed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Speed zones.
         /// </summary>
         internal static string SpeedZones {
             get {
                 return ResourceManager.GetString("SpeedZones", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Time ({0}).
-        /// </summary>
-        internal static string Time {
-            get {
-                return ResourceManager.GetString("Time", resourceCulture);
             }
         }
         
