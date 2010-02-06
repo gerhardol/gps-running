@@ -22,6 +22,7 @@ using System.Text;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Visuals;
 using SportTracksPerformancePredictorPlugin.Properties;
+using SportTracksPerformancePredictorPlugin.Util;
 
 namespace SportTracksPerformancePredictorPlugin.Source
 {
@@ -64,8 +65,8 @@ namespace SportTracksPerformancePredictorPlugin.Source
         {
             get
             {
-                if (activities.Count == 1) return Resources.PPHS1;
-                return String.Format(Resources.PPHS2,activities.Count);
+                if (activities.Count == 1) return Resources.PPHS + " " + StringResources.ForOneActivity;
+                return Resources.PPHS + " " + String.Format(StringResources.ForManyActivities,activities.Count);
             }
         }
 

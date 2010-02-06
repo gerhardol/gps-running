@@ -176,31 +176,7 @@ namespace SportTracksTRIMPPlugin.Source
             double d = double.Parse(p, System.Globalization.NumberStyles.Any);
             return d;
         }
-
-        public static double convertFrom(double p, Length.Units metric)
-        {
-            switch (metric)
-            {
-                case Length.Units.Kilometer: return p / 1000;
-                case Length.Units.Mile: return p / (1.609344 * 1000);
-                case Length.Units.Foot: return p * 3.2808399;
-                case Length.Units.Inch: return p * 39.370079;
-                case Length.Units.Centimeter: return p * 100;
-                case Length.Units.Yard: return p * 1.0936133;
-            }
-            return p;
-        }
-
-        public static double convertFromDistance(double p)
-        {
-            return convertFrom(p, Plugin.GetApplication().SystemPreferences.DistanceUnits);
-        }
-
-        public static double convertFromElevation(double p)
-        {
-            return convertFrom(p, Plugin.GetApplication().SystemPreferences.ElevationUnits);
-        }
-        
+       
         public static string present(double p)
         {
             return String.Format("{0:0.000}", p);
@@ -213,38 +189,6 @@ namespace SportTracksTRIMPPlugin.Source
             for (int i = 0; i < n - 1; i++)
                 s += "0";
             return String.Format("{0:0." + s + "}", p);
-        }
-
-        public static String DistanceUnit
-        {
-            get
-            {
-                return Length.Label(Plugin.GetApplication().SystemPreferences.DistanceUnits);
-            }
-        }
-
-        public static String ElevationUnit
-        {
-            get
-            {
-                return Length.Label(Plugin.GetApplication().SystemPreferences.ElevationUnits);
-            }
-        }
-
-        public static String DistanceUnitShort
-        {
-            get
-            {
-                return Length.LabelAbbr(Plugin.GetApplication().SystemPreferences.DistanceUnits);
-            }
-        }
-
-        public static String ElevationUnitShort
-        {
-            get
-            {
-                return Length.LabelAbbr(Plugin.GetApplication().SystemPreferences.ElevationUnits);
-            }
         }
     }
 }

@@ -32,6 +32,7 @@ using ZoneFiveSoftware.Common.Data.Measurement;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Data.Algorithm;
 using SportTracksOverlayPlugin.Properties;
+using SportTracksOverlayPlugin.Util;
 
 namespace SportTracksOverlayPlugin.Source
 {
@@ -55,7 +56,6 @@ namespace SportTracksOverlayPlugin.Source
         private IDictionary<CheckBox, int> boxes;
         private IList<CheckBox> checkBoxes;
         private CheckBox categoryAverage;
-        private IApplication application;
         private IDictionary<ChartDataSeries, CheckBox> series2boxes;
         private IDictionary<ChartDataSeries, IActivity> series2activity;
         private CheckBox movingAverage;
@@ -160,9 +160,9 @@ namespace SportTracksOverlayPlugin.Source
         {
             InitializeComponent();
 
-            label1.Text = Resources.Activities;
-            label2.Text = Resources.XAxis + ":";
-            label3.Text = Resources.YAxis + ":";
+            label1.Text = StringResources.Activities;
+            label2.Text = StringResources.XAxis + ":";
+            label3.Text = StringResources.YAxis + ":";
             int max = Math.Max(label2.Location.X + label2.Size.Width,
                                 label3.Location.X + label3.Size.Width) + 5;
             useTime.Location = new Point(max, label2.Location.Y);
@@ -175,7 +175,6 @@ namespace SportTracksOverlayPlugin.Source
             dontUpdate = true;
             series2activity = new Dictionary<ChartDataSeries,IActivity>();
             series2boxes = new Dictionary<ChartDataSeries, CheckBox>(); 
-            application = Plugin.GetApplication();
             SizeChanged += new EventHandler(OverlayView_SizeChanged);
             Activities = activities;
             heartRate.Checked = Settings.ShowHeartRate;
@@ -472,19 +471,19 @@ namespace SportTracksOverlayPlugin.Source
             if (!Settings.ShowTime)
             {
                 chart.XAxis.Formatter = new Formatter.General();
-                chart.XAxis.Label = Settings.DistanceUnit;
+                chart.XAxis.Label = UnitUtil.Distance.LabelAxis; ;
             }
             else
             {
                 chart.XAxis.Formatter = new Formatter.SecondsToTime();
-                chart.XAxis.Label = CommonResources.Text.LabelTime;
+                chart.XAxis.Label = UnitUtil.Time.LabelAxis;
             }
             if (Settings.ShowHeartRate)
             {
                 nextIndex = 0;
                 useRight = true;
                 chart.YAxis.Formatter = new Formatter.General();
-                chart.YAxis.Label = Resources.BPM;
+                chart.YAxis.Label = UnitUtil.HeartRate.LabelAxis;
                 addSeries(
                     delegate(float value)
                     {
@@ -516,11 +515,11 @@ namespace SportTracksOverlayPlugin.Source
                 }
                 nextIndex = 0;
                 axis.Formatter = new Formatter.SecondsToTime();
-                axis.Label = String.Format(Resources.Pace,Settings.DistanceUnitShort);
+                axis.Label = UnitUtil.Pace.LabelAxis;
                 addSeries(
                     delegate(float value)
                     {
-                        return 1 / Length.Convert(value, Length.Units.Meter, application.SystemPreferences.DistanceUnits);
+                        return UnitUtil.Pace.ConvertFrom(value);
                     },
                     delegate(ActivityInfo info)
                     {
@@ -547,11 +546,11 @@ namespace SportTracksOverlayPlugin.Source
                 }
                 nextIndex = 0;
                 axis.Formatter = new Formatter.General();
-                axis.Label = String.Format(Resources.Speed,Settings.DistanceUnitShort);
+                axis.Label = UnitUtil.Speed.LabelAxis;
                 addSeries(
                     delegate(float value)
                     {
-                        return 3600 * Length.Convert(value, Length.Units.Meter, application.SystemPreferences.DistanceUnits);
+                        return UnitUtil.Speed.ConvertFrom(value);
                     },
                     delegate(ActivityInfo info) { return info.SmoothedSpeedTrack.Count > 0; },
                     axis,
@@ -575,7 +574,7 @@ namespace SportTracksOverlayPlugin.Source
                 }
                 nextIndex = 0;
                 axis.Formatter = new Formatter.General();
-                axis.Label = Resources.Power;
+                axis.Label = UnitUtil.Power.LabelAxis;
                 addSeries(
                     delegate(float value)
                     {
@@ -603,7 +602,7 @@ namespace SportTracksOverlayPlugin.Source
                 }
                 nextIndex = 0;
                 axis.Formatter = new Formatter.General();
-                axis.Label = Resources.Cadence;
+                axis.Label = UnitUtil.Cadence.LabelAxis;
                 addSeries(
                      delegate(float value)
                      {
@@ -632,12 +631,11 @@ namespace SportTracksOverlayPlugin.Source
                 nextIndex = 0;
                 axis.Formatter = new Formatter.General();
                 axis.ChangeAxisZoom(new Point(0, 0), new Point(10, 10));
-                axis.Label = Resources.Elevation+" (" + Settings.ElevationUnit
-                    + ")";
+                axis.Label = UnitUtil.Elevation.LabelAxis;
                 addSeries(
                     delegate(float value)
                     {
-                        return Length.Convert(value, Length.Units.Meter, application.SystemPreferences.ElevationUnits);
+                        return UnitUtil.Elevation.ConvertFrom(value);
                     },
                     delegate(ActivityInfo info)
                     {
@@ -719,7 +717,7 @@ namespace SportTracksOverlayPlugin.Source
                         ITimeValueEntry<float> entryMoving = info.MovingDistanceMetersTrack.GetInterpolatedValue(info.Activity.StartTime.AddSeconds(elapsed));
                         if (entryMoving != null && (first || (!first && entryMoving.Value > 0)))
                         {
-                            x = (float)Length.Convert(entryMoving.Value, Length.Units.Meter, application.SystemPreferences.DistanceUnits);
+                            x = (float)UnitUtil.Distance.ConvertFrom(entryMoving.Value);
                         }
                     }
                     float y = (float)interpolator(entry.Value);
@@ -819,7 +817,7 @@ namespace SportTracksOverlayPlugin.Source
             this.heartRate.Name = "heartRate";
             this.heartRate.Size = new System.Drawing.Size(73, 17);
             this.heartRate.TabIndex = 5;
-            this.heartRate.Text = global::SportTracksOverlayPlugin.Properties.Resources.HR;
+            this.heartRate.Text = CommonResources.Text.LabelHeartRate;
             this.heartRate.UseVisualStyleBackColor = true;
             this.heartRate.CheckedChanged += new System.EventHandler(this.heartRate_CheckedChanged_1);
             // 
@@ -830,7 +828,7 @@ namespace SportTracksOverlayPlugin.Source
             this.pace.Name = "pace";
             this.pace.Size = new System.Drawing.Size(51, 17);
             this.pace.TabIndex = 6;
-            this.pace.Text = global::SportTracksOverlayPlugin.Properties.Resources.Pace_label;
+            this.pace.Text = CommonResources.Text.LabelPace;
             this.pace.UseVisualStyleBackColor = true;
             this.pace.CheckedChanged += new System.EventHandler(this.pace_CheckedChanged_1);
             // 
@@ -841,7 +839,7 @@ namespace SportTracksOverlayPlugin.Source
             this.speed.Name = "speed";
             this.speed.Size = new System.Drawing.Size(57, 17);
             this.speed.TabIndex = 7;
-            this.speed.Text = global::SportTracksOverlayPlugin.Properties.Resources.Speed_label;
+            this.speed.Text = CommonResources.Text.LabelSpeed;
             this.speed.UseVisualStyleBackColor = true;
             this.speed.CheckedChanged += new System.EventHandler(this.speed_CheckedChanged_1);
             // 
@@ -852,7 +850,7 @@ namespace SportTracksOverlayPlugin.Source
             this.useTime.Name = "useTime";
             this.useTime.Size = new System.Drawing.Size(48, 17);
             this.useTime.TabIndex = 8;
-            this.useTime.Text = global::SportTracksOverlayPlugin.Properties.Resources.Time;
+            this.useTime.Text = CommonResources.Text.LabelTime;
             this.useTime.UseVisualStyleBackColor = true;
             this.useTime.CheckedChanged += new System.EventHandler(this.useTime_CheckedChanged);
             // 
@@ -872,7 +870,7 @@ namespace SportTracksOverlayPlugin.Source
             this.useDistance.Name = "useDistance";
             this.useDistance.Size = new System.Drawing.Size(67, 17);
             this.useDistance.TabIndex = 10;
-            this.useDistance.Text = global::SportTracksOverlayPlugin.Properties.Resources.Distance;
+            this.useDistance.Text = CommonResources.Text.LabelDistance;
             this.useDistance.UseVisualStyleBackColor = true;
             this.useDistance.CheckedChanged += new System.EventHandler(this.useDistance_CheckedChanged);
             // 
@@ -900,7 +898,7 @@ namespace SportTracksOverlayPlugin.Source
             this.power.Name = "power";
             this.power.Size = new System.Drawing.Size(56, 17);
             this.power.TabIndex = 13;
-            this.power.Text = global::SportTracksOverlayPlugin.Properties.Resources.Power_label;
+            this.power.Text = CommonResources.Text.LabelPower;
             this.power.UseVisualStyleBackColor = true;
             this.power.CheckedChanged += new System.EventHandler(this.power_CheckedChanged);
             // 
@@ -911,7 +909,7 @@ namespace SportTracksOverlayPlugin.Source
             this.cadence.Name = "cadence";
             this.cadence.Size = new System.Drawing.Size(69, 17);
             this.cadence.TabIndex = 14;
-            this.cadence.Text = global::SportTracksOverlayPlugin.Properties.Resources.Cadence_label;
+            this.cadence.Text = CommonResources.Text.LabelCadence;
             this.cadence.UseVisualStyleBackColor = true;
             this.cadence.CheckedChanged += new System.EventHandler(this.cadence_CheckedChanged);
             // 
@@ -922,7 +920,7 @@ namespace SportTracksOverlayPlugin.Source
             this.elevation.Name = "elevation";
             this.elevation.Size = new System.Drawing.Size(70, 17);
             this.elevation.TabIndex = 15;
-            this.elevation.Text = global::SportTracksOverlayPlugin.Properties.Resources.Elevation_label;
+            this.elevation.Text = CommonResources.Text.LabelElevation;
             this.elevation.UseVisualStyleBackColor = true;
             this.elevation.CheckedChanged += new System.EventHandler(this.elevation_CheckedChanged);
             // 
@@ -1062,12 +1060,15 @@ namespace SportTracksOverlayPlugin.Source
             Settings.ShowMovingAverage = movingAverage.Checked;
             if (!Settings.ShowTime)
             {
-                movingAverageLabel.Text = Settings.DistanceUnit;
+                movingAverageLabel.Text = UnitUtil.Distance.LabelAbbr;
                 maBox.Text = Settings.MovingAverageLength.ToString();
             }
             else
             {
-                movingAverageLabel.Text = Time.Label(Time.TimeRange.Second);
+                string sec = Time.Label(Time.TimeRange.Second);
+                //ST will not give labels in 2.1
+                if (sec == null || sec.Equals("")) { sec = "s"; }
+                movingAverageLabel.Text = sec;
                 maBox.Text = Settings.MovingAverageTime.ToString();
             }
             maBox.Enabled = Settings.ShowMovingAverage;

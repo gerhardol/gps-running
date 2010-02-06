@@ -21,9 +21,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Visuals;
-using SportTracksTRIMPPlugin.Properties;
 
-namespace SportTracksTRIMPPlugin.Source
+namespace SportTracksHighScorePlugin.Util
 {
     class YesNoDialog : Form
     {
@@ -31,11 +30,19 @@ namespace SportTracksTRIMPPlugin.Source
         private ZoneFiveSoftware.Common.Visuals.Button no;
         private ZoneFiveSoftware.Common.Visuals.TextBox textBox1;
         public bool answer;
-    
+
         public YesNoDialog(String message)
         {
             InitializeComponent();
             this.textBox1.Text = message;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+        }
+        public YesNoDialog(String message, System.Drawing.Icon icon)
+        {
+            InitializeComponent();
+            this.textBox1.Text = message;
+            if (icon != null) { Icon = icon; };
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
@@ -84,7 +91,7 @@ namespace SportTracksTRIMPPlugin.Source
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.yes);
             this.Name = "YesNoDialog";
-            this.Text = Resources.Question;
+            this.Text = StringResources.Question;
             this.ResumeLayout(false);
             this.PerformLayout();
 

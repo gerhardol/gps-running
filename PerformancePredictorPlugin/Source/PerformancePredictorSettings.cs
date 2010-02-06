@@ -27,6 +27,7 @@ using System.Diagnostics;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using System.Globalization;
 using SportTracksPerformancePredictorPlugin.Properties;
+using SportTracksPerformancePredictorPlugin.Util;
 
 namespace SportTracksPerformancePredictorPlugin.Source
 {
@@ -36,18 +37,18 @@ namespace SportTracksPerformancePredictorPlugin.Source
         {
             InitializeComponent();
             linkLabel1.Text = Resources.Webpage;
-            resetSettings.Text = Resources.ResetAllSettings;
+            resetSettings.Text = StringResources.ResetAllSettings;
             groupBox1.Text = Resources.DistancesUsed;
             addDistance.Text = "<- " + Resources.AddDistance;
             removeDistance.Text = Resources.RemoveDistance + " ->";
             groupBox2.Text = Resources.HighScorePluginIntegration;
-            label1.Text = Resources.Use;
+            label1.Text = StringResources.Use;
             label2.Text = Resources.ProcDistUsed;
             foreach (Length.Units s in Enum.GetValues(typeof(Length.Units)))
             {
                 unitBox.Items.Add(Length.Label(s));
             }
-            unitBox.SelectedItem = Settings.DistanceUnit;
+            unitBox.SelectedItem = UnitUtil.Distance.Label;
             updateList();
             numericUpDown1.Value = Settings.PercentOfDistance;
         }
@@ -58,17 +59,16 @@ namespace SportTracksPerformancePredictorPlugin.Source
             foreach (double new_dist in Settings.Distances.Keys)
             {
                 double length = new_dist;
-                String unit = Settings.DistanceUnitShort;
+                String str;
                 if (Settings.Distances[new_dist].Values[0])
                 {
-                    length = Length.Convert(length, Length.Units.Meter, Plugin.GetApplication().SystemPreferences.DistanceUnits);
+                    str = UnitUtil.Distance.ToString(length, "u");
                 }
                 else
                 {
-                    length = Length.Convert(length, Length.Units.Meter, Settings.Distances[new_dist].Keys[0]);
-                    unit = Settings.Distances[new_dist].Keys[0].ToString();
+                    str = UnitUtil.Distance.ToString(length, Settings.Distances[new_dist].Keys[0], "u");
                 }
-                distanceList.Items.Add(length + " " + unit);
+                distanceList.Items.Add(str);
             }
         }
 
@@ -80,7 +80,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
 
         private void resetSettings_Click(object sender, EventArgs e)
         {
-            YesNoDialog dialog = new YesNoDialog(Resources.ResetAllSettingsWarning);
+            YesNoDialog dialog = new YesNoDialog(StringResources.ResetQuestion);
             dialog.ShowDialog();
             if (dialog.answer)
             {
@@ -93,9 +93,22 @@ namespace SportTracksPerformancePredictorPlugin.Source
         {
             try
             {
-                double d = double.Parse(distanceBox.Text, NumberFormatInfo.CurrentInfo);
-                if (d <= 0) throw new Exception();
-                Length.Units unit = (Length.Units)Enum.Parse(typeof(Length.Units), (String)unitBox.SelectedItem);
+                //Use ST parse routines to get handling of units for consistency,
+                //even if there is a unit box (the risk to miss on precision is low)
+                Length.Units unit = UnitUtil.Distance.Unit;
+                //Some attempt to parse the unit box. This was easier in a previous version
+                //unit = (Length.Units)Enum.Parse(typeof(Length.Units), (String)unitBox.SelectedItem);
+                //However, with localised units, this is not possible
+                //The box is not really needed when the unit now can be parsed in the box
+                foreach (Length.Units s in Enum.GetValues(typeof(Length.Units)))
+                {
+                    if (((String)(unitBox.SelectedItem)).Equals(Length.Label(s)))
+                    {
+                        unit = s;
+                    }
+                }
+                double d = UnitUtil.Distance.Parse(distanceBox.Text, ref unit);
+                d = UnitUtil.Distance.ConvertFrom(d, unit);
                 Settings.addDistance(d, unit, false);
                 updateList();
             }

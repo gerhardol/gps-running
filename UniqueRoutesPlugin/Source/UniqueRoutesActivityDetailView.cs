@@ -23,6 +23,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using SportTracksUniqueRoutesPlugin.Source;
 using SportTracksUniqueRoutesPlugin;
@@ -30,6 +31,7 @@ using System.Reflection.Emit;
 using System.Reflection;
 using System.IO;
 using SportTracksUniqueRoutesPlugin.Properties;
+using SportTracksUniqueRoutesPlugin.Util;
 
 namespace SportTracksUniqueRoutesPlugin.Source
 {
@@ -63,28 +65,22 @@ namespace SportTracksUniqueRoutesPlugin.Source
                 if (similar.Count > 1)
                 {
                     DataTable table = new DataTable();
-                    table.Columns.Add(Resources.Date);
-                    table.Columns.Add(Resources.StartTime);
-                    table.Columns.Add(Resources.Time);
-                    table.Columns.Add(Resources.Distance+ " (" + Settings.DistanceUnitShort + ")");
-                    if (Settings.ShowPace)
-                        table.Columns.Add(String.Format(Resources.Pace,Settings.DistanceUnitShort));
-                    else
-                        table.Columns.Add(String.Format(Resources.Speed,Settings.DistanceUnitShort));
-                    table.Columns.Add(Resources.AvgHR);
+                    table.Columns.Add(CommonResources.Text.LabelDate);
+                    table.Columns.Add(CommonResources.Text.LabelStartTime);
+                    table.Columns.Add(UnitUtil.Time.LabelAxis);
+                    table.Columns.Add(UnitUtil.Distance.LabelAxis);
+                    table.Columns.Add(UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace));
+                    table.Columns.Add(CommonResources.Text.LabelAvgHR + UnitUtil.HeartRate.LabelAbbr2);
                     foreach (IActivity activity in similar)
                     {
                         DataRow row = table.NewRow();
                         ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
-                        row[0] = String.Format("{0:yyyy/MM/dd}", activity.StartTime.ToLocalTime());
+                        row[0] = activity.StartTime.ToLocalTime().ToShortDateString();
                         row[1] = activity.StartTime.ToLocalTime().ToShortTimeString();
-                        row[2] = info.Time.ToString();
-                        row[3] = String.Format("{0:0.000}", Settings.convertFromDistance(info.DistanceMeters));
-                        if (Settings.ShowPace)
-                            row[4] = new TimeSpan(0, 0, (int)(1 / Settings.convertFromDistance(info.AverageSpeedMetersPerSecond))).ToString().Substring(3);
-                        else
-                            row[4] = String.Format("{0:0.0}", Settings.convertFromDistance(info.AverageSpeedMetersPerSecond * 60 * 60));
-                        row[5] = Settings.present(info.AverageHeartRate, 1);
+                        row[2] = UnitUtil.Time.ToString(info.Time);
+                        row[3] = UnitUtil.Distance.ToString(info.DistanceMeters);
+                        row[4] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, info.AverageSpeedMetersPerSecond);
+                        row[5] = UnitUtil.HeartRate.ToString(info.AverageHeartRate);
                         table.Rows.Add(row);
                     }
                     summaryView.DataSource = table;
@@ -128,7 +124,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.Activity = activity;
             this.Resize += new EventHandler(UniqueRoutesActivityDetailView_Resize);
             progressBar.Size = new Size(summaryView.Size.Width, progressBar.Height);
-            speedBox.SelectedItem = Resources.Pace;
+            speedBox.SelectedItem = CommonResources.Text.LabelPace;
             contextMenu.Click += new EventHandler(contextMenu_Click);
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
             setSize();
@@ -151,11 +147,11 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
             if (Settings.SelectAll)
             {
-                selectedBox.SelectedItem = Resources.All;
+                selectedBox.SelectedItem = StringResources.All;
             }
             else
             {
-                selectedBox.SelectedItem = Resources.Selected;
+                selectedBox.SelectedItem = StringResources.Selected;
             }
             if (Settings.SelectedPlugin != null &&
                     Settings.SelectedPlugin.Equals("Accumulated Summary") &&
@@ -222,15 +218,15 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
         private void correctLanguage()
         {
-            sendResultToLabel1.Text = Resources.Send;
-            label1.Text = Resources.Show;
-            sendLabel2.Text = Resources.ActivitiesTo;
-            selectedBox.Items.Add(Resources.All);
-            selectedBox.Items.Add(Resources.Selected);
-            speedBox.Items.Add(Resources.Pace);
-            speedBox.Items.Add(Resources.Speed);
+            sendResultToLabel1.Text = StringResources.Send;
+            label1.Text = StringResources.Show;
+            sendLabel2.Text = StringResources.ActivitiesTo;
+            selectedBox.Items.Add(StringResources.All);
+            selectedBox.Items.Add(StringResources.Selected);
+            speedBox.Items.Add(CommonResources.Text.LabelPace);
+            speedBox.Items.Add(CommonResources.Text.LabelSpeed);
             doIt.Text = Resources.DoIt;
-            changeCategory.Text = Resources.ChangeCategory;
+            changeCategory.Text = StringResources.ChangeCategory;
             correctUI(new Control[] { selectedBox, sendLabel2, pluginBox, doIt });
             sendResultToLabel1.Location = new Point(selectedBox.Location.X - 5 - sendResultToLabel1.Size.Width,
                                         sendLabel2.Location.Y);
@@ -321,8 +317,8 @@ namespace SportTracksUniqueRoutesPlugin.Source
         {
             foreach (IActivity activity in similar)
             {
-                String s1 = String.Format("{0:yyyy/MM/dd}", activity.StartTime.ToLocalTime());
-                String s2 = activity.StartTime.ToLocalTime().ToShortTimeString().ToString();
+                String s1 = activity.StartTime.ToLocalTime().ToShortDateString();
+                String s2 = activity.StartTime.ToLocalTime().ToShortTimeString();
                 if (s1.Equals(date) && s2.Equals(starttime))
                     return activity;
             }
@@ -333,7 +329,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
         {
             IList<IActivity> list = new List<IActivity>();
             IList<int> seenRows = new List<int>();
-            if (selectedBox.SelectedItem.Equals(Resources.Selected))
+            if (selectedBox.SelectedItem.Equals(StringResources.Selected))
             {
                 foreach (DataGridViewCell cell in summaryView.SelectedCells)
                 {
@@ -342,7 +338,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
                         seenRows.Add(cell.RowIndex);
                         DataGridViewRow row = summaryView.Rows[cell.RowIndex];
                         list.Add(findActivity((string)row.Cells[0].Value,
-                            (string)row.Cells[1].Value));
+                                              (string)row.Cells[1].Value));
                     }
                 }
             }
@@ -410,7 +406,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
         private void speedBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Settings.ShowPace = speedBox.SelectedItem.Equals(Resources.Pace);
+            Settings.ShowPace = speedBox.SelectedItem.Equals(CommonResources.Text.LabelPace);
             setTable();
         }
 
@@ -428,7 +424,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
         private void selectedBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Settings.SelectAll = selectedBox.SelectedItem.Equals(Resources.All);
+            Settings.SelectAll = selectedBox.SelectedItem.Equals(StringResources.All);
         }
     }
 }

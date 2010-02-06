@@ -61,56 +61,11 @@ namespace SportTracksHighScorePlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add.
-        /// </summary>
-        internal static string Add {
-            get {
-                return ResourceManager.GetString("Add", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to and.
-        /// </summary>
-        internal static string And {
-            get {
-                return ResourceManager.GetString("And", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Avg. HR..
-        /// </summary>
-        internal static string AverageHR {
-            get {
-                return ResourceManager.GetString("AverageHR", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Biggest elevation difference.
         /// </summary>
         internal static string BiggestElevationDifference {
             get {
                 return ResourceManager.GetString("BiggestElevationDifference", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to BPM from.
-        /// </summary>
-        internal static string BPMFrom {
-            get {
-                return ResourceManager.GetString("BPMFrom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to BPM to.
-        /// </summary>
-        internal static string BPMTo {
-            get {
-                return ResourceManager.GetString("BPMTo", resourceCulture);
             }
         }
         
@@ -169,123 +124,6 @@ namespace SportTracksHighScorePlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copy table to clipboard.
-        /// </summary>
-        internal static string CopyTable {
-            get {
-                return ResourceManager.GetString("CopyTable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date.
-        /// </summary>
-        internal static string Date {
-            get {
-                return ResourceManager.GetString("Date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Distance.
-        /// </summary>
-        internal static string Distance {
-            get {
-                return ResourceManager.GetString("Distance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Distances.
-        /// </summary>
-        internal static string Distances {
-            get {
-                return ResourceManager.GetString("Distances", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to distance.
-        /// </summary>
-        internal static string DomDistance {
-            get {
-                return ResourceManager.GetString("DomDistance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to elevation.
-        /// </summary>
-        internal static string DomElevation {
-            get {
-                return ResourceManager.GetString("DomElevation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to time.
-        /// </summary>
-        internal static string DomTime {
-            get {
-                return ResourceManager.GetString("DomTime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Elevation.
-        /// </summary>
-        internal static string Elevation {
-            get {
-                return ResourceManager.GetString("Elevation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Elevations.
-        /// </summary>
-        internal static string Elevations {
-            get {
-                return ResourceManager.GetString("Elevations", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to End.
-        /// </summary>
-        internal static string End {
-            get {
-                return ResourceManager.GetString("End", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Find.
-        /// </summary>
-        internal static string Find {
-            get {
-                return ResourceManager.GetString("Find", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to From.
-        /// </summary>
-        internal static string From {
-            get {
-                return ResourceManager.GetString("From", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Goal.
-        /// </summary>
-        internal static string Goal {
-            get {
-                return ResourceManager.GetString("Goal", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to had manual entered data.
         /// </summary>
         internal static string HadManualEnteredData {
@@ -304,15 +142,6 @@ namespace SportTracksHighScorePlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Heart rate (BPM).
-        /// </summary>
-        internal static string HR {
-            get {
-                return ResourceManager.GetString("HR", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to HR. &amp; speed zone.
         /// </summary>
         internal static string HRAndSpeedZones {
@@ -322,65 +151,20 @@ namespace SportTracksHighScorePlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to HR. zone.
+        ///   Looks up a localized string similar to High Score.
         /// </summary>
-        internal static string HRZone {
+        internal static string HS {
             get {
-                return ResourceManager.GetString("HRZone", resourceCulture);
+                return ResourceManager.GetString("HS", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Heart rate zones.
+        ///   Looks up a localized string similar to High Score view.
         /// </summary>
-        internal static string HRZones {
+        internal static string HSV {
             get {
-                return ResourceManager.GetString("HRZones", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to High Score for one activity.
-        /// </summary>
-        internal static string HS1 {
-            get {
-                return ResourceManager.GetString("HS1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to High Score for {0} activities.
-        /// </summary>
-        internal static string HS2 {
-            get {
-                return ResourceManager.GetString("HS2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to High Score view of {0} activities.
-        /// </summary>
-        internal static string HSV1 {
-            get {
-                return ResourceManager.GetString("HSV1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to High Score view of one activity.
-        /// </summary>
-        internal static string HSV2 {
-            get {
-                return ResourceManager.GetString("HSV2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to High Score view of no activities.
-        /// </summary>
-        internal static string HSV3 {
-            get {
-                return ResourceManager.GetString("HSV3", resourceCulture);
+                return ResourceManager.GetString("HSV", resourceCulture);
             }
         }
         
@@ -424,15 +208,6 @@ namespace SportTracksHighScorePlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Location.
-        /// </summary>
-        internal static string Location {
-            get {
-                return ResourceManager.GetString("Location", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Longest distance traveled.
         /// </summary>
         internal static string LongestDistanceTraveled {
@@ -447,78 +222,6 @@ namespace SportTracksHighScorePlugin.Properties {
         internal static string LongestTimeSpent {
             get {
                 return ResourceManager.GetString("LongestTimeSpent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to and.
-        /// </summary>
-        internal static string LowerCaseAnd {
-            get {
-                return ResourceManager.GetString("LowerCaseAnd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to graph.
-        /// </summary>
-        internal static string LowerCaseGraph {
-            get {
-                return ResourceManager.GetString("LowerCaseGraph", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to maximal.
-        /// </summary>
-        internal static string LowerCaseMaximal {
-            get {
-                return ResourceManager.GetString("LowerCaseMaximal", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to minimal.
-        /// </summary>
-        internal static string LowerCaseMinimal {
-            get {
-                return ResourceManager.GetString("LowerCaseMinimal", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pace.
-        /// </summary>
-        internal static string LowerCasePace {
-            get {
-                return ResourceManager.GetString("LowerCasePace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to speed.
-        /// </summary>
-        internal static string LowerCaseSpeed {
-            get {
-                return ResourceManager.GetString("LowerCaseSpeed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to table.
-        /// </summary>
-        internal static string LowerCaseTable {
-            get {
-                return ResourceManager.GetString("LowerCaseTable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No.
-        /// </summary>
-        internal static string No {
-            get {
-                return ResourceManager.GetString("No", resourceCulture);
             }
         }
         
@@ -541,15 +244,6 @@ namespace SportTracksHighScorePlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ok.
-        /// </summary>
-        internal static string Ok {
-            get {
-                return ResourceManager.GetString("Ok", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to on a distance of.
         /// </summary>
         internal static string OnADistanceOf {
@@ -568,128 +262,11 @@ namespace SportTracksHighScorePlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to on a time of {0} hours.
+        ///   Looks up a localized string similar to on a time of.
         /// </summary>
-        internal static string OnATimeOfHours {
+        internal static string OnATimeOf {
             get {
-                return ResourceManager.GetString("OnATimeOfHours", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to on a time of {0} minutes.
-        /// </summary>
-        internal static string OnATimeOfMinutes {
-            get {
-                return ResourceManager.GetString("OnATimeOfMinutes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to on a time of {0} seconds.
-        /// </summary>
-        internal static string OnATimeOfSeconds {
-            get {
-                return ResourceManager.GetString("OnATimeOfSeconds", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Pace min/{0}.
-        /// </summary>
-        internal static string Pace {
-            get {
-                return ResourceManager.GetString("Pace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Pace (min/{0}).
-        /// </summary>
-        internal static string Pace2 {
-            get {
-                return ResourceManager.GetString("Pace2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to min/{0}.
-        /// </summary>
-        internal static string PaceFormat {
-            get {
-                return ResourceManager.GetString("PaceFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to mm:ss/min from.
-        /// </summary>
-        internal static string PaceLabelFrom {
-            get {
-                return ResourceManager.GetString("PaceLabelFrom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to mm:ss/min to.
-        /// </summary>
-        internal static string PaceLabelTo {
-            get {
-                return ResourceManager.GetString("PaceLabelTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Pace zones.
-        /// </summary>
-        internal static string PaceZones {
-            get {
-                return ResourceManager.GetString("PaceZones", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to per specified.
-        /// </summary>
-        internal static string PerSpecified {
-            get {
-                return ResourceManager.GetString("PerSpecified", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Question?.
-        /// </summary>
-        internal static string Question {
-            get {
-                return ResourceManager.GetString("Question", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Remove.
-        /// </summary>
-        internal static string Remove {
-            get {
-                return ResourceManager.GetString("Remove", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reset....
-        /// </summary>
-        internal static string Reset {
-            get {
-                return ResourceManager.GetString("Reset", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reset all settings....
-        /// </summary>
-        internal static string ResetAllSettings {
-            get {
-                return ResourceManager.GetString("ResetAllSettings", resourceCulture);
+                return ResourceManager.GetString("OnATimeOf", resourceCulture);
             }
         }
         
@@ -766,164 +343,11 @@ namespace SportTracksHighScorePlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show.
-        /// </summary>
-        internal static string Show {
-            get {
-                return ResourceManager.GetString("Show", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Smallest elevation difference.
         /// </summary>
         internal static string SmallestElevationDifference {
             get {
                 return ResourceManager.GetString("SmallestElevationDifference", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} hours.
-        /// </summary>
-        internal static string SomeHours {
-            get {
-                return ResourceManager.GetString("SomeHours", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} minutes.
-        /// </summary>
-        internal static string SomeMinutes {
-            get {
-                return ResourceManager.GetString("SomeMinutes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} seconds.
-        /// </summary>
-        internal static string SomeSeconds {
-            get {
-                return ResourceManager.GetString("SomeSeconds", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Speed {0}/h.
-        /// </summary>
-        internal static string Speed {
-            get {
-                return ResourceManager.GetString("Speed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Speed ({0}/h).
-        /// </summary>
-        internal static string Speed2 {
-            get {
-                return ResourceManager.GetString("Speed2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0}/h.
-        /// </summary>
-        internal static string SpeedFormat {
-            get {
-                return ResourceManager.GetString("SpeedFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0}/h from.
-        /// </summary>
-        internal static string SpeedLabelFrom {
-            get {
-                return ResourceManager.GetString("SpeedLabelFrom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0}/h to.
-        /// </summary>
-        internal static string SpeedLabelTo {
-            get {
-                return ResourceManager.GetString("SpeedLabelTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to speed zone.
-        /// </summary>
-        internal static string SpeedZone {
-            get {
-                return ResourceManager.GetString("SpeedZone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start.
-        /// </summary>
-        internal static string Start {
-            get {
-                return ResourceManager.GetString("Start", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Time.
-        /// </summary>
-        internal static string Time {
-            get {
-                return ResourceManager.GetString("Time", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to hh:mm:ss.
-        /// </summary>
-        internal static string TimeFormat {
-            get {
-                return ResourceManager.GetString("TimeFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Time (hours).
-        /// </summary>
-        internal static string TimeHours {
-            get {
-                return ResourceManager.GetString("TimeHours", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Times.
-        /// </summary>
-        internal static string Times {
-            get {
-                return ResourceManager.GetString("Times", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To.
-        /// </summary>
-        internal static string To {
-            get {
-                return ResourceManager.GetString("To", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Warning.
-        /// </summary>
-        internal static string Warning {
-            get {
-                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
         
@@ -937,7 +361,7 @@ namespace SportTracksHighScorePlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to with a heart rate between {0} and {1} BPM.
+        ///   Looks up a localized string similar to with a heart rate between.
         /// </summary>
         internal static string WithAHRBetween {
             get {
@@ -946,7 +370,7 @@ namespace SportTracksHighScorePlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to with a pace between {0} min/{1} and {2} min/{3} .
+        ///   Looks up a localized string similar to with a pace between.
         /// </summary>
         internal static string WithAPaceBetween {
             get {
@@ -955,20 +379,11 @@ namespace SportTracksHighScorePlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to with a speed between {0} {1}/h and {2} {3}/h.
+        ///   Looks up a localized string similar to with a speed between.
         /// </summary>
         internal static string WithASpeedBetween {
             get {
                 return ResourceManager.GetString("WithASpeedBetween", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Yes.
-        /// </summary>
-        internal static string Yes {
-            get {
-                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

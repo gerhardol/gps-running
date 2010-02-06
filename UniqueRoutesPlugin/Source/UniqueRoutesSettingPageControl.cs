@@ -25,6 +25,7 @@ using System.Text;
 using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using System.Diagnostics;
+using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Data.GPS;
 using ZoneFiveSoftware.Common.Data;
@@ -33,6 +34,7 @@ using System.Collections;
 using System.IO;
 using System.Xml;
 using SportTracksUniqueRoutesPlugin.Properties;
+using SportTracksUniqueRoutesPlugin.Util;
 
 namespace SportTracksUniqueRoutesPlugin.Source
 {
@@ -58,9 +60,9 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
         private void updateLanguage()
         {
-            resetSettings.Text = Resources.ResetAllSettings;
+            resetSettings.Text = StringResources.ResetAllSettings;
             linkLabel1.Text = Resources.Webpage;
-            groupBox1.Text = Resources.Settings;
+            groupBox1.Text = StringResources.Settings;
             label1.Text = Resources.Bandwidth + ":";
             precedeControl(label1, bandwidthBox);
             label2.Text = Resources.AllowPointsOutsideBand + ":";
@@ -71,10 +73,23 @@ namespace SportTracksUniqueRoutesPlugin.Source
             precedeControl(label5, ignoreBeginningBox);
             label8.Text = Resources.IgnoreEndOfRoute + ":";
             precedeControl(label8, ignoreEndBox);
-            metricLabel.Text = Length.LabelPlural(Length.Units.Meter);
-            label4.Text = Resources.Percent;
-            beginningLabel.Text = Length.LabelPlural(Length.Units.Meter);
-            endLabel.Text = Length.LabelPlural(Length.Units.Meter);
+            metricLabel.Text = UnitUtil.Elevation.Label;
+            label4.Text = CommonResources.Text.LabelPercent;
+            beginningLabel.Text = UnitUtil.Distance.Label;
+            endLabel.Text = UnitUtil.Distance.Label;
+        }
+
+        private void presentSettings()
+        {
+            bandwidthBox.Text = UnitUtil.Elevation.ToString(Settings.Bandwidth);
+            percentageOff.Value = (int)Math.Round(Settings.ErrorMargin * 100);
+            hasDirectionBox.Checked = Settings.HasDirection;
+            ignoreBeginningBox.Text = UnitUtil.Distance.ToString(Settings.IgnoreBeginning);
+            ignoreEndBox.Text = UnitUtil.Distance.ToString(Settings.IgnoreEnd);
+
+            metricLabel.Text = UnitUtil.Elevation.Label;
+            beginningLabel.Text = UnitUtil.Distance.Label;
+            endLabel.Text = UnitUtil.Distance.Label;
         }
 
         void UniqueRoutesSettingPageControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -86,13 +101,12 @@ namespace SportTracksUniqueRoutesPlugin.Source
         {
             try
             {
-                Settings.IgnoreEnd = Settings.convertToDistance
-                    (Settings.parseDouble(ignoreEndBox.Text));
+                Settings.IgnoreEnd = UnitUtil.Distance.Parse(ignoreEndBox.Text);
+                presentSettings();
             }
             catch (Exception)
             {
                 new WarningDialog(Resources.EndMeterWarning);
-                bandwidthBox.Text = Settings.Bandwidth.ToString();
             }
         }
 
@@ -100,47 +114,37 @@ namespace SportTracksUniqueRoutesPlugin.Source
         {
             try
             {
-                Settings.IgnoreBeginning = Settings.convertToDistance
-                    (Settings.parseDouble(ignoreBeginningBox.Text));
+                Settings.IgnoreBeginning = UnitUtil.Distance.Parse(ignoreBeginningBox.Text);
+                presentSettings();
             }
             catch (Exception)
             {
                 new WarningDialog(Resources.BeginningMeterWarning);
-                bandwidthBox.Text = Settings.Bandwidth.ToString();
             }
-        }
-
-        private void presentSettings()
-        {
-            bandwidthBox.Text = Settings.Bandwidth.ToString();
-            percentageOff.Value = (int)Math.Round(Settings.ErrorMargin * 100);
-            hasDirectionBox.Checked = Settings.HasDirection;
-            ignoreBeginningBox.Text = Settings.present(Settings.convertFromDistance(Settings.IgnoreBeginning));
-            ignoreEndBox.Text = Settings.present(Settings.convertFromDistance(Settings.IgnoreEnd));
-            beginningLabel.Text = Settings.DistanceUnit;
-            endLabel.Text = Settings.DistanceUnit;
         }
 
         private void hasDirectionBox_LostFocus(object sender, EventArgs e)
         {
             Settings.HasDirection = hasDirectionBox.Checked;
+            presentSettings();
         }
 
         private void percentageOff_LostFocus(object sender, EventArgs e)
         {
             Settings.ErrorMargin = (double) percentageOff.Value / 100;
+            presentSettings();
         }
 
         private void bandwidthBox_LostFocus(object sender, EventArgs e)
         {
             try
             {
-                Settings.Bandwidth = int.Parse(bandwidthBox.Text);
+                Settings.Bandwidth = (int)UnitUtil.Elevation.Parse(bandwidthBox.Text);
+                presentSettings();
             }
             catch (Exception)
             {
                 new WarningDialog(Resources.BandwidthWarning);
-                bandwidthBox.Text = Settings.Bandwidth.ToString();
             }
         }
 

@@ -55,6 +55,8 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.label1 = new System.Windows.Forms.Label();
             this.paceTempoLabel = new System.Windows.Forms.Label();
             this.intervalTab = new System.Windows.Forms.TabPage();
+            this.interval2Label = new System.Windows.Forms.Label();
+            this.interval1Label = new System.Windows.Forms.Label();
             this.intervalGrid = new System.Windows.Forms.DataGridView();
             this.temperatureTab = new System.Windows.Forms.TabPage();
             this.label2 = new System.Windows.Forms.Label();
@@ -87,7 +89,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.tabControl1.Location = new System.Drawing.Point(3, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(516, 363);
+            this.tabControl1.Size = new System.Drawing.Size(516, 370);
             this.tabControl1.TabIndex = 0;
             // 
             // trainingTab
@@ -171,6 +173,8 @@ namespace SportTracksPerformancePredictorPlugin.Source
             // 
             // intervalTab
             // 
+            this.intervalTab.Controls.Add(this.interval2Label);
+            this.intervalTab.Controls.Add(this.interval1Label);
             this.intervalTab.Controls.Add(this.intervalGrid);
             this.intervalTab.Location = new System.Drawing.Point(4, 22);
             this.intervalTab.Name = "intervalTab";
@@ -179,17 +183,34 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.intervalTab.Text = "Interval split times";
             this.intervalTab.UseVisualStyleBackColor = true;
             // 
+            // interval2Label
+            // 
+            this.interval2Label.AutoSize = true;
+            this.interval2Label.Location = new System.Drawing.Point(3, 19);
+            this.interval2Label.Name = "interval2Label";
+            this.interval2Label.Size = new System.Drawing.Size(148, 13);
+            this.interval2Label.TabIndex = 5;
+            this.interval2Label.Text = "Suggested short interval pace";
+            // 
+            // interval1Label
+            // 
+            this.interval1Label.AutoSize = true;
+            this.interval1Label.Location = new System.Drawing.Point(3, 6);
+            this.interval1Label.Name = "interval1Label";
+            this.interval1Label.Size = new System.Drawing.Size(0, 13);
+            this.interval1Label.TabIndex = 4;
+            // 
             // intervalGrid
             // 
             this.intervalGrid.AllowUserToAddRows = false;
             this.intervalGrid.AllowUserToDeleteRows = false;
             this.intervalGrid.AllowUserToResizeRows = false;
             this.intervalGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.intervalGrid.Location = new System.Drawing.Point(0, 0);
+            this.intervalGrid.Location = new System.Drawing.Point(2, 35);
             this.intervalGrid.Name = "intervalGrid";
             this.intervalGrid.RowHeadersVisible = false;
             this.intervalGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.intervalGrid.Size = new System.Drawing.Size(508, 334);
+            this.intervalGrid.Size = new System.Drawing.Size(508, 299);
             this.intervalGrid.TabIndex = 3;
             // 
             // temperatureTab
@@ -242,7 +263,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.weightTab.Controls.Add(this.weightGrid);
             this.weightTab.Location = new System.Drawing.Point(4, 22);
             this.weightTab.Name = "weightTab";
-            this.weightTab.Size = new System.Drawing.Size(508, 337);
+            this.weightTab.Size = new System.Drawing.Size(508, 344);
             this.weightTab.TabIndex = 4;
             this.weightTab.Text = "Weight impact";
             this.weightTab.UseVisualStyleBackColor = true;
@@ -275,7 +296,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.weightGrid.Name = "weightGrid";
             this.weightGrid.RowHeadersVisible = false;
             this.weightGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.weightGrid.Size = new System.Drawing.Size(508, 304);
+            this.weightGrid.Size = new System.Drawing.Size(508, 313);
             this.weightGrid.TabIndex = 5;
             // 
             // TrainingView
@@ -293,6 +314,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.tempoTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.paceTempoGrid)).EndInit();
             this.intervalTab.ResumeLayout(false);
+            this.intervalTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.intervalGrid)).EndInit();
             this.temperatureTab.ResumeLayout(false);
             this.temperatureTab.PerformLayout();
@@ -324,6 +346,8 @@ namespace SportTracksPerformancePredictorPlugin.Source
         private System.Windows.Forms.Label weightLabel2;
         private System.Windows.Forms.Label weightLabel;
         private System.Windows.Forms.DataGridView weightGrid;
+        private System.Windows.Forms.Label interval2Label;
+        private System.Windows.Forms.Label interval1Label;
 
     }
 }

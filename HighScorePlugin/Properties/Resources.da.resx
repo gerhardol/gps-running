@@ -1,75 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema id="root" xmlns="" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
+    <xsd:element msdata:IsDataSet="true" name="root">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element minOccurs="0" name="value" type="xsd:string" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" use="required" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
               <xsd:attribute ref="xml:space" />
@@ -84,19 +25,19 @@
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element minOccurs="0" msdata:Ordinal="1" name="value" type="xsd:string" />
+                <xsd:element minOccurs="0" msdata:Ordinal="2" name="comment" type="xsd:string" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute msdata:Ordinal="1" name="name" type="xsd:string" use="required" />
+              <xsd:attribute msdata:Ordinal="3" name="type" type="xsd:string" />
+              <xsd:attribute msdata:Ordinal="4" name="mimetype" type="xsd:string" />
               <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element minOccurs="0" msdata:Ordinal="1" name="value" type="xsd:string" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
@@ -117,23 +58,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add" xml:space="preserve">
-    <value>Tilføj</value>
-  </data>
-  <data name="And" xml:space="preserve">
-    <value>og</value>
-  </data>
-  <data name="AverageHR" xml:space="preserve">
-    <value>Gennemsnitlig puls</value>
-  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="BiggestElevationDifference" xml:space="preserve">
     <value>Største stigningsforskel</value>
-  </data>
-  <data name="BPMFrom" xml:space="preserve">
-    <value>BPM fra</value>
-  </data>
-  <data name="BPMTo" xml:space="preserve">
-    <value>BPM til</value>
   </data>
   <data name="CannotAddToDistances" xml:space="preserve">
     <value>Kan ikke tilføjes til distancer</value>
@@ -153,68 +80,14 @@
   <data name="CannotAddToTimes" xml:space="preserve">
     <value>Kan ikke tilføjes til tider.</value>
   </data>
-  <data name="CopyTable" xml:space="preserve">
-    <value>Kopier tabellen til udklipsholderen</value>
-  </data>
-  <data name="Date" xml:space="preserve">
-    <value>Dato</value>
-  </data>
-  <data name="Distance" xml:space="preserve">
-    <value>Afstand</value>
-  </data>
-  <data name="Distances" xml:space="preserve">
-    <value>Afstande</value>
-  </data>
-  <data name="Elevation" xml:space="preserve">
-    <value>Stigning</value>
-  </data>
-  <data name="Elevations" xml:space="preserve">
-    <value>Stigninger</value>
-  </data>
-  <data name="End" xml:space="preserve">
-    <value>Stop</value>
-  </data>
-  <data name="Find" xml:space="preserve">
-    <value>Find</value>
-  </data>
-  <data name="From" xml:space="preserve">
-    <value>Fra</value>
-  </data>
-  <data name="Goal" xml:space="preserve">
-    <value>Mål</value>
-  </data>
   <data name="HadManualEnteredData" xml:space="preserve">
     <value>havde manuel indtastet data</value>
   </data>
   <data name="HadNoStartTime" xml:space="preserve">
     <value>havde ingen start tid</value>
   </data>
-  <data name="HR" xml:space="preserve">
-    <value>Puls (BPM)</value>
-  </data>
   <data name="HRAndSpeedZones" xml:space="preserve">
     <value>puls- &amp; hastighedszone</value>
-  </data>
-  <data name="HRZone" xml:space="preserve">
-    <value>pulszone</value>
-  </data>
-  <data name="HRZones" xml:space="preserve">
-    <value>pulszoner</value>
-  </data>
-  <data name="HS1" xml:space="preserve">
-    <value>High Score af én aktivitet</value>
-  </data>
-  <data name="HS2" xml:space="preserve">
-    <value>High Score af {0} activiteter</value>
-  </data>
-  <data name="HSV1" xml:space="preserve">
-    <value>High Score view af {0} activiteter</value>
-  </data>
-  <data name="HSV2" xml:space="preserve">
-    <value>High Score view af én activitet</value>
-  </data>
-  <data name="HSV3" xml:space="preserve">
-    <value>High Score view af ingen activiteter</value>
   </data>
   <data name="IgnoredActivities" xml:space="preserve">
     <value>Ignorerede {0} activiteter</value>
@@ -222,38 +95,11 @@
   <data name="IgnoreManualEnteredBox" xml:space="preserve">
     <value>Ignorer aktiviteter med manuel indtastet data</value>
   </data>
-  <data name="Location" xml:space="preserve">
-    <value>Sted</value>
-  </data>
   <data name="LongestDistanceTraveled" xml:space="preserve">
     <value>Længste afstand tilbagelagt</value>
   </data>
   <data name="LongestTimeSpent" xml:space="preserve">
     <value>Længst tid brugt</value>
-  </data>
-  <data name="LowerCaseAnd" xml:space="preserve">
-    <value>og</value>
-  </data>
-  <data name="LowerCaseGraph" xml:space="preserve">
-    <value>graf</value>
-  </data>
-  <data name="LowerCaseMaximal" xml:space="preserve">
-    <value>maksimal</value>
-  </data>
-  <data name="LowerCaseMinimal" xml:space="preserve">
-    <value>minimal</value>
-  </data>
-  <data name="LowerCasePace" xml:space="preserve">
-    <value>pace</value>
-  </data>
-  <data name="LowerCaseSpeed" xml:space="preserve">
-    <value>hastighed</value>
-  </data>
-  <data name="LowerCaseTable" xml:space="preserve">
-    <value>tabel</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>Nej</value>
   </data>
   <data name="NoResultsForSettings" xml:space="preserve">
     <value>Ingen resultater med nuværende indstillinger.</value>
@@ -261,56 +107,11 @@
   <data name="NothingToDisplay" xml:space="preserve">
     <value>Intet at vise med nuværende instillinger.</value>
   </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
-  </data>
   <data name="OnADistanceOf" xml:space="preserve">
     <value>på en afstand af</value>
   </data>
   <data name="OnAnElevationOf" xml:space="preserve">
     <value>på en stigning af</value>
-  </data>
-  <data name="OnATimeOfHours" xml:space="preserve">
-    <value>på en tid af {0} timer</value>
-  </data>
-  <data name="OnATimeOfMinutes" xml:space="preserve">
-    <value>på en tid af {0} minutter</value>
-  </data>
-  <data name="OnATimeOfSeconds" xml:space="preserve">
-    <value>på en tid af {0} sekunder</value>
-  </data>
-  <data name="Pace" xml:space="preserve">
-    <value>Pace min/{0}</value>
-  </data>
-  <data name="Pace2" xml:space="preserve">
-    <value>Pace (min/{0})</value>
-  </data>
-  <data name="PaceFormat" xml:space="preserve">
-    <value>min/{0}</value>
-  </data>
-  <data name="PaceLabelFrom" xml:space="preserve">
-    <value>mm:ss/min fra</value>
-  </data>
-  <data name="PaceLabelTo" xml:space="preserve">
-    <value>mm:ss/min til</value>
-  </data>
-  <data name="PaceZones" xml:space="preserve">
-    <value>Pace zoner</value>
-  </data>
-  <data name="PerSpecified" xml:space="preserve">
-    <value>per specificeret</value>
-  </data>
-  <data name="Question" xml:space="preserve">
-    <value>Spørgsmål?</value>
-  </data>
-  <data name="Remove" xml:space="preserve">
-    <value>Fjern</value>
-  </data>
-  <data name="Reset" xml:space="preserve">
-    <value>Nulstil...</value>
-  </data>
-  <data name="ResetAllSettings" xml:space="preserve">
-    <value>Nulstil alle indstillinger...</value>
   </data>
   <data name="ResetAllSettingsWarning" xml:space="preserve">
     <value>Er du sikker på at du vil fjerne de nuværende indstillinger og bruge standard indstillingerne?</value>
@@ -336,73 +137,34 @@
   <data name="ShortestTimeSpent" xml:space="preserve">
     <value>Mindst tid brugt</value>
   </data>
-  <data name="Show" xml:space="preserve">
-    <value>Vis</value>
-  </data>
   <data name="SmallestElevationDifference" xml:space="preserve">
     <value>Mindst stigningsforskel</value>
-  </data>
-  <data name="SomeHours" xml:space="preserve">
-    <value>{0} timer</value>
-  </data>
-  <data name="SomeMinutes" xml:space="preserve">
-    <value>{0} minutter</value>
-  </data>
-  <data name="SomeSeconds" xml:space="preserve">
-    <value>{0} sekunder</value>
-  </data>
-  <data name="Speed" xml:space="preserve">
-    <value>Hastighed {0}/t</value>
-  </data>
-  <data name="Speed2" xml:space="preserve">
-    <value>Hastighed ({0}/t)</value>
-  </data>
-  <data name="SpeedFormat" xml:space="preserve">
-    <value>{0}/t</value>
-  </data>
-  <data name="SpeedLabelFrom" xml:space="preserve">
-    <value>{0}/t fra</value>
-  </data>
-  <data name="SpeedLabelTo" xml:space="preserve">
-    <value>{0}/t til</value>
-  </data>
-  <data name="SpeedZone" xml:space="preserve">
-    <value>hastighedszone</value>
-  </data>
-  <data name="Start" xml:space="preserve">
-    <value>Start</value>
-  </data>
-  <data name="Time" xml:space="preserve">
-    <value>Tid</value>
-  </data>
-  <data name="TimeFormat" xml:space="preserve">
-    <value>tt:mm:ss</value>
-  </data>
-  <data name="TimeHours" xml:space="preserve">
-    <value>Tid (timer)</value>
-  </data>
-  <data name="Times" xml:space="preserve">
-    <value>Tider</value>
-  </data>
-  <data name="To" xml:space="preserve">
-    <value>Til</value>
-  </data>
-  <data name="Warning" xml:space="preserve">
-    <value>Advarsel</value>
   </data>
   <data name="Webpage" xml:space="preserve">
     <value>High Score plugin hjemmeside</value>
   </data>
+  <data name="HS" xml:space="preserve">
+    <comment>hsx</comment>
+    <value>High Score</value>
+  </data>
+  <data name="HSV" xml:space="preserve">
+    <comment>hsx</comment>
+    <value>High Score view</value>
+  </data>
+  <data name="OnATimeOf" xml:space="preserve">
+    <comment>hsx</comment>
+    <value>på en tid af</value>
+  </data>
   <data name="WithAHRBetween" xml:space="preserve">
-    <value>med en puls imellem {0} og {1} BPM</value>
+    <comment>hsx</comment>
+    <value>med en puls imellem</value>
   </data>
   <data name="WithAPaceBetween" xml:space="preserve">
-    <value>med et pace imellem {0} min/{1} og {2} min/{3} </value>
+    <comment>hsx</comment>
+    <value>med et pace imellem</value>
   </data>
   <data name="WithASpeedBetween" xml:space="preserve">
-    <value>med en hastighed imellem {0} {1}/t og {2} {3}/t</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Ja</value>
+    <comment>hsx</comment>
+    <value>med en hastighed imellem</value>
   </data>
 </root>

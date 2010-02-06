@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -121,10 +121,12 @@
     <value>Add distance</value>
   </data>
   <data name="AdjustedPace" xml:space="preserve">
-    <value>Adjusted pace (min/{0})</value>
+    <value>Adjusted pace</value>
+    <comment>ppx</comment>
   </data>
   <data name="AdjustedSpeed" xml:space="preserve">
-    <value>Adjusted speed ({0}/h)</value>
+    <value>Adjusted speed</value>
+    <comment>ppx</comment>
   </data>
   <data name="AdjustedTime" xml:space="preserve">
     <value>Adjusted time</value>
@@ -132,29 +134,14 @@
   <data name="AdjustedVDOT" xml:space="preserve">
     <value>Adjusted VDOT</value>
   </data>
-  <data name="Distance" xml:space="preserve">
-    <value>Distance</value>
-  </data>
-  <data name="DistanceMeters" xml:space="preserve">
-    <value>Distance (meter)</value>
-  </data>
   <data name="DistancesUsed" xml:space="preserve">
     <value>Distance used in models</value>
-  </data>
-  <data name="Duration" xml:space="preserve">
-    <value>Duration</value>
   </data>
   <data name="EasyAerobicZone" xml:space="preserve">
     <value>Easy aerobic zone</value>
   </data>
   <data name="EndOfPart" xml:space="preserve">
-    <value>End of part ({0})</value>
-  </data>
-  <data name="EstimatedPace" xml:space="preserve">
-    <value>Estimated pace (min/{0})</value>
-  </data>
-  <data name="EstimatedSpeed" xml:space="preserve">
-    <value>Estimated speed ({0}/h)</value>
+    <value>End of part</value>
   </data>
   <data name="EstimatedTime" xml:space="preserve">
     <value>Estimated time</value>
@@ -165,48 +152,14 @@
   <data name="HighScorePluginIntegration" xml:space="preserve">
     <value>High Score plugin integration</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Image_16_PerformancePredictor" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Image_16_PerformancePredictor.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Image_24_PerformancePredictor" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Image_24_PerformancePredictor.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Image_32_PerformancePredictor" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Image_32_PerformancePredictor.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="IntervalSplitTimes" xml:space="preserve">
     <value>Interval split times</value>
-  </data>
-  <data name="k10Pace" xml:space="preserve">
-    <value>10 (min/{0})</value>
-  </data>
-  <data name="k10Speed" xml:space="preserve">
-    <value>10k ({0}/h)</value>
-  </data>
-  <data name="k5Pace" xml:space="preserve">
-    <value>5k (min/{0})</value>
-  </data>
-  <data name="k5Speed" xml:space="preserve">
-    <value>5k ({0}/h)</value>
-  </data>
-  <data name="Marathon" xml:space="preserve">
-    <value>Marathon</value>
-  </data>
-  <data name="MilePace" xml:space="preserve">
-    <value>Mile (min/{0})</value>
-  </data>
-  <data name="MileSpeed" xml:space="preserve">
-    <value>Mile ({0}/h)</value>
   </data>
   <data name="ModAerobicZone" xml:space="preserve">
     <value>Mod aerobic zone</value>
   </data>
   <data name="NoMaxHR" xml:space="preserve">
     <value>Please go the athlete view and set your maximal heart rate to see the results.</value>
-  </data>
-  <data name="Pace" xml:space="preserve">
-    <value>Pace (min/{0})</value>
   </data>
   <data name="PaceForTempoRuns" xml:space="preserve">
     <value>Pace for tempo runs</value>
@@ -217,17 +170,8 @@
   <data name="PaceRunNotification" xml:space="preserve">
     <value>20 min run is at lactate threshold pace - pace of longer runs adjusted to maintain proper intensity.</value>
   </data>
-  <data name="PercentMaxHR" xml:space="preserve">
-    <value>%max HR.</value>
-  </data>
   <data name="PositiveNumber" xml:space="preserve">
     <value>Distance must be a positive number.</value>
-  </data>
-  <data name="PPHS1" xml:space="preserve">
-    <value>Performance Predictor with High Score plugin on one activity</value>
-  </data>
-  <data name="PPHS2" xml:space="preserve">
-    <value>Performance Predictor with High Score plugin on {0} activities</value>
   </data>
   <data name="PredictedTime" xml:space="preserve">
     <value>Predicted time</value>
@@ -242,13 +186,8 @@
     <value>% of distance to predict time</value>
   </data>
   <data name="ProjectedTemperatureImpact" xml:space="preserve">
-    <value>Projected adverse impact of high temperatures on {0:0.00} {1} time</value>
-  </data>
-  <data name="ProjectedWeight" xml:space="preserve">
-    <value>Projected weight (kg)</value>
-  </data>
-  <data name="ProjectedWeightImpact" xml:space="preserve">
-    <value>Projected impact of weight on {0:0.00} {1} time</value>
+    <value>Projected adverse impact of high temperatures on</value>
+    <comment>ppx</comment>
   </data>
   <data name="Recovery" xml:space="preserve">
     <value>Recovery</value>
@@ -256,50 +195,25 @@
   <data name="RemoveDistance" xml:space="preserve">
     <value>Remove distance</value>
   </data>
-  <data name="ResetAllSettings" xml:space="preserve">
-    <value>Reset all settings...</value>
-  </data>
-  <data name="ResetAllSettingsWarning" xml:space="preserve">
-    <value>Are you sure you want to reset all settings? This cannot be undone.</value>
-  </data>
-  <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
-  </data>
   <data name="SetWeight" xml:space="preserve">
     <value>Please go to the athlete view and set your weight to see the results.</value>
   </data>
-  <data name="ShowPace" xml:space="preserve">
-    <value>Pace</value>
-  </data>
-  <data name="ShowSpeed" xml:space="preserve">
-    <value>Speed</value>
-  </data>
-  <data name="Speed" xml:space="preserve">
-    <value>Speed ({0}/h)</value>
-  </data>
   <data name="StartOfPart" xml:space="preserve">
-    <value>Start of part ({0})</value>
-  </data>
-  <data name="Temperature" xml:space="preserve">
-    <value>Temperature</value>
+    <value>Start of part</value>
+    <comment>ppx</comment>
   </data>
   <data name="TemperatureImpact" xml:space="preserve">
     <value>Temperature impact</value>
   </data>
   <data name="TemperatureNotification" xml:space="preserve">
-    <value>Performance is not adversely affected at 16° C or lower.</value>
+    <value>Performance is not adversely affected at {0} or lower.</value>
+    <comment>ppx</comment>
   </data>
   <data name="TimePrediction" xml:space="preserve">
     <value>Time prediction</value>
   </data>
-  <data name="Training" xml:space="preserve">
-    <value>Training</value>
-  </data>
   <data name="TrainRaceHR" xml:space="preserve">
     <value>Train / race HR.</value>
-  </data>
-  <data name="Use" xml:space="preserve">
-    <value>Use</value>
   </data>
   <data name="UsedActivityStartDate" xml:space="preserve">
     <value>Used activity start date</value>
@@ -312,9 +226,6 @@
   </data>
   <data name="UsedTimeOfActivity" xml:space="preserve">
     <value>Used time of activity</value>
-  </data>
-  <data name="Velocity" xml:space="preserve">
-    <value>Velocity</value>
   </data>
   <data name="ViewInChart" xml:space="preserve">
     <value>View in chart</value>
@@ -332,15 +243,49 @@
     <value>Weight impact</value>
   </data>
   <data name="WeightNotification" xml:space="preserve">
-    <value>Estimated times and paces are +/- 2 seconds per {0}.</value>
+    <value>Estimated times and paces are +/- {0} per {1}</value>
   </data>
   <data name="ZoneDistance" xml:space="preserve">
     <value>Zone / distance</value>
   </data>
-  <data name="Unit" xml:space="preserve">
-    <value>Unit</value>
-  </data>
   <data name="NoSeedActivity" xml:space="preserve">
     <value>No seed activity</value>
+  </data>
+  <data name="EstimatedPace" xml:space="preserve">
+    <value>Estimated pace</value>
+    <comment>ppx</comment>
+  </data>
+  <data name="EstimatedSpeed" xml:space="preserve">
+    <value>Estimated speed</value>
+    <comment>ppx</comment>
+  </data>
+  <data name="IntervalNotification" xml:space="preserve">
+    <value>Suggested short interval times training for certain race distances.</value>
+    <comment>pp, new</comment>
+  </data>
+  <data name="PPHS" xml:space="preserve">
+    <value>Performance Predictor with High Score plugin</value>
+    <comment>ppx</comment>
+  </data>
+  <data name="ProjectedWeight" xml:space="preserve">
+    <value>Projected weight</value>
+    <comment>ppx</comment>
+  </data>
+  <data name="ProjectedWeightImpact" xml:space="preserve">
+    <value>Projected impact of weight on</value>
+    <comment>ppx</comment>
+  </data>
+  <data name="Velocity" xml:space="preserve">
+    <value>Velocity</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Image_16_PerformancePredictor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\image_16_performancepredictor.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Image_24_PerformancePredictor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\image_24_performancepredictor.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Image_32_PerformancePredictor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\image_32_performancepredictor.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

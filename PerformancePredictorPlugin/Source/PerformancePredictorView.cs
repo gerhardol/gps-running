@@ -24,10 +24,12 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Data.Fitness;
+using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Chart;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using System.Reflection;
 using SportTracksPerformancePredictorPlugin.Properties;
+using SportTracksPerformancePredictorPlugin.Util;
 
 namespace SportTracksPerformancePredictorPlugin.Source
 {
@@ -90,14 +92,14 @@ namespace SportTracksPerformancePredictorPlugin.Source
         public PerformancePredictorView(IActivity activity)
         {
             InitializeComponent();
-            groupBox3.Text = Resources.Settings;
+            groupBox3.Text = StringResources.Settings;
             groupBox1.Text = Resources.PredictionModel;
             groupBox2.Text = Resources.Velocity;
             resultBox.Text = Resources.PredictionResults;
             timePrediction.Text = Resources.TimePrediction;
-            training.Text = Resources.Training;
-            pace.Text = Resources.ShowPace;
-            speed.Text = Resources.ShowSpeed;
+            training.Text = StringResources.Training;
+            pace.Text = CommonResources.Text.LabelPace;
+            speed.Text = CommonResources.Text.LabelSpeed;
             chartButton.Text = Resources.ViewInChart;
             table.Text = Resources.ViewInTable;
             trainingView = new TrainingView();
@@ -149,8 +151,8 @@ namespace SportTracksPerformancePredictorPlugin.Source
             form.StartPosition = FormStartPosition.CenterScreen;
             form.Icon = Icon.FromHandle(Properties.Resources.Image_32_PerformancePredictor.GetHicon());
             form.Show();
-            if (activities.Count == 1) form.Text = Resources.PPHS1;
-            else form.Text = String.Format(Resources.PPHS2, activities.Count);
+            if (activities.Count == 1) form.Text = Resources.PPHS + StringResources.ForOneActivity;
+            else form.Text = Resources.PPHS + String.Format(StringResources.ForManyActivities, activities.Count);
             Activities = activities;
         }
 
@@ -189,7 +191,15 @@ namespace SportTracksPerformancePredictorPlugin.Source
             int rpch = 0, rpcw = 0;
             if (form != null)
             {
-                Size = Parent.Size;
+                if (null == Parent)
+                {
+                    //Should only occur when switching language
+                    Size = new Size();
+                }
+                else
+                {
+                    Size = Parent.Size;
+                }
                 rpch = 40;
                 rpcw = 10;
             }
@@ -221,7 +231,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             }
             int width = 0;
             PropertyInfo propInfo = dataGrid.GetType().GetProperty("VerticalScrollBar",
-BindingFlags.Instance | BindingFlags.NonPublic);
+                        BindingFlags.Instance | BindingFlags.NonPublic);
             if (propInfo != null)
             {
                 ScrollBar propValue = propInfo.GetValue(dataGrid, null) as ScrollBar;
@@ -278,9 +288,14 @@ BindingFlags.Instance | BindingFlags.NonPublic);
             }
             if (table.Rows.Count == 0 || series.Points.Count == 0) return;
             dataGrid.DataSource = table;
-            chart.DataSeries.Clear();
-            chart.DataSeries.Add(series);
-            chart.AutozoomToData(true);
+            if (chart != null && !chart.IsDisposed)
+            {
+                chart.DataSeries.Clear();
+                chart.DataSeries.Add(series);
+                chart.AutozoomToData(true);
+                chart.XAxis.Label = UnitUtil.Distance.LabelAxis;
+                chart.YAxis.Label = UnitUtil.Time.LabelAxis;
+            }
             if (!Settings.ShowChart)
             {
                 dataGrid.Visible = true;
@@ -347,23 +362,22 @@ BindingFlags.Instance | BindingFlags.NonPublic);
         {
             set.Clear();
             set.Columns.Clear();
-            set.Columns.Add(Resources.Distance, typeof(double));
-            set.Columns.Add(Resources.Unit);
+            set.Columns.Add(UnitUtil.Distance.LabelAxis);
+            set.Columns.Add(CommonResources.Text.LabelDistance);
             set.Columns.Add(Resources.PredictedTime, typeof(TimeSpan));
             if (Settings.ShowPace)
             {
-                set.Columns.Add(String.Format(Resources.Pace,Settings.DistanceUnitShort));
+                set.Columns.Add(UnitUtil.Pace.LabelAxis);
             }
             else
             {
-                set.Columns.Add(String.Format(Resources.Speed,Settings.DistanceUnitShort), typeof(double));
+                set.Columns.Add(UnitUtil.Speed.LabelAxis, typeof(double));
             }
             set.Columns.Add(Resources.UsedActivityStartDate);
             set.Columns.Add(Resources.UsedActivityStartTime);
             set.Columns.Add(Resources.UsedTimeOfActivity, typeof(TimeSpan));
-            set.Columns.Add(String.Format(Resources.UsedLengthOfActivity,Settings.DistanceUnitShort), typeof(double));
-            set.Columns.Add(String.Format(Resources.StartOfPart,Settings.DistanceUnitShort), typeof(double));
-            set.Columns.Add(String.Format(Resources.EndOfPart,Settings.DistanceUnitShort), typeof(double));
+            set.Columns.Add(Resources.StartOfPart + UnitUtil.Distance.LabelAbbr2);
+            set.Columns.Add(Resources.UsedLengthOfActivity + UnitUtil.Distance.LabelAbbr2);
             series.Points.Clear();
 
             int index = 0;
@@ -374,44 +388,33 @@ BindingFlags.Instance | BindingFlags.NonPublic);
                 int old_time = (int)result[1];
                 double meterStart = (double)result[2];
                 double meterEnd = (double)result[3];
+                int timeStart = 0;
+                if (result.Count > 4) { timeStart = (int)result[4]; }
                 double old_dist = meterEnd - meterStart;
                 double new_dist = old_dist * (100 / Settings.PercentOfDistance);
                 double new_time = predict(new_dist, old_dist, old_time);
                 series.Points.Add(index,
-                    new PointF((float)Length.Convert(new_dist, Length.Units.Meter, Plugin.GetApplication().SystemPreferences.DistanceUnits), (float)new_time));
+                    new PointF((float)UnitUtil.Distance.ConvertFrom(new_dist), (float)new_time));
 
-                double settingDistance = Settings.Distances.Keys[index];
-                double length = settingDistance;
-                String unit = Settings.DistanceUnitShort;
-                if (Settings.Distances[settingDistance].Values[0])
-                {
-                    length = Length.Convert(length, Length.Units.Meter, Plugin.GetApplication().SystemPreferences.DistanceUnits);
-                }
-                else
-                {
-                    length = Length.Convert(length, Length.Units.Meter, Settings.Distances[settingDistance].Keys[0]);
-                    unit = Settings.Distances[settingDistance].Keys[0].ToString();
-                }
+                double length = Settings.Distances.Keys[index];
                 DataRow row = set.NewRow();
-                row[0] = Settings.present(length, 3);
-                row[1] = unit;
-                row[2] = new TimeSpan(0, 0, (int)Math.Round(new_time));
-                TimeSpan pace = new TimeSpan(0,0,(int)Math.Round(new_time
-                        /Length.Convert(new_dist,Length.Units.Meter,Plugin.GetApplication().SystemPreferences.DistanceUnits)));
-                if (Settings.ShowPace)
+                row[0] = UnitUtil.Distance.ToString(length);
+                if (Settings.Distances[length].Values[0])
                 {
-                    row[3] = Settings.present(pace);
+                    row[1] = UnitUtil.Distance.ToString(length, "u");
                 }
                 else
                 {
-                    row[3] = Settings.present(1 / pace.TotalHours, 2);
+                    row[1] = UnitUtil.Distance.ToString(length, Settings.Distances[length].Keys[0], "u");
                 }
+                row[2] = UnitUtil.Time.ToString(new_time);
+                double speed = new_dist / new_time;
+                row[3] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed);
                 row[4] = foundActivity.StartTime.ToLocalTime().ToShortDateString();
-                row[5] = foundActivity.StartTime.ToLocalTime().ToShortTimeString();
+                row[5] = foundActivity.StartTime.AddSeconds(timeStart).ToLocalTime().ToShortTimeString();
                 row[6] = new TimeSpan(0, 0, old_time);
-                row[7] = Settings.present(Length.Convert(old_dist, Length.Units.Meter, Plugin.GetApplication().SystemPreferences.DistanceUnits), 3);
-                row[8] = Settings.present(Length.Convert(meterStart, Length.Units.Meter, Plugin.GetApplication().SystemPreferences.DistanceUnits), 3);
-                row[9] = Settings.present(Length.Convert(meterEnd, Length.Units.Meter, Plugin.GetApplication().SystemPreferences.DistanceUnits),3);
+                row[7] = UnitUtil.Distance.ToString(meterStart);
+                row[8] = UnitUtil.Distance.ToString(old_dist);
                 set.Rows.Add(row);
                 index++;
             }
@@ -420,15 +423,14 @@ BindingFlags.Instance | BindingFlags.NonPublic);
                 DataRow row = set.NewRow();
                 double key = Settings.Distances.Keys[i];
                 Length.Units unit = Settings.Distances[key].Keys[0];
+                row[0] = UnitUtil.Distance.ToString(key);
                 if (Settings.Distances[key][unit])
                 {
-                    row[0] = Length.Convert(key, Length.Units.Meter, Plugin.GetApplication().SystemPreferences.DistanceUnits);
-                    row[1] = Settings.DistanceUnit;
+                    row[1] = UnitUtil.Distance.ToString(key, "u");
                 }
                 else
                 {
-                    row[0] = Length.Convert(key, Length.Units.Meter, unit);
-                    row[1] = unit.ToString();
+                    row[1] = UnitUtil.Distance.ToString(key, unit, "u");
                 }
 
                 row[4] = Resources.NoSeedActivity;
@@ -441,16 +443,16 @@ BindingFlags.Instance | BindingFlags.NonPublic);
         {
             set.Clear();
             set.Columns.Clear();
-            set.Columns.Add(Resources.Distance, typeof(double));
-            set.Columns.Add(Resources.Unit);
+            set.Columns.Add(UnitUtil.Distance.LabelAxis);
+            set.Columns.Add(CommonResources.Text.LabelDistance);
             set.Columns.Add(Resources.PredictedTime, typeof(TimeSpan));
             if (Settings.ShowPace)
             {
-                set.Columns.Add(String.Format(Resources.Pace,Settings.DistanceUnitShort));
+                set.Columns.Add(UnitUtil.Pace.LabelAxis);
             }
             else
             {
-                set.Columns.Add(String.Format(Resources.Speed,Settings.DistanceUnitShort),typeof(double));
+                set.Columns.Add(UnitUtil.Speed.LabelAxis, typeof(double));
             }
             series.Points.Clear();
 
@@ -459,32 +461,22 @@ BindingFlags.Instance | BindingFlags.NonPublic);
             {
                 double new_time = predict(new_dist, old_dist, old_time);
                 series.Points.Add(index++,
-                    new PointF((float)Length.Convert(new_dist, Length.Units.Meter, Plugin.GetApplication().SystemPreferences.DistanceUnits), (float)new_time));
+                    new PointF((float)UnitUtil.Distance.ConvertFrom(new_dist), (float)new_time));
 
                 double length = new_dist;
-                String unit = Settings.DistanceUnitShort;
+                DataRow row = set.NewRow();
+                row[0] = UnitUtil.Distance.ToString(length);
                 if (Settings.Distances[new_dist].Values[0])
                 {
-                    length = Length.Convert(length, Length.Units.Meter, Plugin.GetApplication().SystemPreferences.DistanceUnits);
+                    row[1] = UnitUtil.Distance.ToString(length, "u");
                 }
                 else
                 {
-                    length = Length.Convert(length, Length.Units.Meter, Settings.Distances[new_dist].Keys[0]);
-                    unit = Settings.Distances[new_dist].Keys[0].ToString();
+                    row[1] = UnitUtil.Distance.ToString(length, Settings.Distances[new_dist].Keys[0], "u");
                 }
-                DataRow row = set.NewRow();
-                row[0] = Settings.present(length, 3);
-                row[1] = unit;
-                row[2] = new TimeSpan(0, 0, (int)Math.Round(new_time));
-                TimeSpan pace = new TimeSpan(0, 0, (int)Math.Round(new_time / Length.Convert(new_dist, Length.Units.Meter, Plugin.GetApplication().SystemPreferences.DistanceUnits)));
-                if (Settings.ShowPace)
-                {
-                    row[3] = Settings.present(pace);
-                }
-                else
-                {
-                    row[3] = Settings.present(1 / pace.TotalHours,2);
-                }
+                row[2] = UnitUtil.Time.ToString(new_time);
+                double speed = new_dist / new_time;
+                row[3] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed);
                 set.Rows.Add(row);
             }
         }

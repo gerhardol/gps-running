@@ -24,6 +24,7 @@ using ZoneFiveSoftware.Common.Data.Fitness;
 using System.Windows.Forms;
 using System.Data;
 using SportTracksHighScorePlugin.Properties;
+using SportTracksHighScorePlugin.Util;
 
 namespace SportTracksHighScorePlugin.Source
 {
@@ -66,8 +67,8 @@ namespace SportTracksHighScorePlugin.Source
         {
             get 
             {
-                if (activities.Count == 1) return Resources.HS1;
-                return String.Format(Resources.HS2,activities.Count); 
+                if (activities.Count == 1) return Resources.HS + " " + StringResources.ForOneActivity;
+                return Resources.HS + " " + String.Format(StringResources.ForManyActivities, activities.Count);
             }
         }
 

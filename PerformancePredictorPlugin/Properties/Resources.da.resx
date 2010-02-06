@@ -1,75 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema id="root" xmlns="" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
+    <xsd:element msdata:IsDataSet="true" name="root">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element minOccurs="0" name="value" type="xsd:string" />
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" use="required" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
               <xsd:attribute ref="xml:space" />
@@ -84,19 +25,19 @@
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element minOccurs="0" msdata:Ordinal="1" name="value" type="xsd:string" />
+                <xsd:element minOccurs="0" msdata:Ordinal="2" name="comment" type="xsd:string" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute msdata:Ordinal="1" name="name" type="xsd:string" use="required" />
+              <xsd:attribute msdata:Ordinal="3" name="type" type="xsd:string" />
+              <xsd:attribute msdata:Ordinal="4" name="mimetype" type="xsd:string" />
               <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element minOccurs="0" msdata:Ordinal="1" name="value" type="xsd:string" />
               </xsd:sequence>
               <xsd:attribute name="name" type="xsd:string" use="required" />
             </xsd:complexType>
@@ -117,14 +58,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="AddDistance" xml:space="preserve">
     <value>Tilføj afstand</value>
   </data>
   <data name="AdjustedPace" xml:space="preserve">
-    <value>Tilpasset pace (min/{0})</value>
+    <comment>ppx</comment>
+    <value>Tilpasset pace</value>
   </data>
   <data name="AdjustedSpeed" xml:space="preserve">
-    <value>Tilpasset hastighed ({0}/t)</value>
+    <comment>ppx</comment>
+    <value>Tilpasset hastighed</value>
   </data>
   <data name="AdjustedTime" xml:space="preserve">
     <value>Tilpasset tid</value>
@@ -132,29 +76,14 @@
   <data name="AdjustedVDOT" xml:space="preserve">
     <value>Tilpasset VDOT</value>
   </data>
-  <data name="Distance" xml:space="preserve">
-    <value>Afstand</value>
-  </data>
-  <data name="DistanceMeters" xml:space="preserve">
-    <value>Afstand (meter)</value>
-  </data>
   <data name="DistancesUsed" xml:space="preserve">
     <value>Afstande brugt i modellerne</value>
-  </data>
-  <data name="Duration" xml:space="preserve">
-    <value>Varighed</value>
   </data>
   <data name="EasyAerobicZone" xml:space="preserve">
     <value>Let aerobic zone</value>
   </data>
   <data name="EndOfPart" xml:space="preserve">
-    <value>End of del ({0})</value>
-  </data>
-  <data name="EstimatedPace" xml:space="preserve">
-    <value>Estimeret pace (min/{0})</value>
-  </data>
-  <data name="EstimatedSpeed" xml:space="preserve">
-    <value>Estimeret speed ({0}/t)</value>
+    <value>End of del</value>
   </data>
   <data name="EstimatedTime" xml:space="preserve">
     <value>Estimeret tid</value>
@@ -168,38 +97,11 @@
   <data name="IntervalSplitTimes" xml:space="preserve">
     <value>Interval split tider</value>
   </data>
-  <data name="k10Pace" xml:space="preserve">
-    <value>10 (min/{0})</value>
-  </data>
-  <data name="k10Speed" xml:space="preserve">
-    <value>10k ({0}/t)</value>
-  </data>
-  <data name="k5Pace" xml:space="preserve">
-    <value>5k (min/{0})</value>
-  </data>
-  <data name="k5Speed" xml:space="preserve">
-    <value>5k ({0}/t)</value>
-  </data>
-  <data name="Marathon" xml:space="preserve">
-    <value>Marathon</value>
-  </data>
-  <data name="MilePace" xml:space="preserve">
-    <value>Mile (min/{0})</value>
-  </data>
-  <data name="MileSpeed" xml:space="preserve">
-    <value>Mile ({0}/t)</value>
-  </data>
   <data name="ModAerobicZone" xml:space="preserve">
     <value>Moderat aerobic zone</value>
   </data>
   <data name="NoMaxHR" xml:space="preserve">
     <value>Gå til Udøver-view og sæt din makspulsfor at se resultaterne.</value>
-  </data>
-  <data name="NoSeedActivity" xml:space="preserve">
-    <value>Ingen kildeaktivitet</value>
-  </data>
-  <data name="Pace" xml:space="preserve">
-    <value>Pace (min/{0})</value>
   </data>
   <data name="PaceForTempoRuns" xml:space="preserve">
     <value>Pace for tempo ture</value>
@@ -210,17 +112,8 @@
   <data name="PaceRunNotification" xml:space="preserve">
     <value>20 min løb er ved mælkesyregrænsepace - pace ved længere løb er korrigeret for at holde passende intensitet.</value>
   </data>
-  <data name="PercentMaxHR" xml:space="preserve">
-    <value>%makspuls</value>
-  </data>
   <data name="PositiveNumber" xml:space="preserve">
     <value>Afstande skal være et positivt tal.</value>
-  </data>
-  <data name="PPHS1" xml:space="preserve">
-    <value>Performance Predictor med High Score plugin på én aktivitet</value>
-  </data>
-  <data name="PPHS2" xml:space="preserve">
-    <value>Performance Predictor med High Score plugin på {0} activiteter</value>
   </data>
   <data name="PredictedTime" xml:space="preserve">
     <value>Forudsiget tid</value>
@@ -235,13 +128,8 @@
     <value>% af afstand brugt til at forudsige tid</value>
   </data>
   <data name="ProjectedTemperatureImpact" xml:space="preserve">
-    <value>Projekteret påvirkning af høje temperature på {0:0.00} {1} tid</value>
-  </data>
-  <data name="ProjectedWeight" xml:space="preserve">
-    <value>Projekteret vægt (kg)</value>
-  </data>
-  <data name="ProjectedWeightImpact" xml:space="preserve">
-    <value>Projekteret påvirkning af vægt på {0:0.00} {1} tid</value>
+    <comment>ppx</comment>
+    <value>Projekteret påvirkning af høje temperature på</value>
   </data>
   <data name="Recovery" xml:space="preserve">
     <value>Restituering</value>
@@ -249,53 +137,25 @@
   <data name="RemoveDistance" xml:space="preserve">
     <value>Fjern afstand</value>
   </data>
-  <data name="ResetAllSettings" xml:space="preserve">
-    <value>Nulstil alle indstillinger...</value>
-  </data>
-  <data name="ResetAllSettingsWarning" xml:space="preserve">
-    <value>Er du sikker på at du vil nulstille indstillinger? Dette kan ikke fortrydes.</value>
-  </data>
-  <data name="Settings" xml:space="preserve">
-    <value>Indstillinger</value>
-  </data>
   <data name="SetWeight" xml:space="preserve">
     <value>Gå til Udøver-view og sæt din vægt for at se resultaterne.</value>
   </data>
-  <data name="ShowPace" xml:space="preserve">
-    <value>Pace</value>
-  </data>
-  <data name="ShowSpeed" xml:space="preserve">
-    <value>Hastighed</value>
-  </data>
-  <data name="Speed" xml:space="preserve">
-    <value>Hastighed ({0}/t)</value>
-  </data>
   <data name="StartOfPart" xml:space="preserve">
-    <value>Start of del ({0})</value>
-  </data>
-  <data name="Temperature" xml:space="preserve">
-    <value>Temperatur</value>
+    <comment>ppx</comment>
+    <value>Start of del</value>
   </data>
   <data name="TemperatureImpact" xml:space="preserve">
     <value>Temperatur påvirkning</value>
   </data>
   <data name="TemperatureNotification" xml:space="preserve">
-    <value>Performance er ikke påvirket ved temperaturer på 16° C og lavere.</value>
+    <comment>ppx</comment>
+    <value>Performance er ikke påvirket ved temperaturer på {0} og lavere.</value>
   </data>
   <data name="TimePrediction" xml:space="preserve">
     <value>Tidsforudsigelser</value>
   </data>
-  <data name="Training" xml:space="preserve">
-    <value>Træning</value>
-  </data>
   <data name="TrainRaceHR" xml:space="preserve">
     <value>Træning / løbspuls</value>
-  </data>
-  <data name="Unit" xml:space="preserve">
-    <value>Enhed</value>
-  </data>
-  <data name="Use" xml:space="preserve">
-    <value>Brug</value>
   </data>
   <data name="UsedActivityStartDate" xml:space="preserve">
     <value>Start dato på brugt aktivitet</value>
@@ -308,9 +168,6 @@
   </data>
   <data name="UsedTimeOfActivity" xml:space="preserve">
     <value>Tid af brugt aktivtet</value>
-  </data>
-  <data name="Velocity" xml:space="preserve">
-    <value>Fart</value>
   </data>
   <data name="ViewInChart" xml:space="preserve">
     <value>Se i graf</value>
@@ -328,9 +185,35 @@
     <value>Vægt påvirkning</value>
   </data>
   <data name="WeightNotification" xml:space="preserve">
-    <value>Estimerede tider og paces er +/- 2 sekunder per mil.</value>
+    <value>Estimerede tider og paces er +/- {0} per {1}.</value>
   </data>
   <data name="ZoneDistance" xml:space="preserve">
     <value>Zone / afstand</value>
+  </data>
+  <data name="NoSeedActivity" xml:space="preserve">
+    <value>Ingen kildeaktivitet</value>
+  </data>
+  <data name="EstimatedPace" xml:space="preserve">
+    <comment>ppx</comment>
+    <value>Estimeret pace</value>
+  </data>
+  <data name="EstimatedSpeed" xml:space="preserve">
+    <comment>ppx</comment>
+    <value>Estimeret speed</value>
+  </data>
+  <data name="PPHS" xml:space="preserve">
+    <comment>ppx</comment>
+    <value>Performance Predictor med High Score plugin</value>
+  </data>
+  <data name="ProjectedWeight" xml:space="preserve">
+    <comment>ppx</comment>
+    <value>Projekteret vægt</value>
+  </data>
+  <data name="ProjectedWeightImpact" xml:space="preserve">
+    <comment>ppx</comment>
+    <value>Projekteret påvirkning af vægt på</value>
+  </data>
+  <data name="Velocity" xml:space="preserve">
+    <value>Fart</value>
   </data>
 </root>

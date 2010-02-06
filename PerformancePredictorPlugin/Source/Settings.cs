@@ -284,7 +284,10 @@ namespace SportTracksPerformancePredictorPlugin.Source
             }
             SortedList<Length.Units, bool> list = new SortedList<Length.Units, bool>();
             list.Add(metric, userDefined);
-            distances.Add(d, list);
+            if (!Settings.distances.ContainsKey(d))
+            {
+                distances.Add(d, list);
+            }
             if (DistanceChanged != null)
             {
                 DistanceChanged(null, null);
@@ -298,21 +301,6 @@ namespace SportTracksPerformancePredictorPlugin.Source
             {
                 DistanceChanged(null, null);
             }
-        }
-
-        public static double convertPace(TimeSpan pace)
-        {
-            return 1 / pace.TotalHours;
-        }
-
-        public static string present(TimeSpan time)
-        {
-            if (time.TotalMinutes < 60)
-            {
-                return string.Format("{0}:{1:00}", time.Minutes, time.Seconds);
-            }
-            return string.Format("{0}:{1:00}:{2:00}", time.Days * 24 + time.Hours,
-                time.Minutes, time.Seconds);
         }
 
         private static SortedList<double, SortedList<Length.Units, bool>> parseDistances(string[] p)
@@ -331,61 +319,14 @@ namespace SportTracksPerformancePredictorPlugin.Source
             return dlist;
         }
 
-        public static double parseDouble(string p)
+        private static double parseDouble(string p)
         {
             //if (!p.Contains(".")) p += ".0";
             double d = double.Parse(p, NumberFormatInfo.InvariantInfo);
             return d;
         }
 
-        public static string present(double p)
-        {
-            return String.Format("{0:0.000}", p);
-        }
-
-        public static string present(double p, int digits)
-        {
-            string pad = "";
-            for (int i = 0; i < digits; i++)
-            {
-                pad += "0";
-            }
-            return String.Format("{0:0." + pad + "}", p);
-        }
-
         public static event System.ComponentModel.PropertyChangedEventHandler DistanceChanged;
-
-        public static String DistanceUnit
-        {
-            get
-            {
-                return Length.Label(Plugin.GetApplication().SystemPreferences.DistanceUnits);
-            }
-        }
-
-        public static String ElevationUnit
-        {
-            get
-            {
-                return Length.Label(Plugin.GetApplication().SystemPreferences.ElevationUnits);
-            }
-        }
-
-        public static String DistanceUnitShort
-        {
-            get
-            {
-                return Length.LabelAbbr(Plugin.GetApplication().SystemPreferences.DistanceUnits);
-            }
-        }
-
-        public static String ElevationUnitShort
-        {
-            get
-            {
-                return Length.LabelAbbr(Plugin.GetApplication().SystemPreferences.ElevationUnits);
-            }
-        }
     }
 
     public enum PredictionModel

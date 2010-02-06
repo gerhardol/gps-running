@@ -61,29 +61,11 @@ namespace SportTracksTRIMPPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current rest heart rate: {0} BPM. Maximal heart rate: {1} BPM..
+        ///   Looks up a localized string similar to Current rest heart rate: {0}. Maximal heart rate: {1}..
         /// </summary>
         internal static string CurrentRestAndMax {
             get {
                 return ResourceManager.GetString("CurrentRestAndMax", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Factor.
-        /// </summary>
-        internal static string Factor {
-            get {
-                return ResourceManager.GetString("Factor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Graph.
-        /// </summary>
-        internal static string Graph {
-            get {
-                return ResourceManager.GetString("Graph", resourceCulture);
             }
         }
         
@@ -136,69 +118,6 @@ namespace SportTracksTRIMPPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No selected activity..
-        /// </summary>
-        internal static string NoSelectedActivities {
-            get {
-                return ResourceManager.GetString("NoSelectedActivities", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Number of zones:.
-        /// </summary>
-        internal static string NumberOfZones {
-            get {
-                return ResourceManager.GetString("NumberOfZones", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Question?.
-        /// </summary>
-        internal static string Question {
-            get {
-                return ResourceManager.GetString("Question", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Reset all settings....
-        /// </summary>
-        internal static string ResetAllSettings {
-            get {
-                return ResourceManager.GetString("ResetAllSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Are you sure that you want to reset all settings? This cannot be undone..
-        /// </summary>
-        internal static string ResetQuestion {
-            get {
-                return ResourceManager.GetString("ResetQuestion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start zone:.
-        /// </summary>
-        internal static string StartZone {
-            get {
-                return ResourceManager.GetString("StartZone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Summary.
-        /// </summary>
-        internal static string Summary {
-            get {
-                return ResourceManager.GetString("Summary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to TRIMP of a single activity.
         /// </summary>
         internal static string T1 {
@@ -222,24 +141,6 @@ namespace SportTracksTRIMPPlugin.Properties {
         internal static string TotalTRIMP {
             get {
                 return ResourceManager.GetString("TotalTRIMP", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Use.
-        /// </summary>
-        internal static string Use {
-            get {
-                return ResourceManager.GetString("Use", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Warning.
-        /// </summary>
-        internal static string Warning {
-            get {
-                return ResourceManager.GetString("Warning", resourceCulture);
             }
         }
     }

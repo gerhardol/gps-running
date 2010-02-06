@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,23 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add" xml:space="preserve">
-    <value>Add</value>
-  </data>
-  <data name="And" xml:space="preserve">
-    <value>and</value>
-  </data>
-  <data name="AverageHR" xml:space="preserve">
-    <value>Avg. HR.</value>
-  </data>
   <data name="BiggestElevationDifference" xml:space="preserve">
     <value>Biggest elevation difference</value>
-  </data>
-  <data name="BPMFrom" xml:space="preserve">
-    <value>BPM from</value>
-  </data>
-  <data name="BPMTo" xml:space="preserve">
-    <value>BPM to</value>
   </data>
   <data name="CannotAddToDistances" xml:space="preserve">
     <value>Cannot add to distances.</value>
@@ -153,68 +138,14 @@
   <data name="CannotAddToTimes" xml:space="preserve">
     <value>Cannot add to times.</value>
   </data>
-  <data name="CopyTable" xml:space="preserve">
-    <value>Copy table to clipboard</value>
-  </data>
-  <data name="Date" xml:space="preserve">
-    <value>Date</value>
-  </data>
-  <data name="Distance" xml:space="preserve">
-    <value>Distance</value>
-  </data>
-  <data name="Distances" xml:space="preserve">
-    <value>Distances</value>
-  </data>
-  <data name="Elevation" xml:space="preserve">
-    <value>Elevation</value>
-  </data>
-  <data name="Elevations" xml:space="preserve">
-    <value>Elevations</value>
-  </data>
-  <data name="End" xml:space="preserve">
-    <value>End</value>
-  </data>
-  <data name="Find" xml:space="preserve">
-    <value>Find</value>
-  </data>
-  <data name="From" xml:space="preserve">
-    <value>From</value>
-  </data>
-  <data name="Goal" xml:space="preserve">
-    <value>Goal</value>
-  </data>
   <data name="HadManualEnteredData" xml:space="preserve">
     <value>had manual entered data</value>
   </data>
   <data name="HadNoStartTime" xml:space="preserve">
     <value>had no start time</value>
   </data>
-  <data name="HR" xml:space="preserve">
-    <value>Heart rate (BPM)</value>
-  </data>
   <data name="HRAndSpeedZones" xml:space="preserve">
     <value>HR. &amp; speed zone</value>
-  </data>
-  <data name="HRZone" xml:space="preserve">
-    <value>HR. zone</value>
-  </data>
-  <data name="HRZones" xml:space="preserve">
-    <value>Heart rate zones</value>
-  </data>
-  <data name="HS1" xml:space="preserve">
-    <value>High Score for one activity</value>
-  </data>
-  <data name="HS2" xml:space="preserve">
-    <value>High Score for {0} activities</value>
-  </data>
-  <data name="HSV1" xml:space="preserve">
-    <value>High Score view of {0} activities</value>
-  </data>
-  <data name="HSV2" xml:space="preserve">
-    <value>High Score view of one activity</value>
-  </data>
-  <data name="HSV3" xml:space="preserve">
-    <value>High Score view of no activities</value>
   </data>
   <data name="IgnoredActivities" xml:space="preserve">
     <value>Ignored {0} activities</value>
@@ -222,48 +153,11 @@
   <data name="IgnoreManualEnteredBox" xml:space="preserve">
     <value>Ignored activities with manual entered data</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Image_16_HighScore" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Image_16_HighScore.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Image_24_HighScore" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Image_24_HighScore.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Image_32_HighScore" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Image_32_HighScore.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Location" xml:space="preserve">
-    <value>Location</value>
-  </data>
   <data name="LongestDistanceTraveled" xml:space="preserve">
     <value>Longest distance traveled</value>
   </data>
   <data name="LongestTimeSpent" xml:space="preserve">
     <value>Longest time spent</value>
-  </data>
-  <data name="LowerCaseAnd" xml:space="preserve">
-    <value>and</value>
-  </data>
-  <data name="LowerCaseGraph" xml:space="preserve">
-    <value>graph</value>
-  </data>
-  <data name="LowerCaseMaximal" xml:space="preserve">
-    <value>maximal</value>
-  </data>
-  <data name="LowerCaseMinimal" xml:space="preserve">
-    <value>minimal</value>
-  </data>
-  <data name="LowerCasePace" xml:space="preserve">
-    <value>pace</value>
-  </data>
-  <data name="LowerCaseSpeed" xml:space="preserve">
-    <value>speed</value>
-  </data>
-  <data name="LowerCaseTable" xml:space="preserve">
-    <value>table</value>
-  </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
   </data>
   <data name="NoResultsForSettings" xml:space="preserve">
     <value>No results for this settings.</value>
@@ -271,56 +165,11 @@
   <data name="NothingToDisplay" xml:space="preserve">
     <value>Nothing to display for this setting.</value>
   </data>
-  <data name="Ok" xml:space="preserve">
-    <value>Ok</value>
-  </data>
   <data name="OnADistanceOf" xml:space="preserve">
     <value>on a distance of</value>
   </data>
   <data name="OnAnElevationOf" xml:space="preserve">
     <value>on an elevation of</value>
-  </data>
-  <data name="OnATimeOfHours" xml:space="preserve">
-    <value>on a time of {0} hours</value>
-  </data>
-  <data name="OnATimeOfMinutes" xml:space="preserve">
-    <value>on a time of {0} minutes</value>
-  </data>
-  <data name="OnATimeOfSeconds" xml:space="preserve">
-    <value>on a time of {0} seconds</value>
-  </data>
-  <data name="Pace" xml:space="preserve">
-    <value>Pace min/{0}</value>
-  </data>
-  <data name="Pace2" xml:space="preserve">
-    <value>Pace (min/{0})</value>
-  </data>
-  <data name="PaceFormat" xml:space="preserve">
-    <value>min/{0}</value>
-  </data>
-  <data name="PaceLabelFrom" xml:space="preserve">
-    <value>mm:ss/min from</value>
-  </data>
-  <data name="PaceLabelTo" xml:space="preserve">
-    <value>mm:ss/min to</value>
-  </data>
-  <data name="PaceZones" xml:space="preserve">
-    <value>Pace zones</value>
-  </data>
-  <data name="PerSpecified" xml:space="preserve">
-    <value>per specified</value>
-  </data>
-  <data name="Question" xml:space="preserve">
-    <value>Question?</value>
-  </data>
-  <data name="Remove" xml:space="preserve">
-    <value>Remove</value>
-  </data>
-  <data name="Reset" xml:space="preserve">
-    <value>Reset...</value>
-  </data>
-  <data name="ResetAllSettings" xml:space="preserve">
-    <value>Reset all settings...</value>
   </data>
   <data name="ResetAllSettingsWarning" xml:space="preserve">
     <value>Are you sure you want to delete the current settings and use the default settings instead?</value>
@@ -346,82 +195,44 @@
   <data name="ShortestTimeSpent" xml:space="preserve">
     <value>Shortest time spent</value>
   </data>
-  <data name="Show" xml:space="preserve">
-    <value>Show</value>
-  </data>
   <data name="SmallestElevationDifference" xml:space="preserve">
     <value>Smallest elevation difference</value>
-  </data>
-  <data name="SomeHours" xml:space="preserve">
-    <value>{0} hours</value>
-  </data>
-  <data name="SomeMinutes" xml:space="preserve">
-    <value>{0} minutes</value>
-  </data>
-  <data name="SomeSeconds" xml:space="preserve">
-    <value>{0} seconds</value>
-  </data>
-  <data name="Speed" xml:space="preserve">
-    <value>Speed {0}/h</value>
-  </data>
-  <data name="Speed2" xml:space="preserve">
-    <value>Speed ({0}/h)</value>
-  </data>
-  <data name="SpeedFormat" xml:space="preserve">
-    <value>{0}/h</value>
-  </data>
-  <data name="SpeedLabelFrom" xml:space="preserve">
-    <value>{0}/h from</value>
-  </data>
-  <data name="SpeedLabelTo" xml:space="preserve">
-    <value>{0}/h to</value>
-  </data>
-  <data name="SpeedZone" xml:space="preserve">
-    <value>speed zone</value>
-  </data>
-  <data name="Start" xml:space="preserve">
-    <value>Start</value>
-  </data>
-  <data name="Time" xml:space="preserve">
-    <value>Time</value>
-  </data>
-  <data name="TimeFormat" xml:space="preserve">
-    <value>hh:mm:ss</value>
-  </data>
-  <data name="TimeHours" xml:space="preserve">
-    <value>Time (hours)</value>
-  </data>
-  <data name="Times" xml:space="preserve">
-    <value>Times</value>
-  </data>
-  <data name="To" xml:space="preserve">
-    <value>To</value>
-  </data>
-  <data name="Warning" xml:space="preserve">
-    <value>Warning</value>
   </data>
   <data name="Webpage" xml:space="preserve">
     <value>High Score plugin webpage</value>
   </data>
+  <data name="HS" xml:space="preserve">
+    <value>High Score</value>
+    <comment>hsx</comment>
+  </data>
+  <data name="HSV" xml:space="preserve">
+    <value>High Score view</value>
+    <comment>hsx</comment>
+  </data>
+  <data name="OnATimeOf" xml:space="preserve">
+    <value>on a time of</value>
+    <comment>hsx</comment>
+  </data>
   <data name="WithAHRBetween" xml:space="preserve">
-    <value>with a heart rate between {0} and {1} BPM</value>
+    <value>with a heart rate between</value>
+    <comment>hsx</comment>
   </data>
   <data name="WithAPaceBetween" xml:space="preserve">
-    <value>with a pace between {0} min/{1} and {2} min/{3} </value>
+    <value>with a pace between</value>
+    <comment>hsx</comment>
   </data>
   <data name="WithASpeedBetween" xml:space="preserve">
-    <value>with a speed between {0} {1}/h and {2} {3}/h</value>
+    <value>with a speed between</value>
+    <comment>hsx</comment>
   </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Image_16_HighScore" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\image_16_highscore.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DomDistance" xml:space="preserve">
-    <value>distance</value>
+  <data name="Image_24_HighScore" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\image_24_highscore.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DomElevation" xml:space="preserve">
-    <value>elevation</value>
-  </data>
-  <data name="DomTime" xml:space="preserve">
-    <value>time</value>
+  <data name="Image_32_HighScore" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\image_32_highscore.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -70,7 +70,7 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adjusted pace (min/{0}).
+        ///   Looks up a localized string similar to Adjusted pace.
         /// </summary>
         internal static string AdjustedPace {
             get {
@@ -79,7 +79,7 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adjusted speed ({0}/h).
+        ///   Looks up a localized string similar to Adjusted speed.
         /// </summary>
         internal static string AdjustedSpeed {
             get {
@@ -106,38 +106,11 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Distance.
-        /// </summary>
-        internal static string Distance {
-            get {
-                return ResourceManager.GetString("Distance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Distance (meter).
-        /// </summary>
-        internal static string DistanceMeters {
-            get {
-                return ResourceManager.GetString("DistanceMeters", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Distance used in models.
         /// </summary>
         internal static string DistancesUsed {
             get {
                 return ResourceManager.GetString("DistancesUsed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Duration.
-        /// </summary>
-        internal static string Duration {
-            get {
-                return ResourceManager.GetString("Duration", resourceCulture);
             }
         }
         
@@ -151,7 +124,7 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to End of part ({0}).
+        ///   Looks up a localized string similar to End of part.
         /// </summary>
         internal static string EndOfPart {
             get {
@@ -160,7 +133,7 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Estimated pace (min/{0}).
+        ///   Looks up a localized string similar to Estimated pace.
         /// </summary>
         internal static string EstimatedPace {
             get {
@@ -169,7 +142,7 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Estimated speed ({0}/h).
+        ///   Looks up a localized string similar to Estimated speed.
         /// </summary>
         internal static string EstimatedSpeed {
             get {
@@ -226,74 +199,20 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Suggested short interval times training for certain race distances..
+        /// </summary>
+        internal static string IntervalNotification {
+            get {
+                return ResourceManager.GetString("IntervalNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Interval split times.
         /// </summary>
         internal static string IntervalSplitTimes {
             get {
                 return ResourceManager.GetString("IntervalSplitTimes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 10 (min/{0}).
-        /// </summary>
-        internal static string k10Pace {
-            get {
-                return ResourceManager.GetString("k10Pace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 10k ({0}/h).
-        /// </summary>
-        internal static string k10Speed {
-            get {
-                return ResourceManager.GetString("k10Speed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 5k (min/{0}).
-        /// </summary>
-        internal static string k5Pace {
-            get {
-                return ResourceManager.GetString("k5Pace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 5k ({0}/h).
-        /// </summary>
-        internal static string k5Speed {
-            get {
-                return ResourceManager.GetString("k5Speed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Marathon.
-        /// </summary>
-        internal static string Marathon {
-            get {
-                return ResourceManager.GetString("Marathon", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Mile (min/{0}).
-        /// </summary>
-        internal static string MilePace {
-            get {
-                return ResourceManager.GetString("MilePace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Mile ({0}/h).
-        /// </summary>
-        internal static string MileSpeed {
-            get {
-                return ResourceManager.GetString("MileSpeed", resourceCulture);
             }
         }
         
@@ -325,15 +244,6 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pace (min/{0}).
-        /// </summary>
-        internal static string Pace {
-            get {
-                return ResourceManager.GetString("Pace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Pace for tempo runs.
         /// </summary>
         internal static string PaceForTempoRuns {
@@ -361,15 +271,6 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to %max HR..
-        /// </summary>
-        internal static string PercentMaxHR {
-            get {
-                return ResourceManager.GetString("PercentMaxHR", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Distance must be a positive number..
         /// </summary>
         internal static string PositiveNumber {
@@ -379,20 +280,11 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Performance Predictor with High Score plugin on one activity.
+        ///   Looks up a localized string similar to Performance Predictor with High Score plugin.
         /// </summary>
-        internal static string PPHS1 {
+        internal static string PPHS {
             get {
-                return ResourceManager.GetString("PPHS1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Performance Predictor with High Score plugin on {0} activities.
-        /// </summary>
-        internal static string PPHS2 {
-            get {
-                return ResourceManager.GetString("PPHS2", resourceCulture);
+                return ResourceManager.GetString("PPHS", resourceCulture);
             }
         }
         
@@ -433,7 +325,7 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Projected adverse impact of high temperatures on {0:0.00} {1} time.
+        ///   Looks up a localized string similar to Projected adverse impact of high temperatures on.
         /// </summary>
         internal static string ProjectedTemperatureImpact {
             get {
@@ -442,7 +334,7 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Projected weight (kg).
+        ///   Looks up a localized string similar to Projected weight.
         /// </summary>
         internal static string ProjectedWeight {
             get {
@@ -451,7 +343,7 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Projected impact of weight on {0:0.00} {1} time.
+        ///   Looks up a localized string similar to Projected impact of weight on.
         /// </summary>
         internal static string ProjectedWeightImpact {
             get {
@@ -478,33 +370,6 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reset all settings....
-        /// </summary>
-        internal static string ResetAllSettings {
-            get {
-                return ResourceManager.GetString("ResetAllSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to reset all settings? This cannot be undone..
-        /// </summary>
-        internal static string ResetAllSettingsWarning {
-            get {
-                return ResourceManager.GetString("ResetAllSettingsWarning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Settings.
-        /// </summary>
-        internal static string Settings {
-            get {
-                return ResourceManager.GetString("Settings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Please go to the athlete view and set your weight to see the results..
         /// </summary>
         internal static string SetWeight {
@@ -514,47 +379,11 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pace.
-        /// </summary>
-        internal static string ShowPace {
-            get {
-                return ResourceManager.GetString("ShowPace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Speed.
-        /// </summary>
-        internal static string ShowSpeed {
-            get {
-                return ResourceManager.GetString("ShowSpeed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Speed ({0}/h).
-        /// </summary>
-        internal static string Speed {
-            get {
-                return ResourceManager.GetString("Speed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start of part ({0}).
+        ///   Looks up a localized string similar to Start of part.
         /// </summary>
         internal static string StartOfPart {
             get {
                 return ResourceManager.GetString("StartOfPart", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Temperature.
-        /// </summary>
-        internal static string Temperature {
-            get {
-                return ResourceManager.GetString("Temperature", resourceCulture);
             }
         }
         
@@ -568,7 +397,7 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Performance is not adversely affected at 16° C or lower..
+        ///   Looks up a localized string similar to Performance is not adversely affected at {0} or lower..
         /// </summary>
         internal static string TemperatureNotification {
             get {
@@ -586,38 +415,11 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Training.
-        /// </summary>
-        internal static string Training {
-            get {
-                return ResourceManager.GetString("Training", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Train / race HR..
         /// </summary>
         internal static string TrainRaceHR {
             get {
                 return ResourceManager.GetString("TrainRaceHR", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unit.
-        /// </summary>
-        internal static string Unit {
-            get {
-                return ResourceManager.GetString("Unit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Use.
-        /// </summary>
-        internal static string Use {
-            get {
-                return ResourceManager.GetString("Use", resourceCulture);
             }
         }
         
@@ -712,7 +514,7 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Estimated times and paces are +/- 2 seconds per {0}..
+        ///   Looks up a localized string similar to Estimated times and paces are +/- {0} per {1}.
         /// </summary>
         internal static string WeightNotification {
             get {
