@@ -78,51 +78,6 @@ namespace SportTracksAccumulatedSummaryPlugin.Properties {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to Climb up/down ({0}).
-        /// </summary>
-        internal static string Climb {
-            get {
-                return ResourceManager.GetString("Climb", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Climb zones.
-        /// </summary>
-        internal static string ClimbZones {
-            get {
-                return ResourceManager.GetString("ClimbZones", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to dd:.
-        /// </summary>
-        internal static string Days {
-            get {
-                return ResourceManager.GetString("Days", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Heart rate zones (BPM) ({0}).
-        /// </summary>
-        internal static string HeartRateZones {
-            get {
-                return ResourceManager.GetString("HeartRateZones", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to hh:.
-        /// </summary>
-        internal static string Hours {
-            get {
-                return ResourceManager.GetString("Hours", resourceCulture);
-            }
-        }
-        
         internal static System.Drawing.Bitmap Image_16_AccumulatedSummary {
             get {
                 object obj = ResourceManager.GetObject("Image_16_AccumulatedSummary", resourceCulture);
@@ -154,47 +109,11 @@ namespace SportTracksAccumulatedSummaryPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to mm:.
-        /// </summary>
-        internal static string Minutes {
-            get {
-                return ResourceManager.GetString("Minutes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} out of {1} activities used.
-        /// </summary>
-        internal static string NoutofM {
-            get {
-                return ResourceManager.GetString("NoutofM", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Running.
         /// </summary>
         internal static string Running {
             get {
                 return ResourceManager.GetString("Running", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ss.
-        /// </summary>
-        internal static string Seconds {
-            get {
-                return ResourceManager.GetString("Seconds", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Speed zones.
-        /// </summary>
-        internal static string SpeedZones {
-            get {
-                return ResourceManager.GetString("SpeedZones", resourceCulture);
             }
         }
         

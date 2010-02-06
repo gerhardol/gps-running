@@ -61,15 +61,6 @@ namespace SportTracksOverlayPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Activities.
-        /// </summary>
-        internal static string Activities {
-            get {
-                return ResourceManager.GetString("Activities", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Black category average.
         /// </summary>
         internal static string BCA {
@@ -84,69 +75,6 @@ namespace SportTracksOverlayPlugin.Properties {
         internal static string BMA {
             get {
                 return ResourceManager.GetString("BMA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to BPM.
-        /// </summary>
-        internal static string BPM {
-            get {
-                return ResourceManager.GetString("BPM", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cadence (RPM).
-        /// </summary>
-        internal static string Cadence {
-            get {
-                return ResourceManager.GetString("Cadence", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cadence.
-        /// </summary>
-        internal static string Cadence_label {
-            get {
-                return ResourceManager.GetString("Cadence_label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Distance.
-        /// </summary>
-        internal static string Distance {
-            get {
-                return ResourceManager.GetString("Distance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Elevation.
-        /// </summary>
-        internal static string Elevation {
-            get {
-                return ResourceManager.GetString("Elevation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Elevation.
-        /// </summary>
-        internal static string Elevation_label {
-            get {
-                return ResourceManager.GetString("Elevation_label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Heart rate.
-        /// </summary>
-        internal static string HR {
-            get {
-                return ResourceManager.GetString("HR", resourceCulture);
             }
         }
         
@@ -181,15 +109,6 @@ namespace SportTracksOverlayPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No.
-        /// </summary>
-        internal static string No {
-            get {
-                return ResourceManager.GetString("No", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Value must be a non-negative number!.
         /// </summary>
         internal static string NonNegativeNumber {
@@ -217,128 +136,11 @@ namespace SportTracksOverlayPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ok.
-        /// </summary>
-        internal static string Ok {
-            get {
-                return ResourceManager.GetString("Ok", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Pace (min/{0}).
-        /// </summary>
-        internal static string Pace {
-            get {
-                return ResourceManager.GetString("Pace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Pace.
-        /// </summary>
-        internal static string Pace_label {
-            get {
-                return ResourceManager.GetString("Pace_label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Power (Watts).
-        /// </summary>
-        internal static string Power {
-            get {
-                return ResourceManager.GetString("Power", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Power.
-        /// </summary>
-        internal static string Power_label {
-            get {
-                return ResourceManager.GetString("Power_label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Question?.
-        /// </summary>
-        internal static string Question {
-            get {
-                return ResourceManager.GetString("Question", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Speed ({0}/h).
-        /// </summary>
-        internal static string Speed {
-            get {
-                return ResourceManager.GetString("Speed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Speed.
-        /// </summary>
-        internal static string Speed_label {
-            get {
-                return ResourceManager.GetString("Speed_label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Time.
-        /// </summary>
-        internal static string Time {
-            get {
-                return ResourceManager.GetString("Time", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Warning.
-        /// </summary>
-        internal static string Warning {
-            get {
-                return ResourceManager.GetString("Warning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Overlay plugin webpage.
         /// </summary>
         internal static string Webpage {
             get {
                 return ResourceManager.GetString("Webpage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to X axis.
-        /// </summary>
-        internal static string XAxis {
-            get {
-                return ResourceManager.GetString("XAxis", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Y axis.
-        /// </summary>
-        internal static string YAxis {
-            get {
-                return ResourceManager.GetString("YAxis", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Yes.
-        /// </summary>
-        internal static string Yes {
-            get {
-                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

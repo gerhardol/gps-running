@@ -93,15 +93,9 @@
     <Compile Include="Source\UniqueRoutesActivityDetailView.Designer.cs">
       <DependentUpon>UniqueRoutesActivityDetailView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Source\YesNoDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Source\UniqueRoutesActivityDetail.cs" />
     <Compile Include="Source\UniqueRoutesActivityDetailPage.cs" />
     <Compile Include="Source\Settings.cs" />
-    <Compile Include="Source\WarningDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Source\UniqueRoutesPage.cs" />
     <Compile Include="Source\UniqueRoutesSettingPageControl.cs">
       <SubType>UserControl</SubType>
@@ -110,6 +104,18 @@
       <DependentUpon>UniqueRoutesSettingPageControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\UniqueRoutesSettingsPages.cs" />
+    <Compile Include="Util\StringResources.Designer.cs">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Util\UnitUtil.cs" />
+    <Compile Include="Util\WarningDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Util\YesNoDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -117,10 +123,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.da.resx">
+    <None Include="Properties\Resources.da.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Resources.resx</DependentUpon>
-    </EmbeddedResource>
+    </None>
     <EmbeddedResource Include="Properties\Resources.sv.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -152,6 +158,39 @@
     <EmbeddedResource Include="Source\UniqueRoutesActivityDetailView.resx">
       <SubType>Designer</SubType>
       <DependentUpon>UniqueRoutesActivityDetailView.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Util\StringResources.da.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Util\StringResources.de.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Util\StringResources.es.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Util\StringResources.fr.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Util\StringResources.it.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Util\StringResources.nl.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <EmbeddedResource Include="Util\StringResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>StringResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.sv.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

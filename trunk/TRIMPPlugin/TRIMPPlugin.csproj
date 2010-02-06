@@ -67,6 +67,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Util\StringResources.Designer.cs">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Util\UnitUtil.cs" />
     <Compile Include="Source\TRIMPActivityDetailPage.cs" />
     <Compile Include="Source\TRIMPActivityDetailPages.cs" />
     <Compile Include="Source\TRIMPPage.cs" />
@@ -82,11 +88,11 @@
     <Compile Include="Source\TRIMPView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Source\YesNoDialog.cs">
+    <Compile Include="Util\YesNoDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Source\Settings.cs" />
-    <Compile Include="Source\WarningDialog.cs">
+    <Compile Include="Util\WarningDialog.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
@@ -131,6 +137,39 @@
     <EmbeddedResource Include="Source\TRIMPView.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TRIMPView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.da.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.de.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.es.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.fr.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.it.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.nl.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>StringResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.sv.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

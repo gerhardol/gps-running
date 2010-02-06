@@ -30,6 +30,7 @@ using SportTracksTRIMPPlugin.Source;
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Chart;
 using SportTracksTRIMPPlugin.Properties;
+using SportTracksTRIMPPlugin.Util;
 
 namespace SportTracksTRIMPPlugin.Source
 {
@@ -52,15 +53,15 @@ namespace SportTracksTRIMPPlugin.Source
         public TRIMPSettings()
         {
             InitializeComponent();
-            resetSettings.Text = Resources.ResetAllSettings;
-            label1.Text = Resources.NumberOfZones;
-            label2.Text = Resources.StartZone;
-            label4.Text = Resources.Use;
+            resetSettings.Text = StringResources.ResetAllSettings;
+            label1.Text = StringResources.NumberOfZones;
+            label2.Text = StringResources.StartZone;
+            label4.Text = StringResources.Use;
             useMaxHR.Text = CommonResources.Text.LabelPercentOfMax;
             useHRReserve.Text = CommonResources.Text.LabelPercentOfReserve;
             dataGridView1.Columns[0].HeaderText = CommonResources.Text.LabelPercentOfMax; //Placeholder, set in fillTableAndGraph()
-            dataGridView1.Columns[1].HeaderText = CommonResources.Text.LabelHeartRate + " (" + CommonResources.Text.LabelBPM + ')';
-            dataGridView1.Columns[2].HeaderText = Resources.Factor;
+            dataGridView1.Columns[1].HeaderText = UnitUtil.HeartRate.LabelAbbr2;
+            dataGridView1.Columns[2].HeaderText = StringResources.Factor;
             correctUI(new Control[] { label4, useMaxHR });
             label1.Location = new Point(numberOfZones.Location.X - label1.Size.Width - 5,
                                         label1.Location.Y);
@@ -84,7 +85,9 @@ namespace SportTracksTRIMPPlugin.Source
             }
             else
             {
-                maxHRLabel.Text = String.Format(Resources.CurrentRestAndMax,restHR,maxHR);
+                maxHRLabel.Text = String.Format(Resources.CurrentRestAndMax,
+                            UnitUtil.HeartRate.ToString(restHR, "u"),
+                            UnitUtil.HeartRate.ToString(maxHR, "u"));
                 reset();                
                 dataGridView1.ClearSelection();
             }
@@ -128,7 +131,7 @@ namespace SportTracksTRIMPPlugin.Source
                 chartBase.XAxis.Label = CommonResources.Text.LabelZone + " (" + CommonResources.Text.LabelPercentOfReserve + ")"; ;
                 dataGridView1.Columns[0].HeaderText = CommonResources.Text.LabelPercentOfReserve;
             }
-            chartBase.YAxis.Label = Resources.Factor;
+            chartBase.YAxis.Label = StringResources.Factor;
             int index = 0;
             double low, high, lastFactor = 1;
             DataTable table = new DataTable();
@@ -201,7 +204,7 @@ namespace SportTracksTRIMPPlugin.Source
 
         private void resetSettings_Click_1(object sender, EventArgs e)
         {
-            dialog = new YesNoDialog(Resources.ResetQuestion);
+            dialog = new YesNoDialog(StringResources.ResetQuestion);
             dialog.Disposed += new EventHandler(dialog_Disposed);
             dialog.ShowDialog();
         }

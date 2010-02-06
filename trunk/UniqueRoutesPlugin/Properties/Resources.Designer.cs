@@ -61,38 +61,11 @@ namespace SportTracksUniqueRoutesPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to activities to.
-        /// </summary>
-        internal static string ActivitiesTo {
-            get {
-                return ResourceManager.GetString("ActivitiesTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to all.
-        /// </summary>
-        internal static string All {
-            get {
-                return ResourceManager.GetString("All", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Allowed points outside band.
         /// </summary>
         internal static string AllowPointsOutsideBand {
             get {
                 return ResourceManager.GetString("AllowPointsOutsideBand", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Avg. HR..
-        /// </summary>
-        internal static string AvgHR {
-            get {
-                return ResourceManager.GetString("AvgHR", resourceCulture);
             }
         }
         
@@ -124,38 +97,11 @@ namespace SportTracksUniqueRoutesPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change category.
-        /// </summary>
-        internal static string ChangeCategory {
-            get {
-                return ResourceManager.GetString("ChangeCategory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Date.
-        /// </summary>
-        internal static string Date {
-            get {
-                return ResourceManager.GetString("Date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Did not find any other activities on same route.\nIf you think there should be some, please adjust the settings and try again..
         /// </summary>
         internal static string DidNotFindAnyRoutes {
             get {
                 return ResourceManager.GetString("DidNotFindAnyRoutes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Distance.
-        /// </summary>
-        internal static string Distance {
-            get {
-                return ResourceManager.GetString("Distance", resourceCulture);
             }
         }
         
@@ -223,33 +169,6 @@ namespace SportTracksUniqueRoutesPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ok.
-        /// </summary>
-        internal static string Ok {
-            get {
-                return ResourceManager.GetString("Ok", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Pace.
-        /// </summary>
-        internal static string Pace {
-            get {
-                return ResourceManager.GetString("Pace", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to percent.
-        /// </summary>
-        internal static string Percent {
-            get {
-                return ResourceManager.GetString("Percent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to An error occured in applying the {0} plugin. Low-level error message: {1}.
         /// </summary>
         internal static string PluginApplicationError {
@@ -259,101 +178,11 @@ namespace SportTracksUniqueRoutesPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reset all settings....
-        /// </summary>
-        internal static string ResetAllSettings {
-            get {
-                return ResourceManager.GetString("ResetAllSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Routes have direction.
         /// </summary>
         internal static string RoutesHaveDirection {
             get {
                 return ResourceManager.GetString("RoutesHaveDirection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select category.
-        /// </summary>
-        internal static string SelectCategory {
-            get {
-                return ResourceManager.GetString("SelectCategory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to selected.
-        /// </summary>
-        internal static string Selected {
-            get {
-                return ResourceManager.GetString("Selected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Send.
-        /// </summary>
-        internal static string Send {
-            get {
-                return ResourceManager.GetString("Send", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Settings.
-        /// </summary>
-        internal static string Settings {
-            get {
-                return ResourceManager.GetString("Settings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show.
-        /// </summary>
-        internal static string Show {
-            get {
-                return ResourceManager.GetString("Show", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Speed.
-        /// </summary>
-        internal static string Speed {
-            get {
-                return ResourceManager.GetString("Speed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start time.
-        /// </summary>
-        internal static string StartTime {
-            get {
-                return ResourceManager.GetString("StartTime", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Time.
-        /// </summary>
-        internal static string Time {
-            get {
-                return ResourceManager.GetString("Time", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Use all categories.
-        /// </summary>
-        internal static string UseAllCategories {
-            get {
-                return ResourceManager.GetString("UseAllCategories", resourceCulture);
             }
         }
         

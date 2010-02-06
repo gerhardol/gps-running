@@ -23,6 +23,7 @@ using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using SportTracksUniqueRoutesPlugin.Properties;
+using SportTracksUniqueRoutesPlugin.Util;
 
 namespace SportTracksUniqueRoutesPlugin.Source
 {
@@ -36,7 +37,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
         {
             InitializeComponent();
             node2category = new Dictionary<TreeNode, IActivityCategory>();
-            tree.Nodes.Add(Resources.UseAllCategories);
+            tree.Nodes.Add(StringResources.UseAllCategories);
             foreach (IActivityCategory category in Plugin.GetApplication().Logbook.ActivityCategories)
             {  
                 addNode(category, null);
@@ -87,7 +88,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(168, 23);
             this.okButton.TabIndex = 1;
-            this.okButton.Text = Resources.Ok;
+            this.okButton.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionOk;
             this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
@@ -99,7 +100,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.MaximumSize = new System.Drawing.Size(200, 257);
             this.MinimumSize = new System.Drawing.Size(200, 257);
             this.Name = "CategorySelector";
-            this.Text = Resources.SelectCategory;
+            this.Text = StringResources.SelectCategory;
             this.ResumeLayout(false);
 
         }

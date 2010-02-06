@@ -20,7 +20,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
+using ZoneFiveSoftware.Common.Visuals;
 using SportTracksHighScorePlugin.Properties;
+using SportTracksHighScorePlugin.Util;
 
 namespace SportTracksHighScorePlugin.Source
 {
@@ -39,11 +41,6 @@ namespace SportTracksHighScorePlugin.Source
 
         public abstract String ToString(String speedUnit);
         
-        public static String present(double d)
-        {
-            return string.Format("{0:0.000}", d);
-        }
-
         public abstract String ImageToString(string speedUnit);
     }
 
@@ -60,7 +57,6 @@ namespace SportTracksHighScorePlugin.Source
 
         public override String ToString(String speedUnit)
         {
-            String metric = Settings.DistanceUnit;
             String str;
             switch (Domain)
             {
@@ -83,20 +79,13 @@ namespace SportTracksHighScorePlugin.Source
             switch (Image)
             {
                 case GoalParameter.Distance:
-                    str += Resources.OnADistanceOf + " "+present(HighScore.convertFromDistance(Value)) + " " + metric;
+                    str += Resources.OnADistanceOf + " " + UnitUtil.Distance.ToString(Value,"u");
                     break;
                 case GoalParameter.Time:
-                    TimeSpan time = new TimeSpan(0, 0, (int) Math.Round(Value));
-                    if (time.Hours == 0 && time.Minutes == 0)
-                        str += String.Format(Resources.OnATimeOfSeconds,time.ToString().Substring(6));
-                    else if (time.Hours == 0)
-                        str += String.Format(Resources.OnATimeOfMinutes,time.ToString().Substring(3));
-                    else
-                        str += String.Format(Resources.OnATimeOfHours,time.ToString());
+                    str += Resources.OnATimeOf + " " + UnitUtil.Time.ToString(Value, "u");
                     break;
                 case GoalParameter.Elevation:
-                    str += Resources.OnAnElevationOf + present(HighScore.convertFromElevation(Value))
-                        + " " + Settings.ElevationUnit;
+                    str += Resources.OnAnElevationOf + " " + UnitUtil.Elevation.ToString(Value, "u");
                     break;
                 default:
                     throw new Exception();
@@ -108,19 +97,12 @@ namespace SportTracksHighScorePlugin.Source
         {
             switch (Image)
             {
-                case GoalParameter.Distance: return present(HighScore.convertFromElevation(Value)) 
-                    + " " + Settings.ElevationUnit;
-                case GoalParameter.Time:
-                    TimeSpan time = new TimeSpan(0, 0, (int)Math.Round(Value));
-                    if (time.Hours == 0 && time.Minutes == 0)
-                        return String.Format(Resources.SomeSeconds,time.ToString().Substring(6));
-                    else if (time.Hours == 0)
-                        return String.Format(Resources.SomeMinutes,time.ToString().Substring(3));
-                    else
-                        return String.Format(Resources.SomeHours,time.ToString());
+                case GoalParameter.Distance: 
+                    return UnitUtil.Distance.ToString(Value, "u");
+                case GoalParameter.Time: 
+                    return UnitUtil.Time.ToString(Value);
                 case GoalParameter.Elevation:
-                    return present(HighScore.convertFromElevation(Value))
-                        + " " + Settings.ElevationUnit;
+                    return UnitUtil.Elevation.ToString(Value, "u");;
             }
             return null;
         }
@@ -138,9 +120,37 @@ namespace SportTracksHighScorePlugin.Source
 
         readonly public IList<IList<double>> Intervals;
 
+        private string getInfo(string speedUnit, double min, double max, int format)
+        {
+            string str;
+            string from;
+            string to;
+
+            if (speedUnit.Equals(CommonResources.Text.LabelPace))
+            {
+                from = UnitUtil.Pace.ToString(max);
+                to = UnitUtil.Pace.ToString(min);
+                str = Resources.WithAPaceBetween;
+            }
+            else
+            {
+                from = UnitUtil.Speed.ToString(min);
+                to = UnitUtil.Speed.ToString(max);
+                str = Resources.WithASpeedBetween;
+             }
+            if (0 == format)
+            {
+                str += " " + from + " " + UnitUtil.Pace.LabelAbbr + 
+                    " " + StringResources.And.ToLower() + " " +
+                    to + " " + UnitUtil.Pace.LabelAbbr;
+            } else {
+                str = from + "\n-\n" + to;
+            }
+            return str;
+        }
+
         public override string ToString(String speedUnit)
         {
-            String metric = Settings.DistanceUnit;
             String str;
             switch (Domain)
             {
@@ -163,37 +173,17 @@ namespace SportTracksHighScorePlugin.Source
             switch (Image)
             {
                 case GoalParameter.PulseZone:
-                    str += String.Format(Resources.WithAHRBetween,Intervals[0][0],Intervals[0][1]);
+                    str += Resources.WithAHRBetween;
+                    str += " " + Intervals[0][0] + " - " + Intervals[0][1];
                     break;
                 case GoalParameter.SpeedZone:
-                    if (speedUnit.Equals("pace"))
-                    {
-                        TimeSpan from = new TimeSpan(0, 0, (int)Math.Round(1 / HighScore.convertFromDistance(Intervals[0][1])));
-                        TimeSpan to = new TimeSpan(0, 0, (int)Math.Round(1 / HighScore.convertFromDistance(Intervals[0][0])));
-                        str += String.Format(Resources.WithAPaceBetween,from.ToString().Substring(3),metric,
-                            to.ToString().Substring(3),metric);
-                    }
-                    else
-                    {
-                        str += String.Format(Resources.WithASpeedBetween,present(HighScore.convertFromDistance(Intervals[0][0]) * 3600),
-                            metric,present(HighScore.convertFromDistance(Intervals[0][1]) * 3600),metric);
-                    }
+                    str += getInfo(speedUnit, Intervals[0][0], Intervals[0][1], 0);
                     break;
                 case GoalParameter.PulseZoneSpeedZone:
-                    str += String.Format(Resources.WithAHRBetween, Intervals[0][0], Intervals[0][1]);
-                    str += " "+Resources.LowerCaseAnd;
-                    if (speedUnit.Equals("pace"))
-                    {
-                        TimeSpan from = new TimeSpan(0, 0, (int)Math.Round(1 / HighScore.convertFromDistance(Intervals[1][1])));
-                        TimeSpan to = new TimeSpan(0, 0, (int)Math.Round(1 / HighScore.convertFromDistance(Intervals[1][0])));
-                        str += String.Format(Resources.WithAPaceBetween, from.ToString().Substring(3), metric,
-                            to.ToString().Substring(3), metric);
-                    }
-                    else
-                    {
-                        str += String.Format(Resources.WithASpeedBetween, present(HighScore.convertFromDistance(Intervals[1][0]) * 3600),
-                            metric, present(HighScore.convertFromDistance(Intervals[1][1]) * 3600), metric);
-                    }
+                    str += Resources.WithAHRBetween;
+                    str += " "+Intervals[0][0]+" - "+Intervals[0][1];
+                    str += " "+StringResources.And.ToLower()+" ";
+                    str += getInfo(speedUnit, Intervals[1][0], Intervals[1][1], 0);
                     break;
             }
             return str;
@@ -201,40 +191,21 @@ namespace SportTracksHighScorePlugin.Source
 
         public override String ImageToString(string speedUnit)
         {
-            String metric = Settings.DistanceUnit;
+            String str = null;
             switch (Image)
             {
                 case GoalParameter.PulseZone:
-                    return Intervals[0][0] + "\n-\n" + Intervals[0][1];
+                    str = Intervals[0][0] + "\n-\n" + Intervals[0][1];
+                    break;
                 case GoalParameter.SpeedZone:
-                    if (speedUnit.Equals("pace"))
-                    {
-                        TimeSpan from = new TimeSpan(0, 0, (int)Math.Round(1 / HighScore.convertFromDistance(Intervals[0][1])));
-                        TimeSpan to = new TimeSpan(0, 0, (int)Math.Round(1 / HighScore.convertFromDistance(Intervals[0][0])));
-                        return from.ToString().Substring(3) + 
-                            "\n-\n" + to.ToString().Substring(3);
-                    }
-                    else
-                    {
-                        return present(HighScore.convertFromDistance(Intervals[0][0]) * 3600) +
-                             "\n-\n" + present(HighScore.convertFromDistance(Intervals[0][1]) * 3600);
-                    }
+                    str = getInfo(speedUnit, Intervals[0][0], Intervals[0][1], 1);
+                    break;
                 case GoalParameter.PulseZoneSpeedZone:
                     String res = Intervals[0][0] + "\n" + Intervals[0][1]+"\n/\n";
-                    if (speedUnit.Equals("pace"))
-                    {
-                        TimeSpan from = new TimeSpan(0, 0, (int)Math.Round(1 / HighScore.convertFromDistance(Intervals[1][1])));
-                        TimeSpan to = new TimeSpan(0, 0, (int)Math.Round(1 / HighScore.convertFromDistance(Intervals[1][0])));
-                        return res + from.ToString().Substring(3) +
-                            "\n" + to.ToString().Substring(3);
-                    }
-                    else
-                    {
-                        return res + present(HighScore.convertFromDistance(Intervals[1][0]) * 3600) +
-                             "\n" + present(HighScore.convertFromDistance(Intervals[1][1]) * 3600);
-                    }
+                    str = getInfo(speedUnit, Intervals[1][0], Intervals[1][1], 1);
+                    break;
             }
-            return null;
+            return str;
         }
     }
 

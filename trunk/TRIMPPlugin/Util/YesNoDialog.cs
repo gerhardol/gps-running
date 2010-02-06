@@ -21,39 +21,48 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Visuals;
-using SportTracksTRIMPPlugin.Properties;
 
-namespace SportTracksTRIMPPlugin.Source
+namespace SportTracksTRIMPPlugin.Util
 {
-    class WarningDialog : Form
+    class YesNoDialog : Form
     {
-        private ZoneFiveSoftware.Common.Visuals.Button ok;
+        private ZoneFiveSoftware.Common.Visuals.Button yes;
+        private ZoneFiveSoftware.Common.Visuals.Button no;
         private ZoneFiveSoftware.Common.Visuals.TextBox textBox1;
-    
-        public WarningDialog(String message)
+        public bool answer;
+
+        public YesNoDialog(String message)
         {
             InitializeComponent();
             this.textBox1.Text = message;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            ShowDialog();
+        }
+        public YesNoDialog(String message, System.Drawing.Icon icon)
+        {
+            InitializeComponent();
+            this.textBox1.Text = message;
+            if (icon != null) { Icon = icon; };
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
 
         private void InitializeComponent()
         {
-            this.ok = new ZoneFiveSoftware.Common.Visuals.Button();
+            this.yes = new ZoneFiveSoftware.Common.Visuals.Button();
             this.textBox1 = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.no = new ZoneFiveSoftware.Common.Visuals.Button();
             this.SuspendLayout();
             // 
-            // ok
+            // yes
             // 
-            this.ok.Location = new System.Drawing.Point(102, 96);
-            this.ok.Name = "ok";
-            this.ok.Size = new System.Drawing.Size(75, 23);
-            this.ok.TabIndex = 1;
-            this.ok.Text = CommonResources.Text.ActionOk;
-            //this.ok.UseVisualStyleBackColor = true;
-            this.ok.Click += new System.EventHandler(this.ok_Click);
+            this.yes.Location = new System.Drawing.Point(54, 96);
+            this.yes.Name = "yes";
+            this.yes.Size = new System.Drawing.Size(75, 23);
+            this.yes.TabIndex = 1;
+            this.yes.Text = CommonResources.Text.ActionYes;
+            //this.yes.UseVisualStyleBackColor = true;
+            this.yes.Click += new System.EventHandler(this.ok_Click);
             // 
             // textBox1
             // 
@@ -65,14 +74,24 @@ namespace SportTracksTRIMPPlugin.Source
             this.textBox1.Size = new System.Drawing.Size(256, 77);
             this.textBox1.TabIndex = 2;
             // 
-            // WarningDialog
+            // no
+            // 
+            this.no.Location = new System.Drawing.Point(135, 96);
+            this.no.Name = "no";
+            this.no.Size = new System.Drawing.Size(75, 23);
+            this.no.TabIndex = 3;
+            this.no.Text = CommonResources.Text.ActionNo;
+            //this.no.UseVisualStyleBackColor = true;
+            this.no.Click += new System.EventHandler(this.no_Click);
+            // 
+            // YesNoDialog
             // 
             this.ClientSize = new System.Drawing.Size(281, 131);
+            this.Controls.Add(this.no);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.ok);
-            this.Name = "WarningDialog";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
-            this.Text = Resources.Warning;
+            this.Controls.Add(this.yes);
+            this.Name = "YesNoDialog";
+            this.Text = StringResources.Question;
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -80,6 +99,13 @@ namespace SportTracksTRIMPPlugin.Source
 
         private void ok_Click(object sender, EventArgs e)
         {
+            answer = true;
+            Dispose();
+        }
+
+        private void no_Click(object sender, EventArgs e)
+        {
+            answer = false;
             Dispose();
         }
     }

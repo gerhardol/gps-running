@@ -32,7 +32,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
     {
         private UniqueRoutes() { }
 
-        public static IList<IActivity> findSimilarRoutes(IActivity activity, ProgressBar progressBar)
+        public static IList<IActivity> findSimilarRoutes(IActivity activity, System.Windows.Forms.ProgressBar progressBar)
         {
             IList<IActivity> activities = new List<IActivity>();
             if (activity == null || activity.GPSRoute == null || 

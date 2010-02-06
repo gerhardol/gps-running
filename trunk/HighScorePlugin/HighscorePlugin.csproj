@@ -81,9 +81,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Source\YesNoDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Source\Goal.cs" />
     <Compile Include="Source\HighScore.cs" />
     <Compile Include="Source\HighScoreAction.cs" />
@@ -97,9 +94,6 @@
     </Compile>
     <Compile Include="Source\HighScoreActivityEdit.cs" />
     <Compile Include="Source\Settings.cs" />
-    <Compile Include="Source\WarningDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Source\HighScorePage.cs" />
     <Compile Include="Source\Result.cs" />
     <Compile Include="Source\HighScoreSettingPageControl.cs">
@@ -109,6 +103,18 @@
       <DependentUpon>HighScoreSettingPageControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\HighscoreSettingsPages.cs" />
+    <Compile Include="Util\StringResources.Designer.cs">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Util\UnitUtil.cs" />
+    <Compile Include="Util\WarningDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Util\YesNoDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -150,6 +156,39 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Source\HighScoreSettingPageControl.resx">
       <DependentUpon>HighScoreSettingPageControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.da.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.de.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.es.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.fr.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.it.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.nl.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>StringResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.sv.resx">
+      <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

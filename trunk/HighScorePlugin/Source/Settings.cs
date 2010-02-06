@@ -555,7 +555,7 @@ namespace SportTracksHighScorePlugin.Source
             return true;
         }
 
-        public static double parseDouble(string p)
+        private static double parseDouble(string p)
         {
             //if (!p.Contains(".")) p += ".0";
             double d = double.Parse(p,NumberFormatInfo.InvariantInfo);
@@ -606,55 +606,13 @@ namespace SportTracksHighScorePlugin.Source
             }
         }
 
+        private static double convertTo(double p, Length.Units metric)
+        {
+            return Length.Convert(p, metric, Length.Units.Meter);
+        }
         private static int tt(int hours, int minutes, int seconds)
         {
             return 3600 * hours + 60 * minutes + seconds;
-        }
-
-        public static double convertTo(double p, Length.Units metric)
-        {
-            switch (metric)
-            {
-                case Length.Units.Kilometer: return 1000 * p;
-                case Length.Units.Mile: return 1.609344 * 1000 * p;
-                case Length.Units.Centimeter: return p / 100.0;
-                case Length.Units.Yard: return 0.9144 * p;
-                case Length.Units.Foot: return 0.3048 * p;
-                case Length.Units.Inch: return 0.0254 * p;
-            }
-            return p;
-        }
-
-        public static String DistanceUnit
-        {
-            get
-            {
-                return Length.Label(Plugin.GetApplication().SystemPreferences.DistanceUnits);
-            }
-        }
-
-        public static String ElevationUnit
-        {
-            get
-            {
-                return Length.Label(Plugin.GetApplication().SystemPreferences.ElevationUnits);
-            }
-        }
-
-        public static String DistanceUnitShort
-        {
-            get
-            {
-                return Length.LabelAbbr(Plugin.GetApplication().SystemPreferences.DistanceUnits);
-            }
-        }
-
-        public static String ElevationUnitShort
-        {
-            get
-            {
-                return Length.LabelAbbr(Plugin.GetApplication().SystemPreferences.ElevationUnits);
-            }
         }
     }
 }

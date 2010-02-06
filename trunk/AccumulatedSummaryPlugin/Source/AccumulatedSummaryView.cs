@@ -27,6 +27,7 @@ using SportTracksAccumulatedSummaryPlugin;
 using SportTracksAccumulatedSummaryPlugin.Source;
 using ZoneFiveSoftware.Common.Visuals;
 using SportTracksAccumulatedSummaryPlugin.Properties;
+using SportTracksAccumulatedSummaryPlugin.Util;
 
 namespace SportTracksAccumulatedSummaryPlugin.Source
 {
@@ -52,30 +53,30 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
 
         private void makeReport(StringBuilder builder)
         {
-            String distMetric = Settings.DistanceUnitShort;
+            String distMetric = UnitUtil.Distance.LabelAbbr;
             builder.Append("<html><body><table border=\"1\" width=\"100%\">");
             double totalDistance = getTotalDistance();
-            addEntry(builder, CommonResources.Text.LabelDistance+" (" + distMetric + ")", Settings.present(Settings.convertFromDistance(totalDistance)));
+            addEntry(builder, UnitUtil.Distance.LabelAxis, UnitUtil.Distance.ToString(totalDistance));
             TimeSpan totalTime = getTotalTime();
             showTotalTime(builder, totalTime);
             double averageSpeed = totalDistance / totalTime.TotalSeconds;
             double fastestSpeed = getFastestSpeed();
-            addEntry(builder, CommonResources.Text.LabelPace + " (" + Settings.PaceUnit  + ")",
-                Settings.getPace(averageSpeed).ToString().Substring(3));
-            addEntry(builder, CommonResources.Text.LabelFastestPace + " (" + Settings.PaceUnit + ")",
-                Settings.getPace(fastestSpeed).ToString().Substring(3));
-            addEntry(builder, CommonResources.Text.LabelSpeed + " (" + Settings.SpeedUnit + ")",
-                 Settings.present(Settings.getSpeed(averageSpeed)));
-            addEntry(builder, CommonResources.Text.LabelFastestSpeed + " (" + Settings.SpeedUnit + ")",
-                Settings.present(Settings.getSpeed(fastestSpeed)));
-            addEntry(builder, String.Format(Resources.Climb,Settings.ElevationUnitShort), getTotalUpsAndDowns());
-            addEntry(builder, CommonResources.Text.LabelCalories, getCalories());
-            addEntry(builder, CommonResources.Text.LabelAvgHR, getAverageHeartRate(totalTime));
+            addEntry(builder, UnitUtil.Pace.LabelAxis, UnitUtil.Pace.ToString(averageSpeed));
+            addEntry(builder, CommonResources.Text.LabelFastestPace + UnitUtil.Pace.LabelAbbr2,
+                UnitUtil.Pace.ToString(fastestSpeed));
+            addEntry(builder, UnitUtil.Speed.LabelAxis,
+                UnitUtil.Speed.ToString(averageSpeed));
+            addEntry(builder, CommonResources.Text.LabelFastestSpeed + UnitUtil.Speed.LabelAbbr2,
+                UnitUtil.Speed.ToString(fastestSpeed));
+            addEntry(builder, StringResources.ClimbSummary + UnitUtil.Elevation.LabelAbbr2, getTotalUpsAndDowns());
+            addEntry(builder, UnitUtil.Energy.LabelAxis, getCalories());
+            addEntry(builder, CommonResources.Text.LabelAvgHR + UnitUtil.HeartRate.LabelAbbr2, getAverageHeartRate(totalTime));
             getSpeedZones(builder,totalTime);
-            addEntry(builder, Resources.ClimbZones, getClimbZones(totalTime));
+            addEntry(builder, StringResources.ClimbZones, getClimbZones(totalTime));
             String ratio = getWorkoutRatio();
             TimeSpan realTotalTimeForWorkout = getRealTotalTimeForWorkout(totalTime);
-            addEntry(builder, String.Format(Resources.HeartRateZones,ratio),
+            string fmt = StringResources.HRZone + UnitUtil.HeartRate.LabelAbbr2 + " (" + "{0}" + ")";
+            addEntry(builder, String.Format(fmt, ratio),
                 getWorkout(realTotalTimeForWorkout));
             builder.Append("</table></body></html>");
         }
@@ -105,7 +106,7 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
                 if (activity.HeartRatePerMinuteTrack != null)
                     good++;
             }
-            return String.Format(Resources.NoutofM, good, activities.Count);
+            return String.Format(StringResources.NoutofM, good, activities.Count);
         }
 
         private string getClimbZones(TimeSpan totalTime)
@@ -118,7 +119,7 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
         {
             foreach (IZoneCategory speedZone in Plugin.GetApplication().Logbook.SpeedZones)
             {
-                addEntry(builder, Resources.SpeedZones + ": " + speedZone.Name,
+                addEntry(builder, StringResources.SpeedZone + ": " + speedZone.Name,
                     printCategories(speedZone, totalTime, true, false, false));
             }
         }
@@ -143,7 +144,7 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
                         * (info.Time.TotalSeconds / totalTime.TotalSeconds);
                 }
             }
-            return Settings.present(result);
+            return UnitUtil.HeartRate.ToString(result);
         }
 
         private string printCategories(IZoneCategory zones, TimeSpan totalTime,
@@ -185,28 +186,25 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
             builder.Append("<table width=\"100%\">");
             foreach (String name in dict.Keys)
             {
-                String timeType = Resources.Seconds;
+                String timeType = StringResources.SecondsFormat;
                 String time = String.Format("{0:00}", dict[name].Seconds);
                 if (totalTime.TotalMinutes > 1)
                 {
-                    timeType = Resources.Minutes + ":" + timeType;
+                    timeType = StringResources.MinutesFormat + ":" + timeType;
                     time = String.Format("{0:00}", dict[name].Minutes) + ":" + time;
                 }
                 if (totalTime.TotalHours > 1)
                 {
-                    timeType = Resources.Hours + ":" + timeType;
+                    timeType = StringResources.HoursFormat + ":" + timeType;
                     time = String.Format("{0:00}", dict[name].Hours) + ":" + time;
                 }
                 if (totalTime.TotalDays > 1)
                 {
-                    timeType = Resources.Days + ":" + timeType;
+                    timeType = StringResources.DaysFormat + ":" + timeType;
                     time = String.Format("{0:00}", dict[name].Days) + ":" + time;
                 }
                 addEntry(builder, name + " (" + timeType + ")", time +
-                    " (" +
-                    Settings.present(100 *
-                    dict[name].TotalSeconds / totalTime.TotalSeconds) +
-                    "%)");
+                    " (" + (dict[name].TotalSeconds / totalTime.TotalSeconds).ToString("P2") + ")");
             }
             builder.Append("</table>");
             even = evenStart;
@@ -252,26 +250,26 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
                 ups += info.TotalAscendingMeters(climbZones[0]);
                 downs += info.TotalDescendingMeters(climbZones[0]);
             }
-            return "+" + Settings.present(Settings.convertFromElevation(ups)) + "/" + Settings.present(Settings.convertFromElevation(downs));
+            return "+" + UnitUtil.Elevation.ToString(ups) + "/" + UnitUtil.Elevation.ToString(downs);
         }
 
         private void showTotalTime(StringBuilder builder, TimeSpan totalTime)
         {
-            String timeType = Resources.Seconds;
+            String timeType = StringResources.SecondsFormat;
             String time = String.Format("{0:00}", totalTime.Seconds);
             if (totalTime.TotalMinutes > 1)
             {
-                timeType = Resources.Minutes + ":" + timeType;
+                timeType = StringResources.MinutesFormat + ":" + timeType;
                 time = String.Format("{0:00}", totalTime.Minutes) + ":" + time;
             }
             if (totalTime.TotalHours > 1)
             {
-                timeType = Resources.Hours + ":" + timeType;
+                timeType = StringResources.HoursFormat + ":" + timeType;
                 time = String.Format("{0:00}", totalTime.Hours) + ":" + time;
             }
             if (totalTime.TotalDays > 1)
             {
-                timeType = Resources.Days + ":" + timeType;
+                timeType = StringResources.DaysFormat + ":" + timeType;
                 time = String.Format("{0:00}", totalTime.Days) + ":" + time;
             }
             addEntry(builder, CommonResources.Text.LabelTime+ " (" + timeType + ")", time);

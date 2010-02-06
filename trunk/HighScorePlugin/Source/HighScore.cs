@@ -28,6 +28,8 @@ using System.Data;
 using System.Windows.Forms;
 using SportTracksHighScorePlugin.Properties;
 using ZoneFiveSoftware.Common.Data.Measurement;
+using ZoneFiveSoftware.Common.Visuals;
+using SportTracksHighScorePlugin.Util;
 
 namespace SportTracksHighScorePlugin.Source
 {
@@ -35,7 +37,7 @@ namespace SportTracksHighScorePlugin.Source
     {
         private HighScore() { }
 
-        public static IList<IList<Object>> getFastestTimesOfDistances(IList<IActivity> activities, IList<double> distances, ProgressBar progress)
+        public static IList<IList<Object>> getFastestTimesOfDistances(IList<IActivity> activities, IList<double> distances, System.Windows.Forms.ProgressBar progress)
         {
             IList<Goal> goals = new List<Goal>();
             foreach (double distance in distances)
@@ -56,12 +58,13 @@ namespace SportTracksHighScorePlugin.Source
                     s.Add(result.Seconds);
                     s.Add(result.MeterStart);
                     s.Add(result.MeterEnd);
+                    s.Add(result.TimeStart);
                 }
             }
             return objects;
         }
 
-        public static Result[] calculate(IList<IActivity> activities, IList<Goal> goals, ProgressBar progress)
+        public static Result[] calculate(IList<IActivity> activities, IList<Goal> goals, System.Windows.Forms.ProgressBar progress)
         {
             Result[] results = new Result[goals.Count];
             progress.Minimum = 0;
@@ -368,7 +371,7 @@ namespace SportTracksHighScorePlugin.Source
             if (goal.UpperBound) best = double.MinValue;
             else best = double.MaxValue;
 
-            while (front < image.Length)
+            while (front < image.Length && back < image.Length)
             {
                 if (image[front] - image[back] >= goal.Value)
                 {
@@ -401,30 +404,6 @@ namespace SportTracksHighScorePlugin.Source
                     (int) timeStart, (int) timeEnd, distanceStart, distanceEnd, elevationStart, elevationEnd,
                     averagePulse(pulse, time, bestBack, bestFront));
             return null;
-        }
-
-        public static double convertFrom(double p, Length.Units metric)
-        {
-            switch (metric)
-            {
-                case Length.Units.Kilometer: return p / 1000;
-                case Length.Units.Mile: return p / (1.609344 * 1000);
-                case Length.Units.Foot: return p * 3.2808399;
-                case Length.Units.Inch: return p * 39.370079;
-                case Length.Units.Centimeter: return p * 100;
-                case Length.Units.Yard: return p * 1.0936133;
-            }
-            return p;
-        }
-
-        public static double convertFromDistance(double p)
-        {
-            return convertFrom(p, Plugin.GetApplication().SystemPreferences.DistanceUnits);
-        }
-
-        public static double convertFromElevation(double p)
-        {
-            return convertFrom(p, Plugin.GetApplication().SystemPreferences.ElevationUnits);
         }
 
         public static void generateGoals(GoalParameter domain, GoalParameter image, bool upperBound,
@@ -508,45 +487,22 @@ namespace SportTracksHighScorePlugin.Source
             return goals;
         }
 
-        /*public static String toMyMetric(String metric)
-        {
-            if (metric.Equals("Meter")) return "m";
-            else if (metric.Equals("Kilometer")) return "km";
-            else if (metric.Equals("Centimeter")) return "cm";
-            return metric.ToLower();
-        }*/
-
-        public static double convertSpeed(Result result)
-        {
-            return convertFrom(result.Meters, Plugin.GetApplication().SystemPreferences.DistanceUnits) / (result.Seconds / 3600.0);
-        }
-
-        public static double convertPace(Result result)
-        {
-            return result.Seconds / convertFrom(result.Meters, Plugin.GetApplication().SystemPreferences.DistanceUnits);
-        }
-
         public static DataTable generateTable(IList<Result> results, String speedUnit, 
             bool includeLocationAndDate, GoalParameter domain, GoalParameter image, bool upperBound)
         {
             IApplication app = Plugin.GetApplication();
-            String distanceMetric = Settings.DistanceUnitShort;
-            String elevationMetric = Settings.ElevationUnitShort;
             DataTable table = new DataTable();
-            table.Columns.Add(Resources.Distance + " (" + distanceMetric + ")");
-            table.Columns.Add(Resources.Time);
-            if (speedUnit.Equals(Resources.LowerCaseSpeed))
-                table.Columns.Add(String.Format(Resources.Speed2,distanceMetric));
-            else
-                table.Columns.Add(String.Format(Resources.Pace2,distanceMetric));
-            table.Columns.Add(Resources.Start+" (" + distanceMetric + ")");
-            table.Columns.Add(Resources.End+" (" + distanceMetric + ")");
-            table.Columns.Add(Resources.Elevation+" (+/- " + elevationMetric + ")");
-            table.Columns.Add(Resources.AverageHR);
+            table.Columns.Add(UnitUtil.Distance.LabelAxis);
+            table.Columns.Add(CommonResources.Text.LabelTime);
+            table.Columns.Add(UnitUtil.PaceOrSpeed.LabelAxis(speedUnit.Equals(CommonResources.Text.LabelPace)));
+            table.Columns.Add(CommonResources.Text.LabelStartTime);
+            table.Columns.Add(CommonResources.Text.LabelStart + UnitUtil.Distance.LabelAbbr2);
+            table.Columns.Add(CommonResources.Text.LabelElevation + " (+/- " + UnitUtil.Elevation.LabelAbbr + ")");
+            table.Columns.Add(CommonResources.Text.LabelAvgHR + UnitUtil.HeartRate.LabelAbbr2);
             if (includeLocationAndDate)
             {
-                table.Columns.Add(Resources.Date);
-                table.Columns.Add(Resources.Location);
+                table.Columns.Add(CommonResources.Text.LabelDate);
+                table.Columns.Add(CommonResources.Text.LabelLocation);
             }
             foreach (Result result in results)
             {
@@ -555,56 +511,32 @@ namespace SportTracksHighScorePlugin.Source
                     && result.Goal.UpperBound == upperBound)
                 {
                     DataRow row = table.NewRow();
-                    if (distanceMetric.Equals("m"))
-                        row[0] = Math.Round(convertFrom(result.Meters, Plugin.GetApplication().SystemPreferences.DistanceUnits));
-                    else
-                        row[0] = present(convertFrom(result.Meters, Plugin.GetApplication().SystemPreferences.DistanceUnits));
-                    row[1] = new TimeSpan(0, 0, result.Seconds).ToString();
+                    row[0] = UnitUtil.Distance.ToString(result.Meters);
+                    row[1] = UnitUtil.Time.ToString(result.Seconds);
                     if (result.Seconds > 0 && result.Meters > 0)
                     {
-                        if (speedUnit.Equals(Resources.LowerCaseSpeed))
-                        {
-                            row[2] = present(convertSpeed(result));
-                        }
-                        else
-                            row[2] = new TimeSpan(0, 0, (int)convertPace(result)).ToString();
+                        double speedMS = result.Meters / result.Seconds;
+                        row[2] = UnitUtil.PaceOrSpeed.ToString(speedUnit.Equals(CommonResources.Text.LabelPace), speedMS);
                     }
-                    else
+                    else {
                         row[2] = "-";
-                    row[3] = present(convertFrom(result.MeterStart, Plugin.GetApplication().SystemPreferences.DistanceUnits));
-                    row[4] = present(convertFrom(result.MeterEnd, Plugin.GetApplication().SystemPreferences.DistanceUnits));
-                    if (elevationMetric.Equals("km"))
-                        row[5] = present(convertFrom(result.Elevations, Plugin.GetApplication().SystemPreferences.ElevationUnits));
-                    else
-                        row[5] = Math.Round(convertFrom(result.Elevations, Plugin.GetApplication().SystemPreferences.ElevationUnits));
+                    }
+                    row[3] = UnitUtil.Time.ToString(result.TimeStart);
+                    row[4] = UnitUtil.Distance.ToString(result.MeterStart);
+                    row[5] = UnitUtil.Elevation.ToString(result.Elevations);
                     if (result.AveragePulse.Equals(double.NaN))
                         row[6] = "-";
                     else
                         row[6] = Math.Round(result.AveragePulse);
                     if (includeLocationAndDate)
                     {
-                        row[7] = result.Activity.StartTime.ToShortDateString() ;//String.Format("{0}/{1}/{2}", result.Activity.StartTime.Date.Month, result.Activity.StartTime.Date.Day, result.Activity.StartTime.Date.Year);
+                        row[7] = result.Activity.StartTime.ToShortDateString();
                         row[8] = result.Activity.Location;
                     }
                     table.Rows.Add(row);
                 }
             }
             return table;
-        }
-
-        public static String present(double d)
-        {
-            return string.Format("{0:0.000}", d);
-        }
-
-        public static String present(double d, int decimals)
-        {
-            String str = "0";
-            for (int i = 1; i < decimals; i++)
-            {
-                str += "0";
-            }
-            return string.Format("{0:0." + str + "}", d);
         }
     }
 }

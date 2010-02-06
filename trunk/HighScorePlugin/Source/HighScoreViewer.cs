@@ -25,9 +25,11 @@ using System.Text;
 using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using System.Collections;
+using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Visuals.Chart;
 using SportTracksHighScorePlugin.Properties;
+using SportTracksHighScorePlugin.Util;
 
 namespace SportTracksHighScorePlugin.Source
 {
@@ -46,11 +48,11 @@ namespace SportTracksHighScorePlugin.Source
                 if (form != null)
                 {
                     if (activities.Count > 1)
-                        form.Text = String.Format(Resources.HSV1,activities.Count);
+                        form.Text = Resources.HSV + String.Format(StringResources.OfManyActivities,activities.Count);
                     else if (activities.Count == 1)
-                        form.Text = Resources.HSV2;
+                        form.Text = Resources.HSV + StringResources.OfOneActivity;
                     else
-                        form.Text = Resources.HSV3;
+                        form.Text = Resources.HSV + StringResources.OfNoActivities;
                 }
                 resetCachedResults();
                 showResults();
@@ -89,14 +91,14 @@ namespace SportTracksHighScorePlugin.Source
 
             domainBox.SelectedItem = translateToLanguage(Settings.Domain);
             imageBox.SelectedItem = translateToLanguage(Settings.Image);
-            
-            boundsBox.SelectedItem = Settings.UpperBound ? Resources.LowerCaseMaximal : Resources.LowerCaseMinimal;
+
+            boundsBox.SelectedItem = Settings.UpperBound ? StringResources.Maximal : StringResources.Minimal;
             speedUnit = getMostUsedSpeedUnit(activities);
             paceBox.SelectedItem = speedUnit;
             if (Settings.ShowTable)
-                viewBox.SelectedItem = Resources.LowerCaseTable;
+                viewBox.SelectedItem = StringResources.Table;
             else
-                viewBox.SelectedItem = Resources.LowerCaseGraph;
+                viewBox.SelectedItem = StringResources.Graph;
 
             domain = Settings.Domain;
             image = Settings.Image;
@@ -132,17 +134,17 @@ namespace SportTracksHighScorePlugin.Source
         private string translateToLanguage(GoalParameter goalParameter)
         {
             if (goalParameter.Equals(GoalParameter.PulseZone))
-                return Resources.HRZone;
+                return StringResources.HRZone;
             if (goalParameter.Equals(GoalParameter.SpeedZone))
-                return Resources.SpeedZone;
+                return StringResources.SpeedZone;
             if (goalParameter.Equals(GoalParameter.PulseZoneSpeedZone))
                 return Resources.HRAndSpeedZones;
             if (goalParameter.Equals(GoalParameter.Distance))
-                return Resources.DomDistance;
+                return CommonResources.Text.LabelDistance;
             if (goalParameter.Equals(GoalParameter.Elevation))
-                return Resources.DomElevation;
+                return CommonResources.Text.LabelElevation;
             if (goalParameter.Equals(GoalParameter.Time))
-                return Resources.DomTime;
+                return CommonResources.Text.LabelTime;
             return null;
         }
 
@@ -162,28 +164,28 @@ namespace SportTracksHighScorePlugin.Source
 
         private void convertLanguage()
         {
-            paceBox.Items.Add(Resources.LowerCasePace);
-            paceBox.Items.Add(Resources.LowerCaseSpeed);
-            viewBox.Items.Add(Resources.LowerCaseGraph);
-            viewBox.Items.Add(Resources.LowerCaseTable);
-            label1.Text = Resources.Find;
-            label2.Text = Resources.PerSpecified;
-            label3.Text = Resources.Show;
+            paceBox.Items.Add(CommonResources.Text.LabelPace);
+            paceBox.Items.Add(CommonResources.Text.LabelSpeed);
+            viewBox.Items.Add(StringResources.Graph);
+            viewBox.Items.Add(StringResources.Table);
+            label1.Text = StringResources.Find;
+            label2.Text = StringResources.PerSpecified;
+            label3.Text = StringResources.Show;
             correctUI(new Control[] { boundsBox, domainBox, label2, imageBox });
             label1.Location = new Point(boundsBox.Location.X - 5 - label1.Width, label1.Location.Y);
             correctUI(new Control[] { paceBox, viewBox, Remarks });
             label3.Location = new Point(paceBox.Location.X - 5 - label3.Width, label3.Location.Y);
-            boundsBox.Items.Add(Resources.LowerCaseMinimal);
-            boundsBox.Items.Add(Resources.LowerCaseMaximal);
-            domainBox.Items.Add(Resources.DomDistance);
-            domainBox.Items.Add(Resources.DomElevation);
-            domainBox.Items.Add(Resources.DomTime);
-            imageBox.Items.Add(Resources.DomDistance);
-            imageBox.Items.Add(Resources.DomElevation);
-            imageBox.Items.Add(Resources.DomTime);
-            imageBox.Items.Add(Resources.HRZone);
+            boundsBox.Items.Add(StringResources.Minimal);
+            boundsBox.Items.Add(StringResources.Maximal);
+            domainBox.Items.Add(CommonResources.Text.LabelDistance);
+            domainBox.Items.Add(CommonResources.Text.LabelElevation);
+            domainBox.Items.Add(CommonResources.Text.LabelTime);
+            imageBox.Items.Add(CommonResources.Text.LabelDistance);
+            imageBox.Items.Add(CommonResources.Text.LabelElevation);
+            imageBox.Items.Add(CommonResources.Text.LabelTime);
+            imageBox.Items.Add(StringResources.HRZone);
             imageBox.Items.Add(Resources.HRAndSpeedZones);
-            toolStripMenuItem1.Text = Resources.CopyTable;
+            toolStripMenuItem1.Text = StringResources.CopyTable;
             label2.Location = new Point(label2.Location.X, label1.Location.Y);
         }
 
@@ -194,7 +196,7 @@ namespace SportTracksHighScorePlugin.Source
             {
                 s.Append(column.HeaderText + "\t");
             }
-            s.Append(Resources.Goal);
+            s.Append(StringResources.Goal);
             s.Append("\n");
             int rowIndex = 0;
             foreach (DataGridViewRow row in dataGrid.Rows)
@@ -223,23 +225,21 @@ namespace SportTracksHighScorePlugin.Source
 
         private String getLabel(GoalParameter gp)
         {
-            String dMetric = Settings.DistanceUnitShort;
-            String eMetric = Settings.ElevationUnitShort;
             switch (gp)
             {
                 case GoalParameter.Distance:
-                    return Resources.Distance+" (" +dMetric + ")";
+                    return UnitUtil.Distance.LabelAxis;
                 case GoalParameter.Time:
-                    return Resources.TimeHours;
+                    return UnitUtil.Time.LabelAxis;
                 case GoalParameter.Elevation:
-                    return Resources.Elevation+" (" + eMetric + ")";
+                    return UnitUtil.Elevation.LabelAxis;
                 case GoalParameter.PulseZone:
-                    return Resources.HR;
+                    return UnitUtil.HeartRate.LabelAxis;
                 case GoalParameter.SpeedZone:
-                    if (speedUnit.Equals(Resources.LowerCaseSpeed)) return String.Format(Resources.Speed2,dMetric);
-                    else return String.Format(Resources.Pace2,dMetric);
+                    if (speedUnit.Equals(CommonResources.Text.LabelPace)) return UnitUtil.Pace.LabelAxis;
+                    return UnitUtil.Speed.LabelAxis;
                 case GoalParameter.PulseZoneSpeedZone:
-                    return Resources.HR;
+                    return UnitUtil.HeartRate.LabelAxis;
             }
             throw new Exception();
         }
@@ -255,16 +255,16 @@ namespace SportTracksHighScorePlugin.Source
             switch (gp)
             {
                 case GoalParameter.Distance:
-                    return HighScore.convertFromDistance(result.Meters);
+                    return UnitUtil.Distance.ConvertFrom(result.Meters);
                 case GoalParameter.Time:
-                    return result.Seconds / 60.0;
+                    return result.Seconds;
                 case GoalParameter.Elevation:
-                    return HighScore.convertFromElevation(result.Elevations);
+                    return UnitUtil.Elevation.ConvertFrom(result.Elevations);
                 case GoalParameter.PulseZone:
                     return result.AveragePulse;
                 case GoalParameter.SpeedZone:
-                    if (speedUnit.Equals(Resources.LowerCaseSpeed)) return HighScore.convertSpeed(result);
-                    else return HighScore.convertPace(result)/60;
+                    double speed = result.Meters / result.Seconds;
+                    return UnitUtil.PaceOrSpeed.ConvertFrom(speedUnit.Equals(CommonResources.Text.LabelPace), speed);
                 case GoalParameter.PulseZoneSpeedZone:
                     return result.AveragePulse;
             }
@@ -276,12 +276,12 @@ namespace SportTracksHighScorePlugin.Source
             int speed = 0, pace = 0;
             foreach (IActivity activity in activities)
             {
-                if (activity.Category.SpeedUnits.ToString().ToLower().Equals("speed"))
-                    speed++;
-                else pace++;
+                if (activity.Category.SpeedUnits.ToString().ToLower().Equals(CommonResources.Text.LabelPace))
+                    pace++;
+                else speed++;
             }
-            if (speed >= pace) return Resources.LowerCaseSpeed;
-            return Resources.LowerCasePace;
+            if (speed >= pace) return CommonResources.Text.LabelSpeed;
+            return CommonResources.Text.LabelPace;
         }
 
         private void resetCachedTables()
@@ -400,11 +400,11 @@ namespace SportTracksHighScorePlugin.Source
 
         private String translateParameter(String str)
         {
-            if (str.Equals(Resources.DomDistance)) return "distance";
-            if (str.Equals(Resources.DomElevation)) return "elevation";
-            if (str.Equals(Resources.DomTime)) return "time";
-            if (str.Equals(Resources.HRZone)) return "pulsezone";
-            if (str.Equals(Resources.SpeedZone)) return "speedzone";
+            if (str.Equals(CommonResources.Text.LabelDistance)) return "distance";
+            if (str.Equals(CommonResources.Text.LabelElevation)) return "elevation";
+            if (str.Equals(CommonResources.Text.LabelTime)) return "time";
+            if (str.Equals(StringResources.HRZone)) return "pulsezone";
+            if (str.Equals(StringResources.SpeedZone)) return "speedzone";
             if (str.Equals(Resources.HRAndSpeedZones)) return "pulsezonespeedzone";
             return null;
         }
@@ -413,12 +413,12 @@ namespace SportTracksHighScorePlugin.Source
         {
             Settings.Domain = (GoalParameter)Enum.Parse(typeof(GoalParameter), 
                         translateParameter((String)domainBox.SelectedItem), true);
-            Settings.UpperBound = boundsBox.SelectedItem.Equals(Resources.LowerCaseMaximal);
+            Settings.UpperBound = boundsBox.SelectedItem.Equals(StringResources.Maximal);
             Settings.Image = (GoalParameter)Enum.Parse(typeof(GoalParameter), translateParameter((String)imageBox.SelectedItem), true);
             domain = Settings.Domain;
             image = Settings.Image;
             upperBound = Settings.UpperBound;
-            Settings.ShowTable = viewBox.SelectedItem.Equals(Resources.LowerCaseTable);
+            Settings.ShowTable = viewBox.SelectedItem.Equals(StringResources.Table);
         }
 
         private void showResults()
@@ -432,7 +432,7 @@ namespace SportTracksHighScorePlugin.Source
                 Remarks.Visible = true;
                 return;
             }
-            if (viewBox.SelectedItem.Equals(Resources.LowerCaseGraph))
+            if (viewBox.SelectedItem.Equals(StringResources.Graph))
             {
                 showGraph();                
             }
@@ -478,7 +478,7 @@ namespace SportTracksHighScorePlugin.Source
                 {
                     if (!first)
                     {
-                        Remarks.Text += " " + Resources.And + " ";
+                        Remarks.Text += " " + StringResources.And + " ";
                     }
                     Remarks.Text += manualEntered + " " + Resources.HadManualEnteredData;
                 }
@@ -530,29 +530,30 @@ namespace SportTracksHighScorePlugin.Source
 
         private void showGraph()
         {
-            chart.DataSeries.Clear();
-            chart.XAxis.Label = getLabel(image);
-            chart.YAxis.Label = getLabel(domain);
-            IList<Result> results = cachedResults[domain][image][upperBound];
-            if (results == null)
+            IList<Result> results = null;
+            if ((image == GoalParameter.Distance ||
+               image == GoalParameter.Time ||
+               image == GoalParameter.Elevation))
             {
-                IList<Goal> goals = HighScore.generateGoals();
-                progressBar.Visible = true;
-                results = HighScore.calculate(activities, goals, progressBar);
-                progressBar.Visible = false;
+                // Graph can only be calculated for som X-axis
+                chart.DataSeries.Clear();
+                chart.XAxis.Label = getLabel(image);
+                chart.YAxis.Label = getLabel(domain);
+                results = cachedResults[domain][image][upperBound];
+                if (results == null)
+                {
+                    IList<Goal> goals = HighScore.generateGoals();
+                    progressBar.Visible = true;
+                    results = HighScore.calculate(activities, goals, progressBar);
+                    progressBar.Visible = false;
+                }
             }
-            if (results == null || 
-                !(image == GoalParameter.Distance ||
-                image == GoalParameter.Time ||
-                image == GoalParameter.Elevation))
+            if (results == null)
             {
                 Remarks.Text = Resources.NoResultsForSettings;
                 Remarks.Visible = true;
             }
-            else if (
-                image == GoalParameter.Distance ||
-                image == GoalParameter.Time ||
-                image == GoalParameter.Elevation)
+            else
             {
                 ChartDataSeries series = new ChartDataSeries(chart, chart.YAxis);
                 setAxisType(chart.XAxis, image);
@@ -589,8 +590,7 @@ namespace SportTracksHighScorePlugin.Source
                     {
                         foreach (double to in Settings.speedZones[from].Keys)
                         {
-                            categories.Add(HighScore.present(from, 1) + "-" +
-                                HighScore.present(to, 1));
+                            categories.Add(UnitUtil.Speed.ToString(from) + "-" + UnitUtil.Speed.ToString(to));
                             keys.Add(index++);
                         }
                     }
@@ -605,7 +605,7 @@ namespace SportTracksHighScorePlugin.Source
         {
             Goal goal = getGoalFromTable(e.RowIndex);
             if (goal != null)
-                e.ToolTipText = Resources.Goal+": " + goal.ToString(speedUnit);
+                e.ToolTipText = StringResources.Goal + ": " + goal.ToString(speedUnit);
         }
 
         private Goal getGoalFromTable(int rowIndex)

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element msdata:IsDataSet="true" name="root">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" name="value" type="xsd:string" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" msdata:Ordinal="1" name="value" type="xsd:string" />
+                <xsd:element minOccurs="0" msdata:Ordinal="2" name="comment" type="xsd:string" />
+              </xsd:sequence>
+              <xsd:attribute msdata:Ordinal="1" name="name" type="xsd:string" use="required" />
+              <xsd:attribute msdata:Ordinal="3" name="type" type="xsd:string" />
+              <xsd:attribute msdata:Ordinal="4" name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element minOccurs="0" msdata:Ordinal="1" name="value" type="xsd:string" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Tilføj</value>
+  </data>
+  <data name="And" xml:space="preserve">
+    <value>og</value>
+  </data>
+  <data name="End" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="Find" xml:space="preserve">
+    <value>Find</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>Fra</value>
+  </data>
+  <data name="Goal" xml:space="preserve">
+    <value>Mål</value>
+  </data>
+  <data name="HRZone" xml:space="preserve">
+    <value>Pulszone</value>
+  </data>
+  <data name="Seconds" xml:space="preserve">
+    <value>sekunder</value>
+  </data>
+  <data name="PerSpecified" xml:space="preserve">
+    <value>per specificeret</value>
+  </data>
+  <data name="Question" xml:space="preserve">
+    <value>Spørgsmål?</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Nulstil...</value>
+  </data>
+  <data name="ResetAllSettings" xml:space="preserve">
+    <value>Nulstil alle indstillinger...</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Vis</value>
+  </data>
+  <data name="SpeedZone" xml:space="preserve">
+    <value>Hastighedszone</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="TimeFormat" xml:space="preserve">
+    <value>tt:mm:ss</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>Til</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Advarsel</value>
+  </data>
+  <data name="Factor" xml:space="preserve">
+    <value>Faktor</value>
+  </data>
+  <data name="Graph" xml:space="preserve">
+    <value>graf</value>
+  </data>
+  <data name="NoSelectedActivities" xml:space="preserve">
+    <value>Ingen aktivitet valgt.</value>
+  </data>
+  <data name="NumberOfZones" xml:space="preserve">
+    <value>Antal zoner:</value>
+  </data>
+  <data name="ResetQuestion" xml:space="preserve">
+    <value>Er du sikker på at du vil nulstille alle indstillinger? Dette kan ikke kan fortrydes.</value>
+  </data>
+  <data name="StartZone" xml:space="preserve">
+    <value>Start zone:</value>
+  </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Sammendrag</value>
+  </data>
+  <data name="Use" xml:space="preserve">
+    <value>Brug:</value>
+  </data>
+  <data name="ActivitiesTo" xml:space="preserve">
+    <value>activiteter til</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>alle</value>
+  </data>
+  <data name="ChangeCategory" xml:space="preserve">
+    <value>Ændre kategori</value>
+  </data>
+  <data name="SelectCategory" xml:space="preserve">
+    <value>Vælg kategory</value>
+  </data>
+  <data name="Selected" xml:space="preserve">
+    <value>valgte</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Indstillinger</value>
+  </data>
+  <data name="UseAllCategories" xml:space="preserve">
+    <value>Brug alle kategorier</value>
+  </data>
+  <data name="ClimbSummary" xml:space="preserve">
+    <value>Stigning op/ned</value>
+  </data>
+  <data name="ClimbZones" xml:space="preserve">
+    <value>Stigningszoner</value>
+  </data>
+  <data name="DaysFormat" xml:space="preserve">
+    <value>dd</value>
+  </data>
+  <data name="HoursFormat" xml:space="preserve">
+    <value>tt</value>
+  </data>
+  <data name="MinutesFormat" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="SecondsFormat" xml:space="preserve">
+    <value>ss</value>
+  </data>
+  <data name="Activities" xml:space="preserve">
+    <value>Aktiviteter</value>
+  </data>
+  <data name="XAxis" xml:space="preserve">
+    <value>X akse</value>
+  </data>
+  <data name="YAxis" xml:space="preserve">
+    <value>Y akse</value>
+  </data>
+  <data name="CopyTable" xml:space="preserve">
+    <value>Kopier tabellen til udklipsholderen</value>
+  </data>
+  <data name="ForManyActivities" xml:space="preserve">
+    <value>af {0} activiteter</value>
+  </data>
+  <data name="ForOneActivity" xml:space="preserve">
+    <value>af én aktivitet</value>
+  </data>
+  <data name="OfManyActivities" xml:space="preserve">
+    <value>af {0} activiteter</value>
+  </data>
+  <data name="OfNoActivities" xml:space="preserve">
+    <value>af ingen activiteter</value>
+  </data>
+  <data name="OfOneActivity" xml:space="preserve">
+    <value>af én activitet</value>
+  </data>
+  <data name="Maximal" xml:space="preserve">
+    <value>maksimal</value>
+  </data>
+  <data name="Minimal" xml:space="preserve">
+    <value>minimal</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Fjern</value>
+  </data>
+  <data name="Table" xml:space="preserve">
+    <value>tabel</value>
+  </data>
+  <data name="Marathon" xml:space="preserve">
+    <value>Marathon</value>
+  </data>
+  <data name="Training" xml:space="preserve">
+    <value>Træning</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Enhed</value>
+  </data>
+</root>

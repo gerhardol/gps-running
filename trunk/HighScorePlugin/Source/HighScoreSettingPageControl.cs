@@ -26,6 +26,7 @@ using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using System.Diagnostics;
+using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Data.GPS;
 using ZoneFiveSoftware.Common.Data;
@@ -33,6 +34,7 @@ using System.Collections;
 using System.IO;
 using System.Xml;
 using SportTracksHighScorePlugin.Properties;
+using SportTracksHighScorePlugin.Util;
 
 namespace SportTracksHighScorePlugin.Source
 {
@@ -66,44 +68,45 @@ namespace SportTracksHighScorePlugin.Source
 
         private void setLanguage()
         {
-            resetSettings.Text = Resources.ResetAllSettings;
+            resetSettings.Text = StringResources.ResetAllSettings;
             linkLabel1.Text = Resources.Webpage;
             ignoreManualBox.Text = Resources.IgnoreManualEnteredBox;
-            groupBox1.Text = Resources.Distances;
-            groupBox2.Text = Resources.Times;
-            groupBox3.Text = Resources.Elevations;
-            groupBox4.Text = Resources.HRZones;
-            groupBox5.Text = Resources.PaceZones;
-            addDistance.Text = "<-- " + Resources.Add;
-            removeDistance.Text = Resources.Remove + " -->";
-            resetDistances.Text = Resources.Reset;
-            addTime.Text = "<-- " + Resources.Add;
-            removeTime.Text = Resources.Remove + " -->";
-            resetTimes.Text = Resources.Reset;
-            addElevation.Text = "<-- " + Resources.Add;
-            removeElevation.Text = Resources.Remove + " -->";
-            resetElevations.Text = Resources.Reset;
-            addPulse.Text = "<-- " + Resources.Add;
-            removePulse.Text = Resources.Remove + " -->";
-            resetPulseZone.Text = Resources.Reset;
-            addPace.Text = "<-- " + Resources.Add;
-            removePace.Text = Resources.Remove + " -->";
-            resetPaceZone.Text = Resources.Reset;
-            label1.Text = Resources.BPMFrom;
-            label2.Text = Resources.BPMTo;
-            label4.Text = "(" + Resources.TimeFormat + ")";
+            addDistance.Text = "<-- " + StringResources.Add;
+            removeDistance.Text = StringResources.Remove + " -->";
+            resetDistances.Text = StringResources.Reset;
+            addTime.Text = "<-- " + StringResources.Add;
+            removeTime.Text = StringResources.Remove + " -->";
+            resetTimes.Text = StringResources.Reset;
+            addElevation.Text = "<-- " + StringResources.Add;
+            removeElevation.Text = StringResources.Remove + " -->";
+            resetElevations.Text = StringResources.Reset;
+            addPulse.Text = "<-- " + StringResources.Add;
+            removePulse.Text = StringResources.Remove + " -->";
+            resetPulseZone.Text = StringResources.Reset;
+            addPace.Text = "<-- " + StringResources.Add;
+            removePace.Text = StringResources.Remove + " -->";
+            resetPaceZone.Text = StringResources.Reset;
+            label1.Text = UnitUtil.HeartRate.LabelAbbr + " " + StringResources.From.ToLower();
+            label2.Text = UnitUtil.HeartRate.LabelAbbr + " " + StringResources.To.ToLower();
+            label4.Text = "(" + StringResources.TimeFormat + ")";
         }
 
         private void reset()
         {
-            String paceType = String.Format(Resources.PaceFormat,Settings.DistanceUnitShort);
+            groupBox1.Text = UnitUtil.Distance.LabelAxis;
+            groupBox2.Text = UnitUtil.Time.LabelAxis;
+            groupBox3.Text = UnitUtil.Elevation.LabelAxis;
+            groupBox4.Text = StringResources.HRZone + UnitUtil.HeartRate.LabelAbbr2;
+            groupBox5.Text = StringResources.SpeedZone;
+
+            String paceType = UnitUtil.Pace.Label;
             paceTypeBox.Items.Add(paceType);
-            paceTypeBox.Items.Add(Settings.DistanceUnitShort + "/"+Time.Label(Time.TimeRange.Hour));
+            paceTypeBox.Items.Add(UnitUtil.Speed.LabelAbbr);
             paceTypeBox.SelectedItem = paceType;
             setPaceLabel();
-            distanceLabel.Text = Settings.DistanceUnit;
+            distanceLabel.Text = UnitUtil.Distance.LabelAbbr;
             correctUI(new Control[] { distanceInputBox, distanceLabel });
-            elevationLabel.Text = Settings.ElevationUnit;
+            elevationLabel.Text = UnitUtil.Elevation.LabelAbbr;
             correctUI(new Control[] { elevationInputBox, elevationLabel });
             populateLists();
             ignoreManualBox.Checked = Settings.IgnoreManualData;
@@ -125,16 +128,11 @@ namespace SportTracksHighScorePlugin.Source
 
         private void setPaceLabel()
         {
-            if (((String)paceTypeBox.SelectedItem).Contains("min/"))
-            {
-                paceLabelFrom.Text = Resources.PaceLabelFrom;
-                paceLabelTo.Text = Resources.PaceLabelTo;
-            }
-            else
-            {
-                paceLabelFrom.Text = String.Format(Resources.SpeedLabelFrom, Settings.DistanceUnit);
-                paceLabelTo.Text = String.Format(Resources.SpeedLabelTo, Settings.DistanceUnit);
-            }
+            bool isPace = UnitUtil.Pace.isLabelPace((String)paceTypeBox.SelectedItem);
+            groupBox5.Text = StringResources.SpeedZone + UnitUtil.PaceOrSpeed.LabelAbbr2(isPace);
+            paceLabelFrom.Text = UnitUtil.PaceOrSpeed.LabelAbbr(isPace) + " " + StringResources.From.ToLower();
+            paceLabelTo.Text   = UnitUtil.PaceOrSpeed.LabelAbbr(isPace) + " " + StringResources.To.ToLower();
+
         }
 
         private void populateLists()
@@ -146,11 +144,6 @@ namespace SportTracksHighScorePlugin.Source
             populateSpeedList();
         }
 
-        private String present(double d)
-        {
-            return string.Format("{0:0.000}", d);
-        }
-
         private void populateSpeedList()
         {
             speedZoneIndex = new List<IList<double>>();
@@ -158,19 +151,20 @@ namespace SportTracksHighScorePlugin.Source
             foreach (double min in Settings.speedZones.Keys)
                 foreach (double max in Settings.speedZones[min].Keys)
                 {
-                    if (((String)paceTypeBox.SelectedItem).Contains("min/"))
+                    string from, to;
+                    bool isPace = UnitUtil.Pace.isLabelPace((String)paceTypeBox.SelectedItem);
+                    if (isPace)
                     {
-                        speedBox.Items.Insert(0, String.Format("{1} - {0}",
-                            new TimeSpan(0, 0, (int)Math.Round(1.0/(HighScore.convertFromDistance(min)))).ToString().Substring(3),
-                            new TimeSpan(0, 0, (int)Math.Round(1.0/(HighScore.convertFromDistance(max)))).ToString().Substring(3)));
-                        speedZoneIndex.Insert(0, new double[] { min, max });
+                        from = UnitUtil.Pace.ToString(max);
+                        to = UnitUtil.Pace.ToString(min);
                     }
                     else
                     {
-                        speedBox.Items.Add(String.Format("{1} - {0}", present(HighScore.convertFromDistance(3600*max)),
-                            present(HighScore.convertFromDistance(3600*min))));
-                        speedZoneIndex.Add(new double[] { min, max });
-                    }                    
+                        from = UnitUtil.Speed.ToString(min);
+                        to = UnitUtil.Speed.ToString(max);
+                    }
+                    speedBox.Items.Add(String.Format("{1} - {0}", from, to));
+                    speedZoneIndex.Add(new double[] { min, max });
                 }
         }
 
@@ -181,7 +175,7 @@ namespace SportTracksHighScorePlugin.Source
             {
                 foreach (double max in Settings.pulseZones[min].Keys)
                 {
-                    pulseBox.Items.Add(String.Format("{0} - {1}", min, max));
+                    pulseBox.Items.Add(String.Format("{1} - {0}", min, max));
                 }
             }
         }
@@ -207,7 +201,7 @@ namespace SportTracksHighScorePlugin.Source
             distanceBox.Items.Clear();
             foreach (double distance in Settings.distances.Keys)
             {
-                distanceBox.Items.Add(present(HighScore.convertFromDistance(distance)));
+                distanceBox.Items.Add(UnitUtil.Distance.ToString(distance));
             }
         }
 
@@ -216,7 +210,7 @@ namespace SportTracksHighScorePlugin.Source
             elevationBox.Items.Clear();
             foreach (double elevation in Settings.elevations.Keys)
             {
-                elevationBox.Items.Add(present(HighScore.convertFromElevation(elevation)));
+                elevationBox.Items.Add(UnitUtil.Elevation.ToString(elevation));
             }
         }
 
@@ -224,8 +218,7 @@ namespace SportTracksHighScorePlugin.Source
         {
             try
             {
-                double distance = double.Parse(distanceInputBox.Text);
-                distance = convertToDistance(distance);
+                double distance = UnitUtil.Distance.Parse(distanceInputBox.Text);
                 if (!Settings.distances.ContainsKey(distance))
                 {
                     Settings.distances.Add(distance, true);
@@ -249,30 +242,19 @@ namespace SportTracksHighScorePlugin.Source
 
         private void addTime_Click(object sender, EventArgs e)
         {
-            String[] split = timeInputBox.Text.Split(':');
-            if (split.Length == 3)
-            {
-                int hh, mm, ss;
                 try
                 {
-                    hh = int.Parse(split[0]);
-                    mm = int.Parse(split[1]);
-                    ss = int.Parse(split[2]);
-                    if (hh < 24 && hh >= 0 && mm < 60 && mm >= 0 && ss < 60 && ss >= 0)
+                    int seconds = (int)UnitUtil.Time.Parse(timeInputBox.Text);
+                    if (!Settings.times.ContainsKey(seconds))
                     {
-                        int seconds = 3600 * hh + 60 * mm + ss;
-                        if (!Settings.times.ContainsKey(seconds))
-                        {
-                            Settings.times.Add(seconds, new TimeSpan(hh, mm, ss));
-                            populateTimeList();
-                        }
+                        Settings.times.Add(seconds, new TimeSpan(0, 0, seconds));
+                        populateTimeList();
                     }
                 }
-                catch (Exception) 
+                catch (Exception)
                 {
                     new WarningDialog(Resources.CannotAddToTimes);
                 }
-            }
         }
 
         private void removeTime_Click(object sender, EventArgs e)
@@ -288,8 +270,7 @@ namespace SportTracksHighScorePlugin.Source
         {
             try
             {
-                double elevation = double.Parse(elevationInputBox.Text);
-                elevation = Settings.convertTo(elevation,Plugin.GetApplication().SystemPreferences.ElevationUnits);
+                double elevation = UnitUtil.Elevation.Parse(elevationInputBox.Text);
                 if (!Settings.elevations.ContainsKey(elevation))
                 {
                     Settings.elevations.Add(elevation, true);
@@ -324,8 +305,8 @@ namespace SportTracksHighScorePlugin.Source
         {
             try
             {
-                double min = Settings.parseDouble(minPulseBox.Text);
-                double max = Settings.parseDouble(maxPulseBox.Text);
+                double min = UnitUtil.HeartRate.Parse(minPulseBox.Text);
+                double max = UnitUtil.HeartRate.Parse(maxPulseBox.Text);
                 if (min < 0 || max < 0 || min > max) throw new Exception();
                 Settings.addPulse(min, max);
                 populatePulseList();
@@ -341,16 +322,11 @@ namespace SportTracksHighScorePlugin.Source
             if (pulseBox.SelectedIndex >= 0)
             {
                 String[] values = ((String)pulseBox.SelectedItem).Split('-');
-                double min = double.Parse(values[0]);
-                double max = double.Parse(values[1]);
+                double min = UnitUtil.HeartRate.Parse(values[0]);
+                double max = UnitUtil.HeartRate.Parse(values[1]);
                 Settings.pulseZones[min].Remove(max);
                 populatePulseList();
             }
-        }
-
-        public static double convertToDistance(double p)
-        {
-            return Settings.convertTo(p,Plugin.GetApplication().SystemPreferences.DistanceUnits);
         }
 
         private void addPace_Click(object sender, EventArgs e)
@@ -358,21 +334,16 @@ namespace SportTracksHighScorePlugin.Source
             try
             {
                 double min, max;
-                if (((String)paceTypeBox.SelectedItem).Contains("min/"))
+                bool isPace = UnitUtil.Pace.isLabelPace((String)paceTypeBox.SelectedItem);
+                if (isPace)
                 {
-                    String[] pair = minSpeedBox.Text.Split(':');//min/?, ?/min, ?/min*min/sec 
-                    max = 1.0 / (60 * int.Parse(pair[0]) + int.Parse(pair[1]));
-                    max = convertToDistance(max);
-                    pair = maxSpeedBox.Text.Split(':');
-                    min = 1.0 / (60*int.Parse(pair[0]) + int.Parse(pair[1]));
-                    min = convertToDistance(min);
+                    min = UnitUtil.Pace.Parse(maxSpeedBox.Text);
+                    max = UnitUtil.Pace.Parse(minSpeedBox.Text);
                 }
                 else
                 {
-                    max = double.Parse(maxSpeedBox.Text);
-                    max = convertToDistance(max)/3600.0;
-                    min = double.Parse(minSpeedBox.Text);
-                    min = convertToDistance(min)/3600.0;
+                    min = UnitUtil.Speed.Parse(minSpeedBox.Text);
+                    max = UnitUtil.Speed.Parse(maxSpeedBox.Text);
                 }
                 if (min <= 0 || max <= 0 || max <= min) throw new Exception();
                 Settings.addSpeed(min, max);
@@ -380,7 +351,7 @@ namespace SportTracksHighScorePlugin.Source
             }
             catch (Exception)
             {
-                if (((String)paceTypeBox.SelectedItem).Contains("min/"))
+                if (UnitUtil.Pace.isLabelPace((String)paceTypeBox.SelectedItem))
                     new WarningDialog(Resources.CannotAddToPaceZones);
                 else
                     new WarningDialog(Resources.CannotAddToSpeedZones);

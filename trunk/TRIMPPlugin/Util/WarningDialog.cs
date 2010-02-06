@@ -20,14 +20,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
-using SportTracksOverlayPlugin.Properties;
+using ZoneFiveSoftware.Common.Visuals;
 
-namespace SportTracksOverlayPlugin.Source
+namespace SportTracksTRIMPPlugin.Util
 {
     class WarningDialog : Form
     {
-        private Button ok;
-        private TextBox textBox1;
+        private ZoneFiveSoftware.Common.Visuals.Button ok;
+        private ZoneFiveSoftware.Common.Visuals.TextBox textBox1;
     
         public WarningDialog(String message)
         {
@@ -40,8 +40,8 @@ namespace SportTracksOverlayPlugin.Source
 
         private void InitializeComponent()
         {
-            this.ok = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.ok = new ZoneFiveSoftware.Common.Visuals.Button();
+            this.textBox1 = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.SuspendLayout();
             // 
             // ok
@@ -50,8 +50,8 @@ namespace SportTracksOverlayPlugin.Source
             this.ok.Name = "ok";
             this.ok.Size = new System.Drawing.Size(75, 23);
             this.ok.TabIndex = 1;
-            this.ok.Text = Resources.Ok;
-            this.ok.UseVisualStyleBackColor = true;
+            this.ok.Text = CommonResources.Text.ActionOk;
+            //this.ok.UseVisualStyleBackColor = true;
             this.ok.Click += new System.EventHandler(this.ok_Click);
             // 
             // textBox1
@@ -60,7 +60,7 @@ namespace SportTracksOverlayPlugin.Source
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            //this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBox1.Size = new System.Drawing.Size(256, 77);
             this.textBox1.TabIndex = 2;
             // 
@@ -71,7 +71,7 @@ namespace SportTracksOverlayPlugin.Source
             this.Controls.Add(this.ok);
             this.Name = "WarningDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
-            this.Text = Resources.Warning;
+            this.Text = StringResources.Warning;
             this.ResumeLayout(false);
             this.PerformLayout();
 

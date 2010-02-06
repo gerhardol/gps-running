@@ -32,6 +32,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Collections;
 using SportTracksTRIMPPlugin.Properties;
+using SportTracksTRIMPPlugin.Util;
 
 namespace SportTracksTRIMPPlugin.Source
 {
@@ -109,8 +110,8 @@ namespace SportTracksTRIMPPlugin.Source
 
         private void correctLanguage()
         {
-            tabControl1.TabPages[0].Text = Resources.Summary;
-            tabControl1.TabPages[1].Text = Resources.Graph;
+            tabControl1.TabPages[0].Text = StringResources.Summary;
+            tabControl1.TabPages[1].Text = StringResources.Graph;
             if (Settings.UseMaxHR)
             {
                 dataGridView1.Columns[0].HeaderText = CommonResources.Text.LabelZone + " (" + CommonResources.Text.LabelPercentOfMax + ")";
@@ -120,10 +121,8 @@ namespace SportTracksTRIMPPlugin.Source
                 dataGridView1.Columns[0].HeaderText = CommonResources.Text.LabelZone + " (" + CommonResources.Text.LabelPercentOfReserve + ")"; ;
             }
 
-            dataGridView1.Columns[1].HeaderText = CommonResources.Text.LabelHeartRate;
-            //string minuteStr = "min"; // ZoneFiveSoftware.Common.Data.Measurement.Time.Label(ZoneFiveSoftware.Common.Data.Measurement.Time.TimeRange.Minute)
-            //dataGridView1.Columns[2].HeaderText = CommonResources.Text.LabelTime + " (" + minuteStr + ")";
-            dataGridView1.Columns[2].HeaderText = CommonResources.Text.LabelTime;
+            dataGridView1.Columns[1].HeaderText = UnitUtil.HeartRate.LabelAxis;
+            dataGridView1.Columns[2].HeaderText = UnitUtil.Time.LabelAxis;
         }
 
         private void contextMenuTable_Click(object sender, EventArgs e)
@@ -195,9 +194,10 @@ namespace SportTracksTRIMPPlugin.Source
             if (activities.Count == 0)
             {
                 tabControl1.Visible = false;
-                label1.Text = Resources.NoSelectedActivities;
+                label1.Text = StringResources.NoSelectedActivities;
                 return;
             }
+            label1.Text = "";
             tabControl1.Visible = true;
             if (form != null)
             {
@@ -265,10 +265,6 @@ namespace SportTracksTRIMPPlugin.Source
                 double delta = (100.0 - Settings.StartZone) / Settings.Factors.Count;
                 tableChart.DataSeries.Clear();
                 tableChart.XAxis.Formatter = new Formatter.Percent();
-                //              tableChart.YAxisRight.Clear();
-                //            tableChart.YAxisRight.Add(new RightVerticalAxis(tableChart));
-                //          ChartDataSeries minuteSeries = new ChartDataSeries(tableChart, tableChart.YAxisRight[0]);
-                //        minuteSeries.ChartType = ChartDataSeries.Type.StepFill;
                 ChartDataSeries trimpSeries = new ChartDataSeries(tableChart, tableChart.YAxis);
                 trimpSeries.ChartType = ChartDataSeries.Type.StepFill;
                 float previousTrimp = 0;
@@ -281,10 +277,8 @@ namespace SportTracksTRIMPPlugin.Source
                     {low + " - " + high,
                     Settings.present(lhs[i].Low, 1) + " - " + 
                         Settings.present(lhs[i].High, 1),
-                    Settings.present(times[i].TotalMinutes,1),
+                    times[i].ToString(),
                     Settings.present(trimps[i],1)});
-                    //         minuteSeries.Points.Add(i,
-                    //            new PointF(low, (float)times[i].TotalMinutes));
                     trimpSeries.Points.Add(i,
                         new PointF(low, (float)trimps[i]));
                     current = high;
@@ -292,7 +286,6 @@ namespace SportTracksTRIMPPlugin.Source
                     nextIndex = i + 1;
                 }
                 trimpSeries.Points.Add(nextIndex, new PointF((float)current, previousTrimp));
-                //                tableChart.DataSeries.Add(minuteSeries);
                 tableChart.DataSeries.Add(trimpSeries);
                 if (Settings.UseMaxHR)
                 {
@@ -302,7 +295,6 @@ namespace SportTracksTRIMPPlugin.Source
                     tableChart.XAxis.Label = CommonResources.Text.LabelPercentOfReserve;
                 }
                 tableChart.YAxis.Label = "TRIMP";
-                //                tableChart.YAxisRight[0].Label = "Minutes";
                 tableChart.AutozoomToData(true);
                 double t = 0;
                 foreach (double d in trimps)
@@ -318,7 +310,9 @@ namespace SportTracksTRIMPPlugin.Source
                 {
                     if (activities.Count == 1)
                     {
-                        label1.Text = String.Format(Resources.CurrentRestAndMax, restHR, maxHR) +
+                        label1.Text = String.Format(Resources.CurrentRestAndMax, 
+                            UnitUtil.HeartRate.ToString(restHR, "u"),
+                            UnitUtil.HeartRate.ToString(maxHR, "u")) +
                             " " + String.Format(Resources.TotalTRIMP, Settings.present(t, 1));
                     }
                     else
@@ -406,22 +400,6 @@ namespace SportTracksTRIMPPlugin.Source
             }
             return new double[] { low * (maxHR-restHR) / 100+restHR, 
                 high * (maxHR-restHR) / 100 +restHR};
-        }
-
-        private TimeSpan getTimeSpend(double lowZone, double highZone, 
-            INumericTimeDataSeries iNumericTimeDataSeries)
-        {
-            TimeSpan time = new TimeSpan();
-            int previous = 0;
-            foreach (ITimeValueEntry<float> entry in iNumericTimeDataSeries)
-            {
-                if (entry.Value >= lowZone && entry.Value <= highZone)
-                {
-                    time = time.Add(new TimeSpan(0, 0, entry.ElapsedSeconds - previous));                    
-                }
-                previous = entry.ElapsedSeconds;
-            }
-            return time;
         }
 
         private void InitializeComponent()
