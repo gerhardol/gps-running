@@ -19,10 +19,13 @@ The plugin is activitated by selecting it from the activity detail view.
 
 Once the plugin is activated you can calculate similar routes
 by pressing the button.
+
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/uniqueroutes/Calculate.png]
 
 The results are shown in table as shown below. If you have any of the Accumulated Summary, High Score, Overlay, or TRIMP plugins installed you can use them on the results. 
+
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/uniqueroutes/Results.png]
+
 ===Caveats===
   * It is not possible to select a group of GPS points on the map and apply the plugin on a subsection of an activitys route.
 
