@@ -523,7 +523,7 @@ namespace SportTracksOverlayPlugin.Source
                     },
                     delegate(ActivityInfo info)
                     {
-                        return info.Activity.GPSRoute != null;
+                        return info.SmoothedSpeedTrack.Count > 0;
                     },
                     axis,
                     delegate(ActivityInfo info)
@@ -552,7 +552,10 @@ namespace SportTracksOverlayPlugin.Source
                     {
                         return UnitUtil.Speed.ConvertFrom(value);
                     },
-                    delegate(ActivityInfo info) { return info.SmoothedSpeedTrack.Count > 0; },
+                    delegate(ActivityInfo info) 
+                    { 
+                        return info.SmoothedSpeedTrack.Count > 0; 
+                    },
                     axis,
                     delegate(ActivityInfo info)
                     {
@@ -689,8 +692,7 @@ namespace SportTracksOverlayPlugin.Source
             GetDataSeries getDataSeries)
         {
             ChartDataSeries series = new ChartDataSeries(chart, axis);
-            if (!canInterpolater(info) ||
-                (!Settings.ShowTime && info.Activity.GPSRoute == null))
+            if (!canInterpolater(info))
             {
                 newColor();
                 return series;
