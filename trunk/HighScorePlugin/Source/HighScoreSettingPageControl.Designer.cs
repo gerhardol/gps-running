@@ -101,7 +101,7 @@ namespace SportTracksHighScorePlugin.Source
             this.distanceBox.FormattingEnabled = true;
             this.distanceBox.Location = new System.Drawing.Point(6, 19);
             this.distanceBox.Name = "distanceBox";
-            this.distanceBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.distanceBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.distanceBox.Size = new System.Drawing.Size(88, 69);
             this.distanceBox.TabIndex = 5;
             // 
@@ -119,7 +119,7 @@ namespace SportTracksHighScorePlugin.Source
             // 
             this.distanceInputBox.Location = new System.Drawing.Point(217, 21);
             this.distanceInputBox.Name = "distanceInputBox";
-            this.distanceInputBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.distanceInputBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.distanceInputBox.Size = new System.Drawing.Size(71, 20);
             this.distanceInputBox.TabIndex = 2;
             // 
@@ -128,7 +128,7 @@ namespace SportTracksHighScorePlugin.Source
             this.timeBox.FormattingEnabled = true;
             this.timeBox.Location = new System.Drawing.Point(6, 19);
             this.timeBox.Name = "timeBox";
-            this.timeBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.timeBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.timeBox.Size = new System.Drawing.Size(88, 69);
             this.timeBox.TabIndex = 10;
             // 
@@ -166,7 +166,7 @@ namespace SportTracksHighScorePlugin.Source
             // 
             this.timeInputBox.Location = new System.Drawing.Point(218, 19);
             this.timeInputBox.Name = "timeInputBox";
-            this.timeInputBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.timeInputBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.timeInputBox.Size = new System.Drawing.Size(70, 20);
             this.timeInputBox.TabIndex = 8;
             // 
@@ -274,7 +274,7 @@ namespace SportTracksHighScorePlugin.Source
             // 
             this.elevationInputBox.Location = new System.Drawing.Point(217, 21);
             this.elevationInputBox.Name = "elevationInputBox";
-            this.elevationInputBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.elevationInputBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.elevationInputBox.Size = new System.Drawing.Size(70, 20);
             this.elevationInputBox.TabIndex = 13;
             // 
@@ -303,7 +303,7 @@ namespace SportTracksHighScorePlugin.Source
             this.elevationBox.FormattingEnabled = true;
             this.elevationBox.Location = new System.Drawing.Point(6, 19);
             this.elevationBox.Name = "elevationBox";
-            this.elevationBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.elevationBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.elevationBox.Size = new System.Drawing.Size(88, 69);
             this.elevationBox.TabIndex = 15;
             // 
@@ -366,7 +366,7 @@ namespace SportTracksHighScorePlugin.Source
             // 
             this.maxPulseBox.Location = new System.Drawing.Point(217, 45);
             this.maxPulseBox.Name = "maxPulseBox";
-            this.maxPulseBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.maxPulseBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.maxPulseBox.Size = new System.Drawing.Size(70, 20);
             this.maxPulseBox.TabIndex = 19;
             // 
@@ -374,7 +374,7 @@ namespace SportTracksHighScorePlugin.Source
             // 
             this.minPulseBox.Location = new System.Drawing.Point(217, 19);
             this.minPulseBox.Name = "minPulseBox";
-            this.minPulseBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.minPulseBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.minPulseBox.Size = new System.Drawing.Size(70, 20);
             this.minPulseBox.TabIndex = 18;
             // 
@@ -403,7 +403,7 @@ namespace SportTracksHighScorePlugin.Source
             this.pulseBox.FormattingEnabled = true;
             this.pulseBox.Location = new System.Drawing.Point(6, 19);
             this.pulseBox.Name = "pulseBox";
-            this.pulseBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.pulseBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.pulseBox.Size = new System.Drawing.Size(88, 69);
             this.pulseBox.TabIndex = 21;
             // 
@@ -465,7 +465,7 @@ namespace SportTracksHighScorePlugin.Source
             // 
             this.maxSpeedBox.Location = new System.Drawing.Point(218, 47);
             this.maxSpeedBox.Name = "maxSpeedBox";
-            this.maxSpeedBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.maxSpeedBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.maxSpeedBox.Size = new System.Drawing.Size(70, 20);
             this.maxSpeedBox.TabIndex = 25;
             // 
@@ -473,7 +473,7 @@ namespace SportTracksHighScorePlugin.Source
             // 
             this.minSpeedBox.Location = new System.Drawing.Point(218, 21);
             this.minSpeedBox.Name = "minSpeedBox";
-            this.minSpeedBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.minSpeedBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.minSpeedBox.Size = new System.Drawing.Size(70, 20);
             this.minSpeedBox.TabIndex = 24;
             // 
@@ -502,7 +502,7 @@ namespace SportTracksHighScorePlugin.Source
             this.speedBox.FormattingEnabled = true;
             this.speedBox.Location = new System.Drawing.Point(6, 19);
             this.speedBox.Name = "speedBox";
-            this.speedBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.speedBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.speedBox.Size = new System.Drawing.Size(101, 108);
             this.speedBox.TabIndex = 28;
             // 

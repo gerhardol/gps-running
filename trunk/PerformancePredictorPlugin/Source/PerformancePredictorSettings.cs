@@ -109,6 +109,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
                 }
                 double d = UnitUtil.Distance.Parse(distanceBox.Text, ref unit);
                 d = UnitUtil.Distance.ConvertFrom(d, unit);
+                if (d <= 0) { throw new Exception(); }
                 Settings.addDistance(d, unit, false);
                 updateList();
             }

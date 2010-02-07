@@ -177,12 +177,23 @@ namespace SportTracksOverlayPlugin.Source
             series2boxes = new Dictionary<ChartDataSeries, CheckBox>(); 
             SizeChanged += new EventHandler(OverlayView_SizeChanged);
             Activities = activities;
+
+            useTime.Text = CommonResources.Text.LabelTime;
+            useDistance.Text = CommonResources.Text.LabelDistance;
+            heartRate.Text = CommonResources.Text.LabelHeartRate;
+            pace.Text = CommonResources.Text.LabelPace;
+            speed.Text = CommonResources.Text.LabelSpeed;
+            power.Text = CommonResources.Text.LabelPower;
+            cadence.Text = CommonResources.Text.LabelCadence;
+            elevation.Text = CommonResources.Text.LabelElevation;
+
             heartRate.Checked = Settings.ShowHeartRate;
             pace.Checked = Settings.ShowPace;
             speed.Checked = Settings.ShowSpeed;
             power.Checked = Settings.ShowPower;
             cadence.Checked = Settings.ShowCadence;
             elevation.Checked = Settings.ShowElevation;
+
             categoryAverage.Checked = Settings.ShowCategoryAverage;
             movingAverage.Checked = Settings.ShowMovingAverage;
             toolTip1.SetToolTip(maBox, Resources.MAToolTip);
@@ -232,20 +243,30 @@ namespace SportTracksOverlayPlugin.Source
         {
             try
             {
-                double value = Settings.parseDouble(maBox.Text);
-                if (value < 0) throw new Exception();
                 if (Settings.ShowTime)
                 {
+                    double value = UnitUtil.Time.Parse(maBox.Text);
+                    if (value < 0) { throw new Exception(); }
                     Settings.MovingAverageTime = value;
                 }
                 else
                 {
+                    double value = UnitUtil.Distance.Parse(maBox.Text);
+                    if (value < 0) { throw new Exception(); }
                     Settings.MovingAverageLength = value;
                 }
                 updateChart();
             }
             catch (Exception)
             {
+                if (Settings.ShowTime)
+                {
+                    maBox.Text = Settings.MovingAverageTime.ToString();
+                }
+                else
+                {
+                    maBox.Text = Settings.MovingAverageLength.ToString();
+                }
                 new WarningDialog(Resources.NonNegativeNumber);
             }
         }
@@ -819,7 +840,7 @@ namespace SportTracksOverlayPlugin.Source
             this.heartRate.Name = "heartRate";
             this.heartRate.Size = new System.Drawing.Size(73, 17);
             this.heartRate.TabIndex = 5;
-            this.heartRate.Text = CommonResources.Text.LabelHeartRate;
+            this.heartRate.Text = "Heart rate";
             this.heartRate.UseVisualStyleBackColor = true;
             this.heartRate.CheckedChanged += new System.EventHandler(this.heartRate_CheckedChanged_1);
             // 
@@ -830,7 +851,7 @@ namespace SportTracksOverlayPlugin.Source
             this.pace.Name = "pace";
             this.pace.Size = new System.Drawing.Size(51, 17);
             this.pace.TabIndex = 6;
-            this.pace.Text = CommonResources.Text.LabelPace;
+            this.pace.Text = "Pace";
             this.pace.UseVisualStyleBackColor = true;
             this.pace.CheckedChanged += new System.EventHandler(this.pace_CheckedChanged_1);
             // 
@@ -841,7 +862,7 @@ namespace SportTracksOverlayPlugin.Source
             this.speed.Name = "speed";
             this.speed.Size = new System.Drawing.Size(57, 17);
             this.speed.TabIndex = 7;
-            this.speed.Text = CommonResources.Text.LabelSpeed;
+            this.speed.Text = "Speed";
             this.speed.UseVisualStyleBackColor = true;
             this.speed.CheckedChanged += new System.EventHandler(this.speed_CheckedChanged_1);
             // 
@@ -852,7 +873,7 @@ namespace SportTracksOverlayPlugin.Source
             this.useTime.Name = "useTime";
             this.useTime.Size = new System.Drawing.Size(48, 17);
             this.useTime.TabIndex = 8;
-            this.useTime.Text = CommonResources.Text.LabelTime;
+            this.useTime.Text = "Time";
             this.useTime.UseVisualStyleBackColor = true;
             this.useTime.CheckedChanged += new System.EventHandler(this.useTime_CheckedChanged);
             // 
@@ -872,7 +893,7 @@ namespace SportTracksOverlayPlugin.Source
             this.useDistance.Name = "useDistance";
             this.useDistance.Size = new System.Drawing.Size(67, 17);
             this.useDistance.TabIndex = 10;
-            this.useDistance.Text = CommonResources.Text.LabelDistance;
+            this.useDistance.Text = "Distance";
             this.useDistance.UseVisualStyleBackColor = true;
             this.useDistance.CheckedChanged += new System.EventHandler(this.useDistance_CheckedChanged);
             // 
@@ -900,7 +921,7 @@ namespace SportTracksOverlayPlugin.Source
             this.power.Name = "power";
             this.power.Size = new System.Drawing.Size(56, 17);
             this.power.TabIndex = 13;
-            this.power.Text = CommonResources.Text.LabelPower;
+            this.power.Text = "Power";
             this.power.UseVisualStyleBackColor = true;
             this.power.CheckedChanged += new System.EventHandler(this.power_CheckedChanged);
             // 
@@ -911,7 +932,7 @@ namespace SportTracksOverlayPlugin.Source
             this.cadence.Name = "cadence";
             this.cadence.Size = new System.Drawing.Size(69, 17);
             this.cadence.TabIndex = 14;
-            this.cadence.Text = CommonResources.Text.LabelCadence;
+            this.cadence.Text = "Cadence";
             this.cadence.UseVisualStyleBackColor = true;
             this.cadence.CheckedChanged += new System.EventHandler(this.cadence_CheckedChanged);
             // 
@@ -922,7 +943,7 @@ namespace SportTracksOverlayPlugin.Source
             this.elevation.Name = "elevation";
             this.elevation.Size = new System.Drawing.Size(70, 17);
             this.elevation.TabIndex = 15;
-            this.elevation.Text = CommonResources.Text.LabelElevation;
+            this.elevation.Text = "Elevation";
             this.elevation.UseVisualStyleBackColor = true;
             this.elevation.CheckedChanged += new System.EventHandler(this.elevation_CheckedChanged);
             // 
@@ -960,7 +981,7 @@ namespace SportTracksOverlayPlugin.Source
             // 
             this.maBox.Location = new System.Drawing.Point(4, 91);
             this.maBox.Name = "maBox";
-            this.maBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.maBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.maBox.Size = new System.Drawing.Size(60, 20);
             this.maBox.TabIndex = 20;
             // 

@@ -181,7 +181,7 @@ namespace SportTracksTRIMPPlugin.Source
 
         private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex.Equals(lastCellRowIndex)) return;
+            if (e.RowIndex.Equals(lastCellRowIndex) || dataGridView1.Rows.Count == 0) return;
             lastCellRowIndex = e.RowIndex;
             object cellValue = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
             try
