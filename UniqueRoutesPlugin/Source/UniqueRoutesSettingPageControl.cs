@@ -101,11 +101,14 @@ namespace SportTracksUniqueRoutesPlugin.Source
         {
             try
             {
-                Settings.IgnoreEnd = UnitUtil.Distance.Parse(ignoreEndBox.Text);
+                double value = UnitUtil.Distance.Parse(ignoreEndBox.Text);
+                if (value < 0) { throw new Exception(); }
+                Settings.IgnoreEnd = value;
                 presentSettings();
             }
             catch (Exception)
             {
+                ignoreEndBox.Text = Settings.IgnoreEnd.ToString();
                 new WarningDialog(Resources.EndMeterWarning);
             }
         }
@@ -114,11 +117,14 @@ namespace SportTracksUniqueRoutesPlugin.Source
         {
             try
             {
-                Settings.IgnoreBeginning = UnitUtil.Distance.Parse(ignoreBeginningBox.Text);
+                double value = UnitUtil.Distance.Parse(ignoreBeginningBox.Text);
+                if (value < 0) {  throw new Exception(); }
+                Settings.IgnoreBeginning = value;
                 presentSettings();
             }
             catch (Exception)
             {
+                ignoreBeginningBox.Text = Settings.IgnoreBeginning.ToString();
                 new WarningDialog(Resources.BeginningMeterWarning);
             }
         }
@@ -139,11 +145,14 @@ namespace SportTracksUniqueRoutesPlugin.Source
         {
             try
             {
-                Settings.Bandwidth = (int)UnitUtil.Elevation.Parse(bandwidthBox.Text);
+                int value = (int)UnitUtil.Elevation.Parse(bandwidthBox.Text);
+                if (value <= 0) { throw new Exception(); }
+                Settings.Bandwidth = value;
                 presentSettings();
             }
             catch (Exception)
             {
+                bandwidthBox.Text = Settings.Bandwidth.ToString();
                 new WarningDialog(Resources.BandwidthWarning);
             }
         }

@@ -308,7 +308,7 @@ namespace SportTracksOverlayPlugin.Source
             return true;
         }
 
-        public static double parseDouble(string p)
+        private static double parseDouble(string p)
         {
             //if (!p.Contains(".")) p += ".0";
             double d = double.Parse(p, NumberFormatInfo.InvariantInfo);

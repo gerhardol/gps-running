@@ -219,6 +219,7 @@ namespace SportTracksHighScorePlugin.Source
             try
             {
                 double distance = UnitUtil.Distance.Parse(distanceInputBox.Text);
+                if (distance <= 0) { throw new Exception(); }
                 if (!Settings.distances.ContainsKey(distance))
                 {
                     Settings.distances.Add(distance, true);
@@ -245,6 +246,7 @@ namespace SportTracksHighScorePlugin.Source
                 try
                 {
                     int seconds = (int)UnitUtil.Time.Parse(timeInputBox.Text);
+                    if (seconds <= 0) { throw new Exception(); }
                     if (!Settings.times.ContainsKey(seconds))
                     {
                         Settings.times.Add(seconds, new TimeSpan(0, 0, seconds));
@@ -271,6 +273,7 @@ namespace SportTracksHighScorePlugin.Source
             try
             {
                 double elevation = UnitUtil.Elevation.Parse(elevationInputBox.Text);
+                if (elevation <= 0) { throw new Exception(); }
                 if (!Settings.elevations.ContainsKey(elevation))
                 {
                     Settings.elevations.Add(elevation, true);
