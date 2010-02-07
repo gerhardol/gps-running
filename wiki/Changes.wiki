@@ -40,7 +40,8 @@ Matrix plugin requires a patch: http://matrix.codeplex.com/Project/Download/File
 ===Migration===
   * The old plugins under %!ProgramFiles%\Zone Five Software\!SportTracks 2.1\Plugins must be removed manually.
   * The settings files can be removed after first startup (but there is no harm keeping them if you delete the Preferences.System.xml file, without a backup).
-{{{%APPDATA%\
+{{{
+%APPDATA%\
   !AccumlatedSummaryPlugin (always empty)
   !HighScorePlugin
   !OverlayPlugin

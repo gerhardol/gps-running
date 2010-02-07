@@ -1,20 +1,24 @@
 #summary Developers Info
 #labels
 
-This is not a general !SportTracks plugin description. See for instance [http://www.zonefivesoftware.com/SportTracks/Forums/viewtopic.php?t=4828 here] for more information.
+This is not a general !SportTracks plugin description. See for instance [http://www.zonefivesoftware.com/SportTracks/Forums/viewtopic.php?t=4828 here] for more information about developing ST plugins.
 
-Some specific notes:
+Some specific notes for gps-running plugins:
+
+===Install packages===
+The build event copies the built files to "%ALLUSERSPROFILE%\ZoneFiveSoftware\SportTracks\2.0\Plugins\Update" automatically, so you can have ST running while building, just restart when you want to use the new binaries.
+The build event also creates .st2plugin packages. This should be automatic if you have 7-zip installed in the standard location, otherwise edit the paths.
 
 ===Translations===
-The master copy for translations is done in an Spreadsheet, the .resx files are generated from the source. The master Resources.resx and !StringResources.resx files must be updated correctly for each plugin, the i18.pl script described below updates the translations with the info from the spread sheet.
+The master copy for translations is done in a Spreadsheet, the .resx files are generated from the source. The master Resources.resx and !StringResources.resx files must be updated correctly for each plugin, the i18.pl script described below updates the translations with the info from the spread sheet.
 
 Instructions:
   # Update Resources and !StringResources in the plugins correctly. 
   # Add all master strings and the master language to the spreadsheet. All fields in the plugin must be included here, the script below will not change the "master" copy, each translation will have the same fields as the master.
 Another way to express this: The English strings in the second column is not pushed to the .resx files.
 To keep the .resx and spreadsheet consistent, diff the column contents. (I used a OpenOffice script for this, but this is not working to my liking when saving in Excel format.)
-  # Save the file in .csv format, Field separation "'", specify the character format to be in UTF-8 (important!)
-  # The script that updates translations is  written by ST user markw65 and used in the !ApplyRoutes plugin, with minor additions. The script is written in perl. I use the script in Cygwin, but other perl versions should work too. The script requires some perl modules like XML::Simple. You will get messages when running it...
+  # Save the file in .csv format, Field separation ",", specify the character format to be in UTF-8 (important!)
+  # The script that updates translations is  written by ST user markw65 (post about this in the [http://www.zonefivesoftware.com/SportTracks/Forums/viewtopic.php?p=34501#34501 invitational ST developers forum] and used in the !ApplyRoutes plugin, with minor additions. The script is written in perl. I use the script in Cygwin, but other perl versions should work too. The script requires some perl modules like XML::Simple. You will get messages when running it...
   # Check the script util/i18n.pl, to see how to adapt inparameters as paths. Example how I run it from the trunk directory:
  {{{$ util/i18n.pl file:g:/Users/go/dev/gc/gps-running/tmp/General6.csv .}}}
  
@@ -23,10 +27,9 @@ Some code (and part of the translation) is shared between the plugins. Not in a 
 {{{$ util/cputil.sh PerformancePredictor}}}
 
 ===Problems===
-For some reason, there are often problems building the plugins. at least for me in VSE 2008.
+For some reason, there are often problems building the plugins, at least for me in VSE 2008.
 The workaround is to try rebuilding several times, the build normally succeeds.
 
-A post in the VSE forum, no response:
-[http://social.msdn.microsoft.com/Forums/en-US/Vsexpressvcs/thread/91b3defe-e7eb-4591-b75e-1e9f86f0848b/]
+A post about this problem in the [http://social.msdn.microsoft.com/Forums/en-US/Vsexpressvcs/thread/91b3defe-e7eb-4591-b75e-1e9f86f0848b/ VSE forum], no response.
 
-For UniqueRoutes, the build however always fails if more than one resource is included. The build action for the .resx must be changed from Embedded Resource to None. When building for a release, enable the resources one by one, save the resources.dll files and include in the .st2plugin manually.
+For UniqueRoutes, the build however always fails if more than one resource is included. The build action for the .resx must be changed from Embedded Resource to None. When building for a release, enable the resources one by one, save the resources.dll files and include in the .st2plugin manually (or use old resources).
