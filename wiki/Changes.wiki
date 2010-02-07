@@ -1,9 +1,11 @@
 #summary Summary Changes
 #labels Featured
 
-Kristian Helkjaer Lassen  (Kristian Bisgaard Lassen before he got married) has put up the code for his plugin here at Google Code. Evry thing has it it time, even if we all wish that Kristian continue to maintain and develop plugins, everything has its time. Open sourcing the code lets everyone take over the maintenance. Right now, ST user gerhard has access rights to the code and has started to do some work with the plugins.
+Kristian Helkjaer Lassen (Kristian Bisgaard Lassen before he got married) has put up the code for his plugin here at Google Code. I enjoy Kristian's plugins very much, they have worked really well for me. Most of the issues posted for the plugins has been that the download site is down or that there are exceptions when installing in other locations. It is likely that some work is required for next major ST version and Kristian has indicated that he not really has time/interest to maintain the plugins right now. Every thing has it it time. Open sourcing the code lets everyone take over the maintenance. Right now, ST user gerhard has access rights to the code and has started to do some work with the plugins.
 
-Not too far in the future, there will be a public beta release that should be working more or less as the the current releases. There is no prebuilt packages yet, but you can check out and build manually. 
+Kristian has added me as a committer on Google Code, I have done some work with the plugins (a lot of the changes were started when I was home with a cold but not had to stay in bed all day). There are not many visible changes. See the Changes page on Google Code for details.
+
+More or less official beta releases are availble in the Downloads section.
 
 ===Changes===
   * Plugin settings are now stored in the ST file Preferences.System.xml file instead of in individual preferences.xml files. The plugin will currently try to parse the old settings file if no information is found in the Preferences.System.xml.
@@ -11,42 +13,41 @@ Not too far in the future, there will be a public beta release that should be wo
   * Works in Mono/Linux, except AccumulatedSummary that uses browser integration. There are no specific changes to achieve this, just the change of storage for preferneces was necessary.
   * Cleaned up labels in graphs/tables and table format. Using the translation information built in to !SportTracks for common information like speed/pace etc. This decreases the job required to make translations, both for making the translations, but even more to handle the strings when building. Another benefit is that this makes the user experience more consistent (always the same format for something like km/h). Note that this information was not available in ST when the plugins were first written, it has been added in a later update.
   * More localisation, following the ST settings for distance, temperature etc.
-  * Input of distance, time can be done in the ST way, i.e. "5km" is handled correctly even if you have the distance set to Miles. For Speed this not available. Foe Pace, the time is always per "distance unit" and can be entered as standard time (like 5:30) or in minutes (5.5 or 5,5 depending on your DecimalSeparator settings).
+  * Input of distance, time can be done in the ST way, i.e. "5km" is handled correctly even if you have the distance set to Miles. For Speed this not available. Foe Pace, the time is always per "distance unit" and can be entered as standard time (like 5:30) or in minutes (5.5 or 5,5 depending on your !DecimalSeparator settings).
   * Documentation is just transferred from the old site at gpsrunning.nicolajsen.nl
   
 ===Bugfixes===
   * Various update issues, like ST restart was required to see changed settings for UniqueRoutes.
-  * Some unit display issues, like Elevation summaries in AccomulatedSummary were always in meters, not in the elevation unit settings.
+  * Some unit display issues, like Elevation summaries in AccumulatedSummary were always in meters, not in the elevation unit settings.
 
 ===Future plans===
 Gerhard currently drives development, the current job is to only minor changes to the functionality, just updating the structure. There will likely be more additions over time. Some thoughts:
 
   * Active Lap info (at least in UniqueRoutes, maybe Overlay too).
-  * Unique Routes "hints" to other plugins where matches were found.
-This is for Overlay and DotRacing to match graphs better.
+  * Unique Routes "hints" to other plugins where matches were found. This is for Overlay and !DotRacing to match graphs better.
   * PerformancePredictor: Age tables?
   * UR, HS: Doubleclick on activity to go to it?
 
-  * TRIMP plugin: No plans for it, I would like recommend users to use
-Training Load instead.
+  * TRIMP plugin: No plans for it, I would like recommend users to use Training Load instead.
   * Accumulated Summary: No immediate plans.
 
 ===Related plugins===
 The Unique Routes plugin is integrated in other plugins.
-MapOverlay/DotRacing should work without changes.
+!MapOverlay/!DotRacing should work without changes.
 Matrix plugin requires a patch: http://matrix.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=102155
 (I could put up a build if there are interest if there is no official release).
 
 ===Migration===
-  * The old plugins under %ProgramFiles%\Zone Five Software\SportTracks 2.1\Plugins must be removed manually.
+  * The old plugins under %!ProgramFiles%\Zone Five Software\!SportTracks 2.1\Plugins must be removed manually.
   * The settings files can be removed after first startup (but there is no harm keeping them if you delete the Preferences.System.xml file, without a backup).
-%APPDATA%\
+{{{%APPDATA%\
   !AccumlatedSummaryPlugin (always empty)
   !HighScorePlugin
   !OverlayPlugin
   !PerformancePredictorPlugin
   !TRIMPPlugin
   !UniqueRoutesPlugin
+}}}
 
 ===Feedback===
 For patches, bugreports or feature suggestions, use the Google Code issue list.
