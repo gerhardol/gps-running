@@ -117,7 +117,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             // 
             this.percentageOff.Location = new System.Drawing.Point(237, 39);
             this.percentageOff.Name = "percentageOff";
-            this.percentageOff.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.percentageOff.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.percentageOff.Size = new System.Drawing.Size(39, 20);
             this.percentageOff.TabIndex = 7;
             // 
