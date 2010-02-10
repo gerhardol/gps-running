@@ -108,7 +108,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
             catch (Exception)
             {
-                ignoreEndBox.Text = Settings.IgnoreEnd.ToString();
+                ignoreEndBox.Text = UnitUtil.Distance.ToString(Settings.IgnoreEnd);
                 new WarningDialog(Resources.EndMeterWarning);
             }
         }
@@ -124,7 +124,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
             catch (Exception)
             {
-                ignoreBeginningBox.Text = Settings.IgnoreBeginning.ToString();
+                ignoreBeginningBox.Text = UnitUtil.Distance.ToString(Settings.IgnoreBeginning);
                 new WarningDialog(Resources.BeginningMeterWarning);
             }
         }
@@ -152,7 +152,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
             catch (Exception)
             {
-                bandwidthBox.Text = Settings.Bandwidth.ToString();
+                bandwidthBox.Text = UnitUtil.Elevation.ToString(Settings.Bandwidth);
                 new WarningDialog(Resources.BandwidthWarning);
             }
         }

@@ -60,9 +60,11 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.pluginBox = new System.Windows.Forms.ComboBox();
             this.selectedBox = new System.Windows.Forms.ComboBox();
             this.sendLabel2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelShow = new System.Windows.Forms.Label();
             this.categoryLabel = new System.Windows.Forms.Label();
             this.changeCategory = new System.Windows.Forms.Button();
+            this.activeBox = new System.Windows.Forms.ComboBox();
+            this.labelLaps = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.summaryView)).BeginInit();
             this.contextMenu.SuspendLayout();
             this.SuspendLayout();
@@ -100,12 +102,12 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.copyTable});
             this.contextMenu.Name = "contextMenu";
-            this.contextMenu.Size = new System.Drawing.Size(197, 26);
+            this.contextMenu.Size = new System.Drawing.Size(199, 26);
             // 
             // copyTable
             // 
             this.copyTable.Name = "copyTable";
-            this.copyTable.Size = new System.Drawing.Size(196, 22);
+            this.copyTable.Size = new System.Drawing.Size(198, 22);
             this.copyTable.Text = "Copy table to clipboard";
             // 
             // progressBar
@@ -131,12 +133,12 @@ namespace SportTracksUniqueRoutesPlugin.Source
             // 
             this.speedBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.speedBox.FormattingEnabled = true;
-            this.speedBox.Location = new System.Drawing.Point(51, 61);
+            this.speedBox.Location = new System.Drawing.Point(178, 61);
             this.speedBox.Name = "speedBox";
             this.speedBox.Size = new System.Drawing.Size(68, 21);
             this.speedBox.TabIndex = 5;
             this.speedBox.Visible = false;
-            this.speedBox.SelectedIndexChanged += new System.EventHandler(this.speedBox_SelectedIndexChanged);
+            this.speedBox.SelectedIndexChanged += new System.EventHandler(this.activeBox_SelectedIndexChanged);
             // 
             // sendResultToLabel1
             // 
@@ -177,14 +179,14 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.sendLabel2.TabIndex = 9;
             this.sendLabel2.Text = "activities to";
             // 
-            // label1
+            // labelShow
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 64);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(34, 13);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Show";
+            this.labelShow.AutoSize = true;
+            this.labelShow.Location = new System.Drawing.Point(13, 64);
+            this.labelShow.Name = "labelShow";
+            this.labelShow.Size = new System.Drawing.Size(34, 13);
+            this.labelShow.TabIndex = 10;
+            this.labelShow.Text = "Show";
             // 
             // categoryLabel
             // 
@@ -205,23 +207,45 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.changeCategory.UseVisualStyleBackColor = true;
             this.changeCategory.Click += new System.EventHandler(this.changeCategory_Click);
             // 
+            // activeBox
+            // 
+            this.activeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.activeBox.FormattingEnabled = true;
+            this.activeBox.Location = new System.Drawing.Point(51, 61);
+            this.activeBox.Name = "activeBox";
+            this.activeBox.Size = new System.Drawing.Size(68, 21);
+            this.activeBox.TabIndex = 14;
+            this.activeBox.Visible = false;
+            this.activeBox.SelectedIndexChanged += new System.EventHandler(this.activeBox_SelectedIndexChanged);
+            // 
+            // labelLaps
+            // 
+            this.labelLaps.AutoSize = true;
+            this.labelLaps.Location = new System.Drawing.Point(125, 64);
+            this.labelLaps.Name = "labelLaps";
+            this.labelLaps.Size = new System.Drawing.Size(30, 13);
+            this.labelLaps.TabIndex = 15;
+            this.labelLaps.Text = "Laps";
+            // 
             // UniqueRoutesActivityDetailView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
+            this.Controls.Add(this.labelLaps);
+            this.Controls.Add(this.activeBox);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.categoryLabel);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelShow);
             this.Controls.Add(this.changeCategory);
             this.Controls.Add(this.sendLabel2);
             this.Controls.Add(this.selectedBox);
             this.Controls.Add(this.pluginBox);
             this.Controls.Add(this.sendResultToLabel1);
             this.Controls.Add(this.doIt);
-            this.Controls.Add(this.speedBox);
             this.Controls.Add(this.summaryView);
             this.Controls.Add(this.summaryLabel);
+            this.Controls.Add(this.speedBox);
             this.Name = "UniqueRoutesActivityDetailView";
             this.Size = new System.Drawing.Size(391, 222);
             ((System.ComponentModel.ISupportInitialize)(this.summaryView)).EndInit();
@@ -244,8 +268,10 @@ namespace SportTracksUniqueRoutesPlugin.Source
         private System.Windows.Forms.ComboBox pluginBox;
         private System.Windows.Forms.ComboBox selectedBox;
         private System.Windows.Forms.Label sendLabel2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelShow;
         private System.Windows.Forms.Label categoryLabel;
         private System.Windows.Forms.Button changeCategory;
+        private System.Windows.Forms.ComboBox activeBox;
+        private System.Windows.Forms.Label labelLaps;
     }
 }

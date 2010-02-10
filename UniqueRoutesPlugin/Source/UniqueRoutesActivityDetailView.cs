@@ -79,7 +79,16 @@ namespace SportTracksUniqueRoutesPlugin.Source
                         row[1] = activity.StartTime.ToLocalTime().ToShortTimeString();
                         row[2] = UnitUtil.Time.ToString(info.Time);
                         row[3] = UnitUtil.Distance.ToString(info.DistanceMeters);
-                        row[4] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, info.AverageSpeedMetersPerSecond);
+                        double speed;
+                        if (Settings.UseActive)
+                        {
+                            speed = info.ActiveLapsTotalDetail.LapDistanceMeters * 1000 / info.ActiveLapsTotalDetail.LapElapsed.TotalMilliseconds;
+                        }
+                        else
+                        {
+                            speed = info.AverageSpeedMetersPerSecond;
+                        }
+                        row[4] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed);
                         row[5] = UnitUtil.HeartRate.ToString(info.AverageHeartRate);
                         table.Rows.Add(row);
                     }
@@ -105,11 +114,13 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
         public void changeSettingsVisibility(bool visible)
         {
-            label1.Visible = visible;
+            labelShow.Visible = visible;
             selectedBox.Visible = visible;
+            activeBox.Visible = visible;
             speedBox.Visible = visible;
             pluginBox.Visible = visible;
             sendLabel2.Visible = visible;
+            labelLaps.Visible = visible;
             doIt.Visible = visible;
             sendResultToLabel1.Visible = visible;
         }
@@ -124,6 +135,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.Activity = activity;
             this.Resize += new EventHandler(UniqueRoutesActivityDetailView_Resize);
             progressBar.Size = new Size(summaryView.Size.Width, progressBar.Height);
+            activeBox.SelectedItem = StringResources.All;
             speedBox.SelectedItem = CommonResources.Text.LabelPace;
             contextMenu.Click += new EventHandler(contextMenu_Click);
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
@@ -219,10 +231,13 @@ namespace SportTracksUniqueRoutesPlugin.Source
         private void correctLanguage()
         {
             sendResultToLabel1.Text = StringResources.Send;
-            label1.Text = StringResources.Show;
+            labelShow.Text = StringResources.Show;
             sendLabel2.Text = StringResources.ActivitiesTo;
             selectedBox.Items.Add(StringResources.All);
             selectedBox.Items.Add(StringResources.Selected);
+            labelLaps.Text = CommonResources.Text.LabelSplits;
+            activeBox.Items.Add(StringResources.All);
+            activeBox.Items.Add(StringResources.Active);
             speedBox.Items.Add(CommonResources.Text.LabelPace);
             speedBox.Items.Add(CommonResources.Text.LabelSpeed);
             doIt.Text = Resources.DoIt;
@@ -230,8 +245,8 @@ namespace SportTracksUniqueRoutesPlugin.Source
             correctUI(new Control[] { selectedBox, sendLabel2, pluginBox, doIt });
             sendResultToLabel1.Location = new Point(selectedBox.Location.X - 5 - sendResultToLabel1.Size.Width,
                                         sendLabel2.Location.Y);
-            label1.Location = new Point(speedBox.Location.X - 5 - label1.Size.Width,
-                                    label1.Location.Y);
+            labelShow.Location = new Point(activeBox.Location.X - 5 - labelShow.Size.Width,
+                                    labelShow.Location.Y);
         }
 
         private void setCategoryLabel()
@@ -402,6 +417,12 @@ namespace SportTracksUniqueRoutesPlugin.Source
                     pace++;
             }
             Settings.ShowPace = pace >= speed;
+        }
+
+        private void activeBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Settings.UseActive = activeBox.SelectedItem.Equals(StringResources.Active);
+            setTable();
         }
 
         private void speedBox_SelectedIndexChanged(object sender, EventArgs e)
