@@ -88,6 +88,13 @@ namespace SportTracksUniqueRoutesPlugin.Source
             set { hasDirection = value; }
         }
 
+        private static bool useActive;
+        public static bool UseActive
+        {
+            get { return useActive; }
+            set { useActive = value; }
+        }
+
         private static double ignoreBeginning;
         public static double IgnoreBeginning
         {
@@ -130,6 +137,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             errorMargin = 0.1;
             bandwidth = 40;
             hasDirection = false;
+            useActive = false;
             ignoreBeginning = 0;
             ignoreEnd = 0;
             selectAll = true;
@@ -158,6 +166,8 @@ namespace SportTracksUniqueRoutesPlugin.Source
             if (attr.Length > 0) { bandwidth = XmlConvert.ToInt16(attr); }
             attr = pluginNode.GetAttribute(xmlTags.hasDirection);
             if (attr.Length > 0) { hasDirection = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.useActive);
+            if (attr.Length > 0) { useActive = XmlConvert.ToBoolean(attr); }
             attr = pluginNode.GetAttribute(xmlTags.ignoreBeginning);
             if (attr.Length > 0) { ignoreBeginning = (float)XmlConvert.ToDouble(attr); }
             attr = pluginNode.GetAttribute(xmlTags.ignoreEnd);
@@ -183,6 +193,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             pluginNode.SetAttribute(xmlTags.errorMargin, XmlConvert.ToString(errorMargin));
             pluginNode.SetAttribute(xmlTags.bandwidth, XmlConvert.ToString(bandwidth));
             pluginNode.SetAttribute(xmlTags.hasDirection, XmlConvert.ToString(hasDirection));
+            pluginNode.SetAttribute(xmlTags.useActive, XmlConvert.ToString(useActive));
             pluginNode.SetAttribute(xmlTags.ignoreBeginning, XmlConvert.ToString(ignoreBeginning));
             pluginNode.SetAttribute(xmlTags.ignoreEnd, XmlConvert.ToString(ignoreEnd));
             pluginNode.SetAttribute(xmlTags.selectAll, XmlConvert.ToString(selectAll));
@@ -204,6 +215,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             public const string errorMargin = "errorMargin";
             public const string bandwidth = "bandwidth";
             public const string hasDirection = "hasDirection";
+            public const string useActive = "useActive";
             public const string ignoreBeginning = "ignoreBeginning";
             public const string ignoreEnd = "ignoreEnd";
             public const string selectAll = "selectAll";
