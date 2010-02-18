@@ -408,7 +408,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
                 {
                     row[1] = UnitUtil.Distance.ToString(length, Settings.Distances[length].Keys[0], "u");
                 }
-                row[2] = UnitUtil.Time.ToString(new_time, "mm:ss");
+                row[2] = UnitUtil.Time.ToString(new_time);
                 double speed = new_dist / new_time;
                 row[3] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed);
                 row[4] = foundActivity.StartTime.ToLocalTime().ToShortDateString();
