@@ -64,6 +64,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
                 IList<double> partialDistances = new List<double>();
                 foreach (double distance in Settings.Distances.Keys)
                 {
+                    //Scale down the distances, so we get the high scores
                     partialDistances.Add(distance * Settings.PercentOfDistance / 100.0);
                 }
                 training.Checked = false;
@@ -151,8 +152,8 @@ namespace SportTracksPerformancePredictorPlugin.Source
             form.StartPosition = FormStartPosition.CenterScreen;
             form.Icon = Icon.FromHandle(Properties.Resources.Image_32_PerformancePredictor.GetHicon());
             form.Show();
-            if (activities.Count == 1) form.Text = Resources.PPHS + StringResources.ForOneActivity;
-            else form.Text = Resources.PPHS + String.Format(StringResources.ForManyActivities, activities.Count);
+            if (activities.Count == 1) form.Text = Resources.PPHS + " " + StringResources.ForOneActivity;
+            else form.Text = Resources.PPHS + " " + String.Format(StringResources.ForManyActivities, activities.Count);
             Activities = activities;
         }
 
@@ -381,24 +382,24 @@ namespace SportTracksPerformancePredictorPlugin.Source
             series.Points.Clear();
 
             int index = 0;
-
             foreach (IList<Object> result in results)
             {
                 IActivity foundActivity = (IActivity)result[0];
-                int old_time = (int)result[1];
+                double old_time = double.Parse(result[1].ToString());
                 double meterStart = (double)result[2];
                 double meterEnd = (double)result[3];
-                int timeStart = 0;
-                if (result.Count > 4) { timeStart = (int)result[4]; }
+                double timeStart = 0;
+                if (result.Count > 4) { timeStart = double.Parse(result[4].ToString()); }
                 double old_dist = meterEnd - meterStart;
-                double new_dist = old_dist * (100 / Settings.PercentOfDistance);
+                double new_dist = old_dist * 100 / Settings.PercentOfDistance;
                 double new_time = predict(new_dist, old_dist, old_time);
                 series.Points.Add(index,
                     new PointF((float)UnitUtil.Distance.ConvertFrom(new_dist), (float)new_time));
 
+                //length is the distance HighScore tried to get strech for, may differ to actual dist
                 double length = Settings.Distances.Keys[index];
                 DataRow row = set.NewRow();
-                row[0] = UnitUtil.Distance.ToString(length);
+                row[0] = UnitUtil.Distance.ToString(new_dist);
                 if (Settings.Distances[length].Values[0])
                 {
                     row[1] = UnitUtil.Distance.ToString(length, "u");
@@ -407,12 +408,12 @@ namespace SportTracksPerformancePredictorPlugin.Source
                 {
                     row[1] = UnitUtil.Distance.ToString(length, Settings.Distances[length].Keys[0], "u");
                 }
-                row[2] = UnitUtil.Time.ToString(new_time);
+                row[2] = UnitUtil.Time.ToString(new_time, "mm:ss");
                 double speed = new_dist / new_time;
                 row[3] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed);
                 row[4] = foundActivity.StartTime.ToLocalTime().ToShortDateString();
                 row[5] = foundActivity.StartTime.AddSeconds(timeStart).ToLocalTime().ToShortTimeString();
-                row[6] = new TimeSpan(0, 0, old_time);
+                row[6] = UnitUtil.Time.ToString(old_time);
                 row[7] = UnitUtil.Distance.ToString(meterStart);
                 row[8] = UnitUtil.Distance.ToString(old_dist);
                 set.Rows.Add(row);
