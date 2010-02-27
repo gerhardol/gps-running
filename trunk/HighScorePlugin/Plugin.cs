@@ -67,6 +67,7 @@ namespace SportTracksHighScorePlugin
 
         public void WriteOptions(XmlDocument xmlDoc, XmlElement pluginNode)
         {
+            pluginNode.SetAttribute(xmlTags.Verbose, XmlConvert.ToString(Verbose));
             Settings.WriteOptions(xmlDoc, pluginNode);
         }
 
