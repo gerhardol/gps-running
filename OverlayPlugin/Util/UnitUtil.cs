@@ -676,7 +676,7 @@ namespace SportTracksOverlayPlugin.Util
                 string str = "";
                 if (fmt.EndsWith("U")) { str = " " + Label; fmt = fmt.Remove(fmt.Length - 1); }
                 if (fmt.EndsWith("u")) { str = " " + LabelAbbr; fmt = fmt.Remove(fmt.Length - 1); }
-                str += new TimeSpan(0, 0, (int)Math.Round(pace)).ToString();
+                str = new TimeSpan(0, 0, (int)Math.Round(pace)).ToString() + str;
                 if (str.StartsWith("00:")){str = str.Substring(3); }
                 return str;
             }

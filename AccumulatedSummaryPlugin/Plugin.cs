@@ -64,6 +64,7 @@ namespace SportTracksAccumulatedSummaryPlugin
 
         public void WriteOptions(XmlDocument xmlDoc, XmlElement pluginNode)
         {
+            pluginNode.SetAttribute(xmlTags.Verbose, XmlConvert.ToString(Verbose));
         }
 
         #endregion
