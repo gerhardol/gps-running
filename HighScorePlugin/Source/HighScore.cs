@@ -504,6 +504,7 @@ namespace SportTracksHighScorePlugin.Source
                 table.Columns.Add(CommonResources.Text.LabelDate);
                 table.Columns.Add(CommonResources.Text.LabelLocation);
             }
+            table.Columns.Add(HighScoreViewer.ActivityIdColumn);
             foreach (Result result in results)
             {
                 if (result != null && result.Goal.Domain.Equals(domain) && 
@@ -533,6 +534,7 @@ namespace SportTracksHighScorePlugin.Source
                         row[7] = result.Activity.StartTime.ToShortDateString();
                         row[8] = result.Activity.Location;
                     }
+                    row[HighScoreViewer.ActivityIdColumn] = result.Activity.ReferenceId;
                     table.Rows.Add(row);
                 }
             }

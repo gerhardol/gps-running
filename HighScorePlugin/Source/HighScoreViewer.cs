@@ -23,8 +23,10 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
-using ZoneFiveSoftware.Common.Data.Fitness;
+using System.Reflection;
 using System.Collections;
+
+using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Visuals.Chart;
@@ -78,6 +80,7 @@ namespace SportTracksHighScorePlugin.Source
             convertLanguage();
 
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
+            dataGrid.CellContentDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
             
             this.showDialog = showDialog;
             this.includeLocationAndDate = includeLocationAndDate;
@@ -514,11 +517,11 @@ namespace SportTracksHighScorePlugin.Source
             }
             if (table.Rows.Count > 0)
             {
-                dataGrid.Visible = true;
                 dataGrid.DataSource = table;
                 dataGrid.ShowCellToolTips = true;
                 foreach (DataGridViewColumn column in dataGrid.Columns)
                     column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                dataGrid.Visible = true;
                 setSize();
             }
             else
@@ -631,23 +634,49 @@ namespace SportTracksHighScorePlugin.Source
             setSize();
         }
 
+        private void selectedRow_DoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Guid view = new Guid("1dc82ca0-88aa-45a5-a6c6-c25f56ad1fc3");
+
+            int rowIndex = e.RowIndex;
+            if (rowIndex >= 0 && dataGrid.Columns[ActivityIdColumn] != null)
+            {
+                object id = dataGrid.Rows[rowIndex].Cells[ActivityIdColumn].Value;
+                if (id != null)
+                {
+                    string bookmark = "id=" + id;
+                    Plugin.GetApplication().ShowView(view, bookmark);
+                }
+            }
+        }
+
+        public const string ActivityIdColumn = "ActivityId";
         private void setSize()
         {
-            if (showDialog && Parent != null)
+            if (showDialog || Parent != null)
             {
                 Size = new Size(Parent.Size.Width - 10, //paceBox.Location.X + paceBox.Width),
                                 Parent.Size.Height - 10);
                 progressBar.Size = new Size(Size.Width, progressBar.Height);
-                Settings.WindowSize = new Size(Parent.Size.Width, Parent.Size.Height);
+                if (showDialog)
+                {
+                    Settings.WindowSize = new Size(Parent.Size.Width, Parent.Size.Height);
+                }
             }
             if (dataGrid.Columns.Count > 0 && dataGrid.Rows.Count > 0)
             {
-                int columnWidth = 
-                    ((Size.Width - dataGrid.Location.X - 10)
-                    / dataGrid.Columns.Count);
                 foreach (DataGridViewColumn column in dataGrid.Columns)
                 {
-                    column.Width = columnWidth;
+                    if (column.Name.Equals(ActivityIdColumn))
+                    {
+                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                        column.Width = 0;
+                        column.Visible = false;
+                    }
+                    else
+                    {
+                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    }
                 }
                 dataGrid.Size = new Size(
                     Size.Width - dataGrid.Location.X - 15,

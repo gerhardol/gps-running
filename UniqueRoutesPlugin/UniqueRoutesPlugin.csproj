@@ -85,6 +85,7 @@
     <Compile Include="Source\CategorySelector.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Source\CommonStretches.cs" />
     <Compile Include="Source\GPSGrid.cs" />
     <Compile Include="Source\UniqueRoutes.cs" />
     <Compile Include="Source\UniqueRoutesActivityDetailView.cs">
