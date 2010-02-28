@@ -149,6 +149,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             form.Controls.Add(this);
             form.Size = Settings.WindowSize;
             Parent.SizeChanged += new EventHandler(Parent_SizeChanged);
+            dataGrid.CellContentDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
             form.StartPosition = FormStartPosition.CenterScreen;
             form.Icon = Icon.FromHandle(Properties.Resources.Image_32_PerformancePredictor.GetHicon());
             form.Show();
@@ -190,12 +191,16 @@ namespace SportTracksPerformancePredictorPlugin.Source
         private void setSize()
         {
             int rpch = 0, rpcw = 0;
+            const int chartLabelSize = 20;
             if (form != null)
             {
                 if (null == Parent)
                 {
                     //Should only occur when switching language
-                    Size = new Size();
+                    if (Size == null)
+                    {
+                        Size = new Size();
+                    }
                 }
                 else
                 {
@@ -204,50 +209,36 @@ namespace SportTracksPerformancePredictorPlugin.Source
                 rpch = 40;
                 rpcw = 10;
             }
-            chart.Size = new Size(Size.Width - chart.Location.X - rpcw,
+            chart.Size = new Size(Size.Width - chart.Location.X - rpcw - chartLabelSize,
                 Size.Height - chart.Location.Y - rpch);
-            trainingView.Size = chart.Size;
-            int columnWidth;
-            if (activities != null && activities.Count > 0)
+            chart.AutozoomToData(true);
+            trainingView.Size = new Size(Size.Width - chart.Location.X - rpcw,
+                Size.Height - chart.Location.Y - rpch);
+            if (dataGrid.Columns.Count > 0 && dataGrid.Rows.Count > 0)
             {
-                columnWidth = (int)Math.Floor((chart.Size.Width - 15)/ 10.0);
-            }
-            else
-            {
-                columnWidth = (int)Math.Floor((chart.Size.Width - 15) / 4.0);
-            }
-            foreach (DataGridViewColumn column in dataGrid.Columns)
-            {
-                column.Width = columnWidth;
-                column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            }
-            int height = dataGrid.ColumnHeadersHeight;
-            if (dataGrid.Rows.Count > 0)
-            {
-                height += dataGrid.Rows[0].Height * dataGrid.Rows.Count;
-            }
-            if (height > chart.Size.Height)
-            {
-                height = chart.Size.Height;
-            }
-            int width = 0;
-            PropertyInfo propInfo = dataGrid.GetType().GetProperty("VerticalScrollBar",
-                        BindingFlags.Instance | BindingFlags.NonPublic);
-            if (propInfo != null)
-            {
-                ScrollBar propValue = propInfo.GetValue(dataGrid, null) as ScrollBar;
-                if (propValue != null)
+                foreach (DataGridViewColumn column in dataGrid.Columns)
                 {
-                    if (propValue.Visible)
+                    if (column.Name.Equals(ActivityIdColumn))
                     {
-                        width += propValue.Width;
+                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                        column.Width = 0;
+                        column.Visible = false;
+                    }
+                    else
+                    {
+                        column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                     }
                 }
+
+                dataGrid.Size = new Size(
+                    Size.Width - dataGrid.Location.X - 15,
+                    dataGrid.Rows[0].Height * dataGrid.Rows.Count
+                    + dataGrid.ColumnHeadersHeight + 2);
             }
-            dataGrid.Size = new Size(chart.Size.Width - 17+width,
-                    height-3);
         }
 
+        private const string ActivityIdColumn = "ActivityId";
         private void setView()
         {
             dataGrid.Visible = false;
@@ -288,6 +279,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
                     break;
             }
             if (table.Rows.Count == 0 || series.Points.Count == 0) return;
+
             dataGrid.DataSource = table;
             if (chart != null && !chart.IsDisposed)
             {
@@ -328,16 +320,16 @@ namespace SportTracksPerformancePredictorPlugin.Source
             {
                 ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
 
-                if (info.DistanceMetersMoving == 0 || info.Time.TotalSeconds == 0)
+                if (info.DistanceMeters == 0 || info.Time.TotalSeconds == 0)
                 {
                     setView();
                     return;
                 }
 
                 makeData(cameronSet, cameronSeries, Cameron,
-                    info.DistanceMetersMoving, info.Time.TotalSeconds);
+                    info.DistanceMeters, info.Time.TotalMilliseconds / 1000);
                 makeData(riegelSet, riegelSeries, Riegel,
-                    info.DistanceMetersMoving, info.Time.TotalSeconds);
+                    info.DistanceMeters, info.Time.TotalMilliseconds / 1000);
             }
             setView();
         }
@@ -379,6 +371,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             set.Columns.Add(Resources.UsedTimeOfActivity, typeof(TimeSpan));
             set.Columns.Add(Resources.StartOfPart + UnitUtil.Distance.LabelAbbr2);
             set.Columns.Add(Resources.UsedLengthOfActivity + UnitUtil.Distance.LabelAbbr2);
+            set.Columns.Add(ActivityIdColumn);
             series.Points.Clear();
 
             int index = 0;
@@ -416,6 +409,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
                 row[6] = UnitUtil.Time.ToString(old_time);
                 row[7] = UnitUtil.Distance.ToString(meterStart);
                 row[8] = UnitUtil.Distance.ToString(old_dist);
+                row[ActivityIdColumn] = foundActivity.ReferenceId;
                 set.Rows.Add(row);
                 index++;
             }
@@ -439,7 +433,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             }
         }
 
-        private void makeData(DataTable set, ChartDataSeries series,
+        private void makeData(DataTable set, ChartDataSeries series, 
             PredictTime predict, double old_dist, double old_time)
         {
             set.Clear();
@@ -455,6 +449,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             {
                 set.Columns.Add(UnitUtil.Speed.LabelAxis, typeof(double));
             }
+
             series.Points.Clear();
 
             int index = 0;
@@ -569,6 +564,21 @@ namespace SportTracksPerformancePredictorPlugin.Source
                 Settings.ShowPace = false;
                 makeData();
                 trainingView.setPages();
+            }
+        }
+        private void selectedRow_DoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Guid view = new Guid("1dc82ca0-88aa-45a5-a6c6-c25f56ad1fc3");
+
+            int rowIndex = e.RowIndex;
+            if (rowIndex >= 0 && dataGrid.Columns[ActivityIdColumn] != null)
+            {
+                object id = dataGrid.Rows[rowIndex].Cells[ActivityIdColumn].Value;
+                if (id != null)
+                {
+                    string bookmark = "id=" + id;
+                    Plugin.GetApplication().ShowView(view, bookmark);
+                }
             }
         }
 

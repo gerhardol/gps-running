@@ -167,7 +167,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             weightGrid.Visible = true;
             ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
             weightLabel.Text = Resources.ProjectedWeightImpact + " " +
-                UnitUtil.Distance.ToString(info.DistanceMetersMoving, "u");
+                UnitUtil.Distance.ToString(info.DistanceMeters, "u");
             TimeSpan time = info.Time;
             DataTable set = new DataTable();
             set.Columns.Add(Resources.ProjectedWeight + UnitUtil.Weight.LabelAbbr2);
@@ -197,7 +197,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             double projVdot = vdot * weight / projWeight;
             time = scaleTime(time, Math.Pow(vdot / projVdot, 0.83));
 
-            double speed = info.DistanceMetersMoving / time.TotalSeconds;
+            double speed = info.DistanceMeters * 1000 / time.TotalMilliseconds;
             string str;
             str = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed);
 
@@ -217,8 +217,8 @@ namespace SportTracksPerformancePredictorPlugin.Source
         {
             ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
             TimeSpan time = info.Time;
-            temperatureLabel.Text = Resources.ProjectedTemperatureImpact+" "+UnitUtil.Distance.ToString(info.DistanceMetersMoving,"u");
-            double speed = info.DistanceMetersMoving / time.TotalSeconds;
+            temperatureLabel.Text = Resources.ProjectedTemperatureImpact+" "+UnitUtil.Distance.ToString(info.DistanceMeters,"u");
+            double speed = info.DistanceMeters * 1000 / time.TotalMilliseconds;
             DataTable set = new DataTable();
             set.Columns.Add(CommonResources.Text.LabelTemperature + UnitUtil.Temperature.LabelAbbr2);
             set.Columns.Add(Resources.AdjustedTime);
@@ -269,7 +269,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             set.Columns.Add(Length.ToString(5, Length.Units.Kilometer, "F0u"));
             set.Columns.Add(Length.ToString(10, Length.Units.Kilometer, "F0u"));
             ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
-            double distance = info.DistanceMetersMoving;
+            double distance = info.DistanceMeters;
             double seconds = info.Time.TotalSeconds;
             double mileSpeed = getTrainingSpeed(1609.344, distance, seconds);
             double k5Speed = getTrainingSpeed(5000, distance, seconds);
@@ -317,7 +317,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             paceTempoGrid.DataSource = set;
         }
 
-       private TimeSpan scaleTime(TimeSpan pace, double p)
+        private TimeSpan scaleTime(TimeSpan pace, double p)
         {
             return new TimeSpan(0, 0, 0, 0, (int)Math.Round(pace.TotalMilliseconds * p));
         }
@@ -390,7 +390,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
         {
             ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
             double seconds = info.Time.TotalSeconds;
-            double distance = info.DistanceMetersMoving;
+            double distance = info.DistanceMeters;
             double[] result = new double[15];
             result[0] = getTrainingSpeed(vdot, percentages[0]);
             result[1] = getTrainingSpeed(vdot, percentages[1]);
@@ -456,18 +456,18 @@ namespace SportTracksPerformancePredictorPlugin.Source
         private double getVo2max(IActivity activity)
         {
             ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
-            return 0.8 + 0.1894393 * Math.Exp(-0.012778 * info.Time.TotalMinutes)
-                + 0.2989558 * Math.Exp(-0.1932605 * info.Time.TotalMinutes);
+            return 0.8 + 0.1894393 * Math.Exp(-0.012778 * info.Time.TotalMilliseconds / 60000)
+                + 0.2989558 * Math.Exp(-0.1932605 * info.Time.TotalMilliseconds / 60000);
         }
 
         private double getVdot(IActivity activity)
         {
             ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
-            return (-4.6 + 0.182258 * (info.DistanceMetersMoving / info.Time.TotalMinutes)
-                + 0.000104 * Math.Pow(info.DistanceMetersMoving / info.Time.TotalMinutes, 2)) 
+            return (-4.6 + 0.182258 * (info.DistanceMeters * 60000 / info.Time.TotalMilliseconds)
+                + 0.000104 * Math.Pow(info.DistanceMeters * 60000 / info.Time.TotalMilliseconds, 2)) 
                 / getVo2max(activity);
         }
-        //Table from Kristian Bisgaard Lassen (unknown sourse)
+        //Table from Kristian Bisgaard Lassen (unknown source)
         //Celcius factor
         //16 1
         //18 1.0075

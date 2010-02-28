@@ -28,6 +28,7 @@ using ZoneFiveSoftware.Common.Data.Fitness;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Collections;
+using System.Reflection;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Data.Algorithm;
@@ -63,9 +64,9 @@ namespace SportTracksOverlayPlugin.Source
         private System.Windows.Forms.Panel panelAct;
         private Label labelActivity;
         private IDictionary<ChartDataSeries, IActivity> series2activity;
-        
-        private IList<double> actOffsets;
-        private IDictionary<System.Windows.Forms.TextBox, int> actBoxes;
+
+        private IDictionary<IActivity, IList<double>> actOffsets;
+        private IDictionary<System.Windows.Forms.TextBox, IActivity> actBoxes;
         private IList<System.Windows.Forms.TextBox> actTextBoxes;
         private IDictionary<ChartDataSeries, System.Windows.Forms.TextBox> series2actBoxes;
 
@@ -91,35 +92,53 @@ namespace SportTracksOverlayPlugin.Source
                     activities.Add(activity);
                     activity.DataChanged += new NotifyDataChangedEventHandler(activity_DataChanged);
                 }
+                //Temporary
+                if (Plugin.Verbose > 100 && Settings.uniqueRoutes != null)
+                {
+                    MethodInfo methodInfo = Settings.uniqueRoutes.GetMethod("findSimilarStretch");
+                    IDictionary<IActivity, IList<IList<int>>> result = 
+                        (IDictionary<IActivity, IList<IList<int>>>)methodInfo.Invoke(this, new object[] { activities[0], activities });
+
+                }
                 activities.Sort(new ActivityDateComparer());
+
                 nextIndex = 0;
                 int x = 0;
                 int y = 0;
                 int index = 0;
 
-                actOffsets = new List<double>();
-                actBoxes = new Dictionary<System.Windows.Forms.TextBox, int>();
+                actOffsets = new Dictionary<IActivity, IList<double>>();
+                actBoxes = new Dictionary<System.Windows.Forms.TextBox, IActivity>();
                 actTextBoxes = new List<System.Windows.Forms.TextBox>();
                 checks = new List<bool>();
                 boxes = new Dictionary<CheckBox, int>();
                 checkBoxes = new List<CheckBox>();
-                
+
                 foreach (IActivity activity in activities)
                 {
                     x = 0;
+                    IList<double> s = new List<double>();
+                    s.Add(0);
+                    s.Add(0);
+                    actOffsets.Add(activity, s);//Get from UR integration
 
                     System.Windows.Forms.TextBox offBox = new System.Windows.Forms.TextBox();
                     actTextBoxes.Add(offBox);
-                    offBox.Text = "0";
-                    offBox.Size = new Size(30,20);
-                    offBox.Visible = true;
+                    offBox.Size = new Size(30, 20);
                     offBox.LostFocus += new EventHandler(offBox_LostFocus);
                     offBox.Location = new Point(x, y);
-                    actOffsets.Add(0);
                     panelAct.Controls.Add(offBox);
                     offBox.Name = "offsetBox";
-                    actBoxes.Add(offBox, index);
-                    x += 35;
+                    actBoxes.Add(offBox, activity);
+                    if (Plugin.Verbose > 0)
+                    {
+                        offBox.Visible = true;
+                        x += 35;
+                    }
+                    else
+                    {
+                        offBox.Visible = false;
+                    }
 
                     CheckBox box = new CheckBox();
                     checkBoxes.Add(box);
@@ -207,11 +226,11 @@ namespace SportTracksOverlayPlugin.Source
             maBox.LostFocus += new EventHandler(maBox_LostFocus);
             if (Settings.ShowTime)
             {
-                maBox.Text = UnitUtil.Time.ToString(Settings.MovingAverageTime);
+                maBox.Text = UnitUtil.Time.ToString(Settings.MovingAverageTime, "mm:ss");
             }
             else
             {
-                maBox.Text = UnitUtil.Distance.ToString(Settings.MovingAverageLength);
+                maBox.Text = UnitUtil.Elevation.ToString(Settings.MovingAverageLength);
             }
             updateMovingAverage();
             if (Settings.ShowTime)
@@ -227,6 +246,7 @@ namespace SportTracksOverlayPlugin.Source
             chart.SelectData += new ChartBase.SelectDataHandler(chart_SelectData);
             chart.Click += new EventHandler(chart_Click);
             dontUpdate = false;
+            updateLabels();
             updateChart();
             if (showDialog)
             {
@@ -427,6 +447,24 @@ namespace SportTracksOverlayPlugin.Source
             return average;
         }
 
+        private void updateOffBoxLabel(System.Windows.Forms.TextBox box)
+        {
+           if (Settings.ShowTime)
+            { 
+               box.Text = UnitUtil.Time.ToString(actOffsets[actBoxes[box]][0], "mm:ss");
+            }
+            else
+            {
+                box.Text = UnitUtil.Distance.ToString(actOffsets[actBoxes[box]][1], "F3"); 
+            }
+        }
+        private void updateLabels()
+        {
+            foreach (System.Windows.Forms.TextBox box in actTextBoxes)
+            {
+                updateOffBoxLabel(box);
+            }
+         }
         private void updateChart()
         {
             if (dontUpdate) return;
@@ -633,12 +671,22 @@ namespace SportTracksOverlayPlugin.Source
             {
                 if (checks[index])
                 {
+                    double offset;
+                    if (Settings.ShowTime)
+                    {
+                        offset = actOffsets[activity][0];
+                    }
+                    else
+                    {
+                        offset = actOffsets[activity][1];
+                    }
                     ChartDataSeries series = getDataSeries(
                         interpolator, 
                         canInterpolator, 
                         ActivityInfoCache.Instance.GetInfo(activity),
                         axis,
-                        getDataSeriess);
+                        getDataSeriess,
+                        offset);
                     series2actBoxes.Add(series, actTextBoxes[index]);
                     series2boxes.Add(series, checkBoxes[index]);
                     series2activity.Add(series, activity);
@@ -659,7 +707,8 @@ namespace SportTracksOverlayPlugin.Source
 
         private ChartDataSeries getDataSeries(Interpolator interpolator,
             CanInterpolater canInterpolater, ActivityInfo info, IAxis axis,
-            GetDataSeries getDataSeries)
+            GetDataSeries getDataSeries,
+            double offset)
         {
             ChartDataSeries series = new ChartDataSeries(chart, axis);
             if (!canInterpolater(info))
@@ -682,14 +731,14 @@ namespace SportTracksOverlayPlugin.Source
                     float x = float.NaN;
                     if (Settings.ShowTime)
                     {
-                        x = elapsed;
+                        x = (float)(elapsed+offset);
                     }
                     else
                     {
                         ITimeValueEntry<float> entryMoving = info.MovingDistanceMetersTrack.GetInterpolatedValue(info.Activity.StartTime.AddSeconds(elapsed));
                         if (entryMoving != null && (first || (!first && entryMoving.Value > 0)))
                         {
-                            x = (float)UnitUtil.Distance.ConvertFrom(entryMoving.Value);
+                            x = (float)UnitUtil.Distance.ConvertFrom(entryMoving.Value + offset);
                         }
                     }
                     float y = (float)interpolator(entry.Value);
@@ -848,6 +897,7 @@ namespace SportTracksOverlayPlugin.Source
             // panelAct
             // 
             this.panelAct.AutoScroll = true;
+            this.panelAct.AutoSize = true;
             this.panelAct.Location = new System.Drawing.Point(3, 130);
             this.panelAct.Name = "panelAct";
             this.panelAct.Size = new System.Drawing.Size(138, 147);
@@ -970,28 +1020,22 @@ namespace SportTracksOverlayPlugin.Source
             System.Windows.Forms.TextBox box = (System.Windows.Forms.TextBox)sender;
             try
             {
+                //Recalculate other offset here?
                 if (Settings.ShowTime)
                 {
-                    actOffsets[actBoxes[box]] = UnitUtil.Time.Parse(box.Text);
+                    actOffsets[actBoxes[box]][0] = UnitUtil.Time.Parse(box.Text);
                 }
                 else
                 {
-                    actOffsets[actBoxes[box]] = UnitUtil.Distance.Parse(box.Text);
+                    actOffsets[actBoxes[box]][1] = UnitUtil.Distance.Parse(box.Text);
                 }
             }
             catch
             {
-                if (Settings.ShowTime)
-                {
-                    box.Text = "0";
-                }
-                else
-                {
-                    box.Text = "0";
-                }
+                //Other warning here?
                 new WarningDialog(Resources.NonNegativeNumber);
             }
-            updateChart();
+            updateOffBoxLabel(box);
         }
 
         private void box_CheckedChanged(object sender, EventArgs e)
@@ -1014,7 +1058,7 @@ namespace SportTracksOverlayPlugin.Source
                 }
                 else
                 {
-                    double value = UnitUtil.Distance.Parse(maBox.Text);
+                    double value = UnitUtil.Elevation.Parse(maBox.Text);
                     if (value < 0) { throw new Exception(); }
                     Settings.MovingAverageLength = value;
                     maBox.Text = UnitUtil.Distance.ToString(value);
@@ -1083,6 +1127,7 @@ namespace SportTracksOverlayPlugin.Source
             if (!Settings.ShowTime)
             {
                 Settings.ShowTime = true;
+                updateLabels();
                 updateChart();
                 updateMovingAverage();
             }
@@ -1093,6 +1138,7 @@ namespace SportTracksOverlayPlugin.Source
             if (Settings.ShowTime)
             {
                 Settings.ShowTime = false;
+                updateLabels();
                 updateChart();
                 updateMovingAverage();
             }
@@ -1153,8 +1199,8 @@ namespace SportTracksOverlayPlugin.Source
             }
             else
             {
-                movingAverageLabel.Text = UnitUtil.Distance.LabelAbbr;
-                maBox.Text = UnitUtil.Distance.ToString(Settings.MovingAverageLength);
+                movingAverageLabel.Text = UnitUtil.Elevation.LabelAbbr;
+                maBox.Text = UnitUtil.Elevation.ToString(Settings.MovingAverageLength);
             }
             maBox.Enabled = Settings.ShowMovingAverage;
         }

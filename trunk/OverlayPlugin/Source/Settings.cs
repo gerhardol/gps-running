@@ -24,6 +24,7 @@ using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
+using System.Reflection;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using SportTracksOverlayPlugin.Properties;
 
@@ -33,8 +34,11 @@ namespace SportTracksOverlayPlugin.Source
     {
         static Settings()
         {
+            uniqueRoutes = getPlugin("UniqueRoutes", "SportTracksUniqueRoutesPlugin.Source.UniqueRoutes");
             defaults();
         }
+
+        public readonly static Type uniqueRoutes;
 
         private static bool autoZoom;
         public static bool AutoZoom
@@ -314,5 +318,26 @@ namespace SportTracksOverlayPlugin.Source
             double d = double.Parse(p, NumberFormatInfo.InvariantInfo);
             return d;
         }
+        private static Type getPlugin(string plugin, string klass)
+        {
+            try
+            {
+                //List the assemblies in the current application domain
+                AppDomain currentDomain = AppDomain.CurrentDomain;
+                Assembly[] assems = currentDomain.GetAssemblies();
+
+                foreach (Assembly assem in assems)
+                {
+                    AssemblyName assemName = new AssemblyName((assem.FullName));
+                    if (assemName.Name.Equals(plugin + "Plugin"))
+                    {
+                        return assem.GetType(klass);
+                    }
+                }
+            }
+            catch (Exception) { }
+            return null;
+        }
+
     }
 }

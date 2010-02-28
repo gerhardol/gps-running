@@ -42,13 +42,9 @@ namespace SportTracksHighScorePlugin.Source
         }
 
         public readonly static SortedList<double, bool> distances;
-
         public readonly static SortedList<int, TimeSpan> times;
-
         public readonly static SortedList<double, bool> elevations;
-
         public readonly static SortedList<double, SortedList<double, bool>> pulseZones;
-
         public readonly static SortedList<double, SortedList<double, bool>> speedZones;
 
         private static bool showTable;
@@ -616,3 +612,5 @@ namespace SportTracksHighScorePlugin.Source
         }
     }
 }
+
+

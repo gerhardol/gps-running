@@ -127,7 +127,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.doIt.Text = "Do it!";
             this.doIt.UseVisualStyleBackColor = true;
             this.doIt.Visible = false;
-            this.doIt.Click += new System.EventHandler(this.highScoreButton_Click);
+            this.doIt.Click += new System.EventHandler(this.sendActivityButton_Click);
             // 
             // speedBox
             // 

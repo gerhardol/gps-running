@@ -38,6 +38,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
     public partial class UniqueRoutesActivityDetailView : UserControl
     {
         private IList<IActivity> similar;
+        private IDictionary<string, string> similarToolTip;
         private IActivity activity;
         public IActivity Activity
         {
@@ -58,6 +59,8 @@ namespace SportTracksUniqueRoutesPlugin.Source
             get { return activity; }
         }
 
+        //Column hidden to store ActivityId, used to open links
+        private const string ActivityIdColumn = "ActivityId";
         private void setTable()
         {
             if (similar != null)
@@ -71,6 +74,17 @@ namespace SportTracksUniqueRoutesPlugin.Source
                     table.Columns.Add(UnitUtil.Distance.LabelAxis);
                     table.Columns.Add(UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace));
                     table.Columns.Add(CommonResources.Text.LabelAvgHR + UnitUtil.HeartRate.LabelAbbr2);
+                    table.Columns.Add(ActivityIdColumn);
+                    similarToolTip = new Dictionary<string, string>();
+                    
+                    //Debug info for stretches
+                    IDictionary<IActivity, IList<double>> commonSpeed = null;
+                    bool doGetCommonSpeed = Plugin.Verbose > 0;
+                    if (doGetCommonSpeed)
+                    {
+                        commonSpeed = new Dictionary<IActivity, IList<double>>();
+                        commonSpeed = CommonStretches.getCommonSpeed(this.activity, similar, Settings.UseActive);
+                    }
                     foreach (IActivity activity in similar)
                     {
                         DataRow row = table.NewRow();
@@ -82,7 +96,8 @@ namespace SportTracksUniqueRoutesPlugin.Source
                         double speed;
                         if (Settings.UseActive)
                         {
-                            speed = info.ActiveLapsTotalDetail.LapDistanceMeters * 1000 / info.ActiveLapsTotalDetail.LapElapsed.TotalMilliseconds;
+                            speed = info.ActiveLapsTotalDetail.LapDistanceMeters * 1000 / 
+                                info.ActiveLapsTotalDetail.LapElapsed.TotalMilliseconds;
                         }
                         else
                         {
@@ -90,7 +105,23 @@ namespace SportTracksUniqueRoutesPlugin.Source
                         }
                         row[4] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed);
                         row[5] = UnitUtil.HeartRate.ToString(info.AverageHeartRate);
+                        row[ActivityIdColumn] = activity.ReferenceId;
                         table.Rows.Add(row);
+                        string toolTip = null;
+                        if (commonSpeed != null)
+                        {
+                            toolTip = "Common Stretches (reference): " + UnitUtil.Distance.ToString(commonSpeed[activity][0], "u") +
+                                " (" + UnitUtil.Distance.ToString(commonSpeed[activity][2], "u") + ") " + 
+                                UnitUtil.Time.ToString(commonSpeed[activity][1], "u") +
+                                " (" + UnitUtil.Time.ToString(commonSpeed[activity][3], "u") + ") " +
+                                UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace,
+                                commonSpeed[activity][0] / commonSpeed[activity][1], "u") +
+                                " (" + UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace,
+                                commonSpeed[activity][2] / commonSpeed[activity][3], "u") + ")"
+                                + " " + commonSpeed[activity][4] + " sections";
+                                
+                        }
+                        similarToolTip[activity.ReferenceId] = toolTip;
                     }
                     summaryView.DataSource = table;
                     summaryLabel.Text = String.Format(Resources.FoundActivities,similar.Count - 1);
@@ -135,9 +166,19 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.Activity = activity;
             this.Resize += new EventHandler(UniqueRoutesActivityDetailView_Resize);
             progressBar.Size = new Size(summaryView.Size.Width, progressBar.Height);
-            activeBox.SelectedItem = StringResources.All;
+            if (Settings.UseActive)
+            {
+                activeBox.SelectedItem = StringResources.Active;
+            }
+            else
+            {
+                activeBox.SelectedItem = StringResources.All;
+            }
             speedBox.SelectedItem = CommonResources.Text.LabelPace;
             contextMenu.Click += new EventHandler(contextMenu_Click);
+            summaryView.CellContentDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
+            summaryView.CellToolTipTextNeeded += new DataGridViewCellToolTipTextNeededEventHandler(summaryView_CellToolTipTextNeeded);
+
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
             setSize();
             VisibleChanged += new EventHandler(UniqueRoutesActivityDetailView_VisibleChanged);
@@ -309,19 +350,25 @@ namespace SportTracksUniqueRoutesPlugin.Source
         {
             if (summaryView.Columns.Count > 0 && summaryView.Rows.Count > 0)
             {
-                summaryView.Size = new Size(Size.Width - summaryView.Location.X - 20,
-                       summaryView.Rows[0].Height * summaryView.Rows.Count
-                       + summaryView.ColumnHeadersHeight);
-                progressBar.Size = new Size(summaryView.Size.Width, progressBar.Height);
-                int columnWidth = summaryView.Size.Width / summaryView.Columns.Count;
                 foreach (DataGridViewColumn column in summaryView.Columns)
                 {
-                    column.Width = columnWidth;
+                    if (column.Name.Equals(ActivityIdColumn))
+                    {
+                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                        column.Width = 0;
+                        column.Visible = false;
+                    }
+                    else
+                    {
+                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    }
                 }
                 summaryView.Size = new Size(Size.Width - summaryView.Location.X - 20,
                        summaryView.Rows[0].Height * summaryView.Rows.Count
-                       + summaryView.ColumnHeadersHeight);                
+                       + summaryView.ColumnHeadersHeight);
+                //summaryView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader);
             }
+            progressBar.Size = new Size(summaryView.Size.Width, progressBar.Height);
             changeCategory.Location = new Point(
                     categoryLabel.Location.X + categoryLabel.Width + 5,
                          changeCategory.Location.Y);
@@ -340,7 +387,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             return null;
         }
 
-        private void highScoreButton_Click(object sender, EventArgs e)
+        private void sendActivityButton_Click(object sender, EventArgs e)
         {
             IList<IActivity> list = new List<IActivity>();
             IList<int> seenRows = new List<int>();
@@ -393,16 +440,23 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
         private void calculate()
         {
-            if (activity != null && Visible && !doUpdate)
+            if (Visible && !doUpdate)
             {
-                progressBar.Visible = true;
-                summaryView.Visible = false;
-                changeSettingsVisibility(false);
-                similar = UniqueRoutes.findSimilarRoutes(activity, progressBar);
-                determinePaceOrSpeed();
-                progressBar.Visible = false;
-                setTable();
-                changeSettingsVisibility(similar.Count > 1);
+                if (activity != null)
+                {
+                    progressBar.Visible = true;
+                    summaryView.Visible = false;
+                    changeSettingsVisibility(false);
+                    similar = UniqueRoutes.findSimilarRoutes(activity, progressBar);
+                    determinePaceOrSpeed();
+                    progressBar.Visible = false;
+                    setTable();
+                    changeSettingsVisibility(similar.Count > 1);
+                }
+                else
+                {
+                    setSize();
+                }
             }
         }
 
@@ -447,5 +501,33 @@ namespace SportTracksUniqueRoutesPlugin.Source
         {
             Settings.SelectAll = selectedBox.SelectedItem.Equals(StringResources.All);
         }
+        private void selectedRow_DoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Guid view = new Guid("1dc82ca0-88aa-45a5-a6c6-c25f56ad1fc3");
+
+            int rowIndex = e.RowIndex;
+            if (rowIndex >= 0 && summaryView.Columns[ActivityIdColumn] != null)
+            {
+                object id = summaryView.Rows[rowIndex].Cells[ActivityIdColumn].Value;
+                if (id != null)
+                {
+                    string bookmark = "id=" + id;
+                    Plugin.GetApplication().ShowView(view, bookmark);
+                }
+            }
+        }
+        private void summaryView_CellToolTipTextNeeded(object sender, DataGridViewCellToolTipTextNeededEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            if (rowIndex >= 0 && summaryView.Columns[ActivityIdColumn] != null)
+            {
+                object id = summaryView.Rows[rowIndex].Cells[ActivityIdColumn].Value;
+                if (id != null)
+                {
+                    e.ToolTipText = similarToolTip[id.ToString()];
+                }
+            }
+        }
+
     }
 }
