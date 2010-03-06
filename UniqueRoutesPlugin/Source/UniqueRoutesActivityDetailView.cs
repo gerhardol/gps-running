@@ -80,7 +80,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
                     //Debug info for stretches
                     IDictionary<IActivity, IList<double>> commonSpeed = null;
                     IDictionary<IActivity, string> similarPoints = new Dictionary<IActivity, string>();
-                    bool doGetCommonSpeed = Plugin.Verbose > 0;
+                    bool doGetCommonSpeed = true;// Plugin.Verbose > 0;
                     if (doGetCommonSpeed)
                     {
                         commonSpeed = new Dictionary<IActivity, IList<double>>();

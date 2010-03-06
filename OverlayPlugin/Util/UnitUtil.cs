@@ -443,7 +443,7 @@ namespace SportTracksOverlayPlugin.Util
         public static class Time
         {
             //This class handles Time as in "Time for activities" rather than "Time of day"
-            public static int DefaultDecimalPrecision { get { return 1; } } //Not applicable
+            public static int DefaultDecimalPrecision { get { return 1; } } //Unly used for time less than a minute
             private static string DefFmt { get { return ""; } }
 
             public static string ToString(double p)
@@ -452,7 +452,7 @@ namespace SportTracksOverlayPlugin.Util
             }
             public static String ToString(double sec, string fmt)
             {
-                return ToString(new TimeSpan(0, 0, (int)(sec)), fmt);
+                return ToString(new TimeSpan(0, 0, 0, 0, (int)(sec * 1000)), fmt);
             }
             public static string ToString(TimeSpan p)
             {
@@ -463,10 +463,18 @@ namespace SportTracksOverlayPlugin.Util
                 string str = "";
                 if (fmt.EndsWith("U")) { fmt = fmt.Remove(fmt.Length - 1); }
                 if (fmt.EndsWith("u")) { fmt = fmt.Remove(fmt.Length - 1); }
-                //.NET 2 has no built-in formatting
+                //.NET 2 has no built-in formatting for time
                 //Currently remove millisec ("mm:ss" format)
-                str = (new TimeSpan(0, 0, (int)Math.Round(sec.TotalSeconds))).ToString();
-                if (fmt.Equals("mm:ss") && str.StartsWith("00:")) { str = str.Substring(3); }
+                if (fmt.Equals("ss") && sec.TotalSeconds < 60 || fmt.Equals("s"))
+                {
+                    str = (sec.TotalMilliseconds / 1000).ToString(("F" + DefaultDecimalPrecision));
+                }
+                else
+                {
+                    //Truncate to seconds by creating new TimeSpan
+                    str = (new TimeSpan(0, 0, (int)Math.Round(sec.TotalSeconds))).ToString();
+                    if (fmt.Equals("mm:ss") && str.StartsWith("00:")) { str = str.Substring(3); }
+                }
 
                 return str;
             }
@@ -687,7 +695,7 @@ namespace SportTracksOverlayPlugin.Util
                 string str = "";
                 if (fmt.EndsWith("U")) { str = " " + Label; fmt = fmt.Remove(fmt.Length - 1); }
                 if (fmt.EndsWith("u")) { str = " " + LabelAbbr; fmt = fmt.Remove(fmt.Length - 1); }
-                if (Math.Abs(speedMS) >= double.MaxValue)//"divide by zero" check. Or some hardcoded value?
+                if (Math.Abs(speedMS) == double.MinValue)//"divide by zero" check. Or some hardcoded value?
                 {
                     str = "-" + str;
                 }
