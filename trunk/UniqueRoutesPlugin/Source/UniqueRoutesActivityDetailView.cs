@@ -79,11 +79,13 @@ namespace SportTracksUniqueRoutesPlugin.Source
                     
                     //Debug info for stretches
                     IDictionary<IActivity, IList<double>> commonSpeed = null;
+                    IDictionary<IActivity, string> similarPoints = new Dictionary<IActivity, string>();
                     bool doGetCommonSpeed = Plugin.Verbose > 0;
                     if (doGetCommonSpeed)
                     {
                         commonSpeed = new Dictionary<IActivity, IList<double>>();
                         commonSpeed = CommonStretches.getCommonSpeed(this.activity, similar, Settings.UseActive);
+                        //similarPoints = CommonStretches.findSimilarDebug(this.activity, similar, Settings.UseActive);
                     }
                     foreach (IActivity activity in similar)
                     {
@@ -110,15 +112,17 @@ namespace SportTracksUniqueRoutesPlugin.Source
                         string toolTip = null;
                         if (commonSpeed != null)
                         {
-                            toolTip = "Common Stretches (reference): " + UnitUtil.Distance.ToString(commonSpeed[activity][0], "u") +
-                                " (" + UnitUtil.Distance.ToString(commonSpeed[activity][2], "u") + ") " + 
-                                UnitUtil.Time.ToString(commonSpeed[activity][1], "u") +
-                                " (" + UnitUtil.Time.ToString(commonSpeed[activity][3], "u") + ") " +
+                            toolTip = "Common Stretches: " +
                                 UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace,
                                 commonSpeed[activity][0] / commonSpeed[activity][1], "u") +
                                 " (" + UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace,
-                                commonSpeed[activity][2] / commonSpeed[activity][3], "u") + ")"
-                                + " " + commonSpeed[activity][4] + " sections";
+                                commonSpeed[activity][2] / commonSpeed[activity][3], "u") + ")" +
+                                " " + commonSpeed[activity][4] + " sections " +
+                                UnitUtil.Distance.ToString(commonSpeed[activity][0], "u") + " " +
+                                UnitUtil.Time.ToString(commonSpeed[activity][1], "u") +
+                                " (" + UnitUtil.Distance.ToString(commonSpeed[activity][2], "u") + " " +
+                                " " + UnitUtil.Time.ToString(commonSpeed[activity][3], "u") + ")";
+                            
                                 
                         }
                         similarToolTip[activity.ReferenceId] = toolTip;
@@ -366,7 +370,6 @@ namespace SportTracksUniqueRoutesPlugin.Source
                 summaryView.Size = new Size(Size.Width - summaryView.Location.X - 20,
                        summaryView.Rows[0].Height * summaryView.Rows.Count
                        + summaryView.ColumnHeadersHeight);
-                //summaryView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader);
             }
             progressBar.Size = new Size(summaryView.Size.Width, progressBar.Height);
             changeCategory.Location = new Point(
