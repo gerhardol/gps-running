@@ -481,14 +481,14 @@ namespace SportTracksOverlayPlugin.Source
             }
             else
             {
-                chart.XAxis.Formatter = new Formatter.General();
+                chart.XAxis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
                 chart.XAxis.Label = UnitUtil.Distance.LabelAxis; ;
             }
             if (Settings.ShowHeartRate)
             {
                 nextIndex = 0;
                 useRight = true;
-                chart.YAxis.Formatter = new Formatter.General();
+                chart.YAxis.Formatter = new Formatter.General(UnitUtil.HeartRate.DefaultDecimalPrecision);
                 chart.YAxis.Label = UnitUtil.HeartRate.LabelAxis;
                 addSeries(
                     delegate(float value)
@@ -552,7 +552,7 @@ namespace SportTracksOverlayPlugin.Source
                     useRight = true;
                 }
                 nextIndex = 0;
-                axis.Formatter = new Formatter.General();
+                axis.Formatter = new Formatter.General(UnitUtil.Speed.DefaultDecimalPrecision);
                 axis.Label = UnitUtil.Speed.LabelAxis;
                 addSeries(
                     delegate(float value)
@@ -583,7 +583,7 @@ namespace SportTracksOverlayPlugin.Source
                     useRight = true;
                 }
                 nextIndex = 0;
-                axis.Formatter = new Formatter.General();
+                axis.Formatter = new Formatter.General(UnitUtil.Power.DefaultDecimalPrecision);
                 axis.Label = UnitUtil.Power.LabelAxis;
                 addSeries(
                     delegate(float value)
@@ -611,7 +611,7 @@ namespace SportTracksOverlayPlugin.Source
                     useRight = true;
                 }
                 nextIndex = 0;
-                axis.Formatter = new Formatter.General();
+                axis.Formatter = new Formatter.General(UnitUtil.Cadence.DefaultDecimalPrecision);
                 axis.Label = UnitUtil.Cadence.LabelAxis;
                 addSeries(
                      delegate(float value)
@@ -639,7 +639,7 @@ namespace SportTracksOverlayPlugin.Source
                     useRight = true;
                 }
                 nextIndex = 0;
-                axis.Formatter = new Formatter.General();
+                axis.Formatter = new Formatter.General(UnitUtil.Elevation.DefaultDecimalPrecision);
                 axis.ChangeAxisZoom(new Point(0, 0), new Point(10, 10));
                 axis.Label = UnitUtil.Elevation.LabelAxis;
                 addSeries(
@@ -742,7 +742,7 @@ namespace SportTracksOverlayPlugin.Source
                         }
                     }
                     float y = (float)interpolator(entry.Value);
-                    if (!x.Equals(float.NaN))
+                    if (!x.Equals(float.NaN) && !float.IsInfinity(y))
                     {
                         series.Points.Add(series.Points.Count,
                             new PointF(x, y));
