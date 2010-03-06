@@ -65,7 +65,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
                 bool inBand = false;
                 int direction = 0;
                 if (isAllowedActivity(otherActivity) &&
-                    otherActivity.GPSRoute != null)
+                    otherActivity.GPSRoute != null && otherActivity.GPSRoute.Count >0)
                 {
                     setBeginningAndEndPoints(otherActivity, beginningPoints, endPoints);
                     int noOfPoints = otherActivity.GPSRoute.Count;

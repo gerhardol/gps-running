@@ -161,49 +161,10 @@ namespace SportTracksUniqueRoutesPlugin.Source
                         }
                     }
                 }
-#if false
-                for (int i = 0; i < result.Count; i++)
-                {
-                    if (result[i].Index < 0)
-                    {
-                        result.RemoveAt(i);
-                    }
-                }
-#endif
             }
             return result;
         }
-#if false
-        //Get all close points, in no specific order
-        public IList<int> getAllClose(IGPSPoint point)
-        {
-            IList<int> result = new List<int>();
-            int x = (int)Math.Floor(point.LongitudeDegrees / Width);
-            int y = (int)Math.Floor(point.LatitudeDegrees / Width);
-            for (int i = x - 1; i <= x + 1; i++)
-            {
-                if (Grid.ContainsKey(i))
-                {
-                    for (int j = y - 1; j <= y + 1; j++)
-                    {
-                        if (Grid[i].ContainsKey(j))
-                        {
-                            foreach (int p in Grid[i][j])
-                            {
-                                IGPSPoint pointInGrid = Route[p].Value;
-                                if (point.DistanceMetersToPoint(pointInGrid) < Distance)
-                                {
-                                    result.Add(p);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
 
-            return result;
-        }
-#endif
         //Get a close point, not necessarily the closest or best match
         public int getClosePoint(IGPSPoint point)
         {
