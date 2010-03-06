@@ -585,7 +585,12 @@ namespace SportTracksHighScorePlugin.Source
             {
                 case GoalParameter.Time:
                     axis.Formatter = new Formatter.SecondsToTime(); return;
+                case GoalParameter.Distance:
+                    axis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision); return;
+                case GoalParameter.Elevation:
+                    axis.Formatter = new Formatter.General(UnitUtil.Elevation.DefaultDecimalPrecision); return;
                 case GoalParameter.SpeedZone:
+                    //TBD: This is likely not used
                     ArrayList categories = new ArrayList();
                     ArrayList keys = new ArrayList();
                     int index = 0;
