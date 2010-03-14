@@ -145,6 +145,9 @@
   <data name="O2" xml:space="preserve">
     <value>Overlay of {0} activities</value>
   </data>
+  <data name="String" xml:space="preserve">
+    <value>ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Delete16</value>
+  </data>
   <data name="Webpage" xml:space="preserve">
     <value>Overlay plugin webpage</value>
   </data>
