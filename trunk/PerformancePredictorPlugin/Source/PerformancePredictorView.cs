@@ -138,7 +138,8 @@ namespace SportTracksPerformancePredictorPlugin.Source
             setSize();
             chart.YAxis.Formatter = new Formatter.SecondsToTime();            
             Activity = activity;
-            Settings.DistanceChanged += new PropertyChangedEventHandler(Settings_DistanceChanged);
+            //Remove this listener - let user exlicitly update after chaning settinfgs, to avoid crashes
+            //Settings.DistanceChanged += new PropertyChangedEventHandler(Settings_DistanceChanged);
         }
 
         public PerformancePredictorView(IList<IActivity> activities)
@@ -389,7 +390,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
                 series.Points.Add(index,
                     new PointF((float)UnitUtil.Distance.ConvertFrom(new_dist), (float)new_time));
 
-                //length is the distance HighScore tried to get strech for, may differ to actual dist
+                //length is the distance HighScore tried to get a prediction  for, may differ to actual dist
                 double length = Settings.Distances.Keys[index];
                 DataRow row = set.NewRow();
                 row[0] = UnitUtil.Distance.ToString(new_dist);

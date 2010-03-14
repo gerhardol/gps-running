@@ -114,37 +114,38 @@ namespace SportTracksPerformancePredictorPlugin.Source
         {
             showPrediction = true;
             showPace = true;
-            showChart = true;
+            showChart = false;//show chart by default
             percentOfDistance = 40;
             model = PredictionModel.DAVE_CAMERON;
             distances.Clear();
-            addDistance(100, Length.Units.Meter, false);
-            addDistance(200, Length.Units.Meter, false);
+            //Some distances removed by default
+            //addDistance(100, Length.Units.Meter, false);
+            //addDistance(200, Length.Units.Meter, false);
             addDistance(400, Length.Units.Meter, false);
-            addDistance(500, Length.Units.Meter, false);
-            addDistance(800, Length.Units.Meter, false);
+            //addDistance(500, Length.Units.Meter, false);
+            //addDistance(800, Length.Units.Meter, false);
             addDistance(1, Length.Units.Kilometer, false);
-            addDistance(1.5, Length.Units.Kilometer, false);
+            //addDistance(1.5, Length.Units.Kilometer, false);
             addDistance(1, Length.Units.Mile, false);
             addDistance(2, Length.Units.Kilometer, false);
-            addDistance(3, Length.Units.Kilometer, false);
+            //addDistance(3, Length.Units.Kilometer, false);
             addDistance(2, Length.Units.Mile, false);
-            addDistance(4, Length.Units.Kilometer, false);
-            addDistance(3, Length.Units.Mile, false);
+            //addDistance(4, Length.Units.Kilometer, false);
+            //addDistance(3, Length.Units.Mile, false);
             addDistance(5, Length.Units.Kilometer, false);
-            addDistance(4, Length.Units.Mile, false);
-            addDistance(8, Length.Units.Kilometer, false);
+            //addDistance(4, Length.Units.Mile, false);
+            //addDistance(8, Length.Units.Kilometer, false);
             addDistance(5, Length.Units.Mile, false);
             addDistance(10, Length.Units.Kilometer, false);
-            addDistance(15, Length.Units.Kilometer, false);
+            //addDistance(15, Length.Units.Kilometer, false);
             addDistance(10, Length.Units.Mile, false);
             addDistance(20, Length.Units.Kilometer, false);
             addDistance(21097.5, Length.Units.Meter, true);
-            addDistance(15, Length.Units.Mile, false);
+            //addDistance(15, Length.Units.Mile, false);
             addDistance(25, Length.Units.Kilometer, false);
             addDistance(30, Length.Units.Kilometer, false);
             addDistance(20, Length.Units.Mile, false);
-            addDistance(25, Length.Units.Mile, false);
+            //addDistance(25, Length.Units.Mile, false);
             addDistance(42195, Length.Units.Meter, true);
             windowSize = new Size(800, 600);
         }
