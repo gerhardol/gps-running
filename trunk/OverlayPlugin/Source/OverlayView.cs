@@ -224,14 +224,6 @@ namespace SportTracksOverlayPlugin.Source
             movingAverage.Checked = Settings.ShowMovingAverage;
             toolTipMAbox.SetToolTip(maBox, Resources.MAToolTip);
             maBox.LostFocus += new EventHandler(maBox_LostFocus);
-            if (Settings.ShowTime)
-            {
-                maBox.Text = UnitUtil.Time.ToString(Settings.MovingAverageTime, "mm:ss");
-            }
-            else
-            {
-                maBox.Text = UnitUtil.Elevation.ToString(Settings.MovingAverageLength);
-            }
             updateMovingAverage();
             if (Settings.ShowTime)
             {
@@ -423,7 +415,6 @@ namespace SportTracksOverlayPlugin.Source
                     }
                 }
             }
-            int index = 0;
             foreach (float x in xs.Keys)
             {
                 int seen = 0;
@@ -438,11 +429,12 @@ namespace SportTracksOverlayPlugin.Source
                         seen++;
                     }
                 }
-                if (seen > 1)
+                if (seen > 1 &&
+                    average.Points.IndexOfKey(x) == -1)
                 {
-                    average.Points.Add(index++, new PointF(x, y / seen));
+                    average.Points.Add(x, new PointF(x, y / seen));
                 }
-            }
+             }
             series2boxes.Add(average, categoryAverage);
             return average;
         }
@@ -742,10 +734,10 @@ namespace SportTracksOverlayPlugin.Source
                         }
                     }
                     float y = (float)interpolator(entry.Value);
-                    if (!x.Equals(float.NaN) && !float.IsInfinity(y))
+                    if (!x.Equals(float.NaN) && !float.IsInfinity(y) &&
+                        series.Points.IndexOfKey(x) == -1)
                     {
-                        series.Points.Add(series.Points.Count,
-                            new PointF(x, y));
+                        series.Points.Add(x, new PointF(x, y));
                     }
                 }
                 priorElapsed = elapsed;
@@ -753,6 +745,25 @@ namespace SportTracksOverlayPlugin.Source
             }
             series.LineColor = newColor();
             return series;
+        }
+
+        private void updateMovingAverage()
+        {
+            Settings.ShowMovingAverage = movingAverage.Checked;
+            if (Settings.ShowTime)
+            {
+                string sec = Time.Label(Time.TimeRange.Second);
+                //ST will not give labels in 2.1
+                if (sec == null || sec.Equals("")) { sec = "s"; }
+                movingAverageLabel.Text = sec;
+                maBox.Text = UnitUtil.Time.ToString(Settings.MovingAverageTime, "mm:ss");
+            }
+            else
+            {
+                movingAverageLabel.Text = UnitUtil.Distance.LabelAbbr;
+                maBox.Text = UnitUtil.Distance.ToString(Settings.MovingAverageLength);
+            }
+            maBox.Enabled = Settings.ShowMovingAverage;
         }
 
         private void setSize()
@@ -963,8 +974,9 @@ namespace SportTracksOverlayPlugin.Source
             this.movingAverageLabel.AutoSize = true;
             this.movingAverageLabel.Location = new System.Drawing.Point(70, 94);
             this.movingAverageLabel.Name = "movingAverageLabel";
-            this.movingAverageLabel.Size = new System.Drawing.Size(0, 13);
+            this.movingAverageLabel.Size = new System.Drawing.Size(21, 13);
             this.movingAverageLabel.TabIndex = 19;
+            this.movingAverageLabel.Text = "km";
             // 
             // maBox
             // 
@@ -1054,29 +1066,21 @@ namespace SportTracksOverlayPlugin.Source
                     double value = UnitUtil.Time.Parse(maBox.Text);
                     if (value < 0) { throw new Exception(); }
                     Settings.MovingAverageTime = value;
-                    maBox.Text = UnitUtil.Time.ToString(value);
                 }
                 else
                 {
-                    double value = UnitUtil.Elevation.Parse(maBox.Text);
+                    double value = UnitUtil.Distance.Parse(maBox.Text);
                     if (value < 0) { throw new Exception(); }
                     Settings.MovingAverageLength = value;
-                    maBox.Text = UnitUtil.Distance.ToString(value);
                 }
                 updateChart();
             }
             catch (Exception)
             {
-                if (Settings.ShowTime)
-                {
-                    maBox.Text = UnitUtil.Time.ToString(Settings.MovingAverageTime);
-                }
-                else
-                {
-                    maBox.Text = UnitUtil.Distance.ToString(Settings.MovingAverageLength);
-                }
+                //Generic error message
                 new WarningDialog(Resources.NonNegativeNumber);
             }
+            updateMovingAverage();
         }
 
         void chart_Click(object sender, EventArgs e)
@@ -1185,26 +1189,6 @@ namespace SportTracksOverlayPlugin.Source
             Settings.ShowCategoryAverage = categoryAverage.Checked;
             updateChart();
         }
-
-        private void updateMovingAverage()
-        {
-            Settings.ShowMovingAverage = movingAverage.Checked;
-            if (Settings.ShowTime)
-            {
-                string sec = Time.Label(Time.TimeRange.Second);
-                //ST will not give labels in 2.1
-                if (sec == null || sec.Equals("")) { sec = "s"; }
-                movingAverageLabel.Text = sec;
-                maBox.Text = UnitUtil.Time.ToString(Settings.MovingAverageTime);
-            }
-            else
-            {
-                movingAverageLabel.Text = UnitUtil.Elevation.LabelAbbr;
-                maBox.Text = UnitUtil.Elevation.ToString(Settings.MovingAverageLength);
-            }
-            maBox.Enabled = Settings.ShowMovingAverage;
-        }
-
         private void movingAverage_CheckedChanged(object sender, EventArgs e)
         {
             updateMovingAverage();

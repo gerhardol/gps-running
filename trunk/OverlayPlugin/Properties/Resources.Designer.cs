@@ -136,6 +136,15 @@ namespace SportTracksOverlayPlugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Delete16.
+        /// </summary>
+        internal static string String {
+            get {
+                return ResourceManager.GetString("String", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Overlay plugin webpage.
         /// </summary>
         internal static string Webpage {
