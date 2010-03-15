@@ -132,7 +132,6 @@ namespace SportTracksTRIMPPlugin.Source
                 dataGridView1.Columns[0].HeaderText = CommonResources.Text.LabelPercentOfReserve;
             }
             chartBase.YAxis.Label = StringResources.Factor;
-            int index = 0;
             double low, high, lastFactor = 1;
             DataTable table = new DataTable();
             foreach (double factor in Settings.Factors)
@@ -156,11 +155,17 @@ namespace SportTracksTRIMPPlugin.Source
                     Settings.present(high * (maxHR-restHR) / 100 + restHR, 1),
                     factor});
                 }
-                series.Points.Add(index++, new PointF((float)current,
-                    (float)factor));
+                float x = (float)current;
+                if (!x.Equals(float.NaN) && series.Points.IndexOfKey(x) == -1)
+                {
+                    series.Points.Add(x, new PointF(x, (float)factor));
+                }
                 current = high;
             }
-            series.Points.Add(index, new PointF(100, (float)lastFactor));
+            if (series.Points.IndexOfKey(100) == -1)
+            {
+                series.Points.Add(100, new PointF(100, (float)lastFactor));
+            }
       
             chartBase.DataSeries.Add(series);
             chartBase.AutozoomAxis(chartBase.XAxis, true);

@@ -561,15 +561,17 @@ namespace SportTracksHighScorePlugin.Source
                 ChartDataSeries series = new ChartDataSeries(chart, chart.YAxis);
                 setAxisType(chart.XAxis, image);
                 setAxisType(chart.YAxis, domain);
-                int index = 0;
                 foreach (Result result in results)
                 {
                     if (result != null)
                     {
-                        series.Points.Add(
-                            index++,
-                            new PointF((float)getValue(result, image),
-                                       (float)getValue(result, domain)));
+                        float x = (float)getValue(result, image);
+                        float y = (float)getValue(result, domain);
+                        if (!x.Equals(float.NaN) && !float.IsInfinity(y) &&
+                        series.Points.IndexOfKey(x) == -1)
+                        {
+                            series.Points.Add(x, new PointF(x, y));
+                        }
                     }
                 }
                 chart.DataSeries.Add(series);

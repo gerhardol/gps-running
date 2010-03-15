@@ -136,7 +136,8 @@ namespace SportTracksPerformancePredictorPlugin.Source
             pace.Checked = Settings.ShowPace;
             speed.Checked = !Settings.ShowPace;
             setSize();
-            chart.YAxis.Formatter = new Formatter.SecondsToTime();            
+            chart.YAxis.Formatter = new Formatter.SecondsToTime();
+            chart.XAxis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
             Activity = activity;
             //Remove this listener - let user exlicitly update after chaning settinfgs, to avoid crashes
             //Settings.DistanceChanged += new PropertyChangedEventHandler(Settings_DistanceChanged);
@@ -387,8 +388,11 @@ namespace SportTracksPerformancePredictorPlugin.Source
                 double old_dist = meterEnd - meterStart;
                 double new_dist = old_dist * 100 / Settings.PercentOfDistance;
                 double new_time = predict(new_dist, old_dist, old_time);
-                series.Points.Add(index,
-                    new PointF((float)UnitUtil.Distance.ConvertFrom(new_dist), (float)new_time));
+                float x = (float)UnitUtil.Distance.ConvertFrom(new_dist);
+                if (!x.Equals(float.NaN) && series.Points.IndexOfKey(x) == -1)
+                {
+                    series.Points.Add(x, new PointF(x, (float)new_time));
+                }
 
                 //length is the distance HighScore tried to get a prediction  for, may differ to actual dist
                 double length = Settings.Distances.Keys[index];
@@ -453,12 +457,14 @@ namespace SportTracksPerformancePredictorPlugin.Source
 
             series.Points.Clear();
 
-            int index = 0;
             foreach (double new_dist in Settings.Distances.Keys)
             {
                 double new_time = predict(new_dist, old_dist, old_time);
-                series.Points.Add(index++,
-                    new PointF((float)UnitUtil.Distance.ConvertFrom(new_dist), (float)new_time));
+                float x = (float)UnitUtil.Distance.ConvertFrom(new_dist);
+                if (!x.Equals(float.NaN) && series.Points.IndexOfKey(x) == -1)
+                {
+                    series.Points.Add(x, new PointF(x, (float)new_time));
+                }
 
                 double length = new_dist;
                 DataRow row = set.NewRow();

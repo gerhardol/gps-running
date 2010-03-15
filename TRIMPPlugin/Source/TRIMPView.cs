@@ -279,13 +279,18 @@ namespace SportTracksTRIMPPlugin.Source
                         Settings.present(lhs[i].High, 1),
                     times[i].ToString(),
                     Settings.present(trimps[i],1)});
-                    trimpSeries.Points.Add(i,
-                        new PointF(low, (float)trimps[i]));
+                    if (!low.Equals(float.NaN) && trimpSeries.Points.IndexOfKey(low) == -1)
+                    {
+                        trimpSeries.Points.Add(low, new PointF(low, (float)trimps[i]));
+                    }
                     current = high;
                     previousTrimp = (float)trimps[i];
                     nextIndex = i + 1;
                 }
-                trimpSeries.Points.Add(nextIndex, new PointF((float)current, previousTrimp));
+                if (!current.Equals(float.NaN) && trimpSeries.Points.IndexOfKey((float)current) == -1)
+                {
+                    trimpSeries.Points.Add((float)current, new PointF((float)current, previousTrimp));
+                }
                 tableChart.DataSeries.Add(trimpSeries);
                 if (Settings.UseMaxHR)
                 {
@@ -361,14 +366,15 @@ namespace SportTracksTRIMPPlugin.Source
                     chartBase.XAxis.OriginValue = 0;
                     chartBase.XAxis.Label = CommonResources.Text.LabelDate;
                     chartBase.YAxis.Label = "TRIMP";
-                    int index = 0;
                     foreach (DateTime dateTime in dailyTrimps.Keys)
                     {
                         TimeSpan span = dateTime - startTime;
                         float trimp = (float)dailyTrimps[dateTime];
-                        series.Points.Add(index++,
-                                new PointF((float)span.TotalDays,
-                                trimp));
+                        if (!span.TotalDays.Equals(float.NaN) && series.Points.IndexOfKey((float)span.TotalDays) == -1)
+                        {
+                            series.Points.Add((float)span.TotalDays, new PointF((float)span.TotalDays,
+                                    trimp));
+                        }
                     }
                     chartBase.DataSeries.Add(series);
                     chartBase.AutozoomToData(true);
