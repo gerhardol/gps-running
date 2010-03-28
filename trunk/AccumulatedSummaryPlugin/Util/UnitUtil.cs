@@ -41,7 +41,8 @@ namespace SportTracksAccumulatedSummaryPlugin.Util
         public class Power
         {
             //private static Length.Units Unit { get { return null; } }
-            private static string DefFmt { get { return "F1"; } }
+            public static int DefaultDecimalPrecision { get { return 0; } }
+            private static string DefFmt { get { return "F" + DefaultDecimalPrecision; } }
 
             public static string ToString(double p)
             {
@@ -97,7 +98,8 @@ namespace SportTracksAccumulatedSummaryPlugin.Util
         public class Cadence
         {
             //private static Length.Units Unit { get { return null; } }
-            private static string DefFmt { get { return "F1"; } }
+            public static int DefaultDecimalPrecision { get { return 0; } }
+            private static string DefFmt { get { return "F" + DefaultDecimalPrecision; } }
 
             public static string ToString(double p)
             {
@@ -153,7 +155,8 @@ namespace SportTracksAccumulatedSummaryPlugin.Util
         public static class HeartRate
         {
             //private static Length.Units Unit { get { return null; } }
-            private static string DefFmt { get { return "F1"; } }
+            public static int DefaultDecimalPrecision { get { return 0; } }
+            private static string DefFmt { get { return "F" + DefaultDecimalPrecision; } }
 
             public static string ToString(double p)
             {
@@ -209,7 +212,8 @@ namespace SportTracksAccumulatedSummaryPlugin.Util
         public static class Energy
         {
             private static ZoneFiveSoftware.Common.Data.Measurement.Energy.Units Unit { get { return Plugin.GetApplication().SystemPreferences.EnergyUnits; } }
-            private static string DefFmt { get { return "F0"; } }
+            public static int DefaultDecimalPrecision { get { return 0; } }
+            private static string DefFmt { get { return "F" + DefaultDecimalPrecision; } }
 
             public static string ToString(double p)
             {
@@ -269,7 +273,8 @@ namespace SportTracksAccumulatedSummaryPlugin.Util
         public static class Temperature
         {
             private static ZoneFiveSoftware.Common.Data.Measurement.Temperature.Units Unit { get { return Plugin.GetApplication().SystemPreferences.TemperatureUnits; } }
-            private static string DefFmt { get { return "F1"; } }
+            public static int DefaultDecimalPrecision { get { return 1; } }
+            private static string DefFmt { get { return "F" + DefaultDecimalPrecision; } }
 
             public static string ToString(double p)
             {
@@ -325,7 +330,8 @@ namespace SportTracksAccumulatedSummaryPlugin.Util
         public static class Weight
         {
             private static ZoneFiveSoftware.Common.Data.Measurement.Weight.Units Unit { get { return Plugin.GetApplication().SystemPreferences.WeightUnits; } }
-            private static string DefFmt { get { return "F1"; } }
+            public static int DefaultDecimalPrecision { get { return 1; } }
+            private static string DefFmt { get { return "F" + DefaultDecimalPrecision; } }
 
             public static string ToString(double p)
             {
@@ -379,9 +385,10 @@ namespace SportTracksAccumulatedSummaryPlugin.Util
 
         public static class Elevation
         {
+            private static Length.Units Unit { get { return Plugin.GetApplication().SystemPreferences.ElevationUnits; } }
+            public static int DefaultDecimalPrecision { get { return Length.DefaultDecimalPrecision(Unit); } }
             private static string DefFmt { get { return defFmt(Unit); } }
             private static string defFmt(Length.Units unit) { return "F" + Length.DefaultDecimalPrecision(unit); }
-            private static Length.Units Unit { get { return Plugin.GetApplication().SystemPreferences.ElevationUnits; } }
 
             public static string ToString(double p)
             {
@@ -436,6 +443,7 @@ namespace SportTracksAccumulatedSummaryPlugin.Util
         public static class Time
         {
             //This class handles Time as in "Time for activities" rather than "Time of day"
+            public static int DefaultDecimalPrecision { get { return 1; } } //Unly used for time less than a minute
             private static string DefFmt { get { return ""; } }
 
             public static string ToString(double p)
@@ -444,7 +452,7 @@ namespace SportTracksAccumulatedSummaryPlugin.Util
             }
             public static String ToString(double sec, string fmt)
             {
-                return ToString(new TimeSpan(0, 0, (int)(sec)), fmt);
+                return ToString(new TimeSpan(0, 0, 0, 0, (int)(sec * 1000)), fmt);
             }
             public static string ToString(TimeSpan p)
             {
@@ -455,10 +463,18 @@ namespace SportTracksAccumulatedSummaryPlugin.Util
                 string str = "";
                 if (fmt.EndsWith("U")) { fmt = fmt.Remove(fmt.Length - 1); }
                 if (fmt.EndsWith("u")) { fmt = fmt.Remove(fmt.Length - 1); }
-                //.NET 2 has no built-in formatting
+                //.NET 2 has no built-in formatting for time
                 //Currently remove millisec ("mm:ss" format)
-                str = (new TimeSpan(0, 0, (int)Math.Round(sec.TotalSeconds))).ToString();
-                if (fmt.Equals("mm:ss") && str.StartsWith("00:")) { str = str.Substring(3); }
+                if (fmt.Equals("ss") && sec.TotalSeconds < 60 || fmt.Equals("s"))
+                {
+                    str = (sec.TotalMilliseconds / 1000).ToString(("F" + DefaultDecimalPrecision));
+                }
+                else
+                {
+                    //Truncate to seconds by creating new TimeSpan
+                    str = (new TimeSpan(0, 0, (int)Math.Round(sec.TotalSeconds))).ToString();
+                    if (fmt.Equals("mm:ss") && str.StartsWith("00:")) { str = str.Substring(3); }
+                }
 
                 return str;
             }
@@ -499,6 +515,7 @@ namespace SportTracksAccumulatedSummaryPlugin.Util
         {
             //Some lists uses unit when storing user entered data, why this is public
             public static Length.Units Unit { get { return Plugin.GetApplication().SystemPreferences.DistanceUnits; } }
+            public static int DefaultDecimalPrecision { get { return Length.DefaultDecimalPrecision(Unit); } }
             private static string DefFmt { get { return defFmt(Unit); } }
             private static string defFmt(Length.Units unit) { return "F" + Length.DefaultDecimalPrecision(unit); }
 
@@ -573,7 +590,7 @@ namespace SportTracksAccumulatedSummaryPlugin.Util
         private static Length.Units getDistUnit(bool isPace)
         {
             Length.Units distUnit = Plugin.GetApplication().SystemPreferences.DistanceUnits;
-            //Add all known stuatare length units, in case they are added to ST
+            //Add all known statute length units, in case they are added to ST
             if (distUnit.Equals(Length.Units.Mile) || distUnit.Equals(Length.Units.Inch) ||
                 distUnit.Equals(Length.Units.Foot) || distUnit.Equals(Length.Units.Yard))
             {
@@ -591,7 +608,8 @@ namespace SportTracksAccumulatedSummaryPlugin.Util
             //Convert pace/speed from system type (m/s) to used value
             // all speed units are per hour
             private static Length.Units Unit { get { return getDistUnit(false); } }
-            private static string DefFmt { get { return "F1"; } }
+            public static int DefaultDecimalPrecision { get { return 1; } }
+            private static string DefFmt { get { return "F" + DefaultDecimalPrecision; } }
 
             public static string ToString(double p)
             {
@@ -663,6 +681,7 @@ namespace SportTracksAccumulatedSummaryPlugin.Util
             //Display is done as time, input parsing expects time in minutes or "minute time"
 
             private static Length.Units Unit { get { return getDistUnit(true); } }
+            public static int DefaultDecimalPrecision { get { return 1; } } //Not really applicable
             private static string DefFmt { get { return ""; } }
 
             public static string ToString(double p)
@@ -676,8 +695,15 @@ namespace SportTracksAccumulatedSummaryPlugin.Util
                 string str = "";
                 if (fmt.EndsWith("U")) { str = " " + Label; fmt = fmt.Remove(fmt.Length - 1); }
                 if (fmt.EndsWith("u")) { str = " " + LabelAbbr; fmt = fmt.Remove(fmt.Length - 1); }
-                str = new TimeSpan(0, 0, (int)Math.Round(pace)).ToString() + str;
-                if (str.StartsWith("00:")){str = str.Substring(3); }
+                if (Math.Abs(speedMS) == double.MinValue)//"divide by zero" check. Or some hardcoded value?
+                {
+                    str = "-" + str;
+                }
+                else
+                {
+                    str = new TimeSpan(0, 0, (int)Math.Round(pace)).ToString() + str;
+                    if (str.StartsWith("00:")) { str = str.Substring(3); }
+                }
                 return str;
             }
             public static double ConvertFrom(double speedMS)
@@ -761,6 +787,14 @@ namespace SportTracksAccumulatedSummaryPlugin.Util
 
         public static class PaceOrSpeed
         {
+            public static int DefaultDecimalPrecision(bool isPace)
+            {
+                if (isPace)
+                {
+                    return Pace.DefaultDecimalPrecision;
+                }
+                return Speed.DefaultDecimalPrecision;
+            }
             public static String ToString(bool isPace, double speedMS)
             {
                 if (isPace)
