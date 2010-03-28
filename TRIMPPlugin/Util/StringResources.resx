@@ -297,4 +297,7 @@
   <data name="NoutofM" xml:space="preserve">
     <value>{0} out of {1} activities used</value>
   </data>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
 </root>
