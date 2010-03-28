@@ -58,7 +58,8 @@ namespace SportTracksOverlayPlugin.Source
         private System.Windows.Forms.TextBox maBox;
         private ToolTip toolTipMAbox;
         private System.ComponentModel.IContainer components;
-        private CheckBox lastChecked;
+		private IList<CheckBox> lastChecked;
+		private ChartDataSeries lastSelectedSeries;
 
         private List<IActivity> activities;
         private System.Windows.Forms.Panel panelAct;
@@ -74,6 +75,14 @@ namespace SportTracksOverlayPlugin.Source
         private IDictionary<CheckBox, int> boxes;
         private IList<CheckBox> checkBoxes;
         private IDictionary<ChartDataSeries, CheckBox> series2boxes;
+		
+		//bSelectingDataFlag and bSelectDataFlag are used to coordinate the chart 
+		//click/select/selecting events to minimize 'movingAverage' and 'box' control flicker.
+		//I'm sure there's a better way, but at this time this is all I've got.
+		private bool bSelectingDataFlag;
+		private bool bSelectDataFlag;
+
+		private string saveImageProperties_fileName = "";
 
         public IList<IActivity> Activities
         {
@@ -113,6 +122,7 @@ namespace SportTracksOverlayPlugin.Source
                 checks = new List<bool>();
                 boxes = new Dictionary<CheckBox, int>();
                 checkBoxes = new List<CheckBox>();
+				lastChecked = new List<CheckBox>();
 
                 foreach (IActivity activity in activities)
                 {
@@ -145,6 +155,7 @@ namespace SportTracksOverlayPlugin.Source
                     box.Checked = true;
                     box.Text = activity.StartTime.ToLocalTime().ToString();
                     box.Size = new Size(155, box.Height);
+					box.AutoSize = true;
                     box.ForeColor = newColor();
                     //box.CheckAlign = ContentAlignment.MiddleLeft;
                     box.CheckedChanged += new EventHandler(box_CheckedChanged);
@@ -173,6 +184,8 @@ namespace SportTracksOverlayPlugin.Source
         }
 
         private Form form;
+		private Label labelAOP;
+		private ZoneFiveSoftware.Common.Visuals.Button btnSaveImage;
 
         private bool dontUpdate;
 
@@ -192,9 +205,18 @@ namespace SportTracksOverlayPlugin.Source
             correctUI(new Control[] { useTime, useDistance });
             heartRate.Location = new Point(max, labelYaxis.Location.Y);
             correctUI(new Control[] { heartRate, pace, speed, power, cadence, elevation });
+
+			Font fCategory = categoryAverage.Font;
+			Font fMoving = movingAverage.Font;
+			categoryAverage.Font = new Font( categoryAverage.Font, FontStyle.Bold );
+			movingAverage.Font = new Font( movingAverage.Font, FontStyle.Bold );
+
             chart.Location = new Point(Math.Max(Math.Max(categoryAverage.Location.X + categoryAverage.Size.Width,
                                                          movingAverage.Location.X + movingAverage.Size.Width),
                                                 panelAct.Location.X + panelAct.Size.Width), chart.Location.Y);
+			categoryAverage.Font = fCategory;
+			movingAverage.Font = fMoving;
+
             dontUpdate = true;
             series2activity = new Dictionary<ChartDataSeries, IActivity>();
             series2actBoxes = new Dictionary<ChartDataSeries, System.Windows.Forms.TextBox>();
@@ -212,6 +234,7 @@ namespace SportTracksOverlayPlugin.Source
             elevation.Text = CommonResources.Text.LabelElevation;
             categoryAverage.Text = Resources.BCA;
             movingAverage.Text = Resources.BMA;
+			labelAOP.Text = Resources.AOP;
 
             heartRate.Checked = Settings.ShowHeartRate;
             pace.Checked = Settings.ShowPace;
@@ -236,6 +259,7 @@ namespace SportTracksOverlayPlugin.Source
                 useTime.Checked = false;
             }
             chart.SelectData += new ChartBase.SelectDataHandler(chart_SelectData);
+			chart.SelectingData += new ChartBase.SelectDataHandler( chart_SelectingData );
             chart.Click += new EventHandler(chart_Click);
             dontUpdate = false;
             updateLabels();
@@ -245,6 +269,11 @@ namespace SportTracksOverlayPlugin.Source
                 form = new Form();
                 form.Controls.Add(this);
                 form.Size = Settings.WindowSize;
+
+
+				//6 is the distance between controls
+				form.MinimumSize = new System.Drawing.Size( 6 + elevation.Width + elevation.Left + this.Width - btnSaveImage.Left, 0 );
+
                 form.SizeChanged += new EventHandler(form_SizeChanged);
                 setSize();
                 if (activities.Count == 1)
@@ -460,6 +489,7 @@ namespace SportTracksOverlayPlugin.Source
         private void updateChart()
         {
             if (dontUpdate) return;
+			ResetLastSelectedBoxFonts();
             chart.DataSeries.Clear();
             chart.YAxisRight.Clear();
             series2activity.Clear();
@@ -649,6 +679,7 @@ namespace SportTracksOverlayPlugin.Source
                         return info.SmoothedElevationTrack;
                     });
             }
+			//chart.AutozoomToData is the slowest part of this plugin
             chart.AutozoomToData(true);
             chart.Refresh();
         }
@@ -718,28 +749,29 @@ namespace SportTracksOverlayPlugin.Source
                 float elapsed =
                     (float)DateTimeRangeSeries.TimeNotPaused(info.Activity.StartTime, entryTime,
                                                             pauses).TotalSeconds;
-                if (elapsed != priorElapsed)
-                {
-                    float x = float.NaN;
-                    if (Settings.ShowTime)
-                    {
-                        x = (float)(elapsed+offset);
-                    }
-                    else
-                    {
-                        ITimeValueEntry<float> entryMoving = info.MovingDistanceMetersTrack.GetInterpolatedValue(info.Activity.StartTime.AddSeconds(elapsed));
-                        if (entryMoving != null && (first || (!first && entryMoving.Value > 0)))
-                        {
-                            x = (float)UnitUtil.Distance.ConvertFrom(entryMoving.Value + offset);
-                        }
-                    }
-                    float y = (float)interpolator(entry.Value);
-                    if (!x.Equals(float.NaN) && !float.IsInfinity(y) &&
-                        series.Points.IndexOfKey(x) == -1)
-                    {
-                        series.Points.Add(x, new PointF(x, y));
-                    }
-                }
+				if ( elapsed != priorElapsed )
+				{
+					float x = float.NaN;
+					if ( Settings.ShowTime )
+					{
+						x = (float)( elapsed + offset );
+					}
+					else
+					{
+						//ITimeValueEntry<float> entryMoving = info.MovingDistanceMetersTrack.GetInterpolatedValue( info.Activity.StartTime.AddSeconds( elapsed ) );
+						ITimeValueEntry<float> entryMoving = info.MovingDistanceMetersTrack.GetInterpolatedValue( info.Activity.StartTime.AddSeconds( entry.ElapsedSeconds) );
+						if ( entryMoving != null && ( first || ( !first && entryMoving.Value > 0 ) ) )
+						{
+							x = (float)UnitUtil.Distance.ConvertFrom( entryMoving.Value + offset );
+						}
+					}
+					float y = (float)interpolator( entry.Value );
+					if ( !x.Equals( float.NaN ) && !float.IsInfinity( y ) &&
+						series.Points.IndexOfKey( x ) == -1 )
+					{
+						series.Points.Add( x, new PointF( x, y ) );
+					}
+				}
                 priorElapsed = elapsed;
                 first = false;
             }
@@ -747,24 +779,6 @@ namespace SportTracksOverlayPlugin.Source
             return series;
         }
 
-        private void updateMovingAverage()
-        {
-            Settings.ShowMovingAverage = movingAverage.Checked;
-            if (Settings.ShowTime)
-            {
-                string sec = Time.Label(Time.TimeRange.Second);
-                //ST will not give labels in 2.1
-                if (sec == null || sec.Equals("")) { sec = "s"; }
-                movingAverageLabel.Text = sec;
-                maBox.Text = UnitUtil.Time.ToString(Settings.MovingAverageTime, "mm:ss");
-            }
-            else
-            {
-                movingAverageLabel.Text = UnitUtil.Distance.LabelAbbr;
-                maBox.Text = UnitUtil.Distance.ToString(Settings.MovingAverageLength);
-            }
-            maBox.Enabled = Settings.ShowMovingAverage;
-        }
 
         private void setSize()
         {
@@ -785,15 +799,39 @@ namespace SportTracksOverlayPlugin.Source
                                    Parent.Size.Height);
                 }
             }
+
+			//I don't like the horizontal scrollbar so I have to calculate the width of the panel manually
+			int minPanelWidth=panelAct.Size.Width;
+			int nVertScrollWidth = panelAct.VerticalScroll.Visible == true ? SystemInformation.VerticalScrollBarWidth : 0;
+
+			foreach ( Control c in panelAct.Controls )
+			{
+				if ( c.GetType() == typeof( CheckBox ) )
+				{
+					//Bold is larger so we need to temporarily set font to bold to get its size
+					Font f = new Font( c.Font, c.Font.Style );
+					c.Font = new Font( c.Font, FontStyle.Bold );
+					minPanelWidth = minPanelWidth < c.Width + c.Left + nVertScrollWidth ? c.Width + c.Left + nVertScrollWidth : minPanelWidth;
+					c.Font = f;
+				}
+			}
+
+			//5 is used for the margin between the vertical scrollbar and the left side of chart
+			chart.Location = new Point( panelAct.Location.X + minPanelWidth + 5, chart.Location.Y );
+
             chart.Size = new Size(
                 Size.Width - chart.Location.X,
                 Size.Height - chart.Location.Y -(form == null ? 0 : 30));
-            panelAct.Size = new Size(panelAct.Width, chart.Height);
-        }
+
+			panelAct.MaximumSize = new Size( 0, chart.Height - ( panelAct.Top - chart.Top ) );
+			panelAct.MinimumSize = new Size( minPanelWidth, 0 );
+
+		}
 
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OverlayView));
             this.chart = new ZoneFiveSoftware.Common.Visuals.Chart.LineChart();
             this.labelActivity = new System.Windows.Forms.Label();
             this.heartRate = new System.Windows.Forms.CheckBox();
@@ -812,6 +850,8 @@ namespace SportTracksOverlayPlugin.Source
             this.movingAverageLabel = new System.Windows.Forms.Label();
             this.maBox = new System.Windows.Forms.TextBox();
             this.toolTipMAbox = new System.Windows.Forms.ToolTip(this.components);
+            this.labelAOP = new System.Windows.Forms.Label();
+            this.btnSaveImage = new ZoneFiveSoftware.Common.Visuals.Button();
             this.SuspendLayout();
             // 
             // chart
@@ -821,12 +861,12 @@ namespace SportTracksOverlayPlugin.Source
             this.chart.Location = new System.Drawing.Point(142, 45);
             this.chart.Name = "chart";
             this.chart.Size = new System.Drawing.Size(308, 235);
-            this.chart.TabIndex = 1;
+            this.chart.TabIndex = 12;
             // 
             // labelActivity
             // 
             this.labelActivity.AutoSize = true;
-            this.labelActivity.Location = new System.Drawing.Point(0, 114);
+            this.labelActivity.Location = new System.Drawing.Point(0, 134);
             this.labelActivity.Name = "labelActivity";
             this.labelActivity.Size = new System.Drawing.Size(49, 13);
             this.labelActivity.TabIndex = 3;
@@ -838,7 +878,7 @@ namespace SportTracksOverlayPlugin.Source
             this.heartRate.Location = new System.Drawing.Point(46, 21);
             this.heartRate.Name = "heartRate";
             this.heartRate.Size = new System.Drawing.Size(73, 17);
-            this.heartRate.TabIndex = 5;
+            this.heartRate.TabIndex = 3;
             this.heartRate.Text = "Heart rate";
             this.heartRate.UseVisualStyleBackColor = true;
             this.heartRate.CheckedChanged += new System.EventHandler(this.heartRate_CheckedChanged);
@@ -849,7 +889,7 @@ namespace SportTracksOverlayPlugin.Source
             this.pace.Location = new System.Drawing.Point(125, 21);
             this.pace.Name = "pace";
             this.pace.Size = new System.Drawing.Size(51, 17);
-            this.pace.TabIndex = 6;
+            this.pace.TabIndex = 4;
             this.pace.Text = "Pace";
             this.pace.UseVisualStyleBackColor = true;
             this.pace.CheckedChanged += new System.EventHandler(this.pace_CheckedChanged);
@@ -860,7 +900,7 @@ namespace SportTracksOverlayPlugin.Source
             this.speed.Location = new System.Drawing.Point(182, 22);
             this.speed.Name = "speed";
             this.speed.Size = new System.Drawing.Size(57, 17);
-            this.speed.TabIndex = 7;
+            this.speed.TabIndex = 5;
             this.speed.Text = "Speed";
             this.speed.UseVisualStyleBackColor = true;
             this.speed.CheckedChanged += new System.EventHandler(this.speed_CheckedChanged);
@@ -871,7 +911,7 @@ namespace SportTracksOverlayPlugin.Source
             this.useTime.Location = new System.Drawing.Point(46, 3);
             this.useTime.Name = "useTime";
             this.useTime.Size = new System.Drawing.Size(48, 17);
-            this.useTime.TabIndex = 8;
+            this.useTime.TabIndex = 1;
             this.useTime.Text = "Time";
             this.useTime.UseVisualStyleBackColor = true;
             this.useTime.CheckedChanged += new System.EventHandler(this.useTime_CheckedChanged);
@@ -891,7 +931,7 @@ namespace SportTracksOverlayPlugin.Source
             this.useDistance.Location = new System.Drawing.Point(100, 3);
             this.useDistance.Name = "useDistance";
             this.useDistance.Size = new System.Drawing.Size(67, 17);
-            this.useDistance.TabIndex = 10;
+            this.useDistance.TabIndex = 2;
             this.useDistance.Text = "Distance";
             this.useDistance.UseVisualStyleBackColor = true;
             this.useDistance.CheckedChanged += new System.EventHandler(this.useDistance_CheckedChanged);
@@ -909,9 +949,9 @@ namespace SportTracksOverlayPlugin.Source
             // 
             this.panelAct.AutoScroll = true;
             this.panelAct.AutoSize = true;
-            this.panelAct.Location = new System.Drawing.Point(3, 130);
+            this.panelAct.Location = new System.Drawing.Point(3, 150);
             this.panelAct.Name = "panelAct";
-            this.panelAct.Size = new System.Drawing.Size(138, 147);
+            this.panelAct.Size = new System.Drawing.Size(138, 127);
             this.panelAct.TabIndex = 12;
             // 
             // power
@@ -920,7 +960,7 @@ namespace SportTracksOverlayPlugin.Source
             this.power.Location = new System.Drawing.Point(245, 22);
             this.power.Name = "power";
             this.power.Size = new System.Drawing.Size(56, 17);
-            this.power.TabIndex = 13;
+            this.power.TabIndex = 6;
             this.power.Text = "Power";
             this.power.UseVisualStyleBackColor = true;
             this.power.CheckedChanged += new System.EventHandler(this.power_CheckedChanged);
@@ -931,7 +971,7 @@ namespace SportTracksOverlayPlugin.Source
             this.cadence.Location = new System.Drawing.Point(307, 22);
             this.cadence.Name = "cadence";
             this.cadence.Size = new System.Drawing.Size(69, 17);
-            this.cadence.TabIndex = 14;
+            this.cadence.TabIndex = 7;
             this.cadence.Text = "Cadence";
             this.cadence.UseVisualStyleBackColor = true;
             this.cadence.CheckedChanged += new System.EventHandler(this.cadence_CheckedChanged);
@@ -942,7 +982,7 @@ namespace SportTracksOverlayPlugin.Source
             this.elevation.Location = new System.Drawing.Point(382, 22);
             this.elevation.Name = "elevation";
             this.elevation.Size = new System.Drawing.Size(70, 17);
-            this.elevation.TabIndex = 15;
+            this.elevation.TabIndex = 8;
             this.elevation.Text = "Elevation";
             this.elevation.UseVisualStyleBackColor = true;
             this.elevation.CheckedChanged += new System.EventHandler(this.elevation_CheckedChanged);
@@ -953,7 +993,7 @@ namespace SportTracksOverlayPlugin.Source
             this.categoryAverage.Location = new System.Drawing.Point(3, 44);
             this.categoryAverage.Name = "categoryAverage";
             this.categoryAverage.Size = new System.Drawing.Size(139, 17);
-            this.categoryAverage.TabIndex = 16;
+            this.categoryAverage.TabIndex = 9;
             this.categoryAverage.Text = global::SportTracksOverlayPlugin.Properties.Resources.BCA;
             this.categoryAverage.UseVisualStyleBackColor = true;
             this.categoryAverage.CheckedChanged += new System.EventHandler(this.average_CheckedChanged);
@@ -964,7 +1004,7 @@ namespace SportTracksOverlayPlugin.Source
             this.movingAverage.Location = new System.Drawing.Point(3, 67);
             this.movingAverage.Name = "movingAverage";
             this.movingAverage.Size = new System.Drawing.Size(126, 17);
-            this.movingAverage.TabIndex = 18;
+            this.movingAverage.TabIndex = 10;
             this.movingAverage.Text = global::SportTracksOverlayPlugin.Properties.Resources.BMA;
             this.movingAverage.UseVisualStyleBackColor = true;
             this.movingAverage.CheckedChanged += new System.EventHandler(this.movingAverage_CheckedChanged);
@@ -972,7 +1012,7 @@ namespace SportTracksOverlayPlugin.Source
             // movingAverageLabel
             // 
             this.movingAverageLabel.AutoSize = true;
-            this.movingAverageLabel.Location = new System.Drawing.Point(70, 94);
+            this.movingAverageLabel.Location = new System.Drawing.Point(86, 109);
             this.movingAverageLabel.Name = "movingAverageLabel";
             this.movingAverageLabel.Size = new System.Drawing.Size(21, 13);
             this.movingAverageLabel.TabIndex = 19;
@@ -980,14 +1020,48 @@ namespace SportTracksOverlayPlugin.Source
             // 
             // maBox
             // 
-            this.maBox.Location = new System.Drawing.Point(4, 91);
+            this.maBox.Location = new System.Drawing.Point(20, 106);
             this.maBox.Name = "maBox";
             this.maBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.maBox.Size = new System.Drawing.Size(60, 20);
-            this.maBox.TabIndex = 20;
+            this.maBox.TabIndex = 11;
+            // 
+            // labelAOP
+            // 
+            this.labelAOP.AutoSize = true;
+            this.labelAOP.Location = new System.Drawing.Point(20, 87);
+            this.labelAOP.Name = "labelAOP";
+            this.labelAOP.Size = new System.Drawing.Size(103, 13);
+            this.labelAOP.TabIndex = 21;
+            this.labelAOP.Text = "Average over period";
+            // 
+            // btnSaveImage
+            // 
+            this.btnSaveImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveImage.AutoSize = true;
+            this.btnSaveImage.BackColor = System.Drawing.Color.Transparent;
+            this.btnSaveImage.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSaveImage.BackgroundImage")));
+            this.btnSaveImage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnSaveImage.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.btnSaveImage.CenterImage = null;
+            this.btnSaveImage.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnSaveImage.HyperlinkStyle = false;
+            this.btnSaveImage.ImageMargin = 2;
+            this.btnSaveImage.LeftImage = null;
+            this.btnSaveImage.Location = new System.Drawing.Point(420, 18);
+            this.btnSaveImage.Name = "btnSaveImage";
+            this.btnSaveImage.PushStyle = true;
+            this.btnSaveImage.RightImage = null;
+            this.btnSaveImage.Size = new System.Drawing.Size(23, 23);
+            this.btnSaveImage.TabIndex = 23;
+            this.btnSaveImage.TextAlign = System.Drawing.StringAlignment.Center;
+            this.btnSaveImage.TextLeftMargin = 2;
+            this.btnSaveImage.TextRightMargin = 2;
+            this.btnSaveImage.Click += new System.EventHandler(this.btnSaveImage_Click);
             // 
             // OverlayView
             // 
+            this.Controls.Add(this.btnSaveImage);
             this.Controls.Add(this.maBox);
             this.Controls.Add(this.movingAverageLabel);
             this.Controls.Add(this.movingAverage);
@@ -997,6 +1071,7 @@ namespace SportTracksOverlayPlugin.Source
             this.Controls.Add(this.cadence);
             this.Controls.Add(this.power);
             this.Controls.Add(this.panelAct);
+            this.Controls.Add(this.labelAOP);
             this.Controls.Add(this.labelYaxis);
             this.Controls.Add(this.useDistance);
             this.Controls.Add(this.labelXaxis);
@@ -1066,6 +1141,7 @@ namespace SportTracksOverlayPlugin.Source
                     double value = UnitUtil.Time.Parse(maBox.Text);
                     if (value < 0) { throw new Exception(); }
                     Settings.MovingAverageTime = value;
+                    maBox.Text = UnitUtil.Time.ToString(value, "mm:ss");
                 }
                 else
                 {
@@ -1083,40 +1159,68 @@ namespace SportTracksOverlayPlugin.Source
             updateMovingAverage();
         }
 
+		void ResetLastSelectedBoxFonts()
+		{
+			if ( lastChecked.Count > 0 )
+			{
+				for ( int i = 0; i < lastChecked.Count; i++ )
+				{
+					lastChecked[i].Font = new Font( lastChecked[i].Font, FontStyle.Regular );
+					if ( lastChecked[i] == movingAverage )
+					{
+						lastChecked[i].ForeColor = Color.Black;
+					}
+					lastChecked[i].Refresh();
+				}
+				lastChecked.Clear();
+			}
+		}
+
         void chart_Click(object sender, EventArgs e)
         {
-            if (lastChecked != null)
-            {
-                lastChecked.Font = new Font(lastChecked.Font, FontStyle.Regular);
-                if (lastChecked == movingAverage)
-                {
-                    lastChecked.ForeColor = Color.Black;
-                }
-                lastChecked = null;
-            }
+			bSelectDataFlag = false;
+
+			if ( bSelectingDataFlag )
+			{
+				bSelectingDataFlag = false;
+				return;
+			}
+			ResetLastSelectedBoxFonts();
+
         }
+
+		void chart_SelectingData(object sender, ChartBase.SelectDataEventArgs e)
+		{
+			if ( ( lastSelectedSeries != null ) && ( lastSelectedSeries != e.DataSeries ) )
+				ResetLastSelectedBoxFonts();
+			lastSelectedSeries = e.DataSeries;
+			bSelectingDataFlag = true;
+		}
 
         void chart_SelectData(object sender, ChartBase.SelectDataEventArgs e)
         {
             if (e != null && e.DataSeries != null)
             {
-                if (lastChecked != null)
-                {
-                    lastChecked.Font = new Font(lastChecked.Font, FontStyle.Regular);
-                    if (lastChecked == movingAverage)
-                    {
-                        lastChecked.ForeColor = Color.Black;
-                    }
-                }
+				bSelectingDataFlag = false;
                 if (series2boxes.ContainsKey(e.DataSeries))
-                {
-                    CheckBox box = series2boxes[e.DataSeries];
-                    lastChecked = box;
+                {				
+					CheckBox box = series2boxes[e.DataSeries];
+					lastChecked.Add( box );
                     if (box == movingAverage)
                     {
                         box.ForeColor = getColor(activities.IndexOf(series2activity[e.DataSeries]) % 10);
+						box.Font = new Font( box.Font, FontStyle.Bold );
+
+						box = checkBoxes[activities.IndexOf( series2activity[e.DataSeries] )];
+						lastChecked.Add( box );
                     }
                     box.Font = new Font(box.Font, FontStyle.Bold);
+					panelAct.ScrollControlIntoView( box );
+
+					if ( bSelectDataFlag )
+						chart_SelectingData( sender, e );
+					bSelectDataFlag = true;
+
                 }
             }
         }
@@ -1189,10 +1293,56 @@ namespace SportTracksOverlayPlugin.Source
             Settings.ShowCategoryAverage = categoryAverage.Checked;
             updateChart();
         }
+
+        private void updateMovingAverage()
+        {
+            Settings.ShowMovingAverage = movingAverage.Checked;
+            if (Settings.ShowTime)
+            {
+				string sec = "mm:ss";
+                movingAverageLabel.Text = sec;
+				maBox.Text = UnitUtil.Time.ToString( Settings.MovingAverageTime, "mm:ss" );
+            }
+            else
+            {
+				movingAverageLabel.Text = UnitUtil.Distance.LabelAbbr;
+				maBox.Text = UnitUtil.Distance.ToString( Settings.MovingAverageLength );
+			}
+            maBox.Enabled = Settings.ShowMovingAverage;
+
+
+        }
+
         private void movingAverage_CheckedChanged(object sender, EventArgs e)
         {
             updateMovingAverage();
             updateChart();
         }
+
+		private void btnSaveImage_Click( object sender, EventArgs e )
+		{
+			OverlaySaveImageInfoPage siiPage = new OverlaySaveImageInfoPage();
+
+			if ( !string.IsNullOrEmpty( saveImageProperties_fileName ) ) siiPage.FileName = saveImageProperties_fileName;
+			if ( !string.IsNullOrEmpty( Settings.SavedImageFolder ) ) siiPage.FolderName = Settings.SavedImageFolder;
+			if ( Settings.SavedImageSize != new Size( 0, 0 ) ) siiPage.ImageSize = Settings.SavedImageSize;
+			siiPage.ImageFormat = Settings.SavedImageFormat;
+
+			siiPage.ShowDialog();
+
+			if ( siiPage.DialogResult == DialogResult.OK )
+			{
+				saveImageProperties_fileName = siiPage.FileName;
+				Settings.SavedImageSize = siiPage.ImageSize;
+				Settings.SavedImageFormat = siiPage.ImageFormat;
+				Settings.SavedImageFolder = siiPage.FolderName;
+
+				if ( ( !System.IO.File.Exists( siiPage.FileFullPathAndName ) ) ||
+					( MessageBox.Show( String.Format( Resources.FileAlreadyExists, siiPage.FileFullPathAndName ),
+										Resources.SaveImage, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation ) == DialogResult.Yes ) )
+					chart.SaveImage( siiPage.ImageSize, siiPage.FileFullPathAndName, siiPage.ImageFormat ); 
+			}
+		}
+
     }
 }

@@ -69,6 +69,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Messaging" />
     <Reference Include="System.Windows.Forms" />
@@ -86,6 +87,9 @@
     <Compile Include="Source\OverlayActivityDetailPage.cs" />
     <Compile Include="Source\OverlayEdit.cs" />
     <Compile Include="Source\OverlayPage.cs" />
+    <Compile Include="Source\OverlaySaveImageInfoPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Source\OverlaySettings.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -182,6 +186,9 @@
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Source\OverlaySaveImageInfoPage.resx">
+      <DependentUpon>OverlaySaveImageInfoPage.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Image_32_Overlay.jpg" />
@@ -190,7 +197,6 @@
     <None Include="Resources\Image_16_Overlay.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Resources\Image_24_Overlay.jpg" />
   </ItemGroup>
   <ItemGroup>

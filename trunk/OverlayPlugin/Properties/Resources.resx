@@ -117,11 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AOP" xml:space="preserve">
+    <value>Average over period</value>
+  </data>
   <data name="BCA" xml:space="preserve">
     <value>Black category average</value>
   </data>
+  <data name="Bitmap" xml:space="preserve">
+    <value>Bitmap</value>
+  </data>
   <data name="BMA" xml:space="preserve">
     <value>Bold moving average</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Custom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>Filename</value>
+  </data>
+  <data name="Huge" xml:space="preserve">
+    <value>Huge</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Image_16_Overlay" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -133,8 +151,17 @@
   <data name="Image_32_Overlay" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\image_32_overlay.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="JointPhotographicExpertsGroup" xml:space="preserve">
+    <value>Joint Photographic Experts Group</value>
+  </data>
+  <data name="Large" xml:space="preserve">
+    <value>Large</value>
+  </data>
   <data name="MAToolTip" xml:space="preserve">
     <value>Set to 0 for average from beginning of activity</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Medium</value>
   </data>
   <data name="NonNegativeNumber" xml:space="preserve">
     <value>Value must be a non-negative number!</value>
@@ -145,10 +172,37 @@
   <data name="O2" xml:space="preserve">
     <value>Overlay of {0} activities</value>
   </data>
-  <data name="String" xml:space="preserve">
-    <value>ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Delete16</value>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="PortableNetworkGraphics" xml:space="preserve">
+    <value>Portable Network Graphics</value>
+  </data>
+  <data name="SaveImage" xml:space="preserve">
+    <value>Save Image</value>
+  </data>
+  <data name="SaveIn" xml:space="preserve">
+    <value>Save in</value>
+  </data>
+  <data name="Size" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="Small" xml:space="preserve">
+    <value>Small</value>
+  </data>
+  <data name="TaggedImageFileFormat" xml:space="preserve">
+    <value>Tagged Image File Format</value>
+  </data>
+  <data name="Thumbnail" xml:space="preserve">
+    <value>Thumbnail</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
   </data>
   <data name="Webpage" xml:space="preserve">
     <value>Overlay plugin webpage</value>
+  </data>
+  <data name="FileAlreadyExists" xml:space="preserve">
+    <value>{0} already exists.  Do you want to replace it?</value>
   </data>
 </root>

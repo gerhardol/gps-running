@@ -170,6 +170,36 @@ namespace SportTracksOverlayPlugin.Source
             }
         }
 
+		private static Size savedImageSize;	//savedImageWidth, savedImageHeight in xml
+		public static Size SavedImageSize
+		{
+			get { return savedImageSize; }
+			set
+			{
+				savedImageSize = value;
+			}
+		}
+
+		private static string savedImageFolder;
+		public static string SavedImageFolder
+		{
+			get { return savedImageFolder; }
+			set
+			{
+				savedImageFolder = value;
+			}
+		}
+
+		private static ImageFormat savedImageFormat;
+		public static ImageFormat SavedImageFormat
+		{
+			get { return savedImageFormat; }
+			set
+			{
+				savedImageFormat = value;
+			}
+		}
+
         private static int settingsVersion = 0;
         private const int settingsVersionCurrent = 1;
 
@@ -188,6 +218,9 @@ namespace SportTracksOverlayPlugin.Source
             autoZoom = true;
             showTime = true;
             windowSize = new Size(800, 600);
+			savedImageSize = new Size( 0, 0 );
+			savedImageFolder = "";
+			savedImageFormat = ImageFormat.Jpeg;
         }
 
         public static void ReadOptions(XmlDocument xmlDoc, XmlNamespaceManager nsmgr, XmlElement pluginNode)
@@ -233,7 +266,46 @@ namespace SportTracksOverlayPlugin.Source
             {
                 windowSize = new Size(XmlConvert.ToInt16(attr), XmlConvert.ToInt16(attr2));
             }
-        }
+
+			attr = pluginNode.GetAttribute( xmlTags.savedImageFolder );
+			if ( attr.Length > 0 ) { savedImageFolder = attr; }
+			attr = pluginNode.GetAttribute( xmlTags.savedImageWidth );
+			attr2 = pluginNode.GetAttribute( xmlTags.savedImageHeight );
+			if ( attr.Length > 0 && attr2.Length > 0 )
+				savedImageSize = new Size( XmlConvert.ToInt16( attr ), XmlConvert.ToInt16( attr2 ) );
+			attr = pluginNode.GetAttribute( xmlTags.savedImageFormat );
+			if ( attr.Length > 0 )
+			{
+				//I would have thought this should have been sufficient; however, it is not.
+				savedImageFormat = new ImageFormat( XmlConvert.ToGuid( attr ) );
+				//Need to this as well.
+				savedImageFormat = ImageFormatGuid2ImageFormat( savedImageFormat );
+			}
+		}
+		private static ImageFormat ImageFormatGuid2ImageFormat( ImageFormat imgF )
+		{
+			if ( imgF.Guid.CompareTo( ImageFormat.Bmp.Guid ) == 0 )
+				return ImageFormat.Bmp;
+			else if ( imgF.Guid.CompareTo( ImageFormat.Emf.Guid ) == 0 )
+				return ImageFormat.Emf;
+			else if ( imgF.Guid.CompareTo( ImageFormat.Exif.Guid ) == 0 )
+				return ImageFormat.Exif;
+			else if ( imgF.Guid.CompareTo( ImageFormat.Gif.Guid ) == 0 )
+				return ImageFormat.Gif;
+			else if ( imgF.Guid.CompareTo( ImageFormat.Icon.Guid ) == 0 )
+				return ImageFormat.Icon;
+			else if ( imgF.Guid.CompareTo( ImageFormat.Jpeg.Guid ) == 0 )
+				return ImageFormat.Jpeg;
+			else if ( imgF.Guid.CompareTo( ImageFormat.MemoryBmp.Guid ) == 0 )
+				return ImageFormat.MemoryBmp;
+			else if ( imgF.Guid.CompareTo( ImageFormat.Png.Guid ) == 0 )
+				return ImageFormat.Png;
+			else if ( imgF.Guid.CompareTo( ImageFormat.Tiff.Guid ) == 0 )
+				return ImageFormat.Tiff;
+			else if ( imgF.Guid.CompareTo( ImageFormat.Wmf.Guid ) == 0 )
+				return ImageFormat.Wmf;
+			return imgF;
+		}
 
         public static void WriteOptions(XmlDocument xmlDoc, XmlElement pluginNode)
         {
@@ -254,6 +326,11 @@ namespace SportTracksOverlayPlugin.Source
 
             pluginNode.SetAttribute(xmlTags.viewWidth, XmlConvert.ToString(windowSize.Width));
             pluginNode.SetAttribute(xmlTags.viewHeight, XmlConvert.ToString(windowSize.Height));
+
+			pluginNode.SetAttribute(xmlTags.savedImageFolder, savedImageFolder);
+			pluginNode.SetAttribute(xmlTags.savedImageWidth,XmlConvert.ToString(savedImageSize.Width));
+			pluginNode.SetAttribute(xmlTags.savedImageHeight,XmlConvert.ToString(savedImageSize.Height));
+			pluginNode.SetAttribute(xmlTags.savedImageFormat,XmlConvert.ToString(savedImageFormat.Guid));
         }
 
         private class xmlTags
@@ -274,6 +351,11 @@ namespace SportTracksOverlayPlugin.Source
             public const string showTime = "showTime";
             public const string viewWidth = "viewWidth";
             public const string viewHeight = "viewHeight";
+
+			public const string savedImageFolder = "savedImageFolder";
+			public const string savedImageWidth = "savedImageWidth";
+			public const string savedImageHeight = "savedImageHeight";
+			public const string savedImageFormat = "savedImageFormat";
         }
         
         private static bool load()
@@ -302,6 +384,12 @@ namespace SportTracksOverlayPlugin.Source
                 movingAverageLength = parseDouble(elm.Attributes["movingAverageLength"].Value);
                 movingAverageTime = parseDouble(elm.Attributes["movingAverageTime"].Value);
                 autoZoom = bool.Parse(elm.Attributes["autoZoom"].Value);
+
+				savedImageFolder = elm.Attributes["savedImageFolder"].Value;
+				savedImageSize = new Size( int.Parse( elm.Attributes["savedImageWidth"].Value ),
+										int.Parse( elm.Attributes["savedImageWidth"].Value ) );
+				savedImageFormat = new ImageFormat( new Guid( elm.Attributes["savedImageFormat"].Value ) );
+
             }
             catch (Exception)
             {
@@ -311,7 +399,6 @@ namespace SportTracksOverlayPlugin.Source
             reader.Close();
             return true;
         }
-
         private static double parseDouble(string p)
         {
             //if (!p.Contains(".")) p += ".0";
