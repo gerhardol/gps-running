@@ -40,6 +40,9 @@ namespace SportTracksOverlayPlugin.Source
 			DateTime d = DateTime.Now;
 			txtFilename.Text = String.Format( "{0} {1}",
 											"Overlay", d.ToShortDateString());
+            char[] cInvalid = Path.GetInvalidFileNameChars();
+            for (int i = 0; i < cInvalid.Length; i++)
+                txtFilename.Text = txtFilename.Text.Replace(cInvalid[i], '-');
 
 			txtSaveIn.Text = Environment.GetFolderPath( Environment.SpecialFolder.Personal );
 
