@@ -54,7 +54,6 @@ namespace SportTracksOverlayPlugin.Source
 
         private CheckBox categoryAverage;
         private CheckBox movingAverage;
-        private Label movingAverageLabel;
         private System.Windows.Forms.TextBox maBox;
         private ToolTip toolTipMAbox;
         private System.ComponentModel.IContainer components;
@@ -847,7 +846,6 @@ namespace SportTracksOverlayPlugin.Source
             this.elevation = new System.Windows.Forms.CheckBox();
             this.categoryAverage = new System.Windows.Forms.CheckBox();
             this.movingAverage = new System.Windows.Forms.CheckBox();
-            this.movingAverageLabel = new System.Windows.Forms.Label();
             this.maBox = new System.Windows.Forms.TextBox();
             this.toolTipMAbox = new System.Windows.Forms.ToolTip(this.components);
             this.labelAOP = new System.Windows.Forms.Label();
@@ -1009,15 +1007,6 @@ namespace SportTracksOverlayPlugin.Source
             this.movingAverage.UseVisualStyleBackColor = true;
             this.movingAverage.CheckedChanged += new System.EventHandler(this.movingAverage_CheckedChanged);
             // 
-            // movingAverageLabel
-            // 
-            this.movingAverageLabel.AutoSize = true;
-            this.movingAverageLabel.Location = new System.Drawing.Point(86, 109);
-            this.movingAverageLabel.Name = "movingAverageLabel";
-            this.movingAverageLabel.Size = new System.Drawing.Size(21, 13);
-            this.movingAverageLabel.TabIndex = 19;
-            this.movingAverageLabel.Text = "km";
-            // 
             // maBox
             // 
             this.maBox.Location = new System.Drawing.Point(20, 106);
@@ -1063,7 +1052,6 @@ namespace SportTracksOverlayPlugin.Source
             // 
             this.Controls.Add(this.btnSaveImage);
             this.Controls.Add(this.maBox);
-            this.Controls.Add(this.movingAverageLabel);
             this.Controls.Add(this.movingAverage);
             this.Controls.Add(this.chart);
             this.Controls.Add(this.categoryAverage);
@@ -1300,13 +1288,11 @@ namespace SportTracksOverlayPlugin.Source
             if (Settings.ShowTime)
             {
 				string sec = "mm:ss";
-                movingAverageLabel.Text = sec;
 				maBox.Text = UnitUtil.Time.ToString( Settings.MovingAverageTime, "mm:ss" );
             }
             else
             {
-				movingAverageLabel.Text = UnitUtil.Distance.LabelAbbr;
-				maBox.Text = UnitUtil.Distance.ToString( Settings.MovingAverageLength );
+				maBox.Text = UnitUtil.Distance.ToString( Settings.MovingAverageLength, "u" );
 			}
             maBox.Enabled = Settings.ShowMovingAverage;
 

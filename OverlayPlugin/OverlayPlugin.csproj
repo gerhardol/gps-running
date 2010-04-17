@@ -121,10 +121,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Properties\Resources.da.resx">
+    <EmbeddedResource Include="Properties\Resources.da.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Resources.resx</DependentUpon>
-    </None>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.sv.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Resources.resx</DependentUpon>

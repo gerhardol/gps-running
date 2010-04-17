@@ -97,15 +97,6 @@ namespace SportTracksOverlayPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cancel.
-        /// </summary>
-        internal static string Cancel {
-            get {
-                return ResourceManager.GetString("Cancel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Custom.
         /// </summary>
         internal static string Custom {
@@ -222,15 +213,6 @@ namespace SportTracksOverlayPlugin.Properties {
         internal static string O2 {
             get {
                 return ResourceManager.GetString("O2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to OK.
-        /// </summary>
-        internal static string OK {
-            get {
-                return ResourceManager.GetString("OK", resourceCulture);
             }
         }
         

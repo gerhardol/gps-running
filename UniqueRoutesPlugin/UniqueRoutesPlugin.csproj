@@ -124,34 +124,34 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Properties\Resources.da.resx">
+    <EmbeddedResource Include="Properties\Resources.da.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Resources.resx</DependentUpon>
-    </None>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.sv.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Resources.resx</DependentUpon>
     </EmbeddedResource>
-    <None Include="Properties\Resources.de.resx">
+    <EmbeddedResource Include="Properties\Resources.de.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Resources.resx</DependentUpon>
-    </None>
-    <None Include="Properties\Resources.it.resx">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.it.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Resources.resx</DependentUpon>
-    </None>
-    <None Include="Properties\Resources.nl.resx">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.nl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Resources.resx</DependentUpon>
-    </None>
-    <None Include="Properties\Resources.es.resx">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.es.resx">
       <DependentUpon>Resources.resx</DependentUpon>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Properties\Resources.fr.resx">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.fr.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Resources.resx</DependentUpon>
-    </None>
+    </EmbeddedResource>
     <EmbeddedResource Include="Source\CategorySelector.resx">
       <SubType>Designer</SubType>
       <DependentUpon>CategorySelector.cs</DependentUpon>
