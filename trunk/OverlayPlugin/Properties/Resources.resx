@@ -129,9 +129,6 @@
   <data name="BMA" xml:space="preserve">
     <value>Bold moving average</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
   <data name="Custom" xml:space="preserve">
     <value>Custom</value>
   </data>
@@ -171,9 +168,6 @@
   </data>
   <data name="O2" xml:space="preserve">
     <value>Overlay of {0} activities</value>
-  </data>
-  <data name="OK" xml:space="preserve">
-    <value>OK</value>
   </data>
   <data name="PortableNetworkGraphics" xml:space="preserve">
     <value>Portable Network Graphics</value>
