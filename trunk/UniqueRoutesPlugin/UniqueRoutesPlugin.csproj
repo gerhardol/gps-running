@@ -160,30 +160,30 @@
       <SubType>Designer</SubType>
       <DependentUpon>UniqueRoutesActivityDetailView.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Util\StringResources.da.resx">
+    <EmbeddedResource Include="Util\StringResources.da.resx">
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Util\StringResources.de.resx">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.de.resx">
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Util\StringResources.es.resx">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.es.resx">
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Util\StringResources.fr.resx">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.fr.resx">
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Util\StringResources.it.resx">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.it.resx">
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Util\StringResources.nl.resx">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\StringResources.nl.resx">
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
-    </None>
+    </EmbeddedResource>
     <EmbeddedResource Include="Util\StringResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>StringResources.Designer.cs</LastGenOutput>
