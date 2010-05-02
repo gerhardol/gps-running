@@ -9,7 +9,7 @@ The prediction models works better in some situations:
   * You have to be trained for both the activity you base the prediction on and the distance you predict for. So you have to train for a marathon to predict it.
   * The models do not use the physological effect often seen that activities longer than 2h will be slower. So for instance predict a marathon from a half marathon will give a little too optimistic result.
 
-In all, the predictions are often considered a little too optimistic. Still, if you are interested in analysis of your best performances this sort of plugin should definitely  also be a part of your SportTracks plugin setup.
+In all, the predictions are often considered a little too optimistic. Still, if you are interested in analysis of your best performances this sort of plugin should definitely  also be a part of your !SportTracks plugin setup.
 
 ===Models===
 The Dave Cameron model works as follows:
