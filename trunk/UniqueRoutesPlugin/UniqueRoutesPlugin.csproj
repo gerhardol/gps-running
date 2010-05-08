@@ -1,72 +1,14 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
-    <StartAction>Program</StartAction>
-    <StartProgram>C:\Program Files\Zone Five Software\SportTracks 2.1\SportTracks.exe</StartProgram>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{AE71FE1B-45C9-4B91-BD76-D219DAAC1F0C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SportTracksUniqueRoutesPlugin</RootNamespace>
     <AssemblyName>UniqueRoutesPlugin</AssemblyName>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>2.0</OldToolsVersion>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkSubset>
-    </TargetFrameworkSubset>
+    <PluginId>5c630517-46c4-478d-89d6-a8a6ca6337db</PluginId>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
-  </PropertyGroup>
+  <Import Project="..\Common\Common-References.csproj" />
   <ItemGroup>
-    <Reference Include="Common.Data, Version=2.1.3326.18908, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Zone Five Software\SportTracks 2.1\Common.Data.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Common.Visuals, Version=2.1.3326.18913, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Zone Five Software\SportTracks 2.1\Common.Visuals.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -105,18 +47,6 @@
       <DependentUpon>UniqueRoutesSettingPageControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\UniqueRoutesSettingsPages.cs" />
-    <Compile Include="Util\StringResources.Designer.cs">
-      <DependentUpon>StringResources.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Util\UnitUtil.cs" />
-    <Compile Include="Util\WarningDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Util\YesNoDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -160,6 +90,29 @@
       <SubType>Designer</SubType>
       <DependentUpon>UniqueRoutesActivityDetailView.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="..\Common\Common-Files.csproj" />
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Util\StringResources.Designer.cs">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Util\UnitUtil.cs" />
+    <Compile Include="Util\WarningDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Util\YesNoDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="Util\StringResources.da.resx">
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
@@ -194,42 +147,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
+    <ItemGroup>
     <None Include="plugin.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -242,43 +160,4 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <PropertyGroup>
-    <PostBuildEvent>set guid=5c630517-46c4-478d-89d6-a8a6ca6337db
-set st2plgFile=$(ProjectName)-1.9.x.st2plugin
-REM 7-zip must be configured, hardcoded path used
-REM "%25programfiles%25\7-zip\7z.exe"
-REM To move a .st2plugin to common area, create environment variable (or set it below)
-REM set st2plgoutdir=g:\Users\go\dev\web
-
-set StTarget="%25ALLUSERSPROFILE%25\ZoneFiveSoftware\SportTracks\2.0\Plugins\Update\%25guid%25\$(ProjectName)"
-
-IF NOT EXIST %25StTarget%25 mkdir %25StTarget%25
-REM XCOPY depreciated in Vista, use for XP compatibility
-xcopy  $(TargetDir)*.* "%25StTarget%25" /I/Y/Q/E &lt;NUL:
-
-IF NOT "$(ConfigurationName)"=="Release" GOTO END 
-IF EXIST "%25programfiles%25\7-zip\7z.exe" GOTO st2plug
-goto end
-
-:st2plug
-del "$(TargetDir)%25st2plgFile%25"
-"%25programfiles%25\7-zip\7z" a -r -tzip "$(TargetDir)%25st2plgFile%25"  "$(TargetDir)*"  -x!*.st2plugin -x!*.tmp -x!*.pdb -x!$(ProjectName).xml
-
-if "%25st2plgoutdir%25"=="" GOTO END
-if not EXIST "%25st2plgoutdir%25" GOTO END
-copy "$(TargetDir)%25st2plgFile%25" "%25st2plgOutdir%25"
-
-:END</PostBuildEvent>
-  </PropertyGroup>
 </Project>

@@ -1,58 +1,14 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
-    <StartAction>Program</StartAction>
-    <StartProgram>C:\Program Files\Zone Five Software\SportTracks 2.1\SportTracks.exe</StartProgram>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{8A7EBCE8-1745-43FA-A4AD-C0B67139A82F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SportTracksAccumulatedSummaryPlugin</RootNamespace>
     <AssemblyName>AccumulatedSummaryPlugin</AssemblyName>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>2.0</OldToolsVersion>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <TargetFrameworkSubset>
-    </TargetFrameworkSubset>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <PluginId>859F81F4-8272-4183-BA53-FDF1DD809FD6</PluginId>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
-  </PropertyGroup>
+  <Import Project="..\Common\Common-References.csproj" />
   <ItemGroup>
-    <Reference Include="Common.Data, Version=2.1.3326.18908, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Zone Five Software\SportTracks 2.1\Common.Data.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Common.Visuals, Version=2.1.3326.18913, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Zone Five Software\SportTracks 2.1\Common.Visuals.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -82,18 +38,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Source\Settings.cs" />
-    <Compile Include="Util\StringResources.Designer.cs">
-      <DependentUpon>StringResources.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Util\UnitUtil.cs" />
-    <Compile Include="Util\WarningDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Util\YesNoDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -129,6 +73,32 @@
       <SubType>Designer</SubType>
       <DependentUpon>Resources.resx</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Image_16_AccumulatedSummary.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Image_24_AccumulatedSummary.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Resources\Image_32_AccumulatedSummary.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Util\StringResources.Designer.cs">
+      <DependentUpon>StringResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Util\UnitUtil.cs" />
+    <Compile Include="Util\WarningDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Util\YesNoDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="Util\StringResources.da.resx">
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
@@ -163,17 +133,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Image_16_AccumulatedSummary.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Image_24_AccumulatedSummary.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Resources\Image_32_AccumulatedSummary.jpg" />
-  </ItemGroup>
-  <ItemGroup>
+    <ItemGroup>
     <None Include="plugin.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -186,40 +146,5 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <PropertyGroup>
-    <PostBuildEvent>set guid=859F81F4-8272-4183-BA53-FDF1DD809FD6
-set st2plgFile=$(ProjectName)-1.9.x.st2plugin
-REM 7-zip must be configured, hardcoded path used
-REM "%25programfiles%25\7-zip\7z.exe"
-REM To move a .st2plugin to common area, create environment variable (or set it below)
-REM set st2plgoutdir=g:\Users\go\dev\web
-
-set StTarget="%25ALLUSERSPROFILE%25\ZoneFiveSoftware\SportTracks\2.0\Plugins\Update\%25guid%25\$(ProjectName)"
-
-IF NOT EXIST %25StTarget%25 mkdir %25StTarget%25
-REM XCOPY depreciated in Vista, use for XP compatibility
-xcopy  $(TargetDir)*.* "%25StTarget%25" /I/Y/Q/E &lt;NUL:
-
-IF NOT "$(ConfigurationName)"=="Release" GOTO END 
-IF EXIST "%25programfiles%25\7-zip\7z.exe" GOTO st2plug
-goto end
-
-:st2plug
-del "$(TargetDir)%25st2plgFile%25"
-"%25programfiles%25\7-zip\7z" a -r -tzip "$(TargetDir)%25st2plgFile%25"  "$(TargetDir)*"  -x!*.st2plugin -x!*.tmp -x!*.pdb -x!$(ProjectName).xml
-
-if "%25st2plgoutdir%25"=="" GOTO END
-if not EXIST "%25st2plgoutdir%25" GOTO END
-copy "$(TargetDir)%25st2plgFile%25" "%25st2plgOutdir%25"
-
-:END</PostBuildEvent>
-  </PropertyGroup>
+  <Import Project="..\Common\Common-Files.csproj" />
 </Project>
