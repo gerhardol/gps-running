@@ -1287,7 +1287,7 @@ namespace SportTracksOverlayPlugin.Source
             Settings.ShowMovingAverage = movingAverage.Checked;
             if (Settings.ShowTime)
             {
-				string sec = "mm:ss";
+				//string sec = "mm:ss";
 				maBox.Text = UnitUtil.Time.ToString( Settings.MovingAverageTime, "mm:ss" );
             }
             else
