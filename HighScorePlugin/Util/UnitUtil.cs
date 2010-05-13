@@ -635,6 +635,7 @@ namespace SportTracksHighScorePlugin.Util
             private static String getLabel()
             {
                 String unit;
+#if ST_2_1
                 if (Unit.Equals(Length.Units.Mile))
                 {
                     unit = CommonResources.Text.LabelMilePerHour;
@@ -643,6 +644,11 @@ namespace SportTracksHighScorePlugin.Util
                 {
                     unit = CommonResources.Text.LabelKmPerHour;
                 }
+#else
+                unit = ZoneFiveSoftware.Common.Data.Measurement.Speed.Label(
+                    ZoneFiveSoftware.Common.Data.Measurement.Speed.Units.Speed,
+                    new Length(1, Plugin.GetApplication().SystemPreferences.DistanceUnits));
+#endif
                 return unit;
             }
             public static String Label
@@ -737,6 +743,7 @@ namespace SportTracksHighScorePlugin.Util
             private static String getLabel()
             {
                 String unit;
+#if ST_2_1
                 if (Unit.Equals(Length.Units.Mile))
                 {
                     unit = CommonResources.Text.LabelMinPerMile;
@@ -745,6 +752,11 @@ namespace SportTracksHighScorePlugin.Util
                 {
                     unit = CommonResources.Text.LabelMinPerKm;
                 }
+#else
+                unit = ZoneFiveSoftware.Common.Data.Measurement.Speed.Label(
+                    ZoneFiveSoftware.Common.Data.Measurement.Speed.Units.Pace,
+                    new Length(1, Plugin.GetApplication().SystemPreferences.DistanceUnits));
+#endif
                 return unit;
             }
             public static String Label
@@ -780,8 +792,16 @@ namespace SportTracksHighScorePlugin.Util
             {
                 //All possible labels should be checked here
                 //The "min/" is for changed languages, not foolproof, but that was the way HighScore checked it
-                return (label.Equals(CommonResources.Text.LabelMinPerKm) || label.Equals(CommonResources.Text.LabelMinPerMile)
-                    || label.Contains("min/"));
+                return (
+#if ST_2_1
+                    label.Equals(CommonResources.Text.LabelMinPerKm) || label.Equals(CommonResources.Text.LabelMinPerMile)
+#else
+                    label.Equals(ZoneFiveSoftware.Common.Data.Measurement.Speed.Label(
+                    ZoneFiveSoftware.Common.Data.Measurement.Speed.Units.Pace,
+                    new Length(1, Plugin.GetApplication().SystemPreferences.DistanceUnits)))
+#endif
+                    || label.Contains("min/")
+                    );
             }
         }
 

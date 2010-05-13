@@ -21,6 +21,9 @@ using System.Collections.Generic;
 using System.Text;
 
 using ZoneFiveSoftware.Common.Visuals.Fitness;
+#if !ST_2_1
+using ZoneFiveSoftware.Common.Visuals;
+#endif
 
 namespace SportTracksHighScorePlugin.Source
 {
@@ -28,11 +31,17 @@ namespace SportTracksHighScorePlugin.Source
     {
         #region IExtendActivityDetailPages Members
 
+#if ST_2_1
         public IList<IActivityDetailPage> ActivityDetailPages
         {
             get { return new IActivityDetailPage[] { new HighScoreActivityDetailPage() }; }
         }
-
+#else
+        public IList<IDetailPage> GetDetailPages(IDailyActivityView view, ExtendViewDetailPages.Location location)
+        {
+            return new IDetailPage[] { new HighScoreActivityDetailPage(view) };
+        }
+#endif
         #endregion
     }
 }

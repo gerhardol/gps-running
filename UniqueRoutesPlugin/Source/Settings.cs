@@ -43,7 +43,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             trimp = getPlugin("TRIMP", "SportTracksTRIMPPlugin.Source.TRIMPView");
             defaults();
         }
-
+        
         private static String selectedPlugin;
         public static String SelectedPlugin
         {
@@ -309,8 +309,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
             return cat;
         }
-     
-        public static IActivityCategory getCategory(string[] ps, int p, IList<IActivityCategory> iList)
+        public static IActivityCategory getCategory(string[] ps, int p, IEnumerable<IActivityCategory> iList)
         {
             if (iList == null) return null;
             foreach (IActivityCategory category in iList)
@@ -326,7 +325,6 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
             return null;
         }
-
         private static double parseDouble(string p)
         {
             //if (!p.Contains(".")) p += ".0";

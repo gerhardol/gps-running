@@ -1,6 +1,7 @@
 /*
 Copyright (C) 2007, 2008 Kristian Bisgaard Lassen
 Copyright (C) 2010 Kristian Helkjaer Lassen
+Copyright (C) 2010 Gerhard Olsson
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -22,16 +23,28 @@ using System.Text;
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using SportTracksAccumulatedSummaryPlugin.Properties;
+#if !ST_2_1
+using ZoneFiveSoftware.Common.Visuals.Fitness;
+using ZoneFiveSoftware.Common.Visuals.Util;
+#endif
 
 namespace SportTracksAccumulatedSummaryPlugin.Source
 {
     class AccumulatedSummaryAction: IAction
     {
-        private IList<IActivity> activities;
-
+#if !ST_2_1
+        public AccumulatedSummaryAction(IDailyActivityView view)
+        {
+            this.dailyView = view;
+        }
+        public AccumulatedSummaryAction(IActivityReportsView view)
+        {
+            this.reportView = view;
+        }
+#endif
         public AccumulatedSummaryAction(IList<IActivity> activities)
         {
-            this.activities = activities;
+            this._activities = activities;
         }
 
         #region IAction Members
@@ -51,6 +64,13 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
             get { return Properties.Resources.Image_16_AccumulatedSummary; }
         }
 
+        public IList<string> MenuPath
+        {
+            get
+            {
+                return new List<string>();
+            }
+        }
         public void Refresh()
         {
         }
@@ -68,9 +88,47 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
                 return String.Format(Resources.AS2,activities.Count); 
             }
         }
+        public bool Visible
+        {
+            get
+            {
+                return true;
+            }
+        }
 
         #endregion
 
+#if !ST_2_1
+        private IDailyActivityView dailyView = null;
+        private IActivityReportsView reportView = null;
+#endif
+        private IList<IActivity> activities
+        {
+            get
+            {
+#if !ST_2_1
+                //activities are set either directly or by selection,
+                //not by more than one
+                if (_activities == null)
+                {
+                    if (dailyView != null)
+                    {
+                        return CollectionUtils.GetItemsOfType<IActivity>(dailyView.SelectionProvider.SelectedItems);
+                    }
+                    else if (reportView != null)
+                    {
+                        return CollectionUtils.GetItemsOfType<IActivity>(reportView.SelectionProvider.SelectedItems);
+                    }
+                    else
+                    {
+                        return new List<IActivity>();
+                    }
+                }
+#endif
+                return _activities;
+            }
+        }
+        private IList<IActivity> _activities = null;
         #region INotifyPropertyChanged Members
 
 #pragma warning disable 67

@@ -25,8 +25,15 @@ using ZoneFiveSoftware.Common.Visuals;
 
 namespace SportTracksPerformancePredictorPlugin.Source
 {
-    class PerformancePredictorActivityEdit : IExtendActivityEditActions
+    class PerformancePredictorActivityEdit :
+#if ST_2_1
+    IExtendActivityEditActions
+#else
+     IExtendDailyActivityViewActions, IExtendActivityReportsViewActions
+#endif
     {
+
+#if ST_2_1
         #region IExtendActivityEditActions Members
 
         public IList<IAction> GetActions(IList<IActivity> activities)
@@ -40,5 +47,27 @@ namespace SportTracksPerformancePredictorPlugin.Source
         }
 
         #endregion
+#else
+        #region IExtendDailyActivityViewActions Members
+        public IList<IAction> GetActions(IDailyActivityView view,
+                                                 ExtendViewActions.Location location)
+        {
+            if (location == ExtendViewActions.Location.AnalyzeMenu)
+            {
+                return new IAction[] { new PerformancePredictorAction(view) };
+            }
+            else return new IAction[0];
+        }
+        public IList<IAction> GetActions(IActivityReportsView view,
+                                         ExtendViewActions.Location location)
+        {
+            if (location == ExtendViewActions.Location.AnalyzeMenu)
+            {
+                return new IAction[] { new PerformancePredictorAction(view) };
+            }
+            else return new IAction[0];
+        }
+        #endregion
+#endif
     }
 }

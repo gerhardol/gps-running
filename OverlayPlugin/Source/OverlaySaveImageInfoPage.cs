@@ -596,8 +596,11 @@ namespace SportTracksOverlayPlugin.Source
 			dtp.Tree.RowHotlightColor = System.Drawing.SystemColors.ControlLight;
 			dtp.Tree.RowHotlightColorText = System.Drawing.SystemColors.ControlText;
 			dtp.Location = splitContainer1.Panel1.PointToScreen( isSaveIn.Location );
-			dtp.Tree.SelectedChanged += new EventHandler( dtpTree_SelectedChanged );
-			dtp.Top += isSaveIn.Height;
+#if ST_2_1
+            //Should be rewritten to use ST control in ST3
+            dtp.Tree.SelectedChanged += new EventHandler( dtpTree_SelectedChanged );
+#endif
+            dtp.Top += isSaveIn.Height;
 			dtp.Width = isSaveIn.Width;
 			dtp.Tree.SelectedPath = txtSaveIn.Text;
 			dtp.ShowDialog();

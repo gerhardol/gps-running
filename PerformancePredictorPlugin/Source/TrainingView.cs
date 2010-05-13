@@ -77,8 +77,13 @@ namespace SportTracksPerformancePredictorPlugin.Source
                 UnitUtil.Distance.ToString(1000,"u"));
             SizeChanged += new EventHandler(TrainingView_SizeChanged);            
             setSize();
+#if ST_2_1
             Plugin.GetApplication().Logbook.DataChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(Logbook_DataChanged);
             Plugin.GetApplication().Logbook.Athlete.DataChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(Athlete_DataChanged);
+#else
+ //xxx           Plugin.GetApplication().Logbook.PropertyChanged += new ZoneFiveSoftware.Common.Data.NotifyCollectionChangedEventHandler(Logbook_DataChanged);
+ //           Plugin.GetApplication().Logbook.Athlete.PropertyChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(Athlete_DataChanged);
+#endif
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
         }
 
@@ -87,6 +92,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             setPages();
         }
 
+#if ST_2_1
         private void Athlete_DataChanged(object sender, ZoneFiveSoftware.Common.Data.NotifyDataChangedEventArgs e)
         {
             setPages();
@@ -96,6 +102,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
         {
             setPages();
         }
+#endif
 
         private void TrainingView_SizeChanged(object sender, EventArgs e)
         {

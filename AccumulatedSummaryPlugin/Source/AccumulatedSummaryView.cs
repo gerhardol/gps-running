@@ -246,9 +246,9 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
             foreach (IActivity activity in activities)
             {
                 ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
-                IList<IZoneCategory> climbZones = Plugin.GetApplication().Logbook.ClimbZones;
-                ups += info.TotalAscendingMeters(climbZones[0]);
-                downs += info.TotalDescendingMeters(climbZones[0]);
+                IEnumerable<IZoneCategory> climbZones = Plugin.GetApplication().Logbook.ClimbZones;
+                ups += info.TotalAscendingMeters(climbZones.GetEnumerator().Current);
+                downs += info.TotalDescendingMeters(climbZones.GetEnumerator().Current);
             }
             return "+" + UnitUtil.Elevation.ToString(ups) + "/" + UnitUtil.Elevation.ToString(downs);
         }

@@ -20,18 +20,28 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
+#if !ST_2_1
+using ZoneFiveSoftware.Common.Visuals;
+#endif
 
 namespace SportTracksTRIMPPlugin.Source
 {
-    class TRIMPActivityDetailPages : IExtendActivityDetailPages
+    class TRIMPActivityDetail : IExtendActivityDetailPages
     {
 
         #region IExtendActivityDetailPages Members
 
+#if ST_2_1
         public IList<IActivityDetailPage> ActivityDetailPages
         {
             get { return new IActivityDetailPage[] { new TRIMPActivityDetailPage() }; }
         }
+#else
+        public IList<IDetailPage> GetDetailPages(IDailyActivityView view, ExtendViewDetailPages.Location location)
+        {
+            return new IDetailPage[] { new TRIMPActivityDetailPage(view) };
+        }
+#endif
 
         #endregion
     }

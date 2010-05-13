@@ -20,6 +20,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
+#if !ST_2_1
+using ZoneFiveSoftware.Common.Visuals;
+#endif
 
 namespace SportTracksOverlayPlugin.Source
 {
@@ -27,6 +30,7 @@ namespace SportTracksOverlayPlugin.Source
     {
         #region IExtendActivityDetailPages Members
 
+#if ST_2_1
         public IList<IActivityDetailPage> ActivityDetailPages
         {
             get
@@ -34,6 +38,12 @@ namespace SportTracksOverlayPlugin.Source
                 return new IActivityDetailPage[] { new OverlayActivityDetailPage() };
             }
         }
+#else
+        public IList<IDetailPage> GetDetailPages(IDailyActivityView view, ExtendViewDetailPages.Location location)
+        {
+            return new IDetailPage[] { new OverlayActivityDetailPage(view) };
+        }
+#endif
 
         #endregion
     }

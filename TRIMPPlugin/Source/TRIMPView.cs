@@ -31,6 +31,9 @@ using ZoneFiveSoftware.Common.Data.Measurement;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Collections;
+#if !ST_2_1
+using System.ComponentModel;
+#endif
 using SportTracksTRIMPPlugin.Properties;
 using SportTracksTRIMPPlugin.Util;
 
@@ -635,6 +638,7 @@ namespace SportTracksTRIMPPlugin.Source
             public IList<INamedLowHighZone> Zones
             {
                 get { return zones; }
+                set { zones = value; }
             }
 
             #endregion
@@ -642,8 +646,11 @@ namespace SportTracksTRIMPPlugin.Source
             #region INotifyDataChanged Members
 
 #pragma warning disable 67
+#if ST_2_1
             public event NotifyDataChangedEventHandler DataChanged;
-
+#else
+            public event PropertyChangedEventHandler PropertyChanged;
+#endif
             public bool QueueEvents
             {
                 get
@@ -675,18 +682,24 @@ namespace SportTracksTRIMPPlugin.Source
             public float High
             {
                 get { return high; }
+                set { high = value; }
             }
 
             public float Low
             {
                 get { return low; }
+                set { low = value; }
             }
 
             public string Name
             {
                 get { return low + "/" + high; }
+                set {  } //Unused
             }
 
+#if !ST_2_1
+            public event PropertyChangedEventHandler PropertyChanged;
+#endif
             #endregion
         }
     }
