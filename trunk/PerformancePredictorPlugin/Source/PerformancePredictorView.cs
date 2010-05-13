@@ -46,7 +46,10 @@ namespace SportTracksPerformancePredictorPlugin.Source
                 activity = value;
                 if (activity != null)
                 {
+#if ST_2_1
+                    //xxx
                     activity.DataChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(dataChanged);
+#endif
                 }
                 trainingView.Activity = value;
                 makeData();                
@@ -80,11 +83,12 @@ namespace SportTracksPerformancePredictorPlugin.Source
             }
         }
 
+#if ST_2_1
         private void dataChanged(object sender, ZoneFiveSoftware.Common.Data.NotifyDataChangedEventArgs e)
         {
             makeData();
         }
-
+#endif
         private ChartDataSeries cameronSeries, riegelSeries;
         private DataTable cameronSet, riegelSet;
 

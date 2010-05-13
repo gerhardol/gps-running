@@ -22,16 +22,29 @@ using System.Text;
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using SportTracksOverlayPlugin.Properties;
+#if !ST_2_1
+using ZoneFiveSoftware.Common.Visuals.Fitness;
+using ZoneFiveSoftware.Common.Visuals.Util;
+#endif
 
 namespace SportTracksOverlayPlugin.Source
 {
     class OverlayAction: IAction
     {
-        private IList<IActivity> activities;
+#if !ST_2_1
+        public OverlayAction(IDailyActivityView view)
+        {
+            this.dailyView = view;
+        }
+        public OverlayAction(IActivityReportsView view)
+        {
+            this.reportView = view;
+        }
+#endif
 
         public OverlayAction(IList<IActivity> activities)
         {
-            this.activities = activities;
+            this._activities = activities;
         }
 
         #region IAction Members
@@ -51,13 +64,24 @@ namespace SportTracksOverlayPlugin.Source
             get { return Properties.Resources.Image_16_Overlay; }
         }
 
+        public IList<string> MenuPath
+        {
+            get
+            {
+                return new List<string>();
+            }
+        }
         public void Refresh()
         {
         }
 
         public void Run(System.Drawing.Rectangle rectButton)
         {
+#if OVERLAY_REDESIGN
+            new OverlayView2(activities);
+#else            
             new OverlayView(activities);
+#endif
         }
 
         public string Title
@@ -66,6 +90,13 @@ namespace SportTracksOverlayPlugin.Source
             {
                 if (activities.Count == 1) return Resources.O1;
                 return String.Format(Resources.O2,activities.Count); 
+            }
+        }
+        public bool Visible
+        {
+            get
+            {
+                return true;
             }
         }
 
@@ -77,5 +108,36 @@ namespace SportTracksOverlayPlugin.Source
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
         #endregion
+#if !ST_2_1
+        private IDailyActivityView dailyView = null;
+        private IActivityReportsView reportView = null;
+#endif
+        private IList<IActivity> activities
+        {
+            get
+            {
+#if !ST_2_1
+                //activities are set either directly or by selection,
+                //not by more than one
+                if (_activities == null)
+                {
+                    if (dailyView != null)
+                    {
+                        return CollectionUtils.GetItemsOfType<IActivity>(dailyView.SelectionProvider.SelectedItems);
+                    }
+                    else if (reportView != null)
+                    {
+                        return CollectionUtils.GetItemsOfType<IActivity>(reportView.SelectionProvider.SelectedItems);
+                    }
+                    else
+                    {
+                        return new List<IActivity>();
+                    }
+                }
+#endif
+                return _activities;
+            }
+        }
+        private IList<IActivity> _activities = null;
     }
 }

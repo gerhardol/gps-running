@@ -29,6 +29,9 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Collections;
 using System.Reflection;
+#if ST_2_1
+using System.ComponentModel;
+#endif
 using ZoneFiveSoftware.Common.Data.Measurement;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Data.Algorithm;
@@ -39,50 +42,6 @@ namespace SportTracksOverlayPlugin.Source
 {
     class OverlayView : UserControl
     {
-        private LineChart chart;
-        private Label labelXaxis;
-        private Label labelYaxis;
-
-        private RadioButton useTime;
-        private RadioButton useDistance;
-        private CheckBox heartRate;
-        private CheckBox pace;
-        private CheckBox speed;
-        private CheckBox power;
-        private CheckBox cadence;
-        private CheckBox elevation;
-
-        private CheckBox categoryAverage;
-        private CheckBox movingAverage;
-        private System.Windows.Forms.TextBox maBox;
-        private ToolTip toolTipMAbox;
-        private System.ComponentModel.IContainer components;
-		private IList<CheckBox> lastChecked;
-		private ChartDataSeries lastSelectedSeries;
-
-        private List<IActivity> activities;
-        private System.Windows.Forms.Panel panelAct;
-        private Label labelActivity;
-        private IDictionary<ChartDataSeries, IActivity> series2activity;
-
-        private IDictionary<IActivity, IList<double>> actOffsets;
-        private IDictionary<System.Windows.Forms.TextBox, IActivity> actBoxes;
-        private IList<System.Windows.Forms.TextBox> actTextBoxes;
-        private IDictionary<ChartDataSeries, System.Windows.Forms.TextBox> series2actBoxes;
-
-        private IList<bool> checks;
-        private IDictionary<CheckBox, int> boxes;
-        private IList<CheckBox> checkBoxes;
-        private IDictionary<ChartDataSeries, CheckBox> series2boxes;
-		
-		//bSelectingDataFlag and bSelectDataFlag are used to coordinate the chart 
-		//click/select/selecting events to minimize 'movingAverage' and 'box' control flicker.
-		//I'm sure there's a better way, but at this time this is all I've got.
-		private bool bSelectingDataFlag;
-		private bool bSelectDataFlag;
-
-		private string saveImageProperties_fileName = "";
-
         public IList<IActivity> Activities
         {
             set
@@ -91,14 +50,22 @@ namespace SportTracksOverlayPlugin.Source
                 {
                     foreach (IActivity activity in activities)
                     {
+#if ST_2_1
                         activity.DataChanged -= new NotifyDataChangedEventHandler(activity_DataChanged);
+#else
+//xxx                        activity.PropertyChanged -= new INotifyPropertyChanged(activity_DataChanged);
+#endif
                     }
                 }
                 activities = new List<IActivity>();
                 foreach (IActivity activity in value)
                 {
                     activities.Add(activity);
+#if ST_2_1
                     activity.DataChanged += new NotifyDataChangedEventHandler(activity_DataChanged);
+#else
+//xxx                    activity.PropertyChanged += new NotifyPropertyChanged(activity_DataChanged);
+#endif
                 }
                 //Temporary
                 if (Plugin.Verbose > 100 && Settings.uniqueRoutes != null)
@@ -1085,11 +1052,14 @@ namespace SportTracksOverlayPlugin.Source
             setSize();
         }
 
-        private void activity_DataChanged(object sender, NotifyDataChangedEventArgs e)
+#if ST_2_1
+        private void activity_DataChanged(object sender, 
+        NotifyDataChangedEventArgs e
+            )
         {
             updateChart();
         }
-
+#endif
         private void offBox_LostFocus(object sender, EventArgs e)
         {
             System.Windows.Forms.TextBox box = (System.Windows.Forms.TextBox)sender;
@@ -1329,6 +1299,50 @@ namespace SportTracksOverlayPlugin.Source
 					chart.SaveImage( siiPage.ImageSize, siiPage.FileFullPathAndName, siiPage.ImageFormat ); 
 			}
 		}
+        private LineChart chart;
+        private Label labelXaxis;
+        private Label labelYaxis;
+
+        private RadioButton useTime;
+        private RadioButton useDistance;
+        private CheckBox heartRate;
+        private CheckBox pace;
+        private CheckBox speed;
+        private CheckBox power;
+        private CheckBox cadence;
+        private CheckBox elevation;
+
+        private CheckBox categoryAverage;
+        private CheckBox movingAverage;
+        private System.Windows.Forms.TextBox maBox;
+        private ToolTip toolTipMAbox;
+        private System.ComponentModel.IContainer components;
+        private IList<CheckBox> lastChecked;
+        private ChartDataSeries lastSelectedSeries;
+
+        private List<IActivity> activities;
+        private System.Windows.Forms.Panel panelAct;
+        private Label labelActivity;
+        private IDictionary<ChartDataSeries, IActivity> series2activity;
+
+        private IDictionary<IActivity, IList<double>> actOffsets;
+        private IDictionary<System.Windows.Forms.TextBox, IActivity> actBoxes;
+        private IList<System.Windows.Forms.TextBox> actTextBoxes;
+        private IDictionary<ChartDataSeries, System.Windows.Forms.TextBox> series2actBoxes;
+
+        private IList<bool> checks;
+        private IDictionary<CheckBox, int> boxes;
+        private IList<CheckBox> checkBoxes;
+        private IDictionary<ChartDataSeries, CheckBox> series2boxes;
+
+        //bSelectingDataFlag and bSelectDataFlag are used to coordinate the chart 
+        //click/select/selecting events to minimize 'movingAverage' and 'box' control flicker.
+        //I'm sure there's a better way, but at this time this is all I've got.
+        private bool bSelectingDataFlag;
+        private bool bSelectDataFlag;
+
+        private string saveImageProperties_fileName = "";
+
 
     }
 }

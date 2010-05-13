@@ -210,6 +210,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             {
                 selectedBox.SelectedItem = StringResources.Selected;
             }
+            //pluginBox
             if (Settings.SelectedPlugin != null &&
                     Settings.SelectedPlugin.Equals("Accumulated Summary") &&
                     Settings.accumulatedSummary != null)
@@ -254,6 +255,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             {
                 pluginBox.SelectedItem = "";
                 pluginBox.Enabled = false;
+                doIt.Enabled = false;
             }
             setCategoryLabel();
             doUpdate = false;
@@ -413,8 +415,11 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
             try
             {
-                if (pluginBox.SelectedItem.Equals("Accumulated Summary"))
+                if (pluginBox == null || pluginBox.SelectedItem == null)
                 {
+                }
+                else if (pluginBox.SelectedItem.Equals("Accumulated Summary"))
+                    {
                     Activator.CreateInstance(Settings.accumulatedSummary, new object[] { list });
                 }
                 else if (pluginBox.SelectedItem.Equals("High Score"))

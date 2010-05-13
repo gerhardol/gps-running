@@ -13,17 +13,24 @@
     <BootstrapperEnabled>false</BootstrapperEnabled>
   </PropertyGroup>
  
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
   <PropertyGroup Condition=" ('$(PluginId)' != '') and (('$(Configuration)' == 'ST2.1Release') or ('$(Configuration)' == 'ST2.1Debug')) ">
     <StartProgram>C:\Program Files\Zone Five Software\SportTracks 2.1\SportTracks.exe</StartProgram>
 	<StPluginPath>%25ALLUSERSPROFILE%25\ZoneFiveSoftware\SportTracks\2.0\Plugins</StPluginPath>
 	<StPluginVersion>2</StPluginVersion>
-	<StVersion>2.1</StVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" ('$(PluginId)' != '') and (('$(Configuration)' == 'ST3.0Release') or ('$(Configuration)' == 'ST3.0Debug')) ">
     <StartProgram>C:\Program Files\Zone Five Software\SportTracks 3\SportTracks.exe</StartProgram>
 	<StPluginPath>%25ALLUSERSPROFILE%25\ZoneFiveSoftware\SportTracks\3\Plugins</StPluginPath>
 	<StPluginVersion>3</StPluginVersion>
-	<StVersion>3.0</StVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -147,7 +154,7 @@
 REM Set the plugin GUID in the main PropertyGroup for the plugin
 set guid=$(PluginId)
 if "%guid%"=="" GOTO END
-set stPlgFile=$(ProjectDir)$(ProjectName)-$(StVersion).0.x.st$(StPluginVersion)plugin
+set stPlgFile=$(ProjectDir)$(ProjectName)-0.x.st$(StPluginVersion)plugin
 REM 7-zip must be configured, hardcoded path used
 REM "%25programfiles%25\7-zip\7z.exe"
 REM To move a .st2plugin to common area, create environment variable (or set it below)

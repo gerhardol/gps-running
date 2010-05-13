@@ -22,16 +22,28 @@ using System.Text;
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using SportTracksTRIMPPlugin.Properties;
+#if !ST_2_1
+using ZoneFiveSoftware.Common.Visuals.Fitness;
+using ZoneFiveSoftware.Common.Visuals.Util;
+#endif
 
 namespace SportTracksTRIMPPlugin.Source
 {
     class TRIMPAction: IAction
     {
-        private IList<IActivity> activities;
-
+#if !ST_2_1
+        public TRIMPAction(IDailyActivityView view)
+        {
+            this.dailyView = view;
+        }
+        public TRIMPAction(IActivityReportsView view)
+        {
+            this.reportView = view;
+        }
+#endif
         public TRIMPAction(IList<IActivity> activities)
         {
-            this.activities = activities;
+            this._activities = activities;
         }
 
         #region IAction Members
@@ -51,6 +63,13 @@ namespace SportTracksTRIMPPlugin.Source
             get { return Properties.Resources.Image_16_TRIMP; }
         }
 
+        public IList<string> MenuPath
+        {
+            get
+            {
+                return new List<string>();
+            }
+        }
         public void Refresh()
         {
         }
@@ -68,6 +87,13 @@ namespace SportTracksTRIMPPlugin.Source
                 return String.Format(Resources.T2, activities.Count); 
             }
         }
+        public bool Visible
+        {
+            get
+            {
+                return true;
+            }
+        }
 
         #endregion
 
@@ -77,5 +103,36 @@ namespace SportTracksTRIMPPlugin.Source
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
         #endregion
+#if !ST_2_1
+        private IDailyActivityView dailyView = null;
+        private IActivityReportsView reportView = null;
+#endif
+        private IList<IActivity> activities
+        {
+            get
+            {
+#if !ST_2_1
+                //activities are set either directly or by selection,
+                //not by more than one
+                if (_activities == null)
+                {
+                    if (dailyView != null)
+                    {
+                        return CollectionUtils.GetItemsOfType<IActivity>(dailyView.SelectionProvider.SelectedItems);
+                    }
+                    else if (reportView != null)
+                    {
+                        return CollectionUtils.GetItemsOfType<IActivity>(reportView.SelectionProvider.SelectedItems);
+                    }
+                    else
+                    {
+                        return new List<IActivity>();
+                    }
+                }
+#endif
+                return _activities;
+            }
+        }
+        private IList<IActivity> _activities = null;
     }
 }

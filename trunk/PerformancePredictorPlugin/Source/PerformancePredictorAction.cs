@@ -23,16 +23,29 @@ using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Visuals;
 using SportTracksPerformancePredictorPlugin.Properties;
 using SportTracksPerformancePredictorPlugin.Util;
+#if !ST_2_1
+using ZoneFiveSoftware.Common.Visuals.Fitness;
+using ZoneFiveSoftware.Common.Visuals.Util;
+#endif
 
 namespace SportTracksPerformancePredictorPlugin.Source
 {
     class PerformancePredictorAction : IAction
     {
-        private IList<IActivity> activities;
+#if !ST_2_1
+        public PerformancePredictorAction(IDailyActivityView view)
+        {
+            this.dailyView = view;
+        }
+        public PerformancePredictorAction(IActivityReportsView view)
+        {
+            this.reportView = view;
+        }
+#endif
 
         public PerformancePredictorAction(IList<IActivity> activities)
         {
-            this.activities = activities;
+            this._activities = activities;
         }
 
         #region IAction Members
@@ -52,6 +65,13 @@ namespace SportTracksPerformancePredictorPlugin.Source
             get { return Properties.Resources.Image_16_PerformancePredictor; }
         }
 
+        public IList<string> MenuPath
+        {
+            get
+            {
+                return new List<string>();
+            }
+        }
         public void Refresh()
         {
         }
@@ -69,6 +89,13 @@ namespace SportTracksPerformancePredictorPlugin.Source
                 return Resources.PPHS + " " + String.Format(StringResources.ForManyActivities,activities.Count);
             }
         }
+        public bool Visible
+        {
+            get
+            {
+                return true;
+            }
+        }
 
         #endregion
 
@@ -78,5 +105,36 @@ namespace SportTracksPerformancePredictorPlugin.Source
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
         #endregion
+#if !ST_2_1
+        private IDailyActivityView dailyView = null;
+        private IActivityReportsView reportView = null;
+#endif
+        private IList<IActivity> activities
+        {
+            get
+            {
+#if !ST_2_1
+                //activities are set either directly or by selection,
+                //not by more than one
+                if (_activities == null)
+                {
+                    if (dailyView != null)
+                    {
+                        return CollectionUtils.GetItemsOfType<IActivity>(dailyView.SelectionProvider.SelectedItems);
+                    }
+                    else if (reportView != null)
+                    {
+                        return CollectionUtils.GetItemsOfType<IActivity>(reportView.SelectionProvider.SelectedItems);
+                    }
+                    else
+                    {
+                        return new List<IActivity>();
+                    }
+                }
+#endif
+                return _activities;
+            }
+        }
+        private IList<IActivity> _activities = null;
     }
 }

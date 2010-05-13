@@ -8,14 +8,7 @@
     <PluginId>859F81F4-8272-4183-BA53-FDF1DD809FD6</PluginId>
   </PropertyGroup>
   <Import Project="..\Common\Common-References.csproj" />
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Messaging" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
+
   <ItemGroup>
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -85,20 +78,16 @@
     <None Include="Resources\Image_32_AccumulatedSummary.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Util\StringResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>StringResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Compile Include="Util\StringResources.Designer.cs">
       <DependentUpon>StringResources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Util\UnitUtil.cs" />
-    <Compile Include="Util\WarningDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Util\YesNoDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Util\StringResources.da.resx">
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
@@ -123,26 +112,24 @@
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Util\StringResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>StringResources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Util\StringResources.sv.resx">
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-    <ItemGroup>
-    <None Include="plugin.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+
   <ItemGroup>
-    <None Include="COPYING">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="COPYING.LESSER">
+    <Compile Include="Util\UnitUtil.cs" />
+    <Compile Include="Util\WarningDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Util\YesNoDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+ 
+  <ItemGroup>
+    <None Include="plugin.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
