@@ -29,9 +29,8 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Collections;
 using System.Reflection;
-#if ST_2_1
 using System.ComponentModel;
-#endif
+
 using ZoneFiveSoftware.Common.Data.Measurement;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Data.Algorithm;
@@ -53,7 +52,7 @@ namespace SportTracksOverlayPlugin.Source
 #if ST_2_1
                         activity.DataChanged -= new NotifyDataChangedEventHandler(activity_DataChanged);
 #else
-//xxx                        activity.PropertyChanged -= new INotifyPropertyChanged(activity_DataChanged);
+                        activity.PropertyChanged -= new PropertyChangedEventHandler(Activity_PropertyChanged);
 #endif
                     }
                 }
@@ -64,7 +63,7 @@ namespace SportTracksOverlayPlugin.Source
 #if ST_2_1
                     activity.DataChanged += new NotifyDataChangedEventHandler(activity_DataChanged);
 #else
-//xxx                    activity.PropertyChanged += new NotifyPropertyChanged(activity_DataChanged);
+                    activity.PropertyChanged += new PropertyChangedEventHandler(Activity_PropertyChanged);
 #endif
                 }
                 //Temporary
@@ -1053,9 +1052,12 @@ namespace SportTracksOverlayPlugin.Source
         }
 
 #if ST_2_1
-        private void activity_DataChanged(object sender, 
-        NotifyDataChangedEventArgs e
-            )
+        private void activity_DataChanged(object sender, NotifyDataChangedEventArgs e)
+        {
+            updateChart();
+        }
+#else
+        private void Activity_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             updateChart();
         }

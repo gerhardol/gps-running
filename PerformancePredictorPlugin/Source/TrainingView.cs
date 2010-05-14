@@ -29,6 +29,9 @@ using ZoneFiveSoftware.Common.Data.Measurement;
 using System.Reflection;
 using SportTracksPerformancePredictorPlugin.Properties;
 using SportTracksPerformancePredictorPlugin.Util;
+#if !ST_2_1
+using ZoneFiveSoftware.Common.Data;
+#endif
 
 namespace SportTracksPerformancePredictorPlugin.Source
 {
@@ -81,8 +84,8 @@ namespace SportTracksPerformancePredictorPlugin.Source
             Plugin.GetApplication().Logbook.DataChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(Logbook_DataChanged);
             Plugin.GetApplication().Logbook.Athlete.DataChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(Athlete_DataChanged);
 #else
- //xxx           Plugin.GetApplication().Logbook.PropertyChanged += new ZoneFiveSoftware.Common.Data.NotifyCollectionChangedEventHandler(Logbook_DataChanged);
- //           Plugin.GetApplication().Logbook.Athlete.PropertyChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(Athlete_DataChanged);
+            Plugin.GetApplication().Logbook.Athlete.PropertyChanged += new PropertyChangedEventHandler(Athlete_PropertyChanged);
+            Plugin.GetApplication().Logbook.PropertyChanged += new PropertyChangedEventHandler(Logbook_PropertyChanged);
 #endif
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
         }
@@ -99,6 +102,15 @@ namespace SportTracksPerformancePredictorPlugin.Source
         }
 
         private void Logbook_DataChanged(object sender, ZoneFiveSoftware.Common.Data.NotifyDataChangedEventArgs e)
+        {
+            setPages();
+        }
+#else
+        private void Athlete_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            setPages();
+        }
+        private void Logbook_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             setPages();
         }

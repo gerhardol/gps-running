@@ -49,7 +49,11 @@ namespace SportTracksOverlayPlugin.Source
                 {
                     foreach (IActivity activity in activities)
                     {
+#if ST_2_1
                         activity.DataChanged -= new NotifyDataChangedEventHandler(activity_DataChanged);
+#else
+                        activity.PropertyChanged -= new PropertyChangedEventHandler(Activity_PropertyChanged);
+#endif
                     }
                 }
                 activities = new List<IActivity>();
@@ -58,7 +62,11 @@ namespace SportTracksOverlayPlugin.Source
                 foreach (IActivity activity in value)
                 {
                     activities.Add(activity);
+#if ST_2_1
                     activity.DataChanged += new NotifyDataChangedEventHandler(activity_DataChanged);
+#else
+                    activity.PropertyChanged += new PropertyChangedEventHandler(Activity_PropertyChanged);
+#endif
                     ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
                     maxOffsetDist += info.DistanceMeters;
                     maxOffsetTime += info.ActualTrackTime.TotalSeconds;
@@ -1149,6 +1157,11 @@ namespace SportTracksOverlayPlugin.Source
 
 #if ST_2_1
         private void activity_DataChanged(object sender, NotifyDataChangedEventArgs e)
+        {
+            updateChart();
+        }
+#else
+        private void Activity_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             updateChart();
         }
