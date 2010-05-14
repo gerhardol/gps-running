@@ -24,6 +24,7 @@ using ZoneFiveSoftware.Common.Visuals;
 using SportTracksPerformancePredictorPlugin.Properties;
 using SportTracksPerformancePredictorPlugin.Util;
 #if !ST_2_1
+using ZoneFiveSoftware.Common.Data;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Visuals.Util;
 #endif
@@ -45,7 +46,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
 
         public PerformancePredictorAction(IList<IActivity> activities)
         {
-            this._activities = activities;
+            this.activities = activities;
         }
 
         #region IAction Members
@@ -93,6 +94,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
         {
             get
             {
+                if (activities.Count == 0) return false;
                 return true;
             }
         }
@@ -106,9 +108,35 @@ namespace SportTracksPerformancePredictorPlugin.Source
 
         #endregion
 #if !ST_2_1
+        IList<ItemType> GetAllContainedItems<ItemType>(ISelectionProvider selectionProvider)
+        {
+            List<ItemType> items = new List<ItemType>();
+            foreach (ItemType item in CollectionUtils.GetItemsOfType<ItemType>(selectionProvider.SelectedItems))
+            {
+                if (!items.Contains(item)) items.Add(item);
+            }
+            AddGroupItems<ItemType>(CollectionUtils.GetItemsOfType<IGroupedItem<ItemType>>(
+                                    selectionProvider.SelectedItems), items);
+            return items;
+        }
+
+        void AddGroupItems<ItemType>(IList<IGroupedItem<ItemType>> groups, IList<ItemType> allItems)
+        {
+            foreach (IGroupedItem<ItemType> group in groups)
+            {
+                foreach (ItemType item in group.Items)
+                {
+                    if (!allItems.Contains(item)) allItems.Add(item);
+                }
+                AddGroupItems(group.SubGroups, allItems);
+            }
+        }
+#endif
+#if !ST_2_1
         private IDailyActivityView dailyView = null;
         private IActivityReportsView reportView = null;
 #endif
+        private IList<IActivity> _activities = null;
         private IList<IActivity> activities
         {
             get
@@ -120,11 +148,11 @@ namespace SportTracksPerformancePredictorPlugin.Source
                 {
                     if (dailyView != null)
                     {
-                        return CollectionUtils.GetItemsOfType<IActivity>(dailyView.SelectionProvider.SelectedItems);
+                        return GetAllContainedItems<IActivity>(dailyView.SelectionProvider); 
                     }
                     else if (reportView != null)
                     {
-                        return CollectionUtils.GetItemsOfType<IActivity>(reportView.SelectionProvider.SelectedItems);
+                        return GetAllContainedItems<IActivity>(reportView.SelectionProvider);
                     }
                     else
                     {
@@ -134,7 +162,10 @@ namespace SportTracksPerformancePredictorPlugin.Source
 #endif
                 return _activities;
             }
+            set
+            {
+                _activities = value;
+            }
         }
-        private IList<IActivity> _activities = null;
     }
 }

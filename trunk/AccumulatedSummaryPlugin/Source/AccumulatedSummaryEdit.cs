@@ -61,7 +61,7 @@ class AccumulatedSummaryEdit :
         public IList<IAction> GetActions(IActivityReportsView view,
                                          ExtendViewActions.Location location)
         {
-            if (location == ExtendViewActions.Location.AnalyzeMenu)
+            if (location == ExtendViewActions.Location.EditMenu)
             {
                 return new IAction[] { new AccumulatedSummaryAction(view) };
             }
