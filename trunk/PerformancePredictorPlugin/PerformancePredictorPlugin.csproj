@@ -6,9 +6,8 @@
     <RootNamespace>SportTracksPerformancePredictorPlugin</RootNamespace>
     <AssemblyName>PerformancePredictorPlugin</AssemblyName>
     <PluginId>0AA49FDF-ADA0-4522-9488-A698A7E197AA</PluginId>
-   </PropertyGroup>
+  </PropertyGroup>
   <Import Project="..\Common\Common-References.csproj" />
-
   <ItemGroup>
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -131,7 +130,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-
   <ItemGroup>
     <Compile Include="Util\UnitUtil.cs" />
     <Compile Include="Util\WarningDialog.cs">
@@ -141,11 +139,10 @@
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
- 
   <ItemGroup>
     <None Include="plugin.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="..\Common\Common-Files.csproj" />
- </Project>
+</Project>

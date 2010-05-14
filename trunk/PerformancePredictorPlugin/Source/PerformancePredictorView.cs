@@ -47,8 +47,9 @@ namespace SportTracksPerformancePredictorPlugin.Source
                 if (activity != null)
                 {
 #if ST_2_1
-                    //xxx
                     activity.DataChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(dataChanged);
+#else
+                    activity.PropertyChanged += new PropertyChangedEventHandler(Activity_PropertyChanged);
 #endif
                 }
                 trainingView.Activity = value;
@@ -85,6 +86,11 @@ namespace SportTracksPerformancePredictorPlugin.Source
 
 #if ST_2_1
         private void dataChanged(object sender, ZoneFiveSoftware.Common.Data.NotifyDataChangedEventArgs e)
+        {
+            makeData();
+        }
+#else
+        private void Activity_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             makeData();
         }
