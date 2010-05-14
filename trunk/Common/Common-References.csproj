@@ -154,7 +154,7 @@
 REM Set the plugin GUID in the main PropertyGroup for the plugin
 set guid=$(PluginId)
 if "%guid%"=="" GOTO END
-set stPlgFile=$(ProjectDir)$(ProjectName)-0.x.st$(StPluginVersion)plugin
+set stPlgFile=$(ProjectDir)$(ProjectName)-1.9.st$(StPluginVersion)plugin
 REM 7-zip must be configured, hardcoded path used
 REM "%25programfiles%25\7-zip\7z.exe"
 REM To move a .st2plugin to common area, create environment variable (or set it below)
