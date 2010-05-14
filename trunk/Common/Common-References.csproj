@@ -149,8 +149,7 @@
   </Target>
   -->
  <PropertyGroup>
-    <PostBuildEvent>
-	:: This part is in the Common part of the properties, avoid editing from VSE
+    <PostBuildEvent>:: This part is in the Common part of the properties, avoid editing from VSE
 REM Set the plugin GUID in the main PropertyGroup for the plugin
 set guid=$(PluginId)
 if "%guid%"=="" GOTO END
@@ -169,15 +168,15 @@ xcopy  $(TargetDir)*.* "%25StTarget%25" /I/Y/Q/E &lt;NUL:
 set Release=No
 IF "$(ConfigurationName)"=="ST2.1Release" set Release=Yes
 IF "$(ConfigurationName)"=="ST3.0Release" set Release=Yes
-IF NOT "%Release%"=="Yes" GOTO END
-IF NOT EXIST "%25programfiles%25\7-zip\7z.exe" GOTO end
+IF NOT "%25Release%25"=="Yes" GOTO END
+IF NOT EXIST "%25programfiles%25\7-zip\7z.exe" GOTO END
 
 del "%25stPlgFile%25"
 "%25programfiles%25\7-zip\7z" a -r -tzip "%25stPlgFile%25"  "$(TargetDir)*"  -x!*.st2plugin -x!*.tmp -x!*.pdb -x!$(ProjectName).xml
 
 if "%25stPlgoutdir%25"=="" GOTO END
 if not EXIST "%25stPlgoutdir%25" GOTO END
-copy "$(TargetDir)%25stPlgFile%25" "%25stPlgoutdir%25"
+copy "%25stPlgFile%25" "%25stPlgoutdir%25"
 
 :END</PostBuildEvent>
   </PropertyGroup>

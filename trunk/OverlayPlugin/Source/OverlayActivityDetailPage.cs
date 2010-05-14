@@ -19,9 +19,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 using System;
 using System.Collections.Generic;
 using System.Text;
-#if !ST_2_1
 using System.ComponentModel;
-#endif
 
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Data.Fitness;
