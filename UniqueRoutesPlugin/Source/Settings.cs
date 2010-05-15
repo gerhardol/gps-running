@@ -26,6 +26,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.Reflection;
+using System.ComponentModel;
+
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using SportTracksUniqueRoutesPlugin.Properties;
@@ -123,6 +125,20 @@ namespace SportTracksUniqueRoutesPlugin.Source
             set { showPace = value; }
         }
 
+        private static int summaryViewSortColumn;
+        public static int SummaryViewSortColumn
+        {
+            get { return summaryViewSortColumn; }
+            set { summaryViewSortColumn = value; }
+        }
+
+        private static ListSortDirection summaryViewSortDirection;
+        public static ListSortDirection SummaryViewSortDirection
+        {
+            get { return summaryViewSortDirection; }
+            set { summaryViewSortDirection = value; }
+        }
+
         private static Size windowSize; //viewWidth, viewHeight in xml
         public static Size WindowSize
         {
@@ -141,6 +157,8 @@ namespace SportTracksUniqueRoutesPlugin.Source
             ignoreBeginning = 0;
             ignoreEnd = 0;
             selectAll = true;
+            summaryViewSortColumn = 0;
+            summaryViewSortDirection = ListSortDirection.Ascending;
             windowSize = new Size(800, 600);
         }
 
@@ -176,6 +194,10 @@ namespace SportTracksUniqueRoutesPlugin.Source
             if (attr.Length > 0) { selectAll = XmlConvert.ToBoolean(attr); }
             attr = pluginNode.GetAttribute(xmlTags.showPace);
             if (attr.Length > 0) { showPace = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.summaryViewSortColumn);
+            if (attr.Length > 0) { summaryViewSortColumn = XmlConvert.ToInt16(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.summaryViewSortDirection);
+            if (attr.Length > 0) { summaryViewSortDirection = (ListSortDirection)Enum.Parse(typeof(ListSortDirection), attr); }
             attr = pluginNode.GetAttribute(xmlTags.viewWidth);
             attr2 = pluginNode.GetAttribute(xmlTags.viewHeight);
             if (attr.Length > 0 && attr2.Length > 0)
@@ -198,6 +220,8 @@ namespace SportTracksUniqueRoutesPlugin.Source
             pluginNode.SetAttribute(xmlTags.ignoreEnd, XmlConvert.ToString(ignoreEnd));
             pluginNode.SetAttribute(xmlTags.selectAll, XmlConvert.ToString(selectAll));
             pluginNode.SetAttribute(xmlTags.showPace, XmlConvert.ToString(showPace));
+            pluginNode.SetAttribute(xmlTags.summaryViewSortColumn, XmlConvert.ToString(summaryViewSortColumn));
+            pluginNode.SetAttribute(xmlTags.summaryViewSortDirection, summaryViewSortDirection.ToString());
             pluginNode.SetAttribute(xmlTags.viewWidth, XmlConvert.ToString(windowSize.Width));
             pluginNode.SetAttribute(xmlTags.viewHeight, XmlConvert.ToString(windowSize.Height));
         }
@@ -220,6 +244,8 @@ namespace SportTracksUniqueRoutesPlugin.Source
             public const string ignoreEnd = "ignoreEnd";
             public const string selectAll = "selectAll";
             public const string showPace = "showPace";
+            public const string summaryViewSortColumn = "summaryViewSortColumn";
+            public const string summaryViewSortDirection = "summaryViewSortDirection";
 
             public const string viewWidth = "viewWidth";
             public const string viewHeight = "viewHeight";
