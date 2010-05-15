@@ -149,7 +149,8 @@
   </Target>
   -->
  <PropertyGroup>
-    <PostBuildEvent>:: This part is in the Common part of the properties, avoid editing from VSE
+    <PostBuildEvent>:: This part is in the Common part of the properties
+:: Avoid editing from VSE
 REM Set the plugin GUID in the main PropertyGroup for the plugin
 set guid=$(PluginId)
 if "%guid%"=="" GOTO END
