@@ -234,8 +234,6 @@ namespace SportTracksOverlayPlugin.Source
                 form = new Form();
                 form.Controls.Add(this);
                 form.Size = Settings.WindowSize;
-
-
 				//6 is the distance between controls
 				form.MinimumSize = new System.Drawing.Size( 6 + elevation.Width + elevation.Left + this.Width - btnSaveImage.Left, 0 );
 
@@ -704,9 +702,28 @@ namespace SportTracksOverlayPlugin.Source
                 newColor();
                 return series;
             }
-            IValueRangeSeries<DateTime> pauses = info.NonMovingTimes;
             bool first = true;
             float priorElapsed = float.NaN;
+            //This should be retrieved per activity, if that is changed in ST
+            bool includeStopped = false;
+#if ST_2_1
+            // If UseEnteredData is set, exclude Stopped
+            if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
+            {
+                includeStopped = true;
+            }
+#else
+            includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
+#endif
+            IValueRangeSeries<DateTime> pauses;
+            if (includeStopped)
+            {
+                pauses = info.Activity.TimerPauses;
+            }
+            else
+            {
+                pauses = info.NonMovingTimes;
+            }
             INumericTimeDataSeries data = getDataSeries(info);
             foreach (ITimeValueEntry<float> entry in data)
             {
@@ -723,9 +740,16 @@ namespace SportTracksOverlayPlugin.Source
 					}
 					else
 					{
-						//ITimeValueEntry<float> entryMoving = info.MovingDistanceMetersTrack.GetInterpolatedValue( info.Activity.StartTime.AddSeconds( elapsed ) );
-						ITimeValueEntry<float> entryMoving = info.MovingDistanceMetersTrack.GetInterpolatedValue( info.Activity.StartTime.AddSeconds( entry.ElapsedSeconds) );
-						if ( entryMoving != null && ( first || ( !first && entryMoving.Value > 0 ) ) )
+                        ITimeValueEntry<float> entryMoving;
+                        if (includeStopped)
+                        {
+                            entryMoving = info.ActualDistanceMetersTrack.GetInterpolatedValue(info.Activity.StartTime.AddSeconds(entry.ElapsedSeconds));
+                        }
+                        else
+                        {
+                            entryMoving = info.MovingDistanceMetersTrack.GetInterpolatedValue(info.Activity.StartTime.AddSeconds(entry.ElapsedSeconds));
+                        }
+                        if (entryMoving != null && (first || (!first && entryMoving.Value > 0)))
 						{
 							x = (float)UnitUtil.Distance.ConvertFrom( entryMoving.Value + offset );
 						}
