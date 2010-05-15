@@ -8,7 +8,6 @@
     <PluginId>859F81F4-8272-4183-BA53-FDF1DD809FD6</PluginId>
   </PropertyGroup>
   <Import Project="..\Common\Common-References.csproj" />
-
   <ItemGroup>
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -117,7 +116,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-
   <ItemGroup>
     <Compile Include="Util\UnitUtil.cs" />
     <Compile Include="Util\WarningDialog.cs">
@@ -126,12 +124,6 @@
     <Compile Include="Util\YesNoDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-  </ItemGroup>
- 
-  <ItemGroup>
-    <None Include="plugin.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <Import Project="..\Common\Common-Files.csproj" />
 </Project>

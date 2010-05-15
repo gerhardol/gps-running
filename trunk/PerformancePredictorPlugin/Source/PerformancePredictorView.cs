@@ -149,7 +149,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             chart.YAxis.Formatter = new Formatter.SecondsToTime();
             chart.XAxis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
             Activity = activity;
-            //Remove this listener - let user exlicitly update after chaning settinfgs, to avoid crashes
+            //Remove this listener - let user explicitly update after changing settings, to avoid crashes
             //Settings.DistanceChanged += new PropertyChangedEventHandler(Settings_DistanceChanged);
         }
 
