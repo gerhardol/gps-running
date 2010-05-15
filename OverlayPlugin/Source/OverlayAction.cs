@@ -97,7 +97,7 @@ namespace SportTracksOverlayPlugin.Source
         {
             get
             {
-                if (activities.Count == 0) return false;
+                //ST3fix if (activities.Count == 0) return false;
                 return true;
             }
         }
