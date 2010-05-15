@@ -698,6 +698,7 @@ namespace SportTracksTRIMPPlugin.Source
             }
 
 #if !ST_2_1
+#pragma warning disable 67
             public event PropertyChangedEventHandler PropertyChanged;
 #endif
             #endregion
