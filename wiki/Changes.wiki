@@ -13,8 +13,10 @@ More or less official beta releases are availble in the Downloads section.
   * Works in Mono/Linux, except AccumulatedSummary that uses browser integration. There are no specific changes to achieve this, just the change of storage for preferneces was necessary.
   * Cleaned up labels in graphs/tables and table format. Using the translation information built in to !SportTracks for common information like speed/pace etc. This decreases the job required to make translations, both for making the translations, but even more to handle the strings when building. Another benefit is that this makes the user experience more consistent (always the same format for something like km/h). Note that this information was not available in ST when the plugins were first written, it has been added in a later update.
   * More localisation, following the ST settings for distance, temperature etc.
-  * Input of distance, time can be done in the ST way, i.e. "5km" is handled correctly even if you have the distance set to Miles. For Speed this not available. Foe Pace, the time is always per "distance unit" and can be entered as standard time (like 5:30) or in minutes (5.5 or 5,5 depending on your !DecimalSeparator settings).
+  * Input of distance, time can be done in the ST way, i.e. "5km" is handled correctly even if you have the distance set to Miles. For Speed this not available. For Pace, the time is always per "distance unit" and can be entered as standard time (like 5:30) or in minutes (5.5 or 5,5 depending on your !DecimalSeparator settings).
   * Documentation is just transferred from the old site at gpsrunning.nicolajsen.nl
+  * UniqueRoutes, HighScore: Doubleclick on activity to go to it. UR saves sorting of tables.
+  * UniqueRoutes tries to match "Common Stretches" with the reference activity (visible as tool tips).
   
 ===Bugfixes===
   * Various update issues, like ST restart was required to see changed settings for UniqueRoutes.
@@ -23,10 +25,8 @@ More or less official beta releases are availble in the Downloads section.
 ===Future plans===
 Gerhard currently drives development, the current job is to only minor changes to the functionality, just updating the structure. There will likely be more additions over time. Some thoughts:
 
-  * Active Lap info (at least in UniqueRoutes, maybe Overlay too).
-  * Unique Routes "hints" to other plugins where matches were found. This is for Overlay and !DotRacing to match graphs better.
+  * UniqueRoutes "hints" to other plugins where matches were found, using the "Common Stretches". This is for Overlay and !DotRacing to match graphs better.
   * PerformancePredictor: Age tables?
-  * UR, HS: Doubleclick on activity to go to it?
 
   * TRIMP plugin: No plans for it, I would like recommend users to use Training Load instead.
   * Accumulated Summary: No immediate plans.
@@ -42,12 +42,12 @@ Matrix plugin requires a patch: http://matrix.codeplex.com/Project/Download/File
   * The settings files can be removed after first startup (but there is no harm keeping them if you delete the Preferences.System.xml file, without a backup).
 {{{
 %APPDATA%\
-  !AccumlatedSummaryPlugin (always empty)
-  !HighScorePlugin
-  !OverlayPlugin
-  !PerformancePredictorPlugin
-  !TRIMPPlugin
-  !UniqueRoutesPlugin
+  AccumlatedSummaryPlugin (always empty)
+  HighScorePlugin
+  OverlayPlugin
+  PerformancePredictorPlugin
+  TRIMPPlugin
+  UniqueRoutesPlugin
 }}}
 
 ===Feedback===

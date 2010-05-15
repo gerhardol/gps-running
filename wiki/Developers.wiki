@@ -5,8 +5,31 @@ This is not a general !SportTracks plugin description. See for instance [http://
 
 Some specific notes for gps-running plugins:
 
+===Getting Started===
+MS Visual Studio Express 2008 is currently used VSE2010 can be used too and will be the default version in the near future.
+ 
+This project is adapted to be used in both ST2 and ST3. To achieve this in a simple way, the common paths etc are separated to a common file:
+  # References to !SportTacks libraries etc
+  # Some common build actions (a few common files)
+  # Build actions like creating .st2plugin
+  
+The same setup can be used in other plugins too, done in !MiscPlugin and !ST2Funbeat, see one of the project files as an example. 
+Each .csproj contains a few specific settings and the specific files for the plugin only. The common setting files are imported.
+The plugin GUID is added manually. The GlobalSection in the .sln must be updated manually (you probably want to use your own .sln file).
+
+Note the following issues with the setup:
+  # At startup, VSE warns that files are imported (can be avoided by adjusting the registry).
+  # There are build warnings that all references cannot be found at builds.
+  # You must adjust the Solution properties when using a configuration the first time, otherwise your project will not be build.
+  
+This solution was contributed by old_man_biking on the !SportTracks forum.
+
+===SportTracks Versions===
+These plugins are adapted to both !ST2 and the upcoming !ST3 (not yet released at the time of writing). (The !SportTracks 3.0 Transition Guide describes the changes that need to be done.) Most code is conditionally compiled with "ST_2_1" #define, but the functionality basis is the same. Over time will likely new functions be added to !ST3 path only.
+Note: As !ST3 is in beta only, a few fies are done, marked with "!ST3fix".
+
 ===Install packages===
-The build event copies the built files to "%ALLUSERSPROFILE%\ZoneFiveSoftware\SportTracks\2.0\Plugins\Update" automatically, so you can have ST running while building, just restart when you want to use the new binaries.
+The build event copies the built files to "%ALLUSERSPROFILE%\!ZoneFiveSoftware\!SportTracks\2.0\Plugins\Update" (similar for ST3) automatically, so you can have ST running while building, just restart when you want to use the new binaries.
 The build event also creates .st2plugin packages. This should be automatic if you have 7-zip installed in the standard location, otherwise edit the paths.
 
 ===Translations===
@@ -16,7 +39,7 @@ Instructions:
   # Update Resources and !StringResources in the plugins correctly. 
   # Add all master strings and the master language to the spreadsheet. All fields in the plugin must be included here, the script below will not change the "master" copy, each translation will have the same fields as the master.
 Another way to express this: The English strings in the second column is not pushed to the .resx files.
-To keep the .resx and spreadsheet consistent, diff the column contents. (I used a OpenOffice script for this, but this is not working to my liking when saving in Excel format.)
+To keep the .resx and spreadsheet consistent, diff the column contents. (I used a !OpenOffice script for this, but this is not working to my liking when saving in Excel format.)
   # Save the file in .csv format, Field separation ",", specify the character format to be in UTF-8 (important!)
   # The script that updates translations is  written by ST user markw65 (post about this in the [http://www.zonefivesoftware.com/SportTracks/Forums/viewtopic.php?p=34501#34501 invitational ST developers forum] and used in the !ApplyRoutes plugin, with minor additions. The script is written in perl. I use the script in Cygwin, but other perl versions should work too. The script requires some perl modules like XML::Simple. You will get messages when running it...
   # Check the script util/i18n.pl, to see how to adapt inparameters as paths. Example how I run it from the trunk directory:
@@ -27,9 +50,3 @@ Some code (and part of the translation) is shared between the plugins. Not in a 
 {{{$ util/cputil.sh PerformancePredictor}}}
 
 ===Problems===
-For some reason, there are often problems building the plugins, at least for me in VSE 2008.
-The workaround is to try rebuilding several times, the build normally succeeds.
-
-A post about this problem in the [http://social.msdn.microsoft.com/Forums/en-US/Vsexpressvcs/thread/91b3defe-e7eb-4591-b75e-1e9f86f0848b/ VSE forum], no response.
-
-For UniqueRoutes, the build however always fails if more than one resource is included. The build action for the .resx must be changed from Embedded Resource to None. When building for a release, enable the resources one by one, save the resources.dll files and include in the .st2plugin manually (or use old resources).
