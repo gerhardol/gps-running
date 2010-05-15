@@ -23,12 +23,12 @@
   </ItemGroup>
 
   <PropertyGroup Condition=" ('$(PluginId)' != '') and (('$(Configuration)' == 'ST2.1Release') or ('$(Configuration)' == 'ST2.1Debug')) ">
-    <StartProgram>C:\Program Files\Zone Five Software\SportTracks 2.1\SportTracks.exe</StartProgram>
+    <StartProgram>$(ProgramFiles)\Zone Five Software\SportTracks 2.1\SportTracks.exe</StartProgram>
 	<StPluginPath>%25ALLUSERSPROFILE%25\ZoneFiveSoftware\SportTracks\2.0\Plugins</StPluginPath>
 	<StPluginVersion>2</StPluginVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" ('$(PluginId)' != '') and (('$(Configuration)' == 'ST3.0Release') or ('$(Configuration)' == 'ST3.0Debug')) ">
-    <StartProgram>C:\Program Files\Zone Five Software\SportTracks 3\SportTracks.exe</StartProgram>
+    <StartProgram>$(ProgramFiles)\Zone Five Software\SportTracks 3\SportTracks.exe</StartProgram>
 	<StPluginPath>%25ALLUSERSPROFILE%25\ZoneFiveSoftware\SportTracks\3\Plugins</StPluginPath>
 	<StPluginVersion>3</StPluginVersion>
   </PropertyGroup>
@@ -73,17 +73,17 @@
   <ItemGroup Condition=" ('$(Configuration)' == 'ST2.1Release') or ('$(Configuration)' == 'ST2.1Debug') ">
     <Reference Include="Common.Data, Version=2.1.3478.21402, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Zone Five Software\SportTracks 2.1\Common.Data.dll</HintPath>
+      <HintPath>$(ProgramFiles)\Zone Five Software\SportTracks 2.1\Common.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Common.Visuals, Version=2.1.3478.21407, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Zone Five Software\SportTracks 2.1\Common.Visuals.dll</HintPath>
+      <HintPath>$(ProgramFiles)\Zone Five Software\SportTracks 2.1\Common.Visuals.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SportTracks, Version=2.1.3478.21513, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Zone Five Software\SportTracks 2.1\SportTracks.exe</HintPath>
+      <HintPath>$(ProgramFiles)\Zone Five Software\SportTracks 2.1\SportTracks.exe</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -92,17 +92,17 @@
   <ItemGroup Condition=" ('$(Configuration)' == 'ST3.0Release') or ('$(Configuration)' == 'ST3.0Debug') ">
     <Reference Include="Common.Data, Version=3.0.3769.30863, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Zone Five Software\SportTracks 3\Common.Data.dll</HintPath>
+      <HintPath>$(ProgramFiles)\Zone Five Software\SportTracks 3\Common.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Common.Visuals, Version=3.0.3769.30868, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Zone Five Software\SportTracks 3\Common.Visuals.dll</HintPath>
+      <HintPath>$(ProgramFiles)\Zone Five Software\SportTracks 3\Common.Visuals.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SportTracks, Version=3.0.3769.30929, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\Zone Five Software\SportTracks 3\SportTracks.exe</HintPath>
+      <HintPath>$(ProgramFiles)\Zone Five Software\SportTracks 3\SportTracks.exe</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
