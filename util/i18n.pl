@@ -113,6 +113,7 @@ exit 0;
 sub ParseCSV
 {
     my($csv) = @_;
+    $csv =~ s/\r//g;
     $csv .= "\n";
     my@lines = ();
 	#$i=5;
