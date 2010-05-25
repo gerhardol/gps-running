@@ -27,7 +27,9 @@ using System.Globalization;
 using System.Reflection;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using SportTracksOverlayPlugin.Properties;
-
+#if !ST_2_1
+using ZoneFiveSoftware.Common.Visuals.Forms;
+#endif
 namespace SportTracksOverlayPlugin.Source
 {
     class Settings
@@ -170,8 +172,13 @@ namespace SportTracksOverlayPlugin.Source
             }
         }
 
+#if ST_2_1
 		private static Size savedImageSize;	//savedImageWidth, savedImageHeight in xml
-		public static Size SavedImageSize
+        public static Size SavedImageSize
+#else
+        private static SaveImageDialog.ImageSizeType savedImageSize;
+        public static SaveImageDialog.ImageSizeType SavedImageSize
+#endif
 		{
 			get { return savedImageSize; }
 			set
@@ -217,9 +224,13 @@ namespace SportTracksOverlayPlugin.Source
             movingAverageTime = 0;
             autoZoom = true;
             showTime = true;
-            windowSize = new Size(800, 600);
-			savedImageSize = new Size( 0, 0 );
-			savedImageFolder = "";
+            windowSize = new Size(800, 480);
+#if ST_2_1
+            savedImageSize = new Size( 800, 480 );
+#else
+            savedImageSize = SaveImageDialog.ImageSizeType.Medium;
+#endif
+            savedImageFolder = "";
 			savedImageFormat = ImageFormat.Jpeg;
         }
 
@@ -269,10 +280,21 @@ namespace SportTracksOverlayPlugin.Source
 
 			attr = pluginNode.GetAttribute( xmlTags.savedImageFolder );
 			if ( attr.Length > 0 ) { savedImageFolder = attr; }
-			attr = pluginNode.GetAttribute( xmlTags.savedImageWidth );
+#if ST_2_1
+ 			attr = pluginNode.GetAttribute( xmlTags.savedImageWidth );
 			attr2 = pluginNode.GetAttribute( xmlTags.savedImageHeight );
-			if ( attr.Length > 0 && attr2.Length > 0 )
-				savedImageSize = new Size( XmlConvert.ToInt16( attr ), XmlConvert.ToInt16( attr2 ) );
+            if (attr.Length > 0 && attr2.Length > 0
+            && XmlConvert.ToInt16( attr ) > 0 && XmlConvert.ToInt16( attr2 ) > 0)
+            {
+               savedImageSize = new Size( XmlConvert.ToInt16( attr ), XmlConvert.ToInt16( attr2 ) );
+            }
+#else
+            attr = pluginNode.GetAttribute(xmlTags.savedImageSize);
+            if (attr.Length > 0)
+            {
+                savedImageSize = (SaveImageDialog.ImageSizeType)Enum.Parse(typeof(SaveImageDialog.ImageSizeType), attr);
+            }
+#endif
 			attr = pluginNode.GetAttribute( xmlTags.savedImageFormat );
 			if ( attr.Length > 0 )
 			{
@@ -328,9 +350,13 @@ namespace SportTracksOverlayPlugin.Source
             pluginNode.SetAttribute(xmlTags.viewHeight, XmlConvert.ToString(windowSize.Height));
 
 			pluginNode.SetAttribute(xmlTags.savedImageFolder, savedImageFolder);
+#if ST_2_1
 			pluginNode.SetAttribute(xmlTags.savedImageWidth,XmlConvert.ToString(savedImageSize.Width));
 			pluginNode.SetAttribute(xmlTags.savedImageHeight,XmlConvert.ToString(savedImageSize.Height));
-			pluginNode.SetAttribute(xmlTags.savedImageFormat,XmlConvert.ToString(savedImageFormat.Guid));
+#else
+			pluginNode.SetAttribute(xmlTags.savedImageSize,savedImageSize.ToString());
+#endif
+            pluginNode.SetAttribute(xmlTags.savedImageFormat,XmlConvert.ToString(savedImageFormat.Guid));
         }
 
         private class xmlTags
@@ -353,9 +379,13 @@ namespace SportTracksOverlayPlugin.Source
             public const string viewHeight = "viewHeight";
 
 			public const string savedImageFolder = "savedImageFolder";
+#if ST_2_1
 			public const string savedImageWidth = "savedImageWidth";
 			public const string savedImageHeight = "savedImageHeight";
-			public const string savedImageFormat = "savedImageFormat";
+#else
+            public const string savedImageSize = "savedImageSize";
+#endif
+            public const string savedImageFormat = "savedImageFormat";
         }
         
         private static bool load()
@@ -386,8 +416,11 @@ namespace SportTracksOverlayPlugin.Source
                 autoZoom = bool.Parse(elm.Attributes["autoZoom"].Value);
 
 				savedImageFolder = elm.Attributes["savedImageFolder"].Value;
-				savedImageSize = new Size( int.Parse( elm.Attributes["savedImageWidth"].Value ),
+#if ST_2_1
+//the old load file could be used when a user migrates from old plugin to ST3. Ignore this.
+                savedImageSize = new Size( int.Parse( elm.Attributes["savedImageWidth"].Value ),
 										int.Parse( elm.Attributes["savedImageWidth"].Value ) );
+#endif
 				savedImageFormat = new ImageFormat( new Guid( elm.Attributes["savedImageFormat"].Value ) );
 
             }

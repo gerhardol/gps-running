@@ -15,6 +15,8 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#if ST_2_1
+//Note: In ST3, the native dialog with almost identical interface is used instead
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,7 +33,7 @@ using System.IO;
 
 namespace SportTracksOverlayPlugin.Source
 {
-	public class OverlaySaveImageInfoPage : Form
+    public class OverlaySaveImageInfoPage : Form
 	{
 		public OverlaySaveImageInfoPage()
 		{
@@ -112,7 +114,7 @@ namespace SportTracksOverlayPlugin.Source
 			base.Dispose( disposing );
 		}
 
-		#region Windows Form Designer generated code
+    #region Windows Form Designer generated code
 
 		/// <summary>
 		/// Required method for Designer support - do not modify
@@ -120,7 +122,7 @@ namespace SportTracksOverlayPlugin.Source
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( OverlaySaveImageInfoPage ) );
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OverlaySaveImageInfoPage));
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
@@ -414,9 +416,9 @@ namespace SportTracksOverlayPlugin.Source
 
 		}
 
-		#endregion
+        #endregion
 
-		#region Properties
+    #region Properties
 		private string ImageFileExtension
 		{
 			get
@@ -483,7 +485,7 @@ namespace SportTracksOverlayPlugin.Source
 
 			}
 		}
-		public string FileFullPathAndName
+		public string FileName
 		{
 			get
 			{
@@ -492,8 +494,14 @@ namespace SportTracksOverlayPlugin.Source
 				sPath = Path.Combine( txtSaveIn.Text, sPath );
 				return sPath;
 			}
+            set
+            {
+                txtFilename.Text = Path.GetFileNameWithoutExtension(value);
+                txtSaveIn.Text = Path.GetDirectoryName(value);
+            }
 		}
-		public string FileName
+/* No longer used
+        public string FileName
 		{
 			get
 			{
@@ -515,7 +523,8 @@ namespace SportTracksOverlayPlugin.Source
 				txtSaveIn.Text = value;
 			}
 		}
-		public Size ImageSize
+*/
+        public Size ImageSize
 		{
 			get
 			{
@@ -570,9 +579,9 @@ namespace SportTracksOverlayPlugin.Source
 				}
 			}
 		}
-		#endregion
+        #endregion
 
-		#region "Events"
+    #region "Events"
 		void txtXSize_Validating( object sender, CancelEventArgs e )
 		{
 			int i = 0;
@@ -596,10 +605,7 @@ namespace SportTracksOverlayPlugin.Source
 			dtp.Tree.RowHotlightColor = System.Drawing.SystemColors.ControlLight;
 			dtp.Tree.RowHotlightColorText = System.Drawing.SystemColors.ControlText;
 			dtp.Location = splitContainer1.Panel1.PointToScreen( isSaveIn.Location );
-#if ST_2_1
-            //Should be rewritten to use ST control in ST3
             dtp.Tree.SelectedChanged += new EventHandler( dtpTree_SelectedChanged );
-#endif
             dtp.Top += isSaveIn.Height;
 			dtp.Width = isSaveIn.Width;
 			dtp.Tree.SelectedPath = txtSaveIn.Text;
@@ -649,8 +655,8 @@ namespace SportTracksOverlayPlugin.Source
 		{
 			this.Close();
 		}
-		#endregion
+        #endregion
 
-
-	}
+    }
 }
+#endif
