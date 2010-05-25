@@ -21,6 +21,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
+using System.IO;
+
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Chart;
 using ZoneFiveSoftware.Common.Data;
@@ -34,6 +36,10 @@ using System.ComponentModel;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Data.Algorithm;
+#if !ST_2_1
+using ZoneFiveSoftware.Common.Visuals.Forms;
+#endif
+
 using SportTracksOverlayPlugin.Properties;
 using SportTracksOverlayPlugin.Util;
 
@@ -1303,27 +1309,41 @@ namespace SportTracksOverlayPlugin.Source
 
 		private void btnSaveImage_Click( object sender, EventArgs e )
 		{
-			OverlaySaveImageInfoPage siiPage = new OverlaySaveImageInfoPage();
-
-			if ( !string.IsNullOrEmpty( saveImageProperties_fileName ) ) siiPage.FileName = saveImageProperties_fileName;
-			if ( !string.IsNullOrEmpty( Settings.SavedImageFolder ) ) siiPage.FolderName = Settings.SavedImageFolder;
-			if ( Settings.SavedImageSize != new Size( 0, 0 ) ) siiPage.ImageSize = Settings.SavedImageSize;
+#if ST_2_1
+            OverlaySaveImageInfoPage siiPage = new OverlaySaveImageInfoPage();
+#else
+            SaveImageDialog siiPage = new SaveImageDialog();
+#endif
+                if (string.IsNullOrEmpty(saveImageProperties_fileName))
+                {
+                    saveImageProperties_fileName = String.Format("{0} {1}", "Overlay", DateTime.Now.ToShortDateString());
+                    char[] cInvalid = Path.GetInvalidFileNameChars();
+                    for (int i = 0; i < cInvalid.Length; i++)
+                        saveImageProperties_fileName = saveImageProperties_fileName.Replace(cInvalid[i], '-');
+                }
+                if (string.IsNullOrEmpty(Settings.SavedImageFolder))
+                {
+                    Settings.SavedImageFolder = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+                }
+                siiPage.FileName = Settings.SavedImageFolder + Path.DirectorySeparatorChar + saveImageProperties_fileName;
+            siiPage.ImageSize = Settings.SavedImageSize;
 			siiPage.ImageFormat = Settings.SavedImageFormat;
 
 			siiPage.ShowDialog();
 
 			if ( siiPage.DialogResult == DialogResult.OK )
 			{
-				saveImageProperties_fileName = siiPage.FileName;
-				Settings.SavedImageSize = siiPage.ImageSize;
+				saveImageProperties_fileName = Path.GetFileName(siiPage.FileName);
+                Settings.SavedImageFolder = Path.GetDirectoryName(siiPage.FileName);
+                Settings.SavedImageSize = siiPage.ImageSize;
 				Settings.SavedImageFormat = siiPage.ImageFormat;
-				Settings.SavedImageFolder = siiPage.FolderName;
-
-				if ( ( !System.IO.File.Exists( siiPage.FileFullPathAndName ) ) ||
-					( MessageBox.Show( String.Format( Resources.FileAlreadyExists, siiPage.FileFullPathAndName ),
-										Resources.SaveImage, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation ) == DialogResult.Yes ) )
-					chart.SaveImage( siiPage.ImageSize, siiPage.FileFullPathAndName, siiPage.ImageFormat ); 
-			}
+#if ST_2_1
+                if ((!System.IO.File.Exists(siiPage.FileName)) ||
+                    (MessageBox.Show(String.Format(Resources.FileAlreadyExists, siiPage.FileName),
+                                        Resources.SaveImage, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes))
+					chart.SaveImage( siiPage.ImageSize, siiPage.FileName, siiPage.ImageFormat ); 
+#endif
+            }
 		}
         private LineChart chart;
         private Label labelXaxis;

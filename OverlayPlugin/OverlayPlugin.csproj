@@ -8,6 +8,14 @@
     <PluginId>489FD22A-DB13-49DB-A77C-57E45CB1D049</PluginId>
   </PropertyGroup>
   <Import Project="..\Common\Common-References.csproj" />
+  <ItemGroup Condition=" ('$(Configuration)' == 'ST2.1Release') or ('$(Configuration)' == 'ST2.1Debug') ">
+    <Compile Include="Source\OverlaySaveImageInfoPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <EmbeddedResource Include="Source\OverlaySaveImageInfoPage.resx">
+      <DependentUpon>OverlaySaveImageInfoPage.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -20,9 +28,6 @@
     <Compile Include="Source\OverlayActivityDetailPage.cs" />
     <Compile Include="Source\OverlayEdit.cs" />
     <Compile Include="Source\OverlayPage.cs" />
-    <Compile Include="Source\OverlaySaveImageInfoPage.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Source\OverlaySettings.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -79,9 +84,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Source\OverlayView2.resx">
       <DependentUpon>OverlayView2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Source\OverlaySaveImageInfoPage.resx">
-      <DependentUpon>OverlaySaveImageInfoPage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
