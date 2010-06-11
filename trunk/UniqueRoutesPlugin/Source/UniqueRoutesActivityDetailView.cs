@@ -136,7 +136,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
                 }
                 else
                 {
-                    summaryLabel.Text = Resources.DidNotFindAnyRoutes.Replace("\\n","\n");
+                    summaryLabel.Text = Resources.DidNotFindAnyRoutes.Replace("\\n",Environment.NewLine);
                     summaryLabel.Visible = true;
                     changeSettingsVisibility(false);
                 }
@@ -417,14 +417,14 @@ namespace SportTracksUniqueRoutesPlugin.Source
             {
                 s.Append(column.HeaderText + "\t");
             }
-            s.Append("\n");
+            s.Append(Environment.NewLine);
             foreach (DataGridViewRow row in summaryView.Rows)
             {
                 foreach (DataGridViewCell cell in row.Cells)
                 {
                     s.Append(cell.Value + "\t");
                 }
-                s.Append("\n");
+                s.Append(Environment.NewLine);
             }
             Clipboard.SetText(s.ToString());
         }
