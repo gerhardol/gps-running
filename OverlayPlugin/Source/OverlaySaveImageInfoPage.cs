@@ -15,7 +15,6 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if ST_2_1
 //Note: In ST3, the native dialog with almost identical interface is used instead
 using System;
 using System.Collections.Generic;
@@ -659,4 +658,3 @@ namespace SportTracksOverlayPlugin.Source
 
     }
 }
-#endif

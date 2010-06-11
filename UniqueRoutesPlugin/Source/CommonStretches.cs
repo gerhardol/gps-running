@@ -266,16 +266,20 @@ namespace SportTracksUniqueRoutesPlugin.Source
         }
         static bool getRestLap(int index, IActivity activity)
         {
-            bool restLap = activity.Laps[activity.Laps.Count-1].Rest;
-            for (int i = 0; i < activity.Laps.Count-1; i++)
+            bool restLap = false;
+            if (activity.Laps.Count > 1)
             {
-                //End time is starttime for next lap
-                //Go from first to second last to find where it fits (default is last, no end time there)
-                if (0 > activity.GPSRoute.EntryDateTime(activity.GPSRoute[index]).CompareTo(activity.Laps[i+1].StartTime))
+                restLap = activity.Laps[activity.Laps.Count - 1].Rest;
+                for (int i = 0; i < activity.Laps.Count - 1; i++)
                 {
-                    //time was in previous lap
-                    restLap = activity.Laps[i].Rest;
-                    break;
+                    //End time is starttime for next lap
+                    //Go from first to second last to find where it fits (default is last, no end time there)
+                    if (0 > activity.GPSRoute.EntryDateTime(activity.GPSRoute[index]).CompareTo(activity.Laps[i + 1].StartTime))
+                    {
+                        //time was in previous lap
+                        restLap = activity.Laps[i].Rest;
+                        break;
+                    }
                 }
             }
             return restLap;
