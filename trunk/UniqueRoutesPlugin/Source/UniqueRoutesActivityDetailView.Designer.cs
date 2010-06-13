@@ -138,7 +138,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.speedBox.Size = new System.Drawing.Size(68, 21);
             this.speedBox.TabIndex = 5;
             this.speedBox.Visible = false;
-            this.speedBox.SelectedIndexChanged += new System.EventHandler(this.activeBox_SelectedIndexChanged);
+            this.speedBox.SelectedIndexChanged += new System.EventHandler(this.speedBox_SelectedIndexChanged);
             // 
             // sendResultToLabel1
             // 
