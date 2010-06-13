@@ -59,10 +59,11 @@ namespace SportTracksUniqueRoutesPlugin.Source
         {
             get
             {
-                if (null == selectedCategory)
+                if (null == selectedCategory && null != categoryTmpStr)
                 {
                     //Race problem at startup: Application is not directly accessible, save temp string
                     selectedCategory = parseCategory(categoryTmpStr);
+                    categoryTmpStr = null;
                 }
                 return selectedCategory;
             }

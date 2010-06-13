@@ -159,9 +159,17 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start(new ProcessStartInfo("IExplore",
-                "http://code.google.com/p/gps-running/wiki/UniqueRoutes"));
-        }
+            try
+            {
+                ProcessStartInfo procStartInfo = new ProcessStartInfo("http://code.google.com/p/gps-running/wiki/UniqueRoutes");
+                Process.Start(procStartInfo);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Exception encountered launching browser", "Launching other application",
+                                MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            }
+       }
 
         private void resetSettings_Click(object sender, EventArgs e)
         {
