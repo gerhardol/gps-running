@@ -59,8 +59,7 @@ namespace SportTracksHighScorePlugin.Source
         public IList<IAction> GetActions(IActivityReportsView view,
                                          ExtendViewActions.Location location)
         {
-            //ST3fix
-            if (location == ExtendViewActions.Location.EditMenu)
+            if (location == ExtendViewActions.Location.AnalyzeMenu)
             {
                 return new IAction[] { new HighScoreAction(view) };
             }
