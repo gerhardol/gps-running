@@ -10,7 +10,6 @@
   <Import Project="..\Common\Common-References.csproj" />
   <ItemGroup Condition=" ('$(Configuration)' == 'ST2.1Release') or ('$(Configuration)' == 'ST2.1Debug') ">
     <Compile Include="Source\OverlaySaveImageInfoPage.cs">
-      <SubType>Form</SubType>
     </Compile>
     <EmbeddedResource Include="Source\OverlaySaveImageInfoPage.resx">
       <DependentUpon>OverlaySaveImageInfoPage.cs</DependentUpon>
