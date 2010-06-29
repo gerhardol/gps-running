@@ -51,14 +51,20 @@ namespace SportTracksUniqueRoutesPlugin.Source
             progressBar.Maximum = Plugin.GetApplication().Logbook.Activities.Count;
             if (uniqueModel == UniqueModel.ELEVATION)
             {
+                //Not implemented
             } else {
             GPSGrid grid = new GPSGrid(activity);
             IDictionary<IActivity, int> beginningPoints = new Dictionary<IActivity, int>();
             IDictionary<IActivity, int> endPoints = new Dictionary<IActivity, int>();
 
             setBeginningAndEndPoints(activity, beginningPoints, endPoints);
-            if (!beginningPoints.ContainsKey(activity))
+            if (!beginningPoints.ContainsKey(activity) ||
+                beginningPoints[activity] <= -1 ||
+                        endPoints[activity] <= -1)
+            {
+                //The settings does not include any points
                 return activities;
+            }
             foreach (IActivity otherActivity in Plugin.GetApplication().Logbook.Activities)
             {
                 int pointsOutside = 0;
@@ -69,7 +75,8 @@ namespace SportTracksUniqueRoutesPlugin.Source
                 {
                     setBeginningAndEndPoints(otherActivity, beginningPoints, endPoints);
                     int noOfPoints = otherActivity.GPSRoute.Count;
-                    if (beginningPoints[otherActivity] > -1 &&
+                    if (beginningPoints[otherActivity] > -1 && 
+                        endPoints[otherActivity] > -1 &&
                         otherActivity.GPSRoute[0].Value.DistanceMetersToPoint(activity.GPSRoute[0].Value)
                         < otherActivity.GPSRoute.TotalDistanceMeters + activity.GPSRoute.TotalDistanceMeters)
                     {

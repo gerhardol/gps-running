@@ -48,7 +48,11 @@ namespace SportTracksUniqueRoutesPlugin.Source
             percentageOff.LostFocus += new EventHandler(percentageOff_LostFocus);
             hasDirectionBox.LostFocus += new EventHandler(hasDirectionBox_LostFocus);
             ignoreBeginningBox.LostFocus += new EventHandler(ignoreBeginningBox_LostFocus);
-            ignoreEndBox.LostFocus += new EventHandler(ignoreEndBox_LostFocus);            
+            ignoreEndBox.LostFocus += new EventHandler(ignoreEndBox_LostFocus);
+
+            metricLabel.Visible = false;
+            beginningLabel.Visible = false;
+            endLabel.Visible = false;
             presentSettings();            
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(UniqueRoutesSettingPageControl_PropertyChanged);
         }
@@ -81,15 +85,15 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
         private void presentSettings()
         {
-            bandwidthBox.Text = UnitUtil.Elevation.ToString(Settings.Bandwidth);
+            bandwidthBox.Text = UnitUtil.Elevation.ToString(Settings.Bandwidth, "u");
             percentageOff.Value = (int)Math.Round(Settings.ErrorMargin * 100);
             hasDirectionBox.Checked = Settings.HasDirection;
-            ignoreBeginningBox.Text = UnitUtil.Distance.ToString(Settings.IgnoreBeginning);
-            ignoreEndBox.Text = UnitUtil.Distance.ToString(Settings.IgnoreEnd);
+            ignoreBeginningBox.Text = UnitUtil.Distance.ToString(Settings.IgnoreBeginning, "u");
+            ignoreEndBox.Text = UnitUtil.Distance.ToString(Settings.IgnoreEnd, "u");
 
-            metricLabel.Text = UnitUtil.Elevation.Label;
-            beginningLabel.Text = UnitUtil.Distance.Label;
-            endLabel.Text = UnitUtil.Distance.Label;
+            //metricLabel.Text = UnitUtil.Elevation.Label;
+            //beginningLabel.Text = UnitUtil.Distance.Label;
+            //endLabel.Text = UnitUtil.Distance.Label;
         }
 
         void UniqueRoutesSettingPageControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
