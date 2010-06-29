@@ -80,7 +80,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(174, 16);
+            this.label1.Location = new System.Drawing.Point(106, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(60, 13);
             this.label1.TabIndex = 2;
@@ -89,7 +89,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(92, 41);
+            this.label2.Location = new System.Drawing.Point(24, 41);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(142, 13);
             this.label2.TabIndex = 3;
@@ -98,7 +98,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(120, 65);
+            this.label3.Location = new System.Drawing.Point(52, 65);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(114, 13);
             this.label3.TabIndex = 4;
@@ -107,7 +107,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             // hasDirectionBox
             // 
             this.hasDirectionBox.AutoSize = true;
-            this.hasDirectionBox.Location = new System.Drawing.Point(237, 65);
+            this.hasDirectionBox.Location = new System.Drawing.Point(169, 65);
             this.hasDirectionBox.Name = "hasDirectionBox";
             this.hasDirectionBox.Size = new System.Drawing.Size(15, 14);
             this.hasDirectionBox.TabIndex = 5;
@@ -115,7 +115,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             // 
             // percentageOff
             // 
-            this.percentageOff.Location = new System.Drawing.Point(237, 39);
+            this.percentageOff.Location = new System.Drawing.Point(169, 39);
             this.percentageOff.Name = "percentageOff";
             this.percentageOff.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.percentageOff.Size = new System.Drawing.Size(39, 20);
@@ -124,7 +124,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             // metricLabel
             // 
             this.metricLabel.AutoSize = true;
-            this.metricLabel.Location = new System.Drawing.Point(282, 16);
+            this.metricLabel.Location = new System.Drawing.Point(234, 16);
             this.metricLabel.Name = "metricLabel";
             this.metricLabel.Size = new System.Drawing.Size(38, 13);
             this.metricLabel.TabIndex = 9;
@@ -132,15 +132,15 @@ namespace SportTracksUniqueRoutesPlugin.Source
             // 
             // bandwidthBox
             // 
-            this.bandwidthBox.Location = new System.Drawing.Point(237, 13);
+            this.bandwidthBox.Location = new System.Drawing.Point(169, 13);
             this.bandwidthBox.Name = "bandwidthBox";
-            this.bandwidthBox.Size = new System.Drawing.Size(39, 20);
+            this.bandwidthBox.Size = new System.Drawing.Size(59, 20);
             this.bandwidthBox.TabIndex = 8;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(280, 41);
+            this.label4.Location = new System.Drawing.Point(214, 41);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(43, 13);
             this.label4.TabIndex = 10;
@@ -164,7 +164,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.groupBox1.Controls.Add(this.percentageOff);
             this.groupBox1.Location = new System.Drawing.Point(3, 32);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(370, 135);
+            this.groupBox1.Size = new System.Drawing.Size(327, 135);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Settings";
@@ -172,7 +172,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             // endLabel
             // 
             this.endLabel.AutoSize = true;
-            this.endLabel.Location = new System.Drawing.Point(280, 110);
+            this.endLabel.Location = new System.Drawing.Point(234, 110);
             this.endLabel.Name = "endLabel";
             this.endLabel.Size = new System.Drawing.Size(38, 13);
             this.endLabel.TabIndex = 16;
@@ -180,15 +180,15 @@ namespace SportTracksUniqueRoutesPlugin.Source
             // 
             // ignoreEndBox
             // 
-            this.ignoreEndBox.Location = new System.Drawing.Point(235, 107);
+            this.ignoreEndBox.Location = new System.Drawing.Point(167, 107);
             this.ignoreEndBox.Name = "ignoreEndBox";
-            this.ignoreEndBox.Size = new System.Drawing.Size(39, 20);
+            this.ignoreEndBox.Size = new System.Drawing.Size(59, 20);
             this.ignoreEndBox.TabIndex = 15;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(134, 107);
+            this.label8.Location = new System.Drawing.Point(66, 107);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(100, 13);
             this.label8.TabIndex = 14;
@@ -197,7 +197,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             // beginningLabel
             // 
             this.beginningLabel.AutoSize = true;
-            this.beginningLabel.Location = new System.Drawing.Point(280, 87);
+            this.beginningLabel.Location = new System.Drawing.Point(234, 87);
             this.beginningLabel.Name = "beginningLabel";
             this.beginningLabel.Size = new System.Drawing.Size(38, 13);
             this.beginningLabel.TabIndex = 13;
@@ -205,15 +205,15 @@ namespace SportTracksUniqueRoutesPlugin.Source
             // 
             // ignoreBeginningBox
             // 
-            this.ignoreBeginningBox.Location = new System.Drawing.Point(235, 84);
+            this.ignoreBeginningBox.Location = new System.Drawing.Point(167, 84);
             this.ignoreBeginningBox.Name = "ignoreBeginningBox";
-            this.ignoreBeginningBox.Size = new System.Drawing.Size(39, 20);
+            this.ignoreBeginningBox.Size = new System.Drawing.Size(59, 20);
             this.ignoreBeginningBox.TabIndex = 12;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(106, 87);
+            this.label5.Location = new System.Drawing.Point(38, 87);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(128, 13);
             this.label5.TabIndex = 11;
@@ -239,7 +239,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.resetSettings);
             this.Name = "UniqueRoutesSettingPageControl";
-            this.Size = new System.Drawing.Size(376, 174);
+            this.Size = new System.Drawing.Size(337, 174);
             ((System.ComponentModel.ISupportInitialize)(this.percentageOff)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

@@ -8,7 +8,6 @@
     <PluginId>5c630517-46c4-478d-89d6-a8a6ca6337db</PluginId>
   </PropertyGroup>
   <Import Project="..\Common\Common-References.csproj" />
- 
   <ItemGroup>
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -84,8 +83,10 @@
       <DependentUpon>UniqueRoutesActivityDetailView.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
- 
   <ItemGroup>
+    <EmbeddedResource Include="Source\UniqueRoutesSettingPageControl.resx">
+      <DependentUpon>UniqueRoutesSettingPageControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Util\StringResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>StringResources.Designer.cs</LastGenOutput>
@@ -137,8 +138,8 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
+  <Import Project="..\Common\Common-Files.csproj" />
   <ItemGroup>
     <Folder Include="Resources\" />
   </ItemGroup>
-  <Import Project="..\Common\Common-Files.csproj" />
 </Project>
