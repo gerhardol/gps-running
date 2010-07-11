@@ -170,7 +170,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
             catch(Exception ex)
             {
-                MessageBox.Show("Exception encountered launching browser", "Launching other application",
+                MessageBox.Show("Exception encountered launching browser", "Launching other application"+ex,
                                 MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             }
        }
