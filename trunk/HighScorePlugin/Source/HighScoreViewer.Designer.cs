@@ -74,6 +74,9 @@ namespace SportTracksHighScorePlugin.Source
             this.dataGrid.AllowUserToResizeRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.dataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGrid.ContextMenuStrip = this.contextMenu;
             this.dataGrid.Location = new System.Drawing.Point(6, 54);
@@ -92,12 +95,12 @@ namespace SportTracksHighScorePlugin.Source
             this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1});
             this.contextMenu.Name = "contextMenu";
-            this.contextMenu.Size = new System.Drawing.Size(197, 26);
+            this.contextMenu.Size = new System.Drawing.Size(199, 26);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(196, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(198, 22);
             this.toolStripMenuItem1.Text = "Copy table to clipboard";
             // 
             // label1
@@ -181,6 +184,7 @@ namespace SportTracksHighScorePlugin.Source
             this.chart.Border = ZoneFiveSoftware.Common.Visuals.ControlBorder.Style.SmallRoundShadow;
             this.chart.Location = new System.Drawing.Point(6, 54);
             this.chart.Name = "chart";
+            this.chart.Padding = new System.Windows.Forms.Padding(5);
             this.chart.Size = new System.Drawing.Size(514, 381);
             this.chart.TabIndex = 16;
             // 

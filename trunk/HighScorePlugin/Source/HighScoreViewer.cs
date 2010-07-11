@@ -52,9 +52,9 @@ namespace SportTracksHighScorePlugin.Source
                     if (activities.Count > 1)
                         form.Text = Resources.HSV + String.Format(StringResources.OfManyActivities,activities.Count);
                     else if (activities.Count == 1)
-                        form.Text = Resources.HSV + StringResources.OfOneActivity;
+                        form.Text = Resources.HSV + " " + StringResources.OfOneActivity;
                     else
-                        form.Text = Resources.HSV + StringResources.OfNoActivities;
+                        form.Text = Resources.HSV + " " + StringResources.OfNoActivities;
                 }
                 resetCachedResults();
                 showResults();

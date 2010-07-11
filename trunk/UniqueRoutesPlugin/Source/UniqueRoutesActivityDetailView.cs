@@ -24,6 +24,9 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Visuals;
+#if !ST_2_1
+using ZoneFiveSoftware.Common.Visuals.Forms;
+#endif
 using ZoneFiveSoftware.Common.Data.Fitness;
 using SportTracksUniqueRoutesPlugin.Source;
 using SportTracksUniqueRoutesPlugin;
@@ -37,16 +40,19 @@ namespace SportTracksUniqueRoutesPlugin.Source
 {
     public partial class UniqueRoutesActivityDetailView : UserControl
     {
+        private ITheme m_visualTheme;
         private IList<IActivity> similar;
         private IDictionary<string, string> similarToolTip;
         private IActivity activity;
+        private IDictionary<ToolStripMenuItem, SendToPlugin> aSendToMenu = new Dictionary<ToolStripMenuItem, SendToPlugin>();
+
         public IActivity Activity
         {
             set
             {
                 this.activity = value;
                 summaryLabel.Visible = false;
-                summaryView.Visible = false;                        
+                summaryList.Visible = false;                        
                 progressBar.Visible = false;
                 doIt.Visible = false;
                 changeSettingsVisibility(false);
@@ -54,89 +60,63 @@ namespace SportTracksUniqueRoutesPlugin.Source
                 {
                     calculate();
                 }
-                
             }
             get { return activity; }
         }
 
-        //Column hidden to store ActivityId, used to open links
-        private const string ActivityIdColumn = "ActivityId";
         private void setTable()
         {
+            summaryList.Columns.Clear();
+            summaryList.RowData = null;
             if (similar != null)
             {
                 if (similar.Count > 1)
                 {
-                    DataTable table = new DataTable();
-                    table.Columns.Add(CommonResources.Text.LabelDate);
-                    table.Columns.Add(CommonResources.Text.LabelStartTime);
-                    table.Columns.Add(UnitUtil.Time.LabelAxis);
-                    table.Columns.Add(UnitUtil.Distance.LabelAxis);
-                    table.Columns.Add(UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace));
-                    table.Columns.Add(CommonResources.Text.LabelAvgHR + UnitUtil.HeartRate.LabelAbbr2);
-                    table.Columns.Add(ActivityIdColumn);
+                    IList<UniqueRoutesResult> result = new List<UniqueRoutesResult>();
                     similarToolTip = new Dictionary<string, string>();
-                    
+                    RefreshColumns();
+
                     //Debug info for stretches
                     IDictionary<IActivity, IList<double>> commonStretches = null;
                     IDictionary<IActivity, string> similarPoints = new Dictionary<IActivity, string>();
                     bool doGetcommonStretches = true;// Plugin.Verbose > 0;
                     if (doGetcommonStretches)
                     {
-                        commonStretches = new Dictionary<IActivity, IList<double>>();
+                        //xxx commonStretches = new Dictionary<IActivity, IList<double>>();
                         commonStretches = CommonStretches.getCommonSpeed(this.activity, similar, Settings.UseActive);
                         //similarPoints = CommonStretches.findSimilarDebug(this.activity, similar, Settings.UseActive);
                     }
                     foreach (IActivity activity in similar)
                     {
-                        DataRow row = table.NewRow();
-                        ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
-                        row[0] = activity.StartTime.ToLocalTime().ToShortDateString();
-                        row[1] = activity.StartTime.ToLocalTime().ToShortTimeString();
-                        row[2] = UnitUtil.Time.ToString(info.Time);
-                        row[3] = UnitUtil.Distance.ToString(info.DistanceMeters);
-                        double speed;
-                        if (Settings.UseActive)
-                        {
-                            speed = info.ActiveLapsTotalDetail.LapDistanceMeters * 1000 / 
-                                info.ActiveLapsTotalDetail.LapElapsed.TotalMilliseconds;
-                        }
-                        else
-                        {
-                            speed = info.AverageSpeedMetersPerSecond;
-                        }
-                        row[4] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed);
-                        row[5] = UnitUtil.HeartRate.ToString(info.AverageHeartRate);
-                        row[ActivityIdColumn] = activity.ReferenceId;
-                        table.Rows.Add(row);
-                        string toolTip = null;
+                        string commonText = null;
                         if (commonStretches != null)
                         {
-                            toolTip = "Common Stretches: " +
+                            commonText = 
                                 UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace,
                                 commonStretches[activity][0] / commonStretches[activity][1], "u") +
                                 " (" + UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace,
-                                commonStretches[activity][2] / commonStretches[activity][3], "u") + ")" +
+                                commonStretches[activity][2] / commonStretches[activity][3]) + ")" +
                                 " " + commonStretches[activity][4] + " sections " +
                                 UnitUtil.Distance.ToString(commonStretches[activity][0], "u") + " " +
-                                UnitUtil.Time.ToString(commonStretches[activity][1], "u") +
+                                UnitUtil.Time.ToString(commonStretches[activity][1]) +
                                 " (" + UnitUtil.Distance.ToString(commonStretches[activity][2], "u") + " " +
-                                " " + UnitUtil.Time.ToString(commonStretches[activity][3], "u") + ")";
-                            
-                                
+                                " " + UnitUtil.Time.ToString(commonStretches[activity][3]) + ")";
+
+
                         }
-                        similarToolTip[activity.ReferenceId] = toolTip;
+                        result.Add(new UniqueRoutesResult(activity, commonText));
+                        similarToolTip[activity.ReferenceId] = "Common Stretches: " + commonText;
                     }
-                    summaryView.DataSource = table;
-                    summaryLabel.Text = String.Format(Resources.FoundActivities,similar.Count - 1);
+                    summaryList.RowData = result;
+                    summaryLabel.Text = String.Format(Resources.FoundActivities, similar.Count - 1);
                     summaryView_Sort();
-                    summaryView.Visible = true;
+                    summaryList.Visible = true;
                     summaryLabel.Visible = true;
                     changeSettingsVisibility(true);
                 }
                 else
                 {
-                    summaryLabel.Text = Resources.DidNotFindAnyRoutes.Replace("\\n",Environment.NewLine);
+                    summaryLabel.Text = Resources.DidNotFindAnyRoutes.Replace("\\n", Environment.NewLine);
                     summaryLabel.Visible = true;
                     changeSettingsVisibility(false);
                 }
@@ -147,9 +127,35 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
             setSize();
         }
+        private void RefreshColumns()
+        {
+            summaryList.Columns.Clear();
+            ICollection<IListColumnDefinition> allCols = SummaryColumnIds.ColumnDefs(this.activity);
+            foreach (string id in Settings.ActivityPageColumns)
+            {
+                foreach (ListColumnDefinition columnDef in allCols)
+                {
+                    if (columnDef.Id == id)
+                    {
+                        TreeList.Column col = new TreeList.Column(
+                            columnDef.Id,
+                            columnDef.Text(columnDef.Id),
+                            columnDef.Width,
+                            columnDef.Align
+                        );
+                        col.CanSelect = columnDef.CanSelect;
+                        summaryList.Columns.Add(col);
+                        break;
+                    }
+                }
+            }
+        }
 
         public void changeSettingsVisibility(bool visible)
         {
+            //OLD: No longer visible
+            visible = false;
+
             labelShow.Visible = visible;
             selectedBox.Visible = visible;
             activeBox.Visible = visible;
@@ -170,7 +176,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             doUpdate = true;
             this.Activity = activity;
             this.Resize += new EventHandler(UniqueRoutesActivityDetailView_Resize);
-            progressBar.Size = new Size(summaryView.Size.Width, progressBar.Height);
+            activeBox.Visible = true;
             if (Settings.UseActive)
             {
                 activeBox.SelectedItem = StringResources.Active;
@@ -179,31 +185,58 @@ namespace SportTracksUniqueRoutesPlugin.Source
             {
                 activeBox.SelectedItem = StringResources.All;
             }
+            activeMenuItem.CheckState = Settings.UseActive ? CheckState.Checked : CheckState.Unchecked;
             speedBox.SelectedItem = CommonResources.Text.LabelPace;
-            contextMenu.Click += new EventHandler(contextMenu_Click);
-            summaryView.CellContentDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
-            summaryView.CellToolTipTextNeeded += new DataGridViewCellToolTipTextNeededEventHandler(summaryView_CellToolTipTextNeeded);
-            summaryView.ColumnHeaderMouseClick += new DataGridViewCellMouseEventHandler(summaryView_ColumnHeaderMouseClick);
+            //this.listSettingsMenuItem.Text = Properties.Resources.UI_Activity_Page_ListSettings;
+            listSettingsMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Table16;
+#if !ST_2_1
+            this.listSettingsMenuItem.Click += new System.EventHandler(this.listSettingsToolStripMenuItem_Click);
+#else
+            //No listSetting dialog in ST2
+            if (this.contextMenu.Items.Contains(this.listSettingsMenuItem))
+            {
+                this.contextMenu.Items.Remove(this.listSettingsMenuItem);
+            }
+#endif
+            summaryList.ContextMenuStrip = contextMenu;
+            summaryList.MouseDoubleClick += new MouseEventHandler(selectedRow_DoubleClick);
+            //TODO: ToolTip is not implemented for TreeList?
+            //summaryList.MouseHover += new EventHandler(summaryView_CellToolTipTextNeeded);
+            summaryList.ColumnClicked += new TreeList.ColumnEventHandler(summaryView_ColumnHeaderMouseClick);
 
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
             setSize();
             VisibleChanged += new EventHandler(UniqueRoutesActivityDetailView_VisibleChanged);
-            if (Settings.accumulatedSummary != null)
+
+            bool isPluginMatch = false;
+            foreach (SendToPlugin p in Settings.aSendToPlugin)
             {
-                pluginBox.Items.Add("Accumulated Summary");
+                System.Windows.Forms.ToolStripMenuItem sendMenuItem;
+                sendMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+                sendMenuItem.Name = p.id;
+                sendMenuItem.Size = new System.Drawing.Size(198, 22);
+                sendMenuItem.Text = p.name;
+                sendMenuItem.Click += new System.EventHandler(this.sendActivityButton_Click);
+                sendMenuItem.Enabled = false;
+                if (p.pType != null)
+                {
+                    pluginBox.Items.Add(p.name);
+                    sendMenuItem.Enabled = true;
+                    if (!isPluginMatch)
+                    {
+                        pluginBox.SelectedItem = Settings.SelectedPlugin;
+                    }
+                    if (Settings.SelectedPlugin != null &&
+                            Settings.SelectedPlugin.Equals(p.name))
+                    {
+                        //Match in settings, no more checks
+                        isPluginMatch = true;
+                    }
+                }
+                aSendToMenu[sendMenuItem] = p;
+                this.sendToMenuItem.DropDownItems.Add(sendMenuItem);
             }
-            if (Settings.highScore != null)
-            {
-                pluginBox.Items.Add("High Score");
-            }
-            if (Settings.overlay != null)
-            {
-                pluginBox.Items.Add("Overlay");
-            }
-            if (Settings.trimp != null)
-            {
-                pluginBox.Items.Add("TRIMP");
-            }
+
             if (Settings.SelectAll)
             {
                 selectedBox.SelectedItem = StringResources.All;
@@ -213,48 +246,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
                 selectedBox.SelectedItem = StringResources.Selected;
             }
             //pluginBox
-            if (Settings.SelectedPlugin != null &&
-                    Settings.SelectedPlugin.Equals("Accumulated Summary") &&
-                    Settings.accumulatedSummary != null)
-            {
-                pluginBox.SelectedItem = Settings.SelectedPlugin;
-            }
-            else if (Settings.SelectedPlugin != null &&
-                        Settings.SelectedPlugin.Equals("High Score") &&
-                         Settings.highScore != null)
-            {
-                pluginBox.SelectedItem = Settings.SelectedPlugin;
-            }
-            else if (Settings.SelectedPlugin != null &&
-                Settings.SelectedPlugin.Equals("Overlay") &&
-                Settings.overlay != null)
-            {
-                pluginBox.SelectedItem = Settings.SelectedPlugin;
-            }
-            else if (Settings.SelectedPlugin != null &&
-                Settings.SelectedPlugin.Equals("TRIMP") &&
-                  Settings.trimp != null)
-            {
-                pluginBox.SelectedItem = Settings.SelectedPlugin;
-            }
-            else if (Settings.accumulatedSummary != null)
-            {
-                pluginBox.SelectedItem = "Accumulated Summary";
-            }
-            else if (Settings.highScore != null)
-            {
-                pluginBox.SelectedItem = "High Score";
-            }
-            else if (Settings.overlay != null)
-            {
-                pluginBox.SelectedItem = "Overlay";
-            }
-            else if (Settings.trimp != null)
-            {
-                pluginBox.SelectedItem = "TRIMP";
-            }
-            else
-            {
+            if(!isPluginMatch){
                 pluginBox.SelectedItem = "";
                 pluginBox.Enabled = false;
                 doIt.Enabled = false;
@@ -262,7 +254,16 @@ namespace SportTracksUniqueRoutesPlugin.Source
             setCategoryLabel();
             doUpdate = false;
         }
-
+        public void ThemeChanged(ITheme visualTheme)
+        {
+            //RefreshPage();
+            m_visualTheme = visualTheme;
+            summaryList.ThemeChanged(visualTheme);
+#if !ST_2_1
+            this.splitContainer1.Panel1.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
+            this.splitContainer1.Panel2.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
+#endif
+        }
         private void correctUI(IList<Control> comp)
         {
             Control prev = null;
@@ -306,69 +307,40 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
             else
             {
-                categoryLabel.Text = String.Format(Resources.IncludeOnlyCategory,
-                    getCategory(Settings.SelectedCategory, null));
+                categoryLabel.Text = String.Format("{0}",//Resources.IncludeOnlyCategory,
+                    Settings.printFullCategoryPath(Settings.SelectedCategory));
             }
         }
 
-        private string getCategory(IActivityCategory iActivityCategory, string p)
+        public class ActivitySorter : IComparer<UniqueRoutesResult>
         {
-            if (iActivityCategory == null) return p;
-            if (p == null) return getCategory(iActivityCategory.Parent,
-                                        iActivityCategory.Name);
-            return getCategory(iActivityCategory.Parent,
-                                iActivityCategory.Name + ": " + p);
+            public ActivitySorter(string id):base() { }
+            public int Compare(UniqueRoutesResult x, UniqueRoutesResult y)
+            {
+                return x.getField(Settings.SummaryViewSortColumn).CompareTo(y.getField(Settings.SummaryViewSortColumn))
+                    * (Settings.SummaryViewSortDirection == ListSortDirection.Ascending?1:-1);
+            }
         }
-
         private void summaryView_Sort()
         {
-            if (Settings.SummaryViewSortColumn >= 0 && Settings.SummaryViewSortColumn < summaryView.ColumnCount)
-            {
-                summaryView.Sort(summaryView.Columns[Settings.SummaryViewSortColumn], Settings.SummaryViewSortDirection);
-            }
+            summaryList.SetSortIndicator(Settings.SummaryViewSortColumn, 
+                Settings.SummaryViewSortDirection == ListSortDirection.Ascending);
+            List<UniqueRoutesResult> list = (List<UniqueRoutesResult>)summaryList.RowData;
+            list.Sort(new ActivitySorter(Settings.SummaryViewSortColumn));
+            summaryList.RowData = list;
         }
 
         private void setSize()
         {
-            if (summaryView.Columns.Count > 0 && summaryView.Rows.Count > 0)
-            {
-                foreach (DataGridViewColumn column in summaryView.Columns)
-                {
-                    if (column.Name.Equals(ActivityIdColumn))
-                    {
-                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                        column.Width = 0;
-                        column.Visible = false;
-                    }
-                    else
-                    {
-                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    }
-                }
-                summaryView.Size = new Size(Size.Width - summaryView.Location.X - 20,
-                       summaryView.Rows[0].Height * summaryView.Rows.Count
-                       + summaryView.ColumnHeadersHeight);
-            }
-            progressBar.Size = new Size(summaryView.Size.Width, progressBar.Height);
             changeCategory.Location = new Point(
-                    categoryLabel.Location.X + categoryLabel.Width + 5,
+                //                    categoryLabel.Location.X + categoryLabel.Width + 5,
+                    summaryLabel.Location.X + summaryLabel.Width + 5,
                          changeCategory.Location.Y);
+            categoryLabel.Location = new Point(
+                   changeCategory.Location.X + changeCategory.Width + 5,
+                        summaryLabel.Location.Y);
             Refresh();
         }
-
-        private IActivity findActivity(string date, string starttime)
-        {
-            foreach (IActivity activity in similar)
-            {
-                String s1 = activity.StartTime.ToLocalTime().ToShortDateString();
-                String s2 = activity.StartTime.ToLocalTime().ToShortTimeString();
-                if (s1.Equals(date) && s2.Equals(starttime))
-                    return activity;
-            }
-            return null;
-        }
-
-        //Event handlers
 
         private void calculate()
         {
@@ -376,12 +348,16 @@ namespace SportTracksUniqueRoutesPlugin.Source
             {
                 if (activity != null)
                 {
-                    progressBar.Visible = true;
-                    summaryView.Visible = false;
+                    summaryList.Visible = false;
                     changeSettingsVisibility(false);
+                    categoryLabel.Visible = false;
+                    changeCategory.Visible = false;
+                    progressBar.Visible = true;
                     similar = UniqueRoutes.findSimilarRoutes(activity, progressBar);
                     determinePaceOrSpeed();
                     progressBar.Visible = false;
+                    categoryLabel.Visible = true;
+                    changeCategory.Visible = true;
                     setTable();
                     changeSettingsVisibility(similar.Count > 1);
                 }
@@ -405,28 +381,17 @@ namespace SportTracksUniqueRoutesPlugin.Source
             Settings.ShowPace = pace >= speed;
         }
 
+        /*******************************************************************************/
+        //Event handlers
+
         void UniqueRoutesActivityDetailView_VisibleChanged(object sender, EventArgs e)
         {
             calculate();
         }
 
-        void contextMenu_Click(object sender, EventArgs e)
+        void copyTableMenu_Click(object sender, EventArgs e)
         {
-            StringBuilder s = new StringBuilder();
-            foreach (DataGridViewColumn column in summaryView.Columns)
-            {
-                s.Append(column.HeaderText + "\t");
-            }
-            s.Append(Environment.NewLine);
-            foreach (DataGridViewRow row in summaryView.Rows)
-            {
-                foreach (DataGridViewCell cell in row.Cells)
-                {
-                    s.Append(cell.Value + "\t");
-                }
-                s.Append(Environment.NewLine);
-            }
-            Clipboard.SetText(s.ToString());
+            summaryList.CopyTextToClipboard(true, System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
         }
 
         void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -441,45 +406,58 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
         private void sendActivityButton_Click(object sender, EventArgs e)
         {
+            SendToPlugin sendToPlugin = null;
             IList<IActivity> list = new List<IActivity>();
-            IList<int> seenRows = new List<int>();
-            if (selectedBox.SelectedItem.Equals(StringResources.Selected))
+            if (summaryList.Selected.Count > 0)
+            //if (selectedBox.SelectedItem.Equals(StringResources.Selected))
             {
-                foreach (DataGridViewCell cell in summaryView.SelectedCells)
+                foreach (UniqueRoutesResult sel in summaryList.Selected)
                 {
-                    if (!seenRows.Contains(cell.RowIndex))
-                    {
-                        seenRows.Add(cell.RowIndex);
-                        DataGridViewRow row = summaryView.Rows[cell.RowIndex];
-                        list.Add(findActivity((string)row.Cells[0].Value,
-                                              (string)row.Cells[1].Value));
-                    }
+                    list.Add(sel.Activity);
                 }
             }
             else
             {
                 list = similar;
             }
+
             try
             {
-                if (pluginBox == null || pluginBox.SelectedItem == null)
+                if (sender is ToolStripMenuItem)
                 {
+                    sendToPlugin = aSendToMenu[sender as ToolStripMenuItem];
                 }
-                else if (pluginBox.SelectedItem.Equals("Accumulated Summary"))
+                else
+                {
+                    //Honor selected box
+                    if (!selectedBox.SelectedItem.Equals(StringResources.Selected))
                     {
-                    Activator.CreateInstance(Settings.accumulatedSummary, new object[] { list });
+                        list = similar;
+                    }
+
+                    foreach (SendToPlugin p in Settings.aSendToPlugin)
+                    {
+                        if (pluginBox.SelectedItem.Equals(p.name))
+                        {
+                            sendToPlugin = p;
+                            break;
+                        }
+                    }
                 }
-                else if (pluginBox.SelectedItem.Equals("High Score"))
+             }
+            catch (Exception ex)
+            {
+                new WarningDialog(String.Format(Resources.PluginApplicationError, Settings.SelectedPlugin, ex.ToString())+ " other");
+            }
+               
+            try
+            {
+                if (null != sendToPlugin && null != sendToPlugin.pType)
                 {
-                    Activator.CreateInstance(Settings.highScore, new object[] { list, true, true });
-                }
-                else if (pluginBox.SelectedItem.Equals("Overlay"))
-                {
-                    Activator.CreateInstance(Settings.overlay, new object[] { list });
-                }
-                else if (pluginBox.SelectedItem.Equals("TRIMP"))
-                {
-                    Activator.CreateInstance(Settings.trimp, new object[] { list, true });
+                    object[] par = sendToPlugin.par;
+                    //all plugins have activities as first par
+                    par[0] = list;
+                    Activator.CreateInstance(sendToPlugin.pType, par);
                 }
             }
             catch (Exception ex)
@@ -496,6 +474,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
         private void activeBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             Settings.UseActive = activeBox.SelectedItem.Equals(StringResources.Active);
+            activeMenuItem.CheckState = Settings.UseActive ? CheckState.Checked : CheckState.Unchecked;
             setTable();
         }
 
@@ -521,46 +500,64 @@ namespace SportTracksUniqueRoutesPlugin.Source
         {
             Settings.SelectAll = selectedBox.SelectedItem.Equals(StringResources.All);
         }
-        private void selectedRow_DoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void selectedRow_DoubleClick(object sender, MouseEventArgs e) 
         {
             Guid view = new Guid("1dc82ca0-88aa-45a5-a6c6-c25f56ad1fc3");
 
-            int rowIndex = e.RowIndex;
-            if (rowIndex >= 0 && summaryView.Columns[ActivityIdColumn] != null)
+            object row;
+            TreeList.RowHitState dummy;
+            row = summaryList.RowHitTest(e.Location, out dummy);
+            if (row != null)
             {
-                object id = summaryView.Rows[rowIndex].Cells[ActivityIdColumn].Value;
-                if (id != null)
-                {
-                    string bookmark = "id=" + id;
+                     string bookmark = "id=" + ((UniqueRoutesResult)row).Activity;
                     Plugin.GetApplication().ShowView(view, bookmark);
-                }
             }
         }
-        private void summaryView_CellToolTipTextNeeded(object sender, DataGridViewCellToolTipTextNeededEventArgs e)
+        //ToolTip unused
+        //private void summaryView_CellToolTipTextNeeded(object sender, EventArgs e)
+        //{
+        //    object row;
+        //    TreeList.RowHitState dummy;
+        //    row = summaryList.RowHitTest(e.Location, out dummy);
+        //    if (row != null)
+        //    {
+        //        summaryList.Controls.
+        //           row.ToolTipText = similarToolTip[((UniqueRoutesResult)row).Activity.ReferenceId];
+                
+        //    }
+        //}
+        private void summaryView_ColumnHeaderMouseClick(object sender, TreeList.ColumnEventArgs e)
         {
-            int rowIndex = e.RowIndex;
-            if (rowIndex >= 0 && summaryView.Columns[ActivityIdColumn] != null)
-            {
-                object id = summaryView.Rows[rowIndex].Cells[ActivityIdColumn].Value;
-                if (id != null)
-                {
-                    e.ToolTipText = similarToolTip[id.ToString()];
-                }
-            }
-        }
-        private void summaryView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            int colIndex = e.ColumnIndex;
-            if (colIndex >= 0)
-            {
-                if (Settings.SummaryViewSortColumn == colIndex)
+                if (Settings.SummaryViewSortColumn == e.Column.Id)
                 {
                     Settings.SummaryViewSortDirection = Settings.SummaryViewSortDirection == ListSortDirection.Ascending ?
                            ListSortDirection.Descending : ListSortDirection.Ascending;
                 }
-                Settings.SummaryViewSortColumn = colIndex;
+                Settings.SummaryViewSortColumn = e.Column.Id;
                 summaryView_Sort();
+            
+        }
+#if !ST_2_1
+        private void listSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ListSettingsDialog dialog = new ListSettingsDialog();
+            dialog.AvailableColumns = SummaryColumnIds.ColumnDefs(null);
+            dialog.ThemeChanged(m_visualTheme);
+            dialog.AllowFixedColumnSelect = false;
+            dialog.SelectedColumns = Settings.ActivityPageColumns;
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                Settings.ActivityPageColumns = dialog.SelectedColumns;
+                RefreshColumns();
             }
+        }
+#endif
+        private void activeMenuItem_Click(object sender, EventArgs e)
+        {
+            Settings.UseActive = !Settings.UseActive;
+            activeMenuItem.CheckState = Settings.UseActive ? CheckState.Checked : CheckState.Unchecked;
+            setTable();
         }
     }
 }

@@ -127,6 +127,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\UniqueRoutesResult.cs" />
+    <Compile Include="Source\SummaryColumnIds.cs" />
     <Compile Include="Util\UnitUtil.cs" />
     <Compile Include="Util\WarningDialog.cs">
       <SubType>Form</SubType>

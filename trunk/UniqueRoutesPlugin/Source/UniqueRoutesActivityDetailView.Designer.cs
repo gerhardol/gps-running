@@ -47,12 +47,13 @@ namespace SportTracksUniqueRoutesPlugin.Source
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.summaryLabel = new System.Windows.Forms.Label();
-            this.summaryView = new System.Windows.Forms.DataGridView();
+            this.summaryList = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyTable = new System.Windows.Forms.ToolStripMenuItem();
+            this.listSettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.activeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendToMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.doIt = new System.Windows.Forms.Button();
             this.speedBox = new System.Windows.Forms.ComboBox();
@@ -65,8 +66,11 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.changeCategory = new System.Windows.Forms.Button();
             this.activeBox = new System.Windows.Forms.ComboBox();
             this.labelLaps = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.summaryView)).BeginInit();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.contextMenu.SuspendLayout();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // summaryLabel
@@ -74,47 +78,81 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.summaryLabel.AutoSize = true;
             this.summaryLabel.Location = new System.Drawing.Point(4, 4);
             this.summaryLabel.Name = "summaryLabel";
-            this.summaryLabel.Size = new System.Drawing.Size(35, 13);
+            this.summaryLabel.Size = new System.Drawing.Size(166, 13);
             this.summaryLabel.TabIndex = 0;
-            this.summaryLabel.Text = "label1";
+            this.summaryLabel.Text = "Found nn activities on same route";
             // 
-            // summaryView
+            // summaryList
             // 
-            this.summaryView.AllowUserToAddRows = false;
-            this.summaryView.AllowUserToDeleteRows = false;
-            this.summaryView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.summaryView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.summaryView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.summaryView.ContextMenuStrip = this.contextMenu;
-            this.summaryView.Location = new System.Drawing.Point(4, 117);
-            this.summaryView.Name = "summaryView";
-            this.summaryView.ReadOnly = true;
-            this.summaryView.RowHeadersVisible = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.summaryView.RowsDefaultCellStyle = dataGridViewCellStyle2;
-            this.summaryView.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.summaryView.Size = new System.Drawing.Size(383, 101);
-            this.summaryView.TabIndex = 1;
+            this.summaryList.AutoScroll = true;
+            this.summaryList.AutoSize = true;
+            this.summaryList.BackColor = System.Drawing.Color.Transparent;
+            this.summaryList.Border = ZoneFiveSoftware.Common.Visuals.ControlBorder.Style.SmallRoundShadow;
+            this.summaryList.CheckBoxes = false;
+            this.summaryList.DefaultIndent = 15;
+            this.summaryList.DefaultRowHeight = -1;
+            this.summaryList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.summaryList.HeaderRowHeight = 21;
+            this.summaryList.Location = new System.Drawing.Point(0, 0);
+            this.summaryList.MultiSelect = true;
+            this.summaryList.Name = "summaryList";
+            this.summaryList.NumHeaderRows = ZoneFiveSoftware.Common.Visuals.TreeList.HeaderRows.One;
+            this.summaryList.NumLockedColumns = 0;
+            this.summaryList.RowAlternatingColors = true;
+            this.summaryList.RowHotlightColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
+            this.summaryList.RowHotlightColorText = System.Drawing.SystemColors.HighlightText;
+            this.summaryList.RowHotlightMouse = true;
+            this.summaryList.RowSelectedColor = System.Drawing.SystemColors.Highlight;
+            this.summaryList.RowSelectedColorText = System.Drawing.SystemColors.HighlightText;
+            this.summaryList.RowSeparatorLines = true;
+            this.summaryList.ShowLines = false;
+            this.summaryList.ShowPlusMinus = false;
+            this.summaryList.Size = new System.Drawing.Size(391, 200);
+            this.summaryList.TabIndex = 1;
             // 
             // contextMenu
             // 
             this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.copyTable});
+            this.copyTable,
+            this.listSettingsMenuItem,
+            this.activeMenuItem,
+            this.sendToMenuItem});
             this.contextMenu.Name = "contextMenu";
-            this.contextMenu.Size = new System.Drawing.Size(199, 26);
+            this.contextMenu.Size = new System.Drawing.Size(199, 92);
             // 
             // copyTable
             // 
             this.copyTable.Name = "copyTable";
             this.copyTable.Size = new System.Drawing.Size(198, 22);
             this.copyTable.Text = "Copy table to clipboard";
+            this.copyTable.Click += new System.EventHandler(this.copyTableMenu_Click);
+            // 
+            // listSettingsMenuItem
+            // 
+            this.listSettingsMenuItem.Name = "listSettingsMenuItem";
+            this.listSettingsMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.listSettingsMenuItem.Text = "List Settings...";
+            // 
+            // activeMenuItem
+            // 
+            this.activeMenuItem.Name = "activeMenuItem";
+            this.activeMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.activeMenuItem.Text = "Only active laps";
+            this.activeMenuItem.Click += new System.EventHandler(this.activeMenuItem_Click);
+            // 
+            // sendToMenuItem
+            // 
+            this.sendToMenuItem.Name = "sendToMenuItem";
+            this.sendToMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.sendToMenuItem.Text = "Send to";
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(4, 4);
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Location = new System.Drawing.Point(0, 0);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(100, 23);
+            this.progressBar.Size = new System.Drawing.Size(391, 24);
             this.progressBar.TabIndex = 2;
             this.progressBar.Visible = false;
             // 
@@ -122,7 +160,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             // 
             this.doIt.Location = new System.Drawing.Point(331, 34);
             this.doIt.Name = "doIt";
-            this.doIt.Size = new System.Drawing.Size(56, 23);
+            this.doIt.Size = new System.Drawing.Size(56, 21);
             this.doIt.TabIndex = 3;
             this.doIt.Text = "Do it!";
             this.doIt.UseVisualStyleBackColor = true;
@@ -187,11 +225,12 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.labelShow.Size = new System.Drawing.Size(34, 13);
             this.labelShow.TabIndex = 10;
             this.labelShow.Text = "Show";
+            this.labelShow.Visible = false;
             // 
             // categoryLabel
             // 
             this.categoryLabel.AutoSize = true;
-            this.categoryLabel.Location = new System.Drawing.Point(5, 93);
+            this.categoryLabel.Location = new System.Drawing.Point(269, 4);
             this.categoryLabel.Name = "categoryLabel";
             this.categoryLabel.Size = new System.Drawing.Size(97, 13);
             this.categoryLabel.TabIndex = 11;
@@ -199,7 +238,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             // 
             // changeCategory
             // 
-            this.changeCategory.Location = new System.Drawing.Point(108, 88);
+            this.changeCategory.Location = new System.Drawing.Point(166, -1);
             this.changeCategory.Name = "changeCategory";
             this.changeCategory.Size = new System.Drawing.Size(97, 23);
             this.changeCategory.TabIndex = 13;
@@ -226,44 +265,71 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.labelLaps.Size = new System.Drawing.Size(30, 13);
             this.labelLaps.TabIndex = 15;
             this.labelLaps.Text = "Laps";
+            this.labelLaps.Visible = false;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.summaryLabel);
+            this.splitContainer1.Panel1.Controls.Add(this.changeCategory);
+            this.splitContainer1.Panel1.Controls.Add(this.categoryLabel);
+            this.splitContainer1.Panel1.Controls.Add(this.progressBar);
+            this.splitContainer1.Panel1.Controls.Add(this.sendLabel2);
+            this.splitContainer1.Panel1.Controls.Add(this.pluginBox);
+            this.splitContainer1.Panel1.Controls.Add(this.doIt);
+            this.splitContainer1.Panel1.Controls.Add(this.labelLaps);
+            this.splitContainer1.Panel1.Controls.Add(this.activeBox);
+            this.splitContainer1.Panel1.Controls.Add(this.labelShow);
+            this.splitContainer1.Panel1.Controls.Add(this.selectedBox);
+            this.splitContainer1.Panel1.Controls.Add(this.sendResultToLabel1);
+            this.splitContainer1.Panel1.Controls.Add(this.speedBox);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.summaryList);
+            this.splitContainer1.Size = new System.Drawing.Size(391, 228);
+            this.splitContainer1.SplitterDistance = 27;
+            this.splitContainer1.SplitterWidth = 1;
+            this.splitContainer1.TabIndex = 16;
             // 
             // UniqueRoutesActivityDetailView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.Controls.Add(this.labelLaps);
-            this.Controls.Add(this.activeBox);
-            this.Controls.Add(this.progressBar);
-            this.Controls.Add(this.categoryLabel);
-            this.Controls.Add(this.labelShow);
-            this.Controls.Add(this.changeCategory);
-            this.Controls.Add(this.sendLabel2);
-            this.Controls.Add(this.selectedBox);
-            this.Controls.Add(this.pluginBox);
-            this.Controls.Add(this.sendResultToLabel1);
-            this.Controls.Add(this.doIt);
-            this.Controls.Add(this.summaryView);
-            this.Controls.Add(this.summaryLabel);
-            this.Controls.Add(this.speedBox);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.splitContainer1);
             this.Name = "UniqueRoutesActivityDetailView";
-            this.Size = new System.Drawing.Size(391, 222);
-            ((System.ComponentModel.ISupportInitialize)(this.summaryView)).EndInit();
+            this.Size = new System.Drawing.Size(391, 228);
             this.contextMenu.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.Label summaryLabel;
-        private System.Windows.Forms.DataGridView summaryView;
+        private ZoneFiveSoftware.Common.Visuals.TreeList summaryList;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Button doIt;
         private System.Windows.Forms.ComboBox speedBox;
         private System.Windows.Forms.ContextMenuStrip contextMenu;
         private System.Windows.Forms.ToolStripMenuItem copyTable;
+        private System.Windows.Forms.ToolStripMenuItem listSettingsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem activeMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sendToMenuItem;
         private System.Windows.Forms.Label sendResultToLabel1;
         private System.Windows.Forms.ComboBox pluginBox;
         private System.Windows.Forms.ComboBox selectedBox;
@@ -273,5 +339,6 @@ namespace SportTracksUniqueRoutesPlugin.Source
         private System.Windows.Forms.Button changeCategory;
         private System.Windows.Forms.ComboBox activeBox;
         private System.Windows.Forms.Label labelLaps;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }

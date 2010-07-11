@@ -30,19 +30,55 @@ using System.ComponentModel;
 
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Data.Measurement;
+using ZoneFiveSoftware.Common.Visuals;
 using SportTracksUniqueRoutesPlugin.Properties;
 
 namespace SportTracksUniqueRoutesPlugin.Source
 {
+    public class SendToPlugin
+    {
+        public string name;
+        public string id;
+        public Type pType;
+        public object[] par;
+        public SendToPlugin(string id, string name, string path, object [] par)
+        {
+            this.id = id;
+            this.name = name;
+            pType = getPlugin(id, path);
+            this.par = par;
+        }
+        private static Type getPlugin(string plugin, string klass)
+        {
+            try
+            {
+                //List the assemblies in the current application domain
+                AppDomain currentDomain = AppDomain.CurrentDomain;
+                Assembly[] assems = currentDomain.GetAssemblies();
+
+                foreach (Assembly assem in assems)
+                {
+                    AssemblyName assemName = new AssemblyName((assem.FullName));
+                    if (assemName.Name.Equals(plugin + "Plugin"))
+                    {
+                        return assem.GetType(klass);
+                    }
+                }
+            }
+            catch (Exception) { }
+            return null;
+        }
+    }
+
     class Settings
     {
-        public readonly static Type accumulatedSummary,highScore,overlay,trimp;
+        public readonly static IList<SendToPlugin> aSendToPlugin = new List<SendToPlugin>(){
+            new SendToPlugin("AccumulatedSummary", "Accumulated Summary", "SportTracksAccumulatedSummaryPlugin.Source.AccumulatedSummaryView", new object[] { null }),
+            new SendToPlugin("HighScore", "High Score", "SportTracksHighScorePlugin.Source.HighScoreViewer", new object[] { null, true, true }),
+            new SendToPlugin("Overlay", "Overlay", "SportTracksOverlayPlugin.Source.OverlayView", new object[] { null }),
+            new SendToPlugin("TRIMP", "TRIMP", "SportTracksTRIMPPlugin.Source.TRIMPView", new object[] { null, true })};
         static Settings()
         {
-            accumulatedSummary = getPlugin("AccumulatedSummary", "SportTracksAccumulatedSummaryPlugin.Source.AccumulatedSummaryView");
-            highScore = getPlugin("HighScore", "SportTracksHighScorePlugin.Source.HighScoreViewer");
-            overlay = getPlugin("Overlay", "SportTracksOverlayPlugin.Source.OverlayView");
-            trimp = getPlugin("TRIMP", "SportTracksTRIMPPlugin.Source.TRIMPView");
             defaults();
         }
         
@@ -126,8 +162,8 @@ namespace SportTracksUniqueRoutesPlugin.Source
             set { showPace = value; }
         }
 
-        private static int summaryViewSortColumn;
-        public static int SummaryViewSortColumn
+        private static string summaryViewSortColumn;
+        public static string SummaryViewSortColumn
         {
             get { return summaryViewSortColumn; }
             set { summaryViewSortColumn = value; }
@@ -146,6 +182,35 @@ namespace SportTracksUniqueRoutesPlugin.Source
             get { return windowSize; }
             set { windowSize = value; }
         }
+        private static IList<string> m_activityPageColumns;
+        public static IList<string> ActivityPageColumns
+        {
+            get
+            {
+                //Consistency control, when loading only
+                IList<string> result = new List<string>();
+                ICollection<IListColumnDefinition> allCols = SummaryColumnIds.ColumnDefs(null);
+                foreach (string id in m_activityPageColumns)
+                {
+                    if (!result.Contains(id))
+                    {
+                        foreach (ListColumnDefinition columnDef in allCols)
+                        {
+                            if (columnDef.Id == id)
+                            {
+                                result.Add(id);
+                                break;
+                            }
+                        }
+                    }
+                }
+                return result;
+            }
+            set
+            {
+                m_activityPageColumns = value;
+            }
+        }
 
         public static void defaults()
         {
@@ -158,9 +223,17 @@ namespace SportTracksUniqueRoutesPlugin.Source
             ignoreBeginning = 0;
             ignoreEnd = 0;
             selectAll = true;
-            summaryViewSortColumn = 0;
+            summaryViewSortColumn = SummaryColumnIds.StartDate;
             summaryViewSortDirection = ListSortDirection.Ascending;
             windowSize = new Size(800, 600);
+
+            m_activityPageColumns = new List<string>();
+            m_activityPageColumns.Add(SummaryColumnIds.StartDate);
+            m_activityPageColumns.Add(SummaryColumnIds.StartTime);
+            m_activityPageColumns.Add(SummaryColumnIds.Time);
+            m_activityPageColumns.Add(SummaryColumnIds.Distance);
+            m_activityPageColumns.Add(SummaryColumnIds.AvgSpeedPace);
+            m_activityPageColumns.Add(SummaryColumnIds.AvgHR);
         }
 
         public static void ReadOptions(XmlDocument xmlDoc, XmlNamespaceManager nsmgr, XmlElement pluginNode)
@@ -196,7 +269,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             attr = pluginNode.GetAttribute(xmlTags.showPace);
             if (attr.Length > 0) { showPace = XmlConvert.ToBoolean(attr); }
             attr = pluginNode.GetAttribute(xmlTags.summaryViewSortColumn);
-            if (attr.Length > 0) { summaryViewSortColumn = XmlConvert.ToInt16(attr); }
+            if (attr.Length > 0) { summaryViewSortColumn = attr; }
             attr = pluginNode.GetAttribute(xmlTags.summaryViewSortDirection);
             if (attr.Length > 0) { summaryViewSortDirection = (ListSortDirection)Enum.Parse(typeof(ListSortDirection), attr); }
             attr = pluginNode.GetAttribute(xmlTags.viewWidth);
@@ -205,6 +278,16 @@ namespace SportTracksUniqueRoutesPlugin.Source
             {
                 windowSize = new Size(XmlConvert.ToInt16(attr), XmlConvert.ToInt16(attr2));
             }
+            attr = pluginNode.GetAttribute(xmlTags.sColumns);
+            if (attr.Length > 0)
+            {
+                m_activityPageColumns.Clear();
+                String[] values = attr.Split(';');
+                foreach (String column in values)
+                {
+                    m_activityPageColumns.Add(column);
+                }
+            }
         }
 
         public static void WriteOptions(XmlDocument xmlDoc, XmlElement pluginNode)
@@ -212,7 +295,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             pluginNode.SetAttribute(xmlTags.settingsVersion, XmlConvert.ToString(settingsVersionCurrent));
 
             pluginNode.SetAttribute(xmlTags.selectedPlugin, selectedPlugin);
-            pluginNode.SetAttribute(xmlTags.selectedCategory, printFullCategoryPath(selectedCategory));
+            pluginNode.SetAttribute(xmlTags.selectedCategory, printFullCategoryPath(selectedCategory,null, "|"));
             pluginNode.SetAttribute(xmlTags.errorMargin, XmlConvert.ToString(errorMargin));
             pluginNode.SetAttribute(xmlTags.bandwidth, XmlConvert.ToString(bandwidth));
             pluginNode.SetAttribute(xmlTags.hasDirection, XmlConvert.ToString(hasDirection));
@@ -221,10 +304,17 @@ namespace SportTracksUniqueRoutesPlugin.Source
             pluginNode.SetAttribute(xmlTags.ignoreEnd, XmlConvert.ToString(ignoreEnd));
             pluginNode.SetAttribute(xmlTags.selectAll, XmlConvert.ToString(selectAll));
             pluginNode.SetAttribute(xmlTags.showPace, XmlConvert.ToString(showPace));
-            pluginNode.SetAttribute(xmlTags.summaryViewSortColumn, XmlConvert.ToString(summaryViewSortColumn));
+            pluginNode.SetAttribute(xmlTags.summaryViewSortColumn, summaryViewSortColumn);
             pluginNode.SetAttribute(xmlTags.summaryViewSortDirection, summaryViewSortDirection.ToString());
             pluginNode.SetAttribute(xmlTags.viewWidth, XmlConvert.ToString(windowSize.Width));
             pluginNode.SetAttribute(xmlTags.viewHeight, XmlConvert.ToString(windowSize.Height));
+            String colText = null;
+            foreach (String column in m_activityPageColumns)
+            {
+                if (colText == null) { colText = column; }
+                else { colText += ";" + column; }
+            }
+            pluginNode.SetAttribute(xmlTags.sColumns, colText);
         }
 
         private static int settingsVersion = 0; //default when not existing
@@ -250,6 +340,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
             public const string viewWidth = "viewWidth";
             public const string viewHeight = "viewHeight";
+            public const string sColumns = "sColumns";
         }
 
         private static bool load()
@@ -286,39 +377,17 @@ namespace SportTracksUniqueRoutesPlugin.Source
             return true;
         }
 
-        private static Type getPlugin(string plugin, string klass)
+        public static string printFullCategoryPath(IActivityCategory iActivityCategory)
         {
-            try
-            {
-                //List the assemblies in the current application domain
-                AppDomain currentDomain = AppDomain.CurrentDomain;
-                Assembly[] assems = currentDomain.GetAssemblies();
-
-                foreach (Assembly assem in assems)
-                {
-                    AssemblyName assemName = new AssemblyName((assem.FullName));
-                    if (assemName.Name.Equals(plugin + "Plugin"))
-                    {
-                        return assem.GetType(klass);
-                    }
-                }
-            }
-            catch (Exception) { }
-            return null;
+            return printFullCategoryPath(iActivityCategory, null, ": ");
         }
-
-        private static string printFullCategoryPath(IActivityCategory selectedCategory)
+        private static string printFullCategoryPath(IActivityCategory iActivityCategory, string p, string sep)
         {
-            String str = "";
-            bool first = true;
-            while (selectedCategory != null)
-            {
-                if (first) first = false;
-                else str = "|" + str;
-                str = selectedCategory.Name + str;
-                selectedCategory = selectedCategory.Parent;
-            }
-            return str;
+            if (iActivityCategory == null) return p;
+            if (p == null) return printFullCategoryPath(iActivityCategory.Parent,
+                                        iActivityCategory.Name, sep);
+            return printFullCategoryPath(iActivityCategory.Parent,
+                                iActivityCategory.Name + sep + p, sep);
         }
         private static IActivityCategory parseCategory(string p)
         {
