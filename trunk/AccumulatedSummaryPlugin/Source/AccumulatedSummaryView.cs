@@ -111,7 +111,7 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
 
         private string getClimbZones(TimeSpan totalTime)
         {
-            return printCategories(Plugin.GetApplication().Logbook.ClimbZones[0],
+            return printCategories(Plugin.GetApplication().DisplayOptions.SelectedClimbZone,
                 totalTime, false, true, false);
         }
 
@@ -246,9 +246,9 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
             foreach (IActivity activity in activities)
             {
                 ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
-                IEnumerable<IZoneCategory> climbZones = Plugin.GetApplication().Logbook.ClimbZones;
-                ups += info.TotalAscendingMeters(climbZones.GetEnumerator().Current);
-                downs += info.TotalDescendingMeters(climbZones.GetEnumerator().Current);
+                IZoneCategory cat = Plugin.GetApplication().DisplayOptions.SelectedClimbZone;
+                ups += info.TotalAscendingMeters(cat);
+                downs += info.TotalDescendingMeters(cat);
             }
             return "+" + UnitUtil.Elevation.ToString(ups) + "/" + UnitUtil.Elevation.ToString(downs);
         }
