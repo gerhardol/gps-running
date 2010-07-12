@@ -191,6 +191,7 @@ namespace SportTracksHighScorePlugin.Source
             this.chart.AutoSize = true;
             this.chart.BackColor = System.Drawing.Color.White;
             this.chart.Border = ZoneFiveSoftware.Common.Visuals.ControlBorder.Style.SmallRoundShadow;
+            this.chart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chart.Location = new System.Drawing.Point(0, 0);
             this.chart.Name = "chart";
             this.chart.Padding = new System.Windows.Forms.Padding(5);
@@ -208,6 +209,7 @@ namespace SportTracksHighScorePlugin.Source
             // 
             // splitContainer1
             // 
+            this.splitContainer1.BackColor = System.Drawing.Color.Transparent;
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
@@ -241,6 +243,7 @@ namespace SportTracksHighScorePlugin.Source
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.AutoSize = true;
+            this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.splitContainer1);
             this.Name = "HighScoreViewer";
             this.Size = new System.Drawing.Size(414, 116);

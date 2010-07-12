@@ -148,6 +148,34 @@ namespace SportTracksPerformancePredictorPlugin.Source
             dataGrid.Size = new Size(Size.Width-15,
                     height);           
         }
+        public void ThemeChanged(ITheme visualTheme)
+        {
+            //RefreshPage();
+            //m_visualTheme = visualTheme;
+#if ST_2_1
+            this.BackColor = Color.Transparent;
+            Color bColor = Color.White;
+
+            this.trainingGrid.BackgroundColor = bColor;
+            this.paceTempoGrid.BackgroundColor = bColor;
+            this.intervalGrid.BackgroundColor = bColor;
+            this.temperatureGrid.BackgroundColor = bColor;
+            this.weightGrid.BackgroundColor = bColor;
+#else
+            Color bColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
+            this.BackColor = bColor;
+            this.trainingTab.BackColor = bColor;
+            this.paceTempoTab.BackColor = bColor;
+            this.intervalTab.BackColor = bColor;
+            this.temperatureTab.BackColor = bColor;
+            this.weightTab.BackColor = bColor;
+            this.trainingGrid.BackgroundColor = bColor;
+            this.paceTempoGrid.BackgroundColor = bColor;
+            this.intervalGrid.BackgroundColor = bColor;
+            this.temperatureGrid.BackgroundColor = bColor;
+            this.weightGrid.BackgroundColor = bColor;
+#endif
+        }
 
         private void setSize()
         {

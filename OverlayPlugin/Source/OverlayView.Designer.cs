@@ -89,8 +89,9 @@ namespace SportTracksOverlayPlugin.Source
             this.chart.AutoScroll = true;
             this.chart.BackColor = System.Drawing.Color.White;
             this.chart.Border = ZoneFiveSoftware.Common.Visuals.ControlBorder.Style.SmallRoundShadow;
+            this.chart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chart.Location = new System.Drawing.Point(0, 0);
-            this.chart.Margin = new System.Windows.Forms.Padding(3, 3, 13, 3);
+            //this.chart.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.chart.Name = "chart";
             this.chart.Padding = new System.Windows.Forms.Padding(5);
             this.chart.Size = new System.Drawing.Size(310, 239);
@@ -328,6 +329,7 @@ namespace SportTracksOverlayPlugin.Source
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.BackColor = System.Drawing.Color.Transparent;
             this.splitContainer2.Panel2.Controls.Add(this.chart);
             this.splitContainer2.Size = new System.Drawing.Size(450, 239);
             this.splitContainer2.SplitterDistance = 139;

@@ -122,9 +122,11 @@ namespace SportTracksHighScorePlugin.Source
                 popupForm.Controls.Add(this);
                 popupForm.Size = Settings.WindowSize;
                 popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_HighScore.GetHicon());
-                Parent.SizeChanged += new EventHandler(SizeChanged_handler);
+                this.Size = new Size(Parent.Size.Width - 17, Parent.Size.Height - 38);
+                this.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom)));
+                Parent.SizeChanged += new EventHandler(Parent_SizeChanged);
                 popupForm.StartPosition = FormStartPosition.CenterScreen;
-                //progressBar.Size = new Size(Size.Width - 20, progressBar.Height);
                 popupForm.Show();
             }
             else
@@ -206,18 +208,6 @@ namespace SportTracksHighScorePlugin.Source
 
         private void setSize()
         {
-            int rpch = 0, rpcw = 0;
-            if (popupForm != null && Parent != null)
-            {
-                this.Size = new Size(Parent.Size.Width - 10, Parent.Size.Height - 10);
-                Settings.WindowSize = popupForm.Size;
-                //Charts "bleed" for some reason
-                rpch = 28;
-                rpcw = 7;
-            }
-            chart.Size = new Size(this.splitContainer1.Panel2.Width - rpcw,
-                this.splitContainer1.Panel2.Height - rpch);
-
             if (dataGrid.Columns.Count > 0 && dataGrid.Rows.Count > 0)
             {
                 foreach (DataGridViewColumn column in dataGrid.Columns)
@@ -233,14 +223,9 @@ namespace SportTracksHighScorePlugin.Source
                         column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                     }
                 }
-                //dataGrid.Size = new Size(
-                //    Size.Width - dataGrid.Location.X - 15,
-                //    dataGrid.Rows[0].Height * dataGrid.Rows.Count
-                //    + dataGrid.ColumnHeadersHeight + 2);
             }
-            //chart.Size = new Size(Size.Width - chart.Location.X - 10, 
-            //    Size.Height - chart.Location.Y - 30);
         }
+
         /***********************************************************/
 
         void contextMenu_Click(object sender, EventArgs e)
@@ -690,6 +675,14 @@ namespace SportTracksHighScorePlugin.Source
         void SizeChanged_handler(object sender, EventArgs e)
         {
             setSize();
+        }
+        void Parent_SizeChanged(object sender, EventArgs e)
+        {
+            if (popupForm != null)
+            {
+                Settings.WindowSize = popupForm.Size;
+            }
+            SizeChanged_handler(sender, e);
         }
 
         private void selectedRow_DoubleClick(object sender, DataGridViewCellEventArgs e)
