@@ -115,7 +115,8 @@ namespace SportTracksPerformancePredictorPlugin.Source
             table.Text = Resources.ViewInTable;
             trainingView = new TrainingView();
             trainingView.Location = chart.Location;
-            Controls.Add(trainingView);
+            this.splitContainer1.Panel2.Controls.Add(trainingView);
+            trainingView.Dock = DockStyle.Fill;
             progressBar.Visible = false;
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
             cameronSeries = new ChartDataSeries(chart, chart.YAxis);
@@ -160,6 +161,10 @@ namespace SportTracksPerformancePredictorPlugin.Source
             popupForm = new Form();
             popupForm.Controls.Add(this);
             popupForm.Size = Settings.WindowSize;
+            //Fill would be simpler here, but then edges are cut
+            this.Size = new Size(Parent.Size.Width - 17, Parent.Size.Height - 38);
+            this.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                    | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom)));
             Parent.SizeChanged += new EventHandler(Parent_SizeChanged);
             dataGrid.CellContentDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
             popupForm.StartPosition = FormStartPosition.CenterScreen;
@@ -180,23 +185,15 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.splitContainer1.Panel1.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
             this.splitContainer1.Panel2.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
 #endif
+            if (null != trainingView)
+            {
+                trainingView.ThemeChanged(visualTheme);
+            }
         }
 
 
         private void setSize()
         {
-            int rpch = 0, rpcw = 0;
-            if (popupForm != null && Parent != null)
-            {
-                this.Size = new Size(Parent.Size.Width - 10, Parent.Size.Height - 10);
-                Settings.WindowSize = popupForm.Size;
-                //Charts "bleed" for some reason
-                rpch = 28;
-                rpcw = 7;
-            }
-            chart.Size = new Size(this.splitContainer1.Panel2.Width - rpcw,
-                this.splitContainer1.Panel2.Height - rpch);
-            trainingView.Size = chart.Size;
             if (dataGrid.Columns.Count > 0 && dataGrid.Rows.Count > 0)
             {
                 foreach (DataGridViewColumn column in dataGrid.Columns)
@@ -213,11 +210,6 @@ namespace SportTracksPerformancePredictorPlugin.Source
                         column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                     }
                 }
-
-                //dataGrid.Size = new Size(
-                //    Size.Width - dataGrid.Location.X - 15,
-                //    dataGrid.Rows[0].Height * dataGrid.Rows.Count
-                //    + dataGrid.ColumnHeadersHeight + 2);
             }
         }
 
@@ -469,6 +461,10 @@ namespace SportTracksPerformancePredictorPlugin.Source
 
         void Parent_SizeChanged(object sender, EventArgs e)
         {
+            if (popupForm != null)
+            {
+                Settings.WindowSize = popupForm.Size;
+            }
             setSize();
         }
 

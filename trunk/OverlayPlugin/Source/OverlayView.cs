@@ -245,6 +245,9 @@ namespace SportTracksOverlayPlugin.Source
                 popupForm.Size = Settings.WindowSize;
 				//6 is the distance between controls
 				popupForm.MinimumSize = new System.Drawing.Size( 6 + elevation.Width + elevation.Left + this.Width - btnSaveImage.Left, 0 );
+                this.Size = new Size(Parent.Size.Width - 17, Parent.Size.Height - 38);
+                this.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom)));
                 popupForm.SizeChanged += new EventHandler(form_SizeChanged);
                 setSize();
                 if (activities.Count == 1)
@@ -284,44 +287,7 @@ namespace SportTracksOverlayPlugin.Source
         }
         private void setSize()
         {
-            int rpch = 0, rpcw = 0;
-            if (popupForm != null && Parent != null)
-            {
-                this.Size = new Size(Parent.Size.Width - 10, Parent.Size.Height - 10);
-                Settings.WindowSize = popupForm.Size;
-                //Charts "bleed" for some reason
-                rpch = 28;
-                rpcw = 7;
-            }
-            chart.Size = new Size(this.splitContainer2.Panel2.Width - rpcw,
-                this.splitContainer2.Panel2.Height - rpch);
-            /* Using SplitContainers eliminates most of the adjustions
-                        //I don't like the horizontal scrollbar so I have to calculate the width of the panel manually
-                        int minPanelWidth=panelAct.Size.Width;
-                        int nVertScrollWidth = panelAct.VerticalScroll.Visible == true ? SystemInformation.VerticalScrollBarWidth : 0;
-
-                        foreach ( Control c in panelAct.Controls )
-                        {
-                            if ( c.GetType() == typeof( CheckBox ) )
-                            {
-                                //Bold is larger so we need to temporarily set font to bold to get its size
-                                Font f = new Font( c.Font, c.Font.Style );
-                                c.Font = new Font( c.Font, FontStyle.Bold );
-                                minPanelWidth = minPanelWidth < c.Width + c.Left + nVertScrollWidth ? c.Width + c.Left + nVertScrollWidth : minPanelWidth;
-                                c.Font = f;
-                            }
-                        }
-
-                        //5 is used for the margin between the vertical scrollbar and the left side of chart
-                        chart.Location = new Point( panelAct.Location.X + minPanelWidth + 5, chart.Location.Y );
-
-                        chart.Size = new Size(
-                            Size.Width - chart.Location.X,
-                            Size.Height - chart.Location.Y -(form == null ? 0 : 30));
-
-                        panelAct.MaximumSize = new Size( 0, chart.Height - ( panelAct.Top - chart.Top ) );
-                        panelAct.MinimumSize = new Size( minPanelWidth, 0 );
-            */
+          // Using SplitContainers eliminates the adjustions previously required
         }
 
         /*************************************************/
@@ -831,7 +797,11 @@ namespace SportTracksOverlayPlugin.Source
 
         private void form_SizeChanged(object sender, EventArgs e)
         {
-            setSize();
+            if (popupForm != null)
+            {
+                Settings.WindowSize = popupForm.Size;
+            }
+            OverlayView_SizeChanged(sender, e);
         }
 
         private void OverlayView_SizeChanged(object sender, EventArgs e)
