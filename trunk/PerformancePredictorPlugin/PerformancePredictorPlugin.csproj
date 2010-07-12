@@ -91,6 +91,9 @@
     <None Include="Resources\Image_24_PerformancePredictor.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Source\PerformancePredictorView.resx">
+      <DependentUpon>PerformancePredictorView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Util\StringResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>StringResources.Designer.cs</LastGenOutput>

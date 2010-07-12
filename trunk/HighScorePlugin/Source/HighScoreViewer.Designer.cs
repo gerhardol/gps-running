@@ -63,8 +63,12 @@ namespace SportTracksHighScorePlugin.Source
             this.viewBox = new System.Windows.Forms.ComboBox();
             this.chart = new ZoneFiveSoftware.Common.Visuals.Chart.ChartBase();
             this.Remarks = new System.Windows.Forms.Label();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.contextMenu.SuspendLayout();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGrid
@@ -74,19 +78,21 @@ namespace SportTracksHighScorePlugin.Source
             this.dataGrid.AllowUserToResizeRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.dataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dataGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGrid.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGrid.ContextMenuStrip = this.contextMenu;
-            this.dataGrid.Location = new System.Drawing.Point(6, 54);
+            this.dataGrid.Cursor = System.Windows.Forms.Cursors.Default;
+            this.dataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGrid.Location = new System.Drawing.Point(0, 0);
             this.dataGrid.Name = "dataGrid";
             this.dataGrid.ReadOnly = true;
             this.dataGrid.RowHeadersVisible = false;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             this.dataGrid.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGrid.Size = new System.Drawing.Size(514, 380);
+            this.dataGrid.Size = new System.Drawing.Size(414, 65);
             this.dataGrid.TabIndex = 2;
             this.dataGrid.Visible = false;
             // 
@@ -155,9 +161,11 @@ namespace SportTracksHighScorePlugin.Source
             // 
             // progressBar
             // 
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(6, 54);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(514, 23);
+            this.progressBar.Size = new System.Drawing.Size(402, 23);
             this.progressBar.TabIndex = 12;
             this.progressBar.Visible = false;
             // 
@@ -180,12 +188,13 @@ namespace SportTracksHighScorePlugin.Source
             // 
             // chart
             // 
+            this.chart.AutoSize = true;
             this.chart.BackColor = System.Drawing.Color.White;
             this.chart.Border = ZoneFiveSoftware.Common.Visuals.ControlBorder.Style.SmallRoundShadow;
-            this.chart.Location = new System.Drawing.Point(6, 54);
+            this.chart.Location = new System.Drawing.Point(0, 0);
             this.chart.Name = "chart";
             this.chart.Padding = new System.Windows.Forms.Padding(5);
-            this.chart.Size = new System.Drawing.Size(514, 381);
+            this.chart.Size = new System.Drawing.Size(414, 65);
             this.chart.TabIndex = 16;
             // 
             // Remarks
@@ -197,29 +206,52 @@ namespace SportTracksHighScorePlugin.Source
             this.Remarks.TabIndex = 17;
             this.Remarks.Text = "Remarks";
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.Remarks);
+            this.splitContainer1.Panel1.Controls.Add(this.viewBox);
+            this.splitContainer1.Panel1.Controls.Add(this.label3);
+            this.splitContainer1.Panel1.Controls.Add(this.progressBar);
+            this.splitContainer1.Panel1.Controls.Add(this.paceBox);
+            this.splitContainer1.Panel1.Controls.Add(this.domainBox);
+            this.splitContainer1.Panel1.Controls.Add(this.imageBox);
+            this.splitContainer1.Panel1.Controls.Add(this.label2);
+            this.splitContainer1.Panel1.Controls.Add(this.boundsBox);
+            this.splitContainer1.Panel1.Controls.Add(this.label1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.dataGrid);
+            this.splitContainer1.Panel2.Controls.Add(this.chart);
+            this.splitContainer1.Size = new System.Drawing.Size(414, 116);
+            this.splitContainer1.SplitterWidth = 1;
+            this.splitContainer1.TabIndex = 18;
+            // 
             // HighScoreViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.Controls.Add(this.Remarks);
-            this.Controls.Add(this.viewBox);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.progressBar);
-            this.Controls.Add(this.paceBox);
-            this.Controls.Add(this.domainBox);
-            this.Controls.Add(this.imageBox);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.boundsBox);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.dataGrid);
-            this.Controls.Add(this.chart);
+            this.AutoSize = true;
+            this.Controls.Add(this.splitContainer1);
             this.Name = "HighScoreViewer";
-            this.Size = new System.Drawing.Size(524, 437);
+            this.Size = new System.Drawing.Size(414, 116);
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();
             this.contextMenu.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -239,5 +271,6 @@ namespace SportTracksHighScorePlugin.Source
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private ZoneFiveSoftware.Common.Visuals.Chart.ChartBase chart;
         private System.Windows.Forms.Label Remarks;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }

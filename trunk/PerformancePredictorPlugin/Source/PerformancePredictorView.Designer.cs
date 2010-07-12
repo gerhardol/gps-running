@@ -62,11 +62,15 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.speed = new System.Windows.Forms.RadioButton();
             this.pace = new System.Windows.Forms.RadioButton();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1.SuspendLayout();
             this.resultBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // daveCameron
@@ -146,22 +150,26 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.dataGrid.AllowUserToResizeRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.dataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGrid.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGrid.Location = new System.Drawing.Point(148, 4);
+            this.dataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGrid.Location = new System.Drawing.Point(0, 0);
             this.dataGrid.Name = "dataGrid";
             this.dataGrid.ReadOnly = true;
             this.dataGrid.RowHeadersVisible = false;
             this.dataGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGrid.Size = new System.Drawing.Size(184, 291);
+            this.dataGrid.Size = new System.Drawing.Size(190, 298);
             this.dataGrid.TabIndex = 7;
             // 
             // chart
             // 
+            this.chart.AutoSize = true;
             this.chart.BackColor = System.Drawing.Color.White;
             this.chart.Border = ZoneFiveSoftware.Common.Visuals.ControlBorder.Style.SmallRoundShadow;
-            this.chart.Location = new System.Drawing.Point(148, 3);
+            this.chart.Location = new System.Drawing.Point(0, 0);
             this.chart.Name = "chart";
-            this.chart.Size = new System.Drawing.Size(184, 292);
+            this.chart.Padding = new System.Windows.Forms.Padding(5);
+            this.chart.Size = new System.Drawing.Size(190, 298);
             this.chart.TabIndex = 8;
             // 
             // progressBar
@@ -241,17 +249,36 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.pace.UseVisualStyleBackColor = true;
             this.pace.CheckedChanged += new System.EventHandler(this.pace_CheckedChanged);
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.groupBox2);
+            this.splitContainer1.Panel1.Controls.Add(this.groupBox3);
+            this.splitContainer1.Panel1.Controls.Add(this.progressBar);
+            this.splitContainer1.Panel1.Controls.Add(this.resultBox);
+            this.splitContainer1.Panel1.Controls.Add(this.groupBox1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.chart);
+            this.splitContainer1.Panel2.Controls.Add(this.dataGrid);
+            this.splitContainer1.Size = new System.Drawing.Size(336, 298);
+            this.splitContainer1.SplitterDistance = 145;
+            this.splitContainer1.SplitterWidth = 1;
+            this.splitContainer1.TabIndex = 12;
+            // 
             // PerformancePredictorView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.progressBar);
-            this.Controls.Add(this.resultBox);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.chart);
-            this.Controls.Add(this.dataGrid);
+            this.AutoSize = true;
+            this.Controls.Add(this.splitContainer1);
             this.Name = "PerformancePredictorView";
             this.Size = new System.Drawing.Size(336, 298);
             this.groupBox1.ResumeLayout(false);
@@ -263,6 +290,10 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -284,6 +315,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton speed;
         private System.Windows.Forms.RadioButton pace;
+        private System.Windows.Forms.SplitContainer splitContainer1;
 
 
     }

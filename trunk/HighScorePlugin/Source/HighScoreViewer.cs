@@ -37,7 +37,7 @@ namespace SportTracksHighScorePlugin.Source
 {
     public partial class HighScoreViewer : UserControl
     {
-        private readonly Form form;
+        private readonly Form popupForm;
         
         private readonly bool includeLocationAndDate, showDialog;
 
@@ -47,14 +47,14 @@ namespace SportTracksHighScorePlugin.Source
             set
             {
                 activities = value;
-                if (form != null)
+                if (popupForm != null)
                 {
                     if (activities.Count > 1)
-                        form.Text = Resources.HSV + String.Format(StringResources.OfManyActivities,activities.Count);
+                        popupForm.Text = Resources.HSV + String.Format(StringResources.OfManyActivities,activities.Count);
                     else if (activities.Count == 1)
-                        form.Text = Resources.HSV + " " + StringResources.OfOneActivity;
+                        popupForm.Text = Resources.HSV + " " + StringResources.OfOneActivity;
                     else
-                        form.Text = Resources.HSV + " " + StringResources.OfNoActivities;
+                        popupForm.Text = Resources.HSV + " " + StringResources.OfNoActivities;
                 }
                 resetCachedResults();
                 showResults();
@@ -118,14 +118,14 @@ namespace SportTracksHighScorePlugin.Source
 
             if (showDialog)
             {
-                form = new Form();
-                form.Controls.Add(this);
-                form.Size = Settings.WindowSize;
-                form.Icon = Icon.FromHandle(Properties.Resources.Image_32_HighScore.GetHicon());
+                popupForm = new Form();
+                popupForm.Controls.Add(this);
+                popupForm.Size = Settings.WindowSize;
+                popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_HighScore.GetHicon());
                 Parent.SizeChanged += new EventHandler(SizeChanged_handler);
-                form.StartPosition = FormStartPosition.CenterScreen;
-                progressBar.Size = new Size(Size.Width - 20, progressBar.Height);
-                form.Show();
+                popupForm.StartPosition = FormStartPosition.CenterScreen;
+                //progressBar.Size = new Size(Size.Width - 20, progressBar.Height);
+                popupForm.Show();
             }
             else
             {
@@ -153,8 +153,8 @@ namespace SportTracksHighScorePlugin.Source
 
         private void correctUI(IList<Control> comp)
         {
-            Control prev = null;
-            foreach (Control c in comp)
+/*            Control prev = null;
+           foreach (Control c in comp)
             {
                 if (prev != null)
                 {
@@ -163,6 +163,18 @@ namespace SportTracksHighScorePlugin.Source
                 }
                 prev = c;
             }
+*/        }
+
+        public void ThemeChanged(ITheme visualTheme)
+        {
+            //RefreshPage();
+            //m_visualTheme = visualTheme;
+            //summaryList.ThemeChanged(visualTheme);
+#if !ST_2_1
+            this.dataGrid.BackgroundColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
+            this.splitContainer1.Panel1.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
+            this.splitContainer1.Panel2.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
+#endif
         }
 
         private void convertLanguage()
@@ -191,6 +203,45 @@ namespace SportTracksHighScorePlugin.Source
             toolStripMenuItem1.Text = StringResources.CopyTable;
             label2.Location = new Point(label2.Location.X, label1.Location.Y);
         }
+
+        private void setSize()
+        {
+            int rpch = 0, rpcw = 0;
+            if (popupForm != null && Parent != null)
+            {
+                this.Size = new Size(Parent.Size.Width - 10, Parent.Size.Height - 10);
+                Settings.WindowSize = popupForm.Size;
+                //Charts "bleed" for some reason
+                rpch = 28;
+                rpcw = 7;
+            }
+            chart.Size = new Size(this.splitContainer1.Panel2.Width - rpcw,
+                this.splitContainer1.Panel2.Height - rpch);
+
+            if (dataGrid.Columns.Count > 0 && dataGrid.Rows.Count > 0)
+            {
+                foreach (DataGridViewColumn column in dataGrid.Columns)
+                {
+                    if (column.Name.Equals(ActivityIdColumn))
+                    {
+                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                        column.Width = 0;
+                        column.Visible = false;
+                    }
+                    else
+                    {
+                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    }
+                }
+                //dataGrid.Size = new Size(
+                //    Size.Width - dataGrid.Location.X - 15,
+                //    dataGrid.Rows[0].Height * dataGrid.Rows.Count
+                //    + dataGrid.ColumnHeadersHeight + 2);
+            }
+            //chart.Size = new Size(Size.Width - chart.Location.X - 10, 
+            //    Size.Height - chart.Location.Y - 30);
+        }
+        /***********************************************************/
 
         void contextMenu_Click(object sender, EventArgs e)
         {
@@ -538,7 +589,7 @@ namespace SportTracksHighScorePlugin.Source
                image == GoalParameter.Time ||
                image == GoalParameter.Elevation))
             {
-                // Graph can only be calculated for som X-axis
+                // Graph can only be calculated for some X-axis
                 chart.DataSeries.Clear();
                 chart.XAxis.Label = getLabel(image);
                 chart.YAxis.Label = getLabel(domain);
@@ -658,40 +709,5 @@ namespace SportTracksHighScorePlugin.Source
         }
 
         public const string ActivityIdColumn = "ActivityId";
-        private void setSize()
-        {
-            if (showDialog || Parent != null)
-            {
-                Size = new Size(Parent.Size.Width - 10, //paceBox.Location.X + paceBox.Width),
-                                Parent.Size.Height - 10);
-                progressBar.Size = new Size(Size.Width, progressBar.Height);
-                if (showDialog)
-                {
-                    Settings.WindowSize = new Size(Parent.Size.Width, Parent.Size.Height);
-                }
-            }
-            if (dataGrid.Columns.Count > 0 && dataGrid.Rows.Count > 0)
-            {
-                foreach (DataGridViewColumn column in dataGrid.Columns)
-                {
-                    if (column.Name.Equals(ActivityIdColumn))
-                    {
-                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                        column.Width = 0;
-                        column.Visible = false;
-                    }
-                    else
-                    {
-                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    }
-                }
-                dataGrid.Size = new Size(
-                    Size.Width - dataGrid.Location.X - 15,
-                    dataGrid.Rows[0].Height * dataGrid.Rows.Count
-                    + dataGrid.ColumnHeadersHeight + 2);
-            }
-            chart.Size = new Size(Size.Width - chart.Location.X - 10, 
-                Size.Height - chart.Location.Y - 30);
-        }
     }
 }

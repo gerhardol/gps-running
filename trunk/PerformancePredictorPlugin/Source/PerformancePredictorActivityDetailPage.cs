@@ -134,6 +134,11 @@ namespace SportTracksPerformancePredictorPlugin.Source
         public void ThemeChanged(ITheme visualTheme)
         {
             RefreshPage();
+            //			m_visualTheme = visualTheme;
+            if (control != null)
+            {
+                control.ThemeChanged(visualTheme);
+            }
         }
 
         public string Title
