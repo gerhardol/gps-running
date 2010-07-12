@@ -1,4 +1,5 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <ProjectGuid>{00AA7ECA-95A0-4167-9C74-AD4D2E056BFE}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -6,6 +7,12 @@
     <RootNamespace>SportTracksHighScorePlugin</RootNamespace>
     <AssemblyName>HighScorePlugin</AssemblyName>
     <PluginId>4B84E5C0-EC2B-4C0C-8B8E-3FAEB09F74C6</PluginId>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
   </PropertyGroup>
   <Import Project="..\Common\Common-References.csproj" />
   <ItemGroup>
@@ -92,7 +99,6 @@
     <None Include="app.config" />
     <None Include="Resources\Image_32_HighScore.jpg" />
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Include="Util\StringResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -143,4 +149,4 @@
     </Compile>
   </ItemGroup>
   <Import Project="..\Common\Common-Files.csproj" />
- </Project>
+</Project>
