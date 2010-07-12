@@ -7,12 +7,6 @@
     <RootNamespace>SportTracksUniqueRoutesPlugin</RootNamespace>
     <AssemblyName>UniqueRoutesPlugin</AssemblyName>
     <PluginId>5c630517-46c4-478d-89d6-a8a6ca6337db</PluginId>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
   </PropertyGroup>
   <Import Project="..\Common\Common-References.csproj" />
   <ItemGroup>

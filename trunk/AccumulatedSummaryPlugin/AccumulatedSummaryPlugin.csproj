@@ -7,12 +7,6 @@
     <RootNamespace>SportTracksAccumulatedSummaryPlugin</RootNamespace>
     <AssemblyName>AccumulatedSummaryPlugin</AssemblyName>
     <PluginId>859F81F4-8272-4183-BA53-FDF1DD809FD6</PluginId>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
   </PropertyGroup>
   <Import Project="..\Common\Common-References.csproj" />
   <ItemGroup>
