@@ -620,6 +620,7 @@ namespace SportTracksOverlayPlugin.Util
                 string str = "";
                 if (fmt.EndsWith("U")) { str = " " + Label; fmt = fmt.Remove(fmt.Length-1); }
                 if (fmt.EndsWith("u")) { str = " " + LabelAbbr; fmt = fmt.Remove(fmt.Length-1); }
+                if (string.IsNullOrEmpty(fmt)) { fmt = DefFmt; }
                 return ConvertFrom(p).ToString((fmt)) + str;
             }
             public static double ConvertFrom(double speedMS)
