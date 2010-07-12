@@ -37,10 +37,10 @@
     <Compile Include="Source\OverlayView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Source\OverlayActivityDetail.cs" />
-    <Compile Include="Source\OverlayView2.cs">
-      <SubType>UserControl</SubType>
+    <Compile Include="Source\OverlayView.Designer.cs">
+      <DependentUpon>OverlayView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Source\OverlayActivityDetail.cs" />
     <Compile Include="Source\Settings.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -80,9 +80,6 @@
     <EmbeddedResource Include="Source\OverlayView.resx">
       <DependentUpon>OverlayView.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Source\OverlayView2.resx">
-      <DependentUpon>OverlayView2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
