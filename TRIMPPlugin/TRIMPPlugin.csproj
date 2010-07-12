@@ -7,12 +7,6 @@
     <RootNamespace>SportTracksTRIMPPlugin</RootNamespace>
     <AssemblyName>TRIMPPlugin</AssemblyName>
     <PluginId>F4C8F7D6-B4A5-4E69-9205-48044356D3CF</PluginId>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
   </PropertyGroup>
   <Import Project="..\Common\Common-References.csproj" />
   <ItemGroup>
