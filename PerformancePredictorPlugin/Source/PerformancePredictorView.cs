@@ -98,7 +98,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
         private ChartDataSeries cameronSeries, riegelSeries;
         private DataTable cameronSet, riegelSet;
 
-        private Form form;
+        private Form popupForm;
 
         public PerformancePredictorView(IActivity activity)
         {
@@ -157,75 +157,46 @@ namespace SportTracksPerformancePredictorPlugin.Source
             :
             this((IActivity)null)
         {
-            form = new Form();
-            form.Controls.Add(this);
-            form.Size = Settings.WindowSize;
+            popupForm = new Form();
+            popupForm.Controls.Add(this);
+            popupForm.Size = Settings.WindowSize;
             Parent.SizeChanged += new EventHandler(Parent_SizeChanged);
             dataGrid.CellContentDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
-            form.StartPosition = FormStartPosition.CenterScreen;
-            form.Icon = Icon.FromHandle(Properties.Resources.Image_32_PerformancePredictor.GetHicon());
-            form.Show();
-            if (activities.Count == 1) form.Text = Resources.PPHS + " " + StringResources.ForOneActivity;
-            else form.Text = Resources.PPHS + " " + String.Format(StringResources.ForManyActivities, activities.Count);
+            popupForm.StartPosition = FormStartPosition.CenterScreen;
+            popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_PerformancePredictor.GetHicon());
+            popupForm.Show();
+            if (activities.Count == 1) popupForm.Text = Resources.PPHS + " " + StringResources.ForOneActivity;
+            else popupForm.Text = Resources.PPHS + " " + String.Format(StringResources.ForManyActivities, activities.Count);
             Activities = activities;
         }
 
-        void Parent_SizeChanged(object sender, EventArgs e)
+        public void ThemeChanged(ITheme visualTheme)
         {
-            setSize();
+            //RefreshPage();
+            //m_visualTheme = visualTheme;
+            //summaryList.ThemeChanged(visualTheme);
+#if !ST_2_1
+            this.dataGrid.BackgroundColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
+            this.splitContainer1.Panel1.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
+            this.splitContainer1.Panel2.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
+#endif
         }
 
-        private void Settings_DistanceChanged(object sender, PropertyChangedEventArgs e)
-        {
-            makeData();
-        }
-
-        private void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            makeData();
-        }
-
-        private void form_Resize(object sender, EventArgs e)
-        {
-            setSize();
-        }
-
-        private void PerformancePredictorView_Resize(object sender, EventArgs e)
-        {
-            setSize();
-        }
-
-        private void Parent_Resize(object sender, EventArgs e)
-        {
-            setSize();
-        }
 
         private void setSize()
         {
             int rpch = 0, rpcw = 0;
-            const int chartLabelSize = 20;
-            if (form != null)
+            if (popupForm != null && Parent != null)
             {
-                if (null == Parent)
-                {
-                    //Should only occur when switching language
-                    if (Size == null)
-                    {
-                        Size = new Size();
-                    }
-                }
-                else
-                {
-                    Size = Parent.Size;
-                }
-                rpch = 40;
-                rpcw = 10;
+                this.Size = new Size(Parent.Size.Width - 10, Parent.Size.Height - 10);
+                Settings.WindowSize = popupForm.Size;
+                //Charts "bleed" for some reason
+                rpch = 28;
+                rpcw = 7;
             }
-            chart.Size = new Size(Size.Width - chart.Location.X - rpcw - chartLabelSize,
-                Size.Height - chart.Location.Y - rpch);
-            chart.AutozoomToData(true);
-            trainingView.Size = new Size(Size.Width - chart.Location.X - rpcw,
-                Size.Height - chart.Location.Y - rpch);
+            chart.Size = new Size(this.splitContainer1.Panel2.Width - rpcw,
+                this.splitContainer1.Panel2.Height - rpch);
+            trainingView.Size = chart.Size;
             if (dataGrid.Columns.Count > 0 && dataGrid.Rows.Count > 0)
             {
                 foreach (DataGridViewColumn column in dataGrid.Columns)
@@ -243,10 +214,10 @@ namespace SportTracksPerformancePredictorPlugin.Source
                     }
                 }
 
-                dataGrid.Size = new Size(
-                    Size.Width - dataGrid.Location.X - 15,
-                    dataGrid.Rows[0].Height * dataGrid.Rows.Count
-                    + dataGrid.ColumnHeadersHeight + 2);
+                //dataGrid.Size = new Size(
+                //    Size.Width - dataGrid.Location.X - 15,
+                //    dataGrid.Rows[0].Height * dataGrid.Rows.Count
+                //    + dataGrid.ColumnHeadersHeight + 2);
             }
         }
 
@@ -494,6 +465,38 @@ namespace SportTracksPerformancePredictorPlugin.Source
             }
         }
 
+        /**************************************************/
+
+        void Parent_SizeChanged(object sender, EventArgs e)
+        {
+            setSize();
+        }
+
+        private void Settings_DistanceChanged(object sender, PropertyChangedEventArgs e)
+        {
+            makeData();
+        }
+
+        private void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            makeData();
+        }
+
+        private void form_Resize(object sender, EventArgs e)
+        {
+            setSize();
+        }
+
+        private void PerformancePredictorView_Resize(object sender, EventArgs e)
+        {
+            setSize();
+        }
+
+        private void Parent_Resize(object sender, EventArgs e)
+        {
+            setSize();
+        }
+        
         private void daveCameron_CheckedChanged(object sender, EventArgs e)
         {
             if (daveCameron.Checked)
@@ -598,9 +601,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
                 }
             }
         }
-
     }
 
     public delegate double PredictTime(double new_dist, double old_dist, double old_time);
-
 }

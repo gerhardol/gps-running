@@ -55,7 +55,7 @@ namespace SportTracksHighScorePlugin.Source
 
         public bool Enabled
         {
-            get { return true; }
+            get { return activities.Count > 0; }
         }
 
         public bool HasMenuArrow

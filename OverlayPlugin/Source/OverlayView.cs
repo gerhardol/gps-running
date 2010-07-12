@@ -154,9 +154,12 @@ namespace SportTracksOverlayPlugin.Source
             }
         }
 
-        private Form form;
+        private Form popupForm;
 		private Label labelAOP;
 		private ZoneFiveSoftware.Common.Visuals.Button btnSaveImage;
+        private SplitContainer splitContainer1;
+        private SplitContainer splitContainer2;
+        private SplitContainer splitContainer3;
 
         private bool dontUpdate;
 
@@ -182,9 +185,9 @@ namespace SportTracksOverlayPlugin.Source
 			categoryAverage.Font = new Font( categoryAverage.Font, FontStyle.Bold );
 			movingAverage.Font = new Font( movingAverage.Font, FontStyle.Bold );
 
-            chart.Location = new Point(Math.Max(Math.Max(categoryAverage.Location.X + categoryAverage.Size.Width,
-                                                         movingAverage.Location.X + movingAverage.Size.Width),
-                                                panelAct.Location.X + panelAct.Size.Width), chart.Location.Y);
+            //chart.Location = new Point(Math.Max(Math.Max(categoryAverage.Location.X + categoryAverage.Size.Width,
+            //                                             movingAverage.Location.X + movingAverage.Size.Width),
+            //                                    panelAct.Location.X + panelAct.Size.Width), chart.Location.Y);
 			categoryAverage.Font = fCategory;
 			movingAverage.Font = fMoving;
 
@@ -237,39 +240,91 @@ namespace SportTracksOverlayPlugin.Source
             updateChart();
             if (showDialog)
             {
-                form = new Form();
-                form.Controls.Add(this);
-                form.Size = Settings.WindowSize;
+                popupForm = new Form();
+                popupForm.Controls.Add(this);
+                popupForm.Size = Settings.WindowSize;
 				//6 is the distance between controls
-				form.MinimumSize = new System.Drawing.Size( 6 + elevation.Width + elevation.Left + this.Width - btnSaveImage.Left, 0 );
-
-                form.SizeChanged += new EventHandler(form_SizeChanged);
+				popupForm.MinimumSize = new System.Drawing.Size( 6 + elevation.Width + elevation.Left + this.Width - btnSaveImage.Left, 0 );
+                popupForm.SizeChanged += new EventHandler(form_SizeChanged);
                 setSize();
                 if (activities.Count == 1)
-                    form.Text = Resources.O1;
+                    popupForm.Text = Resources.O1;
                 else
-                    form.Text = String.Format(Resources.O2, activities.Count);
-                form.Icon = Icon.FromHandle(Properties.Resources.Image_32_Overlay.GetHicon());
+                    popupForm.Text = String.Format(Resources.O2, activities.Count);
+                popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_Overlay.GetHicon());
                 Parent.SizeChanged += new EventHandler(Parent_SizeChanged);
-                form.StartPosition = FormStartPosition.CenterScreen;
-                form.ShowDialog();
+                popupForm.StartPosition = FormStartPosition.CenterScreen;
+                popupForm.ShowDialog();
             }
+        }
+
+        public void ThemeChanged(ITheme visualTheme)
+        {
+            //RefreshPage();
+            //m_visualTheme = visualTheme;
+            //summaryList.ThemeChanged(visualTheme);
+#if !ST_2_1
+            this.splitContainer1.Panel1.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
+            this.splitContainer1.Panel2.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
+#endif
         }
 
         private void correctUI(IList<Control> comp)
         {
-            Control prev = null;
-            foreach (Control c in comp)
+            //Control prev = null;
+            //foreach (Control c in comp)
+            //{
+            //    if (prev != null)
+            //    {
+            //        c.Location = new Point(prev.Location.X + prev.Size.Width,
+            //                               prev.Location.Y);
+            //    }
+            //    prev = c;
+            //}
+        }
+        private void setSize()
+        {
+            int rpch = 0, rpcw = 0;
+            if (popupForm != null && Parent != null)
             {
-                if (prev != null)
-                {
-                    c.Location = new Point(prev.Location.X + prev.Size.Width,
-                                           prev.Location.Y);
-                }
-                prev = c;
+                this.Size = new Size(Parent.Size.Width - 10, Parent.Size.Height - 10);
+                Settings.WindowSize = popupForm.Size;
+                //Charts "bleed" for some reason
+                rpch = 28;
+                rpcw = 7;
             }
+            chart.Size = new Size(this.splitContainer2.Panel2.Width - rpcw,
+                this.splitContainer2.Panel2.Height - rpch);
+            /* Using SplitContainers eliminates most of the adjustions
+                        //I don't like the horizontal scrollbar so I have to calculate the width of the panel manually
+                        int minPanelWidth=panelAct.Size.Width;
+                        int nVertScrollWidth = panelAct.VerticalScroll.Visible == true ? SystemInformation.VerticalScrollBarWidth : 0;
+
+                        foreach ( Control c in panelAct.Controls )
+                        {
+                            if ( c.GetType() == typeof( CheckBox ) )
+                            {
+                                //Bold is larger so we need to temporarily set font to bold to get its size
+                                Font f = new Font( c.Font, c.Font.Style );
+                                c.Font = new Font( c.Font, FontStyle.Bold );
+                                minPanelWidth = minPanelWidth < c.Width + c.Left + nVertScrollWidth ? c.Width + c.Left + nVertScrollWidth : minPanelWidth;
+                                c.Font = f;
+                            }
+                        }
+
+                        //5 is used for the margin between the vertical scrollbar and the left side of chart
+                        chart.Location = new Point( panelAct.Location.X + minPanelWidth + 5, chart.Location.Y );
+
+                        chart.Size = new Size(
+                            Size.Width - chart.Location.X,
+                            Size.Height - chart.Location.Y -(form == null ? 0 : 30));
+
+                        panelAct.MaximumSize = new Size( 0, chart.Height - ( panelAct.Top - chart.Top ) );
+                        panelAct.MinimumSize = new Size( minPanelWidth, 0 );
+            */
         }
 
+        /*************************************************/
         private int nextIndex;
 
         private Color getColor(int color)
@@ -774,55 +829,6 @@ namespace SportTracksOverlayPlugin.Source
             return series;
         }
 
-
-        private void setSize()
-        {
-            if (Parent != null)
-            {
-                if (form != null)
-                {
-                    Size = new Size(form.Size.Width - 10,
-                                    form.Size.Height - 10);
-                    Settings.WindowSize =
-                        new Size(
-                        Parent.Size.Width,
-                        Parent.Size.Height);
-                }
-                else
-                {
-                    Size = new Size(Parent.Size.Width,
-                                   Parent.Size.Height);
-                }
-            }
-
-			//I don't like the horizontal scrollbar so I have to calculate the width of the panel manually
-			int minPanelWidth=panelAct.Size.Width;
-			int nVertScrollWidth = panelAct.VerticalScroll.Visible == true ? SystemInformation.VerticalScrollBarWidth : 0;
-
-			foreach ( Control c in panelAct.Controls )
-			{
-				if ( c.GetType() == typeof( CheckBox ) )
-				{
-					//Bold is larger so we need to temporarily set font to bold to get its size
-					Font f = new Font( c.Font, c.Font.Style );
-					c.Font = new Font( c.Font, FontStyle.Bold );
-					minPanelWidth = minPanelWidth < c.Width + c.Left + nVertScrollWidth ? c.Width + c.Left + nVertScrollWidth : minPanelWidth;
-					c.Font = f;
-				}
-			}
-
-			//5 is used for the margin between the vertical scrollbar and the left side of chart
-			chart.Location = new Point( panelAct.Location.X + minPanelWidth + 5, chart.Location.Y );
-
-            chart.Size = new Size(
-                Size.Width - chart.Location.X,
-                Size.Height - chart.Location.Y -(form == null ? 0 : 30));
-
-			panelAct.MaximumSize = new Size( 0, chart.Height - ( panelAct.Top - chart.Top ) );
-			panelAct.MinimumSize = new Size( minPanelWidth, 0 );
-
-		}
-
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
@@ -846,21 +852,37 @@ namespace SportTracksOverlayPlugin.Source
             this.toolTipMAbox = new System.Windows.Forms.ToolTip(this.components);
             this.labelAOP = new System.Windows.Forms.Label();
             this.btnSaveImage = new ZoneFiveSoftware.Common.Visuals.Button();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
             this.SuspendLayout();
             // 
             // chart
             // 
+            this.chart.AutoScroll = true;
             this.chart.BackColor = System.Drawing.Color.White;
             this.chart.Border = ZoneFiveSoftware.Common.Visuals.ControlBorder.Style.SmallRoundShadow;
-            this.chart.Location = new System.Drawing.Point(142, 45);
+            this.chart.Location = new System.Drawing.Point(0, 0);
+            this.chart.Margin = new System.Windows.Forms.Padding(3, 3, 13, 3);
             this.chart.Name = "chart";
-            this.chart.Size = new System.Drawing.Size(308, 235);
+            this.chart.Padding = new System.Windows.Forms.Padding(5);
+            this.chart.Size = new System.Drawing.Size(310, 239);
             this.chart.TabIndex = 12;
             // 
             // labelActivity
             // 
+            this.labelActivity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelActivity.AutoSize = true;
-            this.labelActivity.Location = new System.Drawing.Point(0, 134);
+            this.labelActivity.Location = new System.Drawing.Point(3, 83);
             this.labelActivity.Name = "labelActivity";
             this.labelActivity.Size = new System.Drawing.Size(49, 13);
             this.labelActivity.TabIndex = 3;
@@ -943,9 +965,10 @@ namespace SportTracksOverlayPlugin.Source
             // 
             this.panelAct.AutoScroll = true;
             this.panelAct.AutoSize = true;
-            this.panelAct.Location = new System.Drawing.Point(3, 150);
+            this.panelAct.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelAct.Location = new System.Drawing.Point(0, 0);
             this.panelAct.Name = "panelAct";
-            this.panelAct.Size = new System.Drawing.Size(138, 127);
+            this.panelAct.Size = new System.Drawing.Size(139, 140);
             this.panelAct.TabIndex = 12;
             // 
             // power
@@ -984,7 +1007,7 @@ namespace SportTracksOverlayPlugin.Source
             // categoryAverage
             // 
             this.categoryAverage.AutoSize = true;
-            this.categoryAverage.Location = new System.Drawing.Point(3, 44);
+            this.categoryAverage.Location = new System.Drawing.Point(0, 3);
             this.categoryAverage.Name = "categoryAverage";
             this.categoryAverage.Size = new System.Drawing.Size(139, 17);
             this.categoryAverage.TabIndex = 9;
@@ -995,7 +1018,7 @@ namespace SportTracksOverlayPlugin.Source
             // movingAverage
             // 
             this.movingAverage.AutoSize = true;
-            this.movingAverage.Location = new System.Drawing.Point(3, 67);
+            this.movingAverage.Location = new System.Drawing.Point(0, 26);
             this.movingAverage.Name = "movingAverage";
             this.movingAverage.Size = new System.Drawing.Size(126, 17);
             this.movingAverage.TabIndex = 10;
@@ -1005,7 +1028,7 @@ namespace SportTracksOverlayPlugin.Source
             // 
             // maBox
             // 
-            this.maBox.Location = new System.Drawing.Point(20, 106);
+            this.maBox.Location = new System.Drawing.Point(20, 62);
             this.maBox.Name = "maBox";
             this.maBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.maBox.Size = new System.Drawing.Size(60, 20);
@@ -1014,7 +1037,7 @@ namespace SportTracksOverlayPlugin.Source
             // labelAOP
             // 
             this.labelAOP.AutoSize = true;
-            this.labelAOP.Location = new System.Drawing.Point(20, 87);
+            this.labelAOP.Location = new System.Drawing.Point(17, 46);
             this.labelAOP.Name = "labelAOP";
             this.labelAOP.Size = new System.Drawing.Size(103, 13);
             this.labelAOP.TabIndex = 21;
@@ -1044,30 +1067,98 @@ namespace SportTracksOverlayPlugin.Source
             this.btnSaveImage.TextRightMargin = 2;
             this.btnSaveImage.Click += new System.EventHandler(this.btnSaveImage_Click);
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.btnSaveImage);
+            this.splitContainer1.Panel1.Controls.Add(this.elevation);
+            this.splitContainer1.Panel1.Controls.Add(this.cadence);
+            this.splitContainer1.Panel1.Controls.Add(this.power);
+            this.splitContainer1.Panel1.Controls.Add(this.labelYaxis);
+            this.splitContainer1.Panel1.Controls.Add(this.useDistance);
+            this.splitContainer1.Panel1.Controls.Add(this.labelXaxis);
+            this.splitContainer1.Panel1.Controls.Add(this.useTime);
+            this.splitContainer1.Panel1.Controls.Add(this.speed);
+            this.splitContainer1.Panel1.Controls.Add(this.pace);
+            this.splitContainer1.Panel1.Controls.Add(this.heartRate);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
+            this.splitContainer1.Size = new System.Drawing.Size(450, 282);
+            this.splitContainer1.SplitterDistance = 42;
+            this.splitContainer1.SplitterWidth = 1;
+            this.splitContainer1.TabIndex = 24;
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.splitContainer3);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.chart);
+            this.splitContainer2.Size = new System.Drawing.Size(450, 239);
+            this.splitContainer2.SplitterDistance = 139;
+            this.splitContainer2.SplitterWidth = 1;
+            this.splitContainer2.TabIndex = 0;
+            // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.maBox);
+            this.splitContainer3.Panel1.Controls.Add(this.movingAverage);
+            this.splitContainer3.Panel1.Controls.Add(this.categoryAverage);
+            this.splitContainer3.Panel1.Controls.Add(this.labelAOP);
+            this.splitContainer3.Panel1.Controls.Add(this.labelActivity);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.panelAct);
+            this.splitContainer3.Size = new System.Drawing.Size(139, 239);
+            this.splitContainer3.SplitterDistance = 98;
+            this.splitContainer3.SplitterWidth = 1;
+            this.splitContainer3.TabIndex = 0;
+            // 
             // OverlayView
             // 
-            this.Controls.Add(this.btnSaveImage);
-            this.Controls.Add(this.maBox);
-            this.Controls.Add(this.movingAverage);
-            this.Controls.Add(this.chart);
-            this.Controls.Add(this.categoryAverage);
-            this.Controls.Add(this.elevation);
-            this.Controls.Add(this.cadence);
-            this.Controls.Add(this.power);
-            this.Controls.Add(this.panelAct);
-            this.Controls.Add(this.labelAOP);
-            this.Controls.Add(this.labelYaxis);
-            this.Controls.Add(this.useDistance);
-            this.Controls.Add(this.labelXaxis);
-            this.Controls.Add(this.useTime);
-            this.Controls.Add(this.speed);
-            this.Controls.Add(this.pace);
-            this.Controls.Add(this.heartRate);
-            this.Controls.Add(this.labelActivity);
+            this.AutoSize = true;
+            this.Controls.Add(this.splitContainer1);
             this.Name = "OverlayView";
             this.Size = new System.Drawing.Size(450, 282);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.ResumeLayout(false);
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel1.PerformLayout();
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            this.splitContainer3.Panel2.PerformLayout();
+            this.splitContainer3.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
