@@ -1,4 +1,5 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <ProjectGuid>{FA1AA377-3849-4384-9D19-F95252586E0C}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -6,6 +7,12 @@
     <RootNamespace>SportTracksPerformancePredictorPlugin</RootNamespace>
     <AssemblyName>PerformancePredictorPlugin</AssemblyName>
     <PluginId>0AA49FDF-ADA0-4522-9488-A698A7E197AA</PluginId>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
   </PropertyGroup>
   <Import Project="..\Common\Common-References.csproj" />
   <ItemGroup>
