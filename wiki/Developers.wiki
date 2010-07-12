@@ -6,7 +6,10 @@ This is not a general !SportTracks plugin description. See for instance [http://
 Some specific notes for gps-running plugins:
 
 ===Getting Started===
-MS Visual Studio Express 2008 is currently used, VSE2010 can be used too and will be the default version in the near future.
+The ST plugin API is described on the !SportTracks site. Please sign up to the Developer Network before working with ST plugins (legal requirement). 
+http://www.zonefivesoftware.com/sporttracks/developers/
+
+MS Visual Studio Express 2010 is used, but at the time of conversion, VSE 2008 would happily work with the projects. The solution file can be considered as a template only (use your own copy) and is in VSE 2008 format.
  
 This project is adapted to be used in both ST2 and ST3. To achieve this in a simple way, the common paths etc are separated to a common file:
   # References to !SportTacks libraries etc are dependent on the ST version
@@ -16,7 +19,7 @@ This project is adapted to be used in both ST2 and ST3. To achieve this in a sim
   
 The same setup can be used in other plugins too, done in !MiscPlugin, !ST2Funbeat, Trails and Matrix (on CodePlex), see one of the project files as an example. 
 Each .csproj contains a few specific settings and the specific files for the plugin only. The common setting files are imported.
-The plugin GUID must be added manually. The GlobalSection in the .sln must be updated manually (you probably want to use your own .sln file, use the provided as an example).
+The plugin GUID must be added manually. The GlobalSection in the .sln must be updated manually (you probably want to use your own .sln file, copy the file in the project).
 
 Note the following issues with the setup:
   # At startup, VSE warns that files are imported (can be avoided by adjusting the registry).
@@ -26,7 +29,7 @@ Note the following issues with the setup:
 This solution was contributed by old_man_biking on the !SportTracks forum.
 
 ===SportTracks Versions===
-These plugins are adapted to both !ST2 and the upcoming !ST3 (not yet released at the time of writing). (The !SportTracks 3.0 Transition Guide describes the changes that need to be done.) Most code is conditionally compiled with "ST_2_1" #define, but the functionality basis is the same. Over time will likely new functions be added to !ST3 path only.
+These plugins are adapted to both !ST2 and the upcoming !ST3 (public release planned for August 2010). (The !SportTracks 3.0 Transition Guide describes the changes that need to be done.) Most code is conditionally compiled with "ST_2_1" #define, but the functionality basis is the same. Over time will likely new functions be added to !ST3 path only.
 Note: As !ST3 is in beta only, a few files have temporary workarounds, marked with "!ST3fix".
 
 ===Install packages===
