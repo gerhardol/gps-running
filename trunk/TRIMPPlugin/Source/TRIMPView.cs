@@ -113,7 +113,7 @@ namespace SportTracksTRIMPPlugin.Source
 
         private void correctLanguage()
         {
-            tabControl1.TabPages[0].Text = StringResources.Summary;
+            tabControl1.TabPages[0].Text = Resources.Summary;
             tabControl1.TabPages[1].Text = StringResources.Graph;
             if (Settings.UseMaxHR)
             {

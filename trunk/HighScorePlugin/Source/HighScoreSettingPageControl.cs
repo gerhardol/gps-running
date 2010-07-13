@@ -71,23 +71,23 @@ namespace SportTracksHighScorePlugin.Source
             resetSettings.Text = StringResources.ResetAllSettings;
             linkLabel1.Text = Resources.Webpage;
             ignoreManualBox.Text = Resources.IgnoreManualEnteredBox;
-            addDistance.Text = "<-- " + StringResources.Add;
-            removeDistance.Text = StringResources.Remove + " -->";
+            addDistance.Text = "<-- " + ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionAdd;
+            removeDistance.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionRemove + " -->";
             resetDistances.Text = StringResources.Reset;
-            addTime.Text = "<-- " + StringResources.Add;
-            removeTime.Text = StringResources.Remove + " -->";
+            addTime.Text = "<-- " + ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionAdd;
+            removeTime.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionRemove + " -->";
             resetTimes.Text = StringResources.Reset;
-            addElevation.Text = "<-- " + StringResources.Add;
-            removeElevation.Text = StringResources.Remove + " -->";
+            addElevation.Text = "<-- " + ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionAdd;
+            removeElevation.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionRemove + " -->";
             resetElevations.Text = StringResources.Reset;
-            addPulse.Text = "<-- " + StringResources.Add;
-            removePulse.Text = StringResources.Remove + " -->";
+            addPulse.Text = "<-- " + ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionAdd;
+            removePulse.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionRemove + " -->";
             resetPulseZone.Text = StringResources.Reset;
-            addPace.Text = "<-- " + StringResources.Add;
-            removePace.Text = StringResources.Remove + " -->";
+            addPace.Text = "<-- " + ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionAdd;
+            removePace.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionRemove + " -->";
             resetPaceZone.Text = StringResources.Reset;
-            label1.Text = UnitUtil.HeartRate.LabelAbbr + " " + StringResources.From.ToLower();
-            label2.Text = UnitUtil.HeartRate.LabelAbbr + " " + StringResources.To.ToLower();
+            label1.Text = UnitUtil.HeartRate.LabelAbbr + " " + ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelFrom.ToLower();
+            label2.Text = UnitUtil.HeartRate.LabelAbbr + " " + ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelTo.ToLower();
             label4.Text = "(" + StringResources.TimeFormat + ")";
         }
 
@@ -130,8 +130,8 @@ namespace SportTracksHighScorePlugin.Source
         {
             bool isPace = UnitUtil.Pace.isLabelPace((String)paceTypeBox.SelectedItem);
             groupBox5.Text = StringResources.SpeedZone + UnitUtil.PaceOrSpeed.LabelAbbr2(isPace);
-            paceLabelFrom.Text = UnitUtil.PaceOrSpeed.LabelAbbr(isPace) + " " + StringResources.From.ToLower();
-            paceLabelTo.Text   = UnitUtil.PaceOrSpeed.LabelAbbr(isPace) + " " + StringResources.To.ToLower();
+            paceLabelFrom.Text = UnitUtil.PaceOrSpeed.LabelAbbr(isPace) + " " + ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelFrom.ToLower();
+            paceLabelTo.Text = UnitUtil.PaceOrSpeed.LabelAbbr(isPace) + " " + ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelTo.ToLower();
 
         }
 

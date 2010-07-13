@@ -138,9 +138,6 @@
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
   <Import Project="..\Common\Common-Files.csproj" />
   <ItemGroup>
     <Folder Include="Resources\" />

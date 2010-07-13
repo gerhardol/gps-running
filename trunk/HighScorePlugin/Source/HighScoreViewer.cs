@@ -85,7 +85,6 @@ namespace SportTracksHighScorePlugin.Source
             this.showDialog = showDialog;
             this.includeLocationAndDate = includeLocationAndDate;
 
-            Remarks.Text = "";
             domainBox.DropDownStyle = ComboBoxStyle.DropDownList;
             imageBox.DropDownStyle = ComboBoxStyle.DropDownList;
             boundsBox.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -99,7 +98,7 @@ namespace SportTracksHighScorePlugin.Source
             speedUnit = getMostUsedSpeedUnit(activities);
             paceBox.SelectedItem = speedUnit;
             if (Settings.ShowTable)
-                viewBox.SelectedItem = StringResources.Table;
+                viewBox.SelectedItem = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelList;
             else
                 viewBox.SelectedItem = StringResources.Graph;
 
@@ -181,13 +180,14 @@ namespace SportTracksHighScorePlugin.Source
 
         private void convertLanguage()
         {
+            Remarks.Text = "";
             paceBox.Items.Add(CommonResources.Text.LabelPace);
             paceBox.Items.Add(CommonResources.Text.LabelSpeed);
             viewBox.Items.Add(StringResources.Graph);
-            viewBox.Items.Add(StringResources.Table);
+            viewBox.Items.Add(ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelList);
             label1.Text = StringResources.Find;
             label2.Text = StringResources.PerSpecified;
-            label3.Text = StringResources.Show;
+            label3.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelShow;
             correctUI(new Control[] { boundsBox, domainBox, label2, imageBox });
             label1.Location = new Point(boundsBox.Location.X - 5 - label1.Width, label1.Location.Y);
             correctUI(new Control[] { paceBox, viewBox, Remarks });
@@ -202,7 +202,7 @@ namespace SportTracksHighScorePlugin.Source
             imageBox.Items.Add(CommonResources.Text.LabelTime);
             imageBox.Items.Add(StringResources.HRZone);
             imageBox.Items.Add(Resources.HRAndSpeedZones);
-            toolStripMenuItem1.Text = StringResources.CopyTable;
+            toolStripMenuItem1.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
             label2.Location = new Point(label2.Location.X, label1.Location.Y);
         }
 
@@ -457,7 +457,7 @@ namespace SportTracksHighScorePlugin.Source
             domain = Settings.Domain;
             image = Settings.Image;
             upperBound = Settings.UpperBound;
-            Settings.ShowTable = viewBox.SelectedItem.Equals(StringResources.Table);
+            Settings.ShowTable = viewBox.SelectedItem.Equals(ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelList);
         }
 
         private void showResults()
