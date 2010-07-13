@@ -117,20 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add" xml:space="preserve">
-    <value>Add</value>
-  </data>
-  <data name="And" xml:space="preserve">
-    <value>and</value>
-  </data>
   <data name="End" xml:space="preserve">
     <value>End</value>
   </data>
   <data name="Find" xml:space="preserve">
     <value>Find</value>
-  </data>
-  <data name="From" xml:space="preserve">
-    <value>From</value>
   </data>
   <data name="Goal" xml:space="preserve">
     <value>Goal</value>
@@ -165,14 +156,8 @@
   <data name="SpeedZone" xml:space="preserve">
     <value>Speed zone</value>
   </data>
-  <data name="Start" xml:space="preserve">
-    <value>Start</value>
-  </data>
   <data name="TimeFormat" xml:space="preserve">
     <value>hh:mm:ss</value>
-  </data>
-  <data name="To" xml:space="preserve">
-    <value>To</value>
   </data>
   <data name="Warning" xml:space="preserve">
     <value>Warning</value>
@@ -200,12 +185,6 @@
   </data>
   <data name="Use" xml:space="preserve">
     <value>Use</value>
-  </data>
-  <data name="ActivitiesTo" xml:space="preserve">
-    <value>activities to</value>
-  </data>
-  <data name="All" xml:space="preserve">
-    <value>all</value>
   </data>
   <data name="ChangeCategory" xml:space="preserve">
     <value>Change category</value>
@@ -252,9 +231,6 @@
   <data name="YAxis" xml:space="preserve">
     <value>Y axis</value>
   </data>
-  <data name="CopyTable" xml:space="preserve">
-    <value>Copy table to clipboard</value>
-  </data>
   <data name="ForManyActivities" xml:space="preserve">
     <value>for {0} activities</value>
   </data>
@@ -276,12 +252,6 @@
   <data name="Minimal" xml:space="preserve">
     <value>Minimal</value>
   </data>
-  <data name="Remove" xml:space="preserve">
-    <value>Remove</value>
-  </data>
-  <data name="Table" xml:space="preserve">
-    <value>Table</value>
-  </data>
   <data name="Marathon" xml:space="preserve">
     <value>Marathon</value>
   </data>
@@ -299,5 +269,14 @@
   </data>
   <data name="Active" xml:space="preserve">
     <value>Active</value>
+  </data>
+  <data name="And" xml:space="preserve">
+    <value>and</value>
+  </data>
+  <data name="ActivitySpeedOrPace" xml:space="preserve">
+    <value>Activity Speed/Pace</value>
+  </data>
+  <data name="ListSettings" xml:space="preserve">
+    <value>List Settings</value>
   </data>
 </root>

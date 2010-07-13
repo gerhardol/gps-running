@@ -82,7 +82,6 @@ namespace SportTracksUniqueRoutesPlugin.Source
                     bool doGetcommonStretches = true;// Plugin.Verbose > 0;
                     if (doGetcommonStretches)
                     {
-                        //xxx commonStretches = new Dictionary<IActivity, IList<double>>();
                         commonStretches = CommonStretches.getCommonSpeed(this.activity, similar, Settings.UseActive);
                         //similarPoints = CommonStretches.findSimilarDebug(this.activity, similar, Settings.UseActive);
                     }
@@ -96,7 +95,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
                                 commonStretches[activity][0] / commonStretches[activity][1], "u") +
                                 " (" + UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace,
                                 commonStretches[activity][2] / commonStretches[activity][3]) + ")" +
-                                " " + commonStretches[activity][4] + " sections " +
+                                " " + commonStretches[activity][4] + " "+ Resources.Sections + " " +
                                 UnitUtil.Distance.ToString(commonStretches[activity][0], "u") + " " +
                                 UnitUtil.Time.ToString(commonStretches[activity][1]) +
                                 " (" + UnitUtil.Distance.ToString(commonStretches[activity][2], "u") + " " +
@@ -105,7 +104,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
                         }
                         result.Add(new UniqueRoutesResult(activity, commonText));
-                        similarToolTip[activity.ReferenceId] = "Common Stretches: " + commonText;
+                        similarToolTip[activity.ReferenceId] = Resources.CommonStretches + ": " + commonText;
                     }
                     summaryList.RowData = result;
                     summaryLabel.Text = String.Format(Resources.FoundActivities, similar.Count - 1);
@@ -172,7 +171,6 @@ namespace SportTracksUniqueRoutesPlugin.Source
         public UniqueRoutesActivityDetailView(IActivity activity)
         {
             InitializeComponent();
-            correctLanguage();
             doUpdate = true;
             this.Activity = activity;
             this.Resize += new EventHandler(UniqueRoutesActivityDetailView_Resize);
@@ -183,11 +181,13 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
             else
             {
-                activeBox.SelectedItem = StringResources.All;
+                activeBox.SelectedItem = Resources.All;
             }
             activeMenuItem.CheckState = Settings.UseActive ? CheckState.Checked : CheckState.Unchecked;
-            speedBox.SelectedItem = CommonResources.Text.LabelPace;
-            //this.listSettingsMenuItem.Text = Properties.Resources.UI_Activity_Page_ListSettings;
+            copyTable.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
+#if !ST_2_1
+            sendToMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Analyze16;
+#endif
             listSettingsMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Table16;
 #if !ST_2_1
             this.listSettingsMenuItem.Click += new System.EventHandler(this.listSettingsToolStripMenuItem_Click);
@@ -200,6 +200,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
 #endif
             summaryList.ContextMenuStrip = contextMenu;
             summaryList.MouseDoubleClick += new MouseEventHandler(selectedRow_DoubleClick);
+            speedBox.SelectedItem = CommonResources.Text.LabelPace;
             //TODO: ToolTip is not implemented for TreeList?
             //summaryList.MouseHover += new EventHandler(summaryView_CellToolTipTextNeeded);
             summaryList.ColumnClicked += new TreeList.ColumnEventHandler(summaryView_ColumnHeaderMouseClick);
@@ -239,7 +240,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
             if (Settings.SelectAll)
             {
-                selectedBox.SelectedItem = StringResources.All;
+                selectedBox.SelectedItem = Resources.All;
             }
             else
             {
@@ -251,7 +252,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
                 pluginBox.Enabled = false;
                 doIt.Enabled = false;
             }
-            setCategoryLabel();
+            correctLanguage();
             doUpdate = false;
         }
         public void ThemeChanged(ITheme visualTheme)
@@ -280,19 +281,34 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
         private void correctLanguage()
         {
-            sendResultToLabel1.Text = StringResources.Send;
-            labelShow.Text = StringResources.Show;
-            sendLabel2.Text = StringResources.ActivitiesTo;
-            selectedBox.Items.Add(StringResources.All);
+            //Some labels depends on the activity
+            //summaryLabel, CommonStretches column, setTable()
+
+            setCategoryLabel();
+            changeCategory.Text = StringResources.ChangeCategory;
+            copyTable.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
+            RefreshColumns();
+            listSettingsMenuItem.Text = StringResources.ListSettings;
+#if ST_2_1
+            sendToMenuItem.Text = CommonResources.Text.LabelActivity;
+#else
+            sendToMenuItem.Text = CommonResources.Text.ActionAnalyze;
+#endif
+            this.activeMenuItem.Text = Resources.ctxActiveLaps;
+
+            //No longer visible
+            labelShow.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelShow;
+            sendLabel2.Text = Resources.ActivitiesTo;
+            selectedBox.Items.Add(Resources.All);
             selectedBox.Items.Add(StringResources.Selected);
             labelLaps.Text = CommonResources.Text.LabelSplits;
-            activeBox.Items.Add(StringResources.All);
+            activeBox.Items.Add(Resources .All);
             activeBox.Items.Add(StringResources.Active);
             speedBox.Items.Add(CommonResources.Text.LabelPace);
             speedBox.Items.Add(CommonResources.Text.LabelSpeed);
             doIt.Text = Resources.DoIt;
-            changeCategory.Text = StringResources.ChangeCategory;
             correctUI(new Control[] { selectedBox, sendLabel2, pluginBox, doIt });
+            sendResultToLabel1.Text = StringResources.Send;
             sendResultToLabel1.Location = new Point(selectedBox.Location.X - 5 - sendResultToLabel1.Size.Width,
                                         sendLabel2.Location.Y);
             labelShow.Location = new Point(activeBox.Location.X - 5 - labelShow.Size.Width,
@@ -349,6 +365,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
                 if (activity != null)
                 {
                     summaryList.Visible = false;
+                    summaryLabel.Visible = false;
                     changeSettingsVisibility(false);
                     categoryLabel.Visible = false;
                     changeCategory.Visible = false;
@@ -356,6 +373,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
                     similar = UniqueRoutes.findSimilarRoutes(activity, progressBar);
                     determinePaceOrSpeed();
                     progressBar.Visible = false;
+                    summaryLabel.Visible = true;
                     categoryLabel.Visible = true;
                     changeCategory.Visible = true;
                     setTable();
@@ -498,7 +516,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
         private void selectedBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Settings.SelectAll = selectedBox.SelectedItem.Equals(StringResources.All);
+            Settings.SelectAll = selectedBox.SelectedItem.Equals(Resources.All);
         }
         private void selectedRow_DoubleClick(object sender, MouseEventArgs e) 
         {

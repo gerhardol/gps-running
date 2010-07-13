@@ -61,6 +61,24 @@ namespace SportTracksUniqueRoutesPlugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to activities to.
+        /// </summary>
+        internal static string ActivitiesTo {
+            get {
+                return ResourceManager.GetString("ActivitiesTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to all.
+        /// </summary>
+        internal static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Allowed points outside band.
         /// </summary>
         internal static string AllowPointsOutsideBand {
@@ -93,6 +111,24 @@ namespace SportTracksUniqueRoutesPlugin.Properties {
         internal static string BeginningMeterWarning {
             get {
                 return ResourceManager.GetString("BeginningMeterWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Common Stretches.
+        /// </summary>
+        internal static string CommonStretches {
+            get {
+                return ResourceManager.GetString("CommonStretches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only active laps.
+        /// </summary>
+        internal static string ctxActiveLaps {
+            get {
+                return ResourceManager.GetString("ctxActiveLaps", resourceCulture);
             }
         }
         
@@ -183,6 +219,15 @@ namespace SportTracksUniqueRoutesPlugin.Properties {
         internal static string RoutesHaveDirection {
             get {
                 return ResourceManager.GetString("RoutesHaveDirection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sections.
+        /// </summary>
+        internal static string Sections {
+            get {
+                return ResourceManager.GetString("Sections", resourceCulture);
             }
         }
         

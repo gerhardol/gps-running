@@ -21,6 +21,7 @@ using System.Drawing;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using SportTracksUniqueRoutesPlugin.Util;
+using SportTracksUniqueRoutesPlugin.Properties;
 
 namespace SportTracksUniqueRoutesPlugin.Source
 {
@@ -92,7 +93,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             get { return true; }
         }
     }
-    public class SummaryColumnIds {
+    public static class SummaryColumnIds {
         public const string StartDate = "StartDate";
 		public const string StartTime = "StartTime";
 		public const string Time = "Time";
@@ -110,7 +111,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.StartTime, CommonResources.Text.LabelStartTime, "", 70, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.Time, UnitUtil.Time.LabelAxis, "", 70, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.Distance, UnitUtil.Distance.LabelAxis, "", 60, StringAlignment.Near));
-            string sSpeedPace = "ActivitySpeedOrPace";
+            string sSpeedPace = StringResources.ActivitySpeedOrPace;
             if (null != activity)
             {
                 sSpeedPace = UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace);
@@ -120,7 +121,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.AvgPace, UnitUtil.Pace.LabelAxis, "", 80, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.AvgHR, CommonResources.Text.LabelAvgHR + UnitUtil.HeartRate.LabelAbbr2, "", 80, StringAlignment.Near));
 
-            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.CommonStretches, "Common Stretches", "", 170, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.CommonStretches, Resources.CommonStretches, "", 170, StringAlignment.Near));
 
             return columnDefs;
 		}

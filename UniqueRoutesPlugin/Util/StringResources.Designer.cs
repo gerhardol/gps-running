@@ -79,29 +79,11 @@ namespace SportTracksUniqueRoutesPlugin.Util {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to activities to.
+        ///   Looks up a localized string similar to Activity Speed/Pace.
         /// </summary>
-        internal static string ActivitiesTo {
+        internal static string ActivitySpeedOrPace {
             get {
-                return ResourceManager.GetString("ActivitiesTo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add.
-        /// </summary>
-        internal static string Add {
-            get {
-                return ResourceManager.GetString("Add", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to all.
-        /// </summary>
-        internal static string All {
-            get {
-                return ResourceManager.GetString("All", resourceCulture);
+                return ResourceManager.GetString("ActivitySpeedOrPace", resourceCulture);
             }
         }
         
@@ -138,15 +120,6 @@ namespace SportTracksUniqueRoutesPlugin.Util {
         internal static string ClimbZones {
             get {
                 return ResourceManager.GetString("ClimbZones", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Copy table to clipboard.
-        /// </summary>
-        internal static string CopyTable {
-            get {
-                return ResourceManager.GetString("CopyTable", resourceCulture);
             }
         }
         
@@ -205,15 +178,6 @@ namespace SportTracksUniqueRoutesPlugin.Util {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to From.
-        /// </summary>
-        internal static string From {
-            get {
-                return ResourceManager.GetString("From", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Goal.
         /// </summary>
         internal static string Goal {
@@ -255,6 +219,15 @@ namespace SportTracksUniqueRoutesPlugin.Util {
         internal static string HRZone {
             get {
                 return ResourceManager.GetString("HRZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List Settings.
+        /// </summary>
+        internal static string ListSettings {
+            get {
+                return ResourceManager.GetString("ListSettings", resourceCulture);
             }
         }
         
@@ -385,15 +358,6 @@ namespace SportTracksUniqueRoutesPlugin.Util {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remove.
-        /// </summary>
-        internal static string Remove {
-            get {
-                return ResourceManager.GetString("Remove", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Reset....
         /// </summary>
         internal static string Reset {
@@ -493,15 +457,6 @@ namespace SportTracksUniqueRoutesPlugin.Util {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start.
-        /// </summary>
-        internal static string Start {
-            get {
-                return ResourceManager.GetString("Start", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Start zone:.
         /// </summary>
         internal static string StartZone {
@@ -520,29 +475,11 @@ namespace SportTracksUniqueRoutesPlugin.Util {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Table.
-        /// </summary>
-        internal static string Table {
-            get {
-                return ResourceManager.GetString("Table", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to hh:mm:ss.
         /// </summary>
         internal static string TimeFormat {
             get {
                 return ResourceManager.GetString("TimeFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to To.
-        /// </summary>
-        internal static string To {
-            get {
-                return ResourceManager.GetString("To", resourceCulture);
             }
         }
         
