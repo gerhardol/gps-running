@@ -1067,8 +1067,8 @@ namespace SportTracksOverlayPlugin.Source
 				Settings.SavedImageFormat = siiPage.ImageFormat;
 #if ST_2_1
                 if ((!System.IO.File.Exists(siiPage.FileName)) ||
-                    (MessageBox.Show(String.Format(Resources.FileAlreadyExists, siiPage.FileName),
-                                        Resources.SaveImage, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes))
+                    (MessageBox.Show(String.Format(SaveImageResources.FileAlreadyExists, siiPage.FileName),
+                                        SaveImageResources.SaveImage, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes))
 					chart.SaveImage( siiPage.ImageSize, siiPage.FileName, siiPage.ImageFormat ); 
 #endif
             }

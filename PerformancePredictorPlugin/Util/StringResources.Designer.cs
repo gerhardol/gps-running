@@ -466,15 +466,6 @@ namespace SportTracksPerformancePredictorPlugin.Util {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Summary.
-        /// </summary>
-        internal static string Summary {
-            get {
-                return ResourceManager.GetString("Summary", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to hh:mm:ss.
         /// </summary>
         internal static string TimeFormat {

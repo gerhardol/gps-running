@@ -10,12 +10,50 @@
   </PropertyGroup>
   <Import Project="..\Common\Common-References.csproj" />
   <ItemGroup Condition=" ('$(Configuration)' == 'ST2.1Release') or ('$(Configuration)' == 'ST2.1Debug') ">
-    <Compile Include="Source\OverlaySaveImageInfoPage.cs">
+    <Compile Include="Util\SaveImageInfoPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <EmbeddedResource Include="Source\OverlaySaveImageInfoPage.resx">
-      <DependentUpon>OverlaySaveImageInfoPage.cs</DependentUpon>
+    <EmbeddedResource Include="Util\SaveImageInfoPage.resx">
+      <DependentUpon>SaveImageInfoPage.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Util\SaveImageResources.da.resx">
+      <DependentUpon>SaveImageResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\SaveImageResources.de.resx">
+      <DependentUpon>SaveImageResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\SaveImageResources.es.resx">
+      <DependentUpon>SaveImageResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\SaveImageResources.fr.resx">
+      <DependentUpon>SaveImageResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\SaveImageResources.it.resx">
+      <DependentUpon>SaveImageResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\SaveImageResources.nl.resx">
+      <DependentUpon>SaveImageResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\SaveImageResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SaveImageResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\SaveImageResources.sv.resx">
+      <DependentUpon>SaveImageResources.resx</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Util\SaveImageResources.Designer.cs">
+      <DependentUpon>SaveImageResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Plugin.cs" />
