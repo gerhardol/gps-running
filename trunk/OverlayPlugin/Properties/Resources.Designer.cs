@@ -79,56 +79,11 @@ namespace SportTracksOverlayPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bitmap.
-        /// </summary>
-        internal static string Bitmap {
-            get {
-                return ResourceManager.GetString("Bitmap", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Bold moving average.
         /// </summary>
         internal static string BMA {
             get {
                 return ResourceManager.GetString("BMA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Custom.
-        /// </summary>
-        internal static string Custom {
-            get {
-                return ResourceManager.GetString("Custom", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {0} already exists.  Do you want to replace it?.
-        /// </summary>
-        internal static string FileAlreadyExists {
-            get {
-                return ResourceManager.GetString("FileAlreadyExists", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Filename.
-        /// </summary>
-        internal static string FileName {
-            get {
-                return ResourceManager.GetString("FileName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Huge.
-        /// </summary>
-        internal static string Huge {
-            get {
-                return ResourceManager.GetString("Huge", resourceCulture);
             }
         }
         
@@ -154,38 +109,11 @@ namespace SportTracksOverlayPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Joint Photographic Experts Group.
-        /// </summary>
-        internal static string JointPhotographicExpertsGroup {
-            get {
-                return ResourceManager.GetString("JointPhotographicExpertsGroup", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Large.
-        /// </summary>
-        internal static string Large {
-            get {
-                return ResourceManager.GetString("Large", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Set to 0 for average from beginning of activity.
         /// </summary>
         internal static string MAToolTip {
             get {
                 return ResourceManager.GetString("MAToolTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Medium.
-        /// </summary>
-        internal static string Medium {
-            get {
-                return ResourceManager.GetString("Medium", resourceCulture);
             }
         }
         
@@ -213,78 +141,6 @@ namespace SportTracksOverlayPlugin.Properties {
         internal static string O2 {
             get {
                 return ResourceManager.GetString("O2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Portable Network Graphics.
-        /// </summary>
-        internal static string PortableNetworkGraphics {
-            get {
-                return ResourceManager.GetString("PortableNetworkGraphics", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save Image.
-        /// </summary>
-        internal static string SaveImage {
-            get {
-                return ResourceManager.GetString("SaveImage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save in.
-        /// </summary>
-        internal static string SaveIn {
-            get {
-                return ResourceManager.GetString("SaveIn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Size.
-        /// </summary>
-        internal static string Size {
-            get {
-                return ResourceManager.GetString("Size", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Small.
-        /// </summary>
-        internal static string Small {
-            get {
-                return ResourceManager.GetString("Small", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tagged Image File Format.
-        /// </summary>
-        internal static string TaggedImageFileFormat {
-            get {
-                return ResourceManager.GetString("TaggedImageFileFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Thumbnail.
-        /// </summary>
-        internal static string Thumbnail {
-            get {
-                return ResourceManager.GetString("Thumbnail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type.
-        /// </summary>
-        internal static string Type {
-            get {
-                return ResourceManager.GetString("Type", resourceCulture);
             }
         }
         
