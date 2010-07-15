@@ -46,6 +46,98 @@ namespace SportTracksUniqueRoutesPlugin.Source
         private IActivity activity;
         private IDictionary<ToolStripMenuItem, SendToPlugin> aSendToMenu = new Dictionary<ToolStripMenuItem, SendToPlugin>();
 
+        bool doUpdate;
+
+        public UniqueRoutesActivityDetailView(IActivity activity)
+        {
+            InitializeComponent();
+            doUpdate = true;
+            this.Activity = activity;
+
+            this.Resize += new EventHandler(UniqueRoutesActivityDetailView_Resize);
+            activeBox.Visible = true;
+            if (Settings.UseActive)
+            {
+                activeBox.SelectedItem = StringResources.Active;
+            }
+            else
+            {
+                activeBox.SelectedItem = Resources.All;
+            }
+            activeMenuItem.CheckState = Settings.UseActive ? CheckState.Checked : CheckState.Unchecked;
+            copyTable.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
+#if !ST_2_1
+            sendToMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Analyze16;
+#endif
+            listSettingsMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Table16;
+#if !ST_2_1
+            this.listSettingsMenuItem.Click += new System.EventHandler(this.listSettingsToolStripMenuItem_Click);
+#else
+            //No listSetting dialog in ST2
+            if (this.contextMenu.Items.Contains(this.listSettingsMenuItem))
+            {
+                this.contextMenu.Items.Remove(this.listSettingsMenuItem);
+            }
+#endif
+            summaryList.ContextMenuStrip = contextMenu;
+            summaryList.MouseDoubleClick += new MouseEventHandler(selectedRow_DoubleClick);
+            speedBox.SelectedItem = CommonResources.Text.LabelPace;
+            //TODO: ToolTip is not implemented for TreeList?
+            //summaryList.MouseHover += new EventHandler(summaryView_CellToolTipTextNeeded);
+            summaryList.ColumnClicked += new TreeList.ColumnEventHandler(summaryView_ColumnHeaderMouseClick);
+
+            Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
+            setSize();
+            VisibleChanged += new EventHandler(UniqueRoutesActivityDetailView_VisibleChanged);
+
+            bool isPluginMatch = false;
+            foreach (SendToPlugin p in Settings.aSendToPlugin)
+            {
+                System.Windows.Forms.ToolStripMenuItem sendMenuItem;
+                sendMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+                sendMenuItem.Name = p.id;
+                sendMenuItem.Size = new System.Drawing.Size(198, 22);
+                sendMenuItem.Text = p.name;
+                sendMenuItem.Click += new System.EventHandler(this.sendActivityButton_Click);
+                sendMenuItem.Enabled = false;
+                if (p.pType != null)
+                {
+                    pluginBox.Items.Add(p.name);
+                    sendMenuItem.Enabled = true;
+                    if (!isPluginMatch)
+                    {
+                        pluginBox.SelectedItem = Settings.SelectedPlugin;
+                    }
+                    if (Settings.SelectedPlugin != null &&
+                            Settings.SelectedPlugin.Equals(p.name))
+                    {
+                        //Match in settings, no more checks
+                        isPluginMatch = true;
+                    }
+                }
+                aSendToMenu[sendMenuItem] = p;
+                this.sendToMenuItem.DropDownItems.Add(sendMenuItem);
+            }
+
+            if (Settings.SelectAll)
+            {
+                selectedBox.SelectedItem = Resources.All;
+            }
+            else
+            {
+                selectedBox.SelectedItem = StringResources.Selected;
+            }
+            //pluginBox
+            if (!isPluginMatch)
+            {
+                pluginBox.SelectedItem = "";
+                pluginBox.Enabled = false;
+                doIt.Enabled = false;
+            }
+            correctLanguage();
+            doUpdate = false;
+        }
+
         public IActivity Activity
         {
             set
@@ -150,7 +242,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
         }
 
-        public void changeSettingsVisibility(bool visible)
+        private void changeSettingsVisibility(bool visible)
         {
             //OLD: No longer visible
             visible = false;
@@ -166,95 +258,6 @@ namespace SportTracksUniqueRoutesPlugin.Source
             sendResultToLabel1.Visible = visible;
         }
 
-        bool doUpdate;
-
-        public UniqueRoutesActivityDetailView(IActivity activity)
-        {
-            InitializeComponent();
-            doUpdate = true;
-            this.Activity = activity;
-            this.Resize += new EventHandler(UniqueRoutesActivityDetailView_Resize);
-            activeBox.Visible = true;
-            if (Settings.UseActive)
-            {
-                activeBox.SelectedItem = StringResources.Active;
-            }
-            else
-            {
-                activeBox.SelectedItem = Resources.All;
-            }
-            activeMenuItem.CheckState = Settings.UseActive ? CheckState.Checked : CheckState.Unchecked;
-            copyTable.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
-#if !ST_2_1
-            sendToMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Analyze16;
-#endif
-            listSettingsMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Table16;
-#if !ST_2_1
-            this.listSettingsMenuItem.Click += new System.EventHandler(this.listSettingsToolStripMenuItem_Click);
-#else
-            //No listSetting dialog in ST2
-            if (this.contextMenu.Items.Contains(this.listSettingsMenuItem))
-            {
-                this.contextMenu.Items.Remove(this.listSettingsMenuItem);
-            }
-#endif
-            summaryList.ContextMenuStrip = contextMenu;
-            summaryList.MouseDoubleClick += new MouseEventHandler(selectedRow_DoubleClick);
-            speedBox.SelectedItem = CommonResources.Text.LabelPace;
-            //TODO: ToolTip is not implemented for TreeList?
-            //summaryList.MouseHover += new EventHandler(summaryView_CellToolTipTextNeeded);
-            summaryList.ColumnClicked += new TreeList.ColumnEventHandler(summaryView_ColumnHeaderMouseClick);
-
-            Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
-            setSize();
-            VisibleChanged += new EventHandler(UniqueRoutesActivityDetailView_VisibleChanged);
-
-            bool isPluginMatch = false;
-            foreach (SendToPlugin p in Settings.aSendToPlugin)
-            {
-                System.Windows.Forms.ToolStripMenuItem sendMenuItem;
-                sendMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-                sendMenuItem.Name = p.id;
-                sendMenuItem.Size = new System.Drawing.Size(198, 22);
-                sendMenuItem.Text = p.name;
-                sendMenuItem.Click += new System.EventHandler(this.sendActivityButton_Click);
-                sendMenuItem.Enabled = false;
-                if (p.pType != null)
-                {
-                    pluginBox.Items.Add(p.name);
-                    sendMenuItem.Enabled = true;
-                    if (!isPluginMatch)
-                    {
-                        pluginBox.SelectedItem = Settings.SelectedPlugin;
-                    }
-                    if (Settings.SelectedPlugin != null &&
-                            Settings.SelectedPlugin.Equals(p.name))
-                    {
-                        //Match in settings, no more checks
-                        isPluginMatch = true;
-                    }
-                }
-                aSendToMenu[sendMenuItem] = p;
-                this.sendToMenuItem.DropDownItems.Add(sendMenuItem);
-            }
-
-            if (Settings.SelectAll)
-            {
-                selectedBox.SelectedItem = Resources.All;
-            }
-            else
-            {
-                selectedBox.SelectedItem = StringResources.Selected;
-            }
-            //pluginBox
-            if(!isPluginMatch){
-                pluginBox.SelectedItem = "";
-                pluginBox.Enabled = false;
-                doIt.Enabled = false;
-            }
-            correctLanguage();
-            doUpdate = false;
-        }
         public void ThemeChanged(ITheme visualTheme)
         {
             //RefreshPage();
@@ -328,28 +331,18 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
         }
 
-        public class ActivitySorter : IComparer<UniqueRoutesResult>
-        {
-            public ActivitySorter(string id):base() { }
-            public int Compare(UniqueRoutesResult x, UniqueRoutesResult y)
-            {
-                return x.getField(Settings.SummaryViewSortColumn).CompareTo(y.getField(Settings.SummaryViewSortColumn))
-                    * (Settings.SummaryViewSortDirection == ListSortDirection.Ascending?1:-1);
-            }
-        }
         private void summaryView_Sort()
         {
             summaryList.SetSortIndicator(Settings.SummaryViewSortColumn, 
                 Settings.SummaryViewSortDirection == ListSortDirection.Ascending);
             List<UniqueRoutesResult> list = (List<UniqueRoutesResult>)summaryList.RowData;
-            list.Sort(new ActivitySorter(Settings.SummaryViewSortColumn));
+            list.Sort();
             summaryList.RowData = list;
         }
 
         private void setSize()
         {
             changeCategory.Location = new Point(
-                //                    categoryLabel.Location.X + categoryLabel.Width + 5,
                     summaryLabel.Location.X + summaryLabel.Width + 5,
                          changeCategory.Location.Y);
             categoryLabel.Location = new Point(
@@ -484,10 +477,10 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
         }
 
-        private void calculate_Click(object sender, EventArgs e)
-        {
-            calculate();
-        }
+        //private void calculate_Click(object sender, EventArgs e)
+        //{
+        //    calculate();
+        //}
 
         private void activeBox_SelectedIndexChanged(object sender, EventArgs e)
         {
