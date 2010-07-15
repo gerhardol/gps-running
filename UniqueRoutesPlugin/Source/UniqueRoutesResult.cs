@@ -15,16 +15,19 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-using ZoneFiveSoftware.Common.Visuals;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
+using System;
+
+using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using SportTracksUniqueRoutesPlugin.Util;
 
 namespace SportTracksUniqueRoutesPlugin.Source
 {
-    public class UniqueRoutesResult
+    public class UniqueRoutesResult : IComparable
     {
         public UniqueRoutesResult(IActivity activity, string commonText)
         {
@@ -67,42 +70,42 @@ namespace SportTracksUniqueRoutesPlugin.Source
         {
             get
             {
-                return UnitUtil.Time.ToString(info.Time);
+                return UnitUtil.Time.ToString(getTime());
             }
         }
         public string Distance
         {
             get
             {
-                return UnitUtil.Distance.ToString(info.DistanceMeters);
+                return UnitUtil.Distance.ToString(getDistance());
             }
         }
         public string AvgSpeedPace
         {
             get
             {
-                return UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, ScaleSpeed());
+                return UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, getAvgSpeed());
             }
         }
         public string AvgSpeed
         {
             get
             {
-                return UnitUtil.Speed.ToString(ScaleSpeed());
+                return UnitUtil.Speed.ToString(getAvgSpeed());
             }
         }
         public string AvgPace
         {
             get
             {
-                return UnitUtil.Pace.ToString(ScaleSpeed());
+                return UnitUtil.Pace.ToString(getAvgSpeed());
             }
         }
         public string AvgHR
         {
             get
             {
-                return UnitUtil.HeartRate.ToString(info.AverageHeartRate);
+                return UnitUtil.HeartRate.ToString(getAvgHR());
             }
         }
         private string m_commonStretch;
@@ -120,14 +123,54 @@ namespace SportTracksUniqueRoutesPlugin.Source
                 }
             }
         }
+        /******************************************/
         //There should probably be separate fields for active/total speed/pace
-        private double ScaleSpeed()
+        private System.TimeSpan getTime()
+        {
+            System.TimeSpan value;
+            if (Settings.UseActive)
+            {
+                value = info.ActiveLapsTotalDetail.LapElapsed;
+            }
+            else
+            {
+                value = info.Time;
+            }
+            return value;
+        }
+        private double getDistance()
+        {
+            double value;
+            if (Settings.UseActive)
+            {
+                value = info.ActiveLapsTotalDetail.LapDistanceMeters;
+            }
+            else
+            {
+                value = info.DistanceMeters;
+            }
+            return value;
+        }
+        private double getAvgHR()
+        {
+            double value;
+            if (Settings.UseActive)
+            {
+                value = info.ActiveLapsTotalDetail.AverageHeartRatePerMinute;
+            }
+            else
+            {
+                value = info.AverageHeartRate;
+            }
+            return value;
+        }
+        private double getAvgSpeed()
         {
             double speed;
             if (Settings.UseActive)
             {
-                speed = info.ActiveLapsTotalDetail.LapDistanceMeters * 1000 /
-                info.ActiveLapsTotalDetail.LapElapsed.TotalMilliseconds;
+                speed = info.ActiveLapsTotalDetail.LapDistanceMeters /
+                info.ActiveLapsTotalDetail.LapElapsed.TotalSeconds;
             }
             else
             {
@@ -135,10 +178,12 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
             return speed;
         }
+
+        /******************************************/
         public string getField(string id)
         {
             //Should be using reflection....
-            switch(id)
+            switch (id)
             {
                 case SummaryColumnIds.StartDate:
                     return StartDate;
@@ -159,7 +204,69 @@ namespace SportTracksUniqueRoutesPlugin.Source
                 case SummaryColumnIds.CommonStretches:
                     return CommonStretches;
                 default:
+                    //Should be a assert...
                     return AvgSpeed;
+            }
+        }
+#region IComparable<Product> Members
+
+        public int CompareTo(object obj)
+        {
+            int result = 1;
+            if (obj != null && obj is UniqueRoutesResult)
+            {
+                UniqueRoutesResult other = obj as UniqueRoutesResult;
+                result = Compare(this, other);
+            }
+            return result;
+        }
+        public int CompareTo(UniqueRoutesResult other)
+        {
+            return Compare(this, other);
+        }
+
+    #endregion
+        public int Compare(UniqueRoutesResult x, UniqueRoutesResult y)
+        { 
+            int result = (Settings.SummaryViewSortDirection == ListSortDirection.Ascending ? 1 : -1);
+
+            if (Settings.SummaryViewSortColumn == SummaryColumnIds.CommonStretches)
+            {
+                result *= x.CommonStretches.CompareTo(y.CommonStretches);
+            }
+            else
+            {
+                result *= x.getCompareField(Settings.SummaryViewSortColumn).CompareTo(y.getCompareField(Settings.SummaryViewSortColumn));
+            }
+            return result;
+        }
+        //Helper function to get numerical value used in comparison
+        private double getCompareField(string id)
+        {
+            //Should be using reflection....
+            switch (id)
+            {
+                case SummaryColumnIds.StartDate:
+                    return m_activity.StartTime.Ticks;
+                case SummaryColumnIds.StartTime:
+                    return m_activity.StartTime.TimeOfDay.TotalSeconds;
+                case SummaryColumnIds.Time:
+                    return getTime().TotalSeconds;
+                case SummaryColumnIds.Distance:
+                    return getDistance();
+                case SummaryColumnIds.AvgSpeedPace:
+                    return (Settings.ShowPace ? -1 : 1) * getAvgSpeed();
+                case SummaryColumnIds.AvgSpeed:
+                    return getAvgSpeed();
+                case SummaryColumnIds.AvgPace:
+                    //Use negative, to avoid division by zero
+                    return -getAvgSpeed();
+                case SummaryColumnIds.AvgHR:
+                    return getAvgHR();
+                //case SummaryColumnIds.CommonStretches:
+                //    return CommonStretches.;
+                default:
+                    return getAvgSpeed();
             }
         }
     }
