@@ -78,11 +78,7 @@ namespace SportTracksOverlayPlugin.Source
 
         public void Run(System.Drawing.Rectangle rectButton)
         {
-#if OVERLAY_REDESIGN
-            new OverlayView2(activities);
-#else            
             new OverlayView(activities);
-#endif
         }
 
         public string Title
