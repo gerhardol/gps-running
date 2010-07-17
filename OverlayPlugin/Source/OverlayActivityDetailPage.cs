@@ -109,13 +109,10 @@ namespace SportTracksOverlayPlugin.Source
             {
                 IList<IActivity> list = new List<IActivity>();
                 if (activity != null)
+                {
                     list.Add(activity);
-                 control = 
-#if OVERLAY_REDESIGN
-                     new OverlayView2(list, false);
-#else
-                     new OverlayView(list, false);
-#endif
+                }
+                control = new OverlayView(list, false);
             }
             return control;
         }
@@ -180,11 +177,7 @@ namespace SportTracksOverlayPlugin.Source
         private IDailyActivityView view = null;
 #endif
         private IActivity activity = null;
-#if OVERLAY_REDESIGN
-        private OverlayView2 control = null;
-#else
         private OverlayView control = null;
-#endif
         private IList<string> menuPath = null;
         private bool menuEnabled = true;
         private bool menuVisible = true;
