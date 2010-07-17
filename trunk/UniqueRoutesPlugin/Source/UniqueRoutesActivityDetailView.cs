@@ -282,7 +282,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
         }
 
-        private void correctLanguage()
+        public void correctLanguage()
         {
             //Some labels depends on the activity
             //summaryLabel, CommonStretches column, setTable()

@@ -416,44 +416,47 @@ namespace SportTracksPerformancePredictorPlugin.Source
         {
             set.Clear();
             set.Columns.Clear();
-            set.Columns.Add(UnitUtil.Distance.LabelAxis);
-            set.Columns.Add(CommonResources.Text.LabelDistance);
-            set.Columns.Add(Resources.PredictedTime, typeof(TimeSpan));
-            if (Settings.ShowPace)
+            if (null != set || null != set.Columns)
             {
-                set.Columns.Add(UnitUtil.Pace.LabelAxis);
-            }
-            else
-            {
-                set.Columns.Add(UnitUtil.Speed.LabelAxis, typeof(double));
-            }
-
-            series.Points.Clear();
-
-            foreach (double new_dist in Settings.Distances.Keys)
-            {
-                double new_time = predict(new_dist, old_dist, old_time);
-                float x = (float)UnitUtil.Distance.ConvertFrom(new_dist);
-                if (!x.Equals(float.NaN) && series.Points.IndexOfKey(x) == -1)
+                set.Columns.Add(UnitUtil.Distance.LabelAxis);
+                set.Columns.Add(CommonResources.Text.LabelDistance);
+                set.Columns.Add(Resources.PredictedTime, typeof(TimeSpan));
+                if (Settings.ShowPace)
                 {
-                    series.Points.Add(x, new PointF(x, (float)new_time));
-                }
-
-                double length = new_dist;
-                DataRow row = set.NewRow();
-                row[0] = UnitUtil.Distance.ToString(length);
-                if (Settings.Distances[new_dist].Values[0])
-                {
-                    row[1] = UnitUtil.Distance.ToString(length, "u");
+                    set.Columns.Add(UnitUtil.Pace.LabelAxis);
                 }
                 else
                 {
-                    row[1] = UnitUtil.Distance.ToString(length, Settings.Distances[new_dist].Keys[0], "u");
+                    set.Columns.Add(UnitUtil.Speed.LabelAxis, typeof(double));
                 }
-                row[2] = UnitUtil.Time.ToString(new_time);
-                double speed = new_dist / new_time;
-                row[3] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed);
-                set.Rows.Add(row);
+
+                series.Points.Clear();
+
+                foreach (double new_dist in Settings.Distances.Keys)
+                {
+                    double new_time = predict(new_dist, old_dist, old_time);
+                    float x = (float)UnitUtil.Distance.ConvertFrom(new_dist);
+                    if (!x.Equals(float.NaN) && series.Points.IndexOfKey(x) == -1)
+                    {
+                        series.Points.Add(x, new PointF(x, (float)new_time));
+                    }
+
+                    double length = new_dist;
+                    DataRow row = set.NewRow();
+                    row[0] = UnitUtil.Distance.ToString(length);
+                    if (Settings.Distances[new_dist].Values[0])
+                    {
+                        row[1] = UnitUtil.Distance.ToString(length, "u");
+                    }
+                    else
+                    {
+                        row[1] = UnitUtil.Distance.ToString(length, Settings.Distances[new_dist].Keys[0], "u");
+                    }
+                    row[2] = UnitUtil.Time.ToString(new_time);
+                    double speed = new_dist / new_time;
+                    row[3] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed);
+                    set.Rows.Add(row);
+                }
             }
         }
 
