@@ -150,6 +150,10 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
+            if (control != null)
+            {
+                control.correctLanguage();
+            }
             RefreshPage();
         }
 
