@@ -26,7 +26,6 @@ using System.Windows.Forms;
 
 using ZoneFiveSoftware.Common.Visuals;
 using System.Drawing.Imaging;
-using SportTracksOverlayPlugin.Properties;
 using SportTracksOverlayPlugin.Util;
 using System.IO;
 
@@ -57,25 +56,25 @@ namespace SportTracksOverlayPlugin.Source
 		}
 		private void LoadResourceStrings()
 		{
-			label1.Text = global::SportTracksOverlayPlugin.Properties.Resources.SaveIn;
-			label2.Text = global::SportTracksOverlayPlugin.Properties.Resources.FileName;
-			label3.Text = global::SportTracksOverlayPlugin.Properties.Resources.Size;
-			label4.Text = global::SportTracksOverlayPlugin.Properties.Resources.Type;
+            label1.Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.SaveIn;
+            label2.Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.FileName;
+            label3.Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.Size;
+            label4.Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.Type;
 			comboSize.Items.AddRange( new object[] {
-				global::SportTracksOverlayPlugin.Properties.Resources.Thumbnail + " (200 x 160)",
-				global::SportTracksOverlayPlugin.Properties.Resources.Small + " (400 x 310)",
-				global::SportTracksOverlayPlugin.Properties.Resources.Medium + " (800 x 620)",
-				global::SportTracksOverlayPlugin.Properties.Resources.Large + " (1400 x 1090)",
-				global::SportTracksOverlayPlugin.Properties.Resources.Huge + " (2000 x 1560)",
-				global::SportTracksOverlayPlugin.Properties.Resources.Custom} );
+				global::SportTracksOverlayPlugin.Util.SaveImageResources.Thumbnail + " (200 x 160)",
+				global::SportTracksOverlayPlugin.Util.SaveImageResources.Small + " (400 x 310)",
+				global::SportTracksOverlayPlugin.Util.SaveImageResources.Medium + " (800 x 620)",
+				global::SportTracksOverlayPlugin.Util.SaveImageResources.Large + " (1400 x 1090)",
+				global::SportTracksOverlayPlugin.Util.SaveImageResources.Huge + " (2000 x 1560)",
+				global::SportTracksOverlayPlugin.Util.SaveImageResources.Custom});
 			comboType.Items.AddRange( new object[] {
-				global::SportTracksOverlayPlugin.Properties.Resources.Bitmap + " (.bmp)",
-				global::SportTracksOverlayPlugin.Properties.Resources.JointPhotographicExpertsGroup + " (.jpg)",
-				global::SportTracksOverlayPlugin.Properties.Resources.PortableNetworkGraphics + " (.png)",
-				global::SportTracksOverlayPlugin.Properties.Resources.TaggedImageFileFormat + " (.tif)"} );
+				global::SportTracksOverlayPlugin.Util.SaveImageResources.Bitmap + " (.bmp)",
+				global::SportTracksOverlayPlugin.Util.SaveImageResources.JointPhotographicExpertsGroup + " (.jpg)",
+				global::SportTracksOverlayPlugin.Util.SaveImageResources.PortableNetworkGraphics + " (.png)",
+				global::SportTracksOverlayPlugin.Util.SaveImageResources.TaggedImageFileFormat + " (.tif)"});
             btnCancel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCancel;
             btnOK.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionOk;
-			Text = global::SportTracksOverlayPlugin.Properties.Resources.SaveImage;
+            Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.SaveImage;
 		}
 
 		private Label label1;
