@@ -91,11 +91,15 @@ namespace SportTracksPerformancePredictorPlugin.Source
                 return Resources.PPHS + " " + String.Format(StringResources.ForManyActivities,activities.Count);
             }
         }
+        private bool firstRun = true;
         public bool Visible
         {
             get
             {
-                //ST3fix if (activities.Count == 0) return false;
+                //Analyze menu must be Visible at first call, otherwise it is hidden
+                //Could be done with listeners too
+                if (true == firstRun) { firstRun = false; return true; }
+                if (activities.Count == 0) return false;
                 return true;
             }
         }
