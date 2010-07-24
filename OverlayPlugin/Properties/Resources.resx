@@ -120,6 +120,10 @@
   <data name="AOP" xml:space="preserve">
     <value>Average over period</value>
   </data>
+  <data name="ApplicationName" xml:space="preserve">
+    <value>Overlay</value>
+    <comment>Name of application, displayed in GUI</comment>
+  </data>
   <data name="BCA" xml:space="preserve">
     <value>Black category average</value>
   </data>

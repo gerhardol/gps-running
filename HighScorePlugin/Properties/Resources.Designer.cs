@@ -61,6 +61,15 @@ namespace SportTracksHighScorePlugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to High Score.
+        /// </summary>
+        internal static string ApplicationName {
+            get {
+                return ResourceManager.GetString("ApplicationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Biggest elevation difference.
         /// </summary>
         internal static string BiggestElevationDifference {

@@ -171,7 +171,7 @@
     <value>20 min run is at lactate threshold pace - pace of longer runs adjusted to maintain proper intensity.</value>
   </data>
   <data name="PositiveNumber" xml:space="preserve">
-    <value>Distance must be a positive number.</value>
+    <value>Distance must be a positive number, optionally followed by the unit.</value>
   </data>
   <data name="PredictedTime" xml:space="preserve">
     <value>Predicted time</value>
@@ -278,7 +278,7 @@
   <data name="Velocity" xml:space="preserve">
     <value>Velocity</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Image_16_PerformancePredictor" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\image_16_performancepredictor.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -287,5 +287,9 @@
   </data>
   <data name="Image_32_PerformancePredictor" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\image_32_performancepredictor.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ApplicationName" xml:space="preserve">
+    <value>Performance Predictor</value>
+    <comment>Name of application, displayed in GUI</comment>
   </data>
 </root>

@@ -68,18 +68,8 @@ namespace SportTracksPerformancePredictorPlugin.Source
         public TrainingView()
         {
             InitializeComponent();
-            tabControl1.TabPages[0].Text = StringResources.Training;
-            tabControl1.TabPages[1].Text = Resources.PaceForTempoRuns;
-            tabControl1.TabPages[2].Text = Resources.IntervalSplitTimes;
-            tabControl1.TabPages[3].Text = Resources.TemperatureImpact;
-            tabControl1.TabPages[4].Text = Resources.WeighImpact;
-            label1.Text = Resources.PaceRunNotification;
-            label2.Text = String.Format(Resources.TemperatureNotification, UnitUtil.Temperature.ToString(16,"F0u"));
-            interval2Label.Text = Resources.IntervalNotification;
-            weightLabel2.Text = String.Format(Resources.WeightNotification, 2 + " " + StringResources.Seconds,
-                UnitUtil.Distance.ToString(1000,"u"));
+            InitControls();
             SizeChanged += new EventHandler(TrainingView_SizeChanged);            
-            setSize();
 #if ST_2_1
             Plugin.GetApplication().Logbook.DataChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(Logbook_DataChanged);
             Plugin.GetApplication().Logbook.Athlete.DataChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(Athlete_DataChanged);
@@ -90,6 +80,10 @@ namespace SportTracksPerformancePredictorPlugin.Source
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
         }
 
+        void InitControls()
+        {
+            setSize();
+        }
         private void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             setPages();
@@ -150,31 +144,36 @@ namespace SportTracksPerformancePredictorPlugin.Source
         }
         public void ThemeChanged(ITheme visualTheme)
         {
-            //RefreshPage();
-            //m_visualTheme = visualTheme;
-#if ST_2_1
-            this.BackColor = Color.Transparent;
-            Color bColor = Color.White;
+            Color bColor = visualTheme.Control;
 
+            //Set color for non ST controls
             this.trainingGrid.BackgroundColor = bColor;
             this.paceTempoGrid.BackgroundColor = bColor;
             this.intervalGrid.BackgroundColor = bColor;
             this.temperatureGrid.BackgroundColor = bColor;
             this.weightGrid.BackgroundColor = bColor;
-#else
-            Color bColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
+
             this.BackColor = bColor;
+
             this.trainingTab.BackColor = bColor;
             this.paceTempoTab.BackColor = bColor;
             this.intervalTab.BackColor = bColor;
             this.temperatureTab.BackColor = bColor;
             this.weightTab.BackColor = bColor;
-            this.trainingGrid.BackgroundColor = bColor;
-            this.paceTempoGrid.BackgroundColor = bColor;
-            this.intervalGrid.BackgroundColor = bColor;
-            this.temperatureGrid.BackgroundColor = bColor;
-            this.weightGrid.BackgroundColor = bColor;
-#endif
+        }
+
+        public void UICultureChanged(System.Globalization.CultureInfo culture)
+        {
+            tabControl1.TabPages[0].Text = StringResources.Training;
+            tabControl1.TabPages[1].Text = Resources.PaceForTempoRuns;
+            tabControl1.TabPages[2].Text = Resources.IntervalSplitTimes;
+            tabControl1.TabPages[3].Text = Resources.TemperatureImpact;
+            tabControl1.TabPages[4].Text = Resources.WeighImpact;
+            label1.Text = Resources.PaceRunNotification;
+            label2.Text = String.Format(Resources.TemperatureNotification, UnitUtil.Temperature.ToString(16, "F0u"));
+            interval2Label.Text = Resources.IntervalNotification;
+            weightLabel2.Text = String.Format(Resources.WeightNotification, 2 + " " + StringResources.Seconds,
+                UnitUtil.Distance.ToString(1000, "u"));
         }
 
         private void setSize()

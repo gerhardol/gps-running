@@ -70,6 +70,15 @@ namespace SportTracksOverlayPlugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Overlay.
+        /// </summary>
+        internal static string ApplicationName {
+            get {
+                return ResourceManager.GetString("ApplicationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Black category average.
         /// </summary>
         internal static string BCA {

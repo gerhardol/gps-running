@@ -102,22 +102,9 @@ namespace SportTracksPerformancePredictorPlugin.Source
 
         public PerformancePredictorView(IActivity activity)
         {
-            InitializeComponent();
-            groupBox3.Text = StringResources.Settings;
-            groupBox1.Text = Resources.PredictionModel;
-            groupBox2.Text = Resources.Velocity;
-            resultBox.Text = Resources.PredictionResults;
-            timePrediction.Text = Resources.TimePrediction;
-            training.Text = StringResources.Training;
-            pace.Text = CommonResources.Text.LabelPace;
-            speed.Text = CommonResources.Text.LabelSpeed;
-            chartButton.Text = Resources.ViewInChart;
-            table.Text = Resources.ViewInTable;
-            trainingView = new TrainingView();
-            trainingView.Location = chart.Location;
-            this.splitContainer1.Panel2.Controls.Add(trainingView);
-            trainingView.Dock = DockStyle.Fill;
-            progressBar.Visible = false;
+            InitializeComponent(); 
+            InitControls();
+
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
             cameronSeries = new ChartDataSeries(chart, chart.YAxis);
             riegelSeries = new ChartDataSeries(chart, chart.YAxis);
@@ -146,6 +133,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             training.Checked = !Settings.ShowPrediction;
             pace.Checked = Settings.ShowPace;
             speed.Checked = !Settings.ShowPace;
+
             setSize();
             chart.YAxis.Formatter = new Formatter.SecondsToTime();
             chart.XAxis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
@@ -155,9 +143,23 @@ namespace SportTracksPerformancePredictorPlugin.Source
         }
 
         public PerformancePredictorView(IList<IActivity> activities)
-            :
-            this((IActivity)null)
+            : this((IActivity)null)
         {
+            //Theme and Culture must be set manually
+            this.ThemeChanged(
+#if ST_2_1
+                Plugin.GetApplication().VisualTheme
+#else
+                Plugin.GetApplication().SystemPreferences.VisualTheme
+#endif
+            );
+            this.UICultureChanged(
+#if ST_2_1
+                new System.Globalization.CultureInfo("en")
+#else
+                Plugin.GetApplication().SystemPreferences.UICulture
+#endif
+            );
             popupForm = new Form();
             popupForm.Controls.Add(this);
             popupForm.Size = Settings.WindowSize;
@@ -170,27 +172,65 @@ namespace SportTracksPerformancePredictorPlugin.Source
             popupForm.StartPosition = FormStartPosition.CenterScreen;
             popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_PerformancePredictor.GetHicon());
             popupForm.Show();
+
             if (activities.Count == 1) popupForm.Text = Resources.PPHS + " " + StringResources.ForOneActivity;
             else popupForm.Text = Resources.PPHS + " " + String.Format(StringResources.ForManyActivities, activities.Count);
             Activities = activities;
         }
 
+        void InitControls()
+        {
+            trainingView = new TrainingView();
+            trainingView.Location = chart.Location;
+            trainingView.ThemeChanged(
+#if ST_2_1
+                Plugin.GetApplication().VisualTheme
+#else
+                Plugin.GetApplication().SystemPreferences.VisualTheme
+#endif
+                                     );
+            trainingView.UICultureChanged(
+#if ST_2_1
+                new System.Globalization.CultureInfo("en")
+#else
+                Plugin.GetApplication().SystemPreferences.UICulture
+#endif
+                                         );
+            this.splitContainer1.Panel2.Controls.Add(trainingView);
+            trainingView.Dock = DockStyle.Fill;
+            progressBar.Visible = false;
+        }
         public void ThemeChanged(ITheme visualTheme)
         {
             //RefreshPage();
             //m_visualTheme = visualTheme;
-            //summaryList.ThemeChanged(visualTheme);
-#if !ST_2_1
-            this.dataGrid.BackgroundColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
-            this.splitContainer1.Panel1.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
-            this.splitContainer1.Panel2.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
-#endif
+            this.chart.ThemeChanged(visualTheme);
+            //Set color for non ST controls
+            this.dataGrid.BackgroundColor = visualTheme.Control;
+            this.splitContainer1.Panel1.BackColor = visualTheme.Control;
+            this.splitContainer1.Panel2.BackColor = visualTheme.Control;
             if (null != trainingView)
             {
                 trainingView.ThemeChanged(visualTheme);
             }
         }
-
+        public void UICultureChanged(System.Globalization.CultureInfo culture)
+        {
+            groupBox3.Text = StringResources.Settings;
+            groupBox1.Text = Resources.PredictionModel;
+            groupBox2.Text = Resources.Velocity;
+            resultBox.Text = Resources.PredictionResults;
+            timePrediction.Text = Resources.TimePrediction;
+            training.Text = StringResources.Training;
+            pace.Text = CommonResources.Text.LabelPace;
+            speed.Text = CommonResources.Text.LabelSpeed;
+            chartButton.Text = Resources.ViewInChart;
+            table.Text = Resources.ViewInTable;
+            if (null != trainingView)
+            {
+                trainingView.UICultureChanged(culture);
+            }
+        }
 
         private void setSize()
         {

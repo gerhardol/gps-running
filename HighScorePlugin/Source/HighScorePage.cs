@@ -64,7 +64,7 @@ namespace SportTracksHighScorePlugin.Source
 
         public string PageName
         {
-            get { return "High Score"; }
+            get { return Properties.Resources.ApplicationName; }
         }
 
         public void ShowPage(string bookmark)
@@ -80,20 +80,20 @@ namespace SportTracksHighScorePlugin.Source
         {
             if (control != null)
             {
-                //control.ThemeChanged(visualTheme);
+                control.ThemeChanged(visualTheme);
             }
         }
 
         public string Title
         {
-            get { return "High Score"; }
+            get { return Properties.Resources.ApplicationName; }
         }
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
             if (control != null)
             {
-                
+                control.UICultureChanged(culture);
             }
         }
 

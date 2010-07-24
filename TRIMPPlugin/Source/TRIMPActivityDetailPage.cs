@@ -129,7 +129,7 @@ namespace SportTracksTRIMPPlugin.Source
 
         public string PageName
         {
-            get { return "TRIMP"; }
+            get { return Properties.Resources.ApplicationName; }
         }
 
         public void ShowPage(string bookmark)
@@ -141,17 +141,25 @@ namespace SportTracksTRIMPPlugin.Source
             get { return null; }
         }
 
-        public void ThemeChanged(ITheme visualTheme)
+        public void ThemeChanged(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme)
         {
+            if (control != null)
+            {
+                control.ThemeChanged(visualTheme);
+            }
         }
 
         public string Title
         {
-            get { return "TRIMP"; }
+            get { return Properties.Resources.ApplicationName; }
         }
 
-        public void UICultureChanged(CultureInfo culture)
-        {           
+        public void UICultureChanged(System.Globalization.CultureInfo culture)
+        {
+            if (control != null)
+            {
+                control.UICultureChanged(culture);
+            }
         }
 
         #endregion

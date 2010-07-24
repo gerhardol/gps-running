@@ -145,14 +145,14 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
         public string Title
         {
-            get { return "Unique Routes"; }
+            get { return Properties.Resources.ApplicationName; }
         }
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
             if (control != null)
             {
-                control.correctLanguage();
+                control.UICultureChanged(culture);
             }
             RefreshPage();
         }

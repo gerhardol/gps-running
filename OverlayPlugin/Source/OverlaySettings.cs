@@ -24,6 +24,7 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
+
 using ZoneFiveSoftware.Common.Data.Fitness;
 using SportTracksOverlayPlugin;
 using SportTracksOverlayPlugin.Source;
@@ -43,6 +44,12 @@ namespace SportTracksOverlayPlugin.Source
         {
             System.Diagnostics.Process.Start(new ProcessStartInfo("IExplore",
                 "http://code.google.com/p/gps-running/wiki/Overlay"));
+        }
+        public void ThemeChanged(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme)
+        {
+        }
+        public void UICultureChanged(System.Globalization.CultureInfo culture)
+        {
         }
     }
 }

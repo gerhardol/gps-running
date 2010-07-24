@@ -45,10 +45,8 @@ namespace SportTracksHighScorePlugin.Source
         public HighScoreSettingPageControl()
         {
             InitializeComponent();
-            setLanguage();
             paceTypeBox.DropDownStyle = ComboBoxStyle.DropDownList;
             paceTypeBox.SelectedIndexChanged += new EventHandler(paceTypeBox_SelectedIndexChanged);
-            reset();
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(HighScoreSettingPageControl_PropertyChanged);
         }
 
@@ -66,7 +64,15 @@ namespace SportTracksHighScorePlugin.Source
             }
         }
 
-        private void setLanguage()
+        public void ThemeChanged(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme)
+        {
+            distanceInputBox.ThemeChanged(visualTheme);
+            timeInputBox.ThemeChanged(visualTheme);
+            elevationInputBox.ThemeChanged(visualTheme);
+            maxPulseBox.ThemeChanged(visualTheme);
+            minPulseBox.ThemeChanged(visualTheme);
+        }
+        public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
             resetSettings.Text = StringResources.ResetAllSettings;
             linkLabel1.Text = Resources.Webpage;
@@ -89,6 +95,8 @@ namespace SportTracksHighScorePlugin.Source
             label1.Text = UnitUtil.HeartRate.LabelAbbr + " " + ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelFrom.ToLower();
             label2.Text = UnitUtil.HeartRate.LabelAbbr + " " + ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelTo.ToLower();
             label4.Text = "(" + StringResources.TimeFormat + ")";
+
+            reset();
         }
 
         private void reset()
@@ -155,15 +163,15 @@ namespace SportTracksHighScorePlugin.Source
                     bool isPace = UnitUtil.Pace.isLabelPace((String)paceTypeBox.SelectedItem);
                     if (isPace)
                     {
-                        from = UnitUtil.Pace.ToString(max);
-                        to = UnitUtil.Pace.ToString(min);
+                        from = UnitUtil.Pace.ToString(min);
+                        to = UnitUtil.Pace.ToString(max);
                     }
                     else
                     {
                         from = UnitUtil.Speed.ToString(min);
                         to = UnitUtil.Speed.ToString(max);
                     }
-                    speedBox.Items.Add(String.Format("{1} - {0}", from, to));
+                    speedBox.Items.Add(String.Format("{0} - {1}", from, to));
                     speedZoneIndex.Add(new double[] { min, max });
                 }
         }
@@ -175,7 +183,7 @@ namespace SportTracksHighScorePlugin.Source
             {
                 foreach (double max in Settings.pulseZones[min].Keys)
                 {
-                    pulseBox.Items.Add(String.Format("{1} - {0}", min, max));
+                    pulseBox.Items.Add(String.Format("{0} - {1}", min, max));
                 }
             }
         }

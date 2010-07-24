@@ -47,12 +47,12 @@ namespace SportTracksPerformancePredictorPlugin.Source
         private void InitializeComponent()
         {
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.resetSettings = new System.Windows.Forms.Button();
+            this.resetSettings = new ZoneFiveSoftware.Common.Visuals.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.removeDistance = new System.Windows.Forms.Button();
+            this.removeDistance = new ZoneFiveSoftware.Common.Visuals.Button();
             this.unitBox = new System.Windows.Forms.ComboBox();
-            this.distanceBox = new System.Windows.Forms.TextBox();
-            this.addDistance = new System.Windows.Forms.Button();
+            this.distanceBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.addDistance = new ZoneFiveSoftware.Common.Visuals.Button();
             this.distanceList = new System.Windows.Forms.ListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -81,7 +81,6 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.resetSettings.Size = new System.Drawing.Size(187, 23);
             this.resetSettings.TabIndex = 1;
             this.resetSettings.Text = "Reset all settings...";
-            this.resetSettings.UseVisualStyleBackColor = true;
             this.resetSettings.Click += new System.EventHandler(this.resetSettings_Click);
             // 
             // groupBox1
@@ -105,7 +104,6 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.removeDistance.Size = new System.Drawing.Size(186, 23);
             this.removeDistance.TabIndex = 4;
             this.removeDistance.Text = "Remove distance -->";
-            this.removeDistance.UseVisualStyleBackColor = true;
             this.removeDistance.Click += new System.EventHandler(this.removeDistance_Click);
             // 
             // unitBox
@@ -131,7 +129,6 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.addDistance.Size = new System.Drawing.Size(186, 23);
             this.addDistance.TabIndex = 1;
             this.addDistance.Text = "<-- Add distance";
-            this.addDistance.UseVisualStyleBackColor = true;
             this.addDistance.Click += new System.EventHandler(this.addDistance_Click);
             // 
             // distanceList
@@ -218,12 +215,12 @@ namespace SportTracksPerformancePredictorPlugin.Source
         #endregion
 
         private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.Button resetSettings;
+        private ZoneFiveSoftware.Common.Visuals.Button resetSettings;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button removeDistance;
+        private ZoneFiveSoftware.Common.Visuals.Button removeDistance;
         private System.Windows.Forms.ComboBox unitBox;
-        private System.Windows.Forms.TextBox distanceBox;
-        private System.Windows.Forms.Button addDistance;
+        private ZoneFiveSoftware.Common.Visuals.TextBox distanceBox;
+        private ZoneFiveSoftware.Common.Visuals.Button addDistance;
         private System.Windows.Forms.ListBox distanceList;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label1;

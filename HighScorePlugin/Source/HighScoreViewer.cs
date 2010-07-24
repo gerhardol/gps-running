@@ -38,8 +38,13 @@ namespace SportTracksHighScorePlugin.Source
     public partial class HighScoreViewer : UserControl
     {
         private readonly Form popupForm;
-        
         private readonly bool includeLocationAndDate, showDialog;
+        private GoalParameter domain, image;
+        private bool upperBound;
+        private IDictionary<GoalParameter, IDictionary<GoalParameter, IDictionary<bool, DataTable>>> cachedTables;
+        private IDictionary<DataTable, String> tableFormat;
+        private IDictionary<GoalParameter, IDictionary<GoalParameter, IDictionary<bool, IList<Result>>>> cachedResults;
+        private String speedUnit;
 
         private IList<IActivity> activities;
         public IList<IActivity> Activities
@@ -50,34 +55,24 @@ namespace SportTracksHighScorePlugin.Source
                 if (popupForm != null)
                 {
                     if (activities.Count > 1)
-                        popupForm.Text = Resources.HSV + String.Format(StringResources.OfManyActivities,activities.Count);
+                        popupForm.Text = Resources.HSV + String.Format(StringResources.OfManyActivities, activities.Count);
                     else if (activities.Count == 1)
                         popupForm.Text = Resources.HSV + " " + StringResources.OfOneActivity;
                     else
                         popupForm.Text = Resources.HSV + " " + StringResources.OfNoActivities;
                 }
                 resetCachedResults();
-                showResults();
+                if (activities.Count > 0)
+                {
+                    showResults();
+                }
             }
         }
-
-        private GoalParameter domain, image;
-
-        private bool upperBound;
-
-        private IDictionary<GoalParameter, IDictionary<GoalParameter, IDictionary<bool, DataTable>>> cachedTables;
-
-        private IDictionary<DataTable, String> tableFormat;
-
-        private IDictionary<GoalParameter, IDictionary<GoalParameter, IDictionary<bool, IList<Result>>>> cachedResults;
-
-        private String speedUnit;
 
         public HighScoreViewer(IList<IActivity> activities, bool includeLocationAndDate, bool showDialog)
         {
             InitializeComponent();
-
-            convertLanguage();
+            InitControls();
 
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
             dataGrid.CellContentDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
@@ -117,6 +112,21 @@ namespace SportTracksHighScorePlugin.Source
 
             if (showDialog)
             {
+                //Theme and Culture must be set manually
+                this.ThemeChanged(
+#if ST_2_1
+                Plugin.GetApplication().VisualTheme
+#else
+                Plugin.GetApplication().SystemPreferences.VisualTheme
+#endif
+                );
+                this.UICultureChanged(
+#if ST_2_1
+                new System.Globalization.CultureInfo("en")
+#else
+                Plugin.GetApplication().SystemPreferences.UICulture
+#endif
+                );
                 popupForm = new Form();
                 popupForm.Controls.Add(this);
                 popupForm.Size = Settings.WindowSize;
@@ -133,6 +143,24 @@ namespace SportTracksHighScorePlugin.Source
                 SizeChanged += new EventHandler(SizeChanged_handler);
             }           
             Activities = activities;
+        }
+
+        void InitControls()
+        {
+            paceBox.Items.Add(CommonResources.Text.LabelPace);
+            paceBox.Items.Add(CommonResources.Text.LabelSpeed);
+            viewBox.Items.Add(StringResources.Graph);
+            viewBox.Items.Add(ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelList);
+            boundsBox.Items.Add(StringResources.Minimal);
+            boundsBox.Items.Add(StringResources.Maximal);
+            domainBox.Items.Add(CommonResources.Text.LabelDistance);
+            domainBox.Items.Add(CommonResources.Text.LabelElevation);
+            domainBox.Items.Add(CommonResources.Text.LabelTime);
+            imageBox.Items.Add(CommonResources.Text.LabelDistance);
+            imageBox.Items.Add(CommonResources.Text.LabelElevation);
+            imageBox.Items.Add(CommonResources.Text.LabelTime);
+            imageBox.Items.Add(StringResources.HRZone);
+            imageBox.Items.Add(Resources.HRAndSpeedZones);
         }
 
         private string translateToLanguage(GoalParameter goalParameter)
@@ -154,7 +182,7 @@ namespace SportTracksHighScorePlugin.Source
 
         private void correctUI(IList<Control> comp)
         {
-/*            Control prev = null;
+           Control prev = null;
            foreach (Control c in comp)
             {
                 if (prev != null)
@@ -164,27 +192,21 @@ namespace SportTracksHighScorePlugin.Source
                 }
                 prev = c;
             }
-*/        }
+        }
 
         public void ThemeChanged(ITheme visualTheme)
         {
             //RefreshPage();
             //m_visualTheme = visualTheme;
-            //summaryList.ThemeChanged(visualTheme);
-#if !ST_2_1
-            this.dataGrid.BackgroundColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
-            this.splitContainer1.Panel1.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
-            this.splitContainer1.Panel2.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
-#endif
+            this.chart.ThemeChanged(visualTheme);
+            this.dataGrid.BackgroundColor = visualTheme.Control;
+            this.splitContainer1.Panel1.BackColor = visualTheme.Control;
+            this.splitContainer1.Panel2.BackColor = visualTheme.Control;
         }
 
-        private void convertLanguage()
+        public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
             Remarks.Text = "";
-            paceBox.Items.Add(CommonResources.Text.LabelPace);
-            paceBox.Items.Add(CommonResources.Text.LabelSpeed);
-            viewBox.Items.Add(StringResources.Graph);
-            viewBox.Items.Add(ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelList);
             label1.Text = StringResources.Find;
             label2.Text = StringResources.PerSpecified;
             label3.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelShow;
@@ -192,16 +214,6 @@ namespace SportTracksHighScorePlugin.Source
             label1.Location = new Point(boundsBox.Location.X - 5 - label1.Width, label1.Location.Y);
             correctUI(new Control[] { paceBox, viewBox, Remarks });
             label3.Location = new Point(paceBox.Location.X - 5 - label3.Width, label3.Location.Y);
-            boundsBox.Items.Add(StringResources.Minimal);
-            boundsBox.Items.Add(StringResources.Maximal);
-            domainBox.Items.Add(CommonResources.Text.LabelDistance);
-            domainBox.Items.Add(CommonResources.Text.LabelElevation);
-            domainBox.Items.Add(CommonResources.Text.LabelTime);
-            imageBox.Items.Add(CommonResources.Text.LabelDistance);
-            imageBox.Items.Add(CommonResources.Text.LabelElevation);
-            imageBox.Items.Add(CommonResources.Text.LabelTime);
-            imageBox.Items.Add(StringResources.HRZone);
-            imageBox.Items.Add(Resources.HRAndSpeedZones);
             toolStripMenuItem1.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
             label2.Location = new Point(label2.Location.X, label1.Location.Y);
         }

@@ -36,6 +36,26 @@ namespace SportTracksPerformancePredictorPlugin.Source
         public PerformancePredictorSettings()
         {
             InitializeComponent();
+            InitControls();
+            updateList();
+        }
+
+        void InitControls()
+        {
+            foreach (Length.Units s in Enum.GetValues(typeof(Length.Units)))
+            {
+                unitBox.Items.Add(Length.Label(s));
+            }
+
+            unitBox.SelectedItem = UnitUtil.Distance.Label;
+            numericUpDown1.Value = Settings.PercentOfDistance;
+        }
+        public void ThemeChanged(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme)
+        {
+            this.distanceBox.ThemeChanged(visualTheme);
+        }
+        public void UICultureChanged(System.Globalization.CultureInfo culture)
+        {
             linkLabel1.Text = Resources.Webpage;
             resetSettings.Text = StringResources.ResetAllSettings;
             groupBox1.Text = Resources.DistancesUsed;
@@ -44,15 +64,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             groupBox2.Text = Resources.HighScorePluginIntegration;
             label1.Text = StringResources.Use;
             label2.Text = Resources.ProcDistUsed;
-            foreach (Length.Units s in Enum.GetValues(typeof(Length.Units)))
-            {
-                unitBox.Items.Add(Length.Label(s));
-            }
-            unitBox.SelectedItem = UnitUtil.Distance.Label;
-            updateList();
-            numericUpDown1.Value = Settings.PercentOfDistance;
         }
-
         private void updateList()
         {
             distanceList.Items.Clear();

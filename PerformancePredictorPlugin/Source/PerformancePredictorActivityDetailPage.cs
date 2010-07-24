@@ -143,11 +143,15 @@ namespace SportTracksPerformancePredictorPlugin.Source
 
         public string Title
         {
-            get { return "Performance Predictor"; }
+            get { return Properties.Resources.ApplicationName; }
         }
 
-        public void UICultureChanged(CultureInfo culture)
+        public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
+            if (control != null)
+            {
+                control.UICultureChanged(culture);
+            }
             RefreshPage();
         }
 

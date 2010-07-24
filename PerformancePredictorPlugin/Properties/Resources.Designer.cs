@@ -106,6 +106,15 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Performance Predictor.
+        /// </summary>
+        internal static string ApplicationName {
+            get {
+                return ResourceManager.GetString("ApplicationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Distance used in models.
         /// </summary>
         internal static string DistancesUsed {
@@ -271,7 +280,7 @@ namespace SportTracksPerformancePredictorPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Distance must be a positive number..
+        ///   Looks up a localized string similar to Distance must be a positive number, optionally followed by the unit..
         /// </summary>
         internal static string PositiveNumber {
             get {

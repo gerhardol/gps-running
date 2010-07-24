@@ -80,7 +80,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
         {
             if (control != null)
             {
-                //control.ThemeChanged(visualTheme);
+                control.ThemeChanged(visualTheme);
             }
         }
 
@@ -93,7 +93,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
         {
             if (control != null)
             {
-                
+                control.UICultureChanged(culture);
             }
         }
 

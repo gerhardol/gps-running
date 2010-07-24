@@ -35,9 +35,17 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
     {
         private WebBrowser browser;
         private IList<IActivity> activities;
+        private ITheme m_visualTheme;
 
         public AccumulatedSummaryView(IList<IActivity> activities)
         {
+            m_visualTheme =
+#if ST_2_1
+                Plugin.GetApplication().VisualTheme;
+#else
+                Plugin.GetApplication().SystemPreferences.VisualTheme;
+#endif
+
             InitializeComponent();
             this.activities = activities;
             StringBuilder builder = new StringBuilder(10000);
@@ -50,11 +58,15 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
             Icon = System.Drawing.Icon.FromHandle(Properties.Resources.Image_32_AccumulatedSummary.GetHicon());
             ShowDialog();
         }
-
+        string getRGB(System.Drawing.Color col)
+        {
+            return String.Format("#{0,2:X}{1,2:X}{2,2:X}",col.R, col.G, col.B);
+        }
         private void makeReport(StringBuilder builder)
         {
-            String distMetric = UnitUtil.Distance.LabelAbbr;
-            builder.Append("<html><body><table border=\"1\" width=\"100%\">");
+            String distMetric = UnitUtil.Distance.LabelAbbr;//m_visualTheme.
+            builder.Append("<html><body style=\"background=" + getRGB(m_visualTheme.Control)
+                + "\"><table border=\"1\" width=\"100%\">");
             double totalDistance = getTotalDistance();
             addEntry(builder, UnitUtil.Distance.LabelAxis, UnitUtil.Distance.ToString(totalDistance));
             TimeSpan totalTime = getTotalTime();
@@ -290,7 +302,7 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
 
         private void addEntry(StringBuilder builder, string name, string value)
         {
-            builder.Append("<tr style=\"background:" + (even ? "#CFECEC" : "#FFF380") +
+            builder.Append("<tr style=\"background:" + (even ? getRGB(m_visualTheme.Window) : getRGB(m_visualTheme.Border)) +
                 "\"><td>" + name + "</td><td align=\"right\">"
                 + value + "</td></tr>");
             even = !even;

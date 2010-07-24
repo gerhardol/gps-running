@@ -43,7 +43,6 @@ namespace SportTracksUniqueRoutesPlugin.Source
         public UniqueRoutesSettingPageControl()
         {
             InitializeComponent();
-            updateLanguage();
             bandwidthBox.LostFocus += new EventHandler(bandwidthBox_LostFocus);
             percentageOff.LostFocus += new EventHandler(percentageOff_LostFocus);
             hasDirectionBox.LostFocus += new EventHandler(hasDirectionBox_LostFocus);
@@ -57,12 +56,13 @@ namespace SportTracksUniqueRoutesPlugin.Source
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(UniqueRoutesSettingPageControl_PropertyChanged);
         }
 
-        private void precedeControl(Control a, Control b)
+        public void ThemeChanged(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme)
         {
-            a.Location = new Point(b.Location.X - a.Size.Width - 5, a.Location.Y);
+            this.bandwidthBox.ThemeChanged(visualTheme);
+            this.ignoreBeginningBox.ThemeChanged(visualTheme);
+            this.ignoreEndBox.ThemeChanged(visualTheme);
         }
-
-        private void updateLanguage()
+        public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
             resetSettings.Text = StringResources.ResetAllSettings;
             linkLabel1.Text = Resources.Webpage;
@@ -81,6 +81,10 @@ namespace SportTracksUniqueRoutesPlugin.Source
             label4.Text = CommonResources.Text.LabelPercent;
             beginningLabel.Text = UnitUtil.Distance.Label;
             endLabel.Text = UnitUtil.Distance.Label;
+        }
+        private void precedeControl(Control a, Control b)
+        {
+            a.Location = new Point(b.Location.X - a.Size.Width - 5, a.Location.Y);
         }
 
         private void presentSettings()

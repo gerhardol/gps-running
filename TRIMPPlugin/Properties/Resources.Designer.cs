@@ -61,6 +61,15 @@ namespace SportTracksTRIMPPlugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TRIMP.
+        /// </summary>
+        internal static string ApplicationName {
+            get {
+                return ResourceManager.GetString("ApplicationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current rest heart rate: {0}. Maximal heart rate: {1}..
         /// </summary>
         internal static string CurrentRestAndMax {

@@ -46,21 +46,21 @@ namespace SportTracksUniqueRoutesPlugin.Source
         /// </summary>
         private void InitializeComponent()
         {
-            this.resetSettings = new System.Windows.Forms.Button();
+            this.resetSettings = new ZoneFiveSoftware.Common.Visuals.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.hasDirectionBox = new System.Windows.Forms.CheckBox();
             this.percentageOff = new System.Windows.Forms.NumericUpDown();
             this.metricLabel = new System.Windows.Forms.Label();
-            this.bandwidthBox = new System.Windows.Forms.TextBox();
+            this.bandwidthBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.endLabel = new System.Windows.Forms.Label();
-            this.ignoreEndBox = new System.Windows.Forms.TextBox();
+            this.ignoreEndBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.beginningLabel = new System.Windows.Forms.Label();
-            this.ignoreBeginningBox = new System.Windows.Forms.TextBox();
+            this.ignoreBeginningBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.percentageOff)).BeginInit();
@@ -74,7 +74,6 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.resetSettings.Size = new System.Drawing.Size(164, 23);
             this.resetSettings.TabIndex = 1;
             this.resetSettings.Text = "Reset all settings...";
-            this.resetSettings.UseVisualStyleBackColor = true;
             this.resetSettings.Click += new System.EventHandler(this.resetSettings_Click);
             // 
             // label1
@@ -250,22 +249,22 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
         #endregion
 
-        private System.Windows.Forms.Button resetSettings;
+        private ZoneFiveSoftware.Common.Visuals.Button resetSettings;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox hasDirectionBox;
         private System.Windows.Forms.NumericUpDown percentageOff;
         private System.Windows.Forms.Label metricLabel;
-        private System.Windows.Forms.TextBox bandwidthBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox bandwidthBox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label beginningLabel;
-        private System.Windows.Forms.TextBox ignoreBeginningBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox ignoreBeginningBox;
         private System.Windows.Forms.Label endLabel;
-        private System.Windows.Forms.TextBox ignoreEndBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox ignoreEndBox;
         private System.Windows.Forms.Label label8;
     }
 }

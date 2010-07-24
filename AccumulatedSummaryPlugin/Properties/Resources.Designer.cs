@@ -61,6 +61,15 @@ namespace SportTracksAccumulatedSummaryPlugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accumulated Summary.
+        /// </summary>
+        internal static string ApplicationName {
+            get {
+                return ResourceManager.GetString("ApplicationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Accumulated Summary of one activity.
         /// </summary>
         internal static string AS1 {
