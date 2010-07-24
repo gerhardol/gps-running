@@ -88,6 +88,15 @@ namespace SportTracksUniqueRoutesPlugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unique Routes.
+        /// </summary>
+        internal static string ApplicationName {
+            get {
+                return ResourceManager.GetString("ApplicationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bandwidth.
         /// </summary>
         internal static string Bandwidth {

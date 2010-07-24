@@ -62,7 +62,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
 
         public string PageName
         {
-            get { return "Performance Predictor"; }
+            get { return Properties.Resources.ApplicationName; }
         }
 
         public void ShowPage(string bookmark)
@@ -74,17 +74,25 @@ namespace SportTracksPerformancePredictorPlugin.Source
             get { return null; }
         }
 
-        public void ThemeChanged(ITheme visualTheme)
+        public void ThemeChanged(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme)
         {
+            if (control != null)
+            {
+                control.ThemeChanged(visualTheme);
+            }
         }
 
         public string Title
         {
-            get { return "Performance Predictor"; }
+            get { return Properties.Resources.ApplicationName; }
         }
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
+            if (control != null)
+            {
+                control.UICultureChanged(culture);
+            }
         }
 
         #endregion

@@ -47,45 +47,45 @@ namespace SportTracksHighScorePlugin.Source
         private void InitializeComponent()
         {
             this.distanceBox = new System.Windows.Forms.ListBox();
-            this.removeDistance = new System.Windows.Forms.Button();
-            this.distanceInputBox = new System.Windows.Forms.TextBox();
+            this.removeDistance = new ZoneFiveSoftware.Common.Visuals.Button();
+            this.distanceInputBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.timeBox = new System.Windows.Forms.ListBox();
-            this.addTime = new System.Windows.Forms.Button();
-            this.addDistance = new System.Windows.Forms.Button();
-            this.removeTime = new System.Windows.Forms.Button();
-            this.timeInputBox = new System.Windows.Forms.TextBox();
+            this.addTime = new ZoneFiveSoftware.Common.Visuals.Button();
+            this.addDistance = new ZoneFiveSoftware.Common.Visuals.Button();
+            this.removeTime = new ZoneFiveSoftware.Common.Visuals.Button();
+            this.timeInputBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.resetDistances = new System.Windows.Forms.Button();
+            this.resetDistances = new ZoneFiveSoftware.Common.Visuals.Button();
             this.distanceLabel = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.resetTimes = new System.Windows.Forms.Button();
+            this.resetTimes = new ZoneFiveSoftware.Common.Visuals.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.resetElevations = new System.Windows.Forms.Button();
+            this.resetElevations = new ZoneFiveSoftware.Common.Visuals.Button();
             this.elevationLabel = new System.Windows.Forms.Label();
-            this.elevationInputBox = new System.Windows.Forms.TextBox();
-            this.removeElevation = new System.Windows.Forms.Button();
-            this.addElevation = new System.Windows.Forms.Button();
+            this.elevationInputBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.removeElevation = new ZoneFiveSoftware.Common.Visuals.Button();
+            this.addElevation = new ZoneFiveSoftware.Common.Visuals.Button();
             this.elevationBox = new System.Windows.Forms.ListBox();
-            this.resetSettings = new System.Windows.Forms.Button();
+            this.resetSettings = new ZoneFiveSoftware.Common.Visuals.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.resetPulseZone = new System.Windows.Forms.Button();
+            this.resetPulseZone = new ZoneFiveSoftware.Common.Visuals.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.maxPulseBox = new System.Windows.Forms.TextBox();
-            this.minPulseBox = new System.Windows.Forms.TextBox();
-            this.removePulse = new System.Windows.Forms.Button();
-            this.addPulse = new System.Windows.Forms.Button();
+            this.maxPulseBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.minPulseBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.removePulse = new ZoneFiveSoftware.Common.Visuals.Button();
+            this.addPulse = new ZoneFiveSoftware.Common.Visuals.Button();
             this.pulseBox = new System.Windows.Forms.ListBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.resetPaceZone = new System.Windows.Forms.Button();
+            this.resetPaceZone = new ZoneFiveSoftware.Common.Visuals.Button();
             this.paceTypeBox = new System.Windows.Forms.ComboBox();
             this.paceLabelTo = new System.Windows.Forms.Label();
             this.paceLabelFrom = new System.Windows.Forms.Label();
-            this.maxSpeedBox = new System.Windows.Forms.TextBox();
-            this.minSpeedBox = new System.Windows.Forms.TextBox();
-            this.removePace = new System.Windows.Forms.Button();
-            this.addPace = new System.Windows.Forms.Button();
+            this.maxSpeedBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.minSpeedBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.removePace = new ZoneFiveSoftware.Common.Visuals.Button();
+            this.addPace = new ZoneFiveSoftware.Common.Visuals.Button();
             this.speedBox = new System.Windows.Forms.ListBox();
             this.ignoreManualBox = new System.Windows.Forms.CheckBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
@@ -112,7 +112,6 @@ namespace SportTracksHighScorePlugin.Source
             this.removeDistance.Size = new System.Drawing.Size(111, 23);
             this.removeDistance.TabIndex = 6;
             this.removeDistance.Text = "Remove --->";
-            this.removeDistance.UseVisualStyleBackColor = true;
             this.removeDistance.Click += new System.EventHandler(this.removeDistance_Click);
             // 
             // distanceInputBox
@@ -139,7 +138,6 @@ namespace SportTracksHighScorePlugin.Source
             this.addTime.Size = new System.Drawing.Size(111, 23);
             this.addTime.TabIndex = 9;
             this.addTime.Text = "<--- Add";
-            this.addTime.UseVisualStyleBackColor = true;
             this.addTime.Click += new System.EventHandler(this.addTime_Click);
             // 
             // addDistance
@@ -149,7 +147,6 @@ namespace SportTracksHighScorePlugin.Source
             this.addDistance.Size = new System.Drawing.Size(111, 23);
             this.addDistance.TabIndex = 3;
             this.addDistance.Text = "<--- Add";
-            this.addDistance.UseVisualStyleBackColor = true;
             this.addDistance.Click += new System.EventHandler(this.addDistance_Click);
             // 
             // removeTime
@@ -159,7 +156,6 @@ namespace SportTracksHighScorePlugin.Source
             this.removeTime.Size = new System.Drawing.Size(111, 23);
             this.removeTime.TabIndex = 11;
             this.removeTime.Text = "Remove --->";
-            this.removeTime.UseVisualStyleBackColor = true;
             this.removeTime.Click += new System.EventHandler(this.removeTime_Click);
             // 
             // timeInputBox
@@ -201,7 +197,6 @@ namespace SportTracksHighScorePlugin.Source
             this.resetDistances.Size = new System.Drawing.Size(103, 23);
             this.resetDistances.TabIndex = 7;
             this.resetDistances.Text = "Reset...";
-            this.resetDistances.UseVisualStyleBackColor = true;
             this.resetDistances.Click += new System.EventHandler(this.resetDistances_Click);
             // 
             // distanceLabel
@@ -234,7 +229,6 @@ namespace SportTracksHighScorePlugin.Source
             this.resetTimes.Size = new System.Drawing.Size(103, 23);
             this.resetTimes.TabIndex = 12;
             this.resetTimes.Text = "Reset...";
-            this.resetTimes.UseVisualStyleBackColor = true;
             this.resetTimes.Click += new System.EventHandler(this.resetTimes_Click);
             // 
             // groupBox3
@@ -259,7 +253,6 @@ namespace SportTracksHighScorePlugin.Source
             this.resetElevations.Size = new System.Drawing.Size(103, 23);
             this.resetElevations.TabIndex = 17;
             this.resetElevations.Text = "Reset...";
-            this.resetElevations.UseVisualStyleBackColor = true;
             this.resetElevations.Click += new System.EventHandler(this.resetElevations_Click);
             // 
             // elevationLabel
@@ -285,7 +278,6 @@ namespace SportTracksHighScorePlugin.Source
             this.removeElevation.Size = new System.Drawing.Size(111, 23);
             this.removeElevation.TabIndex = 16;
             this.removeElevation.Text = "Remove --->";
-            this.removeElevation.UseVisualStyleBackColor = true;
             this.removeElevation.Click += new System.EventHandler(this.removeElevation_Click);
             // 
             // addElevation
@@ -295,7 +287,6 @@ namespace SportTracksHighScorePlugin.Source
             this.addElevation.Size = new System.Drawing.Size(111, 23);
             this.addElevation.TabIndex = 14;
             this.addElevation.Text = "<--- Add";
-            this.addElevation.UseVisualStyleBackColor = true;
             this.addElevation.Click += new System.EventHandler(this.addElevation_Click);
             // 
             // elevationBox
@@ -314,7 +305,6 @@ namespace SportTracksHighScorePlugin.Source
             this.resetSettings.Size = new System.Drawing.Size(188, 23);
             this.resetSettings.TabIndex = 1;
             this.resetSettings.Text = "Reset all settings...";
-            this.resetSettings.UseVisualStyleBackColor = true;
             this.resetSettings.Click += new System.EventHandler(this.resetSettings_Click);
             // 
             // groupBox4
@@ -341,7 +331,6 @@ namespace SportTracksHighScorePlugin.Source
             this.resetPulseZone.Size = new System.Drawing.Size(103, 23);
             this.resetPulseZone.TabIndex = 23;
             this.resetPulseZone.Text = "Reset...";
-            this.resetPulseZone.UseVisualStyleBackColor = true;
             this.resetPulseZone.Click += new System.EventHandler(this.resetPulseZone_Click);
             // 
             // label2
@@ -385,7 +374,6 @@ namespace SportTracksHighScorePlugin.Source
             this.removePulse.Size = new System.Drawing.Size(111, 23);
             this.removePulse.TabIndex = 22;
             this.removePulse.Text = "Remove --->";
-            this.removePulse.UseVisualStyleBackColor = true;
             this.removePulse.Click += new System.EventHandler(this.removePulse_Click);
             // 
             // addPulse
@@ -395,7 +383,6 @@ namespace SportTracksHighScorePlugin.Source
             this.addPulse.Size = new System.Drawing.Size(111, 23);
             this.addPulse.TabIndex = 20;
             this.addPulse.Text = "<--- Add";
-            this.addPulse.UseVisualStyleBackColor = true;
             this.addPulse.Click += new System.EventHandler(this.addPulse_Click);
             // 
             // pulseBox
@@ -432,7 +419,6 @@ namespace SportTracksHighScorePlugin.Source
             this.resetPaceZone.Size = new System.Drawing.Size(103, 23);
             this.resetPaceZone.TabIndex = 30;
             this.resetPaceZone.Text = "Reset...";
-            this.resetPaceZone.UseVisualStyleBackColor = true;
             this.resetPaceZone.Click += new System.EventHandler(this.resetPaceZone_Click);
             // 
             // paceTypeBox
@@ -484,7 +470,6 @@ namespace SportTracksHighScorePlugin.Source
             this.removePace.Size = new System.Drawing.Size(98, 23);
             this.removePace.TabIndex = 29;
             this.removePace.Text = "Remove --->";
-            this.removePace.UseVisualStyleBackColor = true;
             this.removePace.Click += new System.EventHandler(this.removePace_Click);
             // 
             // addPace
@@ -494,7 +479,6 @@ namespace SportTracksHighScorePlugin.Source
             this.addPace.Size = new System.Drawing.Size(98, 23);
             this.addPace.TabIndex = 27;
             this.addPace.Text = "<--- Add";
-            this.addPace.UseVisualStyleBackColor = true;
             this.addPace.Click += new System.EventHandler(this.addPace_Click);
             // 
             // speedBox
@@ -563,46 +547,46 @@ namespace SportTracksHighScorePlugin.Source
         #endregion
 
         private System.Windows.Forms.ListBox distanceBox;
-        private System.Windows.Forms.Button removeDistance;
-        private System.Windows.Forms.TextBox distanceInputBox;
+        private ZoneFiveSoftware.Common.Visuals.Button removeDistance;
+        private ZoneFiveSoftware.Common.Visuals.TextBox distanceInputBox;
         private System.Windows.Forms.ListBox timeBox;
-        private System.Windows.Forms.Button addTime;
-        private System.Windows.Forms.Button addDistance;
-        private System.Windows.Forms.Button removeTime;
-        private System.Windows.Forms.TextBox timeInputBox;
+        private ZoneFiveSoftware.Common.Visuals.Button addTime;
+        private ZoneFiveSoftware.Common.Visuals.Button addDistance;
+        private ZoneFiveSoftware.Common.Visuals.Button removeTime;
+        private ZoneFiveSoftware.Common.Visuals.TextBox timeInputBox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button removeElevation;
-        private System.Windows.Forms.Button addElevation;
+        private ZoneFiveSoftware.Common.Visuals.Button removeElevation;
+        private ZoneFiveSoftware.Common.Visuals.Button addElevation;
         private System.Windows.Forms.ListBox elevationBox;
-        private System.Windows.Forms.TextBox elevationInputBox;
-        private System.Windows.Forms.Button resetSettings;
+        private ZoneFiveSoftware.Common.Visuals.TextBox elevationInputBox;
+        private ZoneFiveSoftware.Common.Visuals.Button resetSettings;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox maxPulseBox;
-        private System.Windows.Forms.TextBox minPulseBox;
-        private System.Windows.Forms.Button removePulse;
-        private System.Windows.Forms.Button addPulse;
+        private ZoneFiveSoftware.Common.Visuals.TextBox maxPulseBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox minPulseBox;
+        private ZoneFiveSoftware.Common.Visuals.Button removePulse;
+        private ZoneFiveSoftware.Common.Visuals.Button addPulse;
         private System.Windows.Forms.ListBox pulseBox;
         private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.TextBox maxSpeedBox;
-        private System.Windows.Forms.TextBox minSpeedBox;
-        private System.Windows.Forms.Button removePace;
-        private System.Windows.Forms.Button addPace;
+        private ZoneFiveSoftware.Common.Visuals.TextBox maxSpeedBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox minSpeedBox;
+        private ZoneFiveSoftware.Common.Visuals.Button removePace;
+        private ZoneFiveSoftware.Common.Visuals.Button addPace;
         private System.Windows.Forms.ListBox speedBox;
         private System.Windows.Forms.Label paceLabelTo;
         private System.Windows.Forms.Label paceLabelFrom;
         private System.Windows.Forms.ComboBox paceTypeBox;
         private System.Windows.Forms.Label distanceLabel;
         private System.Windows.Forms.Label elevationLabel;
-        private System.Windows.Forms.Button resetDistances;
-        private System.Windows.Forms.Button resetTimes;
-        private System.Windows.Forms.Button resetElevations;
-        private System.Windows.Forms.Button resetPulseZone;
-        private System.Windows.Forms.Button resetPaceZone;
+        private ZoneFiveSoftware.Common.Visuals.Button resetDistances;
+        private ZoneFiveSoftware.Common.Visuals.Button resetTimes;
+        private ZoneFiveSoftware.Common.Visuals.Button resetElevations;
+        private ZoneFiveSoftware.Common.Visuals.Button resetPulseZone;
+        private ZoneFiveSoftware.Common.Visuals.Button resetPaceZone;
         private System.Windows.Forms.CheckBox ignoreManualBox;
         private System.Windows.Forms.LinkLabel linkLabel1;
     }

@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ApplicationName" xml:space="preserve">
+    <value>TRIMP</value>
+    <comment>Name of application, displayed in GUI</comment>
+  </data>
   <data name="CurrentRestAndMax" xml:space="preserve">
     <value>Current rest heart rate: {0}. Maximal heart rate: {1}.</value>
   </data>

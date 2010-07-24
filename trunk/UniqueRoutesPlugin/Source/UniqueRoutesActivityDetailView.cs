@@ -134,7 +134,6 @@ namespace SportTracksUniqueRoutesPlugin.Source
                 pluginBox.Enabled = false;
                 doIt.Enabled = false;
             }
-            correctLanguage();
             doUpdate = false;
         }
 
@@ -263,26 +262,10 @@ namespace SportTracksUniqueRoutesPlugin.Source
             //RefreshPage();
             m_visualTheme = visualTheme;
             summaryList.ThemeChanged(visualTheme);
-#if !ST_2_1
-            this.splitContainer1.Panel1.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
-            this.splitContainer1.Panel2.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
-#endif
+            this.splitContainer1.Panel1.BackColor = visualTheme.Control;
+            this.splitContainer1.Panel2.BackColor = visualTheme.Control;
         }
-        private void correctUI(IList<Control> comp)
-        {
-            Control prev = null;
-            foreach (Control c in comp)
-            {
-                if (prev != null)
-                {
-                    c.Location = new Point(prev.Location.X + prev.Size.Width,
-                                           prev.Location.Y);
-                }
-                prev = c;
-            }
-        }
-
-        public void correctLanguage()
+        public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
             //Some labels depends on the activity
             //summaryLabel, CommonStretches column, setTable()
@@ -305,7 +288,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             selectedBox.Items.Add(Resources.All);
             selectedBox.Items.Add(StringResources.Selected);
             labelLaps.Text = CommonResources.Text.LabelSplits;
-            activeBox.Items.Add(Resources .All);
+            activeBox.Items.Add(Resources.All);
             activeBox.Items.Add(StringResources.Active);
             speedBox.Items.Add(CommonResources.Text.LabelPace);
             speedBox.Items.Add(CommonResources.Text.LabelSpeed);
@@ -316,6 +299,20 @@ namespace SportTracksUniqueRoutesPlugin.Source
                                         sendLabel2.Location.Y);
             labelShow.Location = new Point(activeBox.Location.X - 5 - labelShow.Size.Width,
                                     labelShow.Location.Y);
+        }
+
+        private void correctUI(IList<Control> comp)
+        {
+            Control prev = null;
+            foreach (Control c in comp)
+            {
+                if (prev != null)
+                {
+                    c.Location = new Point(prev.Location.X + prev.Size.Width,
+                                           prev.Location.Y);
+                }
+                prev = c;
+            }
         }
 
         private void setCategoryLabel()

@@ -22,6 +22,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
+using System.Globalization;
 
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Chart;
@@ -170,16 +171,6 @@ namespace SportTracksOverlayPlugin.Source
         {
             InitializeComponent();
 
-            labelActivity.Text = StringResources.Activities;
-            labelXaxis.Text = StringResources.XAxis + ":";
-            labelYaxis.Text = StringResources.YAxis + ":";
-            int max = Math.Max(labelXaxis.Location.X + labelXaxis.Size.Width,
-                                labelYaxis.Location.X + labelYaxis.Size.Width) + 5;
-            useTime.Location = new Point(max, labelXaxis.Location.Y);
-            correctUI(new Control[] { useTime, useDistance });
-            heartRate.Location = new Point(max, labelYaxis.Location.Y);
-            correctUI(new Control[] { heartRate, pace, speed, power, cadence, elevation });
-
 			Font fCategory = categoryAverage.Font;
 			Font fMoving = movingAverage.Font;
 			categoryAverage.Font = new Font( categoryAverage.Font, FontStyle.Bold );
@@ -197,18 +188,6 @@ namespace SportTracksOverlayPlugin.Source
             series2boxes = new Dictionary<ChartDataSeries, CheckBox>();
             SizeChanged += new EventHandler(OverlayView_SizeChanged);
             Activities = activities;
-
-            useTime.Text = CommonResources.Text.LabelTime;
-            useDistance.Text = CommonResources.Text.LabelDistance;
-            heartRate.Text = CommonResources.Text.LabelHeartRate;
-            pace.Text = CommonResources.Text.LabelPace;
-            speed.Text = CommonResources.Text.LabelSpeed;
-            power.Text = CommonResources.Text.LabelPower;
-            cadence.Text = CommonResources.Text.LabelCadence;
-            elevation.Text = CommonResources.Text.LabelElevation;
-            categoryAverage.Text = Resources.BCA;
-            movingAverage.Text = Resources.BMA;
-			labelAOP.Text = Resources.AOP;
 
             heartRate.Checked = Settings.ShowHeartRate;
             pace.Checked = Settings.ShowPace;
@@ -240,6 +219,21 @@ namespace SportTracksOverlayPlugin.Source
             updateChart();
             if (showDialog)
             {
+                //Theme and Culture must be set manually
+                this.ThemeChanged(
+#if ST_2_1
+                Plugin.GetApplication().VisualTheme
+#else
+                Plugin.GetApplication().SystemPreferences.VisualTheme
+#endif
+                                  );
+                this.UICultureChanged(
+#if ST_2_1
+                new System.Globalization.CultureInfo("en")
+#else
+                Plugin.GetApplication().SystemPreferences.UICulture
+#endif
+                                      );
                 popupForm = new Form();
                 popupForm.Controls.Add(this);
                 popupForm.Size = Settings.WindowSize;
@@ -265,25 +259,51 @@ namespace SportTracksOverlayPlugin.Source
         {
             //RefreshPage();
             //m_visualTheme = visualTheme;
-            //summaryList.ThemeChanged(visualTheme);
 #if !ST_2_1
             this.splitContainer1.Panel1.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
             this.splitContainer1.Panel2.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
 #endif
+            this.chart.ThemeChanged(visualTheme);
+            this.maBox.ThemeChanged(visualTheme);
         }
+        public void UICultureChanged(CultureInfo culture)
+        {
+            labelActivity.Text = StringResources.Activities;
+            labelXaxis.Text = StringResources.XAxis + ":";
+            labelYaxis.Text = StringResources.YAxis + ":";
+            useTime.Text = CommonResources.Text.LabelTime;
+            useDistance.Text = CommonResources.Text.LabelDistance;
+            heartRate.Text = CommonResources.Text.LabelHeartRate;
+            pace.Text = CommonResources.Text.LabelPace;
+            speed.Text = CommonResources.Text.LabelSpeed;
+            power.Text = CommonResources.Text.LabelPower;
+            cadence.Text = CommonResources.Text.LabelCadence;
+            elevation.Text = CommonResources.Text.LabelElevation;
+            categoryAverage.Text = Resources.BCA;
+            movingAverage.Text = Resources.BMA;
+            labelAOP.Text = Resources.AOP;
 
+            int max = Math.Max(labelXaxis.Location.X + labelXaxis.Size.Width,
+                                labelYaxis.Location.X + labelYaxis.Size.Width) + 5;
+            useTime.Location = new Point(max, labelXaxis.Location.Y);
+            correctUI(new Control[] { useTime, useDistance });
+            heartRate.Location = new Point(max, labelYaxis.Location.Y);
+            correctUI(new Control[] { heartRate, pace, speed, power, cadence, elevation });
+
+            updateLabels();
+        }
         private void correctUI(IList<Control> comp)
         {
-            //Control prev = null;
-            //foreach (Control c in comp)
-            //{
-            //    if (prev != null)
-            //    {
-            //        c.Location = new Point(prev.Location.X + prev.Size.Width,
-            //                               prev.Location.Y);
-            //    }
-            //    prev = c;
-            //}
+            Control prev = null;
+            foreach (Control c in comp)
+            {
+                if (prev != null)
+                {
+                    c.Location = new Point(prev.Location.X + prev.Size.Width,
+                                           prev.Location.Y);
+                }
+                prev = c;
+            }
         }
         private void setSize()
         {
@@ -859,7 +879,6 @@ namespace SportTracksOverlayPlugin.Source
                     double value = UnitUtil.Time.Parse(maBox.Text);
                     if (value < 0) { throw new Exception(); }
                     Settings.MovingAverageTime = value;
-                    maBox.Text = UnitUtil.Time.ToString(value, "mm:ss");
                 }
                 else
                 {
@@ -1025,8 +1044,6 @@ namespace SportTracksOverlayPlugin.Source
 				maBox.Text = UnitUtil.Distance.ToString( Settings.MovingAverageLength, "u" );
 			}
             maBox.Enabled = Settings.ShowMovingAverage;
-
-
         }
 
         private void movingAverage_CheckedChanged(object sender, EventArgs e)

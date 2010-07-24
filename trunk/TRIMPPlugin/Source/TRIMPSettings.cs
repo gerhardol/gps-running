@@ -53,21 +53,6 @@ namespace SportTracksTRIMPPlugin.Source
         public TRIMPSettings()
         {
             InitializeComponent();
-            resetSettings.Text = StringResources.ResetAllSettings;
-            label1.Text = StringResources.NumberOfZones;
-            label2.Text = StringResources.StartZone;
-            label4.Text = StringResources.Use;
-            useMaxHR.Text = CommonResources.Text.LabelPercentOfMax;
-            useHRReserve.Text = CommonResources.Text.LabelPercentOfReserve;
-            dataGridView1.Columns[0].HeaderText = CommonResources.Text.LabelPercentOfMax; //Placeholder, set in fillTableAndGraph()
-            dataGridView1.Columns[1].HeaderText = UnitUtil.HeartRate.LabelAbbr2;
-            dataGridView1.Columns[2].HeaderText = StringResources.Factor;
-            correctUI(new Control[] { label4, useMaxHR });
-            label1.Location = new Point(numberOfZones.Location.X - label1.Size.Width - 5,
-                                        label1.Location.Y);
-            label2.Location = new Point(numberOfZones.Location.X - label2.Size.Width - 5,
-                                        label2.Location.Y);
-            useHRReserve.Location = new Point(useMaxHR.Location.X, useHRReserve.Location.Y);
             if (Settings.UseMaxHR)
             {
                 useMaxHR.Checked = true;
@@ -93,6 +78,30 @@ namespace SportTracksTRIMPPlugin.Source
             }
         }
 
+        public void ThemeChanged(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme)
+        {
+            chartBase.ThemeChanged(visualTheme);
+        }
+        public void UICultureChanged(System.Globalization.CultureInfo culture)
+        {
+            resetSettings.Text = StringResources.ResetAllSettings;
+            label1.Text = StringResources.NumberOfZones;
+            label2.Text = StringResources.StartZone;
+            label4.Text = StringResources.Use;
+            useMaxHR.Text = CommonResources.Text.LabelPercentOfMax;
+            useHRReserve.Text = CommonResources.Text.LabelPercentOfReserve;
+            this.linkLabel1.Text = "TRIMP plugin webpage";
+
+            dataGridView1.Columns[0].HeaderText = CommonResources.Text.LabelPercentOfMax; //Placeholder, set in fillTableAndGraph()
+            dataGridView1.Columns[1].HeaderText = UnitUtil.HeartRate.LabelAbbr2;
+            dataGridView1.Columns[2].HeaderText = StringResources.Factor;
+            correctUI(new Control[] { label4, useMaxHR });
+            label1.Location = new Point(numberOfZones.Location.X - label1.Size.Width - 5,
+                                        label1.Location.Y);
+            label2.Location = new Point(numberOfZones.Location.X - label2.Size.Width - 5,
+                                        label2.Location.Y);
+            useHRReserve.Location = new Point(useMaxHR.Location.X, useHRReserve.Location.Y);
+        }
         private bool updating;
 
         private void reset()

@@ -162,6 +162,10 @@ namespace SportTracksOverlayPlugin.Source
 
         public void UICultureChanged(CultureInfo culture)
         {
+            if (control != null)
+            {
+                control.UICultureChanged(culture);
+            }
             RefreshPage();
         }
 

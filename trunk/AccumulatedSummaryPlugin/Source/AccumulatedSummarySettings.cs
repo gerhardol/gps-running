@@ -33,9 +33,15 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
         public AccumulatedSummarySettings()
         {
             InitializeComponent();
-            linkLabel1.Text = Resources.Webpage;
         }
 
+        public void ThemeChanged(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme)
+        {
+        }
+        public void UICultureChanged(System.Globalization.CultureInfo culture)
+        {
+            linkLabel1.Text = Resources.Webpage;
+        }
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(new ProcessStartInfo("IExplore",

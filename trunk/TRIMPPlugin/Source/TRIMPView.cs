@@ -78,7 +78,6 @@ namespace SportTracksTRIMPPlugin.Source
         public TRIMPView(IList<IActivity> activities, bool showDialog)
         {
             InitializeComponent();            
-            correctLanguage();
             this.activities = activities;
             this.showDialog = showDialog;
             graphTab = tabControl1.TabPages[1];
@@ -87,6 +86,21 @@ namespace SportTracksTRIMPPlugin.Source
             contextMenuTable.ItemClicked += new ToolStripItemClickedEventHandler(contextMenuTable_Click);
             if (showDialog)
             {
+                //Theme and Culture must be set manually
+                this.ThemeChanged(
+#if ST_2_1
+                Plugin.GetApplication().VisualTheme
+#else
+                Plugin.GetApplication().SystemPreferences.VisualTheme
+#endif
+                                 );
+                this.UICultureChanged(
+#if ST_2_1
+                new System.Globalization.CultureInfo("en")
+#else
+                Plugin.GetApplication().SystemPreferences.UICulture
+#endif
+                                     );
                 form = new Form();
                 form.Controls.Add(this);
                 form.Size = Settings.WindowSize;
@@ -111,21 +125,34 @@ namespace SportTracksTRIMPPlugin.Source
             setSize();
         }
 
-        private void correctLanguage()
+        public void ThemeChanged(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme)
         {
-            tabControl1.TabPages[0].Text = Resources.Summary;
-            tabControl1.TabPages[1].Text = StringResources.Graph;
-            if (Settings.UseMaxHR)
+            this.chartBase.ThemeChanged(visualTheme);
+            this.tableChart.ThemeChanged(visualTheme);
+            this.BackColor = visualTheme.Control;
+        }
+        public void UICultureChanged(System.Globalization.CultureInfo culture)
+        {
+            this.copyTableToClipboardToolStripMenuItem.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
+            if (null != tabControl1 && 2 <= tabControl1.TabCount)
             {
-                dataGridView1.Columns[0].HeaderText = CommonResources.Text.LabelZone + " (" + CommonResources.Text.LabelPercentOfMax + ")";
+                tabControl1.TabPages[0].Text = Resources.Summary;
+                tabControl1.TabPages[1].Text = StringResources.Graph;
             }
-            else
+            if (null != dataGridView1 && dataGridView1.ColumnCount > 0)
             {
-                dataGridView1.Columns[0].HeaderText = CommonResources.Text.LabelZone + " (" + CommonResources.Text.LabelPercentOfReserve + ")"; ;
-            }
+                if (Settings.UseMaxHR)
+                {
+                    dataGridView1.Columns[0].HeaderText = CommonResources.Text.LabelZone + " (" + CommonResources.Text.LabelPercentOfMax + ")";
+                }
+                else
+                {
+                    dataGridView1.Columns[0].HeaderText = CommonResources.Text.LabelZone + " (" + CommonResources.Text.LabelPercentOfReserve + ")"; ;
+                }
 
-            dataGridView1.Columns[1].HeaderText = UnitUtil.HeartRate.LabelAxis;
-            dataGridView1.Columns[2].HeaderText = UnitUtil.Time.LabelAxis;
+                dataGridView1.Columns[1].HeaderText = UnitUtil.HeartRate.LabelAxis;
+                dataGridView1.Columns[2].HeaderText = UnitUtil.Time.LabelAxis;
+            }
         }
 
         private void contextMenuTable_Click(object sender, EventArgs e)

@@ -66,7 +66,7 @@ namespace SportTracksOverlayPlugin.Source
             this.elevation = new System.Windows.Forms.CheckBox();
             this.categoryAverage = new System.Windows.Forms.CheckBox();
             this.movingAverage = new System.Windows.Forms.CheckBox();
-            this.maBox = new System.Windows.Forms.TextBox();
+            this.maBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.toolTipMAbox = new System.Windows.Forms.ToolTip(this.components);
             this.labelAOP = new System.Windows.Forms.Label();
             this.btnSaveImage = new ZoneFiveSoftware.Common.Visuals.Button();
@@ -398,7 +398,7 @@ namespace SportTracksOverlayPlugin.Source
 
         private System.Windows.Forms.CheckBox categoryAverage;
         private System.Windows.Forms.CheckBox movingAverage;
-        private System.Windows.Forms.TextBox maBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox maBox;
         private System.Windows.Forms.ToolTip toolTipMAbox;
      }
 }

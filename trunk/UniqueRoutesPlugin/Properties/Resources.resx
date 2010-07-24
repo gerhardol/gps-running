@@ -180,4 +180,8 @@
     <value>all</value>
     <comment>NoLongerVisible</comment>
   </data>
+  <data name="ApplicationName" xml:space="preserve">
+    <value>Unique Routes</value>
+    <comment>Name of application, displayed in GUI</comment>
+  </data>
 </root>

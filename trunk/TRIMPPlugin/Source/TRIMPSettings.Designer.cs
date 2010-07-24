@@ -59,7 +59,7 @@ namespace SportTracksTRIMPPlugin.Source
             this.label2 = new System.Windows.Forms.Label();
             this.startZone = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
-            this.resetSettings = new System.Windows.Forms.Button();
+            this.resetSettings = new ZoneFiveSoftware.Common.Visuals.Button();
             this.chartBase = new ZoneFiveSoftware.Common.Visuals.Chart.LineChart();
             this.useMaxHR = new System.Windows.Forms.RadioButton();
             this.useHRReserve = new System.Windows.Forms.RadioButton();
@@ -207,7 +207,6 @@ namespace SportTracksTRIMPPlugin.Source
             this.resetSettings.Size = new System.Drawing.Size(131, 23);
             this.resetSettings.TabIndex = 9;
             this.resetSettings.Text = "Reset all settings...";
-            this.resetSettings.UseVisualStyleBackColor = true;
             this.resetSettings.Click += new System.EventHandler(this.resetSettings_Click_1);
             // 
             // chartBase
@@ -289,7 +288,7 @@ namespace SportTracksTRIMPPlugin.Source
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown startZone;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button resetSettings;
+        private ZoneFiveSoftware.Common.Visuals.Button resetSettings;
         private ZoneFiveSoftware.Common.Visuals.Chart.LineChart chartBase;
         private System.Windows.Forms.DataGridViewTextBoxColumn Zone;
         private System.Windows.Forms.DataGridViewTextBoxColumn HeartRate;

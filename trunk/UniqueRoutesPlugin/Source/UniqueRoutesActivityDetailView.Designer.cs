@@ -55,7 +55,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.activeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sendToMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.doIt = new System.Windows.Forms.Button();
+            this.doIt = new ZoneFiveSoftware.Common.Visuals.Button();
             this.speedBox = new System.Windows.Forms.ComboBox();
             this.sendResultToLabel1 = new System.Windows.Forms.Label();
             this.pluginBox = new System.Windows.Forms.ComboBox();
@@ -63,7 +63,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.sendLabel2 = new System.Windows.Forms.Label();
             this.labelShow = new System.Windows.Forms.Label();
             this.categoryLabel = new System.Windows.Forms.Label();
-            this.changeCategory = new System.Windows.Forms.Button();
+            this.changeCategory = new ZoneFiveSoftware.Common.Visuals.Button();
             this.activeBox = new System.Windows.Forms.ComboBox();
             this.labelLaps = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -163,7 +163,6 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.doIt.Size = new System.Drawing.Size(56, 21);
             this.doIt.TabIndex = 3;
             this.doIt.Text = "Do it!";
-            this.doIt.UseVisualStyleBackColor = true;
             this.doIt.Visible = false;
             this.doIt.Click += new System.EventHandler(this.sendActivityButton_Click);
             // 
@@ -243,7 +242,6 @@ namespace SportTracksUniqueRoutesPlugin.Source
             this.changeCategory.Size = new System.Drawing.Size(97, 23);
             this.changeCategory.TabIndex = 13;
             this.changeCategory.Text = "Change category";
-            this.changeCategory.UseVisualStyleBackColor = true;
             this.changeCategory.Click += new System.EventHandler(this.changeCategory_Click);
             // 
             // activeBox
@@ -323,7 +321,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
         private System.Windows.Forms.Label summaryLabel;
         private ZoneFiveSoftware.Common.Visuals.TreeList summaryList;
         private System.Windows.Forms.ProgressBar progressBar;
-        private System.Windows.Forms.Button doIt;
+        private ZoneFiveSoftware.Common.Visuals.Button doIt;
         private System.Windows.Forms.ComboBox speedBox;
         private System.Windows.Forms.ContextMenuStrip contextMenu;
         private System.Windows.Forms.ToolStripMenuItem copyTable;
@@ -336,7 +334,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
         private System.Windows.Forms.Label sendLabel2;
         private System.Windows.Forms.Label labelShow;
         private System.Windows.Forms.Label categoryLabel;
-        private System.Windows.Forms.Button changeCategory;
+        private ZoneFiveSoftware.Common.Visuals.Button changeCategory;
         private System.Windows.Forms.ComboBox activeBox;
         private System.Windows.Forms.Label labelLaps;
         private System.Windows.Forms.SplitContainer splitContainer1;
