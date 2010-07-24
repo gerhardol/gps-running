@@ -161,7 +161,7 @@
     <value>Include only activities in category '{0}' in search</value>
   </data>
   <data name="PluginApplicationError" xml:space="preserve">
-    <value>An error occured in applying the {0} plugin. Low-level error message: {1}</value>
+    <value>An error occurred in applying the {0} plugin. Low-level error message: {1}</value>
   </data>
   <data name="RoutesHaveDirection" xml:space="preserve">
     <value>Routes have direction</value>
