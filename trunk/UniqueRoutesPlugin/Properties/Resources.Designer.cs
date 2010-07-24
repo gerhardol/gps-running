@@ -214,7 +214,7 @@ namespace SportTracksUniqueRoutesPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error occured in applying the {0} plugin. Low-level error message: {1}.
+        ///   Looks up a localized string similar to An error occurred in applying the {0} plugin. Low-level error message: {1}.
         /// </summary>
         internal static string PluginApplicationError {
             get {
