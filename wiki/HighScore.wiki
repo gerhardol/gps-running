@@ -8,8 +8,8 @@ Have you ever wondered how fast your fastest 5k really was? Most often your fast
 You may think what is actually involved in solving this problem with the 5k race. Well in the case of finding the fastest 5k during one of your half marathon it may not suffice just to look at e.g. the first 5k of the half marathon since the fastest 5k may actually be in an interval that do not start at the beginning of the race but e.g. from 12.2k to 17.2k. So you see, this would indeed by a quite tedious task to find this these results in SportTracks by hand, and I suspect that no one would actually do. 
 
 High Score plugin solves these types of problems. Actually the plugin is more general than just being able to solve the 5k problem we started out by looking at, it can actually tackle a range of problems similar to the 5k problem. What identify these problems is that they can be formulated in one of these two forms:
-  * Find activity with <b>minimal</b> <i>X</i> per <i>some specified Y</i>.</li>
-  * Find activity with <b>maximal</b> <i>X</i> per <i>some specified Y</i>.</li>
+  * Find activity with <b>minimal</b> <i>X</i> per <i>some specified Y</i>.
+  * Find activity with <b>maximal</b> <i>X</i> per <i>some specified Y</i>.
 
 Here <i>X</i> can be time, distance, and elevation, and <i>Y</i> may be time, distance, elevation, heart rate zone, pace/speed zone, and heart rate zone and pace/speed zone.
 
