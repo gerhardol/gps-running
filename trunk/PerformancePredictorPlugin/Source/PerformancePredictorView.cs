@@ -206,9 +206,20 @@ namespace SportTracksPerformancePredictorPlugin.Source
             //m_visualTheme = visualTheme;
             this.chart.ThemeChanged(visualTheme);
             //Set color for non ST controls
-            this.dataGrid.BackgroundColor = visualTheme.Control;
             this.splitContainer1.Panel1.BackColor = visualTheme.Control;
             this.splitContainer1.Panel2.BackColor = visualTheme.Control;
+
+            this.dataGrid.BackgroundColor = visualTheme.Control;
+            this.dataGrid.GridColor = visualTheme.Border;
+            this.dataGrid.DefaultCellStyle.BackColor = visualTheme.Window;
+            this.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.dataGrid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            //This will disable gradient header, but make them more like ST controls
+            //this.dataGrid.RowHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
+            this.dataGrid.ColumnHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
+            this.dataGrid.EnableHeadersVisualStyles = false;
+            this.dataGrid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
+
             if (null != trainingView)
             {
                 trainingView.ThemeChanged(visualTheme);

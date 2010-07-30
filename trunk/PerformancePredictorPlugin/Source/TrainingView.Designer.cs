@@ -86,7 +86,6 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.tabControl1.Controls.Add(this.intervalTab);
             this.tabControl1.Controls.Add(this.temperatureTab);
             this.tabControl1.Controls.Add(this.weightTab);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.HotTrack = true;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(0);
@@ -107,12 +106,11 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.trainingTab.Size = new System.Drawing.Size(434, 111);
             this.trainingTab.TabIndex = 0;
             this.trainingTab.Text = "Training";
-            this.trainingTab.UseVisualStyleBackColor = true;
             // 
             // trainingLabel
             // 
             this.trainingLabel.AutoSize = true;
-            this.trainingLabel.Location = new System.Drawing.Point(7, 7);
+            this.trainingLabel.Location = new System.Drawing.Point(3, 14);
             this.trainingLabel.Name = "trainingLabel";
             this.trainingLabel.Size = new System.Drawing.Size(35, 13);
             this.trainingLabel.TabIndex = 1;
@@ -129,10 +127,11 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.trainingGrid.BackgroundColor = System.Drawing.SystemColors.Control;
             this.trainingGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.trainingGrid.Location = new System.Drawing.Point(0, 30);
+            this.trainingGrid.Margin = new System.Windows.Forms.Padding(0);
             this.trainingGrid.Name = "trainingGrid";
             this.trainingGrid.RowHeadersVisible = false;
             this.trainingGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.trainingGrid.Size = new System.Drawing.Size(430, 81);
+            this.trainingGrid.Size = new System.Drawing.Size(435, 85);
             this.trainingGrid.TabIndex = 0;
             // 
             // paceTempoTab
@@ -144,7 +143,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.paceTempoTab.Location = new System.Drawing.Point(4, 22);
             this.paceTempoTab.Name = "paceTempoTab";
             this.paceTempoTab.Padding = new System.Windows.Forms.Padding(3);
-            this.paceTempoTab.Size = new System.Drawing.Size(434, 111);
+            this.paceTempoTab.Size = new System.Drawing.Size(434, 81);
             this.paceTempoTab.TabIndex = 1;
             this.paceTempoTab.Text = "Pace for tempo runs";
             this.paceTempoTab.UseVisualStyleBackColor = true;
@@ -160,11 +159,12 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.paceTempoGrid.BackgroundColor = System.Drawing.SystemColors.Control;
             this.paceTempoGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.paceTempoGrid.Location = new System.Drawing.Point(0, 30);
+            this.paceTempoGrid.Margin = new System.Windows.Forms.Padding(0);
             this.paceTempoGrid.Name = "paceTempoGrid";
             this.paceTempoGrid.ReadOnly = true;
             this.paceTempoGrid.RowHeadersVisible = false;
             this.paceTempoGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.paceTempoGrid.Size = new System.Drawing.Size(502, 51);
+            this.paceTempoGrid.Size = new System.Drawing.Size(434, 81);
             this.paceTempoGrid.TabIndex = 2;
             // 
             // label1
@@ -227,11 +227,12 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.intervalGrid.BackgroundColor = System.Drawing.SystemColors.Control;
             this.intervalGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.intervalGrid.Location = new System.Drawing.Point(0, 30);
+            this.intervalGrid.Margin = new System.Windows.Forms.Padding(0);
             this.intervalGrid.Name = "intervalGrid";
             this.intervalGrid.ReadOnly = true;
             this.intervalGrid.RowHeadersVisible = false;
             this.intervalGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.intervalGrid.Size = new System.Drawing.Size(430, 81);
+            this.intervalGrid.Size = new System.Drawing.Size(434, 81);
             this.intervalGrid.TabIndex = 3;
             // 
             // temperatureTab
@@ -276,11 +277,12 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.temperatureGrid.BackgroundColor = System.Drawing.SystemColors.Control;
             this.temperatureGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.temperatureGrid.Location = new System.Drawing.Point(0, 30);
+            this.temperatureGrid.Margin = new System.Windows.Forms.Padding(0);
             this.temperatureGrid.Name = "temperatureGrid";
             this.temperatureGrid.ReadOnly = true;
             this.temperatureGrid.RowHeadersVisible = false;
             this.temperatureGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.temperatureGrid.Size = new System.Drawing.Size(430, 81);
+            this.temperatureGrid.Size = new System.Drawing.Size(434, 81);
             this.temperatureGrid.TabIndex = 2;
             // 
             // weightTab
@@ -325,12 +327,12 @@ namespace SportTracksPerformancePredictorPlugin.Source
             this.weightGrid.BackgroundColor = System.Drawing.SystemColors.Control;
             this.weightGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.weightGrid.Location = new System.Drawing.Point(0, 30);
-            this.weightGrid.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
+            this.weightGrid.Margin = new System.Windows.Forms.Padding(0);
             this.weightGrid.Name = "weightGrid";
             this.weightGrid.ReadOnly = true;
             this.weightGrid.RowHeadersVisible = false;
             this.weightGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.weightGrid.Size = new System.Drawing.Size(435, 85);
+            this.weightGrid.Size = new System.Drawing.Size(434, 81);
             this.weightGrid.TabIndex = 5;
             // 
             // TrainingView

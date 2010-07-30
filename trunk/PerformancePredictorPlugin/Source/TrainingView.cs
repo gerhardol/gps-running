@@ -83,6 +83,18 @@ namespace SportTracksPerformancePredictorPlugin.Source
         void InitControls()
         {
             setSize();
+            foreach (TabPage tab in this.tabControl1.TabPages)
+            {
+                foreach (Control grid0 in tab.Controls)
+                {
+                    if (grid0 is DataGridView)
+                    {
+                        DataGridView grid = (grid0 as DataGridView);
+                        grid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+                        grid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
+                    }
+                }
+            }
         }
         private void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -115,60 +127,72 @@ namespace SportTracksPerformancePredictorPlugin.Source
             setSize();
         }
 
-        private void sizeColumnsAndGrid(DataGridView dataGrid, double columnCount)
-        {
-            int newDataGridWidth = Size.Width;
-            int newDataGridHeight = Size.Height - dataGrid.Location.Y-25;
-            int columnWidth;
-            columnWidth = (int)Math.Floor(newDataGridWidth/columnCount);
-            foreach (DataGridViewColumn column in dataGrid.Columns)
-            {
-                column.Width = columnWidth;
-                column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            }
-            int height = dataGrid.ColumnHeadersHeight;
-            if (dataGrid.Rows.Count > 0)
-            {
-                height += dataGrid.Rows[0].Height * dataGrid.Rows.Count;
-                if (dataGrid == weightGrid)
-                {
-                    height += 10;
-                }
-            }
-            if (height > newDataGridHeight)
-            {
-                height = newDataGridHeight;
-            }
-            dataGrid.Size = new Size(Size.Width-15,
-                    height);           
-        }
+        //private void sizeColumnsAndGrid(DataGridView dataGrid, double columnCount)
+        //{
+        //    int newDataGridWidth = Size.Width;
+        //    int newDataGridHeight = Size.Height - dataGrid.Location.Y-25;
+        //    int columnWidth = (int)Math.Floor(newDataGridWidth/columnCount);
+        //    foreach (DataGridViewColumn column in dataGrid.Columns)
+        //    {
+        //        //TODO: Why is this needed?
+        //        try
+        //        {
+        //            column.Width = columnWidth;
+        //        }
+        //        catch { }
+        //        column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        //    }
+        //    int height = dataGrid.ColumnHeadersHeight;
+        //    if (dataGrid.Rows.Count > 0)
+        //    {
+        //        height += dataGrid.Rows[0].Height * dataGrid.Rows.Count;
+        //        if (dataGrid == weightGrid)
+        //        {
+        //            height += 10;
+        //        }
+        //    }
+        //    if (height > newDataGridHeight)
+        //    {
+        //        height = newDataGridHeight;
+        //    }
+        //    dataGrid.Size = new Size(Size.Width-15,
+        //            height);           
+        //}
         public void ThemeChanged(ITheme visualTheme)
         {
             Color bColor = visualTheme.Control;
 
             //Set color for non ST controls
-            this.trainingGrid.BackgroundColor = bColor;
-            this.paceTempoGrid.BackgroundColor = bColor;
-            this.intervalGrid.BackgroundColor = bColor;
-            this.temperatureGrid.BackgroundColor = bColor;
-            this.weightGrid.BackgroundColor = bColor;
-
             this.BackColor = bColor;
 
-            this.trainingTab.BackColor = bColor;
-            this.paceTempoTab.BackColor = bColor;
-            this.intervalTab.BackColor = bColor;
-            this.temperatureTab.BackColor = bColor;
-            this.weightTab.BackColor = bColor;
+            foreach (TabPage tab in this.tabControl1.TabPages)
+            {
+                tab.BackColor = bColor;
+                //Note: Tabs are not changed.
+                //Requires DrawMode set to OwnerDraw, DrawItem implemented
+                foreach (Control grid0 in tab.Controls)
+                {
+                    if (grid0 is DataGridView)
+                    {
+                        DataGridView grid = (grid0 as DataGridView);
+                        //grid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+                        grid.BackgroundColor = bColor;
+                        //This will disable gradient header, but make them more like ST controls
+                        grid.EnableHeadersVisualStyles = false;
+                        grid.ColumnHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
+                        grid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
+                    }
+                }
+            }
         }
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
-            tabControl1.TabPages[0].Text = StringResources.Training;
-            tabControl1.TabPages[1].Text = Resources.PaceForTempoRuns;
-            tabControl1.TabPages[2].Text = Resources.IntervalSplitTimes;
-            tabControl1.TabPages[3].Text = Resources.TemperatureImpact;
-            tabControl1.TabPages[4].Text = Resources.WeighImpact;
+            this.trainingTab.Text = StringResources.Training;
+            this.paceTempoTab.Text = Resources.PaceForTempoRuns;
+            this.intervalTab.Text = Resources.IntervalSplitTimes;
+            this.temperatureTab.Text = Resources.TemperatureImpact;
+            this.weightTab.Text = Resources.WeighImpact;
             label1.Text = Resources.PaceRunNotification;
             label2.Text = String.Format(Resources.TemperatureNotification, UnitUtil.Temperature.ToString(16, "F0u"));
             interval2Label.Text = Resources.IntervalNotification;
@@ -179,11 +203,11 @@ namespace SportTracksPerformancePredictorPlugin.Source
         private void setSize()
         {
             tabControl1.Size = Size;
-            sizeColumnsAndGrid(trainingGrid, 4);
-            sizeColumnsAndGrid(paceTempoGrid, 2);
-            sizeColumnsAndGrid(intervalGrid, 4);
-            sizeColumnsAndGrid(temperatureGrid, 3);
-            sizeColumnsAndGrid(weightGrid, 4);
+            //sizeColumnsAndGrid(trainingGrid, 4);
+            //sizeColumnsAndGrid(paceTempoGrid, 2);
+            //sizeColumnsAndGrid(intervalGrid, 4);
+            //sizeColumnsAndGrid(temperatureGrid, 3);
+            //sizeColumnsAndGrid(weightGrid, 4);
         }
 
         public void setPages()

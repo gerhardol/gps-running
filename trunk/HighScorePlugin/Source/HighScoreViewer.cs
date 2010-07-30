@@ -161,6 +161,7 @@ namespace SportTracksHighScorePlugin.Source
             imageBox.Items.Add(CommonResources.Text.LabelTime);
             imageBox.Items.Add(StringResources.HRZone);
             imageBox.Items.Add(Resources.HRAndSpeedZones);
+            toolStripMenuCopy.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
         }
 
         private string translateToLanguage(GoalParameter goalParameter)
@@ -199,9 +200,19 @@ namespace SportTracksHighScorePlugin.Source
             //RefreshPage();
             //m_visualTheme = visualTheme;
             this.chart.ThemeChanged(visualTheme);
-            this.dataGrid.BackgroundColor = visualTheme.Control;
+
             this.splitContainer1.Panel1.BackColor = visualTheme.Control;
             this.splitContainer1.Panel2.BackColor = visualTheme.Control;
+            this.dataGrid.BackgroundColor = visualTheme.Control;
+            this.dataGrid.GridColor = visualTheme.Border;
+            this.dataGrid.DefaultCellStyle.BackColor = visualTheme.Window;
+            this.dataGrid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            //This will disable gradient header, but make them more like ST controls
+            this.dataGrid.EnableHeadersVisualStyles = false;
+            //this.dataGrid.RowHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
+            this.dataGrid.ColumnHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
+            this.dataGrid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
         }
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
@@ -214,7 +225,7 @@ namespace SportTracksHighScorePlugin.Source
             label1.Location = new Point(boundsBox.Location.X - 5 - label1.Width, label1.Location.Y);
             correctUI(new Control[] { paceBox, viewBox, Remarks });
             label3.Location = new Point(paceBox.Location.X - 5 - label3.Width, label3.Location.Y);
-            toolStripMenuItem1.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
+            toolStripMenuCopy.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
             label2.Location = new Point(label2.Location.X, label1.Location.Y);
         }
 
@@ -568,7 +579,9 @@ namespace SportTracksHighScorePlugin.Source
                 dataGrid.DataSource = table;
                 dataGrid.ShowCellToolTips = true;
                 foreach (DataGridViewColumn column in dataGrid.Columns)
+                {
                     column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                }
                 dataGrid.Visible = true;
                 setSize();
             }

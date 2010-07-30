@@ -51,7 +51,7 @@ namespace SportTracksHighScorePlugin.Source
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGrid = new System.Windows.Forms.DataGridView();
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.boundsBox = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -76,8 +76,8 @@ namespace SportTracksHighScorePlugin.Source
             this.dataGrid.AllowUserToAddRows = false;
             this.dataGrid.AllowUserToDeleteRows = false;
             this.dataGrid.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.dataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            //dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            //this.dataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGrid.BackgroundColor = System.Drawing.SystemColors.Control;
@@ -89,8 +89,8 @@ namespace SportTracksHighScorePlugin.Source
             this.dataGrid.Name = "dataGrid";
             this.dataGrid.ReadOnly = true;
             this.dataGrid.RowHeadersVisible = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.dataGrid.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            //dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            //this.dataGrid.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dataGrid.Size = new System.Drawing.Size(414, 65);
             this.dataGrid.TabIndex = 2;
@@ -99,15 +99,15 @@ namespace SportTracksHighScorePlugin.Source
             // contextMenu
             // 
             this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
+            this.toolStripMenuCopy});
             this.contextMenu.Name = "contextMenu";
             this.contextMenu.Size = new System.Drawing.Size(199, 26);
             // 
             // toolStripMenuItem1
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(198, 22);
-            this.toolStripMenuItem1.Text = "Copy table to clipboard";
+            this.toolStripMenuCopy.Name = "toolStripMenuItem1";
+            this.toolStripMenuCopy.Size = new System.Drawing.Size(198, 22);
+            this.toolStripMenuCopy.Text = "Copy table to clipboard";
             // 
             // label1
             // 
@@ -271,7 +271,7 @@ namespace SportTracksHighScorePlugin.Source
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox viewBox;
         private System.Windows.Forms.ContextMenuStrip contextMenu;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuCopy;
         private ZoneFiveSoftware.Common.Visuals.Chart.ChartBase chart;
         private System.Windows.Forms.Label Remarks;
         private System.Windows.Forms.SplitContainer splitContainer1;
