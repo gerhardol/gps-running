@@ -51,6 +51,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
         public UniqueRoutesActivityDetailView(IActivity activity)
         {
             InitializeComponent();
+            InitControls();
             doUpdate = true;
             this.Activity = activity;
 
@@ -65,22 +66,6 @@ namespace SportTracksUniqueRoutesPlugin.Source
                 activeBox.SelectedItem = Resources.All;
             }
             activeMenuItem.CheckState = Settings.UseActive ? CheckState.Checked : CheckState.Unchecked;
-            copyTable.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
-#if !ST_2_1
-            sendToMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Analyze16;
-#endif
-            listSettingsMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Table16;
-#if !ST_2_1
-            this.listSettingsMenuItem.Click += new System.EventHandler(this.listSettingsToolStripMenuItem_Click);
-#else
-            //No listSetting dialog in ST2
-            if (this.contextMenu.Items.Contains(this.listSettingsMenuItem))
-            {
-                this.contextMenu.Items.Remove(this.listSettingsMenuItem);
-            }
-#endif
-            summaryList.ContextMenuStrip = contextMenu;
-            summaryList.MouseDoubleClick += new MouseEventHandler(selectedRow_DoubleClick);
             speedBox.SelectedItem = CommonResources.Text.LabelPace;
             //TODO: ToolTip is not implemented for TreeList?
             //summaryList.MouseHover += new EventHandler(summaryView_CellToolTipTextNeeded);
@@ -137,6 +122,25 @@ namespace SportTracksUniqueRoutesPlugin.Source
             doUpdate = false;
         }
 
+        void InitControls()
+        {
+            copyTable.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
+#if !ST_2_1
+            sendToMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Analyze16;
+#endif
+            listSettingsMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Table16;
+#if !ST_2_1
+            this.listSettingsMenuItem.Click += new System.EventHandler(this.listSettingsToolStripMenuItem_Click);
+#else
+            //No listSetting dialog in ST2
+            if (this.contextMenu.Items.Contains(this.listSettingsMenuItem))
+            {
+                this.contextMenu.Items.Remove(this.listSettingsMenuItem);
+            }
+#endif
+            summaryList.ContextMenuStrip = contextMenu;
+            summaryList.MouseDoubleClick += new MouseEventHandler(selectedRow_DoubleClick);
+        }
         public IActivity Activity
         {
             set
