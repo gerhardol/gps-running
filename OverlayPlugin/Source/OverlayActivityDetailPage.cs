@@ -50,7 +50,11 @@ namespace SportTracksOverlayPlugin.Source
 
         private void OnViewSelectedItemsChanged(object sender, EventArgs e)
         {
-            Activity = CollectionUtils.GetSingleItemOfType<IActivity>(view.SelectionProvider.SelectedItems);
+            activities = CollectionUtils.GetItemsOfType<IActivity>(view.SelectionProvider.SelectedItems);
+            if ((control != null))
+            {
+                control.Activities = activities;
+            }
             RefreshPage();
         }
         public System.Guid Id { get { return new Guid("{75af74a0-5ec7-11df-a08a-0800200c9a66}"); } }
@@ -58,15 +62,19 @@ namespace SportTracksOverlayPlugin.Source
 
         #region IActivityDetailPage Members
 
+#if ST_2_1
         public IActivity Activity
         {
             set
             {
-                this.activity = value;
-                if (value != null && control != null)
-                    this.control.Activities = new IActivity[] { value };
+                activities = new List<IActivity> { value };
+                if ((control != null))
+                {
+                    control.Activities = activities;
+                }
             }
         }
+#endif
 
         public IList<string> MenuPath
         {
@@ -107,12 +115,7 @@ namespace SportTracksOverlayPlugin.Source
         {
             if (control == null)
             {
-                IList<IActivity> list = new List<IActivity>();
-                if (activity != null)
-                {
-                    list.Add(activity);
-                }
-                control = new OverlayView(list, false);
+                control = new OverlayView(activities, false);
             }
             return control;
         }
@@ -145,7 +148,6 @@ namespace SportTracksOverlayPlugin.Source
         public void ThemeChanged(ITheme visualTheme)
         {
             RefreshPage();
-            //			m_visualTheme = visualTheme;
             if (control != null)
             {
                 control.ThemeChanged(visualTheme);
@@ -180,7 +182,7 @@ namespace SportTracksOverlayPlugin.Source
 #if !ST_2_1
         private IDailyActivityView view = null;
 #endif
-        private IActivity activity = null;
+        private IList<IActivity> activities = new List<IActivity>();
         private OverlayView control = null;
         private IList<string> menuPath = null;
         private bool menuEnabled = true;
