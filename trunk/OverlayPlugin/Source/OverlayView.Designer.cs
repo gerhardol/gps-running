@@ -387,6 +387,14 @@ namespace SportTracksOverlayPlugin.Source
         private System.Windows.Forms.Label labelXaxis;
         private System.Windows.Forms.Label labelYaxis;
 
+        private System.Windows.Forms.Form popupForm;
+        private System.Windows.Forms.Label labelAOP;
+        private ZoneFiveSoftware.Common.Visuals.Button btnSaveImage;
+        private System.Windows.Forms.Panel panelAct;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.SplitContainer splitContainer3;
+
         private System.Windows.Forms.RadioButton useTime;
         private System.Windows.Forms.RadioButton useDistance;
         private System.Windows.Forms.CheckBox heartRate;
@@ -400,5 +408,6 @@ namespace SportTracksOverlayPlugin.Source
         private System.Windows.Forms.CheckBox movingAverage;
         private ZoneFiveSoftware.Common.Visuals.TextBox maBox;
         private System.Windows.Forms.ToolTip toolTipMAbox;
-     }
+        private System.Windows.Forms.Label labelActivity;
+    }
 }

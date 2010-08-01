@@ -46,36 +46,46 @@ namespace SportTracksOverlayPlugin.Source
 
 			txtSaveIn.Text = Environment.GetFolderPath( Environment.SpecialFolder.Personal );
 
-			LoadResourceStrings();
-
-            this.comboSize.SelectedIndex = 2;
-            this.comboType.SelectedIndex = 2;
-
-            this.isSaveIn.Controls["buttonCombo"].Click += new EventHandler(isSaveInButton_Click);
-
-		}
-		private void LoadResourceStrings()
-		{
-            label1.Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.SaveIn;
-            label2.Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.FileName;
-            label3.Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.Size;
-            label4.Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.Type;
-			comboSize.Items.AddRange( new object[] {
+            comboSize.Items.AddRange(new object[] {
 				global::SportTracksOverlayPlugin.Util.SaveImageResources.Thumbnail + " (200 x 160)",
 				global::SportTracksOverlayPlugin.Util.SaveImageResources.Small + " (400 x 310)",
 				global::SportTracksOverlayPlugin.Util.SaveImageResources.Medium + " (800 x 620)",
 				global::SportTracksOverlayPlugin.Util.SaveImageResources.Large + " (1400 x 1090)",
 				global::SportTracksOverlayPlugin.Util.SaveImageResources.Huge + " (2000 x 1560)",
 				global::SportTracksOverlayPlugin.Util.SaveImageResources.Custom});
-			comboType.Items.AddRange( new object[] {
+            comboType.Items.AddRange(new object[] {
 				global::SportTracksOverlayPlugin.Util.SaveImageResources.Bitmap + " (.bmp)",
 				global::SportTracksOverlayPlugin.Util.SaveImageResources.JointPhotographicExpertsGroup + " (.jpg)",
 				global::SportTracksOverlayPlugin.Util.SaveImageResources.PortableNetworkGraphics + " (.png)",
 				global::SportTracksOverlayPlugin.Util.SaveImageResources.TaggedImageFileFormat + " (.tif)"});
+            this.comboSize.SelectedIndex = 2;
+            this.comboType.SelectedIndex = 2;
+
+            this.isSaveIn.Controls["buttonCombo"].Click += new EventHandler(isSaveInButton_Click);
+
+		}
+        public void ThemeChanged(ITheme visualTheme)
+        {
+            this.txtFilename.ThemeChanged(visualTheme);
+            this.txtYSize.ThemeChanged(visualTheme);
+            this.txtXSize.ThemeChanged(visualTheme);
+            this.panelCustom.ThemeChanged(visualTheme);
+            this.isSaveIn.ThemeChanged(visualTheme);
+            this.txtSaveIn.ThemeChanged(visualTheme);
+            //Non ST controls
+            this.splitContainer1.Panel1.BackColor = visualTheme.Control;
+            this.splitContainer1.Panel2.BackColor = visualTheme.Control;
+        }
+        public void UICultureChanged(System.Globalization.CultureInfo culture)
+        {
+            label1.Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.SaveIn;
+            label2.Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.FileName;
+            label3.Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.Size;
+            label4.Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.Type;
             btnCancel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCancel;
             btnOK.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionOk;
             Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.SaveImage;
-		}
+        }
 
 		private Label label1;
 		private Label label2;
@@ -90,7 +100,7 @@ namespace SportTracksOverlayPlugin.Source
 		private ZoneFiveSoftware.Common.Visuals.TextBox txtXSize;
 		private ZoneFiveSoftware.Common.Visuals.Button btnCancel;
 		private ZoneFiveSoftware.Common.Visuals.Button btnOK;
-		private System.Windows.Forms.Panel panelCustom;
+        private ZoneFiveSoftware.Common.Visuals.Panel panelCustom;
 		private ItemSelectorBase isSaveIn;
 		private ZoneFiveSoftware.Common.Visuals.TextBox txtSaveIn;
 
@@ -131,7 +141,7 @@ namespace SportTracksOverlayPlugin.Source
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.txtSaveIn = new ZoneFiveSoftware.Common.Visuals.TextBox();
 			this.isSaveIn = new ZoneFiveSoftware.Common.Visuals.ItemSelectorBase();
-			this.panelCustom = new System.Windows.Forms.Panel();
+            this.panelCustom = new ZoneFiveSoftware.Common.Visuals.Panel();
 			this.txtXSize = new ZoneFiveSoftware.Common.Visuals.TextBox();
 			this.txtYSize = new ZoneFiveSoftware.Common.Visuals.TextBox();
 			this.txtFilename = new ZoneFiveSoftware.Common.Visuals.TextBox();

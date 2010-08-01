@@ -45,6 +45,13 @@ namespace SportTracksOverlayPlugin.Source
             System.Diagnostics.Process.Start(new ProcessStartInfo("IExplore",
                 "http://code.google.com/p/gps-running/wiki/Overlay"));
         }
+        public bool HidePage()
+        {
+            return true;
+        }
+        public void ShowPage(string bookmark)
+        {
+        }
         public void ThemeChanged(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme)
         {
         }

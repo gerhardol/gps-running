@@ -50,12 +50,11 @@ namespace SportTracksOverlayPlugin.Source
 
         private void OnViewSelectedItemsChanged(object sender, EventArgs e)
         {
-            activities = CollectionUtils.GetItemsOfType<IActivity>(view.SelectionProvider.SelectedItems);
+            activities = SportTracksOverlayPlugin.Util.CollectionUtils.GetAllContainedItems<IActivity>(view.SelectionProvider);
             if ((control != null))
             {
                 control.Activities = activities;
             }
-            RefreshPage();
         }
         public System.Guid Id { get { return new Guid("{75af74a0-5ec7-11df-a08a-0800200c9a66}"); } }
 #endif
@@ -103,7 +102,7 @@ namespace SportTracksOverlayPlugin.Source
         {
             if (control != null)
             {
-                control.Refresh();
+                control.RefreshPage();
             }
         }
 
@@ -122,6 +121,7 @@ namespace SportTracksOverlayPlugin.Source
 
         public bool HidePage()
         {
+            if (control != null) { return control.HidePage(); }
             return true;
         }
 
@@ -135,8 +135,8 @@ namespace SportTracksOverlayPlugin.Source
 
         public void ShowPage(string bookmark)
         {
+            if (control != null) { control.ShowPage(bookmark); }
         }
-
         public IPageStatus Status
         {
             get
@@ -147,7 +147,6 @@ namespace SportTracksOverlayPlugin.Source
 
         public void ThemeChanged(ITheme visualTheme)
         {
-            RefreshPage();
             if (control != null)
             {
                 control.ThemeChanged(visualTheme);
@@ -158,7 +157,7 @@ namespace SportTracksOverlayPlugin.Source
         {
             get
             {
-                return Resources.O1;
+                return Resources.ApplicationName;
             }
         }
 
@@ -168,7 +167,6 @@ namespace SportTracksOverlayPlugin.Source
             {
                 control.UICultureChanged(culture);
             }
-            RefreshPage();
         }
 
         #endregion

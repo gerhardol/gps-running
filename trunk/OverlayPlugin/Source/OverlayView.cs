@@ -48,146 +48,32 @@ namespace SportTracksOverlayPlugin.Source
 {
     public partial class OverlayView : UserControl
     {
-        public IList<IActivity> Activities
-        {
-            set
-            {
-                if (activities != null)
-                {
-                    foreach (IActivity activity in activities)
-                    {
-#if ST_2_1
-                        activity.DataChanged -= new NotifyDataChangedEventHandler(activity_DataChanged);
-#else
-                        activity.PropertyChanged -= new PropertyChangedEventHandler(Activity_PropertyChanged);
-#endif
-                    }
-                }
-                activities = new List<IActivity>();
-                foreach (IActivity activity in value)
-                {
-                    activities.Add(activity);
-#if ST_2_1
-                    activity.DataChanged += new NotifyDataChangedEventHandler(activity_DataChanged);
-#else
-                    activity.PropertyChanged += new PropertyChangedEventHandler(Activity_PropertyChanged);
-#endif
-                }
-                //Temporary
-                if (Plugin.Verbose > 100 && Settings.uniqueRoutes != null)
-                {
-                    MethodInfo methodInfo = Settings.uniqueRoutes.GetMethod("findSimilarStretch");
-                    IDictionary<IActivity, IList<IList<int>>> result = 
-                        (IDictionary<IActivity, IList<IList<int>>>)methodInfo.Invoke(this, new object[] { activities[0], activities });
-
-                }
-                activities.Sort(new ActivityDateComparer());
-
-                nextIndex = 0;
-                int x = 0;
-                int y = 0;
-                int index = 0;
-
-                actOffsets = new Dictionary<IActivity, IList<double>>();
-                actBoxes = new Dictionary<System.Windows.Forms.TextBox, IActivity>();
-                actTextBoxes = new List<System.Windows.Forms.TextBox>();
-                checks = new List<bool>();
-                boxes = new Dictionary<CheckBox, int>();
-                checkBoxes = new List<CheckBox>();
-				lastChecked = new List<CheckBox>();
-
-                foreach (IActivity activity in activities)
-                {
-                    x = 0;
-                    IList<double> s = new List<double>();
-                    s.Add(0);
-                    s.Add(0);
-                    actOffsets.Add(activity, s);//Get from UR integration
-
-                    System.Windows.Forms.TextBox offBox = new System.Windows.Forms.TextBox();
-                    actTextBoxes.Add(offBox);
-                    offBox.Size = new Size(30, 20);
-                    offBox.LostFocus += new EventHandler(offBox_LostFocus);
-                    offBox.Location = new Point(x, y);
-                    panelAct.Controls.Add(offBox);
-                    offBox.Name = "offsetBox";
-                    actBoxes.Add(offBox, activity);
-                    if (Plugin.Verbose > 0)
-                    {
-                        offBox.Visible = true;
-                        x += 35;
-                    }
-                    else
-                    {
-                        offBox.Visible = false;
-                    }
-
-                    CheckBox box = new CheckBox();
-                    checkBoxes.Add(box);
-                    box.Checked = true;
-                    box.Text = activity.StartTime.ToLocalTime().ToString();
-                    box.Size = new Size(155, box.Height);
-					box.AutoSize = true;
-                    box.ForeColor = newColor();
-                    //box.CheckAlign = ContentAlignment.MiddleLeft;
-                    box.CheckedChanged += new EventHandler(box_CheckedChanged);
-                    checks.Add(true);
-                    panelAct.Controls.Add(box);
-                    box.Location = new Point(x, y);
-                    boxes.Add(box, index);
-
-                    index++;
-                    y += 25;
-                }
-                updateChart();
-            }
-            get
-            {
-                return activities;
-            }
-        }
-
-        private class ActivityDateComparer : Comparer<IActivity>
-        {
-            public override int Compare(IActivity x, IActivity y)
-            {
-                return x.StartTime.CompareTo(y.StartTime);
-            }
-        }
-
-        private Form popupForm;
-		private Label labelAOP;
-		private ZoneFiveSoftware.Common.Visuals.Button btnSaveImage;
-        private SplitContainer splitContainer1;
-        private SplitContainer splitContainer2;
-        private SplitContainer splitContainer3;
-
-        private bool dontUpdate;
-
-        public OverlayView(IList<IActivity> activities)
-            : this(activities, true) { }
-
+        //A wrapper for popupforms - could be called from IAction
         public OverlayView(IList<IActivity> activities, bool showDialog)
+            : this()
+        {
+            if (showDialog)
+            {
+                //Theme and Culture must be set manually
+                this.ThemeChanged(m_visualTheme);
+                this.UICultureChanged(m_culture);
+            }
+            this.Activities = activities;
+            if (showDialog)
+            {
+                _showPage = true;
+            }
+            RefreshPage();
+            if (showDialog)
+            {
+                this.ShowDialog();
+            }
+        }
+
+        public OverlayView()
         {
             InitializeComponent();
-
-			Font fCategory = categoryAverage.Font;
-			Font fMoving = movingAverage.Font;
-			categoryAverage.Font = new Font( categoryAverage.Font, FontStyle.Bold );
-			movingAverage.Font = new Font( movingAverage.Font, FontStyle.Bold );
-
-            //chart.Location = new Point(Math.Max(Math.Max(categoryAverage.Location.X + categoryAverage.Size.Width,
-            //                                             movingAverage.Location.X + movingAverage.Size.Width),
-            //                                    panelAct.Location.X + panelAct.Size.Width), chart.Location.Y);
-			categoryAverage.Font = fCategory;
-			movingAverage.Font = fMoving;
-
-            dontUpdate = true;
-            series2activity = new Dictionary<ChartDataSeries, IActivity>();
-            series2actBoxes = new Dictionary<ChartDataSeries, System.Windows.Forms.TextBox>();
-            series2boxes = new Dictionary<ChartDataSeries, CheckBox>();
-            SizeChanged += new EventHandler(OverlayView_SizeChanged);
-            Activities = activities;
+            InitControls();
 
             heartRate.Checked = Settings.ShowHeartRate;
             pace.Checked = Settings.ShowPace;
@@ -212,62 +98,200 @@ namespace SportTracksOverlayPlugin.Source
                 useTime.Checked = false;
             }
             chart.SelectData += new ChartBase.SelectDataHandler(chart_SelectData);
-			chart.SelectingData += new ChartBase.SelectDataHandler( chart_SelectingData );
+            chart.SelectingData += new ChartBase.SelectDataHandler(chart_SelectingData);
             chart.Click += new EventHandler(chart_Click);
-            dontUpdate = false;
-            updateLabels();
-            updateChart();
-            if (showDialog)
+        }
+
+        public void InitControls()
+        {
+            Font fCategory = categoryAverage.Font;
+            Font fMoving = movingAverage.Font;
+            categoryAverage.Font = new Font(categoryAverage.Font, FontStyle.Bold);
+            movingAverage.Font = new Font(movingAverage.Font, FontStyle.Bold);
+
+            //chart.Location = new Point(Math.Max(Math.Max(categoryAverage.Location.X + categoryAverage.Size.Width,
+            //                                             movingAverage.Location.X + movingAverage.Size.Width),
+            //                                    panelAct.Location.X + panelAct.Size.Width), chart.Location.Y);
+            categoryAverage.Font = fCategory;
+            movingAverage.Font = fMoving;
+
+            series2boxes = new Dictionary<ChartDataSeries, CheckBox>();
+            SizeChanged += new EventHandler(OverlayView_SizeChanged);
+        }
+
+        public void ShowDialog()
+        {
+            popupForm = new Form();
+            popupForm.Controls.Add(this);
+            popupForm.Size = Settings.WindowSize;
+            //6 is the distance between controls
+            popupForm.MinimumSize = new System.Drawing.Size(6 + elevation.Width + elevation.Left + this.Width - btnSaveImage.Left, 0);
+            this.Size = new Size(Parent.Size.Width - 17, Parent.Size.Height - 38);
+            this.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                    | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom)));
+            popupForm.SizeChanged += new EventHandler(form_SizeChanged);
+            setSize();
+            if (activities.Count == 1)
+                popupForm.Text = Resources.O1;
+            else
+                popupForm.Text = String.Format(Resources.O2, activities.Count);
+            popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_Overlay.GetHicon());
+            Parent.SizeChanged += new EventHandler(Parent_SizeChanged);
+            popupForm.StartPosition = FormStartPosition.CenterScreen;
+            popupForm.ShowDialog();
+        }
+
+        public IList<IActivity> Activities
+        {
+            get
             {
-                //Theme and Culture must be set manually
-                this.ThemeChanged(
+                return activities;
+            }
+            set
+            {
+                if (activities != null)
+                {
+                    foreach (IActivity activity in activities)
+                    {
 #if ST_2_1
-                Plugin.GetApplication().VisualTheme
+                        activity.DataChanged -= new NotifyDataChangedEventHandler(activity_DataChanged);
 #else
-                Plugin.GetApplication().SystemPreferences.VisualTheme
+                        activity.PropertyChanged -= new PropertyChangedEventHandler(Activity_PropertyChanged);
 #endif
-                                  );
-                this.UICultureChanged(
+                    }
+                }
+                activities.Clear();
+                foreach (IActivity activity in value)
+                {
+                    activities.Add(activity);
 #if ST_2_1
-                new System.Globalization.CultureInfo("en")
+                    activity.DataChanged += new NotifyDataChangedEventHandler(activity_DataChanged);
 #else
-                Plugin.GetApplication().SystemPreferences.UICulture
+                    activity.PropertyChanged += new PropertyChangedEventHandler(Activity_PropertyChanged);
 #endif
-                                      );
-                popupForm = new Form();
-                popupForm.Controls.Add(this);
-                popupForm.Size = Settings.WindowSize;
-				//6 is the distance between controls
-				popupForm.MinimumSize = new System.Drawing.Size( 6 + elevation.Width + elevation.Left + this.Width - btnSaveImage.Left, 0 );
-                this.Size = new Size(Parent.Size.Width - 17, Parent.Size.Height - 38);
-                this.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom)));
-                popupForm.SizeChanged += new EventHandler(form_SizeChanged);
-                setSize();
-                if (activities.Count == 1)
-                    popupForm.Text = Resources.O1;
+
+                }
+                RefreshPage();
+            }
+        }
+        public void RefreshPage()
+        {
+            if (_showPage)
+            {
+                updateActivities();
+                updateLabels();
+                updateChart();
+            }
+        }
+        private void updateActivities()
+        {
+            //Temporary
+            if (Plugin.Verbose > 100 && Settings.uniqueRoutes != null)
+            {
+                MethodInfo methodInfo = Settings.uniqueRoutes.GetMethod("findSimilarStretch");
+                IDictionary<IActivity, IList<IList<int>>> result =
+                    (IDictionary<IActivity, IList<IList<int>>>)methodInfo.Invoke(this, new object[] { activities[0], activities });
+
+            }
+            activities.Sort(new ActivityDateComparer());
+
+            nextIndex = 0;
+            int x = 0;
+            int y = 0;
+            int index = 0;
+
+            actOffsets.Clear();
+            actBoxes.Clear();
+            actTextBoxes.Clear();
+            checks.Clear();
+            boxes.Clear();
+            checkBoxes.Clear();
+            lastChecked.Clear();
+            panelAct.Controls.Clear();
+
+            foreach (IActivity activity in activities)
+            {
+                x = 0;
+                IList<double> s = new List<double>();
+                s.Add(0);
+                s.Add(0);
+                actOffsets.Add(activity, s);//TODO: Get from UR integration
+
+                ZoneFiveSoftware.Common.Visuals.TextBox offBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+                actTextBoxes.Add(offBox);
+                offBox.Size = new Size(30, 20);
+                offBox.LostFocus += new EventHandler(offBox_LostFocus);
+                offBox.Location = new Point(x, y);
+                panelAct.Controls.Add(offBox);
+                offBox.Name = "offsetBox";
+                actBoxes.Add(offBox, activity);
+                if (Plugin.Verbose > 0)
+                {
+                    offBox.Visible = true;
+                    x += 35;
+                }
                 else
-                    popupForm.Text = String.Format(Resources.O2, activities.Count);
-                popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_Overlay.GetHicon());
-                Parent.SizeChanged += new EventHandler(Parent_SizeChanged);
-                popupForm.StartPosition = FormStartPosition.CenterScreen;
-                popupForm.ShowDialog();
+                {
+                    offBox.Visible = false;
+                }
+
+                CheckBox box = new CheckBox();
+                checkBoxes.Add(box);
+                box.Checked = true;
+                box.Text = activity.StartTime.ToLocalTime().ToString();
+                box.Size = new Size(155, box.Height);
+                box.AutoSize = true;
+                box.ForeColor = newColor();
+                //box.CheckAlign = ContentAlignment.MiddleLeft;
+                box.CheckedChanged += new EventHandler(box_CheckedChanged);
+                checks.Add(true);
+                panelAct.Controls.Add(box);
+                box.Location = new Point(x, y);
+                boxes.Add(box, index);
+
+                index++;
+                y += 25;
             }
         }
 
+        private class ActivityDateComparer : Comparer<IActivity>
+        {
+            public override int Compare(IActivity x, IActivity y)
+            {
+                return x.StartTime.CompareTo(y.StartTime);
+            }
+        }
+
+        public bool HidePage()
+        {
+            _showPage = false;
+            return true;
+        }
+        public void ShowPage(string bookmark)
+        {
+            bool changed = !_showPage;
+            _showPage = true;
+            if (changed) { RefreshPage(); }
+        }
         public void ThemeChanged(ITheme visualTheme)
         {
-            //RefreshPage();
-            //m_visualTheme = visualTheme;
-#if !ST_2_1
-            this.splitContainer1.Panel1.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
-            this.splitContainer1.Panel2.BackColor = Plugin.GetApplication().SystemPreferences.VisualTheme.Control;
-#endif
+            m_visualTheme = visualTheme;
+
             this.chart.ThemeChanged(visualTheme);
             this.maBox.ThemeChanged(visualTheme);
+            //Non ST controls
+            this.panelAct.BackColor = visualTheme.Control;
+            this.splitContainer1.Panel1.BackColor = visualTheme.Control;
+            this.splitContainer1.Panel2.BackColor = visualTheme.Control;
+            this.splitContainer2.Panel1.BackColor = visualTheme.Control;
+            this.splitContainer2.Panel2.BackColor = visualTheme.Control;
+            this.splitContainer3.Panel1.BackColor = visualTheme.Control;
+            this.splitContainer3.Panel2.BackColor = visualTheme.Control;
         }
+
         public void UICultureChanged(CultureInfo culture)
         {
+            m_culture = culture;
             labelActivity.Text = StringResources.Activities;
             labelXaxis.Text = StringResources.XAxis + ":";
             labelYaxis.Text = StringResources.YAxis + ":";
@@ -291,6 +315,7 @@ namespace SportTracksOverlayPlugin.Source
             correctUI(new Control[] { heartRate, pace, speed, power, cadence, elevation });
 
             updateLabels();
+            RefreshPage();
         }
         private void correctUI(IList<Control> comp)
         {
@@ -478,7 +503,7 @@ namespace SportTracksOverlayPlugin.Source
             return average;
         }
 
-        private void updateOffBoxLabel(System.Windows.Forms.TextBox box)
+        private void updateOffBoxLabel(ZoneFiveSoftware.Common.Visuals.TextBox box)
         {
            if (Settings.ShowTime)
             { 
@@ -491,21 +516,31 @@ namespace SportTracksOverlayPlugin.Source
         }
         private void updateLabels()
         {
-            foreach (System.Windows.Forms.TextBox box in actTextBoxes)
+            if (null != actTextBoxes)
             {
-                updateOffBoxLabel(box);
+                foreach (ZoneFiveSoftware.Common.Visuals.TextBox box in actTextBoxes)
+                {
+                    if (null != box) { updateOffBoxLabel(box); }
+                }
             }
-         }
+        }
         private void updateChart()
         {
-            if (dontUpdate) return;
-			ResetLastSelectedBoxFonts();
+            //TODO: add show working
+            chart.Visible = false;
+            chart.UseWaitCursor = true;
+            this.splitContainer2.Panel2.BackgroundImage = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Hourglass16;
+            this.splitContainer2.Panel2.BackgroundImageLayout = ImageLayout.Center;
+            chart.BeginUpdate();
+            chart.AutozoomToData(false);
+            ResetLastSelectedBoxFonts();
             chart.DataSeries.Clear();
             chart.YAxisRight.Clear();
             series2activity.Clear();
             series2actBoxes.Clear();
             series2boxes.Clear();
             bool useRight = false;
+
             if (Settings.ShowTime)
             {
                 chart.XAxis.Formatter = new Formatter.SecondsToTime();
@@ -516,6 +551,7 @@ namespace SportTracksOverlayPlugin.Source
                 chart.XAxis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
                 chart.XAxis.Label = UnitUtil.Distance.LabelAxis; ;
             }
+
             if (Settings.ShowHeartRate)
             {
                 nextIndex = 0;
@@ -692,6 +728,9 @@ namespace SportTracksOverlayPlugin.Source
 			//chart.AutozoomToData is the slowest part of this plugin
             chart.AutozoomToData(true);
             chart.Refresh();
+            chart.EndUpdate();
+            chart.UseWaitCursor = false;
+            chart.Visible = true;
         }
 
         private IList<ChartDataSeries> buildSeries(
@@ -842,7 +881,7 @@ namespace SportTracksOverlayPlugin.Source
 #endif
         private void offBox_LostFocus(object sender, EventArgs e)
         {
-            System.Windows.Forms.TextBox box = (System.Windows.Forms.TextBox)sender;
+            ZoneFiveSoftware.Common.Visuals.TextBox box = (ZoneFiveSoftware.Common.Visuals.TextBox)sender;
             try
             {
                 //Recalculate other offset here?
@@ -898,7 +937,7 @@ namespace SportTracksOverlayPlugin.Source
 
 		void ResetLastSelectedBoxFonts()
 		{
-			if ( lastChecked.Count > 0 )
+			if ( null != lastChecked && lastChecked.Count > 0 )
 			{
 				for ( int i = 0; i < lastChecked.Count; i++ )
 				{
@@ -1056,20 +1095,23 @@ namespace SportTracksOverlayPlugin.Source
 		{
 #if ST_2_1
             OverlaySaveImageInfoPage siiPage = new OverlaySaveImageInfoPage();
+            siiPage.UICultureChanged(m_culture); //Should be in ST3 too...
 #else
             SaveImageDialog siiPage = new SaveImageDialog();
 #endif
-                if (string.IsNullOrEmpty(saveImageProperties_fileName))
-                {
-                    saveImageProperties_fileName = String.Format("{0} {1}", "Overlay", DateTime.Now.ToShortDateString());
-                    char[] cInvalid = Path.GetInvalidFileNameChars();
-                    for (int i = 0; i < cInvalid.Length; i++)
-                        saveImageProperties_fileName = saveImageProperties_fileName.Replace(cInvalid[i], '-');
-                }
-                if (string.IsNullOrEmpty(Settings.SavedImageFolder))
-                {
-                    Settings.SavedImageFolder = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-                }
+            siiPage.ThemeChanged(m_visualTheme);
+
+            if (string.IsNullOrEmpty(saveImageProperties_fileName))
+            {
+                saveImageProperties_fileName = String.Format("{0} {1}", "Overlay", DateTime.Now.ToShortDateString());
+                char[] cInvalid = Path.GetInvalidFileNameChars();
+                for (int i = 0; i < cInvalid.Length; i++)
+                    saveImageProperties_fileName = saveImageProperties_fileName.Replace(cInvalid[i], '-');
+            }
+            if (string.IsNullOrEmpty(Settings.SavedImageFolder))
+            {
+                Settings.SavedImageFolder = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            }
                 siiPage.FileName = Settings.SavedImageFolder + Path.DirectorySeparatorChar + saveImageProperties_fileName;
             siiPage.ImageSize = Settings.SavedImageSize;
 			siiPage.ImageFormat = Settings.SavedImageFormat;
@@ -1090,29 +1132,43 @@ namespace SportTracksOverlayPlugin.Source
 #endif
             }
 		}
-        private IList<CheckBox> lastChecked;
-        private ChartDataSeries lastSelectedSeries;
 
-        private List<IActivity> activities;
-        private System.Windows.Forms.Panel panelAct;
-        private Label labelActivity;
-        private IDictionary<ChartDataSeries, IActivity> series2activity;
 
-        private IDictionary<IActivity, IList<double>> actOffsets;
-        private IDictionary<System.Windows.Forms.TextBox, IActivity> actBoxes;
-        private IList<System.Windows.Forms.TextBox> actTextBoxes;
-        private IDictionary<ChartDataSeries, System.Windows.Forms.TextBox> series2actBoxes;
+        private ITheme m_visualTheme =
+#if ST_2_1
+                Plugin.GetApplication().VisualTheme;
+#else
+ Plugin.GetApplication().SystemPreferences.VisualTheme;
+#endif
+        private CultureInfo m_culture =
+#if ST_2_1
+                new System.Globalization.CultureInfo("en");
+#else
+ Plugin.GetApplication().SystemPreferences.UICulture;
+#endif
 
-        private IList<bool> checks;
-        private IDictionary<CheckBox, int> boxes;
-        private IList<CheckBox> checkBoxes;
+        private bool _showPage = false;
+        private IList<CheckBox> lastChecked = new List<CheckBox>();
+        private ChartDataSeries lastSelectedSeries = null;
+
+        private List<IActivity> activities = new List<IActivity>();
+        private IDictionary<ChartDataSeries, IActivity> series2activity = new Dictionary<ChartDataSeries, IActivity>();
+
+        private IDictionary<IActivity, IList<double>> actOffsets = new Dictionary<IActivity, IList<double>>();
+        private IDictionary<ZoneFiveSoftware.Common.Visuals.TextBox, IActivity> actBoxes = new Dictionary<ZoneFiveSoftware.Common.Visuals.TextBox, IActivity>();
+        private IList<ZoneFiveSoftware.Common.Visuals.TextBox> actTextBoxes = new List<ZoneFiveSoftware.Common.Visuals.TextBox>();
+        private IDictionary<ChartDataSeries, ZoneFiveSoftware.Common.Visuals.TextBox> series2actBoxes = new Dictionary<ChartDataSeries, ZoneFiveSoftware.Common.Visuals.TextBox>();
+
+        private IList<bool> checks = new List<bool>();
+        private IDictionary<CheckBox, int> boxes = new Dictionary<CheckBox, int>();
+        private IList<CheckBox> checkBoxes = new List<CheckBox>();
         private IDictionary<ChartDataSeries, CheckBox> series2boxes;
 
         //bSelectingDataFlag and bSelectDataFlag are used to coordinate the chart 
         //click/select/selecting events to minimize 'movingAverage' and 'box' control flicker.
         //I'm sure there's a better way, but at this time this is all I've got.
-        private bool bSelectingDataFlag;
-        private bool bSelectDataFlag;
+        private bool bSelectingDataFlag = false;
+        private bool bSelectDataFlag = false;
 
         private string saveImageProperties_fileName = "";
     }
