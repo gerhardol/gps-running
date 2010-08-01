@@ -26,11 +26,11 @@ using System.Windows.Forms;
 using System.Diagnostics;
 
 using ZoneFiveSoftware.Common.Data.Fitness;
-using SportTracksOverlayPlugin;
-using SportTracksOverlayPlugin.Source;
-using SportTracksOverlayPlugin.Properties;
+using GpsRunningPlugin;
+using GpsRunningPlugin.Source;
+using GpsRunningPlugin.Properties;
 
-namespace SportTracksOverlayPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     public partial class OverlaySettings : UserControl
     {

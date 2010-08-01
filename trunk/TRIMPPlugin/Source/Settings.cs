@@ -25,9 +25,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using ZoneFiveSoftware.Common.Data.Measurement;
-using SportTracksTRIMPPlugin.Properties;
+using GpsRunningPlugin.Properties;
 
-namespace SportTracksTRIMPPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class Settings
     {

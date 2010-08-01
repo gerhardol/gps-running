@@ -31,9 +31,9 @@ using System.ComponentModel;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using ZoneFiveSoftware.Common.Visuals;
-using SportTracksUniqueRoutesPlugin.Properties;
+using GpsRunningPlugin.Properties;
 
-namespace SportTracksUniqueRoutesPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     public class SendToPlugin
     {
@@ -357,13 +357,13 @@ namespace SportTracksUniqueRoutesPlugin.Source
                 XmlNode elm = document.ChildNodes[0]["view"];
                 windowSize = new Size(int.Parse(elm.Attributes["viewWidth"].Value),
                                                     int.Parse(elm.Attributes["viewHeight"].Value));
-                errorMargin = SportTracksUniqueRoutesPlugin.Source.Settings.parseDouble(elm.Attributes["errorMargin"].Value);
+                errorMargin = GpsRunningPlugin.Source.Settings.parseDouble(elm.Attributes["errorMargin"].Value);
                 bandwidth = int.Parse(elm.Attributes["bandwidth"].Value);
                 hasDirection = bool.Parse(elm.Attributes["hasDirection"].Value);
                 if (elm.Attributes["ignoreBeginning"] != null)
-                    ignoreBeginning = SportTracksUniqueRoutesPlugin.Source.Settings.parseDouble(elm.Attributes["ignoreBeginning"].Value);
+                    ignoreBeginning = GpsRunningPlugin.Source.Settings.parseDouble(elm.Attributes["ignoreBeginning"].Value);
                 if (elm.Attributes["ignoreEnd"] != null)
-                    ignoreEnd = SportTracksUniqueRoutesPlugin.Source.Settings.parseDouble(elm.Attributes["ignoreEnd"].Value);
+                    ignoreEnd = GpsRunningPlugin.Source.Settings.parseDouble(elm.Attributes["ignoreEnd"].Value);
                 selectAll = bool.Parse(elm.Attributes["selectAll"].Value);
                 selectedCategory = parseCategory(elm.Attributes["selectedCategory"].Value);
                 selectedPlugin = elm.Attributes["selectedPlugin"].Value;
@@ -401,7 +401,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
             }
             else
             {
-                cat = SportTracksUniqueRoutesPlugin.Source.Settings.getCategory(ps, 0, Plugin.GetApplication().Logbook.ActivityCategories);
+                cat = GpsRunningPlugin.Source.Settings.getCategory(ps, 0, Plugin.GetApplication().Logbook.ActivityCategories);
             }
             return cat;
         }

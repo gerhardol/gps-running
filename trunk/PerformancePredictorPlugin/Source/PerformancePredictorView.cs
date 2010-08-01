@@ -28,10 +28,10 @@ using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Chart;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using System.Reflection;
-using SportTracksPerformancePredictorPlugin.Properties;
-using SportTracksPerformancePredictorPlugin.Util;
+using GpsRunningPlugin.Properties;
+using GpsRunningPlugin.Util;
 
-namespace SportTracksPerformancePredictorPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     public partial class PerformancePredictorView : UserControl
     {

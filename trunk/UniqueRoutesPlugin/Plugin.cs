@@ -21,9 +21,9 @@ using System.Text;
 using System.Xml;
 
 using ZoneFiveSoftware.Common.Visuals.Fitness;
-using SportTracksUniqueRoutesPlugin.Source;
+using GpsRunningPlugin.Source;
 
-namespace SportTracksUniqueRoutesPlugin
+namespace GpsRunningPlugin
 {
     class Plugin : IPlugin
     {

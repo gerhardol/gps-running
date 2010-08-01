@@ -24,9 +24,9 @@ using System.Xml;
 using System.Drawing;
 
 using ZoneFiveSoftware.Common.Visuals.Fitness;
-using SportTracksPerformancePredictorPlugin.Source;
+using GpsRunningPlugin.Source;
 
-namespace SportTracksPerformancePredictorPlugin
+namespace GpsRunningPlugin
 {
     class Plugin : IPlugin
     {

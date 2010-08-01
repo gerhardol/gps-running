@@ -23,7 +23,7 @@ using System.Xml;
 
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 
-namespace SportTracksAccumulatedSummaryPlugin
+namespace GpsRunningPlugin
 {
     class Plugin : IPlugin
     {

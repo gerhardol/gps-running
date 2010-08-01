@@ -41,10 +41,10 @@ using ZoneFiveSoftware.Common.Data.Algorithm;
 using ZoneFiveSoftware.Common.Visuals.Forms;
 #endif
 
-using SportTracksOverlayPlugin.Properties;
-using SportTracksOverlayPlugin.Util;
+using GpsRunningPlugin.Properties;
+using GpsRunningPlugin.Util;
 
-namespace SportTracksOverlayPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     public partial class OverlayView : UserControl
     {

@@ -21,12 +21,12 @@ using System.Text;
 using ZoneFiveSoftware.Common.Data;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Data.GPS;
-using SportTracksUniqueRoutesPlugin;
-using SportTracksUniqueRoutesPlugin.Source;
+using GpsRunningPlugin;
+using GpsRunningPlugin.Source;
 using System.Windows.Forms;
 using System.Collections;
 
-namespace SportTracksUniqueRoutesPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class PointInfo 
     {

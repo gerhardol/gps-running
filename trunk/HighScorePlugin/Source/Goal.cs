@@ -21,10 +21,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using ZoneFiveSoftware.Common.Visuals;
-using SportTracksHighScorePlugin.Properties;
-using SportTracksHighScorePlugin.Util;
+using GpsRunningPlugin.Properties;
+using GpsRunningPlugin.Util;
 
-namespace SportTracksHighScorePlugin.Source
+namespace GpsRunningPlugin.Source
 {
     public abstract class Goal
     {

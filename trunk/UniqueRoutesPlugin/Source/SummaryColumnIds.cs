@@ -20,10 +20,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using ZoneFiveSoftware.Common.Data.Fitness;
-using SportTracksUniqueRoutesPlugin.Util;
-using SportTracksUniqueRoutesPlugin.Properties;
+using GpsRunningPlugin.Util;
+using GpsRunningPlugin.Properties;
 
-namespace SportTracksUniqueRoutesPlugin.Source
+namespace GpsRunningPlugin.Source
 {
 #if ST_2_1
         // Interface as in ST3

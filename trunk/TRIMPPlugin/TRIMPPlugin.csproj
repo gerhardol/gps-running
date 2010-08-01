@@ -4,7 +4,7 @@
     <ProjectGuid>{B43B69F5-3071-4CDC-93D4-A8D50C849226}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SportTracksTRIMPPlugin</RootNamespace>
+    <RootNamespace>GpsRunningPlugin</RootNamespace>
     <AssemblyName>TRIMPPlugin</AssemblyName>
     <PluginId>F4C8F7D6-B4A5-4E69-9205-48044356D3CF</PluginId>
   </PropertyGroup>

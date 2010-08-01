@@ -30,9 +30,9 @@ using ZoneFiveSoftware.Common.Visuals.Util;
 #endif
 using System.Globalization;
 using System.Windows.Forms;
-using SportTracksOverlayPlugin.Properties;
+using GpsRunningPlugin.Properties;
 
-namespace SportTracksOverlayPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class OverlayActivityDetailPage : 
 #if ST_2_1
@@ -50,7 +50,7 @@ namespace SportTracksOverlayPlugin.Source
 
         private void OnViewSelectedItemsChanged(object sender, EventArgs e)
         {
-            activities = SportTracksOverlayPlugin.Util.CollectionUtils.GetAllContainedItems<IActivity>(view.SelectionProvider);
+            activities = GpsRunningPlugin.Util.CollectionUtils.GetAllContainedItems<IActivity>(view.SelectionProvider);
             if ((control != null))
             {
                 control.Activities = activities;

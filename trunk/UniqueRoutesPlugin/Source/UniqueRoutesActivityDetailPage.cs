@@ -25,13 +25,13 @@ using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Visuals;
 using System.Windows.Forms;
-using SportTracksUniqueRoutesPlugin.Source;
+using GpsRunningPlugin.Source;
 #if !ST_2_1
 using ZoneFiveSoftware.Common.Data;
 using ZoneFiveSoftware.Common.Visuals.Util;
 #endif
 
-namespace SportTracksUniqueRoutesPlugin.Source
+namespace GpsRunningPlugin.Source
 {
    class UniqueRoutesActivityDetailPage : 
 #if ST_2_1

@@ -31,7 +31,7 @@ using ZoneFiveSoftware.Common.Visuals.Util;
 using System.Windows.Forms;
 using System.Globalization;
 
-namespace SportTracksPerformancePredictorPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class PerformancePredictorActivityDetailPage :
 #if ST_2_1

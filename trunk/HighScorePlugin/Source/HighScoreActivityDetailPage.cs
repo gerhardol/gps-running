@@ -29,7 +29,7 @@ using ZoneFiveSoftware.Common.Data;
 using ZoneFiveSoftware.Common.Visuals.Util;
 #endif
 
-namespace SportTracksHighScorePlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class HighScoreActivityDetailPage : 
 #if ST_2_1

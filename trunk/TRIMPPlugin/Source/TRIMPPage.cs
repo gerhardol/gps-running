@@ -22,7 +22,7 @@ using System.Text;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Visuals;
 
-namespace SportTracksTRIMPPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class TRIMPPage : IExtendSettingsPages
     {

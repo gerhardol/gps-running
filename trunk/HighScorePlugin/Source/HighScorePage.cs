@@ -20,9 +20,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ZoneFiveSoftware.Common.Visuals;
-using SportTracksHighScorePlugin.Properties;
+using GpsRunningPlugin.Properties;
 
-namespace SportTracksHighScorePlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class HighScorePage : ISettingsPage
     {
@@ -34,7 +34,7 @@ namespace SportTracksHighScorePlugin.Source
         {
             get
             {
-                Plugin plugin = new SportTracksHighScorePlugin.Plugin();
+                Plugin plugin = new GpsRunningPlugin.Plugin();
                 return plugin.Id;
             }
         }

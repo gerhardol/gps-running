@@ -26,11 +26,11 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.Reflection;
 using ZoneFiveSoftware.Common.Data.Measurement;
-using SportTracksOverlayPlugin.Properties;
+using GpsRunningPlugin.Properties;
 #if !ST_2_1
 using ZoneFiveSoftware.Common.Visuals.Forms;
 #endif
-namespace SportTracksOverlayPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class Settings
     {

@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Text;
 using ZoneFiveSoftware.Common.Visuals;
 
-namespace SportTracksOverlayPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class OverlaySettingsPage: ISettingsPage
     {
@@ -32,7 +32,7 @@ namespace SportTracksOverlayPlugin.Source
         public Guid Id
         {
             get {
-                Plugin plugin = new SportTracksOverlayPlugin.Plugin();
+                Plugin plugin = new GpsRunningPlugin.Plugin();
                 return plugin.Id;
             }
         }

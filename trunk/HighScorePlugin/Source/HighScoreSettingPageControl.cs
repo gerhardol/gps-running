@@ -33,10 +33,10 @@ using ZoneFiveSoftware.Common.Data;
 using System.Collections;
 using System.IO;
 using System.Xml;
-using SportTracksHighScorePlugin.Properties;
-using SportTracksHighScorePlugin.Util;
+using GpsRunningPlugin.Properties;
+using GpsRunningPlugin.Util;
 
-namespace SportTracksHighScorePlugin.Source
+namespace GpsRunningPlugin.Source
 {
     public partial class HighScoreSettingPageControl : UserControl
     {

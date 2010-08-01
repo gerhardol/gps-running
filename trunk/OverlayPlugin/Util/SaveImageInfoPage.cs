@@ -26,10 +26,10 @@ using System.Windows.Forms;
 
 using ZoneFiveSoftware.Common.Visuals;
 using System.Drawing.Imaging;
-using SportTracksOverlayPlugin.Util;
+using GpsRunningPlugin.Util;
 using System.IO;
 
-namespace SportTracksOverlayPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     public class OverlaySaveImageInfoPage : Form
 	{
@@ -47,17 +47,17 @@ namespace SportTracksOverlayPlugin.Source
 			txtSaveIn.Text = Environment.GetFolderPath( Environment.SpecialFolder.Personal );
 
             comboSize.Items.AddRange(new object[] {
-				global::SportTracksOverlayPlugin.Util.SaveImageResources.Thumbnail + " (200 x 160)",
-				global::SportTracksOverlayPlugin.Util.SaveImageResources.Small + " (400 x 310)",
-				global::SportTracksOverlayPlugin.Util.SaveImageResources.Medium + " (800 x 620)",
-				global::SportTracksOverlayPlugin.Util.SaveImageResources.Large + " (1400 x 1090)",
-				global::SportTracksOverlayPlugin.Util.SaveImageResources.Huge + " (2000 x 1560)",
-				global::SportTracksOverlayPlugin.Util.SaveImageResources.Custom});
+				global::GpsRunningPlugin.Util.SaveImageResources.Thumbnail + " (200 x 160)",
+				global::GpsRunningPlugin.Util.SaveImageResources.Small + " (400 x 310)",
+				global::GpsRunningPlugin.Util.SaveImageResources.Medium + " (800 x 620)",
+				global::GpsRunningPlugin.Util.SaveImageResources.Large + " (1400 x 1090)",
+				global::GpsRunningPlugin.Util.SaveImageResources.Huge + " (2000 x 1560)",
+				global::GpsRunningPlugin.Util.SaveImageResources.Custom});
             comboType.Items.AddRange(new object[] {
-				global::SportTracksOverlayPlugin.Util.SaveImageResources.Bitmap + " (.bmp)",
-				global::SportTracksOverlayPlugin.Util.SaveImageResources.JointPhotographicExpertsGroup + " (.jpg)",
-				global::SportTracksOverlayPlugin.Util.SaveImageResources.PortableNetworkGraphics + " (.png)",
-				global::SportTracksOverlayPlugin.Util.SaveImageResources.TaggedImageFileFormat + " (.tif)"});
+				global::GpsRunningPlugin.Util.SaveImageResources.Bitmap + " (.bmp)",
+				global::GpsRunningPlugin.Util.SaveImageResources.JointPhotographicExpertsGroup + " (.jpg)",
+				global::GpsRunningPlugin.Util.SaveImageResources.PortableNetworkGraphics + " (.png)",
+				global::GpsRunningPlugin.Util.SaveImageResources.TaggedImageFileFormat + " (.tif)"});
             this.comboSize.SelectedIndex = 2;
             this.comboType.SelectedIndex = 2;
 
@@ -78,13 +78,13 @@ namespace SportTracksOverlayPlugin.Source
         }
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
-            label1.Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.SaveIn;
-            label2.Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.FileName;
-            label3.Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.Size;
-            label4.Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.Type;
+            label1.Text = global::GpsRunningPlugin.Util.SaveImageResources.SaveIn;
+            label2.Text = global::GpsRunningPlugin.Util.SaveImageResources.FileName;
+            label3.Text = global::GpsRunningPlugin.Util.SaveImageResources.Size;
+            label4.Text = global::GpsRunningPlugin.Util.SaveImageResources.Type;
             btnCancel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCancel;
             btnOK.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionOk;
-            Text = global::SportTracksOverlayPlugin.Util.SaveImageResources.SaveImage;
+            Text = global::GpsRunningPlugin.Util.SaveImageResources.SaveImage;
         }
 
 		private Label label1;

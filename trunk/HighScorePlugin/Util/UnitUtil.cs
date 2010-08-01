@@ -24,9 +24,9 @@ using System;
 using System.Globalization;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using ZoneFiveSoftware.Common.Visuals;
-using SportTracksHighScorePlugin;
+using GpsRunningPlugin;
 
-namespace SportTracksHighScorePlugin.Util
+namespace GpsRunningPlugin.Util
 {
     class UnitUtil
     {

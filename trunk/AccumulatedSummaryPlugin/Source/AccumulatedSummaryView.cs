@@ -23,13 +23,13 @@ using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Data.Measurement;
 
-using SportTracksAccumulatedSummaryPlugin;
-using SportTracksAccumulatedSummaryPlugin.Source;
+using GpsRunningPlugin;
+using GpsRunningPlugin.Source;
 using ZoneFiveSoftware.Common.Visuals;
-using SportTracksAccumulatedSummaryPlugin.Properties;
-using SportTracksAccumulatedSummaryPlugin.Util;
+using GpsRunningPlugin.Properties;
+using GpsRunningPlugin.Util;
 
-namespace SportTracksAccumulatedSummaryPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class AccumulatedSummaryView : Form
     {

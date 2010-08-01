@@ -20,8 +20,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
-using SportTracksTRIMPPlugin;
-using SportTracksTRIMPPlugin.Source;
+using GpsRunningPlugin;
+using GpsRunningPlugin.Source;
 using System.Drawing;
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Chart;
@@ -34,10 +34,10 @@ using System.Collections;
 #if !ST_2_1
 using System.ComponentModel;
 #endif
-using SportTracksTRIMPPlugin.Properties;
-using SportTracksTRIMPPlugin.Util;
+using GpsRunningPlugin.Properties;
+using GpsRunningPlugin.Util;
 
-namespace SportTracksTRIMPPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class TRIMPView : UserControl
     {
@@ -657,7 +657,7 @@ namespace SportTracksTRIMPPlugin.Source
             {
                 get
                 {
-                    Plugin plugin = new SportTracksTRIMPPlugin.Plugin();
+                    Plugin plugin = new GpsRunningPlugin.Plugin();
                     return plugin.Id.ToString();
                 }
             }

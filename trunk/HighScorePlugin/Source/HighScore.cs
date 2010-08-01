@@ -26,12 +26,12 @@ using ZoneFiveSoftware.Common.Data.GPS;
 using ZoneFiveSoftware.Common.Data;
 using System.Data;
 using System.Windows.Forms;
-using SportTracksHighScorePlugin.Properties;
+using GpsRunningPlugin.Properties;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using ZoneFiveSoftware.Common.Visuals;
-using SportTracksHighScorePlugin.Util;
+using GpsRunningPlugin.Util;
 
-namespace SportTracksHighScorePlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class HighScore
     {

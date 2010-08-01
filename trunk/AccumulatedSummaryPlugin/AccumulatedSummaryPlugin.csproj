@@ -4,7 +4,7 @@
     <ProjectGuid>{8A7EBCE8-1745-43FA-A4AD-C0B67139A82F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SportTracksAccumulatedSummaryPlugin</RootNamespace>
+    <RootNamespace>GpsRunningPlugin</RootNamespace>
     <AssemblyName>AccumulatedSummaryPlugin</AssemblyName>
     <PluginId>859F81F4-8272-4183-BA53-FDF1DD809FD6</PluginId>
   </PropertyGroup>

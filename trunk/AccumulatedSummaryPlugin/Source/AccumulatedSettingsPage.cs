@@ -22,7 +22,7 @@ using System.Text;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Visuals;
 
-namespace SportTracksAccumulatedSummaryPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class AccumulatedSettingsPage : IExtendSettingsPages
     {

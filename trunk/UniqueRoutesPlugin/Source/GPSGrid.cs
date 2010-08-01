@@ -21,10 +21,10 @@ using System.Collections.Generic;
 using System.Text;
 using ZoneFiveSoftware.Common.Data;
 using ZoneFiveSoftware.Common.Data.GPS;
-using SportTracksUniqueRoutesPlugin.Source;
+using GpsRunningPlugin.Source;
 using ZoneFiveSoftware.Common.Data.Fitness;
 
-namespace SportTracksUniqueRoutesPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     public class IndexDiffDist
     {

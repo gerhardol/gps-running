@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Text;
 using ZoneFiveSoftware.Common.Visuals;
 
-namespace SportTracksTRIMPPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class TRIMPSettingsPage: ISettingsPage
     {
@@ -33,7 +33,7 @@ namespace SportTracksTRIMPPlugin.Source
         {
             get
             {
-                Plugin plugin = new SportTracksTRIMPPlugin.Plugin();
+                Plugin plugin = new GpsRunningPlugin.Plugin();
                 return plugin.Id;
             }
         }
