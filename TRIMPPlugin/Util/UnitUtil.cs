@@ -28,6 +28,34 @@ using GpsRunningPlugin;
 
 namespace GpsRunningPlugin.Util
 {
+    class CollectionUtils
+    {
+#if !ST_2_1
+        public static System.Collections.Generic.IList<ItemType> GetAllContainedItems<ItemType>(ISelectionProvider selectionProvider)
+        {
+            System.Collections.Generic.List<ItemType> items = new System.Collections.Generic.List<ItemType>();
+            foreach (ItemType item in ZoneFiveSoftware.Common.Visuals.Util.CollectionUtils.GetItemsOfType<ItemType>(selectionProvider.SelectedItems))
+            {
+                if (!items.Contains(item)) items.Add(item);
+            }
+            AddGroupItems<ItemType>(ZoneFiveSoftware.Common.Visuals.Util.CollectionUtils.GetItemsOfType<ZoneFiveSoftware.Common.Data.IGroupedItem<ItemType>>(
+                                    selectionProvider.SelectedItems), items);
+            return items;
+        }
+
+        public static void AddGroupItems<ItemType>(System.Collections.Generic.IList<ZoneFiveSoftware.Common.Data.IGroupedItem<ItemType>> groups, System.Collections.Generic.IList<ItemType> allItems)
+        {
+            foreach (ZoneFiveSoftware.Common.Data.IGroupedItem<ItemType> group in groups)
+            {
+                foreach (ItemType item in group.Items)
+                {
+                    if (!allItems.Contains(item)) allItems.Add(item);
+                }
+                AddGroupItems(group.SubGroups, allItems);
+            }
+        }
+#endif
+    }
     class UnitUtil
     {
         //Helpfunction for common format
@@ -90,7 +118,7 @@ namespace GpsRunningPlugin.Util
             {
                 get
                 {
-                    return CommonResources.Text.LabelPower + LabelAbbr;
+                    return CommonResources.Text.LabelPower + LabelAbbr2;
                 }
             }
         }
