@@ -114,31 +114,6 @@ namespace GpsRunningPlugin.Source
 
         #endregion
 #if !ST_2_1
-        IList<ItemType> GetAllContainedItems<ItemType>(ISelectionProvider selectionProvider)
-        {
-            List<ItemType> items = new List<ItemType>();
-            foreach (ItemType item in CollectionUtils.GetItemsOfType<ItemType>(selectionProvider.SelectedItems))
-            {
-                if (!items.Contains(item)) items.Add(item);
-            }
-            AddGroupItems<ItemType>(CollectionUtils.GetItemsOfType<IGroupedItem<ItemType>>(
-                                    selectionProvider.SelectedItems), items);
-            return items;
-        }
-
-        void AddGroupItems<ItemType>(IList<IGroupedItem<ItemType>> groups, IList<ItemType> allItems)
-        {
-            foreach (IGroupedItem<ItemType> group in groups)
-            {
-                foreach (ItemType item in group.Items)
-                {
-                    if (!allItems.Contains(item)) allItems.Add(item);
-                }
-                AddGroupItems(group.SubGroups, allItems);
-            }
-        }
-#endif
-#if !ST_2_1
         private IDailyActivityView dailyView = null;
         private IActivityReportsView reportView = null;
 #endif
@@ -154,11 +129,11 @@ namespace GpsRunningPlugin.Source
                 {
                     if (dailyView != null)
                     {
-                        return GetAllContainedItems<IActivity>(dailyView.SelectionProvider);
+                        return GpsRunningPlugin.Util.CollectionUtils.GetAllContainedItems<IActivity>(dailyView.SelectionProvider);
                     }
                     else if (reportView != null)
                     {
-                        return GetAllContainedItems<IActivity>(reportView.SelectionProvider);
+                        return GpsRunningPlugin.Util.CollectionUtils.GetAllContainedItems<IActivity>(reportView.SelectionProvider);
                     }
                     else
                     {
