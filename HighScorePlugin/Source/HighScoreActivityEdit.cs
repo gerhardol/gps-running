@@ -23,7 +23,7 @@ using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Visuals;
 
-namespace SportTracksHighScorePlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class HighScoreActivityEdit : 
 #if ST_2_1

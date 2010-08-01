@@ -23,15 +23,15 @@ using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using System.Windows.Forms;
 using System.Data;
-using SportTracksHighScorePlugin.Properties;
-using SportTracksHighScorePlugin.Util;
+using GpsRunningPlugin.Properties;
+using GpsRunningPlugin.Util;
 #if !ST_2_1
 using ZoneFiveSoftware.Common.Data;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Visuals.Util;
 #endif
 
-namespace SportTracksHighScorePlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class HighScoreAction : IAction
     {

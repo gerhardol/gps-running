@@ -27,9 +27,9 @@ using System.Globalization;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using System.Reflection;
 using System.Diagnostics;
-using SportTracksPerformancePredictorPlugin.Properties;
+using GpsRunningPlugin.Properties;
 
-namespace SportTracksPerformancePredictorPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class Settings
     {

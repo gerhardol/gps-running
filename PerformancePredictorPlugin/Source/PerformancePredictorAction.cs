@@ -21,15 +21,15 @@ using System.Collections.Generic;
 using System.Text;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Visuals;
-using SportTracksPerformancePredictorPlugin.Properties;
-using SportTracksPerformancePredictorPlugin.Util;
+using GpsRunningPlugin.Properties;
+using GpsRunningPlugin.Util;
 #if !ST_2_1
 using ZoneFiveSoftware.Common.Data;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Visuals.Util;
 #endif
 
-namespace SportTracksPerformancePredictorPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class PerformancePredictorAction : IAction
     {

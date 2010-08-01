@@ -33,10 +33,10 @@ using ZoneFiveSoftware.Common.Data.Measurement;
 using System.Collections;
 using System.IO;
 using System.Xml;
-using SportTracksUniqueRoutesPlugin.Properties;
-using SportTracksUniqueRoutesPlugin.Util;
+using GpsRunningPlugin.Properties;
+using GpsRunningPlugin.Util;
 
-namespace SportTracksUniqueRoutesPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     public partial class UniqueRoutesSettingPageControl : UserControl
     {

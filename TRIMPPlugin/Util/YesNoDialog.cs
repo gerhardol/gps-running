@@ -22,7 +22,7 @@ using System.Text;
 using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Visuals;
 
-namespace SportTracksTRIMPPlugin.Util
+namespace GpsRunningPlugin.Util
 {
     class YesNoDialog : Form
     {

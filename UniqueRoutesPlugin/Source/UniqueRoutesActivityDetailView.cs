@@ -28,15 +28,15 @@ using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Forms;
 #endif
 using ZoneFiveSoftware.Common.Data.Fitness;
-using SportTracksUniqueRoutesPlugin.Source;
-using SportTracksUniqueRoutesPlugin;
+using GpsRunningPlugin.Source;
+using GpsRunningPlugin;
 using System.Reflection.Emit;
 using System.Reflection;
 using System.IO;
-using SportTracksUniqueRoutesPlugin.Properties;
-using SportTracksUniqueRoutesPlugin.Util;
+using GpsRunningPlugin.Properties;
+using GpsRunningPlugin.Util;
 
-namespace SportTracksUniqueRoutesPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     public partial class UniqueRoutesActivityDetailView : UserControl
     {

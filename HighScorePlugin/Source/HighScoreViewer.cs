@@ -30,10 +30,10 @@ using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Visuals.Chart;
-using SportTracksHighScorePlugin.Properties;
-using SportTracksHighScorePlugin.Util;
+using GpsRunningPlugin.Properties;
+using GpsRunningPlugin.Util;
 
-namespace SportTracksHighScorePlugin.Source
+namespace GpsRunningPlugin.Source
 {
     public partial class HighScoreViewer : UserControl
     {

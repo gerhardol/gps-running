@@ -4,7 +4,7 @@
     <ProjectGuid>{119B99D1-2FCB-4355-880A-BACF38D18650}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SportTracksOverlayPlugin</RootNamespace>
+    <RootNamespace>GpsRunningPlugin</RootNamespace>
     <AssemblyName>OverlayPlugin</AssemblyName>
     <PluginId>489FD22A-DB13-49DB-A77C-57E45CB1D049</PluginId>
   </PropertyGroup>

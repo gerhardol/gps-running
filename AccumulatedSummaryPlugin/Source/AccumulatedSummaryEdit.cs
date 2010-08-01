@@ -24,7 +24,7 @@ using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Data.Fitness;
 
-namespace SportTracksAccumulatedSummaryPlugin.Source
+namespace GpsRunningPlugin.Source
 {
 class AccumulatedSummaryEdit : 
 #if ST_2_1

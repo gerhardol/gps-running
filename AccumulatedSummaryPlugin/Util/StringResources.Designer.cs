@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SportTracksAccumulatedSummaryPlugin.Util {
+namespace GpsRunningPlugin.Util {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SportTracksAccumulatedSummaryPlugin.Util {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SportTracksAccumulatedSummaryPlugin.Util.StringResources", typeof(StringResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("GpsRunningPlugin.Util.StringResources", typeof(StringResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -462,6 +462,15 @@ namespace SportTracksAccumulatedSummaryPlugin.Util {
         internal static string StartZone {
             get {
                 return ResourceManager.GetString("StartZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Summary.
+        /// </summary>
+        internal static string Summary {
+            get {
+                return ResourceManager.GetString("Summary", resourceCulture);
             }
         }
         

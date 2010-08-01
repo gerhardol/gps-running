@@ -26,10 +26,10 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using System.Globalization;
-using SportTracksPerformancePredictorPlugin.Properties;
-using SportTracksPerformancePredictorPlugin.Util;
+using GpsRunningPlugin.Properties;
+using GpsRunningPlugin.Util;
 
-namespace SportTracksPerformancePredictorPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     public partial class PerformancePredictorSettings : UserControl
     {

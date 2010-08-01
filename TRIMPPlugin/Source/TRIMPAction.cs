@@ -21,14 +21,14 @@ using System.Collections.Generic;
 using System.Text;
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Data.Fitness;
-using SportTracksTRIMPPlugin.Properties;
+using GpsRunningPlugin.Properties;
 #if !ST_2_1
 using ZoneFiveSoftware.Common.Data;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Visuals.Util;
 #endif
 
-namespace SportTracksTRIMPPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class TRIMPAction: IAction
     {

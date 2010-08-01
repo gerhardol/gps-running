@@ -22,9 +22,9 @@ using System.Text;
 using System.Xml;
 
 using ZoneFiveSoftware.Common.Visuals.Fitness;
-using SportTracksTRIMPPlugin.Source;
+using GpsRunningPlugin.Source;
 
-namespace SportTracksTRIMPPlugin
+namespace GpsRunningPlugin
 {
     class Plugin : IPlugin
     {

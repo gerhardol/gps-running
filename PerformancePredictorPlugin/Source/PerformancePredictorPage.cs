@@ -22,7 +22,7 @@ using System.Text;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Visuals;
 
-namespace SportTracksPerformancePredictorPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class PerformanceSettingsPage : IExtendSettingsPages
     {

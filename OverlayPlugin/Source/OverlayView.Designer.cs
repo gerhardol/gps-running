@@ -17,7 +17,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
 
-namespace SportTracksOverlayPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     partial class OverlayView
     {
@@ -230,7 +230,7 @@ namespace SportTracksOverlayPlugin.Source
             this.categoryAverage.Name = "categoryAverage";
             this.categoryAverage.Size = new System.Drawing.Size(139, 17);
             this.categoryAverage.TabIndex = 9;
-            this.categoryAverage.Text = global::SportTracksOverlayPlugin.Properties.Resources.BCA;
+            this.categoryAverage.Text = global::GpsRunningPlugin.Properties.Resources.BCA;
             this.categoryAverage.UseVisualStyleBackColor = true;
             this.categoryAverage.CheckedChanged += new System.EventHandler(this.average_CheckedChanged);
             // 
@@ -241,7 +241,7 @@ namespace SportTracksOverlayPlugin.Source
             this.movingAverage.Name = "movingAverage";
             this.movingAverage.Size = new System.Drawing.Size(126, 17);
             this.movingAverage.TabIndex = 10;
-            this.movingAverage.Text = global::SportTracksOverlayPlugin.Properties.Resources.BMA;
+            this.movingAverage.Text = global::GpsRunningPlugin.Properties.Resources.BMA;
             this.movingAverage.UseVisualStyleBackColor = true;
             this.movingAverage.CheckedChanged += new System.EventHandler(this.movingAverage_CheckedChanged);
             // 

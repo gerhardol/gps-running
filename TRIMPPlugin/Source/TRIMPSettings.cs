@@ -25,14 +25,14 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 using ZoneFiveSoftware.Common.Data.Fitness;
-using SportTracksTRIMPPlugin;
-using SportTracksTRIMPPlugin.Source;
+using GpsRunningPlugin;
+using GpsRunningPlugin.Source;
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Chart;
-using SportTracksTRIMPPlugin.Properties;
-using SportTracksTRIMPPlugin.Util;
+using GpsRunningPlugin.Properties;
+using GpsRunningPlugin.Util;
 
-namespace SportTracksTRIMPPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     public partial class TRIMPSettings : UserControl
     {

@@ -24,7 +24,7 @@ using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Visuals;
 #endif
 
-namespace SportTracksTRIMPPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class TRIMPActivityDetail : IExtendActivityDetailPages
     {

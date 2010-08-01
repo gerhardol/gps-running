@@ -20,9 +20,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ZoneFiveSoftware.Common.Visuals;
-using SportTracksUniqueRoutesPlugin.Properties;
+using GpsRunningPlugin.Properties;
 
-namespace SportTracksUniqueRoutesPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class UniqueRoutesPage : ISettingsPage
     {
@@ -34,7 +34,7 @@ namespace SportTracksUniqueRoutesPlugin.Source
         {
             get
             {
-                Plugin plugin = new SportTracksUniqueRoutesPlugin.Plugin();
+                Plugin plugin = new GpsRunningPlugin.Plugin();
                 return plugin.Id;
             }
         }

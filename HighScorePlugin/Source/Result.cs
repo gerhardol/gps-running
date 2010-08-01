@@ -27,10 +27,10 @@ using ZoneFiveSoftware.Common.Data.GPS;
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Data.Measurement;
-using SportTracksHighScorePlugin.Source;
-using SportTracksHighScorePlugin.Properties;
+using GpsRunningPlugin.Source;
+using GpsRunningPlugin.Properties;
 
-namespace SportTracksHighScorePlugin.Source
+namespace GpsRunningPlugin.Source
 {
     public class Result
     {

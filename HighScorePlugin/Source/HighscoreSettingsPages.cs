@@ -24,7 +24,7 @@ using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using System.Collections;
 
-namespace SportTracksHighScorePlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class HighScoreSettingsPages : IExtendSettingsPages
     {

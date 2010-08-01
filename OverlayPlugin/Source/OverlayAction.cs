@@ -21,14 +21,14 @@ using System.Collections.Generic;
 using System.Text;
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Data.Fitness;
-using SportTracksOverlayPlugin.Properties;
+using GpsRunningPlugin.Properties;
 #if !ST_2_1
 using ZoneFiveSoftware.Common.Data;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Visuals.Util;
 #endif
 
-namespace SportTracksOverlayPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class OverlayAction: IAction
     {
@@ -126,11 +126,11 @@ namespace SportTracksOverlayPlugin.Source
                 {
                     if (dailyView != null)
                     {
-                        return SportTracksOverlayPlugin.Util.CollectionUtils.GetAllContainedItems<IActivity>(dailyView.SelectionProvider);
+                        return GpsRunningPlugin.Util.CollectionUtils.GetAllContainedItems<IActivity>(dailyView.SelectionProvider);
                     }
                     else if (reportView != null)
                     {
-                        return SportTracksOverlayPlugin.Util.CollectionUtils.GetAllContainedItems<IActivity>(reportView.SelectionProvider);
+                        return GpsRunningPlugin.Util.CollectionUtils.GetAllContainedItems<IActivity>(reportView.SelectionProvider);
                     }
                     else
                     {

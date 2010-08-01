@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Text;
 using ZoneFiveSoftware.Common.Visuals;
 
-namespace SportTracksPerformancePredictorPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class PerformancePredictorSettingsPage: ISettingsPage
     {
@@ -32,7 +32,7 @@ namespace SportTracksPerformancePredictorPlugin.Source
         public Guid Id
         {
             get {
-                Plugin plugin = new SportTracksPerformancePredictorPlugin.Plugin();
+                Plugin plugin = new GpsRunningPlugin.Plugin();
                 return plugin.Id;
             }
         }

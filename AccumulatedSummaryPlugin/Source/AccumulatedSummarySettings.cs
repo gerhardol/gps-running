@@ -24,9 +24,9 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
-using SportTracksAccumulatedSummaryPlugin.Properties;
+using GpsRunningPlugin.Properties;
 
-namespace SportTracksAccumulatedSummaryPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     public partial class AccumulatedSummarySettings : UserControl
     {

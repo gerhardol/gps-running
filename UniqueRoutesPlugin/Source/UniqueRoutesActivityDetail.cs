@@ -25,7 +25,7 @@ using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Visuals;
 #endif
 
-namespace SportTracksUniqueRoutesPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class UniqueRoutesActivityDetailPages : IExtendActivityDetailPages
     {

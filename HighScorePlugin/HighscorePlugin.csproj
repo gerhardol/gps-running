@@ -4,7 +4,7 @@
     <ProjectGuid>{00AA7ECA-95A0-4167-9C74-AD4D2E056BFE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SportTracksHighScorePlugin</RootNamespace>
+    <RootNamespace>GpsRunningPlugin</RootNamespace>
     <AssemblyName>HighScorePlugin</AssemblyName>
     <PluginId>4B84E5C0-EC2B-4C0C-8B8E-3FAEB09F74C6</PluginId>
   </PropertyGroup>

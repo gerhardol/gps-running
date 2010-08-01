@@ -4,7 +4,7 @@
     <ProjectGuid>{AE71FE1B-45C9-4B91-BD76-D219DAAC1F0C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SportTracksUniqueRoutesPlugin</RootNamespace>
+    <RootNamespace>GpsRunningPlugin</RootNamespace>
     <AssemblyName>UniqueRoutesPlugin</AssemblyName>
     <PluginId>5c630517-46c4-478d-89d6-a8a6ca6337db</PluginId>
   </PropertyGroup>

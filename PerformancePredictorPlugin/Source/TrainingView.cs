@@ -27,13 +27,13 @@ using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using System.Reflection;
-using SportTracksPerformancePredictorPlugin.Properties;
-using SportTracksPerformancePredictorPlugin.Util;
+using GpsRunningPlugin.Properties;
+using GpsRunningPlugin.Util;
 #if !ST_2_1
 using ZoneFiveSoftware.Common.Data;
 #endif
 
-namespace SportTracksPerformancePredictorPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     public partial class TrainingView : UserControl
     {

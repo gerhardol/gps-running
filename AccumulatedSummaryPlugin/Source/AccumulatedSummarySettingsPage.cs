@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Text;
 using ZoneFiveSoftware.Common.Visuals;
 
-namespace SportTracksAccumulatedSummaryPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class AccumulatedSummarySettingsPage: ISettingsPage
     {
@@ -33,7 +33,7 @@ namespace SportTracksAccumulatedSummaryPlugin.Source
         {
             get
             {
-                Plugin plugin = new SportTracksAccumulatedSummaryPlugin.Plugin();
+                Plugin plugin = new GpsRunningPlugin.Plugin();
                 return plugin.Id;
             }
         }

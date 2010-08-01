@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SportTracksOverlayPlugin.Util {
+namespace GpsRunningPlugin.Util {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SportTracksOverlayPlugin.Util {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SportTracksOverlayPlugin.Util.SaveImageResources", typeof(SaveImageResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("GpsRunningPlugin.Util.SaveImageResources", typeof(SaveImageResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -24,7 +24,7 @@ using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Visuals;
 #endif
 
-namespace SportTracksPerformancePredictorPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class PerformancePredictorActivityDetail : IExtendActivityDetailPages
     {

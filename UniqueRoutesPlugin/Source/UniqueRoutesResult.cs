@@ -23,9 +23,9 @@ using System;
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using ZoneFiveSoftware.Common.Data.Fitness;
-using SportTracksUniqueRoutesPlugin.Util;
+using GpsRunningPlugin.Util;
 
-namespace SportTracksUniqueRoutesPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     public class UniqueRoutesResult : IComparable
     {

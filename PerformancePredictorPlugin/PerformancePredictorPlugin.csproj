@@ -4,7 +4,7 @@
     <ProjectGuid>{FA1AA377-3849-4384-9D19-F95252586E0C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SportTracksPerformancePredictorPlugin</RootNamespace>
+    <RootNamespace>GpsRunningPlugin</RootNamespace>
     <AssemblyName>PerformancePredictorPlugin</AssemblyName>
     <PluginId>0AA49FDF-ADA0-4522-9488-A698A7E197AA</PluginId>
   </PropertyGroup>

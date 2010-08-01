@@ -31,7 +31,7 @@ using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Visuals;
 using System.Globalization;
 
-namespace SportTracksTRIMPPlugin.Source
+namespace GpsRunningPlugin.Source
 {
     class TRIMPActivityDetailPage :
 #if ST_2_1
