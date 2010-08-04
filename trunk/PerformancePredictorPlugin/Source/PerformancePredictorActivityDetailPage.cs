@@ -40,6 +40,7 @@ namespace GpsRunningPlugin.Source
      IDetailPage
 #endif
     {
+        #region IActivityDetailPage Members
 #if !ST_2_1
         public PerformancePredictorActivityDetailPage(IDailyActivityView view)
         {
@@ -49,25 +50,39 @@ namespace GpsRunningPlugin.Source
 
         private void OnViewSelectedItemsChanged(object sender, EventArgs e)
         {
-            Activity = CollectionUtils.GetSingleItemOfType<IActivity>(view.SelectionProvider.SelectedItems);
+            activities = GpsRunningPlugin.Util.CollectionUtils.GetAllContainedItems<IActivity>(view.SelectionProvider);
+            updateActivities();
             RefreshPage();
         }
         public System.Guid Id { get { return new Guid("{ee9dde60-5ed6-11df-a08a-0800200c9a66}"); } }
-#endif
 
-        #region IActivityDetailPage Members
-
+#else
         public IActivity Activity
         {
             set
             {
-                this.activity = value;
-                if (control != null)
-                    this.control.Activity = value;
+                activities = new List<IActivity> { value };
+                updateActivities();
             }
-
         }
+#endif
 
+        private void updateActivities()
+        {
+            //The action depends on if one or many activities are selected...
+            //This should be an option in the plugin instead
+            if ((control != null))
+            {
+                if (activities != null && activities.Count == 1)
+                {
+                    control.Activity = activities[0];
+                }
+                else
+                {
+                    control.Activities = activities;
+                }
+            }
+        }
         public IList<string> MenuPath
         {
             get { return menuPath; }
@@ -107,7 +122,8 @@ namespace GpsRunningPlugin.Source
         {
             if (control == null)
             {
-                control = new PerformancePredictorView(activity);
+                control = new PerformancePredictorView();
+                updateActivities();
             }
             return control;
         }
@@ -134,7 +150,6 @@ namespace GpsRunningPlugin.Source
         public void ThemeChanged(ITheme visualTheme)
         {
             RefreshPage();
-            //			m_visualTheme = visualTheme;
             if (control != null)
             {
                 control.ThemeChanged(visualTheme);
@@ -166,7 +181,7 @@ namespace GpsRunningPlugin.Source
 #if !ST_2_1
         private IDailyActivityView view = null;
 #endif
-        private IActivity activity = null;
+        private IList<IActivity> activities = new List<IActivity>();
         private PerformancePredictorView control = null;
         private IList<string> menuPath = null;
         private bool menuEnabled = true;

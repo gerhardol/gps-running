@@ -27,6 +27,17 @@ using GpsRunningPlugin.Source;
 using System.Windows.Forms;
 using System.Collections;
 
+namespace SportTracksUniqueRoutesPlugin.Source
+{
+    //Compatibility - namespace changed
+    class UniqueRoutes
+    {
+        public static IList<IActivity> findSimilarRoutes(IActivity activity, System.Windows.Forms.ProgressBar progressBar)
+        {
+            return GpsRunningPlugin.Source.UniqueRoutes.findSimilarRoutes(activity, progressBar);
+        }
+    }
+}
 namespace GpsRunningPlugin.Source
 {
     public enum UniqueModel

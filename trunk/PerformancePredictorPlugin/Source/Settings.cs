@@ -37,7 +37,7 @@ namespace GpsRunningPlugin.Source
         static Settings()
         {
             distances = new SortedList<double, SortedList<Length.Units, bool>>();
-            highScore = getPlugin("HighScore", "SportTracksHighScorePlugin.Source.HighScore");
+            highScore = getPlugin("HighScore", "GpsRunningPlugin.Source.HighScore");
             defaults();
         }
 

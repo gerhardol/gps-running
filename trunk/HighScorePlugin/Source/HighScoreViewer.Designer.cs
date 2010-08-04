@@ -47,8 +47,6 @@ namespace GpsRunningPlugin.Source
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGrid = new System.Windows.Forms.DataGridView();
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuCopy = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,8 +74,6 @@ namespace GpsRunningPlugin.Source
             this.dataGrid.AllowUserToAddRows = false;
             this.dataGrid.AllowUserToDeleteRows = false;
             this.dataGrid.AllowUserToResizeRows = false;
-            //dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            //this.dataGrid.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGrid.BackgroundColor = System.Drawing.SystemColors.Control;
@@ -89,8 +85,6 @@ namespace GpsRunningPlugin.Source
             this.dataGrid.Name = "dataGrid";
             this.dataGrid.ReadOnly = true;
             this.dataGrid.RowHeadersVisible = false;
-            //dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            //this.dataGrid.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dataGrid.Size = new System.Drawing.Size(414, 65);
             this.dataGrid.TabIndex = 2;
@@ -103,9 +97,9 @@ namespace GpsRunningPlugin.Source
             this.contextMenu.Name = "contextMenu";
             this.contextMenu.Size = new System.Drawing.Size(199, 26);
             // 
-            // toolStripMenuItem1
+            // toolStripMenuCopy
             // 
-            this.toolStripMenuCopy.Name = "toolStripMenuItem1";
+            this.toolStripMenuCopy.Name = "toolStripMenuCopy";
             this.toolStripMenuCopy.Size = new System.Drawing.Size(198, 22);
             this.toolStripMenuCopy.Text = "Copy table to clipboard";
             // 
@@ -231,6 +225,7 @@ namespace GpsRunningPlugin.Source
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.AutoScroll = true;
             this.splitContainer1.Panel2.Controls.Add(this.dataGrid);
             this.splitContainer1.Panel2.Controls.Add(this.chart);
             this.splitContainer1.Size = new System.Drawing.Size(414, 116);

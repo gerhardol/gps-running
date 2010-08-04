@@ -37,14 +37,23 @@ namespace GpsRunningPlugin.Source
     {
         private TrainingView trainingView;
 
-        private IActivity activity;
+        private IActivity activity = null;
         public IActivity Activity
         {
             get { return activity; }
             set
             {
+                if (activity != null && value != activity)
+                {
+#if ST_2_1
+                    activity.DataChanged -= new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(dataChanged);
+#else
+                    activity.PropertyChanged -= new PropertyChangedEventHandler(Activity_PropertyChanged);
+#endif
+                }
                 activity = value;
-                if (activity != null)
+                activities = null;
+                if (activity != null && value != activity)
                 {
 #if ST_2_1
                     activity.DataChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(dataChanged);
@@ -58,28 +67,50 @@ namespace GpsRunningPlugin.Source
         }
 
         private IList<IList<Object>> results;
-        private IList<IActivity> activities;
+        private IList<IActivity> activities = null;
         public IList<IActivity> Activities
         {
             get { return activities; }
             set
             {
-                activities = value;
-                IList<double> partialDistances = new List<double>();
-                foreach (double distance in Settings.Distances.Keys)
+                activities = null;
+                Activity = null;
+                if (null != value && null != Settings.highScore && 0 < value.Count)
                 {
-                    //Scale down the distances, so we get the high scores
-                    partialDistances.Add(distance * Settings.PercentOfDistance / 100.0);
+                    activities = value;
+                    IList<double> partialDistances = new List<double>();
+                    foreach (double distance in Settings.Distances.Keys)
+                    {
+                        //Scale down the distances, so we get the high scores
+                        partialDistances.Add(distance * Settings.PercentOfDistance / 100.0);
+                    }
+                    training.Checked = false;
+                    timePrediction.Checked = true;
+                    progressBar.Visible = true;
+                    progressBar.Minimum = 0;
+                    progressBar.Maximum = activities.Count;
+                    results = (IList<IList<Object>>)
+                        Settings.highScore.GetMethod("getFastestTimesOfDistances").Invoke(null,
+                        new object[] { activities, partialDistances, progressBar });
+                    progressBar.Visible = false;
                 }
-                training.Checked = false;
-                timePrediction.Checked = true;
-                progressBar.Visible = true;
-                progressBar.Minimum = 0;
-                progressBar.Maximum = activities.Count;
-                results = (IList<IList<Object>>)
-                    Settings.highScore.GetMethod("getFastestTimesOfDistances").Invoke(null, 
-                    new object[] { activities, partialDistances, progressBar });
-                progressBar.Visible = false;
+                string title = Resources.PPHS;
+                if (null != activities)
+                {
+                    if (activities.Count == 1)
+                    {
+                        title = Resources.PPHS + " " + StringResources.ForOneActivity;
+                    }
+                    else
+                    {
+                        title = Resources.PPHS + " " + String.Format(StringResources.ForManyActivities, activities.Count);
+                    }
+                }
+                //title cant be set on activity page
+                if (null != popupForm)
+                {
+                    popupForm.Text = title;
+                }
                 makeData();
             }
         }
@@ -100,7 +131,12 @@ namespace GpsRunningPlugin.Source
 
         private Form popupForm;
 
-        public PerformancePredictorView(IActivity activity)
+        public PerformancePredictorView(IList<IActivity> activities, bool showDialog)
+            : this(showDialog)
+        {
+            Activities = activities;
+        }
+        public PerformancePredictorView()
         {
             InitializeComponent(); 
             InitControls();
@@ -137,68 +173,58 @@ namespace GpsRunningPlugin.Source
             setSize();
             chart.YAxis.Formatter = new Formatter.SecondsToTime();
             chart.XAxis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
-            Activity = activity;
             //Remove this listener - let user explicitly update after changing settings, to avoid crashes
             //Settings.DistanceChanged += new PropertyChangedEventHandler(Settings_DistanceChanged);
         }
 
-        public PerformancePredictorView(IList<IActivity> activities)
-            : this((IActivity)null)
+        public PerformancePredictorView(bool showDialog)
+            : this()
         {
-            //Theme and Culture must be set manually
-            this.ThemeChanged(
+            if (showDialog)
+            {
+                //Theme and Culture must be set manually
+                this.ThemeChanged(
 #if ST_2_1
                 Plugin.GetApplication().VisualTheme
 #else
-                Plugin.GetApplication().SystemPreferences.VisualTheme
+Plugin.GetApplication().SystemPreferences.VisualTheme
 #endif
-            );
-            this.UICultureChanged(
+);
+                this.UICultureChanged(
 #if ST_2_1
                 new System.Globalization.CultureInfo("en")
 #else
-                Plugin.GetApplication().SystemPreferences.UICulture
+Plugin.GetApplication().SystemPreferences.UICulture
 #endif
-            );
-            popupForm = new Form();
-            popupForm.Controls.Add(this);
-            popupForm.Size = Settings.WindowSize;
-            //Fill would be simpler here, but then edges are cut
-            this.Size = new Size(Parent.Size.Width - 17, Parent.Size.Height - 38);
-            this.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                    | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom)));
-            Parent.SizeChanged += new EventHandler(Parent_SizeChanged);
-            dataGrid.CellContentDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
-            popupForm.StartPosition = FormStartPosition.CenterScreen;
-            popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_PerformancePredictor.GetHicon());
-            popupForm.Show();
-
-            if (activities.Count == 1) popupForm.Text = Resources.PPHS + " " + StringResources.ForOneActivity;
-            else popupForm.Text = Resources.PPHS + " " + String.Format(StringResources.ForManyActivities, activities.Count);
-            Activities = activities;
+);
+                popupForm = new Form();
+                popupForm.Controls.Add(this);
+                popupForm.Size = Settings.WindowSize;
+                //Fill would be simpler here, but then edges are cut
+                this.Size = new Size(Parent.Size.Width - 17, Parent.Size.Height - 38);
+                this.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom)));
+                Parent.SizeChanged += new EventHandler(Parent_SizeChanged);
+                dataGrid.CellContentDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
+                popupForm.StartPosition = FormStartPosition.CenterScreen;
+                popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_PerformancePredictor.GetHicon());
+                popupForm.Show();
+            }
         }
 
         void InitControls()
         {
             trainingView = new TrainingView();
             trainingView.Location = chart.Location;
-            trainingView.ThemeChanged(
-#if ST_2_1
-                Plugin.GetApplication().VisualTheme
-#else
-                Plugin.GetApplication().SystemPreferences.VisualTheme
-#endif
-                                     );
-            trainingView.UICultureChanged(
-#if ST_2_1
-                new System.Globalization.CultureInfo("en")
-#else
-                Plugin.GetApplication().SystemPreferences.UICulture
-#endif
-                                         );
+            //Note ThemeChnged set asfor components init by default
             this.splitContainer1.Panel2.Controls.Add(trainingView);
             trainingView.Dock = DockStyle.Fill;
             progressBar.Visible = false;
+
+            this.dataGrid.EnableHeadersVisualStyles = false;
+            this.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.dataGrid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.dataGrid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
         }
         public void ThemeChanged(ITheme visualTheme)
         {
@@ -212,13 +238,9 @@ namespace GpsRunningPlugin.Source
             this.dataGrid.BackgroundColor = visualTheme.Control;
             this.dataGrid.GridColor = visualTheme.Border;
             this.dataGrid.DefaultCellStyle.BackColor = visualTheme.Window;
-            this.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.dataGrid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             //This will disable gradient header, but make them more like ST controls
             //this.dataGrid.RowHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
             this.dataGrid.ColumnHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
-            this.dataGrid.EnableHeadersVisualStyles = false;
-            this.dataGrid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
 
             if (null != trainingView)
             {
@@ -286,6 +308,8 @@ namespace GpsRunningPlugin.Source
                 return;
             if (!Settings.ShowPrediction && activities == null)
             {
+                timePrediction.Checked = false;
+                training.Checked = true;
                 trainingView.Visible = true;
                 return;
             }

@@ -70,20 +70,22 @@ namespace GpsRunningPlugin.Source
             progress.Minimum = 0;
             progress.Maximum = activities.Count;
             progress.Value = 0;
-            foreach (IActivity activity in activities)
+            if (activities != null && activities.Count > 0)
             {
-                if (activity.HasStartTime)
+                foreach (IActivity activity in activities)
                 {
-                    if (Settings.IgnoreManualData)
+                    if (null != activity && activity.HasStartTime)
                     {
-                        if (!activity.UseEnteredData)
-                            calculate(activity, goals, results);
+                        if (Settings.IgnoreManualData)
+                        {
+                            if (!activity.UseEnteredData)
+                                calculate(activity, goals, results);
+                        }
+                        else calculate(activity, goals, results);
                     }
-                    else calculate(activity, goals, results);
+                    progress.Value++;
                 }
-                progress.Value++;
             }
-
             return results;
         }
 
