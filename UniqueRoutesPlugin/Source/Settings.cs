@@ -33,6 +33,18 @@ using ZoneFiveSoftware.Common.Data.Measurement;
 using ZoneFiveSoftware.Common.Visuals;
 using GpsRunningPlugin.Properties;
 
+namespace SportTracksUniqueRoutesPlugin.Source
+{
+    //Compatibility - namespace changed
+    class Settings
+    {
+        public static bool HasDirection
+        {
+            get { return GpsRunningPlugin.Source.Settings.HasDirection; }
+            set { GpsRunningPlugin.Source.Settings.HasDirection = value; }
+        }
+    }
+}
 namespace GpsRunningPlugin.Source
 {
     public class SendToPlugin
@@ -73,10 +85,10 @@ namespace GpsRunningPlugin.Source
     class Settings
     {
         public readonly static IList<SendToPlugin> aSendToPlugin = new List<SendToPlugin>(){
-            new SendToPlugin("AccumulatedSummary", "Accumulated Summary", "SportTracksAccumulatedSummaryPlugin.Source.AccumulatedSummaryView", new object[] { null }),
-            new SendToPlugin("HighScore", "High Score", "SportTracksHighScorePlugin.Source.HighScoreViewer", new object[] { null, true, true }),
-            new SendToPlugin("Overlay", "Overlay", "SportTracksOverlayPlugin.Source.OverlayView", new object[] { null }),
-            new SendToPlugin("TRIMP", "TRIMP", "SportTracksTRIMPPlugin.Source.TRIMPView", new object[] { null, true })};
+            new SendToPlugin("AccumulatedSummary", "Accumulated Summary", "GpsRunningPlugin.Source.AccumulatedSummaryView", new object[] { null }),
+            new SendToPlugin("HighScore", "High Score", "GpsRunningPlugin.Source.HighScoreViewer", new object[] { null, true, true }),
+            new SendToPlugin("Overlay", "Overlay", "GpsRunningPlugin.Source.OverlayView", new object[] { null }),
+            new SendToPlugin("TRIMP", "TRIMP", "GpsRunningPlugin.Source.TRIMPView", new object[] { null, true })};
         static Settings()
         {
             defaults();

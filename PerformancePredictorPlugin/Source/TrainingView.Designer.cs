@@ -86,6 +86,7 @@ namespace GpsRunningPlugin.Source
             this.tabControl1.Controls.Add(this.intervalTab);
             this.tabControl1.Controls.Add(this.temperatureTab);
             this.tabControl1.Controls.Add(this.weightTab);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.HotTrack = true;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(0);
@@ -112,18 +113,19 @@ namespace GpsRunningPlugin.Source
             this.trainingLabel.AutoSize = true;
             this.trainingLabel.Location = new System.Drawing.Point(3, 14);
             this.trainingLabel.Name = "trainingLabel";
-            this.trainingLabel.Size = new System.Drawing.Size(35, 13);
+            this.trainingLabel.Size = new System.Drawing.Size(50, 13);
             this.trainingLabel.TabIndex = 1;
-            this.trainingLabel.Text = "label1";
+            this.trainingLabel.Text = "VO2 max";
             // 
             // trainingGrid
             // 
             this.trainingGrid.AllowUserToAddRows = false;
             this.trainingGrid.AllowUserToDeleteRows = false;
             this.trainingGrid.AllowUserToResizeRows = false;
-            this.trainingGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.trainingGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.trainingGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.trainingGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.trainingGrid.BackgroundColor = System.Drawing.SystemColors.Control;
             this.trainingGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.trainingGrid.Location = new System.Drawing.Point(0, 30);
@@ -131,19 +133,19 @@ namespace GpsRunningPlugin.Source
             this.trainingGrid.Name = "trainingGrid";
             this.trainingGrid.RowHeadersVisible = false;
             this.trainingGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.trainingGrid.Size = new System.Drawing.Size(435, 85);
+            this.trainingGrid.Size = new System.Drawing.Size(431, 81);
             this.trainingGrid.TabIndex = 0;
             // 
             // paceTempoTab
             // 
             this.paceTempoTab.AutoScroll = true;
+            this.paceTempoTab.Controls.Add(this.paceTempoLabel);
             this.paceTempoTab.Controls.Add(this.paceTempoGrid);
             this.paceTempoTab.Controls.Add(this.label1);
-            this.paceTempoTab.Controls.Add(this.paceTempoLabel);
             this.paceTempoTab.Location = new System.Drawing.Point(4, 22);
             this.paceTempoTab.Name = "paceTempoTab";
             this.paceTempoTab.Padding = new System.Windows.Forms.Padding(3);
-            this.paceTempoTab.Size = new System.Drawing.Size(434, 81);
+            this.paceTempoTab.Size = new System.Drawing.Size(434, 111);
             this.paceTempoTab.TabIndex = 1;
             this.paceTempoTab.Text = "Pace for tempo runs";
             this.paceTempoTab.UseVisualStyleBackColor = true;
@@ -153,9 +155,8 @@ namespace GpsRunningPlugin.Source
             this.paceTempoGrid.AllowUserToAddRows = false;
             this.paceTempoGrid.AllowUserToDeleteRows = false;
             this.paceTempoGrid.AllowUserToResizeRows = false;
-            this.paceTempoGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.paceTempoGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
             this.paceTempoGrid.BackgroundColor = System.Drawing.SystemColors.Control;
             this.paceTempoGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.paceTempoGrid.Location = new System.Drawing.Point(0, 30);
@@ -164,7 +165,7 @@ namespace GpsRunningPlugin.Source
             this.paceTempoGrid.ReadOnly = true;
             this.paceTempoGrid.RowHeadersVisible = false;
             this.paceTempoGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.paceTempoGrid.Size = new System.Drawing.Size(434, 81);
+            this.paceTempoGrid.Size = new System.Drawing.Size(431, 81);
             this.paceTempoGrid.TabIndex = 2;
             // 
             // label1
@@ -172,19 +173,20 @@ namespace GpsRunningPlugin.Source
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(460, 13);
+            this.label1.Size = new System.Drawing.Size(368, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "20 min run is at lactate threshold pace - pace of longer runs adjusted to maintai" +
-                "n proper intensity.";
+            this.label1.Text = "20 min run is at lactate threshold pace - pace of longer runs adjusted to >>>>";
+            this.label1.Visible = false;
             // 
             // paceTempoLabel
             // 
             this.paceTempoLabel.AutoSize = true;
             this.paceTempoLabel.Location = new System.Drawing.Point(6, 3);
             this.paceTempoLabel.Name = "paceTempoLabel";
-            this.paceTempoLabel.Size = new System.Drawing.Size(35, 13);
+            this.paceTempoLabel.Size = new System.Drawing.Size(390, 26);
             this.paceTempoLabel.TabIndex = 0;
-            this.paceTempoLabel.Text = "label1";
+            this.paceTempoLabel.Text = "Pace for tempo runs of 20 to 60 minutes at VDOT {0:0.0}. 20 min run is at lactate" +
+                " \r\nthreshold pace - pace of longer runs adjusted to maintain proper intensity.";
             // 
             // intervalTab
             // 
@@ -221,9 +223,10 @@ namespace GpsRunningPlugin.Source
             this.intervalGrid.AllowUserToAddRows = false;
             this.intervalGrid.AllowUserToDeleteRows = false;
             this.intervalGrid.AllowUserToResizeRows = false;
-            this.intervalGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.intervalGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.intervalGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.intervalGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.intervalGrid.BackgroundColor = System.Drawing.SystemColors.Control;
             this.intervalGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.intervalGrid.Location = new System.Drawing.Point(0, 30);
@@ -271,9 +274,10 @@ namespace GpsRunningPlugin.Source
             this.temperatureGrid.AllowUserToAddRows = false;
             this.temperatureGrid.AllowUserToDeleteRows = false;
             this.temperatureGrid.AllowUserToResizeRows = false;
-            this.temperatureGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.temperatureGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.temperatureGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.temperatureGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.temperatureGrid.BackgroundColor = System.Drawing.SystemColors.Control;
             this.temperatureGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.temperatureGrid.Location = new System.Drawing.Point(0, 30);
@@ -312,18 +316,19 @@ namespace GpsRunningPlugin.Source
             this.weightLabel.AutoSize = true;
             this.weightLabel.Location = new System.Drawing.Point(6, 2);
             this.weightLabel.Name = "weightLabel";
-            this.weightLabel.Size = new System.Drawing.Size(35, 13);
+            this.weightLabel.Size = new System.Drawing.Size(92, 13);
             this.weightLabel.TabIndex = 6;
-            this.weightLabel.Text = "label4";
+            this.weightLabel.Text = "estimated weight>";
             // 
             // weightGrid
             // 
             this.weightGrid.AllowUserToAddRows = false;
             this.weightGrid.AllowUserToDeleteRows = false;
             this.weightGrid.AllowUserToResizeRows = false;
-            this.weightGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.weightGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.weightGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.weightGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.weightGrid.BackgroundColor = System.Drawing.SystemColors.Control;
             this.weightGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.weightGrid.Location = new System.Drawing.Point(0, 30);
@@ -339,7 +344,6 @@ namespace GpsRunningPlugin.Source
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoScroll = true;
             this.AutoSize = true;
             this.Controls.Add(this.tabControl1);
             this.Margin = new System.Windows.Forms.Padding(0);

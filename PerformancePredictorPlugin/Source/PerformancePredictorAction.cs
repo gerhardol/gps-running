@@ -80,7 +80,7 @@ namespace GpsRunningPlugin.Source
 
         public void Run(System.Drawing.Rectangle rectButton)
         {
-            new PerformancePredictorView(activities);
+            new PerformancePredictorView(activities, true);
         }
 
         public string Title

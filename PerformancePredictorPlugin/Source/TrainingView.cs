@@ -179,8 +179,11 @@ namespace GpsRunningPlugin.Source
                         grid.BackgroundColor = bColor;
                         //This will disable gradient header, but make them more like ST controls
                         grid.EnableHeadersVisualStyles = false;
-                        grid.ColumnHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
                         grid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
+                        grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                        grid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+
+                        grid.ColumnHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
                     }
                 }
             }

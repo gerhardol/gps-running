@@ -262,7 +262,7 @@ namespace GpsRunningPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pace for tempo runs of 20 to 60 minutes at VDOT {0:0.0}.
+        ///   Looks up a localized string similar to Pace for tempo runs of 20 to 60 minutes at VDOT {0:0.0}. 20 min run is at lactate threshold pace - pace of longer runs adjusted to maintain proper intensity..
         /// </summary>
         internal static string PaceForTempoRuns_label {
             get {
@@ -271,7 +271,8 @@ namespace GpsRunningPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 20 min run is at lactate threshold pace - pace of longer runs adjusted to maintain proper intensity..
+        ///   Looks up a localized string similar to 20 min run is at lactate threshold pace - pace of longer runs adjusted to maintain proper 
+        ///intensity..
         /// </summary>
         internal static string PaceRunNotification {
             get {

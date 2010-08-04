@@ -55,14 +55,14 @@ namespace GpsRunningPlugin.Source
                 if (popupForm != null)
                 {
                     if (activities.Count > 1)
-                        popupForm.Text = Resources.HSV + String.Format(StringResources.OfManyActivities, activities.Count);
+                        popupForm.Text = Resources.HSV + " " + String.Format(StringResources.OfManyActivities, activities.Count);
                     else if (activities.Count == 1)
                         popupForm.Text = Resources.HSV + " " + StringResources.OfOneActivity;
                     else
                         popupForm.Text = Resources.HSV + " " + StringResources.OfNoActivities;
                 }
                 resetCachedResults();
-                if (activities.Count > 0)
+                if (activities.Count > 0 && activities[0] != null)
                 {
                     showResults();
                 }
@@ -162,6 +162,13 @@ namespace GpsRunningPlugin.Source
             imageBox.Items.Add(StringResources.HRZone);
             imageBox.Items.Add(Resources.HRAndSpeedZones);
             toolStripMenuCopy.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
+
+            //This will disable gradient header, but make them more like ST controls
+            //(required for setting ColumnHeadersDefaultCellStyle.BackColor)
+            this.dataGrid.EnableHeadersVisualStyles = false;
+            this.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.dataGrid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.dataGrid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
         }
 
         private string translateToLanguage(GoalParameter goalParameter)
@@ -206,13 +213,7 @@ namespace GpsRunningPlugin.Source
             this.dataGrid.BackgroundColor = visualTheme.Control;
             this.dataGrid.GridColor = visualTheme.Border;
             this.dataGrid.DefaultCellStyle.BackColor = visualTheme.Window;
-            this.dataGrid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            //This will disable gradient header, but make them more like ST controls
-            this.dataGrid.EnableHeadersVisualStyles = false;
-            //this.dataGrid.RowHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
             this.dataGrid.ColumnHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
-            this.dataGrid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
         }
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
@@ -510,7 +511,7 @@ namespace GpsRunningPlugin.Source
             int manualEntered = 0, noStartTime = 0;
             foreach (IActivity activity in activities)
             {
-                if (activity.HasStartTime)
+                if (null != activity && activity.HasStartTime)
                 {
                     if (Settings.IgnoreManualData)
                     {
