@@ -232,6 +232,18 @@ namespace GpsRunningPlugin.Source
             label2.Location = new Point(label2.Location.X, label1.Location.Y);
         }
 
+        private bool _showPage = false;
+        public bool HidePage()
+        {
+            _showPage = false;
+            return true;
+        }
+        public void ShowPage(string bookmark)
+        {
+            bool changed = (_showPage != true);
+            _showPage = true;
+//            if (changed) { makeData(); }
+        }
         private void setSize()
         {
             if (dataGrid.Columns.Count > 0 && dataGrid.Rows.Count > 0)
