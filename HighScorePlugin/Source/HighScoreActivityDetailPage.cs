@@ -116,7 +116,7 @@ namespace GpsRunningPlugin.Source
 
         public bool HidePage()
         {
- //           if (control != null) { return control.HidePage(); }
+            if (control != null) { return control.HidePage(); }
             return true;
         }
 
@@ -130,7 +130,7 @@ namespace GpsRunningPlugin.Source
 
         public void ShowPage(string bookmark)
         {
-//            if (control != null) { control.ShowPage(bookmark); }
+            if (control != null) { control.ShowPage(bookmark); }
         }
 
         public IPageStatus Status
