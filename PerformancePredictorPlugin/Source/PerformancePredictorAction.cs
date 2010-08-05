@@ -53,8 +53,7 @@ namespace GpsRunningPlugin.Source
 
         public bool Enabled
         {
-            get { return activities.Count > 0 
-                && Settings.highScore != null; }
+            get { return activities.Count > 0; }
         }
 
         public bool HasMenuArrow

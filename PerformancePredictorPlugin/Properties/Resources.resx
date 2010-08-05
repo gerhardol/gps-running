@@ -294,4 +294,12 @@ intensity.</value>
     <value>Performance Predictor</value>
     <comment>Name of application, displayed in GUI</comment>
   </data>
+  <data name="HighScorePrediction" xml:space="preserve">
+    <value>High Score Prediction</value>
+    <comment>new</comment>
+  </data>
+  <data name="HighScoreRequired" xml:space="preserve">
+    <value>Predicting using several activities requires High Score plugin</value>
+    <comment>new</comment>
+  </data>
 </root>

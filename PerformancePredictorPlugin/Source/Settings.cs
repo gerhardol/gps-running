@@ -33,14 +33,22 @@ namespace GpsRunningPlugin.Source
 {
     class Settings
     {
-        public readonly static Type highScore;
         static Settings()
         {
-            distances = new SortedList<double, SortedList<Length.Units, bool>>();
-            highScore = getPlugin("HighScore", "GpsRunningPlugin.Source.HighScore");
             defaults();
         }
 
+        private static Type highScore;
+        private static bool isHighScoreChecked = false;
+        public static Type HighScore
+        {
+            get {
+                if(!isHighScoreChecked) {
+                    highScore = getPlugin("HighScore", "GpsRunningPlugin.Source.HighScore");
+                }
+                return highScore;
+            }
+        }
         private static bool showPace;
         public static bool ShowPace
         {
@@ -74,7 +82,7 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        private static SortedList<double, SortedList<Length.Units, bool>> distances;
+        private static SortedList<double, SortedList<Length.Units, bool>> distances = new SortedList<double, SortedList<Length.Units, bool>>();
         public static SortedList<double, SortedList<Length.Units, bool>> Distances
         {
             get { return distances; }

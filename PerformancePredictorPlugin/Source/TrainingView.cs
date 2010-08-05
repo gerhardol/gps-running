@@ -82,7 +82,6 @@ namespace GpsRunningPlugin.Source
 
         void InitControls()
         {
-            setSize();
             foreach (TabPage tab in this.tabControl1.TabPages)
             {
                 foreach (Control grid0 in tab.Controls)
@@ -90,11 +89,15 @@ namespace GpsRunningPlugin.Source
                     if (grid0 is DataGridView)
                     {
                         DataGridView grid = (grid0 as DataGridView);
-                        grid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+                        //This will disable gradient header, but make them more like ST controls
+                        grid.EnableHeadersVisualStyles = false;
                         grid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
+                        grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                        grid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
                     }
                 }
             }
+            setSize();
         }
         private void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -127,37 +130,6 @@ namespace GpsRunningPlugin.Source
             setSize();
         }
 
-        //private void sizeColumnsAndGrid(DataGridView dataGrid, double columnCount)
-        //{
-        //    int newDataGridWidth = Size.Width;
-        //    int newDataGridHeight = Size.Height - dataGrid.Location.Y-25;
-        //    int columnWidth = (int)Math.Floor(newDataGridWidth/columnCount);
-        //    foreach (DataGridViewColumn column in dataGrid.Columns)
-        //    {
-        //        //TODO: Why is this needed?
-        //        try
-        //        {
-        //            column.Width = columnWidth;
-        //        }
-        //        catch { }
-        //        column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-        //    }
-        //    int height = dataGrid.ColumnHeadersHeight;
-        //    if (dataGrid.Rows.Count > 0)
-        //    {
-        //        height += dataGrid.Rows[0].Height * dataGrid.Rows.Count;
-        //        if (dataGrid == weightGrid)
-        //        {
-        //            height += 10;
-        //        }
-        //    }
-        //    if (height > newDataGridHeight)
-        //    {
-        //        height = newDataGridHeight;
-        //    }
-        //    dataGrid.Size = new Size(Size.Width-15,
-        //            height);           
-        //}
         public void ThemeChanged(ITheme visualTheme)
         {
             Color bColor = visualTheme.Control;
@@ -175,14 +147,7 @@ namespace GpsRunningPlugin.Source
                     if (grid0 is DataGridView)
                     {
                         DataGridView grid = (grid0 as DataGridView);
-                        //grid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
                         grid.BackgroundColor = bColor;
-                        //This will disable gradient header, but make them more like ST controls
-                        grid.EnableHeadersVisualStyles = false;
-                        grid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
-                        grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                        grid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-
                         grid.ColumnHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
                     }
                 }
@@ -203,19 +168,37 @@ namespace GpsRunningPlugin.Source
                 UnitUtil.Distance.ToString(1000, "u"));
         }
 
+        private bool _showPage = false;
+        public bool HidePage()
+        {
+            _showPage = false;
+            return true;
+        }
+        public void ShowPage(string bookmark)
+        {
+            bool changed = (_showPage != true);
+            _showPage = true;
+            if (changed) { setPages(); }
+        }
         private void setSize()
         {
-            tabControl1.Size = Size;
-            //sizeColumnsAndGrid(trainingGrid, 4);
-            //sizeColumnsAndGrid(paceTempoGrid, 2);
-            //sizeColumnsAndGrid(intervalGrid, 4);
-            //sizeColumnsAndGrid(temperatureGrid, 3);
-            //sizeColumnsAndGrid(weightGrid, 4);
+            foreach (TabPage tab in this.tabControl1.TabPages)
+            {
+                int offset = tabControl1.Location.X+9;
+                foreach (Control grid0 in tab.Controls)
+                {
+                    if (grid0 is DataGridView)
+                    {
+                        DataGridView grid = (grid0 as DataGridView);
+                        grid.Width = Size.Width - offset;
+                    }
+                }
+            }
         }
 
         public void setPages()
         {
-            if (activity != null && predictor != null)
+            if (_showPage && activity != null && predictor != null)
             {
                 setTraining();
                 setPaceTempo();
@@ -225,7 +208,6 @@ namespace GpsRunningPlugin.Source
                 setSize();
             }
         }
-
         private void setWeight()
         {
             double weight = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(activity.StartTime).WeightKilograms;
