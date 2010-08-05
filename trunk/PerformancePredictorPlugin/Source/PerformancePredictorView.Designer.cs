@@ -46,7 +46,6 @@ namespace GpsRunningPlugin.Source
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.daveCameron = new System.Windows.Forms.RadioButton();
             this.reigel = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -63,6 +62,8 @@ namespace GpsRunningPlugin.Source
             this.speed = new System.Windows.Forms.RadioButton();
             this.pace = new System.Windows.Forms.RadioButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.chkHighScore = new System.Windows.Forms.CheckBox();
+            this.lblHighScoreRequired = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.resultBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
@@ -156,7 +157,7 @@ namespace GpsRunningPlugin.Source
             this.dataGrid.ReadOnly = true;
             this.dataGrid.RowHeadersVisible = false;
             this.dataGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGrid.Size = new System.Drawing.Size(190, 298);
+            this.dataGrid.Size = new System.Drawing.Size(190, 316);
             this.dataGrid.TabIndex = 7;
             // 
             // chart
@@ -168,7 +169,7 @@ namespace GpsRunningPlugin.Source
             this.chart.Location = new System.Drawing.Point(0, 0);
             this.chart.Name = "chart";
             this.chart.Padding = new System.Windows.Forms.Padding(5);
-            this.chart.Size = new System.Drawing.Size(190, 298);
+            this.chart.Size = new System.Drawing.Size(190, 316);
             this.chart.TabIndex = 8;
             // 
             // progressBar
@@ -257,6 +258,7 @@ namespace GpsRunningPlugin.Source
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.chkHighScore);
             this.splitContainer1.Panel1.Controls.Add(this.groupBox2);
             this.splitContainer1.Panel1.Controls.Add(this.groupBox3);
             this.splitContainer1.Panel1.Controls.Add(this.progressBar);
@@ -265,12 +267,35 @@ namespace GpsRunningPlugin.Source
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.lblHighScoreRequired);
             this.splitContainer1.Panel2.Controls.Add(this.chart);
             this.splitContainer1.Panel2.Controls.Add(this.dataGrid);
-            this.splitContainer1.Size = new System.Drawing.Size(336, 298);
+            this.splitContainer1.Size = new System.Drawing.Size(336, 316);
             this.splitContainer1.SplitterDistance = 145;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 12;
+            // 
+            // chkHighScore
+            // 
+            this.chkHighScore.AutoSize = true;
+            this.chkHighScore.Enabled = false;
+            this.chkHighScore.Location = new System.Drawing.Point(11, 296);
+            this.chkHighScore.Name = "chkHighScore";
+            this.chkHighScore.Size = new System.Drawing.Size(79, 17);
+            this.chkHighScore.TabIndex = 12;
+            this.chkHighScore.Text = "High Score";
+            this.chkHighScore.UseVisualStyleBackColor = true;
+            this.chkHighScore.CheckedChanged += new System.EventHandler(this.chkHighScore_CheckedChanged);
+            // 
+            // lblHighScoreRequired
+            // 
+            this.lblHighScoreRequired.AutoSize = true;
+            this.lblHighScoreRequired.Location = new System.Drawing.Point(3, 14);
+            this.lblHighScoreRequired.Name = "lblHighScoreRequired";
+            this.lblHighScoreRequired.Size = new System.Drawing.Size(219, 13);
+            this.lblHighScoreRequired.TabIndex = 9;
+            this.lblHighScoreRequired.Text = "HS required to predict using several activities";
+            this.lblHighScoreRequired.Visible = false;
             // 
             // PerformancePredictorView
             // 
@@ -279,7 +304,7 @@ namespace GpsRunningPlugin.Source
             this.AutoSize = true;
             this.Controls.Add(this.splitContainer1);
             this.Name = "PerformancePredictorView";
-            this.Size = new System.Drawing.Size(336, 298);
+            this.Size = new System.Drawing.Size(336, 316);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.resultBox.ResumeLayout(false);
@@ -290,6 +315,7 @@ namespace GpsRunningPlugin.Source
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
             this.splitContainer1.ResumeLayout(false);
@@ -315,6 +341,8 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.RadioButton speed;
         private System.Windows.Forms.RadioButton pace;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.CheckBox chkHighScore;
+        private System.Windows.Forms.Label lblHighScoreRequired;
 
 
     }

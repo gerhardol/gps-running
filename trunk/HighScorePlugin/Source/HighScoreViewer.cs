@@ -46,12 +46,14 @@ namespace GpsRunningPlugin.Source
         private IDictionary<GoalParameter, IDictionary<GoalParameter, IDictionary<bool, IList<Result>>>> cachedResults;
         private String speedUnit;
 
-        private IList<IActivity> activities;
+        private IList<IActivity> activities = new List<IActivity>();
         public IList<IActivity> Activities
         {
             set
             {
-                activities = value;
+                //Make sure activities is not null
+                if (null == value) { activities.Clear(); }
+                else { activities = value; }
                 if (popupForm != null)
                 {
                     if (activities.Count > 1)
@@ -62,7 +64,7 @@ namespace GpsRunningPlugin.Source
                         popupForm.Text = Resources.HSV + " " + StringResources.OfNoActivities;
                 }
                 resetCachedResults();
-                if (activities.Count > 0 && activities[0] != null)
+                if (activities.Count > 0)
                 {
                     showResults();
                 }

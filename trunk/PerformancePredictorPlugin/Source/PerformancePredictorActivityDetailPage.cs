@@ -61,7 +61,8 @@ namespace GpsRunningPlugin.Source
         {
             set
             {
-                activities = new List<IActivity> { value };
+                if (null == value) { activities = null; }
+                else { activities = new List<IActivity> { value }; }
                 updateActivities();
             }
         }
@@ -69,18 +70,9 @@ namespace GpsRunningPlugin.Source
 
         private void updateActivities()
         {
-            //The action depends on if one or many activities are selected...
-            //This should be an option in the plugin instead
             if ((control != null))
             {
-                if (activities != null && activities.Count == 1)
-                {
-                    control.Activity = activities[0];
-                }
-                else
-                {
                     control.Activities = activities;
-                }
             }
         }
         public IList<string> MenuPath
@@ -130,6 +122,10 @@ namespace GpsRunningPlugin.Source
 
         public bool HidePage()
         {
+            if (null != control)
+            {
+                control.HidePage();
+            }
             return true;
         }
 
@@ -140,6 +136,10 @@ namespace GpsRunningPlugin.Source
 
         public void ShowPage(string bookmark)
         {
+            if (control != null)
+            {
+                control.ShowPage(bookmark);
+            }
         }
 
         public IPageStatus Status

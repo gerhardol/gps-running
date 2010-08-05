@@ -37,65 +37,74 @@ namespace GpsRunningPlugin.Source
     {
         private TrainingView trainingView;
 
-        private IActivity activity = null;
-        public IActivity Activity
-        {
-            get { return activity; }
-            set
-            {
-                if (activity != null && value != activity)
-                {
-#if ST_2_1
-                    activity.DataChanged -= new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(dataChanged);
-#else
-                    activity.PropertyChanged -= new PropertyChangedEventHandler(Activity_PropertyChanged);
-#endif
-                }
-                activity = value;
-                activities = null;
-                if (activity != null && value != activity)
-                {
-#if ST_2_1
-                    activity.DataChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(dataChanged);
-#else
-                    activity.PropertyChanged += new PropertyChangedEventHandler(Activity_PropertyChanged);
-#endif
-                }
-                trainingView.Activity = value;
-                makeData();                
-            }
-        }
+        private IActivity lastActivity = null;
 
-        private IList<IList<Object>> results;
-        private IList<IActivity> activities = null;
+        private IList<IActivity> activities = new List<IActivity>();
         public IList<IActivity> Activities
         {
             get { return activities; }
             set
             {
-                activities = null;
-                Activity = null;
-                if (null != value && null != Settings.highScore && 0 < value.Count)
+                bool showPage = _showPage;
+                _showPage = false;
+
+                //Make sure activities is not null
+                if (null == value) { activities.Clear(); }
+                else { activities = value; }
+
+                //No settings for HS, separate check in makeData(), enabled in setView
+                //For Activity page use Predict/Training by default for single activities
+                lblHighScoreRequired.Visible = false;
+                if (Settings.HighScore != null && (activities.Count > 1 || popupForm != null))
                 {
-                    activities = value;
-                    IList<double> partialDistances = new List<double>();
-                    foreach (double distance in Settings.Distances.Keys)
-                    {
-                        //Scale down the distances, so we get the high scores
-                        partialDistances.Add(distance * Settings.PercentOfDistance / 100.0);
-                    }
-                    training.Checked = false;
-                    timePrediction.Checked = true;
-                    progressBar.Visible = true;
-                    progressBar.Minimum = 0;
-                    progressBar.Maximum = activities.Count;
-                    results = (IList<IList<Object>>)
-                        Settings.highScore.GetMethod("getFastestTimesOfDistances").Invoke(null,
-                        new object[] { activities, partialDistances, progressBar });
-                    progressBar.Visible = false;
+                    chkHighScore.Checked = true;
                 }
+                else
+                {
+                    chkHighScore.Checked = false;
+                    if (activities.Count > 1)
+                    {
+                        lblHighScoreRequired.Visible = true;
+                        activities.Clear();
+                    }
+                }
+
+                //Reset settings
+                if (lastActivity != null)
+                {
+                    if (lastActivity != null && (activities.Count != 1 || lastActivity != activities[0]))
+                    {
+#if ST_2_1
+                    lastActivity.DataChanged -= new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(dataChanged);
+#else
+                        lastActivity.PropertyChanged -= new PropertyChangedEventHandler(Activity_PropertyChanged);
+#endif
+                    }
+                    if (activities.Count != 1 || (activities.Count == 1 && null != activities[0]))
+                    {
+                        trainingView.Activity = null;
+                    }
+                }
+                if (1 == activities.Count && activities[0] != null)
+                {
+                    if (lastActivity != activities[0])
+                    {
+                        lastActivity = activities[0];
+#if ST_2_1
+                        lastActivity.DataChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(dataChanged);
+#else
+                        lastActivity.PropertyChanged += new PropertyChangedEventHandler(Activity_PropertyChanged);
+#endif
+                        trainingView.Activity = lastActivity;
+                    }
+                }
+                else
+                {
+                    lastActivity = null;
+                }
+
                 string title = Resources.PPHS;
-                if (null != activities)
+                if (activities.Count > 0)
                 {
                     if (activities.Count == 1)
                     {
@@ -106,11 +115,13 @@ namespace GpsRunningPlugin.Source
                         title = Resources.PPHS + " " + String.Format(StringResources.ForManyActivities, activities.Count);
                     }
                 }
-                //title cant be set on activity page
+                //title cant be set directly on activity page
                 if (null != popupForm)
                 {
                     popupForm.Text = title;
                 }
+
+                _showPage = showPage;
                 makeData();
             }
         }
@@ -126,10 +137,12 @@ namespace GpsRunningPlugin.Source
             makeData();
         }
 #endif
-        private ChartDataSeries cameronSeries, riegelSeries;
-        private DataTable cameronSet, riegelSet;
+        private ChartDataSeries cameronSeries;// = new ChartDataSeries(chart, chart.YAxis);
+        private ChartDataSeries riegelSeries;// = new ChartDataSeries(chart, chart.YAxis);
+        private DataTable cameronSet = new DataTable();
+        private DataTable riegelSet = new DataTable();
 
-        private Form popupForm;
+        private Form popupForm = null;
 
         public PerformancePredictorView(IList<IActivity> activities, bool showDialog)
             : this(showDialog)
@@ -142,33 +155,12 @@ namespace GpsRunningPlugin.Source
             InitControls();
 
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
-            cameronSeries = new ChartDataSeries(chart, chart.YAxis);
-            riegelSeries = new ChartDataSeries(chart, chart.YAxis);
-            cameronSet = new DataTable();
-            riegelSet = new DataTable();
             if (Parent != null)
             {
                 Parent.Resize += new EventHandler(Parent_Resize);
             }
             Resize += new EventHandler(PerformancePredictorView_Resize);
             Settings settings = new Settings();
-            switch (Settings.Model)
-            {
-                case PredictionModel.DAVE_CAMERON:
-                    daveCameron.Checked = true;
-                    trainingView.Predictor = Cameron;
-                    break;
-                case PredictionModel.PETE_RIEGEL:
-                    reigel.Checked = true;
-                    trainingView.Predictor = Riegel;
-                    break;
-            }
-            chartButton.Checked = Settings.ShowChart;
-            table.Checked = !Settings.ShowChart;
-            timePrediction.Checked = Settings.ShowPrediction;
-            training.Checked = !Settings.ShowPrediction;
-            pace.Checked = Settings.ShowPace;
-            speed.Checked = !Settings.ShowPace;
 
             setSize();
             chart.YAxis.Formatter = new Formatter.SecondsToTime();
@@ -185,18 +177,16 @@ namespace GpsRunningPlugin.Source
                 //Theme and Culture must be set manually
                 this.ThemeChanged(
 #if ST_2_1
-                Plugin.GetApplication().VisualTheme
+                  Plugin.GetApplication().VisualTheme);
 #else
-Plugin.GetApplication().SystemPreferences.VisualTheme
+                  Plugin.GetApplication().SystemPreferences.VisualTheme);
 #endif
-);
                 this.UICultureChanged(
 #if ST_2_1
-                new System.Globalization.CultureInfo("en")
+                  new System.Globalization.CultureInfo("en"));
 #else
-Plugin.GetApplication().SystemPreferences.UICulture
+                  Plugin.GetApplication().SystemPreferences.UICulture);
 #endif
-);
                 popupForm = new Form();
                 popupForm.Controls.Add(this);
                 popupForm.Size = Settings.WindowSize;
@@ -209,16 +199,21 @@ Plugin.GetApplication().SystemPreferences.UICulture
                 popupForm.StartPosition = FormStartPosition.CenterScreen;
                 popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_PerformancePredictor.GetHicon());
                 popupForm.Show();
+                this.ShowPage("");
             }
         }
 
         void InitControls()
         {
+            cameronSeries = new ChartDataSeries(chart, chart.YAxis);
+            riegelSeries = new ChartDataSeries(chart, chart.YAxis);
+
             trainingView = new TrainingView();
             trainingView.Location = chart.Location;
-            //Note ThemeChnged set asfor components init by default
+            //Note ThemeChanged set as for components init by default
             this.splitContainer1.Panel2.Controls.Add(trainingView);
             trainingView.Dock = DockStyle.Fill;
+            trainingView.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             progressBar.Visible = false;
 
             this.dataGrid.EnableHeadersVisualStyles = false;
@@ -226,6 +221,7 @@ Plugin.GetApplication().SystemPreferences.UICulture
             this.dataGrid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             this.dataGrid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
         }
+
         public void ThemeChanged(ITheme visualTheme)
         {
             //RefreshPage();
@@ -238,8 +234,6 @@ Plugin.GetApplication().SystemPreferences.UICulture
             this.dataGrid.BackgroundColor = visualTheme.Control;
             this.dataGrid.GridColor = visualTheme.Border;
             this.dataGrid.DefaultCellStyle.BackColor = visualTheme.Window;
-            //This will disable gradient header, but make them more like ST controls
-            //this.dataGrid.RowHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
             this.dataGrid.ColumnHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
 
             if (null != trainingView)
@@ -247,6 +241,7 @@ Plugin.GetApplication().SystemPreferences.UICulture
                 trainingView.ThemeChanged(visualTheme);
             }
         }
+
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
             groupBox3.Text = StringResources.Settings;
@@ -259,10 +254,28 @@ Plugin.GetApplication().SystemPreferences.UICulture
             speed.Text = CommonResources.Text.LabelSpeed;
             chartButton.Text = Resources.ViewInChart;
             table.Text = Resources.ViewInTable;
+            this.chkHighScore.Text = Properties.Resources.HighScorePrediction;
+            lblHighScoreRequired.Text = Properties.Resources.HighScoreRequired;
+
             if (null != trainingView)
             {
                 trainingView.UICultureChanged(culture);
             }
+        }
+
+        private bool _showPage = false;
+        public bool HidePage()
+        {
+            _showPage = false;
+            if (null != trainingView) { trainingView.HidePage(); }
+            return true;
+        }
+        public void ShowPage(string bookmark)
+        {
+            bool changed = (_showPage != true);
+            _showPage = true;
+            if (null != trainingView) { trainingView.ShowPage(bookmark); }
+            if (changed) { makeData(); }
         }
 
         private void setSize()
@@ -279,8 +292,8 @@ Plugin.GetApplication().SystemPreferences.UICulture
                     }
                     else
                     {
-                        column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                         column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                        //column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                     }
                 }
             }
@@ -289,36 +302,130 @@ Plugin.GetApplication().SystemPreferences.UICulture
         private const string ActivityIdColumn = "ActivityId";
         private void setView()
         {
-            dataGrid.Visible = false;
-            chart.Visible = false;
-            trainingView.Visible = false;
-            this.table.Enabled = false;
-            chartButton.Enabled = false;
-            if (activity == null)
+            if (_showPage)
             {
-                timePrediction.Enabled = false;
-                training.Enabled = false;
+                bool showPage = _showPage;
+                _showPage = false;
+                //Static settings
+                switch (Settings.Model)
+                {
+                    default:
+                    case PredictionModel.DAVE_CAMERON:
+                        daveCameron.Checked = true;
+                        trainingView.Predictor = Cameron;
+                        break;
+                    case PredictionModel.PETE_RIEGEL:
+                        reigel.Checked = true;
+                        trainingView.Predictor = Riegel;
+                        break;
+                }
+                pace.Checked = Settings.ShowPace;
+                speed.Checked = !Settings.ShowPace;
+
+                dataGrid.Visible = false;
+                chart.Visible = false;
+                trainingView.Visible = false;
+                this.table.Enabled = false;
+                chartButton.Enabled = false;
+                chkHighScore.Enabled = false;
+
+                this.table.Enabled = true;
+                this.chartButton.Enabled = true;
+
+                if (activities.Count == 1)
+                {
+                    //chkHighScore.Checked set in Activities (as it may clear selection)
+                    if (Settings.HighScore != null) { chkHighScore.Enabled = true; }
+                }
+                if (activities.Count == 1 && !chkHighScore.Checked)
+                {
+                    timePrediction.Enabled = true;
+                    training.Enabled = true;
+
+                    if (!Settings.ShowPrediction)
+                    {
+                        timePrediction.Checked = false;
+                        training.Checked = true;
+                        chartButton.Checked = false;
+                        this.table.Checked = true;
+
+                        this.table.Enabled = false;
+                        this.chartButton.Enabled = false;
+
+                        trainingView.Visible = true;
+                    }
+                    else
+                    {
+                        timePrediction.Checked = true;
+                    }
+                }
+                else
+                {
+                    timePrediction.Checked = true;
+
+                    timePrediction.Enabled = false;
+                    training.Enabled = false;
+                }
+
+                if (timePrediction.Checked)
+                {
+                    training.Checked = false;
+                    timePrediction.Checked = true;
+                    chartButton.Checked = Settings.ShowChart;
+                    table.Checked = !Settings.ShowChart;
+                }
+                _showPage = showPage;
             }
-            else
+        }
+
+        private void makeData()
+        {
+            if (_showPage)
             {
-                timePrediction.Enabled = true;
-                training.Enabled = true;
+                setView();
+
+                bool showPage = _showPage;
+                _showPage = false;
+
+                cameronSet.Clear(); cameronSet.Rows.Clear(); cameronSeries.Points.Clear();
+                riegelSet.Clear(); riegelSet.Rows.Clear(); riegelSeries.Points.Clear();
+
+                if (activities.Count > 1 || (activities.Count == 1 && chkHighScore.Checked))
+                {
+                    //Predict using one or many activities (check done that HS enabled prior)
+                    makeData(cameronSet, cameronSeries, Cameron);
+                    makeData(riegelSet, riegelSeries, Riegel);
+                }
+                else if (activities.Count == 1)
+                {
+                    //Predict and training info
+                    ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activities[0]);
+
+                    if (info.DistanceMeters > 0 && info.Time.TotalSeconds > 0)
+                    {
+                        makeData(cameronSet, cameronSeries, Cameron,
+                            info.DistanceMeters, info.Time.TotalSeconds);
+                        makeData(riegelSet, riegelSeries, Riegel,
+                            info.DistanceMeters, info.Time.TotalSeconds);
+                    }
+                }
+                //else: no activity selected
+                _showPage = showPage;
+
+                setData();
+                setSize();
             }
-            if (activity == null && (activities == null || activities.Count == 0)) 
-                return;
-            if (!Settings.ShowPrediction && activities == null)
-            {
-                timePrediction.Checked = false;
-                training.Checked = true;
-                trainingView.Visible = true;
-                return;
-            }
-            this.table.Enabled = true;
-            chartButton.Enabled = true;
+        }
+
+        private void setData()
+        {
+            bool showPage = _showPage;
+            _showPage = false;
             DataTable table = null;
             ChartDataSeries series = null;
             switch (Settings.Model)
             {
+                default:
                 case PredictionModel.DAVE_CAMERON:
                     table = cameronSet;
                     series = cameronSeries;
@@ -328,7 +435,8 @@ Plugin.GetApplication().SystemPreferences.UICulture
                     series = riegelSeries;
                     break;
             }
-            if (table.Rows.Count == 0 || series.Points.Count == 0) return;
+            //if (table.Rows.Count > 0 && series.Points.Count > 0)
+            //{
 
             dataGrid.DataSource = table;
             if (chart != null && !chart.IsDisposed)
@@ -339,49 +447,8 @@ Plugin.GetApplication().SystemPreferences.UICulture
                 chart.XAxis.Label = UnitUtil.Distance.LabelAxis;
                 chart.YAxis.Label = UnitUtil.Time.LabelAxis;
             }
-            if (!Settings.ShowChart)
-            {
-                dataGrid.Visible = true;
-            }
-            else
-            {
-                chart.Visible = true;
-            }
-            setSize();
-        }
-
-        private void makeData()
-        {
-            cameronSet.Clear(); cameronSet.Rows.Clear(); cameronSeries.Points.Clear();
-            riegelSet.Clear(); riegelSet.Rows.Clear(); riegelSeries.Points.Clear();
-
-            if (activity == null && (activities == null || activities.Count == 0))
-            {
-                setView();
-                return;
-            }
-
-            if (activity == null)
-            {
-                makeData(cameronSet, cameronSeries, Cameron);
-                makeData(riegelSet, riegelSeries, Riegel);
-            }
-            else
-            {
-                ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
-
-                if (info.DistanceMeters == 0 || info.Time.TotalSeconds == 0)
-                {
-                    setView();
-                    return;
-                }
-
-                makeData(cameronSet, cameronSeries, Cameron,
-                    info.DistanceMeters, info.Time.TotalMilliseconds / 1000);
-                makeData(riegelSet, riegelSeries, Riegel,
-                    info.DistanceMeters, info.Time.TotalMilliseconds / 1000);
-            }
-            setView();
+            _showPage = showPage;
+            updateChartVisibility();
         }
 
         PredictTime Cameron = delegate(double new_dist, double old_dist, double old_time)
@@ -423,6 +490,21 @@ Plugin.GetApplication().SystemPreferences.UICulture
             set.Columns.Add(Resources.UsedLengthOfActivity + UnitUtil.Distance.LabelAbbr2);
             set.Columns.Add(ActivityIdColumn);
             series.Points.Clear();
+
+            IList<IList<Object>> results;
+            IList<double> partialDistances = new List<double>();
+            foreach (double distance in Settings.Distances.Keys)
+            {
+                //Scale down the distances, so we get the high scores
+                partialDistances.Add(distance * Settings.PercentOfDistance / 100.0);
+            }
+            progressBar.Visible = true;
+            progressBar.Minimum = 0;
+            progressBar.Maximum = activities.Count;
+            results = (IList<IList<Object>>)
+                Settings.HighScore.GetMethod("getFastestTimesOfDistances").Invoke(null,
+                new object[] { activities, partialDistances, progressBar });
+            progressBar.Visible = false;
 
             int index = 0;
             foreach (IList<Object> result in results)
@@ -577,6 +659,7 @@ Plugin.GetApplication().SystemPreferences.UICulture
             {
                 Settings.Model = PredictionModel.DAVE_CAMERON;
                 setView();
+                setData();
                 trainingView.Predictor = Cameron;
             }
         }
@@ -587,6 +670,7 @@ Plugin.GetApplication().SystemPreferences.UICulture
             {
                 Settings.Model = PredictionModel.PETE_RIEGEL;
                 setView();
+                setData();
                 trainingView.Predictor = Riegel;
             }
         }
@@ -596,7 +680,7 @@ Plugin.GetApplication().SystemPreferences.UICulture
             if (chartButton.Checked)
             {
                 Settings.ShowChart = true;
-                updateVisibility();
+                updateChartVisibility();
             }
         }
 
@@ -605,39 +689,44 @@ Plugin.GetApplication().SystemPreferences.UICulture
             if (table.Checked)
             {
                 Settings.ShowChart = false;
-                updateVisibility();
+                updateChartVisibility();
             }
         }
 
-        private void updateVisibility()
+        private void updateChartVisibility()
         {
-            if (Settings.ShowChart)
+            if (_showPage && timePrediction.Checked && activities.Count > 0)
             {
-                dataGrid.Visible = false;
-                chart.Visible = true;
-            }
-            else
-            {
-                dataGrid.Visible = true;
-                chart.Visible = false;
+                if (Settings.ShowChart)
+                {
+                    dataGrid.Visible = false;
+                    chart.Visible = true;
+                }
+                else
+                {
+                    dataGrid.Visible = true;
+                    chart.Visible = false;
+                }
             }
         }
 
         private void timePrediction_CheckedChanged(object sender, EventArgs e)
         {
-            if (timePrediction.Checked && activities == null)
+            if (timePrediction.Checked && activities.Count == 1)
             {
                 Settings.ShowPrediction = true;
                 setView();
+                setData();
             }
         }
 
         private void training_CheckedChanged(object sender, EventArgs e)
         {
-            if (training.Checked && activities == null)
+            if (training.Checked && activities.Count == 1)
             {
                 Settings.ShowPrediction = false;
-                setView();               
+                setView();
+                setData();
             }
         }
 
@@ -674,6 +763,11 @@ Plugin.GetApplication().SystemPreferences.UICulture
                     Plugin.GetApplication().ShowView(view, bookmark);
                 }
             }
+        }
+
+        private void chkHighScore_CheckedChanged(object sender, EventArgs e)
+        {
+            makeData();
         }
     }
 

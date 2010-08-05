@@ -186,6 +186,24 @@ namespace GpsRunningPlugin.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to High Score Prediction.
+        /// </summary>
+        internal static string HighScorePrediction {
+            get {
+                return ResourceManager.GetString("HighScorePrediction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Predicting using several activities requires High Score plugin.
+        /// </summary>
+        internal static string HighScoreRequired {
+            get {
+                return ResourceManager.GetString("HighScoreRequired", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap Image_16_PerformancePredictor {
             get {
                 object obj = ResourceManager.GetObject("Image_16_PerformancePredictor", resourceCulture);
