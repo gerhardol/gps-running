@@ -112,6 +112,9 @@ namespace GpsRunningPlugin.Source
             this.summaryList.TabIndex = 1;
             this.summaryList.ContextMenuStrip = contextMenu;
             this.summaryList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(selectedRow_DoubleClick);
+            this.summaryList.MouseMove += new System.Windows.Forms.MouseEventHandler(summaryList_MouseMove);
+            this.summaryList.MouseLeave += new System.EventHandler(summaryList_MouseLeave);
+            this.summaryListToolTipTimer.Tick += new System.EventHandler(ToolTipTimer_Tick);
             // 
             // contextMenu
             // 

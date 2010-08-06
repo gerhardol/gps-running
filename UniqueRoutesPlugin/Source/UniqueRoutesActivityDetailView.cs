@@ -378,7 +378,7 @@ namespace GpsRunningPlugin.Source
 
         private void summaryView_Sort()
         {
-            summaryList.SetSortIndicator(Settings.SummaryViewSortColumn, 
+            summaryList.SetSortIndicator(Settings.SummaryViewSortColumn,
                 Settings.SummaryViewSortDirection == ListSortDirection.Ascending);
             List<UniqueRoutesResult> list = (List<UniqueRoutesResult>)summaryList.RowData;
             list.Sort();
@@ -401,8 +401,8 @@ namespace GpsRunningPlugin.Source
                 DateTime s0, s1;
                 if (null != ti)
                 {
-                    s0=ti.Lower;
-                    s1=ti.Upper;
+                    s0 = ti.Lower;
+                    s1 = ti.Upper;
                 }
                 else
                 {
@@ -456,7 +456,7 @@ namespace GpsRunningPlugin.Source
 #endif
                     IList<IActivity> activities;
 
-                    if (selectedActivities.Count >1)
+                    if (selectedActivities.Count > 1)
                     {
                         activities = selectedActivities;
                     }
@@ -506,7 +506,7 @@ namespace GpsRunningPlugin.Source
                             string tt = act.StartTime + " " + act.Name + act.TotalDistanceMetersEntered + " " + act.TotalTimeEntered;
                             ToolStripMenuItem childMenuItem = new ToolStripMenuItem(tt);
                             childMenuItem.Tag = act.ReferenceId;
-                                childMenuItem.Checked = false;
+                            childMenuItem.Checked = false;
                             this.ctxMenuItemRefActivity.DropDownItems.Add(childMenuItem);
                             childMenuItem.Click += new System.EventHandler(this.ctxRefActivityItemActivities_Click);
                         }
@@ -619,12 +619,12 @@ namespace GpsRunningPlugin.Source
                         }
                     }
                 }
-             }
+            }
             catch (Exception ex)
             {
-                new WarningDialog(String.Format(Resources.PluginApplicationError, Settings.SelectedPlugin, ex.ToString())+ " other");
+                new WarningDialog(String.Format(Resources.PluginApplicationError, Settings.SelectedPlugin, ex.ToString()) + " other");
             }
-               
+
             try
             {
                 if (null != sendToPlugin && null != sendToPlugin.pType)
@@ -664,14 +664,14 @@ namespace GpsRunningPlugin.Source
 
         private void pluginBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Settings.SelectedPlugin = (string)pluginBox.SelectedItem;           
+            Settings.SelectedPlugin = (string)pluginBox.SelectedItem;
         }
 
         private void selectedBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             Settings.SelectAll = selectedBox.SelectedItem.Equals(Resources.All);
         }
-        private void selectedRow_DoubleClick(object sender, MouseEventArgs e) 
+        private void selectedRow_DoubleClick(object sender, MouseEventArgs e)
         {
             Guid view = new Guid("1dc82ca0-88aa-45a5-a6c6-c25f56ad1fc3");
 
@@ -680,33 +680,20 @@ namespace GpsRunningPlugin.Source
             row = summaryList.RowHitTest(e.Location, out dummy);
             if (row != null)
             {
-                     string bookmark = "id=" + ((UniqueRoutesResult)row).Activity;
-                    Plugin.GetApplication().ShowView(view, bookmark);
+                string bookmark = "id=" + ((UniqueRoutesResult)row).Activity;
+                Plugin.GetApplication().ShowView(view, bookmark);
             }
         }
-        //ToolTip unused
-        //private void summaryView_CellToolTipTextNeeded(object sender, EventArgs e)
-        //{
-        //    object row;
-        //    TreeList.RowHitState dummy;
-        //    row = summaryList.RowHitTest(e.Location, out dummy);
-        //    if (row != null)
-        //    {
-        //        summaryList.Controls.
-        //           row.ToolTipText = similarToolTip[((UniqueRoutesResult)row).Activity.ReferenceId];
-                
-        //    }
-        //}
+
         private void summaryView_ColumnHeaderMouseClick(object sender, TreeList.ColumnEventArgs e)
         {
-                if (Settings.SummaryViewSortColumn == e.Column.Id)
-                {
-                    Settings.SummaryViewSortDirection = Settings.SummaryViewSortDirection == ListSortDirection.Ascending ?
-                           ListSortDirection.Descending : ListSortDirection.Ascending;
-                }
-                Settings.SummaryViewSortColumn = e.Column.Id;
-                summaryView_Sort();
-            
+            if (Settings.SummaryViewSortColumn == e.Column.Id)
+            {
+                Settings.SummaryViewSortDirection = Settings.SummaryViewSortDirection == ListSortDirection.Ascending ?
+                       ListSortDirection.Descending : ListSortDirection.Ascending;
+            }
+            Settings.SummaryViewSortColumn = e.Column.Id;
+            summaryView_Sort();
         }
 #if !ST_2_1
         private void listSettingsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -724,11 +711,70 @@ namespace GpsRunningPlugin.Source
             }
         }
 #endif
+
         private void activeMenuItem_Click(object sender, EventArgs e)
         {
             Settings.UseActive = !Settings.UseActive;
             activeMenuItem.CheckState = Settings.UseActive ? CheckState.Checked : CheckState.Unchecked;
             setTable();
+        }
+
+        //ToolTip as used in DataGridView, not implemented for TreeList
+        //private void summaryView_CellToolTipTextNeeded(object sender, EventArgs e)
+        //{
+        //    object row;
+        //    TreeList.RowHitState dummy;
+        //    row = summaryList.RowHitTest(e.Location, out dummy);
+        //    if (row != null)
+        //    {
+        //        summaryList.Controls.
+        //           row.ToolTipText = similarToolTip[((UniqueRoutesResult)row).Activity.ReferenceId];
+        //    }
+        //}
+
+        //ToolTip support in TreeList - courtsey of omb
+
+        // private member variables of the Control - initialization omitted
+        ToolTip summaryListToolTip = new ToolTip();
+        Timer summaryListToolTipTimer = new Timer();
+        bool summaryListTooltipDisabled = false; // is set to true, whenever a tooltip would be annoying, e.g. while a context menu is shown
+        UniqueRoutesResult summaryListLastEntryAtMouseMove = null;
+        Point summaryListCursorLocationAtMouseMove;
+
+        private void summaryList_MouseMove(object sender, MouseEventArgs e)
+        {
+           TreeList.RowHitState rowHitState;
+           UniqueRoutesResult entry = (UniqueRoutesResult)summaryList.RowHitTest(e.Location, out rowHitState);
+           if (entry == summaryListLastEntryAtMouseMove)
+               return;
+           else
+               summaryListToolTip.Hide(summaryList);
+           summaryListLastEntryAtMouseMove = entry;
+           summaryListCursorLocationAtMouseMove = e.Location;
+
+           if (entry != null)
+               summaryListToolTipTimer.Start();
+           else
+               summaryListToolTipTimer.Stop();
+        }
+        private void summaryList_MouseLeave(object sender, EventArgs e)
+        {
+            summaryListToolTipTimer.Stop();
+            summaryListToolTip.Hide(summaryList);
+        }
+        private void ToolTipTimer_Tick(object sender, EventArgs e)
+        {
+            summaryListToolTipTimer.Stop();
+
+            if (summaryListLastEntryAtMouseMove != null &&
+                summaryListCursorLocationAtMouseMove != null &&
+                !summaryListTooltipDisabled)
+                summaryListToolTip.Show(similarToolTip[summaryListLastEntryAtMouseMove.Activity.ReferenceId],
+                              summaryList,
+                              new Point(summaryListCursorLocationAtMouseMove.X +
+                                  Cursor.Current.Size.Width / 2,
+                                        summaryListCursorLocationAtMouseMove.Y),
+                              summaryListToolTip.AutoPopDelay);
         }
     }
 }
