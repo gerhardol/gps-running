@@ -87,7 +87,7 @@ namespace GpsRunningPlugin.Source
         public readonly static IList<SendToPlugin> aSendToPlugin = new List<SendToPlugin>(){
             new SendToPlugin("AccumulatedSummary", "Accumulated Summary", "GpsRunningPlugin.Source.AccumulatedSummaryView", new object[] { null }),
             new SendToPlugin("HighScore", "High Score", "GpsRunningPlugin.Source.HighScoreViewer", new object[] { null, true, true }),
-            new SendToPlugin("Overlay", "Overlay", "GpsRunningPlugin.Source.OverlayView", new object[] { null }),
+            new SendToPlugin("Overlay", "Overlay", "GpsRunningPlugin.Source.OverlayView", new object[] { null, true }),
             new SendToPlugin("TRIMP", "TRIMP", "GpsRunningPlugin.Source.TRIMPView", new object[] { null, true })};
         static Settings()
         {

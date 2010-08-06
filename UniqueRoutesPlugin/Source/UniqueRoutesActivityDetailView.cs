@@ -24,7 +24,10 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Visuals;
+using ZoneFiveSoftware.Common.Visuals.Fitness;
 #if !ST_2_1
+using ZoneFiveSoftware.Common.Data;
+using ZoneFiveSoftware.Common.Data.GPS;
 using ZoneFiveSoftware.Common.Visuals.Forms;
 #endif
 using ZoneFiveSoftware.Common.Data.Fitness;
@@ -41,12 +44,21 @@ namespace GpsRunningPlugin.Source
     public partial class UniqueRoutesActivityDetailView : UserControl
     {
         private ITheme m_visualTheme;
+        private System.Globalization.CultureInfo m_culture;
         private IList<IActivity> similar;
         private IDictionary<string, string> similarToolTip;
         private IActivity refActivity = null;
         private IList<IActivity> selectedActivities = new List<IActivity>();
         private IDictionary<ToolStripMenuItem, SendToPlugin> aSendToMenu = new Dictionary<ToolStripMenuItem, SendToPlugin>();
 
+#if !ST_2_1
+        private IDailyActivityView m_view = null;
+        public UniqueRoutesActivityDetailView(IDailyActivityView view)
+            : this()
+        {
+            m_view = view;
+        }
+#endif
         public UniqueRoutesActivityDetailView()
         {
             InitializeComponent();
@@ -113,7 +125,6 @@ namespace GpsRunningPlugin.Source
             {
                 pluginBox.SelectedItem = "";
                 pluginBox.Enabled = false;
-                btnDoIt.Enabled = false;
             }
         }
 
@@ -125,6 +136,7 @@ namespace GpsRunningPlugin.Source
             sendToMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Analyze16;
 #endif
             listSettingsMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Table16;
+            btnDoIt.CenterImage = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Refresh16;
 #if !ST_2_1
             this.listSettingsMenuItem.Click += new System.EventHandler(this.listSettingsToolStripMenuItem_Click);
 #else
@@ -134,6 +146,8 @@ namespace GpsRunningPlugin.Source
                 this.contextMenu.Items.Remove(this.listSettingsMenuItem);
             }
 #endif
+            progressBar.BringToFront(); //Kept at back to work with designer...
+
             summaryList.ContextMenuStrip = contextMenu;
             summaryList.MouseDoubleClick += new MouseEventHandler(selectedRow_DoubleClick);
         }
@@ -166,11 +180,6 @@ namespace GpsRunningPlugin.Source
                     }
                 }
 
-                summaryLabel.Visible = false;
-                summaryList.Visible = false;                        
-                progressBar.Visible = false;
-                changeSettingsVisibility(false);
-
                 calculate();
             }
             get { return selectedActivities; }
@@ -191,6 +200,11 @@ namespace GpsRunningPlugin.Source
 
         private void setTable()
         {
+            setTable(null);
+        }
+
+        private void setTable(IActivity urActivity)
+        {
             summaryList.Columns.Clear();
             summaryList.RowData = null;
             if (similar != null)
@@ -205,9 +219,9 @@ namespace GpsRunningPlugin.Source
                     IDictionary<IActivity, IList<double>> commonStretches = null;
                     IDictionary<IActivity, string> similarPoints = new Dictionary<IActivity, string>();
                     bool doGetcommonStretches = true;// Plugin.Verbose > 0;
-                    if (doGetcommonStretches)
+                    if (doGetcommonStretches && urActivity != null)
                     {
-                        commonStretches = CommonStretches.getCommonSpeed(this.refActivity, similar, Settings.UseActive);
+                        commonStretches = CommonStretches.getCommonSpeed(urActivity, similar, Settings.UseActive);
                         //similarPoints = CommonStretches.findSimilarDebug(this.activity, similar, Settings.UseActive);
                     }
                     foreach (IActivity activity in similar)
@@ -225,8 +239,6 @@ namespace GpsRunningPlugin.Source
                                 UnitUtil.Time.ToString(commonStretches[activity][1]) +
                                 " (" + UnitUtil.Distance.ToString(commonStretches[activity][2], "u") + " " +
                                 " " + UnitUtil.Time.ToString(commonStretches[activity][3]) + ")";
-
-
                         }
                         result.Add(new UniqueRoutesResult(activity, commonText));
                         similarToolTip[activity.ReferenceId] = Resources.CommonStretches + ": " + commonText;
@@ -236,18 +248,12 @@ namespace GpsRunningPlugin.Source
                     summaryView_Sort();
                     summaryList.Visible = true;
                     summaryLabel.Visible = true;
-                    changeSettingsVisibility(true);
                 }
                 else
                 {
                     summaryLabel.Text = Resources.DidNotFindAnyRoutes.Replace("\\n", Environment.NewLine);
                     summaryLabel.Visible = true;
-                    changeSettingsVisibility(false);
                 }
-            }
-            else
-            {
-                changeSettingsVisibility(false);
             }
             setSize();
         }
@@ -275,25 +281,8 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        private void changeSettingsVisibility(bool visible)
-        {
-            //OLD: No longer visible
-            visible = false;
-
-            labelShow.Visible = visible;
-            selectedBox.Visible = visible;
-            activeBox.Visible = visible;
-            speedBox.Visible = visible;
-            pluginBox.Visible = visible;
-            sendLabel2.Visible = visible;
-            labelLaps.Visible = visible;
-            btnDoIt.Visible = visible;
-            sendResultToLabel1.Visible = visible;
-        }
-
         public void ThemeChanged(ITheme visualTheme)
         {
-            //RefreshPage();
             m_visualTheme = visualTheme;
             summaryList.ThemeChanged(visualTheme);
             this.splitContainer1.Panel1.BackColor = visualTheme.Control;
@@ -303,6 +292,7 @@ namespace GpsRunningPlugin.Source
         {
             //Some labels depends on the activity
             //summaryLabel, CommonStretches column, setTable()
+            m_culture = culture;
 
             setCategoryLabel();
             btnChangeCategory.Text = StringResources.ChangeCategory;
@@ -326,8 +316,8 @@ namespace GpsRunningPlugin.Source
             activeBox.Items.Add(StringResources.Active);
             speedBox.Items.Add(CommonResources.Text.LabelPace);
             speedBox.Items.Add(CommonResources.Text.LabelSpeed);
-            btnDoIt.Text = Resources.DoIt;
-            correctUI(new Control[] { selectedBox, sendLabel2, pluginBox, btnDoIt });
+            btnDoIt.Text = "";
+            //correctUI(new Control[] { selectedBox, sendLabel2, pluginBox, btnDoIt });
             sendResultToLabel1.Text = StringResources.Send;
             sendResultToLabel1.Location = new Point(selectedBox.Location.X - 5 - sendResultToLabel1.Size.Width,
                                         sendLabel2.Location.Y);
@@ -367,6 +357,13 @@ namespace GpsRunningPlugin.Source
                         Settings.printFullCategoryPath(Settings.SelectedCategory));
                 }
             }
+#if !ST_2_1
+            if (null != m_view && m_view.RouteSelectionProvider.SelectedItems.Count > 0)
+            {
+                //TODO: Special info for selection?
+                //categoryLabel.Text += " Using selected points";
+            }
+#endif
             btnChangeCategory.Location = new Point(
                     summaryLabel.Location.X + summaryLabel.Width + 5,
                          btnChangeCategory.Location.Y);
@@ -390,7 +387,49 @@ namespace GpsRunningPlugin.Source
             Refresh();
         }
 
+#if !ST_2_1
+        IActivity getActivity(IActivity activity, IList<IItemTrackSelectionInfo> selectGPS)
+        {
+            IGPSRoute urRoute = new GPSRoute();
+            foreach (IItemTrackSelectionInfo item in selectGPS)
+            {
+                IValueRange<DateTime> ti = item.SelectedTime;
+                DateTime s0, s1;
+                if (null != ti)
+                {
+                    s0=ti.Lower;
+                    s1=ti.Upper;
+                }
+                else
+                {
+                    IValueRange<double> di = item.SelectedDistance;
+                    if (di == null) { continue; }
+                    IDistanceDataTrack dt = activity.GPSRoute.GetDistanceMetersTrack();
+                    s0 = dt.GetTimeAtDistanceMeters(di.Lower);
+                    s1 = dt.GetTimeAtDistanceMeters(di.Upper);
+                }
+
+                for (int i = 0; i < activity.GPSRoute.Count; i++)
+                {
+                    if (activity.GPSRoute[i].ElapsedSeconds < s0.Subtract(activity.GPSRoute.StartTime).TotalSeconds) { continue; }
+                    urRoute.Add(activity.GPSRoute.StartTime.AddSeconds(activity.GPSRoute[i].ElapsedSeconds), activity.GPSRoute[i].Value);
+                    if (activity.GPSRoute[i].ElapsedSeconds > s1.Subtract(activity.GPSRoute.StartTime).TotalSeconds) { break; }
+                }
+            }
+            IActivity result = activity;
+            if (urRoute.Count > 0)
+            {
+                result = Plugin.GetApplication().Logbook.Activities.Add(urRoute.StartTime);
+                result.GPSRoute = urRoute;
+            }
+            return result;
+        }
+#endif
         private void calculate()
+        {
+            calculate(true);
+        }
+        private void calculate(bool useSelection)
         {
             if (_showPage)
             {
@@ -398,24 +437,37 @@ namespace GpsRunningPlugin.Source
                 {
                     summaryList.Visible = false;
                     summaryLabel.Visible = false;
-                    changeSettingsVisibility(false);
                     categoryLabel.Visible = false;
                     btnChangeCategory.Visible = false;
                     progressBar.Visible = true;
+                    IActivity urActivity = refActivity;
+#if !ST_2_1
+                    int countGPS = 0;
+                    IList<IItemTrackSelectionInfo> selectedGPS = m_view.RouteSelectionProvider.SelectedItems;
+                    countGPS = selectedGPS.Count;
+                    if (useSelection && countGPS > 0)
+                    {
+                        urActivity = getActivity(urActivity, selectedGPS);
+                    }
+#endif
+                    IList<IActivity> activities;
+
                     if (selectedActivities.Count >1)
                     {
-                      similar = UniqueRoutes.findSimilarRoutes(refActivity, selectedActivities, progressBar);
+                        activities = selectedActivities;
                     }
-                    else{
-                      similar = UniqueRoutes.findSimilarRoutes(refActivity, progressBar);
-                      btnChangeCategory.Visible = true;
+                    else
+                    {
+                        activities = UniqueRoutes.getBaseActivities();
+                        btnChangeCategory.Visible = true;
                     }
+                    similar = UniqueRoutes.findSimilarRoutes(urActivity, activities, urActivity.Equals(refActivity), progressBar);
                     categoryLabel.Visible = true;
                     determinePaceOrSpeed();
                     progressBar.Visible = false;
+
                     summaryLabel.Visible = true;
-                    setTable();
-                    changeSettingsVisibility(similar.Count > 1);
+                    setTable(urActivity);
                     //Add the activities to the menu
                     this.ctxMenuItemRefActivity.DropDownItems.Clear();
                     foreach (IActivity act in similar)
@@ -423,9 +475,15 @@ namespace GpsRunningPlugin.Source
                         string tt = act.StartTime + " " + act.Name + act.TotalDistanceMetersEntered + " " + act.TotalTimeEntered;
                         ToolStripMenuItem childMenuItem = new ToolStripMenuItem(tt);
                         childMenuItem.Tag = act.ReferenceId;
-                        if (act.Equals(refActivity))
+                        if (act.Equals(urActivity))
                         {
                             childMenuItem.Checked = true;
+                            if (!urActivity.Equals(refActivity))
+                            {
+                                //Temporary activity, to be removed
+                                childMenuItem.Enabled = false;
+
+                            }
                         }
                         else
                         {
@@ -434,6 +492,13 @@ namespace GpsRunningPlugin.Source
                         this.ctxMenuItemRefActivity.DropDownItems.Add(childMenuItem);
                         childMenuItem.Click += new System.EventHandler(this.ctxRefActivityItemActivities_Click);
                     }
+#if !ST_2_1
+                    if (!urActivity.Equals(refActivity))
+                    {
+                        //Delete temporary activity
+                        Plugin.GetApplication().Logbook.Activities.Remove(urActivity);
+                    }
+#endif
                 }
                 else
                 {
@@ -487,8 +552,12 @@ namespace GpsRunningPlugin.Source
                     }
                 }
 
-                calculate();
+                calculate(false); //update, without using selected points
             }
+        }
+        private void refreshButton_Click(object sender, EventArgs e)
+        {
+            calculate();
         }
 
         private void sendActivityButton_Click(object sender, EventArgs e)
@@ -553,11 +622,6 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        //private void calculate_Click(object sender, EventArgs e)
-        //{
-        //    calculate();
-        //}
-
         private void activeBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             Settings.UseActive = activeBox.SelectedItem.Equals(StringResources.Active);
@@ -573,7 +637,8 @@ namespace GpsRunningPlugin.Source
 
         private void changeCategory_Click(object sender, EventArgs e)
         {
-            new CategorySelector();
+            CategorySelector cs = new CategorySelector(m_visualTheme, m_culture);
+            cs.ShowDialog();
             setCategoryLabel();
             calculate();
         }

@@ -112,7 +112,11 @@ namespace GpsRunningPlugin.Source
         {
             if (control == null)
             {
+#if ST_2_1
                 control = new UniqueRoutesActivityDetailView();
+#else
+                control = new UniqueRoutesActivityDetailView(view);
+#endif
                 control.Activities = activities;
             }
             return control;
