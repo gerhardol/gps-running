@@ -130,7 +130,6 @@ namespace GpsRunningPlugin.Source
 
         void InitControls()
         {
-            this.ctxMenuItemRefActivity.Text = Properties.Resources.ctxReferenceActivity;
             copyTable.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
 #if !ST_2_1
             sendToMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Analyze16;
@@ -147,9 +146,6 @@ namespace GpsRunningPlugin.Source
             }
 #endif
             progressBar.BringToFront(); //Kept at back to work with designer...
-
-            summaryList.ContextMenuStrip = contextMenu;
-            summaryList.MouseDoubleClick += new MouseEventHandler(selectedRow_DoubleClick);
         }
         public IList<IActivity> Activities
         {
@@ -229,16 +225,23 @@ namespace GpsRunningPlugin.Source
                         string commonText = null;
                         if (commonStretches != null)
                         {
-                            commonText = 
-                                UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace,
-                                commonStretches[activity][0] / commonStretches[activity][1], "u") +
-                                " (" + UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace,
-                                commonStretches[activity][2] / commonStretches[activity][3]) + ")" +
-                                " " + commonStretches[activity][4] + " "+ Resources.Sections + " " +
-                                UnitUtil.Distance.ToString(commonStretches[activity][0], "u") + " " +
-                                UnitUtil.Time.ToString(commonStretches[activity][1]) +
-                                " (" + UnitUtil.Distance.ToString(commonStretches[activity][2], "u") + " " +
-                                " " + UnitUtil.Time.ToString(commonStretches[activity][3]) + ")";
+                            if (commonStretches[activity][4] > 0)
+                            {
+                                commonText =
+                                    UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace,
+                                    commonStretches[activity][0] / commonStretches[activity][1], "u") +
+                                    " (" + UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace,
+                                    commonStretches[activity][2] / commonStretches[activity][3]) + ")" +
+                                    " " + commonStretches[activity][4] + " " + Resources.Sections + " " +
+                                    UnitUtil.Distance.ToString(commonStretches[activity][0], "u") + " " +
+                                    UnitUtil.Time.ToString(commonStretches[activity][1]) +
+                                    " (" + UnitUtil.Distance.ToString(commonStretches[activity][2], "u") + " " +
+                                    " " + UnitUtil.Time.ToString(commonStretches[activity][3]) + ")";
+                            }
+                            else
+                            {
+                                commonText = commonStretches[activity][4] + " " + Resources.Sections;
+                            }
                         }
                         result.Add(new UniqueRoutesResult(activity, commonText));
                         similarToolTip[activity.ReferenceId] = Resources.CommonStretches + ": " + commonText;
@@ -298,6 +301,7 @@ namespace GpsRunningPlugin.Source
             btnChangeCategory.Text = StringResources.ChangeCategory;
             copyTable.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
             RefreshColumns();
+            this.ctxMenuItemRefActivity.Text = Properties.Resources.ctxReferenceActivity;
             listSettingsMenuItem.Text = StringResources.ListSettings;
 #if ST_2_1
             sendToMenuItem.Text = CommonResources.Text.LabelActivity;
@@ -469,6 +473,7 @@ namespace GpsRunningPlugin.Source
                     summaryLabel.Visible = true;
                     setTable(urActivity);
                     //Add the activities to the menu
+                    IList<IActivity> remaining = selectedActivities;
                     this.ctxMenuItemRefActivity.DropDownItems.Clear();
                     foreach (IActivity act in similar)
                     {
@@ -480,9 +485,8 @@ namespace GpsRunningPlugin.Source
                             childMenuItem.Checked = true;
                             if (!urActivity.Equals(refActivity))
                             {
-                                //Temporary activity, to be removed
+                                //Temporary activity, removed below
                                 childMenuItem.Enabled = false;
-
                             }
                         }
                         else
@@ -491,6 +495,21 @@ namespace GpsRunningPlugin.Source
                         }
                         this.ctxMenuItemRefActivity.DropDownItems.Add(childMenuItem);
                         childMenuItem.Click += new System.EventHandler(this.ctxRefActivityItemActivities_Click);
+                        remaining.Remove(act);
+                    }
+                    if (remaining.Count > 0)
+                    {
+                        ToolStripSeparator separator = new ToolStripSeparator();
+                        this.ctxMenuItemRefActivity.DropDownItems.Add(separator);
+                        foreach (IActivity act in remaining)
+                        {
+                            string tt = act.StartTime + " " + act.Name + act.TotalDistanceMetersEntered + " " + act.TotalTimeEntered;
+                            ToolStripMenuItem childMenuItem = new ToolStripMenuItem(tt);
+                            childMenuItem.Tag = act.ReferenceId;
+                                childMenuItem.Checked = false;
+                            this.ctxMenuItemRefActivity.DropDownItems.Add(childMenuItem);
+                            childMenuItem.Click += new System.EventHandler(this.ctxRefActivityItemActivities_Click);
+                        }
                     }
 #if !ST_2_1
                     if (!urActivity.Equals(refActivity))

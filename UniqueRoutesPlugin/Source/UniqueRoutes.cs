@@ -76,7 +76,7 @@ namespace GpsRunningPlugin.Source
             if (refActivity == null || 
                 uniqueModel == UniqueModel.ELEVATION && refActivity.ElevationMetersTrack == null || 
                 refActivity.GPSRoute == null || //GPS, ELEVATION
-                !isAllowedActivity(refActivity))
+                beginEndCheck && !isAllowedActivity(refActivity))
                 return result;
             progressBar.Value = 0;
             progressBar.Minimum = 0;

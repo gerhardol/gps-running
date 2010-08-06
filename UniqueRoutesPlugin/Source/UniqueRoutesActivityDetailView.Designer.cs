@@ -110,6 +110,8 @@ namespace GpsRunningPlugin.Source
             this.summaryList.ShowPlusMinus = false;
             this.summaryList.Size = new System.Drawing.Size(391, 200);
             this.summaryList.TabIndex = 1;
+            this.summaryList.ContextMenuStrip = contextMenu;
+            this.summaryList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(selectedRow_DoubleClick);
             // 
             // contextMenu
             // 
@@ -170,6 +172,7 @@ namespace GpsRunningPlugin.Source
             this.btnDoIt.BackColor = System.Drawing.Color.Transparent;
             this.btnDoIt.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
             this.btnDoIt.CenterImage = null;
+            this.btnDoIt.ContextMenuStrip = this.contextMenu;
             this.btnDoIt.DialogResult = System.Windows.Forms.DialogResult.None;
             this.btnDoIt.HyperlinkStyle = false;
             this.btnDoIt.ImageMargin = 2;
