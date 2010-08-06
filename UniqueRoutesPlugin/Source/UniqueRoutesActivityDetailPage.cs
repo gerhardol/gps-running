@@ -41,6 +41,7 @@ namespace GpsRunningPlugin.Source
 #endif
 
     {
+        #region IDetailPage Members
 #if !ST_2_1
         public UniqueRoutesActivityDetailPage(IDailyActivityView view)
         {
@@ -50,25 +51,27 @@ namespace GpsRunningPlugin.Source
 
         private void OnViewSelectedItemsChanged(object sender, EventArgs e)
         {
-            Activity = CollectionUtils.GetSingleItemOfType<IActivity>(view.SelectionProvider.SelectedItems);
-            RefreshPage();
+            activities = GpsRunningPlugin.Util.CollectionUtils.GetAllContainedItems<IActivity>(view.SelectionProvider);
+            if ((control != null))
+            {
+                control.Activities = activities;
+            }
         }
         public System.Guid Id { get { return new Guid("{0af379d0-5ebe-11df-a08a-0800200c9a66}"); } }
-#endif
-
-        #region IActivityDetailPage Members
-
+#else
         public IActivity Activity
         {
-            set 
+            set
             {
-                this.activity = value;
-                if (this.control != null && activity != this.control.Activity)
+                if (null == value) { activities = null; }
+                else { activities = new List<IActivity> { value }; }
+                if ((control != null))
                 {
-                    this.control.Activity = activity;
+                    control.Activities = activities;
                 }
             }
         }
+#endif
 
         public IList<string> MenuPath
         {
@@ -109,23 +112,29 @@ namespace GpsRunningPlugin.Source
         {
             if (control == null)
             {
-                control = new UniqueRoutesActivityDetailView(activity);
+                control = new UniqueRoutesActivityDetailView();
+                control.Activities = activities;
             }
             return control;
         }
 
         public bool HidePage()
         {
+            if (control != null) { return control.HidePage(); }
             return true;
         }
 
         public string PageName
         {
-            get { return Title; }
+            get
+            {
+                return Title;
+            }
         }
 
         public void ShowPage(string bookmark)
         {
+            if (control != null) { control.ShowPage(bookmark); }
         }
 
         public IPageStatus Status
@@ -135,8 +144,6 @@ namespace GpsRunningPlugin.Source
 
         public void ThemeChanged(ITheme visualTheme)
         {
-            RefreshPage();
-//			m_visualTheme = visualTheme;
             if (control != null)
             {
                 control.ThemeChanged(visualTheme);
@@ -154,7 +161,6 @@ namespace GpsRunningPlugin.Source
             {
                 control.UICultureChanged(culture);
             }
-            RefreshPage();
         }
 
         #endregion
@@ -167,7 +173,7 @@ namespace GpsRunningPlugin.Source
 #if !ST_2_1
         private IDailyActivityView view = null;
 #endif
-        private IActivity activity = null;
+        private IList<IActivity> activities = new List<IActivity>();
         private UniqueRoutesActivityDetailView control = null;
         private IList<string> menuPath = null;
         private bool menuEnabled = true;

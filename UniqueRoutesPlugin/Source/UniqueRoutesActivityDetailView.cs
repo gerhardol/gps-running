@@ -43,17 +43,14 @@ namespace GpsRunningPlugin.Source
         private ITheme m_visualTheme;
         private IList<IActivity> similar;
         private IDictionary<string, string> similarToolTip;
-        private IActivity activity;
+        private IActivity refActivity = null;
+        private IList<IActivity> selectedActivities = new List<IActivity>();
         private IDictionary<ToolStripMenuItem, SendToPlugin> aSendToMenu = new Dictionary<ToolStripMenuItem, SendToPlugin>();
 
-        bool doUpdate;
-
-        public UniqueRoutesActivityDetailView(IActivity activity)
+        public UniqueRoutesActivityDetailView()
         {
             InitializeComponent();
             InitControls();
-            doUpdate = true;
-            this.Activity = activity;
 
             this.Resize += new EventHandler(UniqueRoutesActivityDetailView_Resize);
             activeBox.Visible = true;
@@ -73,7 +70,6 @@ namespace GpsRunningPlugin.Source
 
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
             setSize();
-            VisibleChanged += new EventHandler(UniqueRoutesActivityDetailView_VisibleChanged);
 
             bool isPluginMatch = false;
             foreach (SendToPlugin p in Settings.aSendToPlugin)
@@ -117,13 +113,13 @@ namespace GpsRunningPlugin.Source
             {
                 pluginBox.SelectedItem = "";
                 pluginBox.Enabled = false;
-                doIt.Enabled = false;
+                btnDoIt.Enabled = false;
             }
-            doUpdate = false;
         }
 
         void InitControls()
         {
+            this.ctxMenuItemRefActivity.Text = Properties.Resources.ctxReferenceActivity;
             copyTable.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
 #if !ST_2_1
             sendToMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Analyze16;
@@ -141,22 +137,56 @@ namespace GpsRunningPlugin.Source
             summaryList.ContextMenuStrip = contextMenu;
             summaryList.MouseDoubleClick += new MouseEventHandler(selectedRow_DoubleClick);
         }
-        public IActivity Activity
+        public IList<IActivity> Activities
         {
             set
             {
-                this.activity = value;
+                selectedActivities = value;
+                if (value == null || value.Count == 0)
+                {
+                    this.refActivity = null;
+                }
+                else
+                {
+                    bool isMatch = false;
+                    if (this.refActivity != null)
+                    {
+                        foreach (IActivity t in value)
+                        {
+                            if (t.Equals(this.refActivity))
+                            {
+                                isMatch = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!isMatch)
+                    {
+                        this.refActivity = value[0];
+                    }
+                }
+
                 summaryLabel.Visible = false;
                 summaryList.Visible = false;                        
                 progressBar.Visible = false;
-                doIt.Visible = false;
                 changeSettingsVisibility(false);
-                if (activity != null)
-                {
-                    calculate();
-                }
+
+                calculate();
             }
-            get { return activity; }
+            get { return selectedActivities; }
+        }
+
+        private bool _showPage = false;
+        public bool HidePage()
+        {
+            _showPage = false;
+            return true;
+        }
+        public void ShowPage(string bookmark)
+        {
+            bool changed = (_showPage != true);
+            _showPage = true;
+            if (changed) { calculate(); }
         }
 
         private void setTable()
@@ -177,7 +207,7 @@ namespace GpsRunningPlugin.Source
                     bool doGetcommonStretches = true;// Plugin.Verbose > 0;
                     if (doGetcommonStretches)
                     {
-                        commonStretches = CommonStretches.getCommonSpeed(this.activity, similar, Settings.UseActive);
+                        commonStretches = CommonStretches.getCommonSpeed(this.refActivity, similar, Settings.UseActive);
                         //similarPoints = CommonStretches.findSimilarDebug(this.activity, similar, Settings.UseActive);
                     }
                     foreach (IActivity activity in similar)
@@ -224,7 +254,7 @@ namespace GpsRunningPlugin.Source
         private void RefreshColumns()
         {
             summaryList.Columns.Clear();
-            ICollection<IListColumnDefinition> allCols = SummaryColumnIds.ColumnDefs(this.activity);
+            ICollection<IListColumnDefinition> allCols = SummaryColumnIds.ColumnDefs(this.refActivity);
             foreach (string id in Settings.ActivityPageColumns)
             {
                 foreach (ListColumnDefinition columnDef in allCols)
@@ -257,7 +287,7 @@ namespace GpsRunningPlugin.Source
             pluginBox.Visible = visible;
             sendLabel2.Visible = visible;
             labelLaps.Visible = visible;
-            doIt.Visible = visible;
+            btnDoIt.Visible = visible;
             sendResultToLabel1.Visible = visible;
         }
 
@@ -275,7 +305,7 @@ namespace GpsRunningPlugin.Source
             //summaryLabel, CommonStretches column, setTable()
 
             setCategoryLabel();
-            changeCategory.Text = StringResources.ChangeCategory;
+            btnChangeCategory.Text = StringResources.ChangeCategory;
             copyTable.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
             RefreshColumns();
             listSettingsMenuItem.Text = StringResources.ListSettings;
@@ -296,8 +326,8 @@ namespace GpsRunningPlugin.Source
             activeBox.Items.Add(StringResources.Active);
             speedBox.Items.Add(CommonResources.Text.LabelPace);
             speedBox.Items.Add(CommonResources.Text.LabelSpeed);
-            doIt.Text = Resources.DoIt;
-            correctUI(new Control[] { selectedBox, sendLabel2, pluginBox, doIt });
+            btnDoIt.Text = Resources.DoIt;
+            correctUI(new Control[] { selectedBox, sendLabel2, pluginBox, btnDoIt });
             sendResultToLabel1.Text = StringResources.Send;
             sendResultToLabel1.Location = new Point(selectedBox.Location.X - 5 - sendResultToLabel1.Size.Width,
                                         sendLabel2.Location.Y);
@@ -321,15 +351,28 @@ namespace GpsRunningPlugin.Source
 
         private void setCategoryLabel()
         {
-            if (Settings.SelectedCategory == null)
+            if (selectedActivities.Count > 1)
             {
-                categoryLabel.Text = Resources.IncludeAllActivitiesInSearch;
+                categoryLabel.Text = string.Format(Resources.LimitingToSelected, selectedActivities.Count);
             }
             else
             {
-                categoryLabel.Text = String.Format("{0}",//Resources.IncludeOnlyCategory,
-                    Settings.printFullCategoryPath(Settings.SelectedCategory));
+                if (Settings.SelectedCategory == null)
+                {
+                    categoryLabel.Text = Resources.IncludeAllActivitiesInSearch;
+                }
+                else
+                {
+                    categoryLabel.Text = String.Format("{0}",//Resources.IncludeOnlyCategory,
+                        Settings.printFullCategoryPath(Settings.SelectedCategory));
+                }
             }
+            btnChangeCategory.Location = new Point(
+                    summaryLabel.Location.X + summaryLabel.Width + 5,
+                         btnChangeCategory.Location.Y);
+            int btnOffset = btnChangeCategory.Visible ? btnChangeCategory.Width + 5 : 0;
+            categoryLabel.Location = new Point(
+                   btnChangeCategory.Location.X + btnOffset, summaryLabel.Location.Y);
         }
 
         private void summaryView_Sort()
@@ -343,35 +386,54 @@ namespace GpsRunningPlugin.Source
 
         private void setSize()
         {
-            changeCategory.Location = new Point(
-                    summaryLabel.Location.X + summaryLabel.Width + 5,
-                         changeCategory.Location.Y);
-            categoryLabel.Location = new Point(
-                   changeCategory.Location.X + changeCategory.Width + 5,
-                        summaryLabel.Location.Y);
+            setCategoryLabel();
             Refresh();
         }
 
         private void calculate()
         {
-            if (Visible && !doUpdate)
+            if (_showPage)
             {
-                if (activity != null)
+                if (refActivity != null)
                 {
                     summaryList.Visible = false;
                     summaryLabel.Visible = false;
                     changeSettingsVisibility(false);
                     categoryLabel.Visible = false;
-                    changeCategory.Visible = false;
+                    btnChangeCategory.Visible = false;
                     progressBar.Visible = true;
-                    similar = UniqueRoutes.findSimilarRoutes(activity, progressBar);
+                    if (selectedActivities.Count >1)
+                    {
+                      similar = UniqueRoutes.findSimilarRoutes(refActivity, selectedActivities, progressBar);
+                    }
+                    else{
+                      similar = UniqueRoutes.findSimilarRoutes(refActivity, progressBar);
+                      btnChangeCategory.Visible = true;
+                    }
+                    categoryLabel.Visible = true;
                     determinePaceOrSpeed();
                     progressBar.Visible = false;
                     summaryLabel.Visible = true;
-                    categoryLabel.Visible = true;
-                    changeCategory.Visible = true;
                     setTable();
                     changeSettingsVisibility(similar.Count > 1);
+                    //Add the activities to the menu
+                    this.ctxMenuItemRefActivity.DropDownItems.Clear();
+                    foreach (IActivity act in similar)
+                    {
+                        string tt = act.StartTime + " " + act.Name + act.TotalDistanceMetersEntered + " " + act.TotalTimeEntered;
+                        ToolStripMenuItem childMenuItem = new ToolStripMenuItem(tt);
+                        childMenuItem.Tag = act.ReferenceId;
+                        if (act.Equals(refActivity))
+                        {
+                            childMenuItem.Checked = true;
+                        }
+                        else
+                        {
+                            childMenuItem.Checked = false;
+                        }
+                        this.ctxMenuItemRefActivity.DropDownItems.Add(childMenuItem);
+                        childMenuItem.Click += new System.EventHandler(this.ctxRefActivityItemActivities_Click);
+                    }
                 }
                 else
                 {
@@ -396,11 +458,6 @@ namespace GpsRunningPlugin.Source
         /*******************************************************************************/
         //Event handlers
 
-        void UniqueRoutesActivityDetailView_VisibleChanged(object sender, EventArgs e)
-        {
-            calculate();
-        }
-
         void copyTableMenu_Click(object sender, EventArgs e)
         {
             summaryList.CopyTextToClipboard(true, System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
@@ -414,6 +471,24 @@ namespace GpsRunningPlugin.Source
         private void UniqueRoutesActivityDetailView_Resize(object sender, EventArgs e)
         {
             setSize();
+        }
+
+        private void ctxRefActivityItemActivities_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem sourceMenuItem = (ToolStripMenuItem)sender;
+            if (sourceMenuItem != null && sourceMenuItem.Tag != null)
+            {
+                string refId = (string)sourceMenuItem.Tag;
+                foreach (IActivity act in similar)
+                {
+                    if (refId.Equals(act.ReferenceId))
+                    {
+                        refActivity = act;
+                    }
+                }
+
+                calculate();
+            }
         }
 
         private void sendActivityButton_Click(object sender, EventArgs e)
