@@ -142,6 +142,15 @@ namespace GpsRunningPlugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reference Activity.
+        /// </summary>
+        internal static string ctxReferenceActivity {
+            get {
+                return ResourceManager.GetString("ctxReferenceActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Did not find any other activities on same route.\nIf you think there should be some, please adjust the settings and try again..
         /// </summary>
         internal static string DidNotFindAnyRoutes {
@@ -210,6 +219,15 @@ namespace GpsRunningPlugin.Properties {
         internal static string IncludeOnlyCategory {
             get {
                 return ResourceManager.GetString("IncludeOnlyCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Using {0} selected activites.
+        /// </summary>
+        internal static string LimitingToSelected {
+            get {
+                return ResourceManager.GetString("LimitingToSelected", resourceCulture);
             }
         }
         

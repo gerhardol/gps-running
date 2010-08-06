@@ -49,47 +49,59 @@ namespace GpsRunningPlugin.Source
         private UniqueRoutes() { }
         private static UniqueModel uniqueModel = UniqueModel.GPS;
 
-        public static IList<IActivity> findSimilarRoutes(IActivity activity, System.Windows.Forms.ProgressBar progressBar)
+        public static IList<IActivity> findSimilarRoutes(IActivity refActivity, System.Windows.Forms.ProgressBar progressBar)
         {
             IList<IActivity> activities = new List<IActivity>();
-            if (activity == null || 
-                uniqueModel == UniqueModel.ELEVATION && activity.ElevationMetersTrack == null || 
-                activity.GPSRoute == null || //GPS, ELEVATION
-                !isAllowedActivity(activity))
-                return activities;
+            foreach (IActivity otherActivity in Plugin.GetApplication().Logbook.Activities)
+            {
+                if (isAllowedActivity(otherActivity) &&
+                    otherActivity.GPSRoute != null && otherActivity.GPSRoute.Count > 0)
+                {
+                    activities.Add(otherActivity);
+                }
+            }
+            return findSimilarRoutes(refActivity, activities, progressBar);
+         }
+        public static IList<IActivity> findSimilarRoutes(IActivity refActivity, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
+        {
+            IList<IActivity> result = new List<IActivity>();
+            if (refActivity == null || 
+                uniqueModel == UniqueModel.ELEVATION && refActivity.ElevationMetersTrack == null || 
+                refActivity.GPSRoute == null || //GPS, ELEVATION
+                !isAllowedActivity(refActivity))
+                return result;
             progressBar.Value = 0;
             progressBar.Minimum = 0;
-            progressBar.Maximum = Plugin.GetApplication().Logbook.Activities.Count;
+            progressBar.Maximum = activities.Count;
             if (uniqueModel == UniqueModel.ELEVATION)
             {
                 //Not implemented
             } else {
-            GPSGrid grid = new GPSGrid(activity);
+            GPSGrid grid = new GPSGrid(refActivity);
             IDictionary<IActivity, int> beginningPoints = new Dictionary<IActivity, int>();
             IDictionary<IActivity, int> endPoints = new Dictionary<IActivity, int>();
 
-            setBeginningAndEndPoints(activity, beginningPoints, endPoints);
-            if (!beginningPoints.ContainsKey(activity) ||
-                beginningPoints[activity] <= -1 ||
-                        endPoints[activity] <= -1)
+            setBeginningAndEndPoints(refActivity, beginningPoints, endPoints);
+            if (!beginningPoints.ContainsKey(refActivity) ||
+                beginningPoints[refActivity] <= -1 ||
+                        endPoints[refActivity] <= -1)
             {
                 //The settings does not include any points
-                return activities;
+                return result;
             }
-            foreach (IActivity otherActivity in Plugin.GetApplication().Logbook.Activities)
+            foreach (IActivity otherActivity in activities)
             {
                 int pointsOutside = 0;
                 bool inBand = false;
                 int direction = 0;
-                if (isAllowedActivity(otherActivity) &&
-                    otherActivity.GPSRoute != null && otherActivity.GPSRoute.Count >0)
+                if (otherActivity.GPSRoute != null && otherActivity.GPSRoute.Count >0)
                 {
                     setBeginningAndEndPoints(otherActivity, beginningPoints, endPoints);
                     int noOfPoints = otherActivity.GPSRoute.Count;
                     if (beginningPoints[otherActivity] > -1 && 
                         endPoints[otherActivity] > -1 &&
-                        otherActivity.GPSRoute[0].Value.DistanceMetersToPoint(activity.GPSRoute[0].Value)
-                        < otherActivity.GPSRoute.TotalDistanceMeters + activity.GPSRoute.TotalDistanceMeters)
+                        otherActivity.GPSRoute[0].Value.DistanceMetersToPoint(refActivity.GPSRoute[0].Value)
+                        < otherActivity.GPSRoute.TotalDistanceMeters + refActivity.GPSRoute.TotalDistanceMeters)
                     {
                         inBand = true;
                         for (int i = beginningPoints[otherActivity]; i <= endPoints[otherActivity]; i++)
@@ -107,7 +119,7 @@ namespace GpsRunningPlugin.Source
                                 //All matching points from grid.getAllClose would be better but is significantly slower
                                 bool inOtherLowerHalf = i < otherActivity.GPSRoute.Count / 2;
                                 
-                                    bool inLowerHalf = closests < activity.GPSRoute.Count / 2;
+                                    bool inLowerHalf = closests < refActivity.GPSRoute.Count / 2;
                                     if ((inLowerHalf && inOtherLowerHalf) ||
                                         (!inLowerHalf && !inOtherLowerHalf))
                                         direction++;
@@ -126,15 +138,15 @@ namespace GpsRunningPlugin.Source
                             pointsOutside = 0;
                             IGPSBounds otherBounds = GPSBounds.FromGPSRoute(otherActivity.GPSRoute);
                             GPSGrid otherGrid = new GPSGrid(otherActivity);
-                            for (int i = beginningPoints[activity]; i <= endPoints[activity]; i++)
+                            for (int i = beginningPoints[refActivity]; i <= endPoints[refActivity]; i++)
                             {
-                                IGPSPoint point = activity.GPSRoute[i].Value;
+                                IGPSPoint point = refActivity.GPSRoute[i].Value;
                                 int closests = otherGrid.getClosePoint(point);
                                 if (closests < 0)
                                 {
                                     pointsOutside++;
                                 }
-                                if (pointsOutside / ((double)activity.GPSRoute.Count) > Settings.ErrorMargin)
+                                if (pointsOutside / ((double)refActivity.GPSRoute.Count) > Settings.ErrorMargin)
                                 {
                                     inBand = false;
                                     break;
@@ -145,12 +157,12 @@ namespace GpsRunningPlugin.Source
                 }
                 if (inBand && (!Settings.HasDirection ||
                     (Settings.HasDirection && direction > 0)))
-                    activities.Add(otherActivity);
+                    result.Add(otherActivity);
                 progressBar.Increment(1);
             }
             }
 
-            return activities;
+            return result;
         }
 
         private static bool isAllowedActivity(IActivity activity)

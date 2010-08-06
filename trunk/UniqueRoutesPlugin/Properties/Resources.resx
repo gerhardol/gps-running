@@ -184,4 +184,12 @@
     <value>Unique Routes</value>
     <comment>Name of application, displayed in GUI</comment>
   </data>
+  <data name="ctxReferenceActivity" xml:space="preserve">
+    <value>Reference Activity</value>
+    <comment>new</comment>
+  </data>
+  <data name="LimitingToSelected" xml:space="preserve">
+    <value>Using {0} selected activites</value>
+    <comment>new</comment>
+  </data>
 </root>
