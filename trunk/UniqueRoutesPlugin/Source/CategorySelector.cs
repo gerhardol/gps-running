@@ -30,9 +30,15 @@ namespace GpsRunningPlugin.Source
     class CategorySelector : Form
     {
         private TreeView tree;
-        private Button okButton;
+        private ZoneFiveSoftware.Common.Visuals.Button okButton;
         private IDictionary<TreeNode, IActivityCategory> node2category;
-        
+
+        public CategorySelector(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme, System.Globalization.CultureInfo culture)
+            : this()
+        {
+            this.ThemeChanged(visualTheme);
+            this.UICultureChanged(culture);
+        }
         public CategorySelector()
         {
             InitializeComponent();
@@ -43,9 +49,17 @@ namespace GpsRunningPlugin.Source
                 addNode(category, null);
             }
             tree.NodeMouseDoubleClick += new TreeNodeMouseClickEventHandler(tree_NodeMouseClick);
-            ShowDialog();
         }
 
+        public void ThemeChanged(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme)
+        {
+            this.BackColor = visualTheme.Control;
+        }
+        public void UICultureChanged(System.Globalization.CultureInfo culture)
+        {
+            this.okButton.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionOk;
+            this.Text = StringResources.SelectCategory;
+        }
         private void tree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (node2category.ContainsKey(tree.SelectedNode))
@@ -72,7 +86,7 @@ namespace GpsRunningPlugin.Source
         private void InitializeComponent()
         {
             this.tree = new System.Windows.Forms.TreeView();
-            this.okButton = new System.Windows.Forms.Button();
+            this.okButton = new ZoneFiveSoftware.Common.Visuals.Button();
             this.SuspendLayout();
             // 
             // tree
@@ -89,7 +103,6 @@ namespace GpsRunningPlugin.Source
             this.okButton.Size = new System.Drawing.Size(168, 23);
             this.okButton.TabIndex = 1;
             this.okButton.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionOk;
-            this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
             // CategorySelector

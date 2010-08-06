@@ -54,6 +54,7 @@ namespace GpsRunningPlugin.Source
             this.listSettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.activeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sendToMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ctxMenuItemRefActivity = new System.Windows.Forms.ToolStripMenuItem();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.btnDoIt = new ZoneFiveSoftware.Common.Visuals.Button();
             this.speedBox = new System.Windows.Forms.ComboBox();
@@ -67,7 +68,6 @@ namespace GpsRunningPlugin.Source
             this.activeBox = new System.Windows.Forms.ComboBox();
             this.labelLaps = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.ctxMenuItemRefActivity = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenu.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -148,6 +148,12 @@ namespace GpsRunningPlugin.Source
             this.sendToMenuItem.Size = new System.Drawing.Size(198, 22);
             this.sendToMenuItem.Text = "Send to";
             // 
+            // ctxMenuItemRefActivity
+            // 
+            this.ctxMenuItemRefActivity.Name = "ctxMenuItemRefActivity";
+            this.ctxMenuItemRefActivity.Size = new System.Drawing.Size(124, 22);
+            this.ctxMenuItemRefActivity.Text = "<A&ctivit>";
+            // 
             // progressBar
             // 
             this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
@@ -160,6 +166,7 @@ namespace GpsRunningPlugin.Source
             // 
             // btnDoIt
             // 
+            this.btnDoIt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDoIt.BackColor = System.Drawing.Color.Transparent;
             this.btnDoIt.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
             this.btnDoIt.CenterImage = null;
@@ -167,18 +174,17 @@ namespace GpsRunningPlugin.Source
             this.btnDoIt.HyperlinkStyle = false;
             this.btnDoIt.ImageMargin = 2;
             this.btnDoIt.LeftImage = null;
-            this.btnDoIt.Location = new System.Drawing.Point(331, 34);
+            this.btnDoIt.Location = new System.Drawing.Point(368, 4);
             this.btnDoIt.Name = "btnDoIt";
             this.btnDoIt.PushStyle = true;
             this.btnDoIt.RightImage = null;
-            this.btnDoIt.Size = new System.Drawing.Size(56, 21);
+            this.btnDoIt.Size = new System.Drawing.Size(20, 21);
             this.btnDoIt.TabIndex = 3;
             this.btnDoIt.Text = "Do it!";
             this.btnDoIt.TextAlign = System.Drawing.StringAlignment.Center;
             this.btnDoIt.TextLeftMargin = 2;
             this.btnDoIt.TextRightMargin = 2;
-            this.btnDoIt.Visible = false;
-            this.btnDoIt.Click += new System.EventHandler(this.sendActivityButton_Click);
+            this.btnDoIt.Click += new System.EventHandler(this.refreshButton_Click);
             // 
             // speedBox
             // 
@@ -301,13 +307,13 @@ namespace GpsRunningPlugin.Source
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.progressBar);
+            this.splitContainer1.Panel1.Controls.Add(this.btnDoIt);
             this.splitContainer1.Panel1.Controls.Add(this.summaryLabel);
             this.splitContainer1.Panel1.Controls.Add(this.btnChangeCategory);
             this.splitContainer1.Panel1.Controls.Add(this.categoryLabel);
-            this.splitContainer1.Panel1.Controls.Add(this.progressBar);
             this.splitContainer1.Panel1.Controls.Add(this.sendLabel2);
             this.splitContainer1.Panel1.Controls.Add(this.pluginBox);
-            this.splitContainer1.Panel1.Controls.Add(this.btnDoIt);
             this.splitContainer1.Panel1.Controls.Add(this.labelLaps);
             this.splitContainer1.Panel1.Controls.Add(this.activeBox);
             this.splitContainer1.Panel1.Controls.Add(this.labelShow);
@@ -322,12 +328,6 @@ namespace GpsRunningPlugin.Source
             this.splitContainer1.SplitterDistance = 27;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 16;
-            // 
-            // ctxMenuItemRefActivity
-            // 
-            this.ctxMenuItemRefActivity.Name = "ctxMenuItemRefActivity";
-            this.ctxMenuItemRefActivity.Size = new System.Drawing.Size(124, 22);
-            this.ctxMenuItemRefActivity.Text = "<A&ctivit>";
             // 
             // UniqueRoutesActivityDetailView
             // 
