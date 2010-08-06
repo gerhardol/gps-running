@@ -51,7 +51,10 @@ namespace GpsRunningPlugin.Source
         private void OnViewSelectedItemsChanged(object sender, EventArgs e)
         {
             activities = GpsRunningPlugin.Util.CollectionUtils.GetAllContainedItems<IActivity>(view.SelectionProvider);
-            updateActivities();
+            if ((control != null))
+            {
+                control.Activities = activities;
+            }
             RefreshPage();
         }
         public System.Guid Id { get { return new Guid("{ee9dde60-5ed6-11df-a08a-0800200c9a66}"); } }
@@ -63,18 +66,14 @@ namespace GpsRunningPlugin.Source
             {
                 if (null == value) { activities = null; }
                 else { activities = new List<IActivity> { value }; }
-                updateActivities();
+                if ((control != null))
+                {
+                    control.Activities = activities;
+                }
             }
         }
 #endif
 
-        private void updateActivities()
-        {
-            if ((control != null))
-            {
-                    control.Activities = activities;
-            }
-        }
         public IList<string> MenuPath
         {
             get { return menuPath; }
@@ -115,7 +114,10 @@ namespace GpsRunningPlugin.Source
             if (control == null)
             {
                 control = new PerformancePredictorView();
-                updateActivities();
+                if ((control != null))
+                {
+                    control.Activities = activities;
+                }
             }
             return control;
         }
