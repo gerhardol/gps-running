@@ -243,7 +243,7 @@ namespace GpsRunningPlugin.Source
                                 commonText = commonStretches[activity][4] + " " + Resources.Sections;
                             }
                         }
-                        if (!urActivity.Equals(refActivity))
+                        if (urActivity.Equals(refActivity) || !activity.Equals(refActivity))
                         {
                             result.Add(new UniqueRoutesResult(activity, commonText));
                         }
