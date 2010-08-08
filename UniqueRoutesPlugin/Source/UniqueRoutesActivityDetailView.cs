@@ -25,9 +25,9 @@ using System.Text;
 using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
+using ZoneFiveSoftware.Common.Data.GPS;
 #if !ST_2_1
 using ZoneFiveSoftware.Common.Data;
-using ZoneFiveSoftware.Common.Data.GPS;
 using ZoneFiveSoftware.Common.Visuals.Forms;
 #endif
 using ZoneFiveSoftware.Common.Data.Fitness;
@@ -51,6 +51,8 @@ namespace GpsRunningPlugin.Source
         private IGPSRoute urRoute = new GPSRoute();
         private IList<IActivity> selectedActivities = new List<IActivity>();
         private IDictionary<ToolStripMenuItem, SendToPlugin> aSendToMenu = new Dictionary<ToolStripMenuItem, SendToPlugin>();
+        private bool _showPage = false;
+        private bool _needsRecalculation = true;
 
 #if !ST_2_1
         private IDailyActivityView m_view = null;
@@ -176,13 +178,12 @@ namespace GpsRunningPlugin.Source
                         this.refActivity = value[0];
                     }
                 }
-
+                _needsRecalculation = true;
                 calculate();
             }
             get { return selectedActivities; }
         }
 
-        private bool _showPage = false;
         public bool HidePage()
         {
             _showPage = false;
@@ -190,9 +191,8 @@ namespace GpsRunningPlugin.Source
         }
         public void ShowPage(string bookmark)
         {
-            bool changed = (_showPage != true);
             _showPage = true;
-            if (changed) { calculate(); }
+            calculate();
         }
 
         private void RefreshColumns()
@@ -433,7 +433,7 @@ namespace GpsRunningPlugin.Source
         }
         private void calculate(bool useSelection)
         {
-            if (_showPage)
+            if (_showPage && _needsRecalculation)
             {
                 if (refActivity != null)
                 {
@@ -576,6 +576,7 @@ namespace GpsRunningPlugin.Source
         }
         private void refreshButton_Click(object sender, EventArgs e)
         {
+            _needsRecalculation = true;
             calculate();
         }
 
@@ -659,6 +660,7 @@ namespace GpsRunningPlugin.Source
             CategorySelector cs = new CategorySelector(m_visualTheme, m_culture);
             cs.ShowDialog();
             setCategoryLabel();
+            _needsRecalculation = true;
             calculate();
         }
 
