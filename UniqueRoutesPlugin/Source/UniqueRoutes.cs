@@ -72,49 +72,57 @@ namespace GpsRunningPlugin.Source
 
         public static IList<IActivity> findSimilarRoutes(IActivity refActivity, IList<IActivity> activities, bool beginEndCheck, System.Windows.Forms.ProgressBar progressBar)
         {
-            IList<IActivity> result = new List<IActivity>();
-            if (refActivity == null || 
-                uniqueModel == UniqueModel.ELEVATION && refActivity.ElevationMetersTrack == null || 
+            if (refActivity == null ||
+                uniqueModel == UniqueModel.ELEVATION && refActivity.ElevationMetersTrack == null ||
+                uniqueModel == UniqueModel.ELEVATION || //Not implemented
                 refActivity.GPSRoute == null || //GPS, ELEVATION
                 beginEndCheck && !isAllowedActivity(refActivity))
+                return new List<IActivity>();
+            return findSimilarRoutes(refActivity.GPSRoute, refActivity.ReferenceId, activities, beginEndCheck, progressBar);
+        }
+        public static IList<IActivity> findSimilarRoutes(IGPSRoute refRoute, IList<IActivity> activities, bool beginEndCheck, System.Windows.Forms.ProgressBar progressBar)
+        {
+            return findSimilarRoutes(refRoute, "", activities, beginEndCheck, progressBar);
+        }
+        public static IList<IActivity> findSimilarRoutes(IGPSRoute refRoute, string refId, IList<IActivity> activities, bool beginEndCheck, System.Windows.Forms.ProgressBar progressBar)
+        {
+            IList<IActivity> result = new List<IActivity>();
+            if (refRoute == null)
                 return result;
             progressBar.Value = 0;
             progressBar.Minimum = 0;
             progressBar.Maximum = activities.Count;
-            if (uniqueModel == UniqueModel.ELEVATION)
-            {
-                //Not implemented
-            } else {
-            GPSGrid grid = new GPSGrid(refActivity);
-            IDictionary<IActivity, int> beginningPoints = new Dictionary<IActivity, int>();
-            IDictionary<IActivity, int> endPoints = new Dictionary<IActivity, int>();
 
-                setBeginningAndEndPoints(refActivity, beginEndCheck, beginningPoints, endPoints);
-                if (!beginningPoints.ContainsKey(refActivity) ||
-                    beginningPoints[refActivity] <= -1 ||
-                            endPoints[refActivity] <= -1)
-                {
-                    //The settings does not include any points
-                    return result;
-                }
+            GPSGrid grid = new GPSGrid(refRoute);
+            IDictionary<string, int> beginningPoints = new Dictionary<string, int>();
+            IDictionary<string, int> endPoints = new Dictionary<string, int>();
+
+            setBeginningAndEndPoints(refId, refRoute, beginEndCheck, beginningPoints, endPoints);
+            if (!beginningPoints.ContainsKey(refId) ||
+                beginningPoints[refId] <= -1 ||
+                        endPoints[refId] <= -1)
+            {
+                //The settings does not include any points
+                return result;
+            }
             foreach (IActivity otherActivity in activities)
             {
                 int pointsOutside = 0;
                 bool inBand = false;
                 int direction = 0;
-                if (otherActivity.GPSRoute != null && otherActivity.GPSRoute.Count >0)
+                if (otherActivity.GPSRoute != null && otherActivity.GPSRoute.Count > 0)
                 {
-                        setBeginningAndEndPoints(otherActivity, beginEndCheck, beginningPoints, endPoints);
+                    setBeginningAndEndPoints(otherActivity, beginEndCheck, beginningPoints, endPoints);
                     int noOfPoints = otherActivity.GPSRoute.Count;
-                    if (beginningPoints[otherActivity] > -1 && endPoints[otherActivity] > -1 &&
+                    if (beginningPoints[otherActivity.ReferenceId] > -1 && endPoints[otherActivity.ReferenceId] > -1 &&
                         //Simple prune, eliminating routes not possible common
-                        otherActivity.GPSRoute[0].Value.DistanceMetersToPoint(refActivity.GPSRoute[0].Value)
-                        < otherActivity.GPSRoute.TotalDistanceMeters + refActivity.GPSRoute.TotalDistanceMeters)
+                        otherActivity.GPSRoute[0].Value.DistanceMetersToPoint(refRoute[0].Value)
+                        < otherActivity.GPSRoute.TotalDistanceMeters + refRoute.TotalDistanceMeters)
                     {
                         inBand = true;
                         if (beginEndCheck)
                         {
-                            for (int i = beginningPoints[otherActivity]; i <= endPoints[otherActivity]; i++)
+                            for (int i = beginningPoints[otherActivity.ReferenceId]; i <= endPoints[otherActivity.ReferenceId]; i++)
                             {
                                 IGPSPoint point = otherActivity.GPSRoute[i].Value;
                                 int closests = grid.getClosePoint(point);
@@ -129,7 +137,7 @@ namespace GpsRunningPlugin.Source
                                     //All matching points from grid.getAllClose would be better but is significantly slower
                                     bool inOtherLowerHalf = i < otherActivity.GPSRoute.Count / 2;
 
-                                    bool inLowerHalf = closests < refActivity.GPSRoute.Count / 2;
+                                    bool inLowerHalf = closests < refRoute.Count / 2;
                                     if ((inLowerHalf && inOtherLowerHalf) ||
                                         (!inLowerHalf && !inOtherLowerHalf))
                                         direction++;
@@ -149,30 +157,28 @@ namespace GpsRunningPlugin.Source
                             pointsOutside = 0;
                             IGPSBounds otherBounds = GPSBounds.FromGPSRoute(otherActivity.GPSRoute);
                             GPSGrid otherGrid = new GPSGrid(otherActivity);
-                            for (int i = beginningPoints[refActivity]; i <= endPoints[refActivity]; i++)
+                            for (int i = beginningPoints[refId]; i <= endPoints[refId]; i++)
                             {
-                                IGPSPoint point = refActivity.GPSRoute[i].Value;
+                                IGPSPoint point = refRoute[i].Value;
                                 int closests = otherGrid.getClosePoint(point);
                                 if (closests < 0)
                                 {
                                     pointsOutside++;
-                                }
-                                if (pointsOutside / ((double)refActivity.GPSRoute.Count) > Settings.ErrorMargin)
-                                {
-                                    inBand = false;
-                                    break;
+                                    if (pointsOutside / ((double)refRoute.Count) > Settings.ErrorMargin)
+                                    {
+                                        inBand = false;
+                                        break;
+                                    }
                                 }
                             }
                         }
                     }
                 }
                 if (inBand && (!Settings.HasDirection ||
-                    (Settings.HasDirection && direction > 0)))
+                    (Settings.HasDirection && direction >= 0)))
                     result.Add(otherActivity);
                 progressBar.Increment(1);
             }
-            }
-
             return result;
         }
 
@@ -190,17 +196,23 @@ namespace GpsRunningPlugin.Source
         }
 
         private static void setBeginningAndEndPoints(IActivity activity, bool beginEndCheck,
-            IDictionary<IActivity, int> beginningPoints,
-            IDictionary<IActivity, int> endPoints)
+            IDictionary<string, int> beginningPoints,
+            IDictionary<string, int> endPoints)
+        {
+            setBeginningAndEndPoints(activity.ReferenceId, activity.GPSRoute, beginEndCheck, beginningPoints, endPoints);
+        }
+        private static void setBeginningAndEndPoints(string activity, IGPSRoute gpsroute, bool beginEndCheck,
+            IDictionary<string, int> beginningPoints,
+            IDictionary<string, int> endPoints)
         {
             double length = 0;
             //prune with some searches
             beginningPoints[activity] = 0;
-            endPoints[activity] = activity.GPSRoute.Count - 1;
+            endPoints[activity] = gpsroute.Count - 1;
             if (beginEndCheck)
             {
                 length = Settings.IgnoreBeginning + Settings.IgnoreEnd;
-                if (length > activity.GPSRoute.TotalDistanceMeters)
+                if (length > gpsroute.TotalDistanceMeters)
                 {
                     //not used at all
                     beginningPoints[activity] = -1;
@@ -217,14 +229,14 @@ namespace GpsRunningPlugin.Source
                     {
                         length = 0;
                         previous = null;
-                        for (int i = 0; i < activity.GPSRoute.Count; i++)
+                        for (int i = 0; i < gpsroute.Count; i++)
                         {
                             if (length >= Settings.IgnoreBeginning)
                             {
                                 beginningPoints[activity] = i;
                                 break;
                             }
-                            IGPSPoint point = activity.GPSRoute[i].Value;
+                            IGPSPoint point = gpsroute[i].Value;
                             if (previous != null)
                                 length += point.DistanceMetersToPoint(previous);
                             previous = point;
@@ -234,9 +246,9 @@ namespace GpsRunningPlugin.Source
                     {
                         length = 0;
                         previous = null;
-                        for (int i = activity.GPSRoute.Count - 1; i >= 0; i--)
+                        for (int i = gpsroute.Count - 1; i >= 0; i--)
                         {
-                            IGPSPoint current = activity.GPSRoute[i].Value;
+                            IGPSPoint current = gpsroute[i].Value;
                             if (length >= Settings.IgnoreEnd)
                             {
                                 endPoints[activity] = i;

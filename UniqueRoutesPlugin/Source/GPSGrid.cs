@@ -55,24 +55,30 @@ namespace GpsRunningPlugin.Source
 
         public GPSGrid(IActivity activity)
             : this(activity, 1, false)
-        {
-        }
+        { }
         public GPSGrid(IActivity activity, double BWidthFactor, bool isDist)
+            : this(activity.GPSRoute, BWidthFactor, isDist)
+        { }
+        public GPSGrid(IGPSRoute route)
+            : this(route, 1, false)
+        { }
+
+        public GPSGrid(IGPSRoute route, double BWidthFactor, bool isDist)
         {
             Width = BWidthFactor * (Settings.Bandwidth) / (60 * 60 * 30.9);
             if (Width < 0.001) Width = 0.001;
             Distance = BWidthFactor * Settings.Bandwidth / 2;            
             Grid = new Dictionary<int, IDictionary<int, IList<int>>>();
-            Route = activity.GPSRoute; //Just copy the reference
+            Route = route; //Just copy the reference
             if (isDist)
             {
-                Dist = activity.GPSRoute.GetDistanceMetersTrack();
+                Dist = route.GetDistanceMetersTrack();
             }
             else
             {
                 Dist = null;
             }
-            for (int i = 0; i < activity.GPSRoute.Count; i++ )
+            for (int i = 0; i < route.Count; i++ )
             {
                 add(i);
             }

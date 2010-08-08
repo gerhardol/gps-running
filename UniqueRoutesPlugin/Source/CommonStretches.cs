@@ -57,9 +57,13 @@ namespace GpsRunningPlugin.Source
 
         public static IDictionary<IActivity, IList<double>> getCommonSpeed(IActivity activity, IList<IActivity> activities, bool useActive)
         {
+            return getCommonSpeed(activity.GPSRoute, activities, useActive);
+        }
+        public static IDictionary<IActivity, IList<double>> getCommonSpeed(IGPSRoute refRoute, IList<IActivity> activities, bool useActive)
+        {
             IDictionary<IActivity, IList<IList<PointInfo>>> points = new Dictionary<IActivity, IList<IList<PointInfo>>>();
             IDictionary<IActivity, IList<double>> result = new Dictionary<IActivity, IList<double>>();
-            points = findSimilarPoints(activity, activities);
+            points = findSimilarPoints(refRoute, activities);
             foreach (IActivity otherActivity in activities)
             {
                 double MinDistStretch = Settings.Bandwidth * 2;
@@ -118,7 +122,15 @@ namespace GpsRunningPlugin.Source
         }
         public static IDictionary<IActivity, IList<IList<PointInfo>>> findSimilarPoints(IActivity activity, IList<IActivity> activities)
         {
-            GPSGrid grid = new GPSGrid(activity, 1, true);
+            return findSimilarPoints(activity.GPSRoute, activity.Laps, activities);
+        }
+        public static IDictionary<IActivity, IList<IList<PointInfo>>> findSimilarPoints(IGPSRoute refRoute, IList<IActivity> activities)
+        {
+            return findSimilarPoints(refRoute, null, activities);
+        }
+        public static IDictionary<IActivity, IList<IList<PointInfo>>> findSimilarPoints(IGPSRoute refRoute, IActivityLaps refLaps, IList<IActivity> activities)
+        {
+            GPSGrid grid = new GPSGrid(refRoute, 1, true);
             IDictionary<IActivity, IList<IList<PointInfo>>> result = new Dictionary<IActivity, IList<IList<PointInfo>>>();
             double cumulativeAverageDist = 0;
             int noCumAv = 0;
@@ -240,8 +252,8 @@ namespace GpsRunningPlugin.Source
                             s.Add(new PointInfo(i, dist[i].Value, otherActivity.GPSRoute[i].ElapsedSeconds,
                                 getRestLap(i, otherActivity),
                                 startMatch + " " + lastMatch + " " + startMatchRef + " " + lastMatchRef));
-                            s.Add(new PointInfo(lastIndex.Index, lastIndex.Dist, activity.GPSRoute[lastIndex.Index].ElapsedSeconds,
-                                getRestLap(lastIndex.Index, activity)));
+                            s.Add(new PointInfo(lastIndex.Index, lastIndex.Dist, refRoute[lastIndex.Index].ElapsedSeconds,
+                                getRestLap(lastIndex.Index, refRoute, refLaps)));
                             result[otherActivity].Add(s);
 
                         }
@@ -266,18 +278,22 @@ namespace GpsRunningPlugin.Source
         }
         static bool getRestLap(int index, IActivity activity)
         {
+            return getRestLap(index, activity.GPSRoute, activity.Laps);
+        }
+        static bool getRestLap(int index, IGPSRoute route, IActivityLaps laps)
+        {
             bool restLap = false;
-            if (activity.Laps.Count > 1)
+            if (laps != null && laps.Count > 1)
             {
-                restLap = activity.Laps[activity.Laps.Count - 1].Rest;
-                for (int i = 0; i < activity.Laps.Count - 1; i++)
+                restLap = laps[laps.Count - 1].Rest;
+                for (int i = 0; i < laps.Count - 1; i++)
                 {
                     //End time is starttime for next lap
                     //Go from first to second last to find where it fits (default is last, no end time there)
-                    if (0 > activity.GPSRoute.EntryDateTime(activity.GPSRoute[index]).CompareTo(activity.Laps[i + 1].StartTime))
+                    if (0 > route.EntryDateTime(route[index]).CompareTo(laps[i + 1].StartTime))
                     {
                         //time was in previous lap
-                        restLap = activity.Laps[i].Rest;
+                        restLap = laps[i].Rest;
                         break;
                     }
                 }
