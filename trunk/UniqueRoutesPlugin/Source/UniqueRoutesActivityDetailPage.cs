@@ -47,6 +47,7 @@ namespace GpsRunningPlugin.Source
         {
             this.view = view;
             view.SelectionProvider.SelectedItemsChanged += new EventHandler(OnViewSelectedItemsChanged);
+            Plugin.GetApplication().PropertyChanged += new PropertyChangedEventHandler(Application_PropertyChanged);
         }
 
         private void OnViewSelectedItemsChanged(object sender, EventArgs e)
@@ -57,6 +58,25 @@ namespace GpsRunningPlugin.Source
                 control.Activities = activities;
             }
         }
+        void Application_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            //Hide/Show the page if view is changing
+            //Really not important here as SelectedItems will not change anyway
+            //(and there are no other triggers)
+            if (e.PropertyName == "ActiveView")
+            {
+                Guid viewId = Plugin.GetApplication().ActiveView.Id;
+                if (viewId == view.Id)
+                {
+                    if (_showPage && control != null) { control.ShowPage(_bookmark); }
+                }
+                else
+                {
+                    if (!_showPage && control != null) { control.HidePage(); }
+                }
+            }
+        }
+
         public System.Guid Id { get { return new Guid("{0af379d0-5ebe-11df-a08a-0800200c9a66}"); } }
 #else
         public IActivity Activity
@@ -124,6 +144,7 @@ namespace GpsRunningPlugin.Source
 
         public bool HidePage()
         {
+            _showPage = false;
             if (control != null) { return control.HidePage(); }
             return true;
         }
@@ -138,6 +159,8 @@ namespace GpsRunningPlugin.Source
 
         public void ShowPage(string bookmark)
         {
+            _showPage = true;
+            _bookmark = bookmark;
             if (control != null) { control.ShowPage(bookmark); }
         }
 
@@ -177,6 +200,8 @@ namespace GpsRunningPlugin.Source
 #if !ST_2_1
         private IDailyActivityView view = null;
 #endif
+        private bool _showPage = false;
+        private string _bookmark = null;
         private IList<IActivity> activities = new List<IActivity>();
         private UniqueRoutesActivityDetailView control = null;
         private IList<string> menuPath = null;
