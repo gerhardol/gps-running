@@ -48,6 +48,7 @@ namespace GpsRunningPlugin.Source
         private IList<IActivity> similar;
         private IDictionary<string, string> similarToolTip;
         private IActivity refActivity = null;
+        private IGPSRoute urRoute = new GPSRoute();
         private IList<IActivity> selectedActivities = new List<IActivity>();
         private IDictionary<ToolStripMenuItem, SendToPlugin> aSendToMenu = new Dictionary<ToolStripMenuItem, SendToPlugin>();
 
@@ -194,75 +195,6 @@ namespace GpsRunningPlugin.Source
             if (changed) { calculate(); }
         }
 
-        private void setTable()
-        {
-            setTable(null);
-        }
-
-        private void setTable(IActivity urActivity)
-        {
-            summaryList.Columns.Clear();
-            summaryList.RowData = null;
-            if (similar != null)
-            {
-                if (similar.Count > 1)
-                {
-                    IList<UniqueRoutesResult> result = new List<UniqueRoutesResult>();
-                    similarToolTip = new Dictionary<string, string>();
-                    RefreshColumns();
-
-                    //Debug info for stretches
-                    IDictionary<IActivity, IList<double>> commonStretches = null;
-                    IDictionary<IActivity, string> similarPoints = new Dictionary<IActivity, string>();
-                    bool doGetcommonStretches = true;// Plugin.Verbose > 0;
-                    if (doGetcommonStretches && urActivity != null)
-                    {
-                        commonStretches = CommonStretches.getCommonSpeed(urActivity, similar, Settings.UseActive);
-                        //similarPoints = CommonStretches.findSimilarDebug(this.activity, similar, Settings.UseActive);
-                    }
-                    foreach (IActivity activity in similar)
-                    {
-                        string commonText = null;
-                        if (commonStretches != null)
-                        {
-                            if (commonStretches[activity][4] > 0)
-                            {
-                                commonText =
-                                    UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace,
-                                    commonStretches[activity][0] / commonStretches[activity][1], "u") +
-                                    " (" + UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace,
-                                    commonStretches[activity][2] / commonStretches[activity][3]) + ")" +
-                                    " " + commonStretches[activity][4] + " " + Resources.Sections + " " +
-                                    UnitUtil.Distance.ToString(commonStretches[activity][0], "u") + " " +
-                                    UnitUtil.Time.ToString(commonStretches[activity][1]) +
-                                    " (" + UnitUtil.Distance.ToString(commonStretches[activity][2], "u") + " " +
-                                    " " + UnitUtil.Time.ToString(commonStretches[activity][3]) + ")";
-                            }
-                            else
-                            {
-                                commonText = commonStretches[activity][4] + " " + Resources.Sections;
-                            }
-                        }
-                        if (urActivity.Equals(refActivity) || !activity.Equals(refActivity))
-                        {
-                            result.Add(new UniqueRoutesResult(activity, commonText));
-                        }
-                        similarToolTip[activity.ReferenceId] = Resources.CommonStretches + ": " + commonText;
-                    }
-                    summaryList.RowData = result;
-                    summaryLabel.Text = String.Format(Resources.FoundActivities, similar.Count - 1);
-                    summaryView_Sort();
-                    summaryList.Visible = true;
-                    summaryLabel.Visible = true;
-                }
-                else
-                {
-                    summaryLabel.Text = Resources.DidNotFindAnyRoutes.Replace("\\n", Environment.NewLine);
-                    summaryLabel.Visible = true;
-                }
-            }
-            setSize();
-        }
         private void RefreshColumns()
         {
             summaryList.Columns.Clear();
@@ -394,8 +326,77 @@ namespace GpsRunningPlugin.Source
             Refresh();
         }
 
+        private void setTable()
+        {
+            summaryList.Columns.Clear();
+            summaryList.RowData = null;
+            if (similar != null)
+            {
+                if (similar.Count > 1)
+                {
+                    IList<UniqueRoutesResult> result = new List<UniqueRoutesResult>();
+                    similarToolTip = new Dictionary<string, string>();
+                    RefreshColumns();
+
+                    //Debug info for stretches
+                    IDictionary<IActivity, IList<double>> commonStretches = null;
+                    IDictionary<IActivity, string> similarPoints = new Dictionary<IActivity, string>();
+                    bool doGetcommonStretches = true;// Plugin.Verbose > 0;
+                    if (doGetcommonStretches)
+                    {
+                        if (urRoute != null && urRoute.Count > 0)
+                        {
+                            commonStretches = CommonStretches.getCommonSpeed(urRoute, similar, false);
+                        }
+                        else if (refActivity != null)
+                        {
+                            commonStretches = CommonStretches.getCommonSpeed(refActivity, similar, Settings.UseActive);
+                            //similarPoints = CommonStretches.findSimilarDebug(this.activity, similar, Settings.UseActive);
+                        }
+                    }
+                    foreach (IActivity activity in similar)
+                    {
+                        string commonText = null;
+                        if (commonStretches != null)
+                        {
+                            if (commonStretches[activity][4] > 0)
+                            {
+                                commonText =
+                                    UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace,
+                                    commonStretches[activity][0] / commonStretches[activity][1], "u") +
+                                    " (" + UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace,
+                                    commonStretches[activity][2] / commonStretches[activity][3]) + ")" +
+                                    " " + commonStretches[activity][4] + " " + Resources.Sections + " " +
+                                    UnitUtil.Distance.ToString(commonStretches[activity][0], "u") + " " +
+                                    UnitUtil.Time.ToString(commonStretches[activity][1]) +
+                                    " (" + UnitUtil.Distance.ToString(commonStretches[activity][2], "u") + " " +
+                                    " " + UnitUtil.Time.ToString(commonStretches[activity][3]) + ")";
+                            }
+                            else
+                            {
+                                commonText = commonStretches[activity][4] + " " + Resources.Sections;
+                            }
+                        }
+                        result.Add(new UniqueRoutesResult(activity, commonText));
+                        similarToolTip[activity.ReferenceId] = Resources.CommonStretches + ": " + commonText;
+                    }
+                    summaryList.RowData = result;
+                    summaryLabel.Text = String.Format(Resources.FoundActivities, similar.Count - 1);
+                    summaryView_Sort();
+                    summaryList.Visible = true;
+                    summaryLabel.Visible = true;
+                }
+                else
+                {
+                    summaryLabel.Text = Resources.DidNotFindAnyRoutes.Replace("\\n", Environment.NewLine);
+                    summaryLabel.Visible = true;
+                }
+            }
+            setSize();
+        }
+
 #if !ST_2_1
-        IActivity getActivity(IActivity activity, IList<IItemTrackSelectionInfo> selectGPS)
+        IGPSRoute getRoute(IActivity activity, IList<IItemTrackSelectionInfo> selectGPS)
         {
             IGPSRoute urRoute = new GPSRoute();
             foreach (IItemTrackSelectionInfo item in selectGPS)
@@ -423,13 +424,7 @@ namespace GpsRunningPlugin.Source
                     if (activity.GPSRoute[i].ElapsedSeconds > s1.Subtract(activity.GPSRoute.StartTime).TotalSeconds) { break; }
                 }
             }
-            IActivity result = activity;
-            if (urRoute.Count > 0)
-            {
-                result = Plugin.GetApplication().Logbook.Activities.Add(urRoute.StartTime);
-                result.GPSRoute = urRoute;
-            }
-            return result;
+            return urRoute;
         }
 #endif
         private void calculate()
@@ -447,14 +442,12 @@ namespace GpsRunningPlugin.Source
                     categoryLabel.Visible = false;
                     btnChangeCategory.Visible = false;
                     progressBar.Visible = true;
-                    IActivity urActivity = refActivity;
+                    urRoute.Clear();
 #if !ST_2_1
-                    int countGPS = 0;
                     IList<IItemTrackSelectionInfo> selectedGPS = m_view.RouteSelectionProvider.SelectedItems;
-                    countGPS = selectedGPS.Count;
-                    if (useSelection && countGPS > 0)
+                    if (useSelection && selectedGPS.Count > 0)
                     {
-                        urActivity = getActivity(urActivity, selectedGPS);
+                        urRoute = getRoute(refActivity, selectedGPS);
                     }
 #endif
                     IList<IActivity> activities;
@@ -468,13 +461,21 @@ namespace GpsRunningPlugin.Source
                         activities = UniqueRoutes.getBaseActivities();
                         btnChangeCategory.Visible = true;
                     }
-                    similar = UniqueRoutes.findSimilarRoutes(urActivity, activities, urActivity.Equals(refActivity), progressBar);
+                    if (urRoute.Count > 0)
+                    {
+                        similar = UniqueRoutes.findSimilarRoutes(urRoute, activities, false, progressBar);
+                    }
+                    else
+                    {
+                        similar = UniqueRoutes.findSimilarRoutes(refActivity, activities, true, progressBar);
+                    }
                     categoryLabel.Visible = true;
                     determinePaceOrSpeed();
                     progressBar.Visible = false;
 
                     summaryLabel.Visible = true;
-                    setTable(urActivity);
+                    setTable();
+                    
                     //Add the activities to the menu
                     IList<IActivity> remaining = selectedActivities;
                     this.ctxMenuItemRefActivity.DropDownItems.Clear();
@@ -483,14 +484,9 @@ namespace GpsRunningPlugin.Source
                         string tt = act.StartTime + " " + act.Name + act.TotalDistanceMetersEntered + " " + act.TotalTimeEntered;
                         ToolStripMenuItem childMenuItem = new ToolStripMenuItem(tt);
                         childMenuItem.Tag = act.ReferenceId;
-                        if (act.Equals(urActivity))
+                        if (act.Equals(refActivity) && urRoute.Count == 0)
                         {
                             childMenuItem.Checked = true;
-                            if (!urActivity.Equals(refActivity))
-                            {
-                                //Temporary activity, removed below
-                                childMenuItem.Enabled = false;
-                            }
                         }
                         else
                         {
@@ -499,6 +495,14 @@ namespace GpsRunningPlugin.Source
                         this.ctxMenuItemRefActivity.DropDownItems.Add(childMenuItem);
                         childMenuItem.Click += new System.EventHandler(this.ctxRefActivityItemActivities_Click);
                         remaining.Remove(act);
+                    }
+                    if (urRoute.Count > 0)
+                    {
+                        string tt = urRoute.StartTime + " " + urRoute.TotalDistanceMeters + " " + urRoute.TotalElapsedSeconds;
+                        ToolStripMenuItem childMenuItem = new ToolStripMenuItem(tt);
+                        childMenuItem.Checked = true;
+                        childMenuItem.Enabled = false;
+                        this.ctxMenuItemRefActivity.DropDownItems.Add(childMenuItem);
                     }
                     if (remaining.Count > 0)
                     {
@@ -514,13 +518,6 @@ namespace GpsRunningPlugin.Source
                             childMenuItem.Click += new System.EventHandler(this.ctxRefActivityItemActivities_Click);
                         }
                     }
-#if !ST_2_1
-                    if (!urActivity.Equals(refActivity))
-                    {
-                        //Delete temporary activity
-                        Plugin.GetApplication().Logbook.Activities.Remove(urActivity);
-                    }
-#endif
                 }
                 else
                 {
