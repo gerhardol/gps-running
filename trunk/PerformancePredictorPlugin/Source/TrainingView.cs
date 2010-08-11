@@ -130,16 +130,20 @@ namespace GpsRunningPlugin.Source
             setSize();
         }
 
+        private ITheme m_visualTheme;
         public void ThemeChanged(ITheme visualTheme)
         {
+            m_visualTheme = visualTheme;
             Color bColor = visualTheme.Control;
+            Color fColor = visualTheme.ControlText;
 
             //Set color for non ST controls
             this.BackColor = bColor;
-
+           
             foreach (TabPage tab in this.tabControl1.TabPages)
             {
                 tab.BackColor = bColor;
+                tab.ForeColor = fColor;
                 //Note: Tabs are not changed.
                 //Requires DrawMode set to OwnerDraw, DrawItem implemented
                 foreach (Control grid0 in tab.Controls)
@@ -147,6 +151,7 @@ namespace GpsRunningPlugin.Source
                     if (grid0 is DataGridView)
                     {
                         DataGridView grid = (grid0 as DataGridView);
+                        grid.ForeColor = fColor;
                         grid.BackgroundColor = bColor;
                         grid.ColumnHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
                     }
@@ -559,5 +564,48 @@ namespace GpsRunningPlugin.Source
             else if (temperature < 37) { return 1.0525; }
             return 1.06;
         }
+
+        void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            Brush backBrush;
+            Brush foreBrush = new SolidBrush(m_visualTheme.ControlText);
+            TabControl tc = sender as TabControl;
+            if (tc == null) return;
+
+            if (e.Index == tc.SelectedIndex)
+            {
+                foreBrush = new SolidBrush(m_visualTheme.ControlText);
+                backBrush = new SolidBrush(m_visualTheme.Control);
+            }
+            else
+            {
+                foreBrush = new SolidBrush(m_visualTheme.SubHeaderText);
+                backBrush = new SolidBrush(m_visualTheme.SubHeader);
+            }
+
+            string tabName = tc.TabPages[e.Index].Text;
+            StringFormat sf = new StringFormat();
+            sf.Alignment = StringAlignment.Center;
+            e.Graphics.FillRectangle(backBrush, e.Bounds);
+            Rectangle r = e.Bounds;
+            r = new Rectangle(r.X, r.Y + 3, r.Width, r.Height - 3);
+            e.Graphics.DrawString(tabName, e.Font, foreBrush, r, sf);
+
+            //The right upper edge
+            Brush background_brush = new SolidBrush(m_visualTheme.Control);//Backcolor of the form
+            Rectangle LastTabRect = tc.GetTabRect(tc.TabPages.Count - 1);
+            Rectangle rect = new Rectangle();
+            rect.Location = new Point(LastTabRect.Right + this.Left, this.Top);
+            rect.Size = new Size(this.Right - rect.Left, LastTabRect.Height);
+            e.Graphics.FillRectangle(background_brush, rect);
+            background_brush.Dispose();
+
+            sf.Dispose();
+            backBrush.Dispose();
+            foreBrush.Dispose();
+
+            e.DrawFocusRectangle();
+        }
+
     }
 }
