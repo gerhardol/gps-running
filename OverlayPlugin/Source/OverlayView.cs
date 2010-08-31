@@ -1129,6 +1129,8 @@ namespace GpsRunningPlugin.Source
                     (MessageBox.Show(String.Format(SaveImageResources.FileAlreadyExists, siiPage.FileName),
                                         SaveImageResources.SaveImage, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes))
 					chart.SaveImage( siiPage.ImageSize, siiPage.FileName, siiPage.ImageFormat ); 
+#else
+                chart.SaveImage(siiPage.ImageSizes[siiPage.ImageSize], siiPage.FileName, siiPage.ImageFormat); 
 #endif
             }
 		}
