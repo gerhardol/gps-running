@@ -565,6 +565,7 @@ namespace GpsRunningPlugin.Source
             return 1.06;
         }
 
+        //Adapted from ApplyRoutes
         void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
             Brush backBrush;
