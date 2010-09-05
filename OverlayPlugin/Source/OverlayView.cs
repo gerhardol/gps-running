@@ -743,14 +743,17 @@ namespace GpsRunningPlugin.Source
             {
                 if (checks[index])
                 {
-                    double offset;
-                    if (Settings.ShowTime)
+                    double offset=0;
+                    if (actOffsets.ContainsKey(activity))
                     {
-                        offset = actOffsets[activity][0];
-                    }
-                    else
-                    {
-                        offset = actOffsets[activity][1];
+                        if (Settings.ShowTime)
+                        {
+                            offset = actOffsets[activity][0];
+                        }
+                        else
+                        {
+                            offset = actOffsets[activity][1];
+                        }
                     }
                     ChartDataSeries series = getDataSeries(
                         interpolator, 
