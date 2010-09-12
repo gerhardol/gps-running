@@ -120,16 +120,16 @@ namespace GpsRunningPlugin.Source
             {
 #if !ST_2_1
                 //activities are set either directly or by selection,
-                //not by more than one
+                //not by more than one view
                 if (_activities == null)
                 {
                     if (dailyView != null)
                     {
-                        return GpsRunningPlugin.Util.CollectionUtils.GetAllContainedItems<IActivity>(dailyView.SelectionProvider);
+                        return CollectionUtils.GetAllContainedItemsOfType<IActivity>(dailyView.SelectionProvider.SelectedItems);
                     }
                     else if (reportView != null)
                     {
-                        return GpsRunningPlugin.Util.CollectionUtils.GetAllContainedItems<IActivity>(reportView.SelectionProvider);
+                        return CollectionUtils.GetAllContainedItemsOfType<IActivity>(reportView.SelectionProvider.SelectedItems);
                     }
                     else
                     {

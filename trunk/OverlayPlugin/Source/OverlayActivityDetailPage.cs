@@ -50,7 +50,7 @@ namespace GpsRunningPlugin.Source
 
         private void OnViewSelectedItemsChanged(object sender, EventArgs e)
         {
-            activities = GpsRunningPlugin.Util.CollectionUtils.GetAllContainedItems<IActivity>(view.SelectionProvider);
+            activities = CollectionUtils.GetAllContainedItemsOfType<IActivity>(view.SelectionProvider.SelectedItems);
             if ((control != null))
             {
                 control.Activities = activities;
