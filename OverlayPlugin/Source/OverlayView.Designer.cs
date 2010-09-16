@@ -71,6 +71,8 @@ namespace GpsRunningPlugin.Source
             this.labelAOP = new System.Windows.Forms.Label();
             this.btnSaveImage = new ZoneFiveSoftware.Common.Visuals.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.distance = new System.Windows.Forms.CheckBox();
+            this.time = new System.Windows.Forms.CheckBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -91,7 +93,6 @@ namespace GpsRunningPlugin.Source
             this.chart.Border = ZoneFiveSoftware.Common.Visuals.ControlBorder.Style.SmallRoundShadow;
             this.chart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chart.Location = new System.Drawing.Point(0, 0);
-            //this.chart.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.chart.Name = "chart";
             this.chart.Padding = new System.Windows.Forms.Padding(5);
             this.chart.Size = new System.Drawing.Size(310, 239);
@@ -247,11 +248,22 @@ namespace GpsRunningPlugin.Source
             // 
             // maBox
             // 
+            this.maBox.AcceptsReturn = false;
+            this.maBox.AcceptsTab = false;
+            this.maBox.BackColor = System.Drawing.Color.White;
+            this.maBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.maBox.ButtonImage = null;
             this.maBox.Location = new System.Drawing.Point(20, 62);
+            this.maBox.MaxLength = 32767;
+            this.maBox.Multiline = false;
             this.maBox.Name = "maBox";
+            this.maBox.ReadOnly = false;
+            this.maBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.maBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
             this.maBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.maBox.Size = new System.Drawing.Size(60, 20);
             this.maBox.TabIndex = 11;
+            this.maBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             // 
             // labelAOP
             // 
@@ -296,6 +308,8 @@ namespace GpsRunningPlugin.Source
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.distance);
+            this.splitContainer1.Panel1.Controls.Add(this.time);
             this.splitContainer1.Panel1.Controls.Add(this.btnSaveImage);
             this.splitContainer1.Panel1.Controls.Add(this.elevation);
             this.splitContainer1.Panel1.Controls.Add(this.cadence);
@@ -315,6 +329,28 @@ namespace GpsRunningPlugin.Source
             this.splitContainer1.SplitterDistance = 42;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 24;
+            // 
+            // distance
+            // 
+            this.distance.AutoSize = true;
+            this.distance.Location = new System.Drawing.Point(513, 22);
+            this.distance.Name = "distance";
+            this.distance.Size = new System.Drawing.Size(68, 17);
+            this.distance.TabIndex = 25;
+            this.distance.Text = "Distance";
+            this.distance.UseVisualStyleBackColor = true;
+            this.distance.CheckedChanged += new System.EventHandler(this.distance_CheckedChanged);
+            // 
+            // time
+            // 
+            this.time.AutoSize = true;
+            this.time.Location = new System.Drawing.Point(458, 22);
+            this.time.Name = "time";
+            this.time.Size = new System.Drawing.Size(49, 17);
+            this.time.TabIndex = 24;
+            this.time.Text = "Time";
+            this.time.UseVisualStyleBackColor = true;
+            this.time.CheckedChanged += new System.EventHandler(this.time_CheckedChanged);
             // 
             // splitContainer2
             // 
@@ -409,5 +445,7 @@ namespace GpsRunningPlugin.Source
         private ZoneFiveSoftware.Common.Visuals.TextBox maBox;
         private System.Windows.Forms.ToolTip toolTipMAbox;
         private System.Windows.Forms.Label labelActivity;
+        private System.Windows.Forms.CheckBox time;
+        private System.Windows.Forms.CheckBox distance;
     }
 }

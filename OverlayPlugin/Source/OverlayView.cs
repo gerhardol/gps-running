@@ -81,13 +81,15 @@ namespace GpsRunningPlugin.Source
             power.Checked = Settings.ShowPower;
             cadence.Checked = Settings.ShowCadence;
             elevation.Checked = Settings.ShowElevation;
+            time.Checked = Settings.ShowTime;
+            distance.Checked = Settings.ShowDistance;
 
             categoryAverage.Checked = Settings.ShowCategoryAverage;
             movingAverage.Checked = Settings.ShowMovingAverage;
             toolTipMAbox.SetToolTip(maBox, Resources.MAToolTip);
             maBox.LostFocus += new EventHandler(maBox_LostFocus);
             updateMovingAverage();
-            if (Settings.ShowTime)
+            if (Settings.UseTimeXAxis)
             {
                 useTime.Checked = true;
                 useDistance.Checked = false;
@@ -303,6 +305,8 @@ namespace GpsRunningPlugin.Source
             power.Text = CommonResources.Text.LabelPower;
             cadence.Text = CommonResources.Text.LabelCadence;
             elevation.Text = CommonResources.Text.LabelElevation;
+            time.Text = CommonResources.Text.LabelTime;
+            distance.Text = CommonResources.Text.LabelDistance;
             categoryAverage.Text = Resources.BCA;
             movingAverage.Text = Resources.BMA;
             labelAOP.Text = Resources.AOP;
@@ -312,7 +316,7 @@ namespace GpsRunningPlugin.Source
             useTime.Location = new Point(max, labelXaxis.Location.Y);
             correctUI(new Control[] { useTime, useDistance });
             heartRate.Location = new Point(max, labelYaxis.Location.Y);
-            correctUI(new Control[] { heartRate, pace, speed, power, cadence, elevation });
+            correctUI(new Control[] { heartRate, pace, speed, power, cadence, elevation, time, distance });
 
             updateLabels();
             RefreshPage();
@@ -394,7 +398,7 @@ namespace GpsRunningPlugin.Source
         {
             if (series.Points.Count == 0) return new ChartDataSeries(chart, axis);
             double size;
-            if (Settings.ShowTime)
+            if (Settings.UseTimeXAxis)
             {
                 size = Settings.MovingAverageTime; //No ConvertFrom, time is always in seconds
             }
@@ -505,7 +509,7 @@ namespace GpsRunningPlugin.Source
 
         private void updateOffBoxLabel(ZoneFiveSoftware.Common.Visuals.TextBox box)
         {
-           if (Settings.ShowTime)
+            if (Settings.UseTimeXAxis)
             { 
                box.Text = UnitUtil.Time.ToString(actOffsets[actBoxes[box]][0], "mm:ss");
             }
@@ -541,7 +545,7 @@ namespace GpsRunningPlugin.Source
             series2boxes.Clear();
             bool useRight = false;
 
-            if (Settings.ShowTime)
+            if (Settings.UseTimeXAxis)
             {
                 chart.XAxis.Formatter = new Formatter.SecondsToTime();
                 chart.XAxis.Label = UnitUtil.Time.LabelAxis;
@@ -725,7 +729,129 @@ namespace GpsRunningPlugin.Source
                         return info.SmoothedElevationTrack;
                     });
             }
-			//chart.AutozoomToData is the slowest part of this plugin
+            if (Settings.ShowTime)
+            {
+                IAxis axis;
+                if (useRight)
+                {
+                    axis = new RightVerticalAxis(chart);
+                    chart.YAxisRight.Add(axis);
+                }
+                else
+                {
+                    axis = chart.YAxis;
+                    useRight = true;
+                }
+                nextIndex = 0;
+                axis.Formatter = new Formatter.SecondsToTime();
+                axis.ChangeAxisZoom(new Point(0, 0), new Point(10, 10));
+                axis.Label = UnitUtil.Time.LabelAxis;
+
+                addSeries(
+                    delegate(float value)
+                    {
+                        return value;                        
+                    },
+                    delegate(ActivityInfo info)
+                    {
+                        return info.SmoothedSpeedTrack. Count > 0;
+                    },
+                    axis,
+                    delegate(ActivityInfo info)
+                    {
+                        INumericTimeDataSeries TimeTrack = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries(info.ActualDistanceMetersTrack);
+                        INumericTimeDataSeries ModTimeTrack;
+                        bool includeStopped = false;
+#if ST_2_1
+                        // If UseEnteredData is set, exclude Stopped
+                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
+                        {
+                            includeStopped = true;
+                        }
+#else
+                        includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
+#endif
+                        CorrectTimeDataSeriesForPauses(info, includeStopped, TimeTrack, out ModTimeTrack);
+
+                        // Copy the modified times into the value of TimeTrack - the time values of TimeTrack will be modified later 
+                        for (int i = 0; i < ModTimeTrack.Count; i++)
+                        {
+                            TimeValueEntry<float> entry = (TimeValueEntry<float>)TimeTrack[i];
+                            entry.Value = ModTimeTrack[i].ElapsedSeconds;
+                        }
+                        //TimeValueEntry<float> lastEntry = (TimeValueEntry<float>)TimeTrack[TimeTrack.Count-1];
+                        //lastEntry.Value = ModTimeTrack[ModTimeTrack.Count-1].ElapsedSeconds;
+                        
+                        return TimeTrack;
+                    });
+            }
+            if (Settings.ShowDistance)
+            {
+                IAxis axis;
+                if (useRight)
+                {
+                    axis = new RightVerticalAxis(chart);
+                    chart.YAxisRight.Add(axis);
+                }
+                else
+                {
+                    axis = chart.YAxis;
+                    useRight = true;
+                }
+                nextIndex = 0;
+                axis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
+                axis.Label = UnitUtil.Distance.LabelAxis;
+                addSeries(
+                    delegate(float value)
+                    {
+                        return UnitUtil.Distance.ConvertFrom(value);
+                    },
+                    delegate(ActivityInfo info)
+                    {
+                        bool includeStopped = false;
+#if ST_2_1
+                        // If UseEnteredData is set, exclude Stopped
+                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
+                        {
+                            includeStopped = true;
+                        }
+#else
+                        includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
+#endif
+                        if (includeStopped) 
+                        { 
+                            return info.ActualDistanceMetersTrack.Count > 0; 
+                        }
+                        else 
+                        { 
+                            return info.MovingDistanceMetersTrack.Count > 0;
+                        }
+                    },
+                    axis,
+                    delegate(ActivityInfo info)
+                    {
+                        bool includeStopped = false;
+#if ST_2_1
+                        // If UseEnteredData is set, exclude Stopped
+                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
+                        {
+                            includeStopped = true;
+                        }
+#else
+                        includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
+#endif
+                        if (includeStopped) 
+                        { 
+                            return info.ActualDistanceMetersTrack; 
+                        }
+                        else 
+                        { 
+                            return info.MovingDistanceMetersTrack; 
+                        }
+                    });
+            }
+
+            //chart.AutozoomToData is the slowest part of this plugin
             chart.AutozoomToData(true);
             chart.Refresh();
             chart.EndUpdate();
@@ -733,6 +859,28 @@ namespace GpsRunningPlugin.Source
             chart.Visible = true;
         }
 
+        private void CorrectTimeDataSeriesForPauses(ActivityInfo info, bool includeStopped, INumericTimeDataSeries dataSeries, out INumericTimeDataSeries newDataSeries)
+        {
+            IValueRangeSeries<DateTime> pauses;
+            if (includeStopped)
+            {
+                pauses = info.Activity.TimerPauses;
+            }
+            else
+            {
+                pauses = info.NonMovingTimes;
+            }
+            newDataSeries = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
+            newDataSeries.AllowMultipleAtSameTime = true;
+            foreach (TimeValueEntry<float> entry in dataSeries)
+            {
+                DateTime entryTime = dataSeries.EntryDateTime(entry);
+                TimeSpan elapsed = DateTimeRangeSeries.TimeNotPaused(info.Activity.StartTime, entryTime, pauses);                
+                newDataSeries.Add(dataSeries.StartTime.Add(elapsed), entry.Value);
+            }
+        }
+        
+        
         private IList<ChartDataSeries> buildSeries(
             Interpolator interpolator, CanInterpolater canInterpolator, IAxis axis,
             GetDataSeries getDataSeriess)
@@ -746,7 +894,7 @@ namespace GpsRunningPlugin.Source
                     double offset=0;
                     if (actOffsets.ContainsKey(activity))
                     {
-                        if (Settings.ShowTime)
+                        if (Settings.UseTimeXAxis)
                         {
                             offset = actOffsets[activity][0];
                         }
@@ -804,26 +952,19 @@ namespace GpsRunningPlugin.Source
 #else
             includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
 #endif
-            IValueRangeSeries<DateTime> pauses;
-            if (includeStopped)
-            {
-                pauses = info.Activity.TimerPauses;
-            }
+            INumericTimeDataSeries data, timeModData;
+            CorrectTimeDataSeriesForPauses( info, includeStopped, getDataSeries(info), out timeModData);
+            if (Settings.UseTimeXAxis)
+                data = timeModData; // x-axis is time, use time with pauses excluded
             else
-            {
-                pauses = info.NonMovingTimes;
-            }
-            INumericTimeDataSeries data = getDataSeries(info);
+                data = getDataSeries(info); // x-axis is distance. Distance need to be looked up using original time.
             foreach (ITimeValueEntry<float> entry in data)
             {
-                DateTime entryTime = data.EntryDateTime(entry);
-                float elapsed =
-                    (float)DateTimeRangeSeries.TimeNotPaused(info.Activity.StartTime, entryTime,
-                                                            pauses).TotalSeconds;
+                float elapsed = entry.ElapsedSeconds;
 				if ( elapsed != priorElapsed )
 				{
 					float x = float.NaN;
-					if ( Settings.ShowTime )
+                    if (Settings.UseTimeXAxis)
 					{
 						x = (float)( elapsed + offset );
 					}
@@ -888,7 +1029,7 @@ namespace GpsRunningPlugin.Source
             try
             {
                 //Recalculate other offset here?
-                if (Settings.ShowTime)
+                if (Settings.UseTimeXAxis)
                 {
                     actOffsets[actBoxes[box]][0] = UnitUtil.Time.Parse(box.Text);
                 }
@@ -916,7 +1057,7 @@ namespace GpsRunningPlugin.Source
         {
             try
             {
-                if (Settings.ShowTime)
+                if (Settings.UseTimeXAxis)
                 {
                     double value = UnitUtil.Time.Parse(maBox.Text);
                     if (value < 0) { throw new Exception(); }
@@ -1011,9 +1152,9 @@ namespace GpsRunningPlugin.Source
 
         private void useTime_CheckedChanged(object sender, EventArgs e)
         {
-            if (!Settings.ShowTime)
+            if (!Settings.UseTimeXAxis)
             {
-                Settings.ShowTime = true;
+                Settings.UseTimeXAxis = true;
                 updateLabels();
                 updateChart();
                 updateMovingAverage();
@@ -1022,9 +1163,9 @@ namespace GpsRunningPlugin.Source
 
         private void useDistance_CheckedChanged(object sender, EventArgs e)
         {
-            if (Settings.ShowTime)
+            if (Settings.UseTimeXAxis)
             {
-                Settings.ShowTime = false;
+                Settings.UseTimeXAxis = false;
                 updateLabels();
                 updateChart();
                 updateMovingAverage();
@@ -1067,6 +1208,18 @@ namespace GpsRunningPlugin.Source
             updateChart();
         }
 
+        private void time_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.ShowTime = time.Checked;
+            updateChart();
+        }
+
+        private void distance_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.ShowDistance = distance.Checked;
+            updateChart();
+        }
+
         private void average_CheckedChanged(object sender, EventArgs e)
         {
             Settings.ShowCategoryAverage = categoryAverage.Checked;
@@ -1076,7 +1229,7 @@ namespace GpsRunningPlugin.Source
         private void updateMovingAverage()
         {
             Settings.ShowMovingAverage = movingAverage.Checked;
-            if (Settings.ShowTime)
+            if (Settings.UseTimeXAxis)
             {
 				//string sec = "mm:ss";
 				maBox.Text = UnitUtil.Time.ToString( Settings.MovingAverageTime, "mm:ss" );

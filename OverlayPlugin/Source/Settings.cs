@@ -112,6 +112,26 @@ namespace GpsRunningPlugin.Source
             }
         }
 
+        private static bool showTime;
+        public static bool ShowTime
+        {
+            get { return showTime; }
+            set
+            {
+                showTime = value;
+            }
+        }
+
+        private static bool showDistance;
+        public static bool ShowDistance
+        {
+            get { return showDistance; }
+            set
+            {
+                showDistance = value;
+            }
+        }
+
         private static bool showCategoryAverage;
         public static bool ShowCategoryAverage
         {
@@ -152,16 +172,16 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        private static bool showTime;
-        public static bool ShowTime
+        private static bool useTimeXAxis;
+        public static bool UseTimeXAxis
         {
-            get { return showTime; }
+            get { return useTimeXAxis; }
             set
             {
-                showTime = value;
+                useTimeXAxis = value;
             }
         }
-
+        
         private static Size windowSize; //viewWidth, viewHeight in xml
         public static Size WindowSize
         {
