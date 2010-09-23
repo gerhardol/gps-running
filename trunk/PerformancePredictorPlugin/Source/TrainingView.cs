@@ -371,7 +371,7 @@ namespace GpsRunningPlugin.Source
             {
                 DataRow row = set.NewRow();
                 row[0] = durations[i];
-                row[1] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed*factors[i]);
+                row[1] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed/factors[i]);
                 set.Rows.Add(row);
             }
             paceTempoGrid.DataSource = set;
