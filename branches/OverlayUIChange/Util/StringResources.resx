@@ -294,4 +294,13 @@
   <data name="Visible" xml:space="preserve">
     <value>Visible</value>
   </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Offset</value>
+  </data>
+  <data name="SetOffset" xml:space="preserve">
+    <value>Set offset</value>
+  </data>
+  <data name="SetMovingAveragePeriod" xml:space="preserve">
+    <value>Set moving average period</value>
+  </data>
 </root>

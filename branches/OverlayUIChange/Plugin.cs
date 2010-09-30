@@ -61,6 +61,7 @@ namespace GpsRunningPlugin
             String attr;
             attr = pluginNode.GetAttribute(xmlTags.Verbose);
             if (attr.Length > 0) { Verbose = XmlConvert.ToInt16(attr); }
+            Verbose = 1;
 
             Settings.ReadOptions(xmlDoc, nsmgr, pluginNode);
         }
