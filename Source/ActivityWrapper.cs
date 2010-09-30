@@ -10,6 +10,8 @@ namespace GpsRunningPlugin.Source
     {
         private IActivity activity;
         private Color actColor;
+        private double timeOffset;
+        private double distanceOffset;
 
         public IActivity Activity
         {
@@ -27,12 +29,39 @@ namespace GpsRunningPlugin.Source
             }
         }
 
+        public double TimeOffset
+        {
+            get
+            {
+                return timeOffset;
+            }
+            set
+            {
+                timeOffset = value;
+            }
+        }
+
+        public double DistanceOffset
+        {
+            get
+            {
+                return distanceOffset;
+            }
+            set
+            {
+                distanceOffset = value;
+            }
+        }
+
         public ActivityWrapper()
         {
             activity = null;
+            timeOffset = 0;
+            distanceOffset = 0;
+            actColor = Color.Black;
         }
 
-        public ActivityWrapper(IActivity activity, Color color)
+        public ActivityWrapper(IActivity activity, Color color):this()
         {
             this.activity = activity;
             this.actColor = color;

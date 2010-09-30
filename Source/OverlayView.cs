@@ -84,11 +84,6 @@ namespace GpsRunningPlugin.Source
             time.Checked = Settings.ShowTime;
             distance.Checked = Settings.ShowDistance;
 
-            categoryAverage.Checked = Settings.ShowCategoryAverage;
-            movingAverage.Checked = Settings.ShowMovingAverage;
-            toolTipMAbox.SetToolTip(maBox, Resources.MAToolTip);
-            maBox.LostFocus += new EventHandler(maBox_LostFocus);
-            updateMovingAverage();
             if (Settings.UseTimeXAxis)
             {
                 useTime.Checked = true;
@@ -105,9 +100,12 @@ namespace GpsRunningPlugin.Source
             treeListAct.Columns.Add(column);
             column = new TreeList.Column("Date", StringResources.ActDate, 200, StringAlignment.Center); 
             treeListAct.Columns.Add(column);
+            column = new TreeList.Column("Offset", StringResources.Offset, 50, StringAlignment.Center);
+            treeListAct.Columns.Add(column);
             column = new TreeList.Column("Name", StringResources.Name, 100, StringAlignment.Center); 
             treeListAct.Columns.Add(column);
             treeListAct.CheckBoxes = true;
+            treeListAct.MultiSelect = true;
             treeListAct.RowDataRenderer.RowAlternatingColors = true;
             treeListAct.LabelProvider = new ActivityLabelProvider();
             treeListAct.CheckedChanged += new TreeList.ItemEventHandler(treeView_CheckedChanged);
@@ -122,17 +120,6 @@ namespace GpsRunningPlugin.Source
 
         public void InitControls()
         {
-            Font fCategory = categoryAverage.Font;
-            Font fMoving = movingAverage.Font;
-            categoryAverage.Font = new Font(categoryAverage.Font, FontStyle.Bold);
-            movingAverage.Font = new Font(movingAverage.Font, FontStyle.Bold);
-
-            //chart.Location = new Point(Math.Max(Math.Max(categoryAverage.Location.X + categoryAverage.Size.Width,
-            //                                             movingAverage.Location.X + movingAverage.Size.Width),
-            //                                    panelAct.Location.X + panelAct.Size.Width), chart.Location.Y);
-            categoryAverage.Font = fCategory;
-            movingAverage.Font = fMoving;
-
             series2boxes = new Dictionary<ChartDataSeries, CheckBox>();
             SizeChanged += new EventHandler(OverlayView_SizeChanged);
         }
@@ -205,7 +192,6 @@ namespace GpsRunningPlugin.Source
             if (_showPage)
             {
                 updateActivities();
-                updateLabels();
                 updateChart();
             }
         }
@@ -222,62 +208,13 @@ namespace GpsRunningPlugin.Source
             activities.Sort(new ActivityDateComparer());
 
             nextIndex = 0;
-            int x = 0;
-            int y = 0;
-            int index = 0;
 
-            actOffsets.Clear();
             actBoxes.Clear();
             actTextBoxes.Clear();
             checks.Clear();
             boxes.Clear();
             checkBoxes.Clear();
-            lastChecked.Clear();
-            panelAct.Controls.Clear();
 
-            foreach (IActivity activity in activities)
-            {
-                x = 0;
-                IList<double> s = new List<double>();
-                s.Add(0);
-                s.Add(0);
-                actOffsets.Add(activity, s);//TODO: Get from UR integration
-
-                ZoneFiveSoftware.Common.Visuals.TextBox offBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
-                actTextBoxes.Add(offBox);
-                offBox.Size = new Size(30, 20);
-                offBox.LostFocus += new EventHandler(offBox_LostFocus);
-                offBox.Location = new Point(x, y);
-                panelAct.Controls.Add(offBox);
-                offBox.Name = "offsetBox";
-                actBoxes.Add(offBox, activity);
-                if (Plugin.Verbose > 0)
-                {
-                    offBox.Visible = true;
-                    x += 35;
-                }
-                else
-                {
-                    offBox.Visible = false;
-                }
-
-                CheckBox box = new CheckBox();
-                checkBoxes.Add(box);
-                box.Checked = true;
-                box.Text = activity.StartTime.ToLocalTime().ToString();
-                box.Size = new Size(155, box.Height);
-                box.AutoSize = true;
-                box.ForeColor = newColor();
-                //box.CheckAlign = ContentAlignment.MiddleLeft;
-                box.CheckedChanged += new EventHandler(box_CheckedChanged);
-                checks.Add(true);
-                panelAct.Controls.Add(box);
-                box.Location = new Point(x, y);
-                boxes.Add(box, index);
-
-                index++;
-                y += 25;
-            }
             treeListAct.RowData = actWrappers;
             foreach(ActivityWrapper wrapper in actWrappers)
             {
@@ -309,7 +246,6 @@ namespace GpsRunningPlugin.Source
             m_visualTheme = visualTheme;
 
             this.chart.ThemeChanged(visualTheme);
-            this.maBox.ThemeChanged(visualTheme);
             this.panel1.ThemeChanged(visualTheme);
             this.panel2.ThemeChanged(visualTheme);
             this.actionBanner1.ThemeChanged(visualTheme);
@@ -326,8 +262,8 @@ namespace GpsRunningPlugin.Source
             actionBanner1.Text = StringResources.OverlayChart;
             showMeanMenuItem.Text = Resources.BCA;
             showRollingAverageMenuItem.Text = Resources.BMA;
+            offsetStripTextBox.Text = StringResources.SetOffset;
 
-            labelActivity.Text = StringResources.Activities;
             labelXaxis.Text = StringResources.XAxis + ":";
             labelYaxis.Text = StringResources.YAxis + ":";
             useTime.Text = CommonResources.Text.LabelTime;
@@ -340,9 +276,6 @@ namespace GpsRunningPlugin.Source
             elevation.Text = CommonResources.Text.LabelElevation;
             time.Text = CommonResources.Text.LabelTime;
             distance.Text = CommonResources.Text.LabelDistance;
-            categoryAverage.Text = Resources.BCA;
-            movingAverage.Text = Resources.BMA;
-            labelAOP.Text = Resources.AOP;
 
             int max = Math.Max(labelXaxis.Location.X + labelXaxis.Size.Width,
                                 labelYaxis.Location.X + labelYaxis.Size.Width) + 5;
@@ -351,7 +284,6 @@ namespace GpsRunningPlugin.Source
             heartRate.Location = new Point(max, labelYaxis.Location.Y);
             correctUI(new Control[] { heartRate, pace, speed, power, cadence, elevation, time, distance });
 
-            updateLabels();
             RefreshPage();
         }
         private void correctUI(IList<Control> comp)
@@ -496,7 +428,6 @@ namespace GpsRunningPlugin.Source
             chart.DataSeries.Add(average);
             average.LineColor = series.LineColor;
             average.LineWidth = 2;
-            series2boxes.Add(average, movingAverage);
             series2activity.Add(average, series2activity[series]);
             return average;
         }
@@ -536,41 +467,18 @@ namespace GpsRunningPlugin.Source
                     average.Points.Add(x, new PointF(x, y / seen));
                 }
              }
-            series2boxes.Add(average, categoryAverage);
             return average;
         }
 
-        private void updateOffBoxLabel(ZoneFiveSoftware.Common.Visuals.TextBox box)
-        {
-            if (Settings.UseTimeXAxis)
-            { 
-               box.Text = UnitUtil.Time.ToString(actOffsets[actBoxes[box]][0], "mm:ss");
-            }
-            else
-            {
-                box.Text = UnitUtil.Distance.ToString(actOffsets[actBoxes[box]][1], "F3"); 
-            }
-        }
-        private void updateLabels()
-        {
-            if (null != actTextBoxes)
-            {
-                foreach (ZoneFiveSoftware.Common.Visuals.TextBox box in actTextBoxes)
-                {
-                    if (null != box) { updateOffBoxLabel(box); }
-                }
-            }
-        }
         private void updateChart()
         {
             //TODO: add show working
             chart.Visible = false;
             chart.UseWaitCursor = true;
-            this.splitContainer2.Panel2.BackgroundImage = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Hourglass16;
-            this.splitContainer2.Panel2.BackgroundImageLayout = ImageLayout.Center;
+//            this.chart.BackgroundImage = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Hourglass16;
+//            this.chart.BackgroundImageLayout = ImageLayout.Center;
             chart.BeginUpdate();
             chart.AutozoomToData(false);
-            ResetLastSelectedBoxFonts();
             chart.DataSeries.Clear();
             chart.YAxisRight.Clear();
             series2activity.Clear();
@@ -928,16 +836,13 @@ namespace GpsRunningPlugin.Source
                 if (checkedWrappers.Contains(actWrapper))
                 {
                     double offset=0;
-                    if (actOffsets.ContainsKey(activity))
+                    if (Settings.UseTimeXAxis)
                     {
-                        if (Settings.UseTimeXAxis)
-                        {
-                            offset = actOffsets[activity][0];
-                        }
-                        else
-                        {
-                            offset = actOffsets[activity][1];
-                        }
+                        offset = actWrapper.TimeOffset;
+                    }
+                    else
+                    {
+                        offset = actWrapper.DistanceOffset;
                     }
                     ChartDataSeries series = getDataSeries(
                         interpolator, 
@@ -946,8 +851,6 @@ namespace GpsRunningPlugin.Source
                         axis,
                         getDataSeriess,
                         offset);
-                    series2actBoxes.Add(series, actTextBoxes[index]);
-                    series2boxes.Add(series, checkBoxes[index]);
                     series2activity.Add(series, activity);
                     list.Add(series);
                 }
@@ -1059,83 +962,11 @@ namespace GpsRunningPlugin.Source
             updateChart();
         }
 #endif
-        private void offBox_LostFocus(object sender, EventArgs e)
-        {
-            ZoneFiveSoftware.Common.Visuals.TextBox box = (ZoneFiveSoftware.Common.Visuals.TextBox)sender;
-            try
-            {
-                //Recalculate other offset here?
-                if (Settings.UseTimeXAxis)
-                {
-                    actOffsets[actBoxes[box]][0] = UnitUtil.Time.Parse(box.Text);
-                }
-                else
-                {
-                    actOffsets[actBoxes[box]][1] = UnitUtil.Distance.Parse(box.Text);
-                }
-            }
-            catch
-            {
-                //Other warning here?
-                new WarningDialog(Resources.NonNegativeNumber);
-            }
-            updateOffBoxLabel(box);
-        }
-
-        private void box_CheckedChanged(object sender, EventArgs e)
-        {
-            CheckBox box = (CheckBox)sender;
-            checks[boxes[box]] = box.Checked;
-            updateChart();
-        }
 
         private void treeView_CheckedChanged(object sender, EventArgs e)
         {
             updateChart();
         }
-
-        private void maBox_LostFocus(object sender, EventArgs e)
-        {
-            try
-            {
-                if (Settings.UseTimeXAxis)
-                {
-                    double value = UnitUtil.Time.Parse(maBox.Text);
-                    if (value < 0) { throw new Exception(); }
-                    Settings.MovingAverageTime = value;
-                }
-                else
-                {
-                    double value = UnitUtil.Distance.Parse(maBox.Text);
-                    if (value < 0) { throw new Exception(); }
-                    Settings.MovingAverageLength = value;
-                }
-                updateChart();
-            }
-            catch (Exception)
-            {
-                //Generic error message
-                new WarningDialog(Resources.NonNegativeNumber);
-            }
-            updateMovingAverage();
-        }
-
-		void ResetLastSelectedBoxFonts()
-		{
-			if ( null != lastChecked && lastChecked.Count > 0 )
-			{
-				for ( int i = 0; i < lastChecked.Count; i++ )
-				{
-					lastChecked[i].Font = new Font( lastChecked[i].Font, FontStyle.Regular );
-					if ( lastChecked[i] == movingAverage )
-					{
-						lastChecked[i].ForeColor = Color.Black;
-					}
-					lastChecked[i].Refresh();
-				}
-				lastChecked.Clear();
-			}
-		}
 
         void chart_Click(object sender, EventArgs e)
         {
@@ -1147,15 +978,12 @@ namespace GpsRunningPlugin.Source
 				bSelectingDataFlag = false;
 				return;
 			}
-			ResetLastSelectedBoxFonts();
-
         }
 
 		void chart_SelectingData(object sender, ChartBase.SelectDataEventArgs e)
 		{
             if ((lastSelectedSeries != null) && (lastSelectedSeries != e.DataSeries))
             {
-                ResetLastSelectedBoxFonts();
                 treeListAct.SelectedItems = new object[] { };
             }
 			lastSelectedSeries = e.DataSeries;
@@ -1178,24 +1006,9 @@ namespace GpsRunningPlugin.Source
                 bSelectingDataFlag = false;
                 if (series2boxes.ContainsKey(e.DataSeries))
                 {				
-					CheckBox box = series2boxes[e.DataSeries];
-					lastChecked.Add( box );
-                    if (box == movingAverage)
-                    {
-                        box.ForeColor = 
-                            getColor(activities.IndexOf(series2activity[e.DataSeries]) % 10);
-						box.Font = new Font( box.Font, FontStyle.Bold );
-
-						box = checkBoxes[activities.IndexOf( series2activity[e.DataSeries] )];
-						lastChecked.Add( box );
-                    }
-                    box.Font = new Font(box.Font, FontStyle.Bold);
-					panelAct.ScrollControlIntoView( box );
-
 					if ( bSelectDataFlag )
 						chart_SelectingData( sender, e );
 					bSelectDataFlag = true;
-
                 }
             }
         }
@@ -1210,9 +1023,8 @@ namespace GpsRunningPlugin.Source
             if (!Settings.UseTimeXAxis)
             {
                 Settings.UseTimeXAxis = true;
-                updateLabels();
                 updateChart();
-                updateMovingAverage();
+                treeListAct.Refresh();
             }
         }
 
@@ -1221,9 +1033,8 @@ namespace GpsRunningPlugin.Source
             if (Settings.UseTimeXAxis)
             {
                 Settings.UseTimeXAxis = false;
-                updateLabels();
                 updateChart();
-                updateMovingAverage();
+                treeListAct.Refresh();
             }
         }
 
@@ -1272,33 +1083,6 @@ namespace GpsRunningPlugin.Source
         private void distance_CheckedChanged(object sender, EventArgs e)
         {
             Settings.ShowDistance = distance.Checked;
-            updateChart();
-        }
-
-        private void average_CheckedChanged(object sender, EventArgs e)
-        {
-            Settings.ShowCategoryAverage = categoryAverage.Checked;
-            updateChart();
-        }
-
-        private void updateMovingAverage()
-        {
-            Settings.ShowMovingAverage = movingAverage.Checked;
-            if (Settings.UseTimeXAxis)
-            {
-				//string sec = "mm:ss";
-				maBox.Text = UnitUtil.Time.ToString( Settings.MovingAverageTime, "mm:ss" );
-            }
-            else
-            {
-				maBox.Text = UnitUtil.Distance.ToString( Settings.MovingAverageLength, "u" );
-			}
-            maBox.Enabled = Settings.ShowMovingAverage;
-        }
-
-        private void movingAverage_CheckedChanged(object sender, EventArgs e)
-        {
-            updateMovingAverage();
             updateChart();
         }
 
@@ -1356,8 +1140,44 @@ namespace GpsRunningPlugin.Source
         private void bannerContextMenuStrip_Opening(object sender, CancelEventArgs e)
         {
             showMeanMenuItem.Checked = Settings.ShowCategoryAverage;
+            showRollingAverageMenuItem.Checked = Settings.ShowMovingAverage;
+            offsetStripTextBox.Enabled = (treeListAct.SelectedItems.Count > 0);
+            offsetStripTextBox.Text = StringResources.SetOffset;
+            averageStripTextBox.Text = StringResources.SetMovingAveragePeriod;
         }
-        
+
+        private void bannerContextMenuStrip_Closed(object sender, ToolStripDropDownClosedEventArgs e)
+        {
+            // Set the offset of the selected activities here            
+            foreach (ActivityWrapper wrapper in treeListAct.SelectedItems)
+            {
+                try
+                {
+                    if (!Settings.UseTimeXAxis)
+                        wrapper.DistanceOffset = UnitUtil.Distance.Parse(offsetStripTextBox.Text);
+                    else
+                        wrapper.TimeOffset = UnitUtil.Time.Parse(offsetStripTextBox.Text);
+                }
+                catch
+                {
+                    // No valid value in the textbox, ignore it
+                }
+            }
+            try
+            {
+                if (!Settings.UseTimeXAxis)
+                    Settings.MovingAverageLength = UnitUtil.Distance.Parse(averageStripTextBox.Text);
+                else
+                    Settings.MovingAverageTime = UnitUtil.Time.Parse(averageStripTextBox.Text);
+            }
+            catch
+            {
+                // No valid value in the textbox, ignore it
+            }
+            treeListAct.Refresh();
+            updateChart();
+        }
+
         private void ShowMeanMenuItem_Click(object sender, EventArgs e)
         {
             Settings.ShowCategoryAverage = !Settings.ShowCategoryAverage;
@@ -1367,7 +1187,6 @@ namespace GpsRunningPlugin.Source
         private void rollingAverageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Settings.ShowMovingAverage = !Settings.ShowMovingAverage;
-            maBox.Enabled = Settings.ShowMovingAverage;
             updateChart();
         }
 
@@ -1385,14 +1204,12 @@ namespace GpsRunningPlugin.Source
 #endif
 
         private bool _showPage = false;
-        private IList<CheckBox> lastChecked = new List<CheckBox>();
         private ChartDataSeries lastSelectedSeries = null;
 
         private List<IActivity> activities = new List<IActivity>();
         private List<ActivityWrapper> actWrappers = new List<ActivityWrapper>();
         private IDictionary<ChartDataSeries, IActivity> series2activity = new Dictionary<ChartDataSeries, IActivity>();
 
-        private IDictionary<IActivity, IList<double>> actOffsets = new Dictionary<IActivity, IList<double>>();
         private IDictionary<ZoneFiveSoftware.Common.Visuals.TextBox, IActivity> actBoxes = new Dictionary<ZoneFiveSoftware.Common.Visuals.TextBox, IActivity>();
         private IList<ZoneFiveSoftware.Common.Visuals.TextBox> actTextBoxes = new List<ZoneFiveSoftware.Common.Visuals.TextBox>();
         private IDictionary<ChartDataSeries, ZoneFiveSoftware.Common.Visuals.TextBox> series2actBoxes = new Dictionary<ChartDataSeries, ZoneFiveSoftware.Common.Visuals.TextBox>();
@@ -1409,5 +1226,7 @@ namespace GpsRunningPlugin.Source
         private bool bSelectDataFlag = false;
 
         private string saveImageProperties_fileName = "";
+
+
     }
 }

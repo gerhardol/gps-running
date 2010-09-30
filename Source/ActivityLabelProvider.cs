@@ -4,6 +4,7 @@ using System.Text;
 using System.Drawing;
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Data.Fitness;
+using GpsRunningPlugin.Util;
 
 namespace GpsRunningPlugin.Source
 {
@@ -19,6 +20,13 @@ namespace GpsRunningPlugin.Source
                 return wrapper.Activity.StartTime.ToLocalTime().ToString();
             else if (column.Id == "Colour")
                 return null;
+            else if (column.Id == "Offset")
+            {
+                if (Settings.UseTimeXAxis)
+                    return UnitUtil.Time.ToString(wrapper.TimeOffset);
+                else
+                    return UnitUtil.Distance.ToString(wrapper.DistanceOffset);
+            }
             else if (column.Id == "Visible")
                 return "";
             else

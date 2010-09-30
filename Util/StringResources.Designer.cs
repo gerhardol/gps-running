@@ -340,6 +340,15 @@ namespace GpsRunningPlugin.Util {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Offset.
+        /// </summary>
+        internal static string Offset {
+            get {
+                return ResourceManager.GetString("Offset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to of {0} activities.
         /// </summary>
         internal static string OfManyActivities {
@@ -462,6 +471,24 @@ namespace GpsRunningPlugin.Util {
         internal static string Send {
             get {
                 return ResourceManager.GetString("Send", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set moving average period.
+        /// </summary>
+        internal static string SetMovingAveragePeriod {
+            get {
+                return ResourceManager.GetString("SetMovingAveragePeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set offset.
+        /// </summary>
+        internal static string SetOffset {
+            get {
+                return ResourceManager.GetString("SetOffset", resourceCulture);
             }
         }
         
