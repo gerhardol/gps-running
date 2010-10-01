@@ -94,21 +94,26 @@ namespace GpsRunningPlugin.Source
                 useDistance.Checked = true;
                 useTime.Checked = false;
             }
+
+            RefreshColumns();
+#if false
             TreeList.Column column = new TreeList.Column("Visible", StringResources.Visible, 50, StringAlignment.Center);
             treeListAct.Columns.Add(column);
             column = new TreeList.Column("Colour", StringResources.Colour, 50, StringAlignment.Center);
             treeListAct.Columns.Add(column);
-            column = new TreeList.Column("Date", StringResources.ActDate, 200, StringAlignment.Center); 
+            column = new TreeList.Column("StartTime", StringResources.ActDate, 200, StringAlignment.Center); 
             treeListAct.Columns.Add(column);
             column = new TreeList.Column("Offset", StringResources.Offset, 50, StringAlignment.Center);
             treeListAct.Columns.Add(column);
             column = new TreeList.Column("Name", StringResources.Name, 100, StringAlignment.Center); 
             treeListAct.Columns.Add(column);
+#endif
             treeListAct.CheckBoxes = true;
             treeListAct.MultiSelect = true;
             treeListAct.RowDataRenderer.RowAlternatingColors = true;
             treeListAct.LabelProvider = new ActivityLabelProvider();
             treeListAct.CheckedChanged += new TreeList.ItemEventHandler(treeView_CheckedChanged);
+            treeListAct.ContextMenuStrip = treeListContextMenuStrip;
 
             actionBanner1.Text = StringResources.OverlayChart;
             actionBanner1.MenuClicked += actionBanner1_MenuClicked;
@@ -118,9 +123,37 @@ namespace GpsRunningPlugin.Source
             chart.Click += new EventHandler(chart_Click);
         }
 
+        private void RefreshColumns()
+        {
+
+            treeListAct.Columns.Clear();
+            foreach (string id in Settings.TreeListActColumns)
+            {
+                foreach (
+#if ST_2_1
+                    ListItemInfo
+#else
+                    IListColumnDefinition
+#endif
+                    columnDef in OverlayColumnIds.ColumnDefs())
+                {
+                    if (columnDef.Id == id)
+                    {
+                        TreeList.Column column = new TreeList.Column(
+                            columnDef.Id,
+                            columnDef.Text(columnDef.Id),
+                            columnDef.Width,
+                            columnDef.Align
+                        );
+                        treeListAct.Columns.Add(column);
+                        break;
+                    }
+                }
+            }
+        }
+        
         public void InitControls()
         {
-            series2boxes = new Dictionary<ChartDataSeries, CheckBox>();
             SizeChanged += new EventHandler(OverlayView_SizeChanged);
         }
 
@@ -209,12 +242,6 @@ namespace GpsRunningPlugin.Source
 
             nextIndex = 0;
 
-            actBoxes.Clear();
-            actTextBoxes.Clear();
-            checks.Clear();
-            boxes.Clear();
-            checkBoxes.Clear();
-
             treeListAct.RowData = actWrappers;
             foreach(ActivityWrapper wrapper in actWrappers)
             {
@@ -263,6 +290,8 @@ namespace GpsRunningPlugin.Source
             showMeanMenuItem.Text = Resources.BCA;
             showRollingAverageMenuItem.Text = Resources.BMA;
             offsetStripTextBox.Text = StringResources.SetOffset;
+
+            tableSettingsMenuItem.Text = StringResources.TableSettings;
 
             labelXaxis.Text = StringResources.XAxis + ":";
             labelYaxis.Text = StringResources.YAxis + ":";
@@ -482,8 +511,6 @@ namespace GpsRunningPlugin.Source
             chart.DataSeries.Clear();
             chart.YAxisRight.Clear();
             series2activity.Clear();
-            series2actBoxes.Clear();
-            series2boxes.Clear();
             bool useRight = false;
 
             if (Settings.UseTimeXAxis)
@@ -1004,12 +1031,9 @@ namespace GpsRunningPlugin.Source
                     treeListAct.SelectedItems = new object[] { };
                 }
                 bSelectingDataFlag = false;
-                if (series2boxes.ContainsKey(e.DataSeries))
-                {				
-					if ( bSelectDataFlag )
-						chart_SelectingData( sender, e );
-					bSelectDataFlag = true;
-                }
+                if (bSelectDataFlag)
+                    chart_SelectingData(sender, e);
+                bSelectDataFlag = true;
             }
         }
 
@@ -1190,6 +1214,29 @@ namespace GpsRunningPlugin.Source
             updateChart();
         }
 
+        private void tableSettingsMenuItem_Click(object sender, EventArgs e)
+        {
+#if ST_2_1
+            ListSettings dialog = new ListSettings();
+			dialog.ColumnsAvailable = OverlayColumnIds.ColumnDefs();
+#else
+            ListSettingsDialog dialog = new ListSettingsDialog();
+            dialog.AvailableColumns = OverlayColumnIds.ColumnDefs(); // TrailResultColumnIds.ColumnDefs(m_controller.CurrentActivity);
+#endif
+            dialog.ThemeChanged(m_visualTheme);
+            dialog.AllowFixedColumnSelect = false;
+            dialog.SelectedColumns = Settings.TreeListActColumns; // PluginMain.Settings.ActivityPageColumns;
+            dialog.NumFixedColumns = 3; // PluginMain.Settings.ActivityPageNumFixedColumns;
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                int numFixedColumns = dialog.NumFixedColumns;
+                Settings.TreeListActColumns = dialog.SelectedColumns;
+                RefreshColumns();
+            }
+
+        }
+
         private ITheme m_visualTheme =
 #if ST_2_1
                 Plugin.GetApplication().VisualTheme;
@@ -1210,15 +1257,6 @@ namespace GpsRunningPlugin.Source
         private List<ActivityWrapper> actWrappers = new List<ActivityWrapper>();
         private IDictionary<ChartDataSeries, IActivity> series2activity = new Dictionary<ChartDataSeries, IActivity>();
 
-        private IDictionary<ZoneFiveSoftware.Common.Visuals.TextBox, IActivity> actBoxes = new Dictionary<ZoneFiveSoftware.Common.Visuals.TextBox, IActivity>();
-        private IList<ZoneFiveSoftware.Common.Visuals.TextBox> actTextBoxes = new List<ZoneFiveSoftware.Common.Visuals.TextBox>();
-        private IDictionary<ChartDataSeries, ZoneFiveSoftware.Common.Visuals.TextBox> series2actBoxes = new Dictionary<ChartDataSeries, ZoneFiveSoftware.Common.Visuals.TextBox>();
-
-        private IList<bool> checks = new List<bool>();
-        private IDictionary<CheckBox, int> boxes = new Dictionary<CheckBox, int>();
-        private IList<CheckBox> checkBoxes = new List<CheckBox>();
-        private IDictionary<ChartDataSeries, CheckBox> series2boxes;
-
         //bSelectingDataFlag and bSelectDataFlag are used to coordinate the chart 
         //click/select/selecting events to minimize 'movingAverage' and 'box' control flicker.
         //I'm sure there's a better way, but at this time this is all I've got.
@@ -1226,6 +1264,7 @@ namespace GpsRunningPlugin.Source
         private bool bSelectDataFlag = false;
 
         private string saveImageProperties_fileName = "";
+
 
 
     }

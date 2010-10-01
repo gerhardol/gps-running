@@ -303,4 +303,7 @@
   <data name="SetMovingAveragePeriod" xml:space="preserve">
     <value>Set moving average period</value>
   </data>
+  <data name="TableSettings" xml:space="preserve">
+    <value>Table settings</value>
+  </data>
 </root>

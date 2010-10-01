@@ -42,6 +42,20 @@ namespace GpsRunningPlugin.Source
 
         public readonly static Type uniqueRoutes;
 
+        private static IList<string> treeListActColumns;
+        public static IList<string> TreeListActColumns
+        {
+            get
+            {
+                return treeListActColumns;
+            }
+            set
+            {
+                treeListActColumns = value;
+                //PluginMain.WriteExtensionData();
+            }
+        }
+
         private static bool autoZoom;
         public static bool AutoZoom
         {
@@ -252,6 +266,15 @@ namespace GpsRunningPlugin.Source
 #endif
             savedImageFolder = "";
 			savedImageFormat = ImageFormat.Jpeg;
+
+            treeListActColumns = new List<string>();
+            treeListActColumns.Add(OverlayColumnIds.Visible);
+            treeListActColumns.Add(OverlayColumnIds.Colour);
+            treeListActColumns.Add(OverlayColumnIds.StartTime);
+            treeListActColumns.Add(OverlayColumnIds.Offset);
+            treeListActColumns.Add(OverlayColumnIds.Time);
+            treeListActColumns.Add(OverlayColumnIds.AvgHR);
+
         }
 
         public static void ReadOptions(XmlDocument xmlDoc, XmlNamespaceManager nsmgr, XmlElement pluginNode)
