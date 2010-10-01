@@ -79,6 +79,8 @@ namespace GpsRunningPlugin.Source
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.panel2 = new ZoneFiveSoftware.Common.Visuals.Panel();
             this.treeListAct = new ZoneFiveSoftware.Common.Visuals.TreeList();
+            this.treeListContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tableSettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.bannerContextMenuStrip.SuspendLayout();
@@ -87,6 +89,7 @@ namespace GpsRunningPlugin.Source
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.treeListContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // chart
@@ -432,6 +435,20 @@ namespace GpsRunningPlugin.Source
             this.treeListAct.Size = new System.Drawing.Size(652, 70);
             this.treeListAct.TabIndex = 0;
             // 
+            // treeListContextMenuStrip
+            // 
+            this.treeListContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tableSettingsMenuItem});
+            this.treeListContextMenuStrip.Name = "treeListContextMenuStrip";
+            this.treeListContextMenuStrip.Size = new System.Drawing.Size(153, 48);
+            // 
+            // tableSettingsMenuItem
+            // 
+            this.tableSettingsMenuItem.Name = "tableSettingsMenuItem";
+            this.tableSettingsMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.tableSettingsMenuItem.Text = "Table settings";
+            this.tableSettingsMenuItem.Click += new System.EventHandler(this.tableSettingsMenuItem_Click);
+            // 
             // OverlayView
             // 
             this.AutoSize = true;
@@ -448,6 +465,7 @@ namespace GpsRunningPlugin.Source
             this.splitContainer4.Panel2.ResumeLayout(false);
             this.splitContainer4.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            this.treeListContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -484,5 +502,7 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.ToolStripTextBox offsetStripTextBox;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripTextBox averageStripTextBox;
+        private System.Windows.Forms.ContextMenuStrip treeListContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem tableSettingsMenuItem;
     }
 }

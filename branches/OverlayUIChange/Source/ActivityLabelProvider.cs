@@ -16,7 +16,7 @@ namespace GpsRunningPlugin.Source
         {
             ActivityWrapper wrapper = (ActivityWrapper)element;
 
-            if (column.Id == "Date")
+            if (column.Id == "StartTime")
                 return wrapper.Activity.StartTime.ToLocalTime().ToString();
             else if (column.Id == "Colour")
                 return null;
@@ -30,7 +30,15 @@ namespace GpsRunningPlugin.Source
             else if (column.Id == "Visible")
                 return "";
             else
-                return base.GetText(wrapper.Activity, column);
+            {
+                ActivityInfoCache actInfoCache = new ActivityInfoCache();
+                ActivityInfo actInfo = actInfoCache.GetInfo(wrapper.Activity);
+                string text = base.GetText(actInfo, column);
+                if (text != null)
+                    return text;
+                else
+                    return base.GetText(wrapper.Activity, column);
+            }
         }
 
         public override System.Drawing.Image GetImage(object element, TreeList.Column column)

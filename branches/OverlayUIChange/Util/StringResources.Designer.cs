@@ -538,6 +538,15 @@ namespace GpsRunningPlugin.Util {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Table settings.
+        /// </summary>
+        internal static string TableSettings {
+            get {
+                return ResourceManager.GetString("TableSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to hh:mm:ss.
         /// </summary>
         internal static string TimeFormat {
