@@ -151,6 +151,15 @@ namespace GpsRunningPlugin.Util {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to difference.
+        /// </summary>
+        internal static string Difference {
+            get {
+                return ResourceManager.GetString("Difference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End.
         /// </summary>
         internal static string End {

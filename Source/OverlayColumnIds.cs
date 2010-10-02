@@ -99,26 +99,45 @@ namespace GpsRunningPlugin.Source
         public const string Colour = "Colour";
         public const string StartTime = "StartTime";
         public const string Offset = "Offset";
+        
         public const string Time = "Time";
         public const string Distance = "DistanceMeters";
         public const string AvgSpeed = "AverageSpeedMetersPerSecond";
         public const string AvgPace = "AvgPace";
         public const string AvgHR = "AverageHeartRate";
 
+        public const string TimeDiff = "TimeDiff";
+        public const string DistanceDiff = "DistanceMetersDiff";
+        public const string AvgSpeedDiff = "AverageSpeedMetersPerSecondDiff";
+        public const string AvgPaceDiff = "AvgPaceDiff";
+        public const string AvgHRDiff = "AverageHeartRateDiff";
+
         public static ICollection<IListColumnDefinition> ColumnDefs()
         {
             IList<IListColumnDefinition> columnDefs = new List<IListColumnDefinition>();
-            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.Visible, StringResources.Visible, "", 50, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.Colour, StringResources.Colour, "", 50, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.StartTime, CommonResources.Text.LabelStartTime, "", 150, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.Offset, StringResources.Offset, "", 70, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.Time, CommonResources.Text.LabelTime, "", 70, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.Distance, CommonResources.Text.LabelDistance, "", 60, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.AvgSpeed, CommonResources.Text.LabelAvgSpeed, "", 80, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.AvgPace, CommonResources.Text.LabelAvgPace, "", 80, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.AvgHR, CommonResources.Text.LabelAvgHR + UnitUtil.HeartRate.LabelAbbr2, "", 80, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.TimeDiff, CommonResources.Text.LabelTime + " " + StringResources.Difference, "", 70, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.DistanceDiff, CommonResources.Text.LabelDistance + " " + StringResources.Difference, "", 60, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.AvgSpeedDiff, CommonResources.Text.LabelAvgSpeed + " " + StringResources.Difference, "", 80, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.AvgPaceDiff, CommonResources.Text.LabelAvgPace + " " + StringResources.Difference, "", 80, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.AvgHRDiff, CommonResources.Text.LabelAvgHR + " " + StringResources.Difference + UnitUtil.HeartRate.LabelAbbr2, "", 80, StringAlignment.Near));
 
             return columnDefs;
         }
+        public static ICollection<IListColumnDefinition> PermanentColumnDefs()
+        {
+            IList<IListColumnDefinition> columnDefs = new List<IListColumnDefinition>();
+            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.Visible, StringResources.Visible, "", 50, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.Colour, StringResources.Colour, "", 50, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.StartTime, CommonResources.Text.LabelStartTime, "", 150, StringAlignment.Near));
+
+            return columnDefs;
+        }
+
     }
 }

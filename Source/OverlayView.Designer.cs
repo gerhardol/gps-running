@@ -75,12 +75,16 @@ namespace GpsRunningPlugin.Source
             this.averageStripTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.offsetStripTextBox = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.setRefActMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showDiffMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel3 = new System.Windows.Forms.Panel();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.panel2 = new ZoneFiveSoftware.Common.Visuals.Panel();
             this.treeListAct = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.treeListContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tableSettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setRefTreeListMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.bannerContextMenuStrip.SuspendLayout();
@@ -314,43 +318,66 @@ namespace GpsRunningPlugin.Source
             this.showRollingAverageMenuItem,
             this.averageStripTextBox,
             this.toolStripSeparator1,
-            this.offsetStripTextBox});
+            this.offsetStripTextBox,
+            this.toolStripSeparator2,
+            this.setRefActMenuItem,
+            this.showDiffMenuItem});
             this.bannerContextMenuStrip.Name = "bannerContextMenuStrip";
             this.bannerContextMenuStrip.ShowCheckMargin = true;
             this.bannerContextMenuStrip.ShowImageMargin = false;
-            this.bannerContextMenuStrip.Size = new System.Drawing.Size(161, 104);
+            this.bannerContextMenuStrip.Size = new System.Drawing.Size(191, 176);
             this.bannerContextMenuStrip.Closed += new System.Windows.Forms.ToolStripDropDownClosedEventHandler(this.bannerContextMenuStrip_Closed);
             this.bannerContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.bannerContextMenuStrip_Opening);
             // 
             // showMeanMenuItem
             // 
             this.showMeanMenuItem.Name = "showMeanMenuItem";
-            this.showMeanMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.showMeanMenuItem.Size = new System.Drawing.Size(190, 22);
             this.showMeanMenuItem.Text = "Mean";
             this.showMeanMenuItem.Click += new System.EventHandler(this.ShowMeanMenuItem_Click);
             // 
             // showRollingAverageMenuItem
             // 
             this.showRollingAverageMenuItem.Name = "showRollingAverageMenuItem";
-            this.showRollingAverageMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.showRollingAverageMenuItem.Size = new System.Drawing.Size(190, 22);
             this.showRollingAverageMenuItem.Text = "Rolling Average";
             this.showRollingAverageMenuItem.Click += new System.EventHandler(this.rollingAverageToolStripMenuItem_Click);
             // 
             // averageStripTextBox
             // 
             this.averageStripTextBox.Name = "averageStripTextBox";
-            this.averageStripTextBox.Size = new System.Drawing.Size(100, 23);
+            this.averageStripTextBox.Size = new System.Drawing.Size(130, 23);
+            this.averageStripTextBox.Text = "Moving average width";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(157, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(187, 6);
             // 
             // offsetStripTextBox
             // 
             this.offsetStripTextBox.Name = "offsetStripTextBox";
-            this.offsetStripTextBox.Size = new System.Drawing.Size(100, 23);
-            this.offsetStripTextBox.Text = "Enter offset for selected activities";
+            this.offsetStripTextBox.Size = new System.Drawing.Size(130, 23);
+            this.offsetStripTextBox.Text = "Enter activity offset";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(187, 6);
+            // 
+            // setRefActMenuItem
+            // 
+            this.setRefActMenuItem.Name = "setRefActMenuItem";
+            this.setRefActMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.setRefActMenuItem.Text = "Set reference activity";
+            this.setRefActMenuItem.Click += new System.EventHandler(this.setRefActMenuItem_Click);
+            // 
+            // showDiffMenuItem
+            // 
+            this.showDiffMenuItem.Name = "showDiffMenuItem";
+            this.showDiffMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.showDiffMenuItem.Text = "Difference";
+            this.showDiffMenuItem.Click += new System.EventHandler(this.showDiffMenuItem_Click);
             // 
             // panel3
             // 
@@ -438,16 +465,25 @@ namespace GpsRunningPlugin.Source
             // treeListContextMenuStrip
             // 
             this.treeListContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tableSettingsMenuItem});
+            this.tableSettingsMenuItem,
+            this.setRefTreeListMenuItem});
             this.treeListContextMenuStrip.Name = "treeListContextMenuStrip";
-            this.treeListContextMenuStrip.Size = new System.Drawing.Size(153, 48);
+            this.treeListContextMenuStrip.Size = new System.Drawing.Size(184, 48);
+            this.treeListContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.treeListContextMenuStrip_Opening);
             // 
             // tableSettingsMenuItem
             // 
             this.tableSettingsMenuItem.Name = "tableSettingsMenuItem";
-            this.tableSettingsMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.tableSettingsMenuItem.Size = new System.Drawing.Size(183, 22);
             this.tableSettingsMenuItem.Text = "Table settings";
             this.tableSettingsMenuItem.Click += new System.EventHandler(this.tableSettingsMenuItem_Click);
+            // 
+            // setRefTreeListMenuItem
+            // 
+            this.setRefTreeListMenuItem.Name = "setRefTreeListMenuItem";
+            this.setRefTreeListMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.setRefTreeListMenuItem.Text = "Set reference activity";
+            this.setRefTreeListMenuItem.Click += new System.EventHandler(this.setRefActMenuItem_Click);
             // 
             // OverlayView
             // 
@@ -504,5 +540,9 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.ToolStripTextBox averageStripTextBox;
         private System.Windows.Forms.ContextMenuStrip treeListContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem tableSettingsMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem setRefActMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showDiffMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setRefTreeListMenuItem;
     }
 }
