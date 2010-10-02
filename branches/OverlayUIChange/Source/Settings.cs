@@ -56,6 +56,20 @@ namespace GpsRunningPlugin.Source
             }
         }
 
+        private static IList<string> treeListPermanentActColumns;
+        public static IList<string> TreeListPermanentActColumns
+        {
+            get
+            {
+                return treeListPermanentActColumns;
+            }
+            set
+            {
+                treeListPermanentActColumns = value;
+                //PluginMain.WriteExtensionData();
+            }
+        }
+
         private static bool autoZoom;
         public static bool AutoZoom
         {
@@ -186,6 +200,16 @@ namespace GpsRunningPlugin.Source
             }
         }
 
+        private static bool showDifference;
+        public static bool ShowDifference
+        {
+            get { return showDifference; }
+            set
+            {
+                showDifference = value;
+            }
+        }
+        
         private static bool useTimeXAxis;
         public static bool UseTimeXAxis
         {
@@ -253,6 +277,7 @@ namespace GpsRunningPlugin.Source
             showCadence = false;
             showElevation = false;
             showCategoryAverage = false;
+            showDifference = false;
             showMovingAverage = false;
             movingAverageLength = 0;
             movingAverageTime = 0;
@@ -267,10 +292,13 @@ namespace GpsRunningPlugin.Source
             savedImageFolder = "";
 			savedImageFormat = ImageFormat.Jpeg;
 
+            treeListPermanentActColumns = new List<string>();
+            treeListPermanentActColumns.Add(OverlayColumnIds.Visible);
+            treeListPermanentActColumns.Add(OverlayColumnIds.Colour);
+            treeListPermanentActColumns.Add(OverlayColumnIds.StartTime);
+
             treeListActColumns = new List<string>();
-            treeListActColumns.Add(OverlayColumnIds.Visible);
-            treeListActColumns.Add(OverlayColumnIds.Colour);
-            treeListActColumns.Add(OverlayColumnIds.StartTime);
+            // Visible, colour and StartTime will always be shown anyway
             treeListActColumns.Add(OverlayColumnIds.Offset);
             treeListActColumns.Add(OverlayColumnIds.Time);
             treeListActColumns.Add(OverlayColumnIds.AvgHR);

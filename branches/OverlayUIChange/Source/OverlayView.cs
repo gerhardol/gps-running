@@ -127,6 +127,30 @@ namespace GpsRunningPlugin.Source
         {
 
             treeListAct.Columns.Clear();
+            foreach (string id in Settings.TreeListPermanentActColumns)
+            {
+                foreach (
+#if ST_2_1
+                    ListItemInfo
+#else
+IListColumnDefinition
+#endif
+ columnDef in OverlayColumnIds.PermanentColumnDefs())
+                {
+                    if (columnDef.Id == id)
+                    {
+                        TreeList.Column column = new TreeList.Column(
+                            columnDef.Id,
+                            columnDef.Text(columnDef.Id),
+                            columnDef.Width,
+                            columnDef.Align
+                        );
+                        treeListAct.Columns.Add(column);
+                        break;
+                    }
+                }
+            }
+
             foreach (string id in Settings.TreeListActColumns)
             {
                 foreach (
@@ -217,6 +241,7 @@ namespace GpsRunningPlugin.Source
                     actWrappers.Add(new ActivityWrapper(activity, newColor()));
                 }
 
+                CommonData.refActWrapper = null;
                 RefreshPage();
             }
         }
@@ -1168,6 +1193,9 @@ namespace GpsRunningPlugin.Source
             offsetStripTextBox.Enabled = (treeListAct.SelectedItems.Count > 0);
             offsetStripTextBox.Text = StringResources.SetOffset;
             averageStripTextBox.Text = StringResources.SetMovingAveragePeriod;
+            setRefActMenuItem.Enabled = (treeListAct.SelectedItems.Count == 1);
+            showDiffMenuItem.Enabled = (CommonData.refActWrapper != null);
+            showDiffMenuItem.Checked = Settings.ShowDifference;
         }
 
         private void bannerContextMenuStrip_Closed(object sender, ToolStripDropDownClosedEventArgs e)
@@ -1212,6 +1240,28 @@ namespace GpsRunningPlugin.Source
         {
             Settings.ShowMovingAverage = !Settings.ShowMovingAverage;
             updateChart();
+        }
+
+        private void setRefActMenuItem_Click(object sender, EventArgs e)
+        {
+            if (treeListAct.SelectedItems.Count == 1)
+            {
+                CommonData.refActWrapper = (ActivityWrapper)treeListAct.SelectedItems[0];
+            }
+            treeListAct.Refresh();
+            updateChart();
+        }
+
+        private void showDiffMenuItem_Click(object sender, EventArgs e)
+        {
+            Settings.ShowDifference = !Settings.ShowDifference;
+            updateChart();
+        }
+
+
+        private void treeListContextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            setRefTreeListMenuItem.Enabled = (treeListAct.SelectedItems.Count == 1);
         }
 
         private void tableSettingsMenuItem_Click(object sender, EventArgs e)
@@ -1264,8 +1314,10 @@ namespace GpsRunningPlugin.Source
         private bool bSelectDataFlag = false;
 
         private string saveImageProperties_fileName = "";
+    }
 
-
-
+    static class CommonData
+    {
+        public static ActivityWrapper refActWrapper = null;
     }
 }
