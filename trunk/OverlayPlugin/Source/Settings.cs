@@ -36,7 +36,7 @@ namespace GpsRunningPlugin.Source
     {
         static Settings()
         {
-            uniqueRoutes = getPlugin("UniqueRoutes", "SportTracksUniqueRoutesPlugin.Source.UniqueRoutes");
+            uniqueRoutes = getPlugin("UniqueRoutes", "GpsRunningPlugin.Source.UniqueRoutes");
             defaults();
         }
 

@@ -457,8 +457,8 @@ namespace GpsRunningPlugin.Source
             result[2] = getTrainingSpeed(vdot, percentages[2]);
             result[3] = getTrainingSpeed(vdot, percentages[3]);
             result[6] = getTrainingSpeed(42195, distance, seconds);
-            result[4] = result[3] / (1 + (result[3] / result[6] - 1) / 3);
-            result[5] = result[3] / (1 + (result[3] / result[6] - 1) / 6);
+            result[4] = result[3] / (1 + (result[3] / result[6] - 1) / 6.0);
+            result[5] = result[3] / (1 + (result[3] / result[6] - 1) / 3.0);
             result[7] = getTrainingSpeed(21097.5, distance, seconds);
             result[8] = getTrainingSpeed(15000, distance, seconds);
             result[9] = getTrainingSpeed(12000, distance, seconds);
@@ -500,8 +500,8 @@ namespace GpsRunningPlugin.Source
             result[2] = 0.72;
             result[3] = 0.75;
             result[6] = 0.8 + 0.09 * (vdot - 30) / 55;
-            result[4] = result[3] + (result[6] - result[3])/3.0;
-            result[5] = result[3] + (result[6] - result[3])/6.0;
+            result[4] = result[3] + (result[6] - result[3])/6.0;
+            result[5] = result[3] + (result[6] - result[3])/3.0;
             result[7] = 0.84 + 0.08 * (vdot - 30) / 55;
             result[8] = 0.86 + 0.08 * (vdot - 30) / 55;
             result[9] = 0.87 + 0.08 * (vdot - 30) / 55;
