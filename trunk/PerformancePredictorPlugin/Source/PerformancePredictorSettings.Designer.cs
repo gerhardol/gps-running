@@ -76,11 +76,23 @@ namespace GpsRunningPlugin.Source
             // 
             // resetSettings
             // 
+            this.resetSettings.BackColor = System.Drawing.Color.Transparent;
+            this.resetSettings.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.resetSettings.CenterImage = null;
+            this.resetSettings.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.resetSettings.HyperlinkStyle = false;
+            this.resetSettings.ImageMargin = 2;
+            this.resetSettings.LeftImage = null;
             this.resetSettings.Location = new System.Drawing.Point(6, 16);
             this.resetSettings.Name = "resetSettings";
+            this.resetSettings.PushStyle = true;
+            this.resetSettings.RightImage = null;
             this.resetSettings.Size = new System.Drawing.Size(187, 23);
             this.resetSettings.TabIndex = 1;
             this.resetSettings.Text = "Reset all settings...";
+            this.resetSettings.TextAlign = System.Drawing.StringAlignment.Center;
+            this.resetSettings.TextLeftMargin = 2;
+            this.resetSettings.TextRightMargin = 2;
             this.resetSettings.Click += new System.EventHandler(this.resetSettings_Click);
             // 
             // groupBox1
@@ -99,11 +111,23 @@ namespace GpsRunningPlugin.Source
             // 
             // removeDistance
             // 
+            this.removeDistance.BackColor = System.Drawing.Color.Transparent;
+            this.removeDistance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.removeDistance.CenterImage = null;
+            this.removeDistance.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.removeDistance.HyperlinkStyle = false;
+            this.removeDistance.ImageMargin = 2;
+            this.removeDistance.LeftImage = null;
             this.removeDistance.Location = new System.Drawing.Point(132, 130);
             this.removeDistance.Name = "removeDistance";
+            this.removeDistance.PushStyle = true;
+            this.removeDistance.RightImage = null;
             this.removeDistance.Size = new System.Drawing.Size(186, 23);
             this.removeDistance.TabIndex = 4;
             this.removeDistance.Text = "Remove distance -->";
+            this.removeDistance.TextAlign = System.Drawing.StringAlignment.Center;
+            this.removeDistance.TextLeftMargin = 2;
+            this.removeDistance.TextRightMargin = 2;
             this.removeDistance.Click += new System.EventHandler(this.removeDistance_Click);
             // 
             // unitBox
@@ -117,18 +141,42 @@ namespace GpsRunningPlugin.Source
             // 
             // distanceBox
             // 
+            this.distanceBox.AcceptsReturn = false;
+            this.distanceBox.AcceptsTab = false;
+            this.distanceBox.BackColor = System.Drawing.Color.White;
+            this.distanceBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.distanceBox.ButtonImage = null;
             this.distanceBox.Location = new System.Drawing.Point(132, 21);
+            this.distanceBox.MaxLength = 32767;
+            this.distanceBox.Multiline = false;
             this.distanceBox.Name = "distanceBox";
+            this.distanceBox.ReadOnly = false;
+            this.distanceBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.distanceBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.distanceBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.distanceBox.Size = new System.Drawing.Size(82, 20);
             this.distanceBox.TabIndex = 2;
+            this.distanceBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             // 
             // addDistance
             // 
+            this.addDistance.BackColor = System.Drawing.Color.Transparent;
+            this.addDistance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.addDistance.CenterImage = null;
+            this.addDistance.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.addDistance.HyperlinkStyle = false;
+            this.addDistance.ImageMargin = 2;
+            this.addDistance.LeftImage = null;
             this.addDistance.Location = new System.Drawing.Point(132, 47);
             this.addDistance.Name = "addDistance";
+            this.addDistance.PushStyle = true;
+            this.addDistance.RightImage = null;
             this.addDistance.Size = new System.Drawing.Size(186, 23);
             this.addDistance.TabIndex = 1;
             this.addDistance.Text = "<-- Add distance";
+            this.addDistance.TextAlign = System.Drawing.StringAlignment.Center;
+            this.addDistance.TextLeftMargin = 2;
+            this.addDistance.TextRightMargin = 2;
             this.addDistance.Click += new System.EventHandler(this.addDistance_Click);
             // 
             // distanceList
@@ -174,8 +222,9 @@ namespace GpsRunningPlugin.Source
             0,
             0});
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(32, 20);
+            this.numericUpDown1.Size = new System.Drawing.Size(36, 20);
             this.numericUpDown1.TabIndex = 1;
+            this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDown1.Value = new decimal(new int[] {
             20,
             0,
@@ -203,7 +252,6 @@ namespace GpsRunningPlugin.Source
             this.Name = "PerformancePredictorSettings";
             this.Size = new System.Drawing.Size(342, 268);
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
