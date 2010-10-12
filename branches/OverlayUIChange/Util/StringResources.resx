@@ -307,6 +307,12 @@
     <value>Table settings</value>
   </data>
   <data name="Difference" xml:space="preserve">
-    <value>difference</value>
+    <value>diff</value>
+  </data>
+  <data name="MovingAverage" xml:space="preserve">
+    <value>Moving average</value>
+  </data>
+  <data name="Width" xml:space="preserve">
+    <value>width</value>
   </data>
 </root>

@@ -305,6 +305,7 @@ IListColumnDefinition
             //Non ST controls
             //this.panelAct.BackColor = visualTheme.Control;
             //this.panel3.BackColor = visualTheme.Control;
+            chartBackgroundPanel.BackColor = visualTheme.Window;
             this.BackColor = visualTheme.Control;
         }
 
@@ -314,7 +315,6 @@ IListColumnDefinition
             actionBanner1.Text = StringResources.OverlayChart;
             showMeanMenuItem.Text = Resources.BCA;
             showRollingAverageMenuItem.Text = Resources.BMA;
-            offsetStripTextBox.Text = StringResources.SetOffset;
 
             tableSettingsMenuItem.Text = StringResources.TableSettings;
 
@@ -331,6 +331,25 @@ IListColumnDefinition
             time.Text = CommonResources.Text.LabelTime;
             distance.Text = CommonResources.Text.LabelDistance;
 
+            showMenuItem.Text = StringResources.Show;
+            showDiffMenuItem.Text = StringResources.Show + " " + StringResources.Difference.ToLower();
+
+            showHRMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelHeartRate;
+            showPaceMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelPace;
+            showSpeedMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelSpeed;
+            showPowerMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelPower;
+            showCadenceMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelCadence;
+            showElevationMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelElevation;
+            showTimeMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelTime;
+            showDistanceMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelDistance;
+
+            showHRDiffMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelHeartRate.ToLower() + " " + StringResources.Difference;
+            showTimeDiffMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelTime.ToLower() + " " + StringResources.Difference;
+            showDistDiffMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelDistance.ToLower() + " " + StringResources.Difference;
+
+            offsetStripTextBox.Text = CommonResources.Text.LabelActivity + " " + StringResources.Offset.ToLower();
+            averageStripTextBox.Text = StringResources.MovingAverage + " " + StringResources.Width;
+            
             int max = Math.Max(labelXaxis.Location.X + labelXaxis.Size.Width,
                                 labelYaxis.Location.X + labelYaxis.Size.Width) + 5;
             useTime.Location = new Point(max, labelXaxis.Location.Y);
@@ -890,7 +909,7 @@ IListColumnDefinition
                     double offset=0;
                     if (Settings.UseTimeXAxis)
                     {
-                        offset = actWrapper.TimeOffset;
+                        offset = actWrapper.TimeOffset.TotalSeconds;
                     }
                     else
                     {
@@ -988,7 +1007,7 @@ IListColumnDefinition
             series.LineColor = newColor();
             return series;
         }
-
+        
         private void form_SizeChanged(object sender, EventArgs e)
         {
             if (popupForm != null)
@@ -1191,11 +1210,17 @@ IListColumnDefinition
             showMeanMenuItem.Checked = Settings.ShowCategoryAverage;
             showRollingAverageMenuItem.Checked = Settings.ShowMovingAverage;
             offsetStripTextBox.Enabled = (treeListAct.SelectedItems.Count > 0);
-            offsetStripTextBox.Text = StringResources.SetOffset;
-            averageStripTextBox.Text = StringResources.SetMovingAveragePeriod;
+            if (offsetStripTextBox.Enabled)
+            {
+                ActivityWrapper wrapper = (ActivityWrapper)treeListAct.SelectedItems[0];
+                if (Settings.UseTimeXAxis)
+                    offsetStripTextBox.Text = Util.UnitUtil.Time.ToString(wrapper.TimeOffset);
+                else
+                    offsetStripTextBox.Text = wrapper.DistanceOffset.ToString();
+            }
+
             setRefActMenuItem.Enabled = (treeListAct.SelectedItems.Count == 1);
             showDiffMenuItem.Enabled = (CommonData.refActWrapper != null);
-            showDiffMenuItem.Checked = Settings.ShowDifference;
         }
 
         private void bannerContextMenuStrip_Closed(object sender, ToolStripDropDownClosedEventArgs e)
@@ -1208,7 +1233,7 @@ IListColumnDefinition
                     if (!Settings.UseTimeXAxis)
                         wrapper.DistanceOffset = UnitUtil.Distance.Parse(offsetStripTextBox.Text);
                     else
-                        wrapper.TimeOffset = UnitUtil.Time.Parse(offsetStripTextBox.Text);
+                        wrapper.TimeOffset = Time.ParseTimeSpan(offsetStripTextBox.Text, false);
                 }
                 catch
                 {
@@ -1252,9 +1277,103 @@ IListColumnDefinition
             updateChart();
         }
 
-        private void showDiffMenuItem_Click(object sender, EventArgs e)
+        // TODO: Fix handling of the user entering the offset
+        private void offsetStripTextBox_TextChanged(object sender, EventArgs e)
         {
-            Settings.ShowDifference = !Settings.ShowDifference;
+            if (treeListAct.SelectedItems.Count >= 1)
+            {
+                try
+                {
+                    foreach (ActivityWrapper wrapper in treeListAct.SelectedItems)
+                    {
+                        // This parsing is done just to verify that they can be done and that the text in the box is valid
+                        if (Settings.UseTimeXAxis)
+                        {
+                            wrapper.TimeOffset = Time.ParseTimeSpan(offsetStripTextBox.Text, false);
+                            offsetStripTextBox.Text = Util.UnitUtil.Time.ToString(wrapper.TimeOffset);
+                        }
+                        else
+                        {
+                            wrapper.DistanceOffset = double.Parse(offsetStripTextBox.Text);
+                        }
+                    }
+
+                }
+                catch (Exception Ex)
+                {
+                    ActivityWrapper wrapper = (ActivityWrapper)treeListAct.SelectedItems[0];
+                    if (Settings.UseTimeXAxis)
+                        offsetStripTextBox.Text = Util.UnitUtil.Time.ToString(wrapper.TimeOffset);
+                    else
+                        offsetStripTextBox.Text = wrapper.DistanceOffset.ToString();
+                }
+            }
+        }
+
+        private void bannerShowContextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            showHRMenuItem.Checked = Settings.ShowHeartRate;
+            showPaceMenuItem.Checked = Settings.ShowPace;
+            showSpeedMenuItem.Checked = Settings.ShowSpeed;
+            showPowerMenuItem.Checked = Settings.ShowPower;
+            showCadenceMenuItem.Checked = Settings.ShowCadence;
+            showElevationMenuItem.Checked = Settings.ShowElevation;
+            showTimeMenuItem.Checked = Settings.ShowTime;
+            showDistanceMenuItem.Checked = Settings.ShowDistance;
+        }
+
+        private void showXXXMenuItem_click(object sender, EventArgs e)
+        {
+            // Change the corresponding check box. Its event handler will change the settings.
+            if (sender == showHRMenuItem)
+            {
+                heartRate.Checked = !heartRate.Checked;
+            }
+            else if (sender == showPaceMenuItem)
+            {
+                pace.Checked = !pace.Checked;
+            }
+            else if (sender == showSpeedMenuItem)
+            {
+                speed.Checked = !speed.Checked;
+            }
+            else if (sender == showPowerMenuItem)
+            {
+                power.Checked = !power.Checked;
+            }
+            else if (sender == showCadenceMenuItem)
+            {
+                cadence.Checked = !cadence.Checked;
+            }
+            else if (sender == showElevationMenuItem)
+            {
+                elevation.Checked = !elevation.Checked;
+            }
+            else if (sender == showTimeMenuItem)
+            {
+                time.Checked = !time.Checked;
+            }
+            else if (sender == showDistanceMenuItem)
+            {
+                distance.Checked = !distance.Checked;
+            }
+        }
+
+        private void bannerShowDiffContextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            showTimeDiffMenuItem.Checked = Settings.ShowDiffTime;
+            showDistDiffMenuItem.Checked = Settings.ShowDiffDistance;
+            showHRDiffMenuItem.Checked = Settings.ShowDiffHeartRate;
+        }
+
+        private void showDiffXXXMenuItem_click(object sender, EventArgs e)
+        {
+            if (sender == showTimeDiffMenuItem)
+                Settings.ShowDiffTime = !Settings.ShowDiffTime;
+            else if (sender == showDistDiffMenuItem)
+                Settings.ShowDiffDistance = !Settings.ShowDiffDistance;
+            else if (sender == showHRDiffMenuItem)
+                Settings.ShowDiffHeartRate = !Settings.ShowDiffHeartRate;
             updateChart();
         }
 
@@ -1314,6 +1433,11 @@ IListColumnDefinition
         private bool bSelectDataFlag = false;
 
         private string saveImageProperties_fileName = "";
+
+
+
+
+
     }
 
     static class CommonData

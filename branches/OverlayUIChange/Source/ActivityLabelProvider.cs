@@ -31,7 +31,7 @@ namespace GpsRunningPlugin.Source
                     return null;
                 case "Offset":
                     if (Settings.UseTimeXAxis)
-                        return UnitUtil.Time.ToString(wrapper.TimeOffset);
+                        return wrapper.TimeOffset.ToString();
                     else
                         return UnitUtil.Distance.ToString(wrapper.DistanceOffset);
                 case "Visible":
