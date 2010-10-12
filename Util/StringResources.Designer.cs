@@ -151,7 +151,7 @@ namespace GpsRunningPlugin.Util {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to difference.
+        ///   Looks up a localized string similar to diff.
         /// </summary>
         internal static string Difference {
             get {
@@ -309,6 +309,15 @@ namespace GpsRunningPlugin.Util {
         internal static string MinutesShort {
             get {
                 return ResourceManager.GetString("MinutesShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Moving average.
+        /// </summary>
+        internal static string MovingAverage {
+            get {
+                return ResourceManager.GetString("MovingAverage", resourceCulture);
             }
         }
         
@@ -615,6 +624,15 @@ namespace GpsRunningPlugin.Util {
         internal static string Warning {
             get {
                 return ResourceManager.GetString("Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to width.
+        /// </summary>
+        internal static string Width {
+            get {
+                return ResourceManager.GetString("Width", resourceCulture);
             }
         }
         

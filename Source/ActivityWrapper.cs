@@ -10,7 +10,7 @@ namespace GpsRunningPlugin.Source
     {
         private IActivity activity;
         private Color actColor;
-        private double timeOffset;
+        private TimeSpan timeOffset;
         private double distanceOffset;
 
         public IActivity Activity
@@ -29,7 +29,7 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        public double TimeOffset
+        public TimeSpan TimeOffset
         {
             get
             {
@@ -56,7 +56,7 @@ namespace GpsRunningPlugin.Source
         public ActivityWrapper()
         {
             activity = null;
-            timeOffset = 0;
+            timeOffset = new TimeSpan();
             distanceOffset = 0;
             actColor = Color.Black;
         }
