@@ -148,7 +148,7 @@ namespace GpsRunningPlugin.Source
                 this.contextMenu.Items.Remove(this.listSettingsMenuItem);
             }
 #endif
-            progressBar.BringToFront(); //Kept at back to work with designer...
+            this.summaryListToolTipTimer.Tick += new System.EventHandler(ToolTipTimer_Tick);
         }
         public IList<IActivity> Activities
         {
@@ -388,8 +388,8 @@ namespace GpsRunningPlugin.Source
                 }
                 else
                 {
-                    summaryLabel.Text = Resources.DidNotFindAnyRoutes.Replace("\\n", Environment.NewLine);
-                    summaryLabel.Visible = true;
+                    summaryListLabel.Text = Resources.DidNotFindAnyRoutes.Replace("\\n", Environment.NewLine);
+                    summaryListLabel.Visible = true;
                 }
             }
             setSize();
@@ -439,8 +439,10 @@ namespace GpsRunningPlugin.Source
                 {
                     summaryList.Visible = false;
                     summaryLabel.Visible = false;
+                    summaryListLabel.Visible = false;
                     categoryLabel.Visible = false;
                     btnChangeCategory.Visible = false;
+                    progressBar.BringToFront(); //Kept at back to work with designer...
                     progressBar.Visible = true;
                     urRoute.Clear();
 #if !ST_2_1
@@ -469,11 +471,10 @@ namespace GpsRunningPlugin.Source
                     {
                         similar = UniqueRoutes.findSimilarRoutes(refActivity, activities, true, progressBar);
                     }
+                    progressBar.Visible = false;
                     categoryLabel.Visible = true;
                     determinePaceOrSpeed();
-                    progressBar.Visible = false;
 
-                    summaryLabel.Visible = true;
                     setTable();
                     
                     //Add the activities to the menu
