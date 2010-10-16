@@ -303,8 +303,6 @@ IListColumnDefinition
             this.actionBanner1.ThemeChanged(visualTheme);
             this.treeListAct.ThemeChanged(visualTheme);
             //Non ST controls
-            //this.panelAct.BackColor = visualTheme.Control;
-            //this.panel3.BackColor = visualTheme.Control;
             chartBackgroundPanel.BackColor = visualTheme.Window;
             this.BackColor = visualTheme.Control;
         }
@@ -862,6 +860,184 @@ IListColumnDefinition
                         }
                     });
             }
+            if (Settings.ShowDiffHeartRate)
+            {
+                IAxis axis;
+                if (useRight)
+                {
+                    axis = new RightVerticalAxis(chart);
+                    chart.YAxisRight.Add(axis);
+                }
+                else
+                {
+                    axis = chart.YAxis;
+                    useRight = true;
+                }
+                nextIndex = 0;
+                axis.Formatter = new Formatter.General(UnitUtil.HeartRate.DefaultDecimalPrecision);
+                axis.Label = UnitUtil.HeartRate.LabelAxis;
+                addSeries(
+                    delegate(float value)
+                    {
+                        return value;
+                    },
+                    delegate(ActivityInfo info)
+                    {
+                        if (CommonData.refActWrapper == null)
+                            return false;
+                        else
+                            return info.Activity.HeartRatePerMinuteTrack != null &&
+                                   CommonData.refActWrapper.Activity.HeartRatePerMinuteTrack != null;
+                    },
+                    chart.YAxis,
+                    delegate(ActivityInfo info)
+                    {
+                        INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
+                        foreach (ITimeValueEntry<float> p in info.Activity.HeartRatePerMinuteTrack)
+                        {
+                            DateTime refActualTime = CommonData.refActWrapper.Activity.HeartRatePerMinuteTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+                            DateTime actualTime = info.Activity.HeartRatePerMinuteTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+
+                            ITimeValueEntry<float> refHR = CommonData.refActWrapper.Activity.HeartRatePerMinuteTrack.GetInterpolatedValue(refActualTime);
+                            if (refHR != null)
+                            {
+                                track.Add(actualTime, p.Value - refHR.Value);
+                            }
+                        }
+                        return track;
+                    }
+                    );
+            }
+            if (Settings.ShowDiffDistance)
+            {
+                IAxis axis;
+                if (useRight)
+                {
+                    axis = new RightVerticalAxis(chart);
+                    chart.YAxisRight.Add(axis);
+                }
+                else
+                {
+                    axis = chart.YAxis;
+                    useRight = true;
+                }
+                nextIndex = 0;
+                axis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
+                axis.Label = UnitUtil.Distance.LabelAxis;
+                addSeries(
+                    delegate(float value)
+                    {
+                        return UnitUtil.Distance.ConvertFrom(value);
+                    },
+                    delegate(ActivityInfo info)
+                    {
+                        bool includeStopped = false;
+#if ST_2_1
+                        // If UseEnteredData is set, exclude Stopped
+                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
+                        {
+                            includeStopped = true;
+                        }
+#else
+                        includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
+#endif
+
+                        if (CommonData.refActWrapper == null)
+                            return false;
+                        else
+                        {
+                            ActivityInfoCache cache = new ActivityInfoCache();
+                            ActivityInfo refInfo = cache.GetInfo(CommonData.refActWrapper.Activity);
+
+                            if (includeStopped)
+                            {
+                                return info.ActualDistanceMetersTrack.Count > 0 &&
+                                       refInfo.ActualDistanceMetersTrack.Count > 0;
+                            }
+                            else
+                            {
+                                return info.MovingDistanceMetersTrack.Count > 0 &&
+                                       refInfo.MovingDistanceMetersTrack.Count > 0;
+                            }
+                        }
+                    },
+                    axis,
+                    delegate(ActivityInfo info)
+                    {
+                        bool includeStopped = false;
+#if ST_2_1
+                        // If UseEnteredData is set, exclude Stopped
+                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
+                        {
+                            includeStopped = true;
+                        }
+#else
+                        includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
+#endif
+                        ActivityInfoCache cache = new ActivityInfoCache();
+                        ActivityInfo refInfo = cache.GetInfo(CommonData.refActWrapper.Activity);
+
+                        INumericTimeDataSeries refTrack, actTrack;
+                        if (includeStopped)
+                        {
+                            actTrack = info.ActualDistanceMetersTrack;
+                            refTrack = refInfo.ActualDistanceMetersTrack;
+                        }
+                        else
+                        {
+                            actTrack = info.MovingDistanceMetersTrack;
+                            refTrack = refInfo.MovingDistanceMetersTrack;
+                        }
+                        IValueRangeSeries<DateTime> actPauses, refPauses;
+                        if (includeStopped)
+                        {
+                            actPauses = info.Activity.TimerPauses;
+                            refPauses = refInfo.Activity.TimerPauses;
+                        }
+                        else
+                        {
+                            actPauses = info.NonMovingTimes;
+                            refPauses = refInfo.NonMovingTimes;
+                        }
+
+                        INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
+                        INumericTimeDataSeries modActTrack, modRefTrack;
+                        CorrectTimeDataSeriesForPauses(info, includeStopped, actTrack, out modActTrack);
+                        CorrectTimeDataSeriesForPauses(refInfo, includeStopped, refTrack, out modRefTrack);
+                        foreach (ITimeValueEntry<float> p in actTrack)
+                        {
+                            DateTime refActualTime = modRefTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+                            DateTime actualTime = modActTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+
+                            ITimeValueEntry<float> refDist = modRefTrack.GetInterpolatedValue(refActualTime);
+                            if (refDist != null)
+                            {
+                                track.Add(actualTime, p.Value - refDist.Value);
+                            }
+                        }
+                        return track;
+
+                        foreach (ITimeValueEntry<float> p in actTrack)
+                        {
+                            
+                            TimeSpan ts = new TimeSpan(0, 0, (int)p.ElapsedSeconds);
+                            //DateTime refActualTime = DateTimeRangeSeries.AddTimeAndPauses(refTrack.StartTime, ts, refPauses);
+                            DateTime refActualTime = refTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+                            DateTime actualTime = actTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+                                //DateTimeRangeSeries.AddTimeAndPauses(actTrack.StartTime, ts, actPauses);
+                                //actTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+
+                            ITimeValueEntry<float> refDist = refTrack.GetInterpolatedValue(refActualTime);
+                            if (refDist != null)
+                            {
+                                track.Add(actualTime, p.Value - refDist.Value);
+                            }
+                        }
+                        return track;
+
+                    });
+            }
+
 
             //chart.AutozoomToData is the slowest part of this plugin
             chart.AutozoomToData(true);
