@@ -48,6 +48,7 @@ namespace GpsRunningPlugin.Source
         {
             this.components = new System.ComponentModel.Container();
             this.summaryLabel = new System.Windows.Forms.Label();
+            this.summaryListLabel = new System.Windows.Forms.Label();
             this.summaryList = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyTable = new System.Windows.Forms.ToolStripMenuItem();
@@ -83,6 +84,16 @@ namespace GpsRunningPlugin.Source
             this.summaryLabel.TabIndex = 0;
             this.summaryLabel.Text = "Found nn activities on same route";
             // 
+            // summaryListLabel
+            // 
+            this.summaryListLabel.AutoSize = true;
+            this.summaryListLabel.Location = new System.Drawing.Point(4, 4);
+            this.summaryListLabel.Name = "summaryListLabel";
+            this.summaryListLabel.Size = new System.Drawing.Size(166, 13);
+            this.summaryListLabel.TabIndex = 0;
+            this.summaryListLabel.Text = "Found no activities on same route";
+            this.summaryListLabel.Visible = false;
+            // 
             // summaryList
             // 
             this.summaryList.AutoScroll = true;
@@ -114,7 +125,6 @@ namespace GpsRunningPlugin.Source
             this.summaryList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(selectedRow_DoubleClick);
             this.summaryList.MouseMove += new System.Windows.Forms.MouseEventHandler(summaryList_MouseMove);
             this.summaryList.MouseLeave += new System.EventHandler(summaryList_MouseLeave);
-            this.summaryListToolTipTimer.Tick += new System.EventHandler(ToolTipTimer_Tick);
             // 
             // contextMenu
             // 
@@ -330,6 +340,7 @@ namespace GpsRunningPlugin.Source
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.summaryList);
+            this.splitContainer1.Panel2.Controls.Add(this.summaryListLabel);
             this.splitContainer1.Size = new System.Drawing.Size(391, 228);
             this.splitContainer1.SplitterDistance = 27;
             this.splitContainer1.SplitterWidth = 1;
@@ -357,6 +368,7 @@ namespace GpsRunningPlugin.Source
         #endregion
 
         private System.Windows.Forms.Label summaryLabel;
+        private System.Windows.Forms.Label summaryListLabel;
         private ZoneFiveSoftware.Common.Visuals.TreeList summaryList;
         private System.Windows.Forms.ProgressBar progressBar;
         private ZoneFiveSoftware.Common.Visuals.Button btnDoIt;
