@@ -892,19 +892,40 @@ IListColumnDefinition
                     chart.YAxis,
                     delegate(ActivityInfo info)
                     {
-                        INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
-                        foreach (ITimeValueEntry<float> p in info.Activity.HeartRatePerMinuteTrack)
-                        {
-                            DateTime refActualTime = CommonData.refActWrapper.Activity.HeartRatePerMinuteTrack.StartTime.AddSeconds(p.ElapsedSeconds);
-                            DateTime actualTime = info.Activity.HeartRatePerMinuteTrack.StartTime.AddSeconds(p.ElapsedSeconds);
 
-                            ITimeValueEntry<float> refHR = CommonData.refActWrapper.Activity.HeartRatePerMinuteTrack.GetInterpolatedValue(refActualTime);
-                            if (refHR != null)
+                        bool includeStopped = false;
+#if ST_2_1
+                        // If UseEnteredData is set, exclude Stopped
+                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
+                        {
+                            includeStopped = true;
+                        }
+#else
+                        includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
+#endif
+                        ActivityInfo refInfo = ActivityInfoCache.Instance.GetInfo(CommonData.refActWrapper.Activity);
+
+                        INumericTimeDataSeries refTrack, actTrack, modRefTrack, modActTrack, modTrack;
+                        actTrack = info.Activity.HeartRatePerMinuteTrack;
+                        refTrack = refInfo.Activity.HeartRatePerMinuteTrack;
+
+                        // Remove pauses in order to be able to calculate difference
+                        CorrectTimeDataSeriesForPauses(info, includeStopped, actTrack, out modActTrack);
+                        CorrectTimeDataSeriesForPauses(refInfo, includeStopped, refTrack, out modRefTrack);
+                        INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
+                        foreach (ITimeValueEntry<float> p in modActTrack)
+                        {
+                            DateTime refActualTime = modRefTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+                            DateTime actualTime = modActTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+
+                            ITimeValueEntry<float> refEntry = modRefTrack.GetInterpolatedValue(refActualTime);
+                            if (refEntry != null)
                             {
-                                track.Add(actualTime, p.Value - refHR.Value);
+                                track.Add(actualTime, p.Value - refEntry.Value);
                             }
                         }
-                        return track;
+                        AddPausesToTimeDataSeries(info, includeStopped, track, out modTrack);
+                        return modTrack;
                     }
                     );
             }
@@ -946,8 +967,7 @@ IListColumnDefinition
                             return false;
                         else
                         {
-                            ActivityInfoCache cache = new ActivityInfoCache();
-                            ActivityInfo refInfo = cache.GetInfo(CommonData.refActWrapper.Activity);
+                            ActivityInfo refInfo = ActivityInfoCache.Instance.GetInfo(CommonData.refActWrapper.Activity);
 
                             if (includeStopped)
                             {
@@ -974,10 +994,9 @@ IListColumnDefinition
 #else
                         includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
 #endif
-                        ActivityInfoCache cache = new ActivityInfoCache();
-                        ActivityInfo refInfo = cache.GetInfo(CommonData.refActWrapper.Activity);
+                        ActivityInfo refInfo = ActivityInfoCache.Instance.GetInfo(CommonData.refActWrapper.Activity);
 
-                        INumericTimeDataSeries refTrack, actTrack;
+                        INumericTimeDataSeries refTrack, actTrack, modRefTrack, modActTrack, modTrack;
                         if (includeStopped)
                         {
                             actTrack = info.ActualDistanceMetersTrack;
@@ -988,23 +1007,12 @@ IListColumnDefinition
                             actTrack = info.MovingDistanceMetersTrack;
                             refTrack = refInfo.MovingDistanceMetersTrack;
                         }
-                        IValueRangeSeries<DateTime> actPauses, refPauses;
-                        if (includeStopped)
-                        {
-                            actPauses = info.Activity.TimerPauses;
-                            refPauses = refInfo.Activity.TimerPauses;
-                        }
-                        else
-                        {
-                            actPauses = info.NonMovingTimes;
-                            refPauses = refInfo.NonMovingTimes;
-                        }
-
-                        INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
-                        INumericTimeDataSeries modActTrack, modRefTrack;
+                       
+                        // Remove pauses in order to be able to calculate difference
                         CorrectTimeDataSeriesForPauses(info, includeStopped, actTrack, out modActTrack);
                         CorrectTimeDataSeriesForPauses(refInfo, includeStopped, refTrack, out modRefTrack);
-                        foreach (ITimeValueEntry<float> p in actTrack)
+                        INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
+                        foreach (ITimeValueEntry<float> p in modActTrack)
                         {
                             DateTime refActualTime = modRefTrack.StartTime.AddSeconds(p.ElapsedSeconds);
                             DateTime actualTime = modActTrack.StartTime.AddSeconds(p.ElapsedSeconds);
@@ -1015,25 +1023,8 @@ IListColumnDefinition
                                 track.Add(actualTime, p.Value - refDist.Value);
                             }
                         }
-                        return track;
-
-                        foreach (ITimeValueEntry<float> p in actTrack)
-                        {
-                            
-                            TimeSpan ts = new TimeSpan(0, 0, (int)p.ElapsedSeconds);
-                            //DateTime refActualTime = DateTimeRangeSeries.AddTimeAndPauses(refTrack.StartTime, ts, refPauses);
-                            DateTime refActualTime = refTrack.StartTime.AddSeconds(p.ElapsedSeconds);
-                            DateTime actualTime = actTrack.StartTime.AddSeconds(p.ElapsedSeconds);
-                                //DateTimeRangeSeries.AddTimeAndPauses(actTrack.StartTime, ts, actPauses);
-                                //actTrack.StartTime.AddSeconds(p.ElapsedSeconds);
-
-                            ITimeValueEntry<float> refDist = refTrack.GetInterpolatedValue(refActualTime);
-                            if (refDist != null)
-                            {
-                                track.Add(actualTime, p.Value - refDist.Value);
-                            }
-                        }
-                        return track;
+                        AddPausesToTimeDataSeries(info, includeStopped, track, out modTrack);
+                        return modTrack;
 
                     });
             }
@@ -1065,6 +1056,26 @@ IListColumnDefinition
                 DateTime entryTime = dataSeries.EntryDateTime(entry);
                 TimeSpan elapsed = DateTimeRangeSeries.TimeNotPaused(info.Activity.StartTime, entryTime, pauses);                
                 newDataSeries.Add(dataSeries.StartTime.Add(elapsed), entry.Value);
+            }
+        }
+
+        private void AddPausesToTimeDataSeries(ActivityInfo info, bool includeStopped, INumericTimeDataSeries dataSeries, out INumericTimeDataSeries newDataSeries)
+        {
+            IValueRangeSeries<DateTime> pauses;
+            if (includeStopped)
+            {
+                pauses = info.Activity.TimerPauses;
+            }
+            else
+            {
+                pauses = info.NonMovingTimes;
+            }
+            newDataSeries = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
+            newDataSeries.AllowMultipleAtSameTime = true;
+            foreach (TimeValueEntry<float> entry in dataSeries)
+            {
+                DateTime newEntryTime = DateTimeRangeSeries.AddTimeAndPauses(info.Activity.StartTime, new TimeSpan(0,0, (int)entry.ElapsedSeconds), pauses);
+                newDataSeries.Add(newEntryTime, entry.Value);
             }
         }
         
