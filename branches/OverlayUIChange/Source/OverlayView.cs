@@ -789,8 +789,6 @@ IListColumnDefinition
                             TimeValueEntry<float> entry = (TimeValueEntry<float>)TimeTrack[i];
                             entry.Value = ModTimeTrack[i].ElapsedSeconds;
                         }
-                        //TimeValueEntry<float> lastEntry = (TimeValueEntry<float>)TimeTrack[TimeTrack.Count-1];
-                        //lastEntry.Value = ModTimeTrack[ModTimeTrack.Count-1].ElapsedSeconds;
                         
                         return TimeTrack;
                     });
@@ -928,6 +926,101 @@ IListColumnDefinition
                         return modTrack;
                     }
                     );
+            }
+            if (Settings.ShowDiffTime)
+            {
+                IAxis axis;
+                if (useRight)
+                {
+                    axis = new RightVerticalAxis(chart);
+                    chart.YAxisRight.Add(axis);
+                }
+                else
+                {
+                    axis = chart.YAxis;
+                    useRight = true;
+                }
+                nextIndex = 0;
+                axis.Formatter = new Formatter.SecondsToTime();
+                axis.ChangeAxisZoom(new Point(0, 0), new Point(10, 10));
+                axis.Label = UnitUtil.Time.LabelAxis;
+                addSeries(
+                    delegate(float value)
+                    {
+                        return value;
+                    },
+                    delegate(ActivityInfo info)
+                    {
+                        if (CommonData.refActWrapper == null)
+                            return false;
+                        else
+                        {
+                            ActivityInfo refInfo = ActivityInfoCache.Instance.GetInfo(CommonData.refActWrapper.Activity);
+                            return info.SmoothedSpeedTrack.Count > 0 && refInfo.SmoothedSpeedTrack.Count > 0;
+                        }
+                    },
+                    axis,
+                    delegate(ActivityInfo info)
+                    {
+                        bool includeStopped = false;
+#if ST_2_1
+                        // If UseEnteredData is set, exclude Stopped
+                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
+                        {
+                            includeStopped = true;
+                        }
+#else
+                        includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
+#endif
+                        ActivityInfo refInfo = ActivityInfoCache.Instance.GetInfo(CommonData.refActWrapper.Activity);
+
+                        INumericTimeDataSeries refTrack, actTrack, modRefTrack, modActTrack, modTrack;
+
+                        if (includeStopped)
+                        {
+                            actTrack = info.ActualDistanceMetersTrack;
+                            refTrack = refInfo.ActualDistanceMetersTrack;
+                        }
+                        else
+                        {
+                            actTrack = info.MovingDistanceMetersTrack;
+                            refTrack = refInfo.MovingDistanceMetersTrack;
+                        }
+
+                        // Remove pauses in order to be able to calculate difference
+                        CorrectTimeDataSeriesForPauses(info, includeStopped, actTrack, out modActTrack);
+                        CorrectTimeDataSeriesForPauses(refInfo, includeStopped, refTrack, out modRefTrack);
+
+                        INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
+                        // Create track containing time difference
+                        int lastFoundElapsedTime = 0;
+                        foreach (TimeValueEntry<float> entry in modActTrack)
+                        {
+                            bool found = false;
+                            ITimeValueEntry<float> refEntry = null;
+                            for (int i = lastFoundElapsedTime; i < modRefTrack.TotalElapsedSeconds && !found; i++)
+                            {
+                                refEntry = modRefTrack.GetInterpolatedValue(modRefTrack.StartTime.Add(new TimeSpan(0, 0, i)));
+                                if (refEntry == null)
+                                {
+                                    lastFoundElapsedTime = i;
+                                    break;
+                                }
+                                else if ( refEntry.Value >= entry.Value)
+                                {
+                                    found = true;
+                                    lastFoundElapsedTime = i;
+                                    break;
+                                }
+                            }
+                            if (found)
+                            {
+                                track.Add(modActTrack.EntryDateTime(entry), (float)entry.ElapsedSeconds - (float)refEntry.ElapsedSeconds);
+                            }
+                        }
+                        AddPausesToTimeDataSeries(info, includeStopped, track, out modTrack);
+                        return modTrack;
+                    });
             }
             if (Settings.ShowDiffDistance)
             {
@@ -1486,7 +1579,7 @@ IListColumnDefinition
                     }
 
                 }
-                catch (Exception Ex)
+                catch
                 {
                     ActivityWrapper wrapper = (ActivityWrapper)treeListAct.SelectedItems[0];
                     if (Settings.UseTimeXAxis)
