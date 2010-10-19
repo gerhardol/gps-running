@@ -272,6 +272,10 @@ IListColumnDefinition
             {
                 treeListAct.SetChecked(wrapper, true);
             }
+            if (actWrappers.Count > 0)
+            {
+                CommonData.refActWrapper = actWrappers[0];
+            }
         }
 
         private class ActivityDateComparer : Comparer<IActivity>
@@ -344,9 +348,6 @@ IListColumnDefinition
             showHRDiffMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelHeartRate.ToLower() + " " + StringResources.Difference;
             showTimeDiffMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelTime.ToLower() + " " + StringResources.Difference;
             showDistDiffMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelDistance.ToLower() + " " + StringResources.Difference;
-
-            offsetStripTextBox.Text = CommonResources.Text.LabelActivity + " " + StringResources.Offset.ToLower();
-            averageStripTextBox.Text = StringResources.MovingAverage + " " + StringResources.Width;
             
             int max = Math.Max(labelXaxis.Location.X + labelXaxis.Size.Width,
                                 labelYaxis.Location.X + labelYaxis.Size.Width) + 5;
@@ -1489,50 +1490,9 @@ IListColumnDefinition
         {
             showMeanMenuItem.Checked = Settings.ShowCategoryAverage;
             showRollingAverageMenuItem.Checked = Settings.ShowMovingAverage;
-            offsetStripTextBox.Enabled = (treeListAct.SelectedItems.Count > 0);
-            if (offsetStripTextBox.Enabled)
-            {
-                ActivityWrapper wrapper = (ActivityWrapper)treeListAct.SelectedItems[0];
-                if (Settings.UseTimeXAxis)
-                    offsetStripTextBox.Text = Util.UnitUtil.Time.ToString(wrapper.TimeOffset);
-                else
-                    offsetStripTextBox.Text = wrapper.DistanceOffset.ToString();
-            }
 
             setRefActMenuItem.Enabled = (treeListAct.SelectedItems.Count == 1);
             showDiffMenuItem.Enabled = (CommonData.refActWrapper != null);
-        }
-
-        private void bannerContextMenuStrip_Closed(object sender, ToolStripDropDownClosedEventArgs e)
-        {
-            // Set the offset of the selected activities here            
-            foreach (ActivityWrapper wrapper in treeListAct.SelectedItems)
-            {
-                try
-                {
-                    if (!Settings.UseTimeXAxis)
-                        wrapper.DistanceOffset = UnitUtil.Distance.Parse(offsetStripTextBox.Text);
-                    else
-                        wrapper.TimeOffset = Time.ParseTimeSpan(offsetStripTextBox.Text, false);
-                }
-                catch
-                {
-                    // No valid value in the textbox, ignore it
-                }
-            }
-            try
-            {
-                if (!Settings.UseTimeXAxis)
-                    Settings.MovingAverageLength = UnitUtil.Distance.Parse(averageStripTextBox.Text);
-                else
-                    Settings.MovingAverageTime = UnitUtil.Time.Parse(averageStripTextBox.Text);
-            }
-            catch
-            {
-                // No valid value in the textbox, ignore it
-            }
-            treeListAct.Refresh();
-            updateChart();
         }
 
         private void ShowMeanMenuItem_Click(object sender, EventArgs e)
@@ -1557,38 +1517,6 @@ IListColumnDefinition
             updateChart();
         }
 
-        // TODO: Fix handling of the user entering the offset
-        private void offsetStripTextBox_TextChanged(object sender, EventArgs e)
-        {
-            if (treeListAct.SelectedItems.Count >= 1)
-            {
-                try
-                {
-                    foreach (ActivityWrapper wrapper in treeListAct.SelectedItems)
-                    {
-                        // This parsing is done just to verify that they can be done and that the text in the box is valid
-                        if (Settings.UseTimeXAxis)
-                        {
-                            wrapper.TimeOffset = Time.ParseTimeSpan(offsetStripTextBox.Text, false);
-                            offsetStripTextBox.Text = Util.UnitUtil.Time.ToString(wrapper.TimeOffset);
-                        }
-                        else
-                        {
-                            wrapper.DistanceOffset = double.Parse(offsetStripTextBox.Text);
-                        }
-                    }
-
-                }
-                catch
-                {
-                    ActivityWrapper wrapper = (ActivityWrapper)treeListAct.SelectedItems[0];
-                    if (Settings.UseTimeXAxis)
-                        offsetStripTextBox.Text = Util.UnitUtil.Time.ToString(wrapper.TimeOffset);
-                    else
-                        offsetStripTextBox.Text = wrapper.DistanceOffset.ToString();
-                }
-            }
-        }
 
         private void bannerShowContextMenuStrip_Opening(object sender, CancelEventArgs e)
         {
@@ -1713,6 +1641,121 @@ IListColumnDefinition
         private bool bSelectDataFlag = false;
 
         private string saveImageProperties_fileName = "";
+
+
+        private void setRollAvgWidthMenuItem_Click(object sender, EventArgs e)
+        {
+            bool valueOk = false;
+            String textBoxInit;
+            while (!valueOk)
+            {
+                String labelText = null;
+                if (Settings.UseTimeXAxis)
+                {
+                    labelText = StringResources.SetMovingAveragePeriod+":";
+                    textBoxInit = UnitUtil.Time.ToString(Settings.MovingAverageTime);
+                }
+                else
+                {
+                    labelText = StringResources.SetMovingAveragePeriod + ":";
+                    textBoxInit = UnitUtil.Distance.ToString(Settings.MovingAverageLength);
+                }
+                InputDialog dialog = new InputDialog("Set moving average width", labelText, textBoxInit);
+                if (dialog.ReturnOk)
+                {
+                    try
+                    {
+                        if (Settings.UseTimeXAxis)
+                        {
+                            double value = UnitUtil.Time.Parse(dialog.TextResult);
+                            if (value < 0) { throw new Exception(); }
+                            Settings.MovingAverageTime = value;
+                        }
+                        else
+                        {
+                            double value = UnitUtil.Distance.Parse(dialog.TextResult);
+                            if (value < 0) { throw new Exception(); }
+                            Settings.MovingAverageLength = value;
+                        }
+                        valueOk = true;
+                        updateChart();
+                    }
+                    catch (Exception)
+                    {
+                        //Generic error message
+                        new WarningDialog(Resources.NonNegativeNumber);
+                    }
+                }
+                else
+                {
+                    valueOk = true; // cancelled
+                }
+            }
+        }
+
+        private void offsetMenuItem_Click(object sender, EventArgs e)
+        {
+            bool valueOk = false;
+            String textBoxInit;
+            while (!valueOk && treeListAct.SelectedItems.Count > 0)
+            {
+                String labelText = null;
+                ActivityWrapper wrapper = (ActivityWrapper)treeListAct.SelectedItems[0];
+                if (Settings.UseTimeXAxis)
+                {
+                    labelText = StringResources.SetOffset + " " + CommonResources.Text.LabelTime.ToLower()+":";
+                    textBoxInit = UnitUtil.Time.ToString(wrapper.TimeOffset);
+                }
+                else
+                {
+                    labelText = StringResources.SetOffset + " " + CommonResources.Text.LabelDistance.ToLower() + ":";
+                    textBoxInit = UnitUtil.Distance.ToString(UnitUtil.Distance.ConvertFrom(wrapper.DistanceOffset));
+                }
+                InputDialog dialog = new InputDialog(StringResources.SetOffset, labelText, textBoxInit);
+                if (dialog.ReturnOk)
+                {
+                    try
+                    {
+                        double value;
+                        if (Settings.UseTimeXAxis)
+                        {
+                            value = UnitUtil.Time.Parse(dialog.TextResult);
+                            if (value < 0) { throw new Exception(); }
+                        }
+                        else
+                        {
+                            value = UnitUtil.Distance.Parse(dialog.TextResult);
+                            if (value < 0) { throw new Exception(); }
+                        }
+                        valueOk = true;
+                        foreach (ActivityWrapper w in treeListAct.SelectedItems)
+                        {
+                            // This parsing is done just to verify that they can be done and that the text in the box is valid
+                            if (Settings.UseTimeXAxis)
+                            {
+                                w.TimeOffset = new TimeSpan(0, 0, (int)value);
+                            }
+                            else
+                            {
+                                w.DistanceOffset = value;
+                            }
+                        }
+                        treeListAct.Refresh();
+                        updateChart();
+                    }
+                    catch (Exception)
+                    {
+                        //Generic error message
+                        new WarningDialog(Resources.NonNegativeNumber);
+                    }
+                }
+                else
+                {
+                    valueOk = true; // cancelled
+                }
+            }
+
+        }
 
 
 
