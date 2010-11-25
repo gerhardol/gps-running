@@ -348,7 +348,10 @@ IListColumnDefinition
             showHRDiffMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelHeartRate.ToLower() + " " + StringResources.Difference;
             showTimeDiffMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelTime.ToLower() + " " + StringResources.Difference;
             showDistDiffMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelDistance.ToLower() + " " + StringResources.Difference;
-            
+
+            offsetMenuItem.Text = StringResources.SetOffset;
+            setRollAvgWidthMenuItem.Text = StringResources.SetMovingAveragePeriod;
+
             int max = Math.Max(labelXaxis.Location.X + labelXaxis.Size.Width,
                                 labelYaxis.Location.X + labelYaxis.Size.Width) + 5;
             useTime.Location = new Point(max, labelXaxis.Location.Y);

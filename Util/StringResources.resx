@@ -298,7 +298,7 @@
     <value>Offset</value>
   </data>
   <data name="SetOffset" xml:space="preserve">
-    <value>Set offset</value>
+    <value>Set activity offset</value>
   </data>
   <data name="SetMovingAveragePeriod" xml:space="preserve">
     <value>Set moving average period</value>
