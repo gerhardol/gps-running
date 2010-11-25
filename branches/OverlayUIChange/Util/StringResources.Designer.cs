@@ -502,7 +502,7 @@ namespace GpsRunningPlugin.Util {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set offset.
+        ///   Looks up a localized string similar to Set activity offset.
         /// </summary>
         internal static string SetOffset {
             get {
