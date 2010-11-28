@@ -42,6 +42,34 @@ namespace GpsRunningPlugin.Source
 
         public readonly static Type uniqueRoutes;
 
+        private static IList<string> treeListActColumns;
+        public static IList<string> TreeListActColumns
+        {
+            get
+            {
+                return treeListActColumns;
+            }
+            set
+            {
+                treeListActColumns = value;
+                //PluginMain.WriteExtensionData();
+            }
+        }
+
+        private static IList<string> treeListPermanentActColumns;
+        public static IList<string> TreeListPermanentActColumns
+        {
+            get
+            {
+                return treeListPermanentActColumns;
+            }
+            set
+            {
+                treeListPermanentActColumns = value;
+                //PluginMain.WriteExtensionData();
+            }
+        }
+
         private static bool autoZoom;
         public static bool AutoZoom
         {
@@ -172,6 +200,36 @@ namespace GpsRunningPlugin.Source
             }
         }
 
+        private static bool showDiffHeartRate;
+        public static bool ShowDiffHeartRate
+        {
+            get { return showDiffHeartRate; }
+            set
+            {
+                showDiffHeartRate = value;
+            }
+        }
+
+        private static bool showDiffDistance;
+        public static bool ShowDiffDistance
+        {
+            get { return showDiffDistance; }
+            set
+            {
+                showDiffDistance = value;
+            }
+        }
+
+        private static bool showDiffTime;
+        public static bool ShowDiffTime
+        {
+            get { return showDiffTime; }
+            set
+            {
+                showDiffTime = value;
+            }
+        }
+
         private static bool useTimeXAxis;
         public static bool UseTimeXAxis
         {
@@ -239,6 +297,9 @@ namespace GpsRunningPlugin.Source
             showCadence = false;
             showElevation = false;
             showCategoryAverage = false;
+            showDiffHeartRate = false;
+            showDiffDistance = false;
+            showDiffTime = false;
             showMovingAverage = false;
             movingAverageLength = 0;
             movingAverageTime = 0;
@@ -252,6 +313,18 @@ namespace GpsRunningPlugin.Source
 #endif
             savedImageFolder = "";
 			savedImageFormat = ImageFormat.Jpeg;
+
+            treeListPermanentActColumns = new List<string>();
+            treeListPermanentActColumns.Add(OverlayColumnIds.Visible);
+            treeListPermanentActColumns.Add(OverlayColumnIds.Colour);
+            treeListPermanentActColumns.Add(OverlayColumnIds.StartTime);
+
+            treeListActColumns = new List<string>();
+            // Visible, colour and StartTime will always be shown anyway
+            treeListActColumns.Add(OverlayColumnIds.Offset);
+            treeListActColumns.Add(OverlayColumnIds.Time);
+            treeListActColumns.Add(OverlayColumnIds.AvgHR);
+
         }
 
         public static void ReadOptions(XmlDocument xmlDoc, XmlNamespaceManager nsmgr, XmlElement pluginNode)
@@ -266,6 +339,8 @@ namespace GpsRunningPlugin.Source
                 load();
             }
 
+            attr = pluginNode.GetAttribute(xmlTags.useTimeXAxis);
+            if (attr.Length > 0) { useTimeXAxis = XmlConvert.ToBoolean(attr); }
             attr = pluginNode.GetAttribute(xmlTags.showHeartRate);
             if (attr.Length > 0) { showHeartRate = XmlConvert.ToBoolean(attr); }
             attr = pluginNode.GetAttribute(xmlTags.showPace);
@@ -290,6 +365,8 @@ namespace GpsRunningPlugin.Source
             if (attr.Length > 0) { autoZoom = XmlConvert.ToBoolean(attr); }
             attr = pluginNode.GetAttribute(xmlTags.showTime);
             if (attr.Length > 0) { showTime = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.showDistance);
+            if (attr.Length > 0) { showDistance = XmlConvert.ToBoolean(attr); }
 
             attr = pluginNode.GetAttribute(xmlTags.viewWidth);
             attr2 = pluginNode.GetAttribute(xmlTags.viewHeight);
@@ -323,6 +400,18 @@ namespace GpsRunningPlugin.Source
 				//Need to this as well.
 				savedImageFormat = ImageFormatGuid2ImageFormat( savedImageFormat );
 			}
+
+            attr = pluginNode.GetAttribute(xmlTags.TListLColumns);
+            if (attr.Length > 0)
+            {
+                treeListActColumns.Clear();
+                String[] values = attr.Split(';');
+                foreach (String column in values)
+                {
+                    treeListActColumns.Add(column);
+                }
+            }
+
 		}
 		private static ImageFormat ImageFormatGuid2ImageFormat( ImageFormat imgF )
 		{
@@ -353,6 +442,7 @@ namespace GpsRunningPlugin.Source
         {
             pluginNode.SetAttribute(xmlTags.settingsVersion, XmlConvert.ToString(settingsVersionCurrent));
 
+            pluginNode.SetAttribute(xmlTags.useTimeXAxis, XmlConvert.ToString(useTimeXAxis));
             pluginNode.SetAttribute(xmlTags.showHeartRate, XmlConvert.ToString(showHeartRate));
             pluginNode.SetAttribute(xmlTags.showPace, XmlConvert.ToString(showPace));
             pluginNode.SetAttribute(xmlTags.showSpeed, XmlConvert.ToString(showSpeed));
@@ -365,6 +455,7 @@ namespace GpsRunningPlugin.Source
             pluginNode.SetAttribute(xmlTags.movingAverageTime, XmlConvert.ToString(movingAverageTime));
             pluginNode.SetAttribute(xmlTags.autoZoom, XmlConvert.ToString(autoZoom));
             pluginNode.SetAttribute(xmlTags.showTime, XmlConvert.ToString(showTime));
+            pluginNode.SetAttribute(xmlTags.showDistance, XmlConvert.ToString(showDistance));
 
             pluginNode.SetAttribute(xmlTags.viewWidth, XmlConvert.ToString(windowSize.Width));
             pluginNode.SetAttribute(xmlTags.viewHeight, XmlConvert.ToString(windowSize.Height));
@@ -377,12 +468,22 @@ namespace GpsRunningPlugin.Source
 			pluginNode.SetAttribute(xmlTags.savedImageSize,savedImageSize.ToString());
 #endif
             pluginNode.SetAttribute(xmlTags.savedImageFormat,XmlConvert.ToString(savedImageFormat.Guid));
+
+            String colText = null;
+            foreach (String column in treeListActColumns)
+            {
+                if (colText == null) { colText = column; }
+                else { colText += ";" + column; }
+            }
+            pluginNode.SetAttribute(xmlTags.TListLColumns, colText);
+
         }
 
         private class xmlTags
         {
             public const string settingsVersion = "settingsVersion";
 
+            public const string useTimeXAxis = "useTimeXAxis";
             public const string showHeartRate = "showHeartRate";
             public const string showPace = "showPace";
             public const string showSpeed = "showSpeed";
@@ -395,10 +496,14 @@ namespace GpsRunningPlugin.Source
             public const string movingAverageTime = "movingAverageTime";
             public const string autoZoom = "autoZoom";
             public const string showTime = "showTime";
+            public const string showDistance = "showDistance";
             public const string viewWidth = "viewWidth";
             public const string viewHeight = "viewHeight";
 
 			public const string savedImageFolder = "savedImageFolder";
+
+            public const string TListLColumns = "TListColumns";
+
 #if ST_2_1
 			public const string savedImageWidth = "savedImageWidth";
 			public const string savedImageHeight = "savedImageHeight";
