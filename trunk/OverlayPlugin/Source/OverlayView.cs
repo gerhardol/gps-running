@@ -84,11 +84,6 @@ namespace GpsRunningPlugin.Source
             time.Checked = Settings.ShowTime;
             distance.Checked = Settings.ShowDistance;
 
-            categoryAverage.Checked = Settings.ShowCategoryAverage;
-            movingAverage.Checked = Settings.ShowMovingAverage;
-            toolTipMAbox.SetToolTip(maBox, Resources.MAToolTip);
-            maBox.LostFocus += new EventHandler(maBox_LostFocus);
-            updateMovingAverage();
             if (Settings.UseTimeXAxis)
             {
                 useTime.Checked = true;
@@ -99,25 +94,90 @@ namespace GpsRunningPlugin.Source
                 useDistance.Checked = true;
                 useTime.Checked = false;
             }
+
+            RefreshColumns();
+#if false
+            TreeList.Column column = new TreeList.Column("Visible", StringResources.Visible, 50, StringAlignment.Center);
+            treeListAct.Columns.Add(column);
+            column = new TreeList.Column("Colour", StringResources.Colour, 50, StringAlignment.Center);
+            treeListAct.Columns.Add(column);
+            column = new TreeList.Column("StartTime", StringResources.ActDate, 200, StringAlignment.Center); 
+            treeListAct.Columns.Add(column);
+            column = new TreeList.Column("Offset", StringResources.Offset, 50, StringAlignment.Center);
+            treeListAct.Columns.Add(column);
+            column = new TreeList.Column("Name", StringResources.Name, 100, StringAlignment.Center); 
+            treeListAct.Columns.Add(column);
+#endif
+            treeListAct.CheckBoxes = true;
+            treeListAct.MultiSelect = true;
+            treeListAct.RowDataRenderer.RowAlternatingColors = true;
+            treeListAct.LabelProvider = new ActivityLabelProvider();
+            treeListAct.CheckedChanged += new TreeList.ItemEventHandler(treeView_CheckedChanged);
+            treeListAct.ContextMenuStrip = treeListContextMenuStrip;
+
+            actionBanner1.Text = StringResources.OverlayChart;
+            actionBanner1.MenuClicked += actionBanner1_MenuClicked;
+            
             chart.SelectData += new ChartBase.SelectDataHandler(chart_SelectData);
             chart.SelectingData += new ChartBase.SelectDataHandler(chart_SelectingData);
             chart.Click += new EventHandler(chart_Click);
         }
 
+        private void RefreshColumns()
+        {
+
+            treeListAct.Columns.Clear();
+            foreach (string id in Settings.TreeListPermanentActColumns)
+            {
+                foreach (
+#if ST_2_1
+                    ListItemInfo
+#else
+IListColumnDefinition
+#endif
+ columnDef in OverlayColumnIds.PermanentColumnDefs())
+                {
+                    if (columnDef.Id == id)
+                    {
+                        TreeList.Column column = new TreeList.Column(
+                            columnDef.Id,
+                            columnDef.Text(columnDef.Id),
+                            columnDef.Width,
+                            columnDef.Align
+                        );
+                        treeListAct.Columns.Add(column);
+                        break;
+                    }
+                }
+            }
+
+            foreach (string id in Settings.TreeListActColumns)
+            {
+                foreach (
+#if ST_2_1
+                    ListItemInfo
+#else
+                    IListColumnDefinition
+#endif
+                    columnDef in OverlayColumnIds.ColumnDefs())
+                {
+                    if (columnDef.Id == id)
+                    {
+                        TreeList.Column column = new TreeList.Column(
+                            columnDef.Id,
+                            columnDef.Text(columnDef.Id),
+                            columnDef.Width,
+                            columnDef.Align
+                        );
+                        treeListAct.Columns.Add(column);
+                        break;
+                    }
+                }
+            }
+        }
+        
         public void InitControls()
         {
-            Font fCategory = categoryAverage.Font;
-            Font fMoving = movingAverage.Font;
-            categoryAverage.Font = new Font(categoryAverage.Font, FontStyle.Bold);
-            movingAverage.Font = new Font(movingAverage.Font, FontStyle.Bold);
-
-            //chart.Location = new Point(Math.Max(Math.Max(categoryAverage.Location.X + categoryAverage.Size.Width,
-            //                                             movingAverage.Location.X + movingAverage.Size.Width),
-            //                                    panelAct.Location.X + panelAct.Size.Width), chart.Location.Y);
-            categoryAverage.Font = fCategory;
-            movingAverage.Font = fMoving;
-
-            series2boxes = new Dictionary<ChartDataSeries, CheckBox>();
             SizeChanged += new EventHandler(OverlayView_SizeChanged);
         }
 
@@ -173,6 +233,15 @@ namespace GpsRunningPlugin.Source
 #endif
 
                 }
+                activities.Sort(new ActivityDateComparer());
+                nextIndex = 0;
+                actWrappers.Clear();
+                foreach (IActivity activity in activities)
+                {
+                    actWrappers.Add(new ActivityWrapper(activity, newColor()));
+                }
+
+                CommonData.refActWrapper = null;
                 RefreshPage();
             }
         }
@@ -181,7 +250,6 @@ namespace GpsRunningPlugin.Source
             if (_showPage)
             {
                 updateActivities();
-                updateLabels();
                 updateChart();
             }
         }
@@ -198,61 +266,15 @@ namespace GpsRunningPlugin.Source
             activities.Sort(new ActivityDateComparer());
 
             nextIndex = 0;
-            int x = 0;
-            int y = 0;
-            int index = 0;
 
-            actOffsets.Clear();
-            actBoxes.Clear();
-            actTextBoxes.Clear();
-            checks.Clear();
-            boxes.Clear();
-            checkBoxes.Clear();
-            lastChecked.Clear();
-            panelAct.Controls.Clear();
-
-            foreach (IActivity activity in activities)
+            treeListAct.RowData = actWrappers;
+            foreach(ActivityWrapper wrapper in actWrappers)
             {
-                x = 0;
-                IList<double> s = new List<double>();
-                s.Add(0);
-                s.Add(0);
-                actOffsets.Add(activity, s);//TODO: Get from UR integration
-
-                ZoneFiveSoftware.Common.Visuals.TextBox offBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
-                actTextBoxes.Add(offBox);
-                offBox.Size = new Size(30, 20);
-                offBox.LostFocus += new EventHandler(offBox_LostFocus);
-                offBox.Location = new Point(x, y);
-                panelAct.Controls.Add(offBox);
-                offBox.Name = "offsetBox";
-                actBoxes.Add(offBox, activity);
-                if (Plugin.Verbose > 0)
-                {
-                    offBox.Visible = true;
-                    x += 35;
-                }
-                else
-                {
-                    offBox.Visible = false;
-                }
-
-                CheckBox box = new CheckBox();
-                checkBoxes.Add(box);
-                box.Checked = true;
-                box.Text = activity.StartTime.ToLocalTime().ToString();
-                box.Size = new Size(155, box.Height);
-                box.AutoSize = true;
-                box.ForeColor = newColor();
-                //box.CheckAlign = ContentAlignment.MiddleLeft;
-                box.CheckedChanged += new EventHandler(box_CheckedChanged);
-                checks.Add(true);
-                panelAct.Controls.Add(box);
-                box.Location = new Point(x, y);
-                boxes.Add(box, index);
-
-                index++;
-                y += 25;
+                treeListAct.SetChecked(wrapper, true);
+            }
+            if (actWrappers.Count > 0)
+            {
+                CommonData.refActWrapper = actWrappers[0];
             }
         }
 
@@ -280,21 +302,24 @@ namespace GpsRunningPlugin.Source
             m_visualTheme = visualTheme;
 
             this.chart.ThemeChanged(visualTheme);
-            this.maBox.ThemeChanged(visualTheme);
+            this.panel1.ThemeChanged(visualTheme);
+            this.panel2.ThemeChanged(visualTheme);
+            this.actionBanner1.ThemeChanged(visualTheme);
+            this.treeListAct.ThemeChanged(visualTheme);
             //Non ST controls
-            this.panelAct.BackColor = visualTheme.Control;
-            this.splitContainer1.Panel1.BackColor = visualTheme.Control;
-            this.splitContainer1.Panel2.BackColor = visualTheme.Control;
-            this.splitContainer2.Panel1.BackColor = visualTheme.Control;
-            this.splitContainer2.Panel2.BackColor = visualTheme.Control;
-            this.splitContainer3.Panel1.BackColor = visualTheme.Control;
-            this.splitContainer3.Panel2.BackColor = visualTheme.Control;
+            chartBackgroundPanel.BackColor = visualTheme.Window;
+            this.BackColor = visualTheme.Control;
         }
 
         public void UICultureChanged(CultureInfo culture)
         {
             m_culture = culture;
-            labelActivity.Text = StringResources.Activities;
+            actionBanner1.Text = StringResources.OverlayChart;
+            showMeanMenuItem.Text = Resources.BCA;
+            showRollingAverageMenuItem.Text = Resources.BMA;
+
+            tableSettingsMenuItem.Text = StringResources.TableSettings;
+
             labelXaxis.Text = StringResources.XAxis + ":";
             labelYaxis.Text = StringResources.YAxis + ":";
             useTime.Text = CommonResources.Text.LabelTime;
@@ -307,9 +332,25 @@ namespace GpsRunningPlugin.Source
             elevation.Text = CommonResources.Text.LabelElevation;
             time.Text = CommonResources.Text.LabelTime;
             distance.Text = CommonResources.Text.LabelDistance;
-            categoryAverage.Text = Resources.BCA;
-            movingAverage.Text = Resources.BMA;
-            labelAOP.Text = Resources.AOP;
+
+            showMenuItem.Text = StringResources.Show;
+            showDiffMenuItem.Text = StringResources.Show + " " + StringResources.Difference.ToLower();
+
+            showHRMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelHeartRate;
+            showPaceMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelPace;
+            showSpeedMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelSpeed;
+            showPowerMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelPower;
+            showCadenceMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelCadence;
+            showElevationMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelElevation;
+            showTimeMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelTime;
+            showDistanceMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelDistance;
+
+            showHRDiffMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelHeartRate.ToLower() + " " + StringResources.Difference;
+            showTimeDiffMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelTime.ToLower() + " " + StringResources.Difference;
+            showDistDiffMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelDistance.ToLower() + " " + StringResources.Difference;
+
+            offsetMenuItem.Text = StringResources.SetOffset;
+            setRollAvgWidthMenuItem.Text = StringResources.SetMovingAveragePeriod;
 
             int max = Math.Max(labelXaxis.Location.X + labelXaxis.Size.Width,
                                 labelYaxis.Location.X + labelYaxis.Size.Width) + 5;
@@ -318,7 +359,6 @@ namespace GpsRunningPlugin.Source
             heartRate.Location = new Point(max, labelYaxis.Location.Y);
             correctUI(new Control[] { heartRate, pace, speed, power, cadence, elevation, time, distance });
 
-            updateLabels();
             RefreshPage();
         }
         private void correctUI(IList<Control> comp)
@@ -463,7 +503,6 @@ namespace GpsRunningPlugin.Source
             chart.DataSeries.Add(average);
             average.LineColor = series.LineColor;
             average.LineWidth = 2;
-            series2boxes.Add(average, movingAverage);
             series2activity.Add(average, series2activity[series]);
             return average;
         }
@@ -503,46 +542,21 @@ namespace GpsRunningPlugin.Source
                     average.Points.Add(x, new PointF(x, y / seen));
                 }
              }
-            series2boxes.Add(average, categoryAverage);
             return average;
         }
 
-        private void updateOffBoxLabel(ZoneFiveSoftware.Common.Visuals.TextBox box)
-        {
-            if (Settings.UseTimeXAxis)
-            { 
-               box.Text = UnitUtil.Time.ToString(actOffsets[actBoxes[box]][0], "mm:ss");
-            }
-            else
-            {
-                box.Text = UnitUtil.Distance.ToString(actOffsets[actBoxes[box]][1], "F3"); 
-            }
-        }
-        private void updateLabels()
-        {
-            if (null != actTextBoxes)
-            {
-                foreach (ZoneFiveSoftware.Common.Visuals.TextBox box in actTextBoxes)
-                {
-                    if (null != box) { updateOffBoxLabel(box); }
-                }
-            }
-        }
         private void updateChart()
         {
             //TODO: add show working
             chart.Visible = false;
             chart.UseWaitCursor = true;
-            this.splitContainer2.Panel2.BackgroundImage = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Hourglass16;
-            this.splitContainer2.Panel2.BackgroundImageLayout = ImageLayout.Center;
+//            this.chart.BackgroundImage = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Hourglass16;
+//            this.chart.BackgroundImageLayout = ImageLayout.Center;
             chart.BeginUpdate();
             chart.AutozoomToData(false);
-            ResetLastSelectedBoxFonts();
             chart.DataSeries.Clear();
             chart.YAxisRight.Clear();
             series2activity.Clear();
-            series2actBoxes.Clear();
-            series2boxes.Clear();
             bool useRight = false;
 
             if (Settings.UseTimeXAxis)
@@ -779,8 +793,6 @@ namespace GpsRunningPlugin.Source
                             TimeValueEntry<float> entry = (TimeValueEntry<float>)TimeTrack[i];
                             entry.Value = ModTimeTrack[i].ElapsedSeconds;
                         }
-                        //TimeValueEntry<float> lastEntry = (TimeValueEntry<float>)TimeTrack[TimeTrack.Count-1];
-                        //lastEntry.Value = ModTimeTrack[ModTimeTrack.Count-1].ElapsedSeconds;
                         
                         return TimeTrack;
                     });
@@ -850,6 +862,270 @@ namespace GpsRunningPlugin.Source
                         }
                     });
             }
+            if (Settings.ShowDiffHeartRate)
+            {
+                IAxis axis;
+                if (useRight)
+                {
+                    axis = new RightVerticalAxis(chart);
+                    chart.YAxisRight.Add(axis);
+                }
+                else
+                {
+                    axis = chart.YAxis;
+                    useRight = true;
+                }
+                nextIndex = 0;
+                axis.Formatter = new Formatter.General(UnitUtil.HeartRate.DefaultDecimalPrecision);
+                axis.Label = UnitUtil.HeartRate.LabelAxis;
+                addSeries(
+                    delegate(float value)
+                    {
+                        return value;
+                    },
+                    delegate(ActivityInfo info)
+                    {
+                        if (CommonData.refActWrapper == null)
+                            return false;
+                        else
+                            return info.Activity.HeartRatePerMinuteTrack != null &&
+                                   CommonData.refActWrapper.Activity.HeartRatePerMinuteTrack != null;
+                    },
+                    chart.YAxis,
+                    delegate(ActivityInfo info)
+                    {
+
+                        bool includeStopped = false;
+#if ST_2_1
+                        // If UseEnteredData is set, exclude Stopped
+                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
+                        {
+                            includeStopped = true;
+                        }
+#else
+                        includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
+#endif
+                        ActivityInfo refInfo = ActivityInfoCache.Instance.GetInfo(CommonData.refActWrapper.Activity);
+
+                        INumericTimeDataSeries refTrack, actTrack, modRefTrack, modActTrack, modTrack;
+                        actTrack = info.Activity.HeartRatePerMinuteTrack;
+                        refTrack = refInfo.Activity.HeartRatePerMinuteTrack;
+
+                        // Remove pauses in order to be able to calculate difference
+                        CorrectTimeDataSeriesForPauses(info, includeStopped, actTrack, out modActTrack);
+                        CorrectTimeDataSeriesForPauses(refInfo, includeStopped, refTrack, out modRefTrack);
+                        INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
+                        foreach (ITimeValueEntry<float> p in modActTrack)
+                        {
+                            DateTime refActualTime = modRefTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+                            DateTime actualTime = modActTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+
+                            ITimeValueEntry<float> refEntry = modRefTrack.GetInterpolatedValue(refActualTime);
+                            if (refEntry != null)
+                            {
+                                track.Add(actualTime, p.Value - refEntry.Value);
+                            }
+                        }
+                        AddPausesToTimeDataSeries(info, includeStopped, track, out modTrack);
+                        return modTrack;
+                    }
+                    );
+            }
+            if (Settings.ShowDiffTime)
+            {
+                IAxis axis;
+                if (useRight)
+                {
+                    axis = new RightVerticalAxis(chart);
+                    chart.YAxisRight.Add(axis);
+                }
+                else
+                {
+                    axis = chart.YAxis;
+                    useRight = true;
+                }
+                nextIndex = 0;
+                axis.Formatter = new Formatter.SecondsToTime();
+                axis.ChangeAxisZoom(new Point(0, 0), new Point(10, 10));
+                axis.Label = UnitUtil.Time.LabelAxis;
+                addSeries(
+                    delegate(float value)
+                    {
+                        return value;
+                    },
+                    delegate(ActivityInfo info)
+                    {
+                        if (CommonData.refActWrapper == null)
+                            return false;
+                        else
+                        {
+                            ActivityInfo refInfo = ActivityInfoCache.Instance.GetInfo(CommonData.refActWrapper.Activity);
+                            return info.SmoothedSpeedTrack.Count > 0 && refInfo.SmoothedSpeedTrack.Count > 0;
+                        }
+                    },
+                    axis,
+                    delegate(ActivityInfo info)
+                    {
+                        bool includeStopped = false;
+#if ST_2_1
+                        // If UseEnteredData is set, exclude Stopped
+                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
+                        {
+                            includeStopped = true;
+                        }
+#else
+                        includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
+#endif
+                        ActivityInfo refInfo = ActivityInfoCache.Instance.GetInfo(CommonData.refActWrapper.Activity);
+
+                        INumericTimeDataSeries refTrack, actTrack, modRefTrack, modActTrack, modTrack;
+
+                        if (includeStopped)
+                        {
+                            actTrack = info.ActualDistanceMetersTrack;
+                            refTrack = refInfo.ActualDistanceMetersTrack;
+                        }
+                        else
+                        {
+                            actTrack = info.MovingDistanceMetersTrack;
+                            refTrack = refInfo.MovingDistanceMetersTrack;
+                        }
+
+                        // Remove pauses in order to be able to calculate difference
+                        CorrectTimeDataSeriesForPauses(info, includeStopped, actTrack, out modActTrack);
+                        CorrectTimeDataSeriesForPauses(refInfo, includeStopped, refTrack, out modRefTrack);
+
+                        INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
+                        // Create track containing time difference
+                        int lastFoundElapsedTime = 0;
+                        foreach (TimeValueEntry<float> entry in modActTrack)
+                        {
+                            bool found = false;
+                            ITimeValueEntry<float> refEntry = null;
+                            for (int i = lastFoundElapsedTime; i < modRefTrack.TotalElapsedSeconds && !found; i++)
+                            {
+                                refEntry = modRefTrack.GetInterpolatedValue(modRefTrack.StartTime.Add(new TimeSpan(0, 0, i)));
+                                if (refEntry == null)
+                                {
+                                    lastFoundElapsedTime = i;
+                                    break;
+                                }
+                                else if ( refEntry.Value >= entry.Value)
+                                {
+                                    found = true;
+                                    lastFoundElapsedTime = i;
+                                    break;
+                                }
+                            }
+                            if (found)
+                            {
+                                track.Add(modActTrack.EntryDateTime(entry), (float)entry.ElapsedSeconds - (float)refEntry.ElapsedSeconds);
+                            }
+                        }
+                        AddPausesToTimeDataSeries(info, includeStopped, track, out modTrack);
+                        return modTrack;
+                    });
+            }
+            if (Settings.ShowDiffDistance)
+            {
+                IAxis axis;
+                if (useRight)
+                {
+                    axis = new RightVerticalAxis(chart);
+                    chart.YAxisRight.Add(axis);
+                }
+                else
+                {
+                    axis = chart.YAxis;
+                    useRight = true;
+                }
+                nextIndex = 0;
+                axis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
+                axis.Label = UnitUtil.Distance.LabelAxis;
+                addSeries(
+                    delegate(float value)
+                    {
+                        return UnitUtil.Distance.ConvertFrom(value);
+                    },
+                    delegate(ActivityInfo info)
+                    {
+                        bool includeStopped = false;
+#if ST_2_1
+                        // If UseEnteredData is set, exclude Stopped
+                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
+                        {
+                            includeStopped = true;
+                        }
+#else
+                        includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
+#endif
+
+                        if (CommonData.refActWrapper == null)
+                            return false;
+                        else
+                        {
+                            ActivityInfo refInfo = ActivityInfoCache.Instance.GetInfo(CommonData.refActWrapper.Activity);
+
+                            if (includeStopped)
+                            {
+                                return info.ActualDistanceMetersTrack.Count > 0 &&
+                                       refInfo.ActualDistanceMetersTrack.Count > 0;
+                            }
+                            else
+                            {
+                                return info.MovingDistanceMetersTrack.Count > 0 &&
+                                       refInfo.MovingDistanceMetersTrack.Count > 0;
+                            }
+                        }
+                    },
+                    axis,
+                    delegate(ActivityInfo info)
+                    {
+                        bool includeStopped = false;
+#if ST_2_1
+                        // If UseEnteredData is set, exclude Stopped
+                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
+                        {
+                            includeStopped = true;
+                        }
+#else
+                        includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
+#endif
+                        ActivityInfo refInfo = ActivityInfoCache.Instance.GetInfo(CommonData.refActWrapper.Activity);
+
+                        INumericTimeDataSeries refTrack, actTrack, modRefTrack, modActTrack, modTrack;
+                        if (includeStopped)
+                        {
+                            actTrack = info.ActualDistanceMetersTrack;
+                            refTrack = refInfo.ActualDistanceMetersTrack;
+                        }
+                        else
+                        {
+                            actTrack = info.MovingDistanceMetersTrack;
+                            refTrack = refInfo.MovingDistanceMetersTrack;
+                        }
+                       
+                        // Remove pauses in order to be able to calculate difference
+                        CorrectTimeDataSeriesForPauses(info, includeStopped, actTrack, out modActTrack);
+                        CorrectTimeDataSeriesForPauses(refInfo, includeStopped, refTrack, out modRefTrack);
+                        INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
+                        foreach (ITimeValueEntry<float> p in modActTrack)
+                        {
+                            DateTime refActualTime = modRefTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+                            DateTime actualTime = modActTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+
+                            ITimeValueEntry<float> refDist = modRefTrack.GetInterpolatedValue(refActualTime);
+                            if (refDist != null)
+                            {
+                                track.Add(actualTime, p.Value - refDist.Value);
+                            }
+                        }
+                        AddPausesToTimeDataSeries(info, includeStopped, track, out modTrack);
+                        return modTrack;
+
+                    });
+            }
+
 
             //chart.AutozoomToData is the slowest part of this plugin
             chart.AutozoomToData(true);
@@ -879,6 +1155,26 @@ namespace GpsRunningPlugin.Source
                 newDataSeries.Add(dataSeries.StartTime.Add(elapsed), entry.Value);
             }
         }
+
+        private void AddPausesToTimeDataSeries(ActivityInfo info, bool includeStopped, INumericTimeDataSeries dataSeries, out INumericTimeDataSeries newDataSeries)
+        {
+            IValueRangeSeries<DateTime> pauses;
+            if (includeStopped)
+            {
+                pauses = info.Activity.TimerPauses;
+            }
+            else
+            {
+                pauses = info.NonMovingTimes;
+            }
+            newDataSeries = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
+            newDataSeries.AllowMultipleAtSameTime = true;
+            foreach (TimeValueEntry<float> entry in dataSeries)
+            {
+                DateTime newEntryTime = DateTimeRangeSeries.AddTimeAndPauses(info.Activity.StartTime, new TimeSpan(0,0, (int)entry.ElapsedSeconds), pauses);
+                newDataSeries.Add(newEntryTime, entry.Value);
+            }
+        }
         
         
         private IList<ChartDataSeries> buildSeries(
@@ -887,21 +1183,21 @@ namespace GpsRunningPlugin.Source
         {
             IList<ChartDataSeries> list = new List<ChartDataSeries>();
             int index = 0;            
-            foreach (IActivity activity in activities)
+            
+            foreach (ActivityWrapper actWrapper in actWrappers)
             {
-                if (checks[index])
+                IActivity activity = actWrapper.Activity;
+                ArrayList checkedWrappers = (ArrayList)treeListAct.CheckedElements;
+                if (checkedWrappers.Contains(actWrapper))
                 {
                     double offset=0;
-                    if (actOffsets.ContainsKey(activity))
+                    if (Settings.UseTimeXAxis)
                     {
-                        if (Settings.UseTimeXAxis)
-                        {
-                            offset = actOffsets[activity][0];
-                        }
-                        else
-                        {
-                            offset = actOffsets[activity][1];
-                        }
+                        offset = actWrapper.TimeOffset.TotalSeconds;
+                    }
+                    else
+                    {
+                        offset = actWrapper.DistanceOffset;
                     }
                     ChartDataSeries series = getDataSeries(
                         interpolator, 
@@ -910,8 +1206,6 @@ namespace GpsRunningPlugin.Source
                         axis,
                         getDataSeriess,
                         offset);
-                    series2actBoxes.Add(series, actTextBoxes[index]);
-                    series2boxes.Add(series, checkBoxes[index]);
                     series2activity.Add(series, activity);
                     list.Add(series);
                 }
@@ -997,7 +1291,7 @@ namespace GpsRunningPlugin.Source
             series.LineColor = newColor();
             return series;
         }
-
+        
         private void form_SizeChanged(object sender, EventArgs e)
         {
             if (popupForm != null)
@@ -1023,96 +1317,30 @@ namespace GpsRunningPlugin.Source
             updateChart();
         }
 #endif
-        private void offBox_LostFocus(object sender, EventArgs e)
-        {
-            ZoneFiveSoftware.Common.Visuals.TextBox box = (ZoneFiveSoftware.Common.Visuals.TextBox)sender;
-            try
-            {
-                //Recalculate other offset here?
-                if (Settings.UseTimeXAxis)
-                {
-                    actOffsets[actBoxes[box]][0] = UnitUtil.Time.Parse(box.Text);
-                }
-                else
-                {
-                    actOffsets[actBoxes[box]][1] = UnitUtil.Distance.Parse(box.Text);
-                }
-            }
-            catch
-            {
-                //Other warning here?
-                new WarningDialog(Resources.NonNegativeNumber);
-            }
-            updateOffBoxLabel(box);
-        }
 
-        private void box_CheckedChanged(object sender, EventArgs e)
+        private void treeView_CheckedChanged(object sender, EventArgs e)
         {
-            CheckBox box = (CheckBox)sender;
-            checks[boxes[box]] = box.Checked;
             updateChart();
         }
 
-        private void maBox_LostFocus(object sender, EventArgs e)
-        {
-            try
-            {
-                if (Settings.UseTimeXAxis)
-                {
-                    double value = UnitUtil.Time.Parse(maBox.Text);
-                    if (value < 0) { throw new Exception(); }
-                    Settings.MovingAverageTime = value;
-                }
-                else
-                {
-                    double value = UnitUtil.Distance.Parse(maBox.Text);
-                    if (value < 0) { throw new Exception(); }
-                    Settings.MovingAverageLength = value;
-                }
-                updateChart();
-            }
-            catch (Exception)
-            {
-                //Generic error message
-                new WarningDialog(Resources.NonNegativeNumber);
-            }
-            updateMovingAverage();
-        }
-
-		void ResetLastSelectedBoxFonts()
-		{
-			if ( null != lastChecked && lastChecked.Count > 0 )
-			{
-				for ( int i = 0; i < lastChecked.Count; i++ )
-				{
-					lastChecked[i].Font = new Font( lastChecked[i].Font, FontStyle.Regular );
-					if ( lastChecked[i] == movingAverage )
-					{
-						lastChecked[i].ForeColor = Color.Black;
-					}
-					lastChecked[i].Refresh();
-				}
-				lastChecked.Clear();
-			}
-		}
-
         void chart_Click(object sender, EventArgs e)
         {
-			bSelectDataFlag = false;
+            treeListAct.SelectedItems = new object[] { };
+            bSelectDataFlag = false;
 
 			if ( bSelectingDataFlag )
 			{
 				bSelectingDataFlag = false;
 				return;
 			}
-			ResetLastSelectedBoxFonts();
-
         }
 
 		void chart_SelectingData(object sender, ChartBase.SelectDataEventArgs e)
 		{
-			if ( ( lastSelectedSeries != null ) && ( lastSelectedSeries != e.DataSeries ) )
-				ResetLastSelectedBoxFonts();
+            if ((lastSelectedSeries != null) && (lastSelectedSeries != e.DataSeries))
+            {
+                treeListAct.SelectedItems = new object[] { };
+            }
 			lastSelectedSeries = e.DataSeries;
 			bSelectingDataFlag = true;
 		}
@@ -1121,27 +1349,19 @@ namespace GpsRunningPlugin.Source
         {
             if (e != null && e.DataSeries != null)
             {
-				bSelectingDataFlag = false;
-                if (series2boxes.ContainsKey(e.DataSeries))
-                {				
-					CheckBox box = series2boxes[e.DataSeries];
-					lastChecked.Add( box );
-                    if (box == movingAverage)
-                    {
-                        box.ForeColor = getColor(activities.IndexOf(series2activity[e.DataSeries]) % 10);
-						box.Font = new Font( box.Font, FontStyle.Bold );
-
-						box = checkBoxes[activities.IndexOf( series2activity[e.DataSeries] )];
-						lastChecked.Add( box );
-                    }
-                    box.Font = new Font(box.Font, FontStyle.Bold);
-					panelAct.ScrollControlIntoView( box );
-
-					if ( bSelectDataFlag )
-						chart_SelectingData( sender, e );
-					bSelectDataFlag = true;
-
+                // Select the row of the treeview
+                if (series2activity.ContainsKey(e.DataSeries))
+                {
+                    treeListAct.SelectedItems = new object[] { actWrappers[activities.IndexOf(series2activity[e.DataSeries])] };
                 }
+                else
+                {
+                    treeListAct.SelectedItems = new object[] { };
+                }
+                bSelectingDataFlag = false;
+                if (bSelectDataFlag)
+                    chart_SelectingData(sender, e);
+                bSelectDataFlag = true;
             }
         }
 
@@ -1155,9 +1375,8 @@ namespace GpsRunningPlugin.Source
             if (!Settings.UseTimeXAxis)
             {
                 Settings.UseTimeXAxis = true;
-                updateLabels();
                 updateChart();
-                updateMovingAverage();
+                treeListAct.Refresh();
             }
         }
 
@@ -1166,9 +1385,8 @@ namespace GpsRunningPlugin.Source
             if (Settings.UseTimeXAxis)
             {
                 Settings.UseTimeXAxis = false;
-                updateLabels();
                 updateChart();
-                updateMovingAverage();
+                treeListAct.Refresh();
             }
         }
 
@@ -1220,33 +1438,6 @@ namespace GpsRunningPlugin.Source
             updateChart();
         }
 
-        private void average_CheckedChanged(object sender, EventArgs e)
-        {
-            Settings.ShowCategoryAverage = categoryAverage.Checked;
-            updateChart();
-        }
-
-        private void updateMovingAverage()
-        {
-            Settings.ShowMovingAverage = movingAverage.Checked;
-            if (Settings.UseTimeXAxis)
-            {
-				//string sec = "mm:ss";
-				maBox.Text = UnitUtil.Time.ToString( Settings.MovingAverageTime, "mm:ss" );
-            }
-            else
-            {
-				maBox.Text = UnitUtil.Distance.ToString( Settings.MovingAverageLength, "u" );
-			}
-            maBox.Enabled = Settings.ShowMovingAverage;
-        }
-
-        private void movingAverage_CheckedChanged(object sender, EventArgs e)
-        {
-            updateMovingAverage();
-            updateChart();
-        }
-
 		private void btnSaveImage_Click( object sender, EventArgs e )
 		{
 #if ST_2_1
@@ -1291,6 +1482,252 @@ namespace GpsRunningPlugin.Source
             }
 		}
 
+        void actionBanner1_MenuClicked(object sender, System.EventArgs e)
+        {
+            //actionBanner1.ContextMenuStrip.Width = 100;
+            actionBanner1.ContextMenuStrip.Show(actionBanner1.Parent.PointToScreen(new System.Drawing.Point(actionBanner1.Right - actionBanner1.ContextMenuStrip.Width - 2,
+                actionBanner1.Bottom + 1)));
+        }
+
+        private void bannerContextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            showMeanMenuItem.Checked = Settings.ShowCategoryAverage;
+            showRollingAverageMenuItem.Checked = Settings.ShowMovingAverage;
+
+            setRefActMenuItem.Enabled = (treeListAct.SelectedItems.Count == 1);
+            showDiffMenuItem.Enabled = (CommonData.refActWrapper != null);
+        }
+
+        private void ShowMeanMenuItem_Click(object sender, EventArgs e)
+        {
+            Settings.ShowCategoryAverage = !Settings.ShowCategoryAverage;
+            updateChart();
+        }
+
+        private void rollingAverageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Settings.ShowMovingAverage = !Settings.ShowMovingAverage;
+            updateChart();
+        }
+
+        private void setRefActMenuItem_Click(object sender, EventArgs e)
+        {
+            if (treeListAct.SelectedItems.Count == 1)
+            {
+                CommonData.refActWrapper = (ActivityWrapper)treeListAct.SelectedItems[0];
+            }
+            treeListAct.Refresh();
+            updateChart();
+        }
+
+        private void setRollAvgWidthMenuItem_Click(object sender, EventArgs e)
+        {
+            bool valueOk = false;
+            String textBoxInit;
+            while (!valueOk)
+            {
+                String labelText = null;
+                if (Settings.UseTimeXAxis)
+                {
+                    labelText = StringResources.SetMovingAveragePeriod + ":";
+                    textBoxInit = UnitUtil.Time.ToString(Settings.MovingAverageTime);
+                }
+                else
+                {
+                    labelText = StringResources.SetMovingAveragePeriod + ":";
+                    textBoxInit = UnitUtil.Distance.ToString(Settings.MovingAverageLength);
+                }
+                InputDialog dialog = new InputDialog("Set moving average width", labelText, textBoxInit);
+                if (dialog.ReturnOk)
+                {
+                    try
+                    {
+                        if (Settings.UseTimeXAxis)
+                        {
+                            double value = UnitUtil.Time.Parse(dialog.TextResult);
+                            if (value < 0) { throw new Exception(); }
+                            Settings.MovingAverageTime = value;
+                        }
+                        else
+                        {
+                            double value = UnitUtil.Distance.Parse(dialog.TextResult);
+                            if (value < 0) { throw new Exception(); }
+                            Settings.MovingAverageLength = value;
+                        }
+                        valueOk = true;
+                        updateChart();
+                    }
+                    catch (Exception)
+                    {
+                        //Generic error message
+                        new WarningDialog(Resources.NonNegativeNumber);
+                    }
+                }
+                else
+                {
+                    valueOk = true; // cancelled
+                }
+            }
+        }
+
+        private void offsetMenuItem_Click(object sender, EventArgs e)
+        {
+            bool valueOk = false;
+            String textBoxInit;
+            while (!valueOk && treeListAct.SelectedItems.Count > 0)
+            {
+                String labelText = null;
+                ActivityWrapper wrapper = (ActivityWrapper)treeListAct.SelectedItems[0];
+                if (Settings.UseTimeXAxis)
+                {
+                    labelText = StringResources.SetOffset + " " + CommonResources.Text.LabelTime.ToLower() + ":";
+                    textBoxInit = UnitUtil.Time.ToString(wrapper.TimeOffset);
+                }
+                else
+                {
+                    labelText = StringResources.SetOffset + " " + CommonResources.Text.LabelDistance.ToLower() + ":";
+                    textBoxInit = UnitUtil.Distance.ToString(UnitUtil.Distance.ConvertFrom(wrapper.DistanceOffset));
+                }
+                InputDialog dialog = new InputDialog(StringResources.SetOffset, labelText, textBoxInit);
+                if (dialog.ReturnOk)
+                {
+                    try
+                    {
+                        double value;
+                        if (Settings.UseTimeXAxis)
+                        {
+                            value = UnitUtil.Time.Parse(dialog.TextResult);
+                            if (value < 0) { throw new Exception(); }
+                        }
+                        else
+                        {
+                            value = UnitUtil.Distance.Parse(dialog.TextResult);
+                            if (value < 0) { throw new Exception(); }
+                        }
+                        valueOk = true;
+                        foreach (ActivityWrapper w in treeListAct.SelectedItems)
+                        {
+                            // This parsing is done just to verify that they can be done and that the text in the box is valid
+                            if (Settings.UseTimeXAxis)
+                            {
+                                w.TimeOffset = new TimeSpan(0, 0, (int)value);
+                            }
+                            else
+                            {
+                                w.DistanceOffset = value;
+                            }
+                        }
+                        treeListAct.Refresh();
+                        updateChart();
+                    }
+                    catch (Exception)
+                    {
+                        //Generic error message
+                        new WarningDialog(Resources.NonNegativeNumber);
+                    }
+                }
+                else
+                {
+                    valueOk = true; // cancelled
+                }
+            }
+        }
+
+        private void bannerShowContextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            showHRMenuItem.Checked = Settings.ShowHeartRate;
+            showPaceMenuItem.Checked = Settings.ShowPace;
+            showSpeedMenuItem.Checked = Settings.ShowSpeed;
+            showPowerMenuItem.Checked = Settings.ShowPower;
+            showCadenceMenuItem.Checked = Settings.ShowCadence;
+            showElevationMenuItem.Checked = Settings.ShowElevation;
+            showTimeMenuItem.Checked = Settings.ShowTime;
+            showDistanceMenuItem.Checked = Settings.ShowDistance;
+        }
+
+        private void showXXXMenuItem_click(object sender, EventArgs e)
+        {
+            // Change the corresponding check box. Its event handler will change the settings.
+            if (sender == showHRMenuItem)
+            {
+                heartRate.Checked = !heartRate.Checked;
+            }
+            else if (sender == showPaceMenuItem)
+            {
+                pace.Checked = !pace.Checked;
+            }
+            else if (sender == showSpeedMenuItem)
+            {
+                speed.Checked = !speed.Checked;
+            }
+            else if (sender == showPowerMenuItem)
+            {
+                power.Checked = !power.Checked;
+            }
+            else if (sender == showCadenceMenuItem)
+            {
+                cadence.Checked = !cadence.Checked;
+            }
+            else if (sender == showElevationMenuItem)
+            {
+                elevation.Checked = !elevation.Checked;
+            }
+            else if (sender == showTimeMenuItem)
+            {
+                time.Checked = !time.Checked;
+            }
+            else if (sender == showDistanceMenuItem)
+            {
+                distance.Checked = !distance.Checked;
+            }
+        }
+
+        private void bannerShowDiffContextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            showTimeDiffMenuItem.Checked = Settings.ShowDiffTime;
+            showDistDiffMenuItem.Checked = Settings.ShowDiffDistance;
+            showHRDiffMenuItem.Checked = Settings.ShowDiffHeartRate;
+        }
+
+        private void showDiffXXXMenuItem_click(object sender, EventArgs e)
+        {
+            if (sender == showTimeDiffMenuItem)
+                Settings.ShowDiffTime = !Settings.ShowDiffTime;
+            else if (sender == showDistDiffMenuItem)
+                Settings.ShowDiffDistance = !Settings.ShowDiffDistance;
+            else if (sender == showHRDiffMenuItem)
+                Settings.ShowDiffHeartRate = !Settings.ShowDiffHeartRate;
+            updateChart();
+        }
+
+
+        private void treeListContextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            setRefTreeListMenuItem.Enabled = (treeListAct.SelectedItems.Count == 1);
+        }
+
+        private void tableSettingsMenuItem_Click(object sender, EventArgs e)
+        {
+#if ST_2_1
+            ListSettings dialog = new ListSettings();
+			dialog.ColumnsAvailable = OverlayColumnIds.ColumnDefs();
+#else
+            ListSettingsDialog dialog = new ListSettingsDialog();
+            dialog.AvailableColumns = OverlayColumnIds.ColumnDefs(); // TrailResultColumnIds.ColumnDefs(m_controller.CurrentActivity);
+#endif
+            dialog.ThemeChanged(m_visualTheme);
+            dialog.AllowFixedColumnSelect = false;
+            dialog.SelectedColumns = Settings.TreeListActColumns; // PluginMain.Settings.ActivityPageColumns;
+            dialog.NumFixedColumns = 3; // PluginMain.Settings.ActivityPageNumFixedColumns;
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                int numFixedColumns = dialog.NumFixedColumns;
+                Settings.TreeListActColumns = dialog.SelectedColumns;
+                RefreshColumns();
+            }
+
+        }
 
         private ITheme m_visualTheme =
 #if ST_2_1
@@ -1306,21 +1743,11 @@ namespace GpsRunningPlugin.Source
 #endif
 
         private bool _showPage = false;
-        private IList<CheckBox> lastChecked = new List<CheckBox>();
         private ChartDataSeries lastSelectedSeries = null;
 
         private List<IActivity> activities = new List<IActivity>();
+        private List<ActivityWrapper> actWrappers = new List<ActivityWrapper>();
         private IDictionary<ChartDataSeries, IActivity> series2activity = new Dictionary<ChartDataSeries, IActivity>();
-
-        private IDictionary<IActivity, IList<double>> actOffsets = new Dictionary<IActivity, IList<double>>();
-        private IDictionary<ZoneFiveSoftware.Common.Visuals.TextBox, IActivity> actBoxes = new Dictionary<ZoneFiveSoftware.Common.Visuals.TextBox, IActivity>();
-        private IList<ZoneFiveSoftware.Common.Visuals.TextBox> actTextBoxes = new List<ZoneFiveSoftware.Common.Visuals.TextBox>();
-        private IDictionary<ChartDataSeries, ZoneFiveSoftware.Common.Visuals.TextBox> series2actBoxes = new Dictionary<ChartDataSeries, ZoneFiveSoftware.Common.Visuals.TextBox>();
-
-        private IList<bool> checks = new List<bool>();
-        private IDictionary<CheckBox, int> boxes = new Dictionary<CheckBox, int>();
-        private IList<CheckBox> checkBoxes = new List<CheckBox>();
-        private IDictionary<ChartDataSeries, CheckBox> series2boxes;
 
         //bSelectingDataFlag and bSelectDataFlag are used to coordinate the chart 
         //click/select/selecting events to minimize 'movingAverage' and 'box' control flicker.
@@ -1329,5 +1756,14 @@ namespace GpsRunningPlugin.Source
         private bool bSelectDataFlag = false;
 
         private string saveImageProperties_fileName = "";
+
+
+
+
+    }
+
+    static class CommonData
+    {
+        public static ActivityWrapper refActWrapper = null;
     }
 }

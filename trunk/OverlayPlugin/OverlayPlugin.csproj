@@ -132,6 +132,12 @@
     <None Include="Resources\Image_24_Overlay.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Source\InputControl.resx">
+      <DependentUpon>InputControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\InputDialog.resx">
+      <DependentUpon>InputDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Util\StringResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>StringResources.Designer.cs</LastGenOutput>
@@ -172,6 +178,21 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\ActivityLabelProvider.cs" />
+    <Compile Include="Source\ActivityWrapper.cs" />
+    <Compile Include="Source\InputControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Source\InputControl.Designer.cs">
+      <DependentUpon>InputControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Source\OverlayColumnIds.cs" />
+    <Compile Include="Util\InputDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Util\InputDialog.Designer.cs">
+      <DependentUpon>InputDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Util\UnitUtil.cs" />
     <Compile Include="Util\WarningDialog.cs">
       <SubType>Form</SubType>
