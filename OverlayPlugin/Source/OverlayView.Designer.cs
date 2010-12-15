@@ -121,7 +121,7 @@ namespace GpsRunningPlugin.Source
             this.chart.Border = ZoneFiveSoftware.Common.Visuals.ControlBorder.Style.SmallRoundShadow;
             this.chart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chart.Location = new System.Drawing.Point(0, 0);
-            this.chart.Margin = new System.Windows.Forms.Padding(0);
+            //this.chart.Margin = new System.Windows.Forms.Padding(0);
             this.chart.Name = "chart";
             this.chart.Padding = new System.Windows.Forms.Padding(5);
             this.chart.Size = new System.Drawing.Size(646, 135);

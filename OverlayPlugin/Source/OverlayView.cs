@@ -129,13 +129,7 @@ namespace GpsRunningPlugin.Source
             treeListAct.Columns.Clear();
             foreach (string id in Settings.TreeListPermanentActColumns)
             {
-                foreach (
-#if ST_2_1
-                    ListItemInfo
-#else
-IListColumnDefinition
-#endif
- columnDef in OverlayColumnIds.PermanentColumnDefs())
+                foreach (IListColumnDefinition columnDef in OverlayColumnIds.PermanentColumnDefs())
                 {
                     if (columnDef.Id == id)
                     {
@@ -153,13 +147,7 @@ IListColumnDefinition
 
             foreach (string id in Settings.TreeListActColumns)
             {
-                foreach (
-#if ST_2_1
-                    ListItemInfo
-#else
-                    IListColumnDefinition
-#endif
-                    columnDef in OverlayColumnIds.ColumnDefs())
+                foreach (IListColumnDefinition columnDef in OverlayColumnIds.ColumnDefs())
                 {
                     if (columnDef.Id == id)
                     {
@@ -179,6 +167,9 @@ IListColumnDefinition
         public void InitControls()
         {
             SizeChanged += new EventHandler(OverlayView_SizeChanged);
+#if ST_2_1
+            this.tableSettingsMenuItem.Enabled = false;
+#endif
         }
 
         public void ShowDialog()
@@ -1325,7 +1316,11 @@ IListColumnDefinition
 
         void chart_Click(object sender, EventArgs e)
         {
+#if ST_2_1
+            treeListAct.Selected = new object[] { };
+#else
             treeListAct.SelectedItems = new object[] { };
+#endif
             bSelectDataFlag = false;
 
 			if ( bSelectingDataFlag )
@@ -1339,7 +1334,11 @@ IListColumnDefinition
 		{
             if ((lastSelectedSeries != null) && (lastSelectedSeries != e.DataSeries))
             {
+#if ST_2_1
+                treeListAct.Selected = new object[] { };
+#else
                 treeListAct.SelectedItems = new object[] { };
+#endif
             }
 			lastSelectedSeries = e.DataSeries;
 			bSelectingDataFlag = true;
@@ -1352,11 +1351,19 @@ IListColumnDefinition
                 // Select the row of the treeview
                 if (series2activity.ContainsKey(e.DataSeries))
                 {
+#if ST_2_1
+                    treeListAct.Selected = new object[] { actWrappers[activities.IndexOf(series2activity[e.DataSeries])] };
+#else
                     treeListAct.SelectedItems = new object[] { actWrappers[activities.IndexOf(series2activity[e.DataSeries])] };
+#endif
                 }
                 else
                 {
+#if ST_2_1
+                    treeListAct.Selected = new object[] { };
+#else
                     treeListAct.SelectedItems = new object[] { };
+#endif
                 }
                 bSelectingDataFlag = false;
                 if (bSelectDataFlag)
@@ -1538,6 +1545,9 @@ IListColumnDefinition
                     textBoxInit = UnitUtil.Distance.ToString(Settings.MovingAverageLength);
                 }
                 InputDialog dialog = new InputDialog("Set moving average width", labelText, textBoxInit);
+                dialog.ThemeChanged(m_visualTheme);
+                dialog.UICultureChanged(m_culture);
+                dialog.ShowDialog();
                 if (dialog.ReturnOk)
                 {
                     try
@@ -1589,6 +1599,9 @@ IListColumnDefinition
                     textBoxInit = UnitUtil.Distance.ToString(UnitUtil.Distance.ConvertFrom(wrapper.DistanceOffset));
                 }
                 InputDialog dialog = new InputDialog(StringResources.SetOffset, labelText, textBoxInit);
+                dialog.ThemeChanged(m_visualTheme);
+                dialog.UICultureChanged(m_culture);
+                dialog.ShowDialog();
                 if (dialog.ReturnOk)
                 {
                     try
@@ -1708,6 +1721,7 @@ IListColumnDefinition
 
         private void tableSettingsMenuItem_Click(object sender, EventArgs e)
         {
+#if !ST_2_1
 #if ST_2_1
             ListSettings dialog = new ListSettings();
 			dialog.ColumnsAvailable = OverlayColumnIds.ColumnDefs();
@@ -1727,6 +1741,7 @@ IListColumnDefinition
                 RefreshColumns();
             }
 
+#endif
         }
 
         private ITheme m_visualTheme =

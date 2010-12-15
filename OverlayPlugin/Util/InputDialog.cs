@@ -21,6 +21,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Globalization;
 using ZoneFiveSoftware.Common.Visuals;
 
 namespace GpsRunningPlugin.Util
@@ -54,7 +55,6 @@ namespace GpsRunningPlugin.Util
             this.cancelButton.Text = CommonResources.Text.ActionCancel;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            ShowDialog();
         }
 
         public InputDialog(String formText, String label, String inputText)
@@ -63,13 +63,21 @@ namespace GpsRunningPlugin.Util
             this.Text = formText;
             this.inputDescriptionLabel.Text = label;
             this.inputTextBox.Text = inputText;
-            this.okButton.Text = CommonResources.Text.ActionOk;
-            this.cancelButton.Text = CommonResources.Text.ActionCancel;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            ShowDialog();
         }
 
+        public void ThemeChanged(ITheme visualTheme)
+        {
+            this.inputTextBox.ThemeChanged(visualTheme);
+            this.BackColor = visualTheme.Control;
+        }
+
+        public void UICultureChanged(CultureInfo culture)
+        {
+            this.okButton.Text = CommonResources.Text.ActionOk;
+            this.cancelButton.Text = CommonResources.Text.ActionCancel;
+        }
         private void okButton_Click(object sender, EventArgs e)
         {
             returnOk = true;
