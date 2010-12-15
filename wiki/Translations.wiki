@@ -1,0 +1,28 @@
+#summary Plugin translations
+#labels Featured
+
+= Introduction =
+
+This page describes how to make translations of the GPS-Running or related plugins.
+
+= Details =
+
+All the related projects are handled about the same:
+  * The master source to translate is in an Excel sheet, stored with the source code
+  * For each language updated and each project, the translator will update an issue for the project.
+
+This simplifies if there are several translators or developers, keeps track of history both for the translated strings and when they are included in builds, make it possible to make minor updates etc.
+
+Links to resources for this and other plugins:
+  * http://code.google.com/p/gps-running/source/browse/trunk/GpsRunning.xls 
+  * http://code.google.com/p/sporttracks-miscplugin/source/browse/trunk/SportTracksPluginResources.xls 
+  * http://code.google.com/p/trails/source/browse/trunk/Resources.xls 
+  * http://matrix.codeplex.com/SourceControl/list/changesets (It seems like the complete blob has to be downloaded for Matrix) 
+
+= Workflow =
+  * Open an issue for each plugin and each language on Google Code or CodePlex. You need to have Google id or CodePlex id for this. 
+  * Take a note of the SVN revision and download the xls file
+  * Translate
+  * Attach the xls file to the issue.
+
+General question, add to the issues. PM/email at other questions. 
