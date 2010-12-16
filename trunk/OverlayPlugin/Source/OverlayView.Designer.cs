@@ -100,6 +100,8 @@ namespace GpsRunningPlugin.Source
             this.treeListContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tableSettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setRefTreeListMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showChartToolsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showToolBarMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.bannerContextMenuStrip.SuspendLayout();
@@ -336,11 +338,13 @@ namespace GpsRunningPlugin.Source
             this.showDiffMenuItem,
             this.showMeanMenuItem,
             this.showRollingAverageMenuItem,
-            this.setRollAvgWidthMenuItem,
             this.toolStripSeparator1,
+            this.setRollAvgWidthMenuItem,
             this.offsetMenuItem,
+            this.setRefActMenuItem,
             this.toolStripSeparator2,
-            this.setRefActMenuItem});
+            this.showChartToolsMenuItem,
+            this.showToolBarMenuItem});
             this.bannerContextMenuStrip.Name = "bannerContextMenuStrip";
             this.bannerContextMenuStrip.ShowCheckMargin = true;
             this.bannerContextMenuStrip.ShowImageMargin = false;
@@ -625,6 +629,20 @@ namespace GpsRunningPlugin.Source
             this.setRefTreeListMenuItem.Text = "Set reference activity";
             this.setRefTreeListMenuItem.Click += new System.EventHandler(this.setRefActMenuItem_Click);
             // 
+            // showChartToolsMenuItem
+            // 
+            this.showChartToolsMenuItem.Name = "showChartToolsMenuItem";
+            this.showChartToolsMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.showChartToolsMenuItem.Text = "< showChartTools";
+            this.showChartToolsMenuItem.Click += new System.EventHandler(this.showChartToolsMenuItem_Click);
+            // 
+            // showToolBarMenuItem
+            // 
+            this.showToolBarMenuItem.Name = "showToolBarMenuItem";
+            this.showToolBarMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.showToolBarMenuItem.Text = "< showToolBar";
+            this.showToolBarMenuItem.Click += new System.EventHandler(this.showToolBarMenuItem_Click);
+            // 
             // OverlayView
             // 
             this.AutoSize = true;
@@ -701,5 +719,7 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.Panel chartBackgroundPanel;
         private System.Windows.Forms.ToolStripMenuItem setRollAvgWidthMenuItem;
         private System.Windows.Forms.ToolStripMenuItem offsetMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showChartToolsMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showToolBarMenuItem;
     }
 }
