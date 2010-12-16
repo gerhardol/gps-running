@@ -170,6 +170,8 @@ namespace GpsRunningPlugin.Source
 #if ST_2_1
             this.tableSettingsMenuItem.Enabled = false;
 #endif
+            //TODO:
+            this.showToolBarMenuItem.Visible = false;
         }
 
         public void ShowDialog()
@@ -342,6 +344,9 @@ namespace GpsRunningPlugin.Source
 
             offsetMenuItem.Text = StringResources.SetOffset;
             setRollAvgWidthMenuItem.Text = StringResources.SetMovingAveragePeriod;
+
+            showChartToolsMenuItem.Text = StringResources.Menu_ShowChartBar;
+            showToolBarMenuItem.Text = StringResources.Menu_ShowToolBar; 
 
             int max = Math.Max(labelXaxis.Location.X + labelXaxis.Size.Width,
                                 labelYaxis.Location.X + labelYaxis.Size.Width) + 5;
@@ -1503,6 +1508,7 @@ namespace GpsRunningPlugin.Source
 
             setRefActMenuItem.Enabled = (treeListAct.SelectedItems.Count == 1);
             showDiffMenuItem.Enabled = (CommonData.refActWrapper != null);
+            this.offsetMenuItem.Enabled = (activities != null && activities.Count > 1 && treeListAct.SelectedItems.Count > 0);
         }
 
         private void ShowMeanMenuItem_Click(object sender, EventArgs e)
@@ -1537,12 +1543,12 @@ namespace GpsRunningPlugin.Source
                 if (Settings.UseTimeXAxis)
                 {
                     labelText = StringResources.SetMovingAveragePeriod + ":";
-                    textBoxInit = UnitUtil.Time.ToString(Settings.MovingAverageTime);
+                    textBoxInit = UnitUtil.Time.ToString(Settings.MovingAverageTime, "u");
                 }
                 else
                 {
                     labelText = StringResources.SetMovingAveragePeriod + ":";
-                    textBoxInit = UnitUtil.Distance.ToString(Settings.MovingAverageLength);
+                    textBoxInit = UnitUtil.Distance.ToString(Settings.MovingAverageLength, "u");
                 }
                 InputDialog dialog = new InputDialog("Set moving average width", labelText, textBoxInit);
                 dialog.ThemeChanged(m_visualTheme);
@@ -1591,12 +1597,12 @@ namespace GpsRunningPlugin.Source
                 if (Settings.UseTimeXAxis)
                 {
                     labelText = StringResources.SetOffset + " " + CommonResources.Text.LabelTime.ToLower() + ":";
-                    textBoxInit = UnitUtil.Time.ToString(wrapper.TimeOffset);
+                    textBoxInit = UnitUtil.Time.ToString(wrapper.TimeOffset, "u");
                 }
                 else
                 {
                     labelText = StringResources.SetOffset + " " + CommonResources.Text.LabelDistance.ToLower() + ":";
-                    textBoxInit = UnitUtil.Distance.ToString(UnitUtil.Distance.ConvertFrom(wrapper.DistanceOffset));
+                    textBoxInit = UnitUtil.Distance.ToString(UnitUtil.Distance.ConvertFrom(wrapper.DistanceOffset), "u");
                 }
                 InputDialog dialog = new InputDialog(StringResources.SetOffset, labelText, textBoxInit);
                 dialog.ThemeChanged(m_visualTheme);
@@ -1742,6 +1748,24 @@ namespace GpsRunningPlugin.Source
             }
 
 #endif
+        }
+        private void showChartToolsMenuItem_Click(object sender, EventArgs e)
+        {
+   
+            //TODO: PluginMain.Settings.ShowChartToolBar = !PluginMain.Settings.ShowChartToolBar;
+            if (this.tableLayoutPanel1.RowStyles[1].Height == 0)
+            {
+                this.tableLayoutPanel1.RowStyles[1].Height = 50;
+            }
+            else
+            {
+                this.tableLayoutPanel1.RowStyles[1].Height = 0;
+            }
+        }
+        private void showToolBarMenuItem_Click(object sender, EventArgs e)
+        {
+            //PluginMain.Settings.ShowChartToolBar = !PluginMain.Settings.ShowChartToolBar;
+            //ShowChartToolBar = PluginMain.Settings.ShowChartToolBar;
         }
 
         private ITheme m_visualTheme =

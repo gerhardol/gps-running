@@ -315,4 +315,11 @@
   <data name="Width" xml:space="preserve">
     <value>width</value>
   </data>
+  <data name="Menu_ShowChartBar" xml:space="preserve">
+    <value>Show Chart Bar</value>
+  </data>
+  <data name="Menu_ShowToolBar" xml:space="preserve">
+    <value>Show Chart Tools</value>
+    <comment>Same as STcore </comment>
+  </data>
 </root>
