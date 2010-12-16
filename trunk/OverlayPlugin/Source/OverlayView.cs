@@ -314,6 +314,7 @@ namespace GpsRunningPlugin.Source
             tableSettingsMenuItem.Text = StringResources.TableSettings;
 
             labelXaxis.Text = StringResources.XAxis + ":";
+ 
             labelYaxis.Text = StringResources.YAxis + ":";
             useTime.Text = CommonResources.Text.LabelTime;
             useDistance.Text = CommonResources.Text.LabelDistance;
@@ -1344,6 +1345,7 @@ namespace GpsRunningPlugin.Source
 #else
                 treeListAct.SelectedItems = new object[] { };
 #endif
+                lastSelectedSeries.ValueAxis.LabelColor = Color.Black;
             }
 			lastSelectedSeries = e.DataSeries;
 			bSelectingDataFlag = true;
@@ -1370,6 +1372,7 @@ namespace GpsRunningPlugin.Source
                     treeListAct.SelectedItems = new object[] { };
 #endif
                 }
+                e.DataSeries.ValueAxis.LabelColor = e.DataSeries.SelectedColor;
                 bSelectingDataFlag = false;
                 if (bSelectDataFlag)
                     chart_SelectingData(sender, e);
