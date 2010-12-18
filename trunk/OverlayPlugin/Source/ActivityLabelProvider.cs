@@ -85,6 +85,16 @@ namespace GpsRunningPlugin.Source
                         return "0";
                     else
                         return (actInfo.AverageHeartRate - refActInfo.AverageHeartRate).ToString("N0");
+                case "AveragePowerDiff":
+                    if (!boRefExists)
+                        return "0";
+                    else
+                        return (actInfo.AveragePower - refActInfo.AveragePower).ToString("N0");
+                case "AverageCadenceDiff":
+                    if (!boRefExists)
+                        return "0";
+                    else
+                        return (actInfo.AverageCadence - refActInfo.AverageCadence).ToString("N0");
                 case "TimeDiff":
                     if (!boRefExists)
                         return new TimeSpan(0).ToString();
@@ -92,7 +102,7 @@ namespace GpsRunningPlugin.Source
                         return (actInfo.Time - refActInfo.Time).ToString();
                 default:
                     string text = base.GetText(actInfo, column);
-                    if (text != null)
+                    if (text != "")
                         return text;
                     else
                         return base.GetText(wrapper.Activity, column);                    
