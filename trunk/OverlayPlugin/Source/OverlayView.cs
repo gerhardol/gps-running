@@ -1531,7 +1531,7 @@ namespace GpsRunningPlugin.Source
             setRefActMenuItem.Enabled = (treeListAct.SelectedItems.Count == 1);
             showDiffMenuItem.Enabled = (CommonData.refActWrapper != null);
             this.offsetMenuItem.Enabled = (activities != null && activities.Count > 1 && treeListAct.SelectedItems.Count > 0);
-            showChartToolsMenuItem.Checked = this.tableLayoutPanel1.RowStyles[1].Height > 0;
+            showChartToolsMenuItem.Checked = Settings.ShowChartBar;
         }
 
         private void ShowMeanMenuItem_Click(object sender, EventArgs e)
@@ -1774,9 +1774,8 @@ namespace GpsRunningPlugin.Source
         }
         private void showChartToolsMenuItem_Click(object sender, EventArgs e)
         {
-   
-            //TODO: PluginMain.Settings.ShowChartToolBar = !PluginMain.Settings.ShowChartToolBar;
-            if (this.tableLayoutPanel1.RowStyles[1].Height == 0)
+            Settings.ShowChartBar = !Settings.ShowChartBar;
+            if (Settings.ShowChartBar)
             {
                 this.tableLayoutPanel1.RowStyles[1].Height = 50;
             }
@@ -1832,12 +1831,16 @@ namespace GpsRunningPlugin.Source
                 m_boDetailPageExpanded = !m_boDetailPageExpanded;
                 m_DetailPage.PageMaximized = m_boDetailPageExpanded;
             }
+            if (m_boDetailPageExpanded)
+            {
+                this.expandButton.BackgroundImage = CommonResources.Images.View3PaneLowerLeft16;
+            }
+            else
+            {
+                this.expandButton.BackgroundImage = CommonResources.Images.View2PaneLowerHalf16;
+            }
 #endif
         }
-
-
-
-
     }
 
     static class CommonData

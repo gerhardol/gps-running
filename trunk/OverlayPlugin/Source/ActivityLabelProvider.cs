@@ -53,18 +53,22 @@ namespace GpsRunningPlugin.Source
                 case "Visible":
                     return "";
                 case "DistanceMeters":
-                    return ((actInfo.DistanceMeters/1000).ToString("0.##"));
+                    return UnitUtil.Distance.ToString(actInfo.DistanceMeters);
                 case "AverageSpeedMetersPerSecond":
                     return UnitUtil.Speed.ToString(actInfo.AverageSpeedMetersPerSecond);
                 case "AvgPace":
                     return UnitUtil.Pace.ToString(actInfo.AverageSpeedMetersPerSecond);
                 case "AverageHeartRate":
-                    return actInfo.AverageHeartRate.ToString("###");
+                    return UnitUtil.HeartRate.ToString(actInfo.AverageHeartRate);
+                case "TotalAscendingMeters":
+                    return UnitUtil.Elevation.ToString(actInfo.TotalAscendingMeters(Plugin.GetApplication().DisplayOptions.SelectedClimbZone));
+                case "TotalDescendingMeters":
+                    return UnitUtil.Elevation.ToString(actInfo.TotalDescendingMeters(Plugin.GetApplication().DisplayOptions.SelectedClimbZone));
                 case "DistanceMetersDiff":
                     if (!boRefExists)
                         return "0";
                     else
-                        return ((actInfo.DistanceMeters - refActInfo.DistanceMeters) / 1000).ToString("0.##");
+                        return UnitUtil.Distance.ToString(actInfo.DistanceMeters - refActInfo.DistanceMeters);
                 case "AverageSpeedMetersPerSecondDiff":
                     if (!boRefExists)
                         return "0";
@@ -84,17 +88,17 @@ namespace GpsRunningPlugin.Source
                     if (!boRefExists)
                         return "0";
                     else
-                        return (actInfo.AverageHeartRate - refActInfo.AverageHeartRate).ToString("N0");
+                        return UnitUtil.HeartRate.ToString(actInfo.AverageHeartRate - refActInfo.AverageHeartRate);
                 case "AveragePowerDiff":
                     if (!boRefExists)
                         return "0";
                     else
-                        return (actInfo.AveragePower - refActInfo.AveragePower).ToString("N0");
+                        return UnitUtil.Power.ToString(actInfo.AveragePower - refActInfo.AveragePower);
                 case "AverageCadenceDiff":
                     if (!boRefExists)
                         return "0";
                     else
-                        return (actInfo.AverageCadence - refActInfo.AverageCadence).ToString("N0");
+                        return UnitUtil.Cadence.ToString(actInfo.AverageCadence - refActInfo.AverageCadence);
                 case "TimeDiff":
                     if (!boRefExists)
                         return new TimeSpan(0).ToString();

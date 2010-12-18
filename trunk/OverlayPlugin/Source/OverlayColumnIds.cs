@@ -110,8 +110,8 @@ namespace GpsRunningPlugin.Source
         public const string AvgHR = "AverageHeartRate";
         public const string AvgPower = "AveragePower";
         public const string AvgCad = "AverageCadence";
-//        public const string TotAsc = "TotalAscendingMeters";
-//        public const string TotDesc = "TotalDescendingMeters";
+        public const string TotAsc = "TotalAscendingMeters";
+        public const string TotDesc = "TotalDescendingMeters";
 
         public const string TimeDiff = "TimeDiff";
         public const string DistanceDiff = "DistanceMetersDiff";
@@ -134,8 +134,8 @@ namespace GpsRunningPlugin.Source
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.AvgHR, CommonResources.Text.LabelAvgHR + UnitUtil.HeartRate.LabelAbbr2, "", 80, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.AvgCad, CommonResources.Text.LabelAvgCadence, "", 60, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.AvgPower, CommonResources.Text.LabelAvgPower, "", 60, StringAlignment.Near));
-//            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.TotAsc, CommonResources.Text.LabelTotalAscending, "", 60, StringAlignment.Near));
-//            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.TotDesc, CommonResources.Text.LabelTotalDescending, "", 60, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.TotAsc, CommonResources.Text.LabelTotalAscending, "", 60, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.TotDesc, CommonResources.Text.LabelTotalDescending, "", 60, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.TimeDiff, CommonResources.Text.LabelTime + " " + StringResources.Difference, "", 70, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.DistanceDiff, CommonResources.Text.LabelDistance + " " + StringResources.Difference, "", 60, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.AvgSpeedDiff, CommonResources.Text.LabelAvgSpeed + " " + StringResources.Difference, "", 80, StringAlignment.Near));
