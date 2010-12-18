@@ -229,7 +229,24 @@ namespace GpsRunningPlugin.Source
                 showDiffTime = value;
             }
         }
-
+        private static bool showChartBar;
+        public static bool ShowChartBar
+        {
+            get { return showChartBar; }
+            set
+            {
+                showChartBar = value;
+            }
+        }
+        private static bool showChartTools;
+        public static bool ShowChartTools
+        {
+            get { return showChartTools; }
+            set
+            {
+                showChartTools = value;
+            }
+        }
         private static bool useTimeXAxis;
         public static bool UseTimeXAxis
         {
@@ -301,6 +318,8 @@ namespace GpsRunningPlugin.Source
             showDiffDistance = false;
             showDiffTime = false;
             showMovingAverage = false;
+            showChartBar = true;
+            showChartTools = true;
             movingAverageLength = 0;
             movingAverageTime = 0;
             autoZoom = true;
@@ -367,6 +386,10 @@ namespace GpsRunningPlugin.Source
             if (attr.Length > 0) { showTime = XmlConvert.ToBoolean(attr); }
             attr = pluginNode.GetAttribute(xmlTags.showDistance);
             if (attr.Length > 0) { showDistance = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.showChartBar);
+            if (attr.Length > 0) { showChartBar = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.showChartTools);
+            if (attr.Length > 0) { showChartTools = XmlConvert.ToBoolean(attr); }
 
             attr = pluginNode.GetAttribute(xmlTags.viewWidth);
             attr2 = pluginNode.GetAttribute(xmlTags.viewHeight);
@@ -456,6 +479,8 @@ namespace GpsRunningPlugin.Source
             pluginNode.SetAttribute(xmlTags.autoZoom, XmlConvert.ToString(autoZoom));
             pluginNode.SetAttribute(xmlTags.showTime, XmlConvert.ToString(showTime));
             pluginNode.SetAttribute(xmlTags.showDistance, XmlConvert.ToString(showDistance));
+            pluginNode.SetAttribute(xmlTags.showChartBar, XmlConvert.ToString(ShowChartBar));
+            pluginNode.SetAttribute(xmlTags.showChartTools, XmlConvert.ToString(ShowChartTools));
 
             pluginNode.SetAttribute(xmlTags.viewWidth, XmlConvert.ToString(windowSize.Width));
             pluginNode.SetAttribute(xmlTags.viewHeight, XmlConvert.ToString(windowSize.Height));
@@ -497,6 +522,8 @@ namespace GpsRunningPlugin.Source
             public const string autoZoom = "autoZoom";
             public const string showTime = "showTime";
             public const string showDistance = "showDistance";
+            public const string showChartBar = "showChartBar";
+            public const string showChartTools = "showChartTools";
             public const string viewWidth = "viewWidth";
             public const string viewHeight = "viewHeight";
 
