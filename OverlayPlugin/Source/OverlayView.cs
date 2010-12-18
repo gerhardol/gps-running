@@ -48,10 +48,17 @@ namespace GpsRunningPlugin.Source
 {
     public partial class OverlayView : UserControl
     {
-        //A wrapper for popupforms - could be called from IAction
-        public OverlayView(IList<IActivity> activities, bool showDialog)
+        public OverlayView(
+#if !ST_2_1
+            IDetailPage detailPage, 
+#endif
+            IList<IActivity> activities, 
+            bool showDialog)
             : this()
         {
+#if !ST_2_1
+            m_DetailPage = detailPage;
+#endif
             if (showDialog)
             {
                 //Theme and Culture must be set manually
@@ -121,6 +128,10 @@ namespace GpsRunningPlugin.Source
             chart.SelectData += new ChartBase.SelectDataHandler(chart_SelectData);
             chart.SelectingData += new ChartBase.SelectDataHandler(chart_SelectingData);
             chart.Click += new EventHandler(chart_Click);
+
+#if !ST_2_1
+            expandButton.BackgroundImage = CommonResources.Images.View2PaneLowerHalf16;
+#endif
         }
 
         private void RefreshColumns()
@@ -242,6 +253,14 @@ namespace GpsRunningPlugin.Source
         {
             if (_showPage)
             {
+#if !ST_2_1
+                if (m_DetailPage == null)
+                    expandButton.Visible = false;
+                else
+                    expandButton.Visible = true;
+#else
+                expandButton.Visible = false;
+#endif
                 updateActivities();
                 updateChart();
             }
@@ -1512,6 +1531,7 @@ namespace GpsRunningPlugin.Source
             setRefActMenuItem.Enabled = (treeListAct.SelectedItems.Count == 1);
             showDiffMenuItem.Enabled = (CommonData.refActWrapper != null);
             this.offsetMenuItem.Enabled = (activities != null && activities.Count > 1 && treeListAct.SelectedItems.Count > 0);
+            showChartToolsMenuItem.Checked = this.tableLayoutPanel1.RowStyles[1].Height > 0;
         }
 
         private void ShowMeanMenuItem_Click(object sender, EventArgs e)
@@ -1798,6 +1818,22 @@ namespace GpsRunningPlugin.Source
         private bool bSelectDataFlag = false;
 
         private string saveImageProperties_fileName = "";
+
+#if !ST_2_1
+        private IDetailPage m_DetailPage = null;
+#endif
+        private bool m_boDetailPageExpanded = false;
+
+        private void expandButton_Click(object sender, EventArgs e)
+        {
+#if !ST_2_1
+            if (m_DetailPage != null)
+            {
+                m_boDetailPageExpanded = !m_boDetailPageExpanded;
+                m_DetailPage.PageMaximized = m_boDetailPageExpanded;
+            }
+#endif
+        }
 
 
 
