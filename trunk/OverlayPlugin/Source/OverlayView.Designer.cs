@@ -87,11 +87,14 @@ namespace GpsRunningPlugin.Source
             this.showHRDiffMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showMeanMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showRollingAverageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setRollAvgWidthMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.setRollAvgWidthMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.offsetMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.setRefActMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.showChartToolsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showToolBarMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.expandButton = new ZoneFiveSoftware.Common.Visuals.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.chartBackgroundPanel = new System.Windows.Forms.Panel();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
@@ -100,10 +103,9 @@ namespace GpsRunningPlugin.Source
             this.treeListContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tableSettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setRefTreeListMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showChartToolsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showToolBarMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.actionBanner1.SuspendLayout();
             this.bannerContextMenuStrip.SuspendLayout();
             this.bannerShowContextMenuStrip.SuspendLayout();
             this.bannerShowDiffContextMenuStrip.SuspendLayout();
@@ -123,7 +125,6 @@ namespace GpsRunningPlugin.Source
             this.chart.Border = ZoneFiveSoftware.Common.Visuals.ControlBorder.Style.SmallRoundShadow;
             this.chart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chart.Location = new System.Drawing.Point(0, 0);
-            //this.chart.Margin = new System.Windows.Forms.Padding(0);
             this.chart.Name = "chart";
             this.chart.Padding = new System.Windows.Forms.Padding(5);
             this.chart.Size = new System.Drawing.Size(646, 135);
@@ -319,6 +320,7 @@ namespace GpsRunningPlugin.Source
             // 
             this.actionBanner1.BackColor = System.Drawing.Color.Transparent;
             this.actionBanner1.ContextMenuStrip = this.bannerContextMenuStrip;
+            this.actionBanner1.Controls.Add(this.expandButton);
             this.actionBanner1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.actionBanner1.HasMenuButton = true;
             this.actionBanner1.Location = new System.Drawing.Point(0, 0);
@@ -348,7 +350,7 @@ namespace GpsRunningPlugin.Source
             this.bannerContextMenuStrip.Name = "bannerContextMenuStrip";
             this.bannerContextMenuStrip.ShowCheckMargin = true;
             this.bannerContextMenuStrip.ShowImageMargin = false;
-            this.bannerContextMenuStrip.Size = new System.Drawing.Size(212, 192);
+            this.bannerContextMenuStrip.Size = new System.Drawing.Size(212, 214);
             this.bannerContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.bannerContextMenuStrip_Opening);
             // 
             // showMenuItem
@@ -483,17 +485,17 @@ namespace GpsRunningPlugin.Source
             this.showRollingAverageMenuItem.Text = "Rolling Average";
             this.showRollingAverageMenuItem.Click += new System.EventHandler(this.rollingAverageToolStripMenuItem_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(208, 6);
+            // 
             // setRollAvgWidthMenuItem
             // 
             this.setRollAvgWidthMenuItem.Name = "setRollAvgWidthMenuItem";
             this.setRollAvgWidthMenuItem.Size = new System.Drawing.Size(211, 22);
             this.setRollAvgWidthMenuItem.Text = "Set moving average width";
             this.setRollAvgWidthMenuItem.Click += new System.EventHandler(this.setRollAvgWidthMenuItem_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(208, 6);
             // 
             // offsetMenuItem
             // 
@@ -502,17 +504,52 @@ namespace GpsRunningPlugin.Source
             this.offsetMenuItem.Text = "Set activity offset";
             this.offsetMenuItem.Click += new System.EventHandler(this.offsetMenuItem_Click);
             // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(208, 6);
-            // 
             // setRefActMenuItem
             // 
             this.setRefActMenuItem.Name = "setRefActMenuItem";
             this.setRefActMenuItem.Size = new System.Drawing.Size(211, 22);
             this.setRefActMenuItem.Text = "Set reference activity";
             this.setRefActMenuItem.Click += new System.EventHandler(this.setRefActMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(208, 6);
+            // 
+            // showChartToolsMenuItem
+            // 
+            this.showChartToolsMenuItem.Name = "showChartToolsMenuItem";
+            this.showChartToolsMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.showChartToolsMenuItem.Text = "< showChartTools";
+            this.showChartToolsMenuItem.Click += new System.EventHandler(this.showChartToolsMenuItem_Click);
+            // 
+            // showToolBarMenuItem
+            // 
+            this.showToolBarMenuItem.Name = "showToolBarMenuItem";
+            this.showToolBarMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.showToolBarMenuItem.Text = "< showToolBar";
+            this.showToolBarMenuItem.Click += new System.EventHandler(this.showToolBarMenuItem_Click);
+            // 
+            // expandButton
+            // 
+            this.expandButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.expandButton.BackColor = System.Drawing.Color.Transparent;
+            this.expandButton.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.expandButton.CenterImage = null;
+            this.expandButton.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.expandButton.HyperlinkStyle = false;
+            this.expandButton.ImageMargin = 2;
+            this.expandButton.LeftImage = null;
+            this.expandButton.Location = new System.Drawing.Point(602, 2);
+            this.expandButton.Name = "expandButton";
+            this.expandButton.PushStyle = true;
+            this.expandButton.RightImage = null;
+            this.expandButton.Size = new System.Drawing.Size(17, 17);
+            this.expandButton.TabIndex = 1;
+            this.expandButton.TextAlign = System.Drawing.StringAlignment.Center;
+            this.expandButton.TextLeftMargin = 2;
+            this.expandButton.TextRightMargin = 2;
+            this.expandButton.Click += new System.EventHandler(this.expandButton_Click);
             // 
             // panel3
             // 
@@ -629,20 +666,6 @@ namespace GpsRunningPlugin.Source
             this.setRefTreeListMenuItem.Text = "Set reference activity";
             this.setRefTreeListMenuItem.Click += new System.EventHandler(this.setRefActMenuItem_Click);
             // 
-            // showChartToolsMenuItem
-            // 
-            this.showChartToolsMenuItem.Name = "showChartToolsMenuItem";
-            this.showChartToolsMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.showChartToolsMenuItem.Text = "< showChartTools";
-            this.showChartToolsMenuItem.Click += new System.EventHandler(this.showChartToolsMenuItem_Click);
-            // 
-            // showToolBarMenuItem
-            // 
-            this.showToolBarMenuItem.Name = "showToolBarMenuItem";
-            this.showToolBarMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.showToolBarMenuItem.Text = "< showToolBar";
-            this.showToolBarMenuItem.Click += new System.EventHandler(this.showToolBarMenuItem_Click);
-            // 
             // OverlayView
             // 
             this.AutoSize = true;
@@ -651,6 +674,7 @@ namespace GpsRunningPlugin.Source
             this.Size = new System.Drawing.Size(652, 285);
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.actionBanner1.ResumeLayout(false);
             this.bannerContextMenuStrip.ResumeLayout(false);
             this.bannerShowContextMenuStrip.ResumeLayout(false);
             this.bannerShowDiffContextMenuStrip.ResumeLayout(false);
@@ -721,5 +745,6 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.ToolStripMenuItem offsetMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showChartToolsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showToolBarMenuItem;
+        private ZoneFiveSoftware.Common.Visuals.Button expandButton;
     }
 }

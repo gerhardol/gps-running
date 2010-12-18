@@ -116,7 +116,11 @@ namespace GpsRunningPlugin.Source
         {
             if (control == null)
             {
+#if !ST_2_1
+                control = new OverlayView(this, activities, false);
+#else
                 control = new OverlayView(activities, false);
+#endif
             }
             return control;
         }
