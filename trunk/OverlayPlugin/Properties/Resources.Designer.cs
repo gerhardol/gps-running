@@ -136,6 +136,33 @@ namespace GpsRunningPlugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Chart Bar.
+        /// </summary>
+        internal static string Menu_ShowChartBar {
+            get {
+                return ResourceManager.GetString("Menu_ShowChartBar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Chart Tools.
+        /// </summary>
+        internal static string Menu_ShowToolBar {
+            get {
+                return ResourceManager.GetString("Menu_ShowToolBar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Moving average.
+        /// </summary>
+        internal static string MovingAverage {
+            get {
+                return ResourceManager.GetString("MovingAverage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value must be a non-negative number!.
         /// </summary>
         internal static string NonNegativeNumber {
@@ -159,6 +186,42 @@ namespace GpsRunningPlugin.Properties {
         internal static string O2 {
             get {
                 return ResourceManager.GetString("O2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlay chart.
+        /// </summary>
+        internal static string OverlayChart {
+            get {
+                return ResourceManager.GetString("OverlayChart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set moving average period.
+        /// </summary>
+        internal static string SetMovingAveragePeriod {
+            get {
+                return ResourceManager.GetString("SetMovingAveragePeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set activity offset.
+        /// </summary>
+        internal static string SetOffset {
+            get {
+                return ResourceManager.GetString("SetOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Table settings.
+        /// </summary>
+        internal static string TableSettings {
+            get {
+                return ResourceManager.GetString("TableSettings", resourceCulture);
             }
         }
         
