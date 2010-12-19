@@ -103,18 +103,7 @@ namespace GpsRunningPlugin.Source
             }
 
             RefreshColumns();
-#if false
-            TreeList.Column column = new TreeList.Column("Visible", StringResources.Visible, 50, StringAlignment.Center);
-            treeListAct.Columns.Add(column);
-            column = new TreeList.Column("Colour", StringResources.Colour, 50, StringAlignment.Center);
-            treeListAct.Columns.Add(column);
-            column = new TreeList.Column("StartTime", StringResources.ActDate, 200, StringAlignment.Center); 
-            treeListAct.Columns.Add(column);
-            column = new TreeList.Column("Offset", StringResources.Offset, 50, StringAlignment.Center);
-            treeListAct.Columns.Add(column);
-            column = new TreeList.Column("Name", StringResources.Name, 100, StringAlignment.Center); 
-            treeListAct.Columns.Add(column);
-#endif
+
             treeListAct.CheckBoxes = true;
             treeListAct.MultiSelect = true;
             treeListAct.RowDataRenderer.RowAlternatingColors = true;
@@ -122,7 +111,7 @@ namespace GpsRunningPlugin.Source
             treeListAct.CheckedChanged += new TreeList.ItemEventHandler(treeView_CheckedChanged);
             treeListAct.ContextMenuStrip = treeListContextMenuStrip;
 
-            actionBanner1.Text = StringResources.OverlayChart;
+            actionBanner1.Text = Resources.OverlayChart;
             actionBanner1.MenuClicked += actionBanner1_MenuClicked;
             
             chart.SelectData += new ChartBase.SelectDataHandler(chart_SelectData);
@@ -326,11 +315,11 @@ namespace GpsRunningPlugin.Source
         public void UICultureChanged(CultureInfo culture)
         {
             m_culture = culture;
-            actionBanner1.Text = StringResources.OverlayChart;
+            actionBanner1.Text = Resources.OverlayChart;
             showMeanMenuItem.Text = Resources.BCA;
             showRollingAverageMenuItem.Text = Resources.BMA;
 
-            tableSettingsMenuItem.Text = StringResources.TableSettings;
+            tableSettingsMenuItem.Text = Resources.TableSettings;
 
             labelXaxis.Text = StringResources.XAxis + ":";
  
@@ -362,11 +351,11 @@ namespace GpsRunningPlugin.Source
             showTimeDiffMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelTime.ToLower() + " " + StringResources.Difference;
             showDistDiffMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelDistance.ToLower() + " " + StringResources.Difference;
 
-            offsetMenuItem.Text = StringResources.SetOffset;
-            setRollAvgWidthMenuItem.Text = StringResources.SetMovingAveragePeriod;
+            offsetMenuItem.Text = Resources.SetOffset;
+            setRollAvgWidthMenuItem.Text = Resources.SetMovingAveragePeriod;
 
-            showChartToolsMenuItem.Text = StringResources.Menu_ShowChartBar;
-            showToolBarMenuItem.Text = StringResources.Menu_ShowToolBar; 
+            showChartToolsMenuItem.Text = Resources.Menu_ShowChartBar;
+            showToolBarMenuItem.Text = Resources.Menu_ShowToolBar; 
 
             int max = Math.Max(labelXaxis.Location.X + labelXaxis.Size.Width,
                                 labelYaxis.Location.X + labelYaxis.Size.Width) + 5;
@@ -1565,12 +1554,12 @@ namespace GpsRunningPlugin.Source
                 String labelText = null;
                 if (Settings.UseTimeXAxis)
                 {
-                    labelText = StringResources.SetMovingAveragePeriod + ":";
+                    labelText = Resources.SetMovingAveragePeriod + ":";
                     textBoxInit = UnitUtil.Time.ToString(Settings.MovingAverageTime, "u");
                 }
                 else
                 {
-                    labelText = StringResources.SetMovingAveragePeriod + ":";
+                    labelText = Resources.SetMovingAveragePeriod + ":";
                     textBoxInit = UnitUtil.Distance.ToString(Settings.MovingAverageLength, "u");
                 }
                 InputDialog dialog = new InputDialog("Set moving average width", labelText, textBoxInit);
@@ -1619,15 +1608,15 @@ namespace GpsRunningPlugin.Source
                 ActivityWrapper wrapper = (ActivityWrapper)treeListAct.SelectedItems[0];
                 if (Settings.UseTimeXAxis)
                 {
-                    labelText = StringResources.SetOffset + " " + CommonResources.Text.LabelTime.ToLower() + ":";
+                    labelText = Resources.SetOffset + " " + CommonResources.Text.LabelTime.ToLower() + ":";
                     textBoxInit = UnitUtil.Time.ToString(wrapper.TimeOffset, "u");
                 }
                 else
                 {
-                    labelText = StringResources.SetOffset + " " + CommonResources.Text.LabelDistance.ToLower() + ":";
+                    labelText = Resources.SetOffset + " " + CommonResources.Text.LabelDistance.ToLower() + ":";
                     textBoxInit = UnitUtil.Distance.ToString(UnitUtil.Distance.ConvertFrom(wrapper.DistanceOffset), "u");
                 }
-                InputDialog dialog = new InputDialog(StringResources.SetOffset, labelText, textBoxInit);
+                InputDialog dialog = new InputDialog(Resources.SetOffset, labelText, textBoxInit);
                 dialog.ThemeChanged(m_visualTheme);
                 dialog.UICultureChanged(m_culture);
                 dialog.ShowDialog();

@@ -158,4 +158,25 @@
   <data name="Webpage" xml:space="preserve">
     <value>Overlay plugin webpage</value>
   </data>
+  <data name="Menu_ShowChartBar" xml:space="preserve">
+    <value>Show Chart Bar</value>
+  </data>
+  <data name="Menu_ShowToolBar" xml:space="preserve">
+    <value>Show Chart Tools</value>
+  </data>
+  <data name="MovingAverage" xml:space="preserve">
+    <value>Moving average</value>
+  </data>
+  <data name="OverlayChart" xml:space="preserve">
+    <value>Overlay chart</value>
+  </data>
+  <data name="SetMovingAveragePeriod" xml:space="preserve">
+    <value>Set moving average period</value>
+  </data>
+  <data name="SetOffset" xml:space="preserve">
+    <value>Set activity offset</value>
+  </data>
+  <data name="TableSettings" xml:space="preserve">
+    <value>Table settings</value>
+  </data>
 </root>
