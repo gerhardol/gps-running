@@ -134,8 +134,13 @@ namespace GpsRunningPlugin.Source
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.AvgHR, CommonResources.Text.LabelAvgHR + UnitUtil.HeartRate.LabelAbbr2, "", 80, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.AvgCad, CommonResources.Text.LabelAvgCadence, "", 60, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.AvgPower, CommonResources.Text.LabelAvgPower, "", 60, StringAlignment.Near));
+#if ST_2_1
+            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.TotAsc, CommonResources.Text.LabelAscending, "", 60, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.TotDesc, CommonResources.Text.LabelDescending, "", 60, StringAlignment.Near));
+#else
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.TotAsc, CommonResources.Text.LabelTotalAscending, "", 60, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.TotDesc, CommonResources.Text.LabelTotalDescending, "", 60, StringAlignment.Near));
+#endif
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.TimeDiff, CommonResources.Text.LabelTime + " " + StringResources.Difference, "", 70, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.DistanceDiff, CommonResources.Text.LabelDistance + " " + StringResources.Difference, "", 60, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.AvgSpeedDiff, CommonResources.Text.LabelAvgSpeed + " " + StringResources.Difference, "", 80, StringAlignment.Near));
