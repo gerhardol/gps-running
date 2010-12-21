@@ -20,6 +20,10 @@ Links to resources for this and other plugins:
   * https://sporttracks-activitypicture.googlecode.com/svn/trunk/ActivityPicturePlugin_Localization.xls
   * http://matrix.codeplex.com/SourceControl/list/changesets (It seems like the complete blob has to be downloaded for Matrix) 
 
+= Hints =
+
+Some fitness related items have no generally accepted translation. There may not be a "perfect" translation. To get hints, you can peek at other plugins translations.
+
 = Workflow =
   * Open an issue for each plugin and each language on Google Code or CodePlex. You need to have Google id or CodePlex id for this. 
   * Take a note of the SVN revision and download the xls file
