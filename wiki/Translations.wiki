@@ -17,6 +17,7 @@ Links to resources for this and other plugins:
   * http://code.google.com/p/gps-running/source/browse/trunk/GpsRunning.xls 
   * http://code.google.com/p/sporttracks-miscplugin/source/browse/trunk/SportTracksPluginResources.xls 
   * http://code.google.com/p/trails/source/browse/trunk/Resources.xls 
+  * https://sporttracks-activitypicture.googlecode.com/svn/trunk/ActivityPicturePlugin_Localization.xls
   * http://matrix.codeplex.com/SourceControl/list/changesets (It seems like the complete blob has to be downloaded for Matrix) 
 
 = Workflow =
