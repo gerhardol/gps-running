@@ -40,6 +40,7 @@ namespace GpsRunningPlugin.Source
      IDetailPage
 #endif
     {
+        #region IActivityDetailPage Members
 #if !ST_2_1
         public TRIMPActivityDetailPage(IDailyActivityView view)
         {
@@ -54,7 +55,6 @@ namespace GpsRunningPlugin.Source
         }
         public System.Guid Id { get { return new Guid("{70c12320-5ec8-11df-a08a-0800200c9a66}"); } }
 #endif
-        #region IActivityDetailPage Members
 
         public IActivity Activity
         {

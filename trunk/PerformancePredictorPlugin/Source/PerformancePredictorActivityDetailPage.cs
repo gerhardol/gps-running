@@ -64,7 +64,7 @@ namespace GpsRunningPlugin.Source
         {
             set
             {
-                if (null == value) { activities = null; }
+                if (null == value) { activities = new List<IActivity>(); }
                 else { activities = new List<IActivity> { value }; }
                 if ((control != null))
                 {

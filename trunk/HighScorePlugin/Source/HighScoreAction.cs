@@ -45,11 +45,12 @@ namespace GpsRunningPlugin.Source
         {
             this.reportView = view;
         }
-#endif
+#else
         public HighScoreAction(IList<IActivity> activities)
         {
             this.activities = activities;
         }
+#endif
 
         #region IAction Members
 
