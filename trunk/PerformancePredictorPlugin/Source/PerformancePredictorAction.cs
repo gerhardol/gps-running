@@ -42,12 +42,12 @@ namespace GpsRunningPlugin.Source
         {
             this.reportView = view;
         }
-#endif
-
+#else
         public PerformancePredictorAction(IList<IActivity> activities)
         {
             this.activities = activities;
         }
+#endif
 
         #region IAction Members
 
@@ -79,7 +79,20 @@ namespace GpsRunningPlugin.Source
 
         public void Run(System.Drawing.Rectangle rectButton)
         {
-            new PerformancePredictorView(activities, true);
+            PerformancePredictorView t;
+#if ST_2_1
+                t = new PerformancePredictorView(true);
+#else
+            if (reportView != null)
+            {
+                t = new PerformancePredictorView(reportView);
+            }
+            else
+            {
+                t = new PerformancePredictorView(dailyView);
+            }
+#endif
+            t.Activities = activities;
         }
 
         public string Title

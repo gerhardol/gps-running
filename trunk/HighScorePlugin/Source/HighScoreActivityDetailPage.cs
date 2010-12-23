@@ -109,8 +109,9 @@ namespace GpsRunningPlugin.Source
         {
             if (control == null)
             {
-                control = new HighScoreViewer(activities, false, false);
+                control = new HighScoreViewer(this, view);
             }
+            control.Activities = activities;
             return control;
         }
 

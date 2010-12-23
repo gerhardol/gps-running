@@ -81,7 +81,20 @@ namespace GpsRunningPlugin.Source
 
         public void Run(System.Drawing.Rectangle rectButton)
         {
-            new HighScoreViewer(activities, activities.Count > 1, true);
+            HighScoreViewer t;
+#if ST_2_1
+                t = new OverlayView(true);
+#else
+            if (reportView != null)
+            {
+                t = new HighScoreViewer(reportView);
+            }
+            else
+            {
+                t = new HighScoreViewer(dailyView);
+            }
+#endif
+            t.Activities = activities;
         }
 
         public string Title

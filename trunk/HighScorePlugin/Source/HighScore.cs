@@ -492,7 +492,6 @@ namespace GpsRunningPlugin.Source
         public static DataTable generateTable(IList<Result> results, String speedUnit, 
             bool includeLocationAndDate, GoalParameter domain, GoalParameter image, bool upperBound)
         {
-            IApplication app = Plugin.GetApplication();
             DataTable table = new DataTable();
             table.Columns.Add(UnitUtil.Distance.LabelAxis);
             table.Columns.Add(CommonResources.Text.LabelTime);

@@ -135,7 +135,7 @@ namespace GpsRunningPlugin.Source
 #if ST_2_1
                 control = new UniqueRoutesActivityDetailView();
 #else
-                control = new UniqueRoutesActivityDetailView(view);
+                control = new UniqueRoutesActivityDetailView(this, view);
 #endif
                 control.Activities = activities;
             }
