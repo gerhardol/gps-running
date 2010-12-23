@@ -48,31 +48,39 @@ namespace GpsRunningPlugin.Source
 {
     public partial class OverlayView : UserControl
     {
-        public OverlayView(
 #if !ST_2_1
-            IDetailPage detailPage, 
+        public OverlayView(IDetailPage detailPage, IDailyActivityView view)
+           : this()
+        {
+            m_DetailPage = detailPage;
+            m_view = view;
+            if (m_DetailPage != null)
+            {
+                expandButton.Visible = true;
+            }
+        }
+        //popup dialog
+        public OverlayView(IDailyActivityView view)
+            : this(true)
+        {
+            //m_layer = TrailPointsLayer.Instance((IView)view);
+        }
+        public OverlayView(IActivityReportsView view)
+            : this(true)
+        {
+            //m_layer = TrailPointsLayer.Instance((IView)view);
+        }
 #endif
-            IList<IActivity> activities, 
-            bool showDialog)
+        //popup view
+        public OverlayView(bool showDialog)
             : this()
         {
-#if !ST_2_1
-            m_DetailPage = detailPage;
-#endif
             if (showDialog)
             {
                 //Theme and Culture must be set manually
                 this.ThemeChanged(m_visualTheme);
                 this.UICultureChanged(m_culture);
-            }
-            this.Activities = activities;
-            if (showDialog)
-            {
                 _showPage = true;
-            }
-            RefreshPage();
-            if (showDialog)
-            {
                 this.ShowDialog();
             }
         }
@@ -103,7 +111,6 @@ namespace GpsRunningPlugin.Source
             }
 
             RefreshColumns();
-
             treeListAct.CheckBoxes = true;
             treeListAct.MultiSelect = true;
             treeListAct.RowDataRenderer.RowAlternatingColors = true;
@@ -117,15 +124,10 @@ namespace GpsRunningPlugin.Source
             chart.SelectData += new ChartBase.SelectDataHandler(chart_SelectData);
             chart.SelectingData += new ChartBase.SelectDataHandler(chart_SelectingData);
             chart.Click += new EventHandler(chart_Click);
-
-#if !ST_2_1
-            expandButton.BackgroundImage = CommonResources.Images.View2PaneLowerHalf16;
-#endif
         }
 
         private void RefreshColumns()
         {
-
             treeListAct.Columns.Clear();
             foreach (string id in Settings.TreeListPermanentActColumns)
             {
@@ -163,15 +165,20 @@ namespace GpsRunningPlugin.Source
                 }
             }
         }
-        
+
         public void InitControls()
         {
             SizeChanged += new EventHandler(OverlayView_SizeChanged);
 #if ST_2_1
             this.tableSettingsMenuItem.Enabled = false;
 #endif
+#if !ST_2_1
+            expandButton.BackgroundImage = CommonResources.Images.View2PaneLowerHalf16;
+#endif
             //TODO:
             this.showToolBarMenuItem.Visible = false;
+            //Enabled when possible
+            expandButton.Visible = false;
         }
 
         public void ShowDialog()
@@ -193,7 +200,7 @@ namespace GpsRunningPlugin.Source
             popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_Overlay.GetHicon());
             Parent.SizeChanged += new EventHandler(Parent_SizeChanged);
             popupForm.StartPosition = FormStartPosition.CenterScreen;
-            popupForm.ShowDialog();
+            popupForm.Show();
         }
 
         public IList<IActivity> Activities
@@ -242,14 +249,6 @@ namespace GpsRunningPlugin.Source
         {
             if (_showPage)
             {
-#if !ST_2_1
-                if (m_DetailPage == null)
-                    expandButton.Visible = false;
-                else
-                    expandButton.Visible = true;
-#else
-                expandButton.Visible = false;
-#endif
                 updateActivities();
                 updateChart();
             }
@@ -1807,8 +1806,11 @@ namespace GpsRunningPlugin.Source
 
         private string saveImageProperties_fileName = "";
 
-#if !ST_2_1
+#if ST_2_1
+        private object m_DetailPage = null;
+#else
         private IDetailPage m_DetailPage = null;
+        private IDailyActivityView m_view = null;
 #endif
         private bool m_boDetailPageExpanded = false;
 

@@ -78,11 +78,20 @@ namespace GpsRunningPlugin.Source
 
         public void Run(System.Drawing.Rectangle rectButton)
         {
-#if !ST_2_1
-            new OverlayView(null, activities, true);
+            OverlayView t;
+#if ST_2_1
+                t = new OverlayView(true);
 #else
-            new OverlayView(activities, true);
+            if (reportView != null)
+            {
+                t = new OverlayView(reportView);
+            }
+            else
+            {
+                t = new OverlayView(dailyView);
+            }
 #endif
+            t.Activities = activities;
         }
 
         public string Title

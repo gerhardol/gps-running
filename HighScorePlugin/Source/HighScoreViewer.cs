@@ -38,13 +38,20 @@ namespace GpsRunningPlugin.Source
     public partial class HighScoreViewer : UserControl
     {
         private readonly Form popupForm;
-        private readonly bool includeLocationAndDate, showDialog;
+        private bool includeLocationAndDate = false;
+        private readonly bool showDialog = false;
         private GoalParameter domain, image;
         private bool upperBound;
         private IDictionary<GoalParameter, IDictionary<GoalParameter, IDictionary<bool, DataTable>>> cachedTables;
         private IDictionary<DataTable, String> tableFormat;
         private IDictionary<GoalParameter, IDictionary<GoalParameter, IDictionary<bool, IList<Result>>>> cachedResults;
         private String speedUnit;
+#if ST_2_1
+        private object m_DetailPage = null;
+#else
+        private IDetailPage m_DetailPage = null;
+        private IDailyActivityView m_view = null;
+#endif
 
         private IList<IActivity> activities = new List<IActivity>();
         public IList<IActivity> Activities
@@ -63,15 +70,40 @@ namespace GpsRunningPlugin.Source
                     else
                         popupForm.Text = Resources.HSV + " " + StringResources.OfNoActivities;
                 }
+                this.includeLocationAndDate = (activities.Count > 1);
                 resetCachedResults();
                 if (activities.Count > 0)
                 {
+
                     showResults();
                 }
             }
         }
 
-        public HighScoreViewer(IList<IActivity> activities, bool includeLocationAndDate, bool showDialog)
+#if !ST_2_1
+        public HighScoreViewer(IDetailPage detailPage, IDailyActivityView view)
+           : this()
+        {
+            m_DetailPage = detailPage;
+            m_view = view;
+            if (m_DetailPage != null)
+            {
+                //expandButton.Visible = true;
+            }
+        }
+        //popup dialog
+        public HighScoreViewer(IDailyActivityView view)
+            : this(true)
+        {
+            //m_layer = TrailPointsLayer.Instance((IView)view);
+        }
+        public HighScoreViewer(IActivityReportsView view)
+            : this(true)
+        {
+            //m_layer = TrailPointsLayer.Instance((IView)view);
+        }
+#endif
+       public HighScoreViewer()
         {
             InitializeComponent();
             InitControls();
@@ -79,9 +111,6 @@ namespace GpsRunningPlugin.Source
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
             dataGrid.CellContentDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
             
-            this.showDialog = showDialog;
-            this.includeLocationAndDate = includeLocationAndDate;
-
             domainBox.DropDownStyle = ComboBoxStyle.DropDownList;
             imageBox.DropDownStyle = ComboBoxStyle.DropDownList;
             boundsBox.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -111,6 +140,12 @@ namespace GpsRunningPlugin.Source
 
             dataGrid.CellToolTipTextNeeded += new DataGridViewCellToolTipTextNeededEventHandler(dataGrid_CellToolTipTextNeeded);
             contextMenu.Click += new EventHandler(contextMenu_Click);
+        }
+
+        public HighScoreViewer(bool showDialog)
+            : this ()
+        {
+            this.showDialog = showDialog;
 
             if (showDialog)
             {
@@ -144,7 +179,6 @@ namespace GpsRunningPlugin.Source
             {
                 SizeChanged += new EventHandler(SizeChanged_handler);
             }           
-            Activities = activities;
         }
 
         void InitControls()

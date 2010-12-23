@@ -26,6 +26,7 @@ using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Chart;
+using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using System.Reflection;
 using GpsRunningPlugin.Properties;
@@ -38,6 +39,12 @@ namespace GpsRunningPlugin.Source
         private TrainingView trainingView;
 
         private IActivity lastActivity = null;
+#if ST_2_1
+        private object m_DetailPage = null;
+#else
+        private IDetailPage m_DetailPage = null;
+        private IDailyActivityView m_view = null;
+#endif
 
         private IList<IActivity> activities = new List<IActivity>();
         public IList<IActivity> Activities
@@ -144,11 +151,29 @@ namespace GpsRunningPlugin.Source
 
         private Form popupForm = null;
 
-        public PerformancePredictorView(IList<IActivity> activities, bool showDialog)
-            : this(showDialog)
+#if !ST_2_1
+        public PerformancePredictorView(IDetailPage detailPage, IDailyActivityView view)
+           : this()
         {
-            Activities = activities;
+            m_DetailPage = detailPage;
+            m_view = view;
+            if (m_DetailPage != null)
+            {
+                //expandButton.Visible = true;
+            }
         }
+        //popup dialog
+        public PerformancePredictorView(IDailyActivityView view)
+            : this(true)
+        {
+            //m_layer = TrailPointsLayer.Instance((IView)view);
+        }
+        public PerformancePredictorView(IActivityReportsView view)
+            : this(true)
+        {
+            //m_layer = TrailPointsLayer.Instance((IView)view);
+        }
+#endif
         public PerformancePredictorView()
         {
             InitializeComponent(); 

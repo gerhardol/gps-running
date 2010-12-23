@@ -20,6 +20,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 using System;
 using System.Collections.Generic;
 using System.Text;
+
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using GpsRunningPlugin.Properties;
@@ -42,11 +43,12 @@ namespace GpsRunningPlugin.Source
         {
             this.reportView = view;
         }
-#endif
+#else
         public AccumulatedSummaryAction(IList<IActivity> activities)
         {
             this.activities = activities;
         }
+#endif
 
         #region IAction Members
 
@@ -86,7 +88,7 @@ namespace GpsRunningPlugin.Source
             get 
             {
                 if (activities.Count == 1) return Resources.AS1;
-                return String.Format(Resources.AS2,activities.Count); 
+                return String.Format(Resources.AS2, activities.Count); 
             }
         }
         private bool firstRun = true;

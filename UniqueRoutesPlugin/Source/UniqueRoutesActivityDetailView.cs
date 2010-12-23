@@ -54,12 +54,21 @@ namespace GpsRunningPlugin.Source
         private bool _showPage = false;
         private bool _needsRecalculation = true;
 
-#if !ST_2_1
+#if ST_2_1
+        private object m_DetailPage = null;
+#else
+        private IDetailPage m_DetailPage = null;
         private IDailyActivityView m_view = null;
-        public UniqueRoutesActivityDetailView(IDailyActivityView view)
+
+        public UniqueRoutesActivityDetailView(IDetailPage detailPage, IDailyActivityView view)
             : this()
         {
+            m_DetailPage = detailPage;
             m_view = view;
+            if (m_DetailPage != null)
+            {
+                //expandButton.Visible = true;
+            }
         }
 #endif
         public UniqueRoutesActivityDetailView()
