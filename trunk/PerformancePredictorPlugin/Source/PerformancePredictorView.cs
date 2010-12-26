@@ -40,11 +40,148 @@ namespace GpsRunningPlugin.Source
 
         private IActivity lastActivity = null;
 #if ST_2_1
-        private object m_DetailPage = null;
+        private const object m_DetailPage = null;
 #else
         private IDetailPage m_DetailPage = null;
         private IDailyActivityView m_view = null;
 #endif
+
+#if !ST_2_1
+        public PerformancePredictorView(IDetailPage detailPage, IDailyActivityView view)
+           : this()
+        {
+            m_DetailPage = detailPage;
+            m_view = view;
+            if (m_DetailPage != null)
+            {
+                //expandButton.Visible = true;
+            }
+        }
+        //popup dialog
+        public PerformancePredictorView(IDailyActivityView view)
+            : this(true)
+        {
+            //m_layer = TrailPointsLayer.Instance((IView)view);
+        }
+        public PerformancePredictorView(IActivityReportsView view)
+            : this(true)
+        {
+            //m_layer = TrailPointsLayer.Instance((IView)view);
+        }
+#endif
+        public PerformancePredictorView()
+        {
+            InitializeComponent();
+            InitControls();
+
+            Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
+            if (Parent != null)
+            {
+                Parent.Resize += new EventHandler(Parent_Resize);
+            }
+            Resize += new EventHandler(PerformancePredictorView_Resize);
+            Settings settings = new Settings();
+
+            setSize();
+            chart.YAxis.Formatter = new Formatter.SecondsToTime();
+            chart.XAxis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
+            //Remove this listener - let user explicitly update after changing settings, to avoid crashes
+            //Settings.DistanceChanged += new PropertyChangedEventHandler(Settings_DistanceChanged);
+        }
+
+        public PerformancePredictorView(bool showDialog)
+            : this()
+        {
+            if (showDialog)
+            {
+                //Theme and Culture must be set manually
+                this.ThemeChanged(
+#if ST_2_1
+Plugin.GetApplication().VisualTheme);
+#else
+                  Plugin.GetApplication().SystemPreferences.VisualTheme);
+#endif
+                this.UICultureChanged(
+#if ST_2_1
+new System.Globalization.CultureInfo("en"));
+#else
+                  Plugin.GetApplication().SystemPreferences.UICulture);
+#endif
+                popupForm = new Form();
+                popupForm.Controls.Add(this);
+                popupForm.Size = Settings.WindowSize;
+                //Fill would be simpler here, but then edges are cut
+                this.Size = new Size(Parent.Size.Width - 17, Parent.Size.Height - 38);
+                this.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom)));
+                Parent.SizeChanged += new EventHandler(Parent_SizeChanged);
+                dataGrid.CellContentDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
+                popupForm.StartPosition = FormStartPosition.CenterScreen;
+                popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_PerformancePredictor.GetHicon());
+                popupForm.Show();
+                this.ShowPage("");
+            }
+        }
+
+        void InitControls()
+        {
+            cameronSeries = new ChartDataSeries(chart, chart.YAxis);
+            riegelSeries = new ChartDataSeries(chart, chart.YAxis);
+
+            trainingView = new TrainingView();
+            trainingView.Location = chart.Location;
+            //Note ThemeChanged set as for components init by default
+            this.splitContainer1.Panel2.Controls.Add(trainingView);
+            trainingView.Dock = DockStyle.Fill;
+            trainingView.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            progressBar.Visible = false;
+
+            this.dataGrid.EnableHeadersVisualStyles = false;
+            this.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.dataGrid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.dataGrid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
+        }
+
+        public void ThemeChanged(ITheme visualTheme)
+        {
+            //RefreshPage();
+            //m_visualTheme = visualTheme;
+            this.chart.ThemeChanged(visualTheme);
+            //Set color for non ST controls
+            this.splitContainer1.Panel1.BackColor = visualTheme.Control;
+            this.splitContainer1.Panel2.BackColor = visualTheme.Control;
+
+            this.dataGrid.BackgroundColor = visualTheme.Control;
+            this.dataGrid.GridColor = visualTheme.Border;
+            this.dataGrid.DefaultCellStyle.BackColor = visualTheme.Window;
+            this.dataGrid.ColumnHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
+
+            if (null != trainingView)
+            {
+                trainingView.ThemeChanged(visualTheme);
+            }
+        }
+
+        public void UICultureChanged(System.Globalization.CultureInfo culture)
+        {
+            groupBox3.Text = StringResources.Settings;
+            groupBox1.Text = Resources.PredictionModel;
+            groupBox2.Text = Resources.Velocity;
+            resultBox.Text = Resources.PredictionResults;
+            timePrediction.Text = Resources.TimePrediction;
+            training.Text = StringResources.Training;
+            pace.Text = CommonResources.Text.LabelPace;
+            speed.Text = CommonResources.Text.LabelSpeed;
+            chartButton.Text = Resources.ViewInChart;
+            table.Text = Resources.ViewInTable;
+            this.chkHighScore.Text = Properties.Resources.HighScorePrediction;
+            lblHighScoreRequired.Text = Properties.Resources.HighScoreRequired;
+
+            if (null != trainingView)
+            {
+                trainingView.UICultureChanged(culture);
+            }
+        }
 
         private IList<IActivity> activities = new List<IActivity>();
         public IList<IActivity> Activities
@@ -150,143 +287,6 @@ namespace GpsRunningPlugin.Source
         private DataTable riegelSet = new DataTable();
 
         private Form popupForm = null;
-
-#if !ST_2_1
-        public PerformancePredictorView(IDetailPage detailPage, IDailyActivityView view)
-           : this()
-        {
-            m_DetailPage = detailPage;
-            m_view = view;
-            if (m_DetailPage != null)
-            {
-                //expandButton.Visible = true;
-            }
-        }
-        //popup dialog
-        public PerformancePredictorView(IDailyActivityView view)
-            : this(true)
-        {
-            //m_layer = TrailPointsLayer.Instance((IView)view);
-        }
-        public PerformancePredictorView(IActivityReportsView view)
-            : this(true)
-        {
-            //m_layer = TrailPointsLayer.Instance((IView)view);
-        }
-#endif
-        public PerformancePredictorView()
-        {
-            InitializeComponent(); 
-            InitControls();
-
-            Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
-            if (Parent != null)
-            {
-                Parent.Resize += new EventHandler(Parent_Resize);
-            }
-            Resize += new EventHandler(PerformancePredictorView_Resize);
-            Settings settings = new Settings();
-
-            setSize();
-            chart.YAxis.Formatter = new Formatter.SecondsToTime();
-            chart.XAxis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
-            //Remove this listener - let user explicitly update after changing settings, to avoid crashes
-            //Settings.DistanceChanged += new PropertyChangedEventHandler(Settings_DistanceChanged);
-        }
-
-        public PerformancePredictorView(bool showDialog)
-            : this()
-        {
-            if (showDialog)
-            {
-                //Theme and Culture must be set manually
-                this.ThemeChanged(
-#if ST_2_1
-                  Plugin.GetApplication().VisualTheme);
-#else
-                  Plugin.GetApplication().SystemPreferences.VisualTheme);
-#endif
-                this.UICultureChanged(
-#if ST_2_1
-                  new System.Globalization.CultureInfo("en"));
-#else
-                  Plugin.GetApplication().SystemPreferences.UICulture);
-#endif
-                popupForm = new Form();
-                popupForm.Controls.Add(this);
-                popupForm.Size = Settings.WindowSize;
-                //Fill would be simpler here, but then edges are cut
-                this.Size = new Size(Parent.Size.Width - 17, Parent.Size.Height - 38);
-                this.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom)));
-                Parent.SizeChanged += new EventHandler(Parent_SizeChanged);
-                dataGrid.CellContentDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
-                popupForm.StartPosition = FormStartPosition.CenterScreen;
-                popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_PerformancePredictor.GetHicon());
-                popupForm.Show();
-                this.ShowPage("");
-            }
-        }
-
-        void InitControls()
-        {
-            cameronSeries = new ChartDataSeries(chart, chart.YAxis);
-            riegelSeries = new ChartDataSeries(chart, chart.YAxis);
-
-            trainingView = new TrainingView();
-            trainingView.Location = chart.Location;
-            //Note ThemeChanged set as for components init by default
-            this.splitContainer1.Panel2.Controls.Add(trainingView);
-            trainingView.Dock = DockStyle.Fill;
-            trainingView.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            progressBar.Visible = false;
-
-            this.dataGrid.EnableHeadersVisualStyles = false;
-            this.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.dataGrid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.dataGrid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
-        }
-
-        public void ThemeChanged(ITheme visualTheme)
-        {
-            //RefreshPage();
-            //m_visualTheme = visualTheme;
-            this.chart.ThemeChanged(visualTheme);
-            //Set color for non ST controls
-            this.splitContainer1.Panel1.BackColor = visualTheme.Control;
-            this.splitContainer1.Panel2.BackColor = visualTheme.Control;
-
-            this.dataGrid.BackgroundColor = visualTheme.Control;
-            this.dataGrid.GridColor = visualTheme.Border;
-            this.dataGrid.DefaultCellStyle.BackColor = visualTheme.Window;
-            this.dataGrid.ColumnHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
-
-            if (null != trainingView)
-            {
-                trainingView.ThemeChanged(visualTheme);
-            }
-        }
-
-        public void UICultureChanged(System.Globalization.CultureInfo culture)
-        {
-            groupBox3.Text = StringResources.Settings;
-            groupBox1.Text = Resources.PredictionModel;
-            groupBox2.Text = Resources.Velocity;
-            resultBox.Text = Resources.PredictionResults;
-            timePrediction.Text = Resources.TimePrediction;
-            training.Text = StringResources.Training;
-            pace.Text = CommonResources.Text.LabelPace;
-            speed.Text = CommonResources.Text.LabelSpeed;
-            chartButton.Text = Resources.ViewInChart;
-            table.Text = Resources.ViewInTable;
-            this.chkHighScore.Text = Properties.Resources.HighScorePrediction;
-            lblHighScoreRequired.Text = Properties.Resources.HighScoreRequired;
-
-            if (null != trainingView)
-            {
-                trainingView.UICultureChanged(culture);
-            }
-        }
 
         private bool _showPage = false;
         public bool HidePage()
@@ -680,7 +680,7 @@ namespace GpsRunningPlugin.Source
         
         private void daveCameron_CheckedChanged(object sender, EventArgs e)
         {
-            if (daveCameron.Checked)
+            if (_showPage && daveCameron.Checked)
             {
                 Settings.Model = PredictionModel.DAVE_CAMERON;
                 setView();
@@ -691,7 +691,7 @@ namespace GpsRunningPlugin.Source
 
         private void reigel_CheckedChanged(object sender, EventArgs e)
         {
-            if (reigel.Checked)
+            if (_showPage && reigel.Checked)
             {
                 Settings.Model = PredictionModel.PETE_RIEGEL;
                 setView();
@@ -702,7 +702,7 @@ namespace GpsRunningPlugin.Source
 
         private void chartButton_CheckedChanged(object sender, EventArgs e)
         {
-            if (chartButton.Checked)
+            if (_showPage && chartButton.Checked)
             {
                 Settings.ShowChart = true;
                 updateChartVisibility();
@@ -711,7 +711,7 @@ namespace GpsRunningPlugin.Source
 
         private void table_CheckedChanged(object sender, EventArgs e)
         {
-            if (table.Checked)
+            if (_showPage && table.Checked)
             {
                 Settings.ShowChart = false;
                 updateChartVisibility();
@@ -737,7 +737,7 @@ namespace GpsRunningPlugin.Source
 
         private void timePrediction_CheckedChanged(object sender, EventArgs e)
         {
-            if (timePrediction.Checked && activities.Count == 1)
+            if (_showPage && timePrediction.Checked && activities.Count == 1)
             {
                 Settings.ShowPrediction = true;
                 setView();
@@ -747,7 +747,7 @@ namespace GpsRunningPlugin.Source
 
         private void training_CheckedChanged(object sender, EventArgs e)
         {
-            if (training.Checked && activities.Count == 1)
+            if (_showPage && training.Checked && activities.Count == 1)
             {
                 Settings.ShowPrediction = false;
                 setView();
@@ -757,7 +757,7 @@ namespace GpsRunningPlugin.Source
 
         private void pace_CheckedChanged(object sender, EventArgs e)
         {
-            if (pace.Checked)
+            if (_showPage && pace.Checked)
             {
                 Settings.ShowPace = true;
                 makeData();
@@ -767,7 +767,7 @@ namespace GpsRunningPlugin.Source
 
         private void speed_CheckedChanged(object sender, EventArgs e)
         {
-            if (speed.Checked)
+            if (_showPage && speed.Checked)
             {
                 Settings.ShowPace = false;
                 makeData();

@@ -84,7 +84,7 @@ namespace GpsRunningPlugin.Source
         {
             HighScoreViewer t;
 #if ST_2_1
-                t = new OverlayView(true);
+            t = new HighScoreViewer(true);
 #else
             if (reportView != null)
             {
