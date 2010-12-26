@@ -113,7 +113,11 @@ namespace GpsRunningPlugin.Source
         {
             if (control == null)
             {
+#if !ST_2_1
+                control = new PerformancePredictorView(this, view);
+#else
                 control = new PerformancePredictorView();
+#endif
                 if ((control != null))
                 {
                     control.Activities = activities;

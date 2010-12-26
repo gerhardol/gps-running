@@ -41,6 +41,7 @@ namespace GpsRunningPlugin.Source
      IDetailPage
 #endif
     {
+        #region IActivityDetailPage Members
 #if !ST_2_1
         public OverlayActivityDetailPage(IDailyActivityView view)
         {
@@ -57,11 +58,7 @@ namespace GpsRunningPlugin.Source
             }
         }
         public System.Guid Id { get { return new Guid("{75af74a0-5ec7-11df-a08a-0800200c9a66}"); } }
-#endif
-
-        #region IActivityDetailPage Members
-
-#if ST_2_1
+#else
         public IActivity Activity
         {
             set

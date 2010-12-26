@@ -51,36 +51,7 @@ namespace GpsRunningPlugin.Source
 #else
         private IDetailPage m_DetailPage = null;
         private IDailyActivityView m_view = null;
-#endif
 
-        private IList<IActivity> activities = new List<IActivity>();
-        public IList<IActivity> Activities
-        {
-            set
-            {
-                //Make sure activities is not null
-                if (null == value) { activities.Clear(); }
-                else { activities = value; }
-                if (popupForm != null)
-                {
-                    if (activities.Count > 1)
-                        popupForm.Text = Resources.HSV + " " + String.Format(StringResources.OfManyActivities, activities.Count);
-                    else if (activities.Count == 1)
-                        popupForm.Text = Resources.HSV + " " + StringResources.OfOneActivity;
-                    else
-                        popupForm.Text = Resources.HSV + " " + StringResources.OfNoActivities;
-                }
-                this.includeLocationAndDate = (activities.Count > 1);
-                resetCachedResults();
-                if (activities.Count > 0)
-                {
-
-                    showResults();
-                }
-            }
-        }
-
-#if !ST_2_1
         public HighScoreViewer(IDetailPage detailPage, IDailyActivityView view)
            : this()
         {
@@ -103,14 +74,14 @@ namespace GpsRunningPlugin.Source
             //m_layer = TrailPointsLayer.Instance((IView)view);
         }
 #endif
-       public HighScoreViewer()
+        public HighScoreViewer()
         {
             InitializeComponent();
             InitControls();
 
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
             dataGrid.CellContentDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
-            
+
             domainBox.DropDownStyle = ComboBoxStyle.DropDownList;
             imageBox.DropDownStyle = ComboBoxStyle.DropDownList;
             boundsBox.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -131,7 +102,7 @@ namespace GpsRunningPlugin.Source
             domain = Settings.Domain;
             image = Settings.Image;
             upperBound = Settings.UpperBound;
-            
+
             domainBox.SelectedIndexChanged += new EventHandler(domainBox_SelectedIndexChanged);
             imageBox.SelectedIndexChanged += new EventHandler(imageBox_SelectedIndexChanged);
             boundsBox.SelectedIndexChanged += new EventHandler(boundsBox_SelectedIndexChanged);
@@ -143,7 +114,7 @@ namespace GpsRunningPlugin.Source
         }
 
         public HighScoreViewer(bool showDialog)
-            : this ()
+            : this()
         {
             this.showDialog = showDialog;
 
@@ -152,18 +123,18 @@ namespace GpsRunningPlugin.Source
                 //Theme and Culture must be set manually
                 this.ThemeChanged(
 #if ST_2_1
-                Plugin.GetApplication().VisualTheme
+                  Plugin.GetApplication().VisualTheme
 #else
-                Plugin.GetApplication().SystemPreferences.VisualTheme
+                  Plugin.GetApplication().SystemPreferences.VisualTheme
 #endif
-                );
+);
                 this.UICultureChanged(
 #if ST_2_1
-                new System.Globalization.CultureInfo("en")
+                  new System.Globalization.CultureInfo("en")
 #else
-                Plugin.GetApplication().SystemPreferences.UICulture
+                  Plugin.GetApplication().SystemPreferences.UICulture
 #endif
-                );
+);
                 popupForm = new Form();
                 popupForm.Controls.Add(this);
                 popupForm.Size = Settings.WindowSize;
@@ -178,7 +149,7 @@ namespace GpsRunningPlugin.Source
             else
             {
                 SizeChanged += new EventHandler(SizeChanged_handler);
-            }           
+            }
         }
 
         void InitControls()
@@ -205,6 +176,33 @@ namespace GpsRunningPlugin.Source
             this.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             this.dataGrid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             this.dataGrid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
+        }
+
+        private IList<IActivity> activities = new List<IActivity>();
+        public IList<IActivity> Activities
+        {
+            set
+            {
+                //Make sure activities is not null
+                if (null == value) { activities.Clear(); }
+                else { activities = value; }
+                if (popupForm != null)
+                {
+                    if (activities.Count > 1)
+                        popupForm.Text = Resources.HSV + " " + String.Format(StringResources.OfManyActivities, activities.Count);
+                    else if (activities.Count == 1)
+                        popupForm.Text = Resources.HSV + " " + StringResources.OfOneActivity;
+                    else
+                        popupForm.Text = Resources.HSV + " " + StringResources.OfNoActivities;
+                }
+                this.includeLocationAndDate = (activities.Count > 1);
+                resetCachedResults();
+                if (activities.Count > 0)
+                {
+
+                    showResults();
+                }
+            }
         }
 
         private string translateToLanguage(GoalParameter goalParameter)
