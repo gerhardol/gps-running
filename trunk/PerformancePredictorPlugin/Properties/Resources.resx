@@ -170,7 +170,6 @@
   <data name="PaceRunNotification" xml:space="preserve">
     <value>20 min run is at lactate threshold pace - pace of longer runs adjusted to maintain proper 
 intensity.</value>
-    <comment>updated</comment>
   </data>
   <data name="PositiveNumber" xml:space="preserve">
     <value>Distance must be a positive number, optionally followed by the unit.</value>
@@ -263,7 +262,7 @@ intensity.</value>
   </data>
   <data name="IntervalNotification" xml:space="preserve">
     <value>Suggested short interval times training for certain race distances.</value>
-    <comment>pp, new</comment>
+    <comment>pp</comment>
   </data>
   <data name="PPHS" xml:space="preserve">
     <value>Performance Predictor with High Score plugin</value>
@@ -296,10 +295,8 @@ intensity.</value>
   </data>
   <data name="HighScorePrediction" xml:space="preserve">
     <value>High Score Prediction</value>
-    <comment>new</comment>
   </data>
   <data name="HighScoreRequired" xml:space="preserve">
     <value>Predicting using several activities requires High Score plugin</value>
-    <comment>new</comment>
   </data>
 </root>
