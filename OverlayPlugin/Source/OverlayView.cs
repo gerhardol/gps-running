@@ -319,6 +319,7 @@ namespace GpsRunningPlugin.Source
             showRollingAverageMenuItem.Text = Resources.BMA;
 
             tableSettingsMenuItem.Text = Resources.TableSettings;
+            setRefTreeListMenuItem.Text = Resources.SetRefActivity;
 
             labelXaxis.Text = StringResources.XAxis + ":";
  
@@ -353,6 +354,8 @@ namespace GpsRunningPlugin.Source
             offsetMenuItem.Text = Resources.SetOffset;
             setRollAvgWidthMenuItem.Text = Resources.SetMovingAveragePeriod;
 
+            setRefActMenuItem.Text = Resources.SetRefActivity;
+
             showChartToolsMenuItem.Text = Resources.Menu_ShowChartBar;
             showToolBarMenuItem.Text = Resources.Menu_ShowToolBar; 
 
@@ -362,6 +365,8 @@ namespace GpsRunningPlugin.Source
             correctUI(new Control[] { useTime, useDistance });
             heartRate.Location = new Point(max, labelYaxis.Location.Y);
             correctUI(new Control[] { heartRate, pace, speed, power, cadence, elevation, time, distance });
+
+            RefreshColumns();
 
             RefreshPage();
         }

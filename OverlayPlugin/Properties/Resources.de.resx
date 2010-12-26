@@ -59,6 +59,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="AOP" xml:space="preserve">
+    <value>Durchschnitt im Zeitraum</value>
+  </data>
   <data name="BCA" xml:space="preserve">
     <value>Durschnittskurve - schwarz</value>
   </data>
@@ -79,5 +82,29 @@
   </data>
   <data name="Webpage" xml:space="preserve">
     <value>Overlay Plugin Webseite</value>
+  </data>
+  <data name="Menu_ShowChartBar" xml:space="preserve">
+    <value>Zeige Diagrammleiste</value>
+  </data>
+  <data name="Menu_ShowToolBar" xml:space="preserve">
+    <value>Zeige Diagrammwerkzeug</value>
+  </data>
+  <data name="MovingAverage" xml:space="preserve">
+    <value>Gleitender Mittelwert</value>
+  </data>
+  <data name="OverlayChart" xml:space="preserve">
+    <value>Overlay chart</value>
+  </data>
+  <data name="SetMovingAveragePeriod" xml:space="preserve">
+    <value>Filterbreite einstellen</value>
+  </data>
+  <data name="SetOffset" xml:space="preserve">
+    <value>Versatz der Aktivität einstellen</value>
+  </data>
+  <data name="TableSettings" xml:space="preserve">
+    <value>Tabellen-Einstellungen</value>
+  </data>
+  <data name="SetRefActivity" xml:space="preserve">
+    <value>Referenzaktivität einstellen</value>
   </data>
 </root>

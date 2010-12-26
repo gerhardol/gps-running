@@ -199,7 +199,7 @@ namespace GpsRunningPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set moving average period.
+        ///   Looks up a localized string similar to Set filter width.
         /// </summary>
         internal static string SetMovingAveragePeriod {
             get {
@@ -213,6 +213,15 @@ namespace GpsRunningPlugin.Properties {
         internal static string SetOffset {
             get {
                 return ResourceManager.GetString("SetOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set reference activity.
+        /// </summary>
+        internal static string SetRefActivity {
+            get {
+                return ResourceManager.GetString("SetRefActivity", resourceCulture);
             }
         }
         
