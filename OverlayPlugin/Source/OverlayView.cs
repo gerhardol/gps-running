@@ -319,7 +319,7 @@ namespace GpsRunningPlugin.Source
             showRollingAverageMenuItem.Text = Resources.BMA;
 
             tableSettingsMenuItem.Text = Resources.TableSettings;
-            setRefTreeListMenuItem.Text = Resources.SetRefActivity;
+            setRefTreeListMenuItem.Text = StringResources.SetRefActivity;
 
             labelXaxis.Text = StringResources.XAxis + ":";
  
@@ -354,7 +354,7 @@ namespace GpsRunningPlugin.Source
             offsetMenuItem.Text = Resources.SetOffset;
             setRollAvgWidthMenuItem.Text = Resources.SetMovingAveragePeriod;
 
-            setRefActMenuItem.Text = Resources.SetRefActivity;
+            setRefActMenuItem.Text = StringResources.SetRefActivity;
 
             showChartToolsMenuItem.Text = Resources.Menu_ShowChartBar;
             showToolBarMenuItem.Text = Resources.Menu_ShowToolBar; 
