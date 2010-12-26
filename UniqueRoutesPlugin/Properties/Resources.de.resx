@@ -70,10 +70,17 @@
   <data name="BeginningMeterWarning" xml:space="preserve">
     <value>Die ignorierten Meter des Starts müssen eine Zahl sein.</value>
   </data>
+  <data name="CommonStretches" xml:space="preserve">
+    <value>Gemeinsame Strecken</value>
+  </data>
+  <data name="ctxActiveLaps" xml:space="preserve">
+    <value>Nur aktive Runden</value>
+  </data>
   <data name="DidNotFindAnyRoutes" xml:space="preserve">
     <value>Konnte keine andere Aktivität der gleichen Route finden.\ Wenn Sie meinen es gibt welche, bitte überprüfen Sie die Einstellungen und versuchen es erneut.</value>
   </data>
   <data name="DoIt" xml:space="preserve">
+    <comment>NoLongerVisible</comment>
     <value>Los!</value>
   </data>
   <data name="EndMeterWarning" xml:space="preserve">
@@ -100,7 +107,18 @@
   <data name="RoutesHaveDirection" xml:space="preserve">
     <value>Die Routen haben eine Richtung</value>
   </data>
+  <data name="Sections" xml:space="preserve">
+    <value>Abschnitte</value>
+  </data>
   <data name="Webpage" xml:space="preserve">
     <value>Unique Routes Plugin Webseite</value>
+  </data>
+  <data name="ActivitiesTo" xml:space="preserve">
+    <comment>NoLongerVisible</comment>
+    <value>Aktivitäten an</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <comment>NoLongerVisible</comment>
+    <value>alle</value>
   </data>
 </root>

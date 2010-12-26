@@ -70,10 +70,17 @@
   <data name="BeginningMeterWarning" xml:space="preserve">
     <value>Ignorera meter i början måste vara ett nummer.</value>
   </data>
+  <data name="CommonStretches" xml:space="preserve">
+    <value>Gemensamma delar</value>
+  </data>
+  <data name="ctxActiveLaps" xml:space="preserve">
+    <value>Enbart aktiva varv</value>
+  </data>
   <data name="DidNotFindAnyRoutes" xml:space="preserve">
     <value>Hittade inte några aktiviteter på samma rutt.\nJustera inställningarna och försök igen.</value>
   </data>
   <data name="DoIt" xml:space="preserve">
+    <comment>NoLongerVisible</comment>
     <value>Leta!</value>
   </data>
   <data name="EndMeterWarning" xml:space="preserve">
@@ -100,7 +107,18 @@
   <data name="RoutesHaveDirection" xml:space="preserve">
     <value>Rutter har riktning</value>
   </data>
+  <data name="Sections" xml:space="preserve">
+    <value>sektioner</value>
+  </data>
   <data name="Webpage" xml:space="preserve">
     <value>Unique Routes plugin websida</value>
+  </data>
+  <data name="ActivitiesTo" xml:space="preserve">
+    <comment>NoLongerVisible</comment>
+    <value>aktiviteter till</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <comment>NoLongerVisible</comment>
+    <value>alla</value>
   </data>
 </root>

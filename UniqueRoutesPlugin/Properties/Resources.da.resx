@@ -74,6 +74,7 @@
     <value>Fandt ikke andre aktivitet på samme rute.\nHvis du mener der burde være mindst én anden, så prøv at ændre indstillinger og prøv igen.</value>
   </data>
   <data name="DoIt" xml:space="preserve">
+    <comment>NoLongerVisible</comment>
     <value>Gør det!</value>
   </data>
   <data name="EndMeterWarning" xml:space="preserve">
@@ -102,5 +103,13 @@
   </data>
   <data name="Webpage" xml:space="preserve">
     <value>Unique Routes plugin hjemmeside</value>
+  </data>
+  <data name="ActivitiesTo" xml:space="preserve">
+    <comment>NoLongerVisible</comment>
+    <value>activiteter til</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <comment>NoLongerVisible</comment>
+    <value>alle</value>
   </data>
 </root>

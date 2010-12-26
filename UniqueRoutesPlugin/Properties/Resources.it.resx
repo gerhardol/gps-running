@@ -74,6 +74,7 @@
     <value>Non trovo nessuna altra attività su questo percorso.\n se pensi che ce ne debbano essere, modifica i settaggi e riprova.</value>
   </data>
   <data name="DoIt" xml:space="preserve">
+    <comment>NoLongerVisible</comment>
     <value>Esegui</value>
   </data>
   <data name="EndMeterWarning" xml:space="preserve">
@@ -102,5 +103,13 @@
   </data>
   <data name="Webpage" xml:space="preserve">
     <value>Pagina web del plugin 'Unique Routes'</value>
+  </data>
+  <data name="ActivitiesTo" xml:space="preserve">
+    <comment>NoLongerVisible</comment>
+    <value>Attività da</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <comment>NoLongerVisible</comment>
+    <value>tutti</value>
   </data>
 </root>

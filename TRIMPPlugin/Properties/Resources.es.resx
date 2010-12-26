@@ -58,7 +58,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="CurrentRestAndMax" xml:space="preserve">
     <value>RC en reposo actual: {0}. RC Máximo: {1}.</value>
   </data>
@@ -70,6 +70,9 @@
   </data>
   <data name="NoRestOrMaxHR" xml:space="preserve">
     <value>No existe RC máximo o en reposo en la Bitácora.\n el plugin no puede calcular nada mientras no sean configurados en .\n para configurarlos vaya a la vista de Atleta.</value>
+  </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Resumen</value>
   </data>
   <data name="T1" xml:space="preserve">
     <value>TRIMP una actividad</value>

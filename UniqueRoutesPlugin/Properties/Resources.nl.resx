@@ -74,6 +74,7 @@
     <value>Vond geen activiteiten op zelfde route</value>
   </data>
   <data name="DoIt" xml:space="preserve">
+    <comment>NoLongerVisible</comment>
     <value>Doen!</value>
   </data>
   <data name="EndMeterWarning" xml:space="preserve">
@@ -102,5 +103,13 @@
   </data>
   <data name="Webpage" xml:space="preserve">
     <value>Unique Routes plugin webpagina</value>
+  </data>
+  <data name="ActivitiesTo" xml:space="preserve">
+    <comment>NoLongerVisible</comment>
+    <value>activiteiten naar</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <comment>NoLongerVisible</comment>
+    <value>alle</value>
   </data>
 </root>
