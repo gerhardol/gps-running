@@ -57,7 +57,7 @@ namespace GpsRunningPlugin.Source
             this.sendToMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxMenuItemRefActivity = new System.Windows.Forms.ToolStripMenuItem();
             this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.btnDoIt = new ZoneFiveSoftware.Common.Visuals.Button();
+            this.btnRefresh = new ZoneFiveSoftware.Common.Visuals.Button();
             this.speedBox = new System.Windows.Forms.ComboBox();
             this.sendResultToLabel1 = new System.Windows.Forms.Label();
             this.pluginBox = new System.Windows.Forms.ComboBox();
@@ -65,11 +65,14 @@ namespace GpsRunningPlugin.Source
             this.sendLabel2 = new System.Windows.Forms.Label();
             this.labelShow = new System.Windows.Forms.Label();
             this.categoryLabel = new System.Windows.Forms.Label();
-            this.btnChangeCategory = new ZoneFiveSoftware.Common.Visuals.Button();
+            this.infoIcon = new System.Windows.Forms.PictureBox();
+            this.toolTipInfo = new System.Windows.Forms.ToolTip(this.components);
+            this.boxCategory = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.activeBox = new System.Windows.Forms.ComboBox();
             this.labelLaps = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.contextMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.infoIcon)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -83,6 +86,7 @@ namespace GpsRunningPlugin.Source
             this.summaryLabel.Size = new System.Drawing.Size(166, 13);
             this.summaryLabel.TabIndex = 0;
             this.summaryLabel.Text = "Found nn activities on same route";
+            this.summaryLabel.Visible = false;
             // 
             // summaryListLabel
             // 
@@ -101,6 +105,7 @@ namespace GpsRunningPlugin.Source
             this.summaryList.BackColor = System.Drawing.Color.Transparent;
             this.summaryList.Border = ZoneFiveSoftware.Common.Visuals.ControlBorder.Style.SmallRoundShadow;
             this.summaryList.CheckBoxes = false;
+            this.summaryList.ContextMenuStrip = this.contextMenu;
             this.summaryList.DefaultIndent = 15;
             this.summaryList.DefaultRowHeight = -1;
             this.summaryList.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -121,10 +126,9 @@ namespace GpsRunningPlugin.Source
             this.summaryList.ShowPlusMinus = false;
             this.summaryList.Size = new System.Drawing.Size(391, 200);
             this.summaryList.TabIndex = 1;
-            this.summaryList.ContextMenuStrip = contextMenu;
-            this.summaryList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(selectedRow_DoubleClick);
-            this.summaryList.MouseMove += new System.Windows.Forms.MouseEventHandler(summaryList_MouseMove);
-            this.summaryList.MouseLeave += new System.EventHandler(summaryList_MouseLeave);
+            this.summaryList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.selectedRow_DoubleClick);
+            this.summaryList.MouseLeave += new System.EventHandler(this.summaryList_MouseLeave);
+            this.summaryList.MouseMove += new System.Windows.Forms.MouseEventHandler(this.summaryList_MouseMove);
             // 
             // contextMenu
             // 
@@ -179,28 +183,28 @@ namespace GpsRunningPlugin.Source
             this.progressBar.TabIndex = 2;
             this.progressBar.Visible = false;
             // 
-            // btnDoIt
+            // btnRefresh
             // 
-            this.btnDoIt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDoIt.BackColor = System.Drawing.Color.Transparent;
-            this.btnDoIt.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
-            this.btnDoIt.CenterImage = null;
-            this.btnDoIt.ContextMenuStrip = this.contextMenu;
-            this.btnDoIt.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnDoIt.HyperlinkStyle = false;
-            this.btnDoIt.ImageMargin = 2;
-            this.btnDoIt.LeftImage = null;
-            this.btnDoIt.Location = new System.Drawing.Point(368, 4);
-            this.btnDoIt.Name = "btnDoIt";
-            this.btnDoIt.PushStyle = true;
-            this.btnDoIt.RightImage = null;
-            this.btnDoIt.Size = new System.Drawing.Size(20, 21);
-            this.btnDoIt.TabIndex = 3;
-            this.btnDoIt.Text = "Do it!";
-            this.btnDoIt.TextAlign = System.Drawing.StringAlignment.Center;
-            this.btnDoIt.TextLeftMargin = 2;
-            this.btnDoIt.TextRightMargin = 2;
-            this.btnDoIt.Click += new System.EventHandler(this.refreshButton_Click);
+            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRefresh.BackColor = System.Drawing.Color.Transparent;
+            this.btnRefresh.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.btnRefresh.CenterImage = null;
+            this.btnRefresh.ContextMenuStrip = this.contextMenu;
+            this.btnRefresh.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnRefresh.HyperlinkStyle = false;
+            this.btnRefresh.ImageMargin = 2;
+            this.btnRefresh.LeftImage = null;
+            this.btnRefresh.Location = new System.Drawing.Point(368, 4);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.PushStyle = true;
+            this.btnRefresh.RightImage = null;
+            this.btnRefresh.Size = new System.Drawing.Size(20, 21);
+            this.btnRefresh.TabIndex = 3;
+            this.btnRefresh.Text = "Do it!";
+            this.btnRefresh.TextAlign = System.Drawing.StringAlignment.Center;
+            this.btnRefresh.TextLeftMargin = 2;
+            this.btnRefresh.TextRightMargin = 2;
+            this.btnRefresh.Click += new System.EventHandler(this.refreshButton_Click);
             // 
             // speedBox
             // 
@@ -265,32 +269,48 @@ namespace GpsRunningPlugin.Source
             // categoryLabel
             // 
             this.categoryLabel.AutoSize = true;
-            this.categoryLabel.Location = new System.Drawing.Point(269, 4);
+            this.categoryLabel.Location = new System.Drawing.Point(22, 7);
             this.categoryLabel.Name = "categoryLabel";
-            this.categoryLabel.Size = new System.Drawing.Size(97, 13);
+            this.categoryLabel.Size = new System.Drawing.Size(58, 13);
             this.categoryLabel.TabIndex = 11;
-            this.categoryLabel.Text = "Include activities in";
+            this.categoryLabel.Text = "<Category:";
             // 
-            // btnChangeCategory
+            // infoIcon
             // 
-            this.btnChangeCategory.BackColor = System.Drawing.Color.Transparent;
-            this.btnChangeCategory.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
-            this.btnChangeCategory.CenterImage = null;
-            this.btnChangeCategory.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnChangeCategory.HyperlinkStyle = false;
-            this.btnChangeCategory.ImageMargin = 2;
-            this.btnChangeCategory.LeftImage = null;
-            this.btnChangeCategory.Location = new System.Drawing.Point(166, 0);
-            this.btnChangeCategory.Name = "btnChangeCategory";
-            this.btnChangeCategory.PushStyle = true;
-            this.btnChangeCategory.RightImage = null;
-            this.btnChangeCategory.Size = new System.Drawing.Size(97, 23);
-            this.btnChangeCategory.TabIndex = 13;
-            this.btnChangeCategory.Text = "Change category";
-            this.btnChangeCategory.TextAlign = System.Drawing.StringAlignment.Center;
-            this.btnChangeCategory.TextLeftMargin = 2;
-            this.btnChangeCategory.TextRightMargin = 2;
-            this.btnChangeCategory.Click += new System.EventHandler(this.changeCategory_Click);
+            this.infoIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.infoIcon.Location = new System.Drawing.Point(6, 2);
+            this.infoIcon.Name = "infoIcon";
+            this.infoIcon.Size = new System.Drawing.Size(19, 20);
+            this.infoIcon.TabIndex = 14;
+            this.infoIcon.TabStop = false;
+            // 
+            // toolTipInfo
+            // 
+            this.toolTipInfo.AutoPopDelay = 25000;
+            this.toolTipInfo.InitialDelay = 500;
+            this.toolTipInfo.ReshowDelay = 100;
+            // 
+            // boxCategory
+            // 
+            this.boxCategory.AcceptsReturn = false;
+            this.boxCategory.AcceptsTab = false;
+            this.boxCategory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.boxCategory.BackColor = System.Drawing.Color.White;
+            this.boxCategory.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.boxCategory.ButtonImage = null;
+            this.boxCategory.Location = new System.Drawing.Point(82, 3);
+            this.boxCategory.MaxLength = 32767;
+            this.boxCategory.Multiline = false;
+            this.boxCategory.Name = "boxCategory";
+            this.boxCategory.ReadOnly = true;
+            this.boxCategory.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.boxCategory.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.boxCategory.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.boxCategory.Size = new System.Drawing.Size(281, 21);
+            this.boxCategory.TabIndex = 20;
+            this.boxCategory.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.boxCategory.ButtonClick += new System.EventHandler(this.boxCategory_ButtonClicked);
             // 
             // activeBox
             // 
@@ -323,11 +343,12 @@ namespace GpsRunningPlugin.Source
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.progressBar);
-            this.splitContainer1.Panel1.Controls.Add(this.btnDoIt);
-            this.splitContainer1.Panel1.Controls.Add(this.summaryLabel);
-            this.splitContainer1.Panel1.Controls.Add(this.btnChangeCategory);
             this.splitContainer1.Panel1.Controls.Add(this.categoryLabel);
+            this.splitContainer1.Panel1.Controls.Add(this.btnRefresh);
+            this.splitContainer1.Panel1.Controls.Add(this.boxCategory);
+            this.splitContainer1.Panel1.Controls.Add(this.infoIcon);
+            this.splitContainer1.Panel1.Controls.Add(this.progressBar);
+            this.splitContainer1.Panel1.Controls.Add(this.summaryLabel);
             this.splitContainer1.Panel1.Controls.Add(this.sendLabel2);
             this.splitContainer1.Panel1.Controls.Add(this.pluginBox);
             this.splitContainer1.Panel1.Controls.Add(this.labelLaps);
@@ -356,6 +377,7 @@ namespace GpsRunningPlugin.Source
             this.Name = "UniqueRoutesActivityDetailView";
             this.Size = new System.Drawing.Size(391, 228);
             this.contextMenu.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.infoIcon)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -371,7 +393,7 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.Label summaryListLabel;
         private ZoneFiveSoftware.Common.Visuals.TreeList summaryList;
         private System.Windows.Forms.ProgressBar progressBar;
-        private ZoneFiveSoftware.Common.Visuals.Button btnDoIt;
+        private ZoneFiveSoftware.Common.Visuals.Button btnRefresh;
         private System.Windows.Forms.ComboBox speedBox;
         private System.Windows.Forms.ContextMenuStrip contextMenu;
         private System.Windows.Forms.ToolStripMenuItem copyTable;
@@ -384,10 +406,13 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.Label sendLabel2;
         private System.Windows.Forms.Label labelShow;
         private System.Windows.Forms.Label categoryLabel;
-        private ZoneFiveSoftware.Common.Visuals.Button btnChangeCategory;
+        //private ZoneFiveSoftware.Common.Visuals.Button btnChangeCategory;
         private System.Windows.Forms.ComboBox activeBox;
         private System.Windows.Forms.Label labelLaps;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ToolStripMenuItem ctxMenuItemRefActivity;
+        private System.Windows.Forms.PictureBox infoIcon;
+        private System.Windows.Forms.ToolTip toolTipInfo;
+        private ZoneFiveSoftware.Common.Visuals.TextBox boxCategory;
     }
 }
