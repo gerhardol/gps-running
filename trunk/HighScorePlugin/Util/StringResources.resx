@@ -279,9 +279,6 @@
   <data name="ListSettings" xml:space="preserve">
     <value>List settings</value>
   </data>
-  <data name="ActDate" xml:space="preserve">
-    <value>Activity date</value>
-  </data>
   <data name="Colour" xml:space="preserve">
     <value>Colour</value>
   </data>

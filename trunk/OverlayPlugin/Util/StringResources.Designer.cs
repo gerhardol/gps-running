@@ -61,15 +61,6 @@ namespace GpsRunningPlugin.Util {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Activity date.
-        /// </summary>
-        internal static string ActDate {
-            get {
-                return ResourceManager.GetString("ActDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Active.
         /// </summary>
         internal static string Active {
