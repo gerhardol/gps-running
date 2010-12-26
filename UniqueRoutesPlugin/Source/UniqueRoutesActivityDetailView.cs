@@ -685,15 +685,13 @@ namespace GpsRunningPlugin.Source
         }
         private void selectedRow_DoubleClick(object sender, MouseEventArgs e)
         {
-            Guid view = new Guid("1dc82ca0-88aa-45a5-a6c6-c25f56ad1fc3");
-
             object row;
             TreeList.RowHitState dummy;
             row = summaryList.RowHitTest(e.Location, out dummy);
             if (row != null)
             {
                 string bookmark = "id=" + ((UniqueRoutesResult)row).Activity;
-                Plugin.GetApplication().ShowView(view, bookmark);
+                Plugin.GetApplication().ShowView(GUIDs.OpenView, bookmark);
             }
         }
 
