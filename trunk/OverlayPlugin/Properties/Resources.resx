@@ -171,12 +171,15 @@
     <value>Overlay chart</value>
   </data>
   <data name="SetMovingAveragePeriod" xml:space="preserve">
-    <value>Set moving average period</value>
+    <value>Set filter width</value>
   </data>
   <data name="SetOffset" xml:space="preserve">
     <value>Set activity offset</value>
   </data>
   <data name="TableSettings" xml:space="preserve">
     <value>Table settings</value>
+  </data>
+  <data name="SetRefActivity" xml:space="preserve">
+    <value>Set reference activity</value>
   </data>
 </root>

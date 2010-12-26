@@ -59,6 +59,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="AOP" xml:space="preserve">
+    <value>Promedio sobre Periodo</value>
+  </data>
   <data name="BCA" xml:space="preserve">
     <value>Negro prom. categoría</value>
   </data>
@@ -79,5 +82,26 @@
   </data>
   <data name="Webpage" xml:space="preserve">
     <value>Link a WEB del plugin &quot;Overlay&quot;</value>
+  </data>
+  <data name="Menu_ShowChartBar" xml:space="preserve">
+    <value>Muestra gráfica de barras</value>
+  </data>
+  <data name="Menu_ShowToolBar" xml:space="preserve">
+    <value>Muestra herramientas de gráficos</value>
+  </data>
+  <data name="MovingAverage" xml:space="preserve">
+    <value>Promedio movil</value>
+  </data>
+  <data name="OverlayChart" xml:space="preserve">
+    <value>Gráfica Overlay</value>
+  </data>
+  <data name="SetMovingAveragePeriod" xml:space="preserve">
+    <value>Fijar filtro de ancho</value>
+  </data>
+  <data name="SetOffset" xml:space="preserve">
+    <value>Fijar Compensación de actividad</value>
+  </data>
+  <data name="TableSettings" xml:space="preserve">
+    <value>Tabla de configuraciones</value>
   </data>
 </root>
