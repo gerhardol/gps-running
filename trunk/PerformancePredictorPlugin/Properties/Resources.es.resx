@@ -58,7 +58,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="AddDistance" xml:space="preserve">
     <value>Agregar distancia</value>
   </data>
@@ -110,6 +110,7 @@
     <value>Paso para Tempo de 20 hasta 60 minutes a VDOT {0:0.0}</value>
   </data>
   <data name="PaceRunNotification" xml:space="preserve">
+    <comment>updated</comment>
     <value>20 minutos al paso de umbral de lactato - el paso de carreras más largas deberá ser ajustado para mantener la intensidad apropiada.</value>
   </data>
   <data name="PositiveNumber" xml:space="preserve">
@@ -190,6 +191,9 @@
   <data name="ZoneDistance" xml:space="preserve">
     <value>Zona / distancia</value>
   </data>
+  <data name="NoSeedActivity" xml:space="preserve">
+    <value>Ninguna actividad</value>
+  </data>
   <data name="EstimatedPace" xml:space="preserve">
     <comment>ppx</comment>
     <value>Paso estimado</value>
@@ -197,6 +201,10 @@
   <data name="EstimatedSpeed" xml:space="preserve">
     <comment>ppx</comment>
     <value>Velocidad estimada</value>
+  </data>
+  <data name="IntervalNotification" xml:space="preserve">
+    <comment>pp, new</comment>
+    <value>Tiempos sugeridos para repeticiones según la distancia de la competencia.</value>
   </data>
   <data name="PPHS" xml:space="preserve">
     <comment>ppx</comment>

@@ -58,7 +58,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="CurrentRestAndMax" xml:space="preserve">
     <value>Huidige rusthartslag : {0}. Maximale hartslag : {1}.</value>
   </data>
@@ -70,6 +70,9 @@
   </data>
   <data name="NoRestOrMaxHR" xml:space="preserve">
     <value>Geen rusthartsalg of maximale hartslag in logboek.\nDe plugin kan niet werken alvorens een mximale hartslag is ingevoerd.\nGa naar atleet scherm om deze in te stellen.</value>
+  </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Samenvatting</value>
   </data>
   <data name="T1" xml:space="preserve">
     <value>TRIMP van één activiteit</value>

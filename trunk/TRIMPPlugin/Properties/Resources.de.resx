@@ -58,7 +58,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="CurrentRestAndMax" xml:space="preserve">
     <value>Derzeitiger Ruhepuls: {0}, Maximalpuls: {1}.</value>
   </data>
@@ -70,6 +70,9 @@
   </data>
   <data name="NoRestOrMaxHR" xml:space="preserve">
     <value>Kein Ruhepuls oder kein Maximalpuls im Logbuch vorhanden. Das Plugin funktioniert nur bei festgelegtem Maximal- und Ruhepuls. Legen Sie bitte diese(n) in der Ansicht &quot;Sportler&quot; fest.</value>
+  </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Ergebnis</value>
   </data>
   <data name="T1" xml:space="preserve">
     <value>TRIMP für eine Aktivität</value>

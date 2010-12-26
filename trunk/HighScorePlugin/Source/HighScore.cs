@@ -489,6 +489,7 @@ namespace GpsRunningPlugin.Source
             return goals;
         }
 
+        //TODO: Break out table generation, so CultureChanged will work
         public static DataTable generateTable(IList<Result> results, String speedUnit, 
             bool includeLocationAndDate, GoalParameter domain, GoalParameter image, bool upperBound)
         {

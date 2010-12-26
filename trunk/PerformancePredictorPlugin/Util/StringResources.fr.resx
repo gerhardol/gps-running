@@ -58,26 +58,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add" xml:space="preserve">
-    <value>Ajouter</value>
-  </data>
-  <data name="And" xml:space="preserve">
-    <value>et</value>
-  </data>
   <data name="End" xml:space="preserve">
     <value>Fin</value>
   </data>
   <data name="Find" xml:space="preserve">
     <value>Chercher</value>
   </data>
-  <data name="From" xml:space="preserve">
-    <value>De</value>
-  </data>
   <data name="Goal" xml:space="preserve">
     <value>Objectif</value>
   </data>
   <data name="HRZone" xml:space="preserve">
     <value>Paliers de FC</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>heures</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>minutes</value>
   </data>
   <data name="Seconds" xml:space="preserve">
     <value>secondes</value>
@@ -100,14 +97,8 @@
   <data name="SpeedZone" xml:space="preserve">
     <value>Paliers de vitesse</value>
   </data>
-  <data name="Start" xml:space="preserve">
-    <value>Début</value>
-  </data>
   <data name="TimeFormat" xml:space="preserve">
     <value>hh:mm:ss</value>
-  </data>
-  <data name="To" xml:space="preserve">
-    <value>A</value>
   </data>
   <data name="Warning" xml:space="preserve">
     <value>Attention</value>
@@ -130,17 +121,8 @@
   <data name="StartZone" xml:space="preserve">
     <value>Zone de début :</value>
   </data>
-  <data name="Summary" xml:space="preserve">
-    <value>Résumé</value>
-  </data>
   <data name="Use" xml:space="preserve">
     <value>Utiliser</value>
-  </data>
-  <data name="ActivitiesTo" xml:space="preserve">
-    <value>activités dans</value>
-  </data>
-  <data name="All" xml:space="preserve">
-    <value>Tout</value>
   </data>
   <data name="ChangeCategory" xml:space="preserve">
     <value>Changer la catégorie</value>
@@ -187,9 +169,6 @@
   <data name="YAxis" xml:space="preserve">
     <value>axe Y</value>
   </data>
-  <data name="CopyTable" xml:space="preserve">
-    <value>Copier la table dans le presse-papier</value>
-  </data>
   <data name="ForManyActivities" xml:space="preserve">
     <value>pour {0} activités</value>
   </data>
@@ -211,14 +190,11 @@
   <data name="Minimal" xml:space="preserve">
     <value>minimal</value>
   </data>
-  <data name="Remove" xml:space="preserve">
-    <value>Supprimer</value>
-  </data>
-  <data name="Table" xml:space="preserve">
-    <value>table</value>
-  </data>
   <data name="Marathon" xml:space="preserve">
     <value>Marathon</value>
+  </data>
+  <data name="MinutesShort" xml:space="preserve">
+    <value>min</value>
   </data>
   <data name="Training" xml:space="preserve">
     <value>Entraînement</value>
@@ -228,5 +204,23 @@
   </data>
   <data name="NoutofM" xml:space="preserve">
     <value>{0} activités parmi {1} utilisées</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="And" xml:space="preserve">
+    <value>et</value>
+  </data>
+  <data name="ActivitySpeedOrPace" xml:space="preserve">
+    <value>Vitesse/allure activité</value>
+  </data>
+  <data name="Colour" xml:space="preserve">
+    <value>Couleur</value>
+  </data>
+  <data name="Visible" xml:space="preserve">
+    <value>Visible</value>
+  </data>
+  <data name="Width" xml:space="preserve">
+    <value>largeur</value>
   </data>
 </root>

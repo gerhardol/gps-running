@@ -58,7 +58,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="CurrentRestAndMax" xml:space="preserve">
     <value>Frequenza cardiaca a riposo: {0}. Frequenza Cardiaca Massima: {1}.</value>
   </data>
@@ -70,6 +70,9 @@
   </data>
   <data name="NoRestOrMaxHR" xml:space="preserve">
     <value>manca la frequenza cardiaca a riposo o la massima nel logbook. \n il plugin non può compiere alcun calcolo fino a che tali valori non saranno impostati. \n per impostare i valori vai nella voce: Selezionare Vista,  atleta</value>
+  </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Resoconto</value>
   </data>
   <data name="T1" xml:space="preserve">
     <value>TRIMP di una singola attività</value>

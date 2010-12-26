@@ -58,7 +58,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="AddDistance" xml:space="preserve">
     <value>Lägg till distans</value>
   </data>
@@ -110,11 +110,12 @@
     <value>Tempo för snabblöpturer på 20 till 60 minuter vid VDOT {0:0.0}</value>
   </data>
   <data name="PaceRunNotification" xml:space="preserve">
+    <comment>updated</comment>
     <value>20 min löptur är i mjölksyre tempo – tempo vid längre löpturer anpassade för att
 upprätthålla lämplig intensitet.</value>
   </data>
   <data name="PositiveNumber" xml:space="preserve">
-    <value>Distans måste vara ett positivt nummer.</value>
+    <value>Distans måste vara ett positivt nummer, eventuellt följt av enhet.</value>
   </data>
   <data name="PredictedTime" xml:space="preserve">
     <value>Prognostid</value>

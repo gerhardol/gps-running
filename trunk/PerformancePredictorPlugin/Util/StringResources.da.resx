@@ -58,20 +58,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add" xml:space="preserve">
-    <value>Tilføj</value>
-  </data>
-  <data name="And" xml:space="preserve">
-    <value>og</value>
-  </data>
   <data name="End" xml:space="preserve">
     <value>Stop</value>
   </data>
   <data name="Find" xml:space="preserve">
     <value>Find</value>
-  </data>
-  <data name="From" xml:space="preserve">
-    <value>Fra</value>
   </data>
   <data name="Goal" xml:space="preserve">
     <value>Mål</value>
@@ -100,14 +91,8 @@
   <data name="SpeedZone" xml:space="preserve">
     <value>Hastighedszone</value>
   </data>
-  <data name="Start" xml:space="preserve">
-    <value>Start</value>
-  </data>
   <data name="TimeFormat" xml:space="preserve">
     <value>tt:mm:ss</value>
-  </data>
-  <data name="To" xml:space="preserve">
-    <value>Til</value>
   </data>
   <data name="Warning" xml:space="preserve">
     <value>Advarsel</value>
@@ -130,17 +115,8 @@
   <data name="StartZone" xml:space="preserve">
     <value>Start zone:</value>
   </data>
-  <data name="Summary" xml:space="preserve">
-    <value>Sammendrag</value>
-  </data>
   <data name="Use" xml:space="preserve">
     <value>Brug:</value>
-  </data>
-  <data name="ActivitiesTo" xml:space="preserve">
-    <value>activiteter til</value>
-  </data>
-  <data name="All" xml:space="preserve">
-    <value>alle</value>
   </data>
   <data name="ChangeCategory" xml:space="preserve">
     <value>Ændre kategori</value>
@@ -187,9 +163,6 @@
   <data name="YAxis" xml:space="preserve">
     <value>Y akse</value>
   </data>
-  <data name="CopyTable" xml:space="preserve">
-    <value>Kopier tabellen til udklipsholderen</value>
-  </data>
   <data name="ForManyActivities" xml:space="preserve">
     <value>af {0} activiteter</value>
   </data>
@@ -211,12 +184,6 @@
   <data name="Minimal" xml:space="preserve">
     <value>minimal</value>
   </data>
-  <data name="Remove" xml:space="preserve">
-    <value>Fjern</value>
-  </data>
-  <data name="Table" xml:space="preserve">
-    <value>tabel</value>
-  </data>
   <data name="Marathon" xml:space="preserve">
     <value>Marathon</value>
   </data>
@@ -228,5 +195,8 @@
   </data>
   <data name="NoutofM" xml:space="preserve">
     <value>Brugt {0} ud af {1} mulige</value>
+  </data>
+  <data name="And" xml:space="preserve">
+    <value>og</value>
   </data>
 </root>

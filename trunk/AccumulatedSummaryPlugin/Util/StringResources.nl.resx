@@ -58,26 +58,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add" xml:space="preserve">
-    <value>Toevoegen</value>
-  </data>
-  <data name="And" xml:space="preserve">
-    <value>en</value>
-  </data>
   <data name="End" xml:space="preserve">
     <value>Einde</value>
   </data>
   <data name="Find" xml:space="preserve">
     <value>Zoek</value>
   </data>
-  <data name="From" xml:space="preserve">
-    <value>Van</value>
-  </data>
   <data name="Goal" xml:space="preserve">
     <value>Doel</value>
   </data>
   <data name="HRZone" xml:space="preserve">
     <value>HF. Zone</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>uren</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>minuten</value>
   </data>
   <data name="Seconds" xml:space="preserve">
     <value>seconden</value>
@@ -100,14 +97,8 @@
   <data name="SpeedZone" xml:space="preserve">
     <value>Snelheidszone</value>
   </data>
-  <data name="Start" xml:space="preserve">
-    <value>Start</value>
-  </data>
   <data name="TimeFormat" xml:space="preserve">
     <value>uu:mm:ss</value>
-  </data>
-  <data name="To" xml:space="preserve">
-    <value>Tot</value>
   </data>
   <data name="Warning" xml:space="preserve">
     <value>Waarschuwing</value>
@@ -130,17 +121,8 @@
   <data name="StartZone" xml:space="preserve">
     <value>Startzone:</value>
   </data>
-  <data name="Summary" xml:space="preserve">
-    <value>Samenvatting</value>
-  </data>
   <data name="Use" xml:space="preserve">
     <value>Gebruik</value>
-  </data>
-  <data name="ActivitiesTo" xml:space="preserve">
-    <value>activiteiten naar</value>
-  </data>
-  <data name="All" xml:space="preserve">
-    <value>alle</value>
   </data>
   <data name="ChangeCategory" xml:space="preserve">
     <value>Verander categorie</value>
@@ -187,9 +169,6 @@
   <data name="YAxis" xml:space="preserve">
     <value>Y as</value>
   </data>
-  <data name="CopyTable" xml:space="preserve">
-    <value>Kopieer tabel naar klembord</value>
-  </data>
   <data name="ForManyActivities" xml:space="preserve">
     <value>voor {0} activiteiten</value>
   </data>
@@ -211,19 +190,40 @@
   <data name="Minimal" xml:space="preserve">
     <value>minimaal</value>
   </data>
-  <data name="Remove" xml:space="preserve">
-    <value>Wissen</value>
-  </data>
-  <data name="Table" xml:space="preserve">
-    <value>tabel</value>
-  </data>
   <data name="Marathon" xml:space="preserve">
     <value>Marathon</value>
+  </data>
+  <data name="MinutesShort" xml:space="preserve">
+    <value>min</value>
   </data>
   <data name="Training" xml:space="preserve">
     <value>Training</value>
   </data>
   <data name="Unit" xml:space="preserve">
     <value>Eenheid</value>
+  </data>
+  <data name="NoutofM" xml:space="preserve">
+    <value>{0} van {1} activiteiten gebruikt</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Aktief</value>
+  </data>
+  <data name="And" xml:space="preserve">
+    <value>en</value>
+  </data>
+  <data name="ActivitySpeedOrPace" xml:space="preserve">
+    <value>Snelheid/tempo activiteit</value>
+  </data>
+  <data name="Colour" xml:space="preserve">
+    <value>Kleur</value>
+  </data>
+  <data name="Visible" xml:space="preserve">
+    <value>Zichtbaar</value>
+  </data>
+  <data name="Difference" xml:space="preserve">
+    <value>versch</value>
+  </data>
+  <data name="Width" xml:space="preserve">
+    <value>breedte</value>
   </data>
 </root>
