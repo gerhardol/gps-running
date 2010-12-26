@@ -28,6 +28,19 @@ namespace GpsRunningPlugin.Source
 {
     class UniqueRoutesSettingsPages : IExtendSettingsPages
     {
+        #region ISettingsPage Member
+
+        public Guid Id
+        {
+            get { return GUIDs.Settings; }
+        }
+
+        public IList<ZoneFiveSoftware.Common.Visuals.ISettingsPage> SubPages
+        {
+            get { return null; }
+        }
+
+        #endregion
         #region IExtendSettingsPages Members
 
         static List<ISettingsPage> list;

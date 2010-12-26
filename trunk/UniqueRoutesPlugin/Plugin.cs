@@ -42,7 +42,7 @@ namespace GpsRunningPlugin
 
         public Guid Id
         {
-            get { return new Guid("{5c630517-46c4-478d-89d6-a8a6ca6337db}"); }
+            get { return GUIDs.PluginMain; }
         }
 
         public string Name
