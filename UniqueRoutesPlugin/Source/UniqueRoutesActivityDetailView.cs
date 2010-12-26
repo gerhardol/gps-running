@@ -88,8 +88,6 @@ namespace GpsRunningPlugin.Source
             }
             activeMenuItem.CheckState = Settings.UseActive ? CheckState.Checked : CheckState.Unchecked;
             speedBox.SelectedItem = CommonResources.Text.LabelPace;
-            //TODO: ToolTip is not implemented for TreeList?
-            //summaryList.MouseHover += new EventHandler(summaryView_CellToolTipTextNeeded);
             summaryList.ColumnClicked += new TreeList.ColumnEventHandler(summaryView_ColumnHeaderMouseClick);
 
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
@@ -142,12 +140,14 @@ namespace GpsRunningPlugin.Source
 
         void InitControls()
         {
+            this.infoIcon.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Information16;
+            this.boxCategory.ButtonImage = Properties.Resources.DropDown;
             copyTable.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
 #if !ST_2_1
             sendToMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Analyze16;
 #endif
             listSettingsMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Table16;
-            btnDoIt.CenterImage = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Refresh16;
+            btnRefresh.CenterImage = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Refresh16;
 #if !ST_2_1
             this.listSettingsMenuItem.Click += new System.EventHandler(this.listSettingsToolStripMenuItem_Click);
 #else
@@ -159,12 +159,74 @@ namespace GpsRunningPlugin.Source
 #endif
             this.summaryListToolTipTimer.Tick += new System.EventHandler(ToolTipTimer_Tick);
         }
+
+        public void ThemeChanged(ITheme visualTheme)
+        {
+            m_visualTheme = visualTheme;
+            summaryList.ThemeChanged(visualTheme);
+            this.splitContainer1.Panel1.BackColor = visualTheme.Control;
+            this.splitContainer1.Panel2.BackColor = visualTheme.Control;
+            this.infoIcon.BackColor = visualTheme.Control;
+            this.boxCategory.ThemeChanged(visualTheme);
+        }
+
+        public void UICultureChanged(System.Globalization.CultureInfo culture)
+        {
+            //Some labels depends on the activity
+            //summaryLabel, CommonStretches column, setTable()
+            m_culture = culture;
+
+            setCategoryLabel();
+            this.categoryLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelCategory + ":";
+            //btnChangeCategory.Text = StringResources.ChangeCategory;
+            copyTable.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
+            RefreshColumns();
+            this.ctxMenuItemRefActivity.Text = StringResources.SetRefActivity;
+            listSettingsMenuItem.Text = StringResources.ListSettings;
+#if ST_2_1
+            sendToMenuItem.Text = CommonResources.Text.LabelActivity;
+#else
+            sendToMenuItem.Text = CommonResources.Text.ActionAnalyze;
+#endif
+            this.activeMenuItem.Text = Resources.ctxActiveLaps;
+
+            //No longer visible
+            labelShow.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelShow;
+            sendLabel2.Text = Resources.ActivitiesTo;
+            selectedBox.Items.Add(Resources.All);
+            selectedBox.Items.Add(StringResources.Selected);
+            labelLaps.Text = CommonResources.Text.LabelSplits;
+            activeBox.Items.Add(Resources.All);
+            activeBox.Items.Add(StringResources.Active);
+            speedBox.Items.Add(CommonResources.Text.LabelPace);
+            speedBox.Items.Add(CommonResources.Text.LabelSpeed);
+            btnRefresh.Text = "";
+            //correctUI(new Control[] { selectedBox, sendLabel2, pluginBox, btnDoIt });
+            //sendResultToLabel1.Text = StringResources.Send;
+            //sendResultToLabel1.Location = new Point(selectedBox.Location.X - 5 - sendResultToLabel1.Size.Width,
+            //                            sendLabel2.Location.Y);
+            //labelShow.Location = new Point(activeBox.Location.X - 5 - labelShow.Size.Width,
+            //                        labelShow.Location.Y);
+            this.boxCategory.Location = new Point(categoryLabel.Location.X + categoryLabel.Width + 3,
+                this.boxCategory.Location.Y);
+            this.boxCategory.Size = new Size(btnRefresh.Location.X - boxCategory.Location.X - 6,
+                boxCategory.Size.Height);
+
+        }
+        
         public IList<IActivity> Activities
         {
             set
             {
-                selectedActivities = value;
-                if (value == null || value.Count == 0)
+                selectedActivities = new List<IActivity>();
+                foreach (IActivity t in value)
+                {
+                    if (t.GPSRoute != null && t.GPSRoute.Count > 1)
+                    {
+                        selectedActivities.Add(t);
+                    }
+                }
+                if (selectedActivities.Count == 0)
                 {
                     this.refActivity = null;
                 }
@@ -173,7 +235,7 @@ namespace GpsRunningPlugin.Source
                     bool isMatch = false;
                     if (this.refActivity != null)
                     {
-                        foreach (IActivity t in value)
+                        foreach (IActivity t in selectedActivities)
                         {
                             if (t.Equals(this.refActivity))
                             {
@@ -184,7 +246,7 @@ namespace GpsRunningPlugin.Source
                     }
                     if (!isMatch)
                     {
-                        this.refActivity = value[0];
+                        this.refActivity = selectedActivities[0];
                     }
                 }
                 _needsRecalculation = true;
@@ -228,51 +290,6 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        public void ThemeChanged(ITheme visualTheme)
-        {
-            m_visualTheme = visualTheme;
-            summaryList.ThemeChanged(visualTheme);
-            this.splitContainer1.Panel1.BackColor = visualTheme.Control;
-            this.splitContainer1.Panel2.BackColor = visualTheme.Control;
-        }
-        public void UICultureChanged(System.Globalization.CultureInfo culture)
-        {
-            //Some labels depends on the activity
-            //summaryLabel, CommonStretches column, setTable()
-            m_culture = culture;
-
-            setCategoryLabel();
-            btnChangeCategory.Text = StringResources.ChangeCategory;
-            copyTable.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
-            RefreshColumns();
-            this.ctxMenuItemRefActivity.Text = Properties.Resources.ctxReferenceActivity;
-            listSettingsMenuItem.Text = StringResources.ListSettings;
-#if ST_2_1
-            sendToMenuItem.Text = CommonResources.Text.LabelActivity;
-#else
-            sendToMenuItem.Text = CommonResources.Text.ActionAnalyze;
-#endif
-            this.activeMenuItem.Text = Resources.ctxActiveLaps;
-
-            //No longer visible
-            labelShow.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelShow;
-            sendLabel2.Text = Resources.ActivitiesTo;
-            selectedBox.Items.Add(Resources.All);
-            selectedBox.Items.Add(StringResources.Selected);
-            labelLaps.Text = CommonResources.Text.LabelSplits;
-            activeBox.Items.Add(Resources.All);
-            activeBox.Items.Add(StringResources.Active);
-            speedBox.Items.Add(CommonResources.Text.LabelPace);
-            speedBox.Items.Add(CommonResources.Text.LabelSpeed);
-            btnDoIt.Text = "";
-            //correctUI(new Control[] { selectedBox, sendLabel2, pluginBox, btnDoIt });
-            sendResultToLabel1.Text = StringResources.Send;
-            sendResultToLabel1.Location = new Point(selectedBox.Location.X - 5 - sendResultToLabel1.Size.Width,
-                                        sendLabel2.Location.Y);
-            labelShow.Location = new Point(activeBox.Location.X - 5 - labelShow.Size.Width,
-                                    labelShow.Location.Y);
-        }
-
         private void correctUI(IList<Control> comp)
         {
             Control prev = null;
@@ -291,18 +308,21 @@ namespace GpsRunningPlugin.Source
         {
             if (selectedActivities.Count > 1)
             {
-                categoryLabel.Text = string.Format(Resources.LimitingToSelected, selectedActivities.Count);
+                this.boxCategory.Text = string.Format(Resources.LimitingToSelected, selectedActivities.Count);
+                //categoryLabel.Text = string.Format(Resources.LimitingToSelected, selectedActivities.Count);
             }
             else
             {
                 if (Settings.SelectedCategory == null)
                 {
-                    categoryLabel.Text = Resources.IncludeAllActivitiesInSearch;
+                    this.boxCategory.Text = Util.StringResources.UseAllCategories;
+                    //categoryLabel.Text = Resources.IncludeAllActivitiesInSearch;
                 }
                 else
                 {
-                    categoryLabel.Text = String.Format("{0}",//Resources.IncludeOnlyCategory,
-                        Settings.printFullCategoryPath(Settings.SelectedCategory));
+                    this.boxCategory.Text = Settings.printFullCategoryPath(Settings.SelectedCategory);
+                    //categoryLabel.Text = String.Format("{0}",//Resources.IncludeOnlyCategory,
+                    //    Settings.printFullCategoryPath(Settings.SelectedCategory));
                 }
             }
 #if !ST_2_1
@@ -312,12 +332,12 @@ namespace GpsRunningPlugin.Source
                 //categoryLabel.Text += " Using selected points";
             }
 #endif
-            btnChangeCategory.Location = new Point(
-                    summaryLabel.Location.X + summaryLabel.Width + 5,
-                         btnChangeCategory.Location.Y);
-            int btnOffset = btnChangeCategory.Visible ? btnChangeCategory.Width + 5 : 0;
-            categoryLabel.Location = new Point(
-                   btnChangeCategory.Location.X + btnOffset, summaryLabel.Location.Y);
+            //btnChangeCategory.Location = new Point(
+            //        summaryLabel.Location.X + summaryLabel.Width + 5,
+            //             btnChangeCategory.Location.Y);
+            //int btnOffset = btnChangeCategory.Visible ? btnChangeCategory.Width + 5 : 0;
+            //categoryLabel.Location = new Point(
+            //       btnChangeCategory.Location.X + btnOffset, summaryLabel.Location.Y);
         }
 
         private void summaryView_Sort()
@@ -390,15 +410,17 @@ namespace GpsRunningPlugin.Source
                         similarToolTip[activity.ReferenceId] = Resources.CommonStretches + ": " + commonText;
                     }
                     summaryList.RowData = result;
-                    summaryLabel.Text = String.Format(Resources.FoundActivities, similar.Count - 1);
+                    //summaryLabel.Text = String.Format(Resources.FoundActivities, similar.Count - 1);
+                    toolTipInfo.SetToolTip(infoIcon, String.Format(Resources.FoundActivities, similar.Count - 1));
                     summaryView_Sort();
                     summaryList.Visible = true;
-                    summaryLabel.Visible = true;
+                    //summaryLabel.Visible = true;
                 }
                 else
                 {
-                    summaryListLabel.Text = Resources.DidNotFindAnyRoutes.Replace("\\n", Environment.NewLine);
-                    summaryListLabel.Visible = true;
+                    toolTipInfo.SetToolTip(infoIcon, Resources.DidNotFindAnyRoutes.Replace("\\n", Environment.NewLine));
+                    //summaryListLabel.Text = Resources.DidNotFindAnyRoutes.Replace("\\n", Environment.NewLine);
+                    //summaryListLabel.Visible = true;
                 }
             }
             setSize();
@@ -450,7 +472,8 @@ namespace GpsRunningPlugin.Source
                     summaryLabel.Visible = false;
                     summaryListLabel.Visible = false;
                     categoryLabel.Visible = false;
-                    btnChangeCategory.Visible = false;
+                    //btnChangeCategory.Visible = false;
+                    boxCategory.Visible = true;
                     progressBar.BringToFront(); //Kept at back to work with designer...
                     progressBar.Visible = true;
                     urRoute.Clear();
@@ -470,7 +493,8 @@ namespace GpsRunningPlugin.Source
                     else
                     {
                         activities = UniqueRoutes.getBaseActivities();
-                        btnChangeCategory.Visible = true;
+                        //btnChangeCategory.Visible = true;
+                        boxCategory.Visible = true;
                     }
                     if (urRoute.Count > 0)
                     {
@@ -487,13 +511,17 @@ namespace GpsRunningPlugin.Source
                     setTable();
                     
                     //Add the activities to the menu
-                    IList<IActivity> remaining = selectedActivities;
+                    IList<IActivity> remaining = new List<IActivity>();
+                    foreach (IActivity t in selectedActivities)
+                    {
+                        remaining.Add(t);
+                    }
                     this.ctxMenuItemRefActivity.DropDownItems.Clear();
                     foreach (IActivity act in similar)
                     {
-                        string tt = act.StartTime + " " + act.Name + act.TotalDistanceMetersEntered + " " + act.TotalTimeEntered;
+                        string tt = act.StartTime + " " + act.Name + " " + UnitUtil.Distance.ToString(act.TotalDistanceMetersEntered, "u") + " " + UnitUtil.Time.ToString(act.TotalTimeEntered, "u");
                         ToolStripMenuItem childMenuItem = new ToolStripMenuItem(tt);
-                        childMenuItem.Tag = act.ReferenceId;
+                        childMenuItem.Tag = act;
                         if (act.Equals(refActivity) && urRoute.Count == 0)
                         {
                             childMenuItem.Checked = true;
@@ -520,10 +548,17 @@ namespace GpsRunningPlugin.Source
                         this.ctxMenuItemRefActivity.DropDownItems.Add(separator);
                         foreach (IActivity act in remaining)
                         {
-                            string tt = act.StartTime + " " + act.Name + act.TotalDistanceMetersEntered + " " + act.TotalTimeEntered;
+                            string tt = act.StartTime + " " + act.Name + " " +UnitUtil.Distance.ToString(act.TotalDistanceMetersEntered, "u") + " " + UnitUtil.Time.ToString(act.TotalTimeEntered, "u");
                             ToolStripMenuItem childMenuItem = new ToolStripMenuItem(tt);
-                            childMenuItem.Tag = act.ReferenceId;
-                            childMenuItem.Checked = false;
+                            childMenuItem.Tag = act;
+                            if (act.Equals(refActivity) && urRoute.Count == 0)
+                            {
+                                childMenuItem.Checked = true;
+                            }
+                            else
+                            {
+                                childMenuItem.Checked = false;
+                            }
                             this.ctxMenuItemRefActivity.DropDownItems.Add(childMenuItem);
                             childMenuItem.Click += new System.EventHandler(this.ctxRefActivityItemActivities_Click);
                         }
@@ -572,15 +607,7 @@ namespace GpsRunningPlugin.Source
             ToolStripMenuItem sourceMenuItem = (ToolStripMenuItem)sender;
             if (sourceMenuItem != null && sourceMenuItem.Tag != null)
             {
-                string refId = (string)sourceMenuItem.Tag;
-                foreach (IActivity act in similar)
-                {
-                    if (refId.Equals(act.ReferenceId))
-                    {
-                        refActivity = act;
-                    }
-                }
-
+                refActivity = (IActivity)(sourceMenuItem.Tag);
                 calculate(false); //update, without using selected points
             }
         }
@@ -665,13 +692,69 @@ namespace GpsRunningPlugin.Source
             setTable();
         }
 
-        private void changeCategory_Click(object sender, EventArgs e)
+        //private void changeCategory_Click(object sender, EventArgs e)
+        //{
+        //    CategorySelector cs = new CategorySelector(m_visualTheme, m_culture);
+        //    cs.ShowDialog();
+        //    setCategoryLabel();
+        //    _needsRecalculation = true;
+        //    calculate();
+        //}
+        private void addNode(IActivityCategory category, System.Collections.IList parentCategories)
         {
-            CategorySelector cs = new CategorySelector(m_visualTheme, m_culture);
-            cs.ShowDialog();
-            setCategoryLabel();
-            _needsRecalculation = true;
-            calculate();
+            if (parentCategories == null)
+                if (category.SubCategories.Count > 0) parentCategories.Add(category);
+            foreach (IActivityCategory subcategory in category.SubCategories)
+            {
+                addNode(subcategory, parentCategories);
+            }
+        }
+//xxx
+        private void boxCategory_ButtonClicked(object sender, EventArgs e)
+        {
+            TreeListPopup treeListPopup = new TreeListPopup();
+            treeListPopup.ThemeChanged(m_visualTheme);
+            treeListPopup.Tree.Columns.Add(new TreeList.Column());
+
+            IList<object> list = new List<object>();
+            foreach (IActivityCategory category in Plugin.GetApplication().Logbook.ActivityCategories)
+            {
+                list.Add(category);
+            }
+            list.Add( Util.StringResources.UseAllCategories);
+
+            treeListPopup.Tree.RowData = list;
+            treeListPopup.Tree.ContentProvider = new ActivityCategoryContentProvider(list);
+            treeListPopup.Tree.ShowPlusMinus = true;
+            treeListPopup.FitContent = false;
+
+            if (Settings.SelectedCategory != null)
+            {
+                treeListPopup.Tree.Selected = new object[] { Settings.SelectedCategory };
+                treeListPopup.Tree.Expanded = new object[] { Settings.SelectedCategory };
+            }
+            System.Collections.IList parentCategories = new System.Collections.ArrayList();
+            foreach (IActivityCategory category in Plugin.GetApplication().Logbook.ActivityCategories)
+            {
+                addNode(category, parentCategories);
+            }
+            treeListPopup.Tree.Expanded = parentCategories;
+
+            treeListPopup.ItemSelected += delegate(object sender2, TreeListPopup.ItemSelectedEventArgs e2)
+            {
+                if (e2.Item is IActivityCategory)
+                {
+                    Settings.SelectedCategory = (IActivityCategory)e2.Item;
+                }
+                else
+                {
+                    Settings.SelectedCategory = null;
+                }
+                setCategoryLabel();
+                _needsRecalculation = true;
+                calculate();
+            };
+            treeListPopup.Popup(this.boxCategory.Parent.RectangleToScreen(this.boxCategory.Bounds));
         }
 
         private void pluginBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -779,12 +862,15 @@ namespace GpsRunningPlugin.Source
             if (summaryListLastEntryAtMouseMove != null &&
                 summaryListCursorLocationAtMouseMove != null &&
                 !summaryListTooltipDisabled)
-                summaryListToolTip.Show(similarToolTip[summaryListLastEntryAtMouseMove.Activity.ReferenceId],
+            {
+                string tt = similarToolTip[summaryListLastEntryAtMouseMove.Activity.ReferenceId];
+                summaryListToolTip.Show(tt,
                               summaryList,
                               new Point(summaryListCursorLocationAtMouseMove.X +
                                   Cursor.Current.Size.Width / 2,
                                         summaryListCursorLocationAtMouseMove.Y),
                               summaryListToolTip.AutoPopDelay);
+            }
         }
     }
 }
