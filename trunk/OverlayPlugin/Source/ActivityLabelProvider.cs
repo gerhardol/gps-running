@@ -41,40 +41,40 @@ namespace GpsRunningPlugin.Source
 
             switch(column.Id)
             {
-                case "StartTime":
+                case OverlayColumnIds.StartTime:
                     return wrapper.Activity.StartTime.ToLocalTime().ToString();
-                case "Colour":
+                case OverlayColumnIds.Colour:
                     return null;
-                case "Offset":
+                case OverlayColumnIds.Offset:
                     if (Settings.UseTimeXAxis)
                         return wrapper.TimeOffset.ToString();
                     else
                         return UnitUtil.Distance.ToString(wrapper.DistanceOffset);
-                case "Visible":
+                case OverlayColumnIds.Visible:
                     return "";
-                case "DistanceMeters":
+                case OverlayColumnIds.Distance:
                     return UnitUtil.Distance.ToString(actInfo.DistanceMeters);
-                case "AverageSpeedMetersPerSecond":
+                case OverlayColumnIds.AvgSpeed:
                     return UnitUtil.Speed.ToString(actInfo.AverageSpeedMetersPerSecond);
-                case "AvgPace":
+                case OverlayColumnIds.AvgPace:
                     return UnitUtil.Pace.ToString(actInfo.AverageSpeedMetersPerSecond);
-                case "AverageHeartRate":
+                case OverlayColumnIds.AvgHR:
                     return UnitUtil.HeartRate.ToString(actInfo.AverageHeartRate);
-                case "TotalAscendingMeters":
+                case OverlayColumnIds.TotAsc:
                     return UnitUtil.Elevation.ToString(actInfo.TotalAscendingMeters(Plugin.GetApplication().DisplayOptions.SelectedClimbZone));
-                case "TotalDescendingMeters":
+                case OverlayColumnIds.TotDesc:
                     return UnitUtil.Elevation.ToString(actInfo.TotalDescendingMeters(Plugin.GetApplication().DisplayOptions.SelectedClimbZone));
-                case "DistanceMetersDiff":
+                case OverlayColumnIds.DistanceDiff:
                     if (!boRefExists)
                         return "0";
                     else
                         return UnitUtil.Distance.ToString(actInfo.DistanceMeters - refActInfo.DistanceMeters);
-                case "AverageSpeedMetersPerSecondDiff":
+                case OverlayColumnIds.AvgSpeedDiff:
                     if (!boRefExists)
                         return "0";
                     else
                         return UnitUtil.Speed.ToString(actInfo.AverageSpeedMetersPerSecond - refActInfo.AverageSpeedMetersPerSecond);
-                case "AvgPaceDiff":
+                case OverlayColumnIds.AvgPaceDiff:
                     if (!boRefExists)
                         return "0";
                     else
@@ -84,22 +84,22 @@ namespace GpsRunningPlugin.Source
                         TimeSpan time = new TimeSpan(0, 0, (int)(pace-refPace));
                         return time.ToString();
                     }
-                case "AverageHeartRateDiff":
+                case OverlayColumnIds.AvgHRDiff:
                     if (!boRefExists)
                         return "0";
                     else
                         return UnitUtil.HeartRate.ToString(actInfo.AverageHeartRate - refActInfo.AverageHeartRate);
-                case "AveragePowerDiff":
+                case OverlayColumnIds.AvgPowerDiff:
                     if (!boRefExists)
                         return "0";
                     else
                         return UnitUtil.Power.ToString(actInfo.AveragePower - refActInfo.AveragePower);
-                case "AverageCadenceDiff":
+                case OverlayColumnIds.AvgCadDiff:
                     if (!boRefExists)
                         return "0";
                     else
                         return UnitUtil.Cadence.ToString(actInfo.AverageCadence - refActInfo.AverageCadence);
-                case "TimeDiff":
+                case OverlayColumnIds.TimeDiff:
                     if (!boRefExists)
                         return new TimeSpan(0).ToString();
                     else
@@ -117,7 +117,7 @@ namespace GpsRunningPlugin.Source
         {
             ActivityWrapper wrapper = (ActivityWrapper)element;
 
-            if (column.Id == "Colour")
+            if (column.Id == OverlayColumnIds.Colour)
             {
                 Bitmap image = new Bitmap(column.Width, 15);
                 for (int x = 0; x < image.Width; x++)
