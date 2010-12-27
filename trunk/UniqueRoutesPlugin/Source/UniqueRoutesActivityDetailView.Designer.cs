@@ -56,6 +56,7 @@ namespace GpsRunningPlugin.Source
             this.activeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sendToMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxMenuItemRefActivity = new System.Windows.Forms.ToolStripMenuItem();
+            this.limitActivityMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.btnRefresh = new ZoneFiveSoftware.Common.Visuals.Button();
             this.speedBox = new System.Windows.Forms.ComboBox();
@@ -129,6 +130,8 @@ namespace GpsRunningPlugin.Source
             this.summaryList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.selectedRow_DoubleClick);
             this.summaryList.MouseLeave += new System.EventHandler(this.summaryList_MouseLeave);
             this.summaryList.MouseMove += new System.Windows.Forms.MouseEventHandler(this.summaryList_MouseMove);
+            this.summaryList.SelectedItemsChanged += new System.EventHandler(summaryList_SelectedItemsChanged);
+            this.summaryList.Click += new System.EventHandler(summaryList_Click);
             // 
             // contextMenu
             // 
@@ -145,27 +148,34 @@ namespace GpsRunningPlugin.Source
             // 
             this.copyTable.Name = "copyTable";
             this.copyTable.Size = new System.Drawing.Size(198, 22);
-            this.copyTable.Text = "Copy table to clipboard";
+            this.copyTable.Text = "<Copy table to clipboard";
             this.copyTable.Click += new System.EventHandler(this.copyTableMenu_Click);
             // 
             // listSettingsMenuItem
             // 
             this.listSettingsMenuItem.Name = "listSettingsMenuItem";
             this.listSettingsMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.listSettingsMenuItem.Text = "List Settings...";
+            this.listSettingsMenuItem.Text = "<List Settings...";
             // 
             // activeMenuItem
             // 
             this.activeMenuItem.Name = "activeMenuItem";
             this.activeMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.activeMenuItem.Text = "Only active laps";
+            this.activeMenuItem.Text = "<Only active laps";
             this.activeMenuItem.Click += new System.EventHandler(this.activeMenuItem_Click);
             // 
             // sendToMenuItem
             // 
             this.sendToMenuItem.Name = "sendToMenuItem";
             this.sendToMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.sendToMenuItem.Text = "Send to";
+            this.sendToMenuItem.Text = "<Send to";
+            // 
+            // limitActivityMenuItem
+            // 
+            this.limitActivityMenuItem.Name = "limitActivityMenuItem";
+            this.limitActivityMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.limitActivityMenuItem.Text = "<Limit selection to current activities...";
+            this.limitActivityMenuItem.Click += new System.EventHandler(this.limitActivityMenuItem_Click);
             // 
             // ctxMenuItemRefActivity
             // 
@@ -414,5 +424,6 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.PictureBox infoIcon;
         private System.Windows.Forms.ToolTip toolTipInfo;
         private ZoneFiveSoftware.Common.Visuals.TextBox boxCategory;
+        private System.Windows.Forms.ToolStripMenuItem limitActivityMenuItem;
     }
 }

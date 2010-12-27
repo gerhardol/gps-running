@@ -29,6 +29,8 @@ using ZoneFiveSoftware.Common.Data.GPS;
 #if !ST_2_1
 using ZoneFiveSoftware.Common.Data;
 using ZoneFiveSoftware.Common.Visuals.Forms;
+using ZoneFiveSoftware.Common.Visuals.Util;
+using ZoneFiveSoftware.Common.Visuals.Mapping;
 #endif
 using ZoneFiveSoftware.Common.Data.Fitness;
 using GpsRunningPlugin.Source;
@@ -38,6 +40,8 @@ using System.Reflection;
 using System.IO;
 using GpsRunningPlugin.Properties;
 using GpsRunningPlugin.Util;
+using TrailsPlugin.Data;
+using TrailsPlugin.UI.MapLayers;
 
 namespace GpsRunningPlugin.Source
 {
@@ -53,18 +57,21 @@ namespace GpsRunningPlugin.Source
         private IDictionary<ToolStripMenuItem, SendToPlugin> aSendToMenu = new Dictionary<ToolStripMenuItem, SendToPlugin>();
         private bool _showPage = false;
         private bool _needsRecalculation = true;
+        private bool _allowActivityUpdate = true; //Ignore "automatic" activity update
 
 #if ST_2_1
         private object m_DetailPage = null;
 #else
         private IDetailPage m_DetailPage = null;
         private IDailyActivityView m_view = null;
+        private TrailPointsLayer m_layer = null;
 
         public UniqueRoutesActivityDetailView(IDetailPage detailPage, IDailyActivityView view)
             : this()
         {
             m_DetailPage = detailPage;
             m_view = view;
+            m_layer = TrailPointsLayer.Instance(m_view);
             if (m_DetailPage != null)
             {
                 //expandButton.Visible = true;
@@ -101,10 +108,9 @@ namespace GpsRunningPlugin.Source
                 sendMenuItem.Name = p.id;
                 sendMenuItem.Size = new System.Drawing.Size(198, 22);
                 sendMenuItem.Text = p.name;
-                sendMenuItem.Click += new System.EventHandler(this.sendActivityButton_Click);
-                sendMenuItem.Enabled = false;
                 if (p.pType != null)
                 {
+                    sendMenuItem.Click += new System.EventHandler(this.sendActivityButton_Click);
                     pluginBox.Items.Add(p.name);
                     sendMenuItem.Enabled = true;
                     if (!isPluginMatch)
@@ -118,9 +124,18 @@ namespace GpsRunningPlugin.Source
                         isPluginMatch = true;
                     }
                 }
+                else
+                {
+                    if (p.id == "TRIMP")
+                    {
+                        sendMenuItem.Visible = false;
+                    }
+                    sendMenuItem.Enabled = false;
+                }
                 aSendToMenu[sendMenuItem] = p;
                 this.sendToMenuItem.DropDownItems.Add(sendMenuItem);
             }
+            this.sendToMenuItem.DropDownItems.Add(this.limitActivityMenuItem);
 
             if (Settings.SelectAll)
             {
@@ -158,6 +173,7 @@ namespace GpsRunningPlugin.Source
             }
 #endif
             this.summaryListToolTipTimer.Tick += new System.EventHandler(ToolTipTimer_Tick);
+            summaryList.LabelProvider = new ActivityLabelProvider();
         }
 
         public void ThemeChanged(ITheme visualTheme)
@@ -181,6 +197,7 @@ namespace GpsRunningPlugin.Source
             //btnChangeCategory.Text = StringResources.ChangeCategory;
             copyTable.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
             RefreshColumns();
+            this.limitActivityMenuItem.Text = Properties.Resources.UI_Activity_List_LimitSelection;
             this.ctxMenuItemRefActivity.Text = StringResources.SetRefActivity;
             listSettingsMenuItem.Text = StringResources.ListSettings;
 #if ST_2_1
@@ -218,39 +235,45 @@ namespace GpsRunningPlugin.Source
         {
             set
             {
-                selectedActivities = new List<IActivity>();
-                foreach (IActivity t in value)
+                if (_allowActivityUpdate)
                 {
-                    if (t.GPSRoute != null && t.GPSRoute.Count > 1)
+                    selectedActivities = new List<IActivity>();
+                    foreach (IActivity t in value)
                     {
-                        selectedActivities.Add(t);
-                    }
-                }
-                if (selectedActivities.Count == 0)
-                {
-                    this.refActivity = null;
-                }
-                else
-                {
-                    bool isMatch = false;
-                    if (this.refActivity != null)
-                    {
-                        foreach (IActivity t in selectedActivities)
+                        if (t.GPSRoute != null && t.GPSRoute.Count > 1)
                         {
-                            if (t.Equals(this.refActivity))
-                            {
-                                isMatch = true;
-                                break;
-                            }
+                            selectedActivities.Add(t);
                         }
                     }
-                    if (!isMatch)
+                    if (selectedActivities.Count == 0)
                     {
-                        this.refActivity = selectedActivities[0];
+                        this.refActivity = null;
+                        summaryList.Visible = false;
+                        summaryListLabel.Text = Resources.NoGpsActivitiesSelected;
+                        summaryListLabel.Visible = true;
                     }
+                    else
+                    {
+                        bool isMatch = false;
+                        if (this.refActivity != null)
+                        {
+                            foreach (IActivity t in selectedActivities)
+                            {
+                                if (t.Equals(this.refActivity))
+                                {
+                                    isMatch = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!isMatch)
+                        {
+                            this.refActivity = selectedActivities[0];
+                        }
+                    }
+                    _needsRecalculation = true;
+                    calculate();
                 }
-                _needsRecalculation = true;
-                calculate();
             }
             get { return selectedActivities; }
         }
@@ -258,11 +281,19 @@ namespace GpsRunningPlugin.Source
         public bool HidePage()
         {
             _showPage = false;
+            if (m_layer != null)
+            {
+                m_layer.ShowPage = false;
+            }
             return true;
         }
         public void ShowPage(string bookmark)
         {
             _showPage = true;
+            if (m_layer != null)
+            {
+                m_layer.ShowPage = true;
+            }
             calculate();
         }
 
@@ -270,6 +301,17 @@ namespace GpsRunningPlugin.Source
         {
             summaryList.Columns.Clear();
             ICollection<IListColumnDefinition> allCols = SummaryColumnIds.ColumnDefs(this.refActivity);
+            //Permanent fields
+            foreach (IListColumnDefinition columnDef in SummaryColumnIds.PermanentMultiColumnDefs())
+            {
+                TreeList.Column column = new TreeList.Column(
+                    columnDef.Id,
+                    columnDef.Text(columnDef.Id),
+                    columnDef.Width,
+                    columnDef.Align
+                );
+                summaryList.Columns.Add(column);
+            }
             foreach (string id in Settings.ActivityPageColumns)
             {
                 foreach (ListColumnDefinition columnDef in allCols)
@@ -419,8 +461,8 @@ namespace GpsRunningPlugin.Source
                 else
                 {
                     toolTipInfo.SetToolTip(infoIcon, Resources.DidNotFindAnyRoutes.Replace("\\n", Environment.NewLine));
-                    //summaryListLabel.Text = Resources.DidNotFindAnyRoutes.Replace("\\n", Environment.NewLine);
-                    //summaryListLabel.Visible = true;
+                    summaryListLabel.Text = Resources.DidNotFindAnyRoutes.Replace("\\n", Environment.NewLine);
+                    summaryListLabel.Visible = true;
                 }
             }
             setSize();
@@ -573,17 +615,100 @@ namespace GpsRunningPlugin.Source
 
         private void determinePaceOrSpeed()
         {
-            int pace = 0, speed = 0;
-            foreach (IActivity activity in similar)
+        //    int pace = 0, speed = 0;
+        //    foreach (IActivity activity in similar)
+        //    {
+        //        if (activity.Category.SpeedUnits.ToString().ToLower().Equals("speed"))
+        //            speed++;
+        //        else
+        //            pace++;
+        //    }
+        //    Settings.ShowPace = pace >= speed;
+            if (refActivity != null)
             {
-                if (activity.Category.SpeedUnits.ToString().ToLower().Equals("speed"))
-                    speed++;
-                else
-                    pace++;
+                Settings.ShowPace = (refActivity.Category.SpeedUnits == ZoneFiveSoftware.Common.Data.Measurement.Speed.Units.Pace) ?
+                    true : false;
             }
-            Settings.ShowPace = pace >= speed;
         }
 
+        //Some views like mapping is only working in single view - there are likely better tests
+        public bool isSingleView
+        {
+            get
+            {
+#if !ST_2_1
+                if (CollectionUtils.GetSingleItemOfType<IActivity>(m_view.SelectionProvider.SelectedItems) == null)
+                {
+                    return false;
+                }
+#endif
+                return true;
+            }
+        }
+        public void MarkTrack(IList<TrailResultMarked> atr)
+        {
+#if !ST_2_1
+            if (_showPage)
+            {
+                //if (m_view != null &&
+                //    m_view.RouteSelectionProvider != null &&
+                //    isSingleView == true)
+                //{
+                //    //if (!markChart)
+                //    //{
+                //    //    m_view.RouteSelectionProvider.SelectedItemsChanged -= new EventHandler(RouteSelectionProvider_SelectedItemsChanged);
+                //    //}
+                //    if (atr.Count > 0)
+                //    {
+                //        //Only one activity, OK to merge selections on one track
+                //        TrailsItemTrackSelectionInfo r = TrailResultMarked.SelInfoUnion(atr);
+                //        r.Activity = refActivity;
+                //        m_view.RouteSelectionProvider.SelectedItems = new IItemTrackSelectionInfo[] { r };
+                //        m_layer.ZoomRoute = atr[0].trailResult.GpsPoints(r);
+
+                //    }
+                //    //if (!markChart)
+                //    //{
+                //    //    m_view.RouteSelectionProvider.SelectedItemsChanged += new EventHandler(RouteSelectionProvider_SelectedItemsChanged);
+                //    //}
+                //}
+                //else
+                {
+                    IDictionary<string, MapPolyline> result = new Dictionary<string, MapPolyline>();
+                    foreach (TrailResultMarked trm in atr)
+                    {
+                        TrailMapPolyline m = new TrailMapPolyline(trm.trailResult, trm.selInfo);
+                        m.Click += new MouseEventHandler(mapPoly_Click);
+                        result.Add(m.key, m);
+                    }
+                    m_layer.MarkedTrailRoutes = result;
+                }
+            }
+#endif
+        }
+
+        void mapPoly_Click(object sender, MouseEventArgs e)
+        {
+            if (sender is TrailMapPolyline)
+            {
+                IList<TrailResult> result = new List<TrailResult> { (sender as TrailMapPolyline).TrailRes };
+                this.EnsureVisible(result, true);
+            }
+        }
+
+        public void EnsureVisible(IList<TrailResult> atr, bool chart)
+        {
+            if (atr != null && atr.Count > 0 && atr[0].Activity!=null)
+            {
+                foreach (UniqueRoutesResult urr in (IList<UniqueRoutesResult>)summaryList.RowData)
+                {
+                    if (atr[0].Activity == urr.Activity)
+                    {
+                        this.summaryList.EnsureVisible(urr);
+                    }
+                }
+            }
+        }
         /*******************************************************************************/
         //Event handlers
 
@@ -634,11 +759,13 @@ namespace GpsRunningPlugin.Source
                 list = similar;
             }
 
+            string pluginName = Settings.SelectedPlugin;
             try
             {
                 if (sender is ToolStripMenuItem)
                 {
                     sendToPlugin = aSendToMenu[sender as ToolStripMenuItem];
+                    pluginName = sendToPlugin.name;
                 }
                 else
                 {
@@ -660,7 +787,7 @@ namespace GpsRunningPlugin.Source
             }
             catch (Exception ex)
             {
-                new WarningDialog(String.Format(Resources.PluginApplicationError, Settings.SelectedPlugin, ex.ToString()) + " other");
+                new WarningDialog(String.Format(Resources.PluginApplicationError, pluginName, ex.ToString()) + " other");
             }
 
             try
@@ -670,6 +797,9 @@ namespace GpsRunningPlugin.Source
                     object[] par = sendToPlugin.par;
                     //all plugins have activities as first par
                     par[0] = list;
+#if !ST_2_1
+                    par[1] = m_view;
+#endif
                     Activator.CreateInstance(sendToPlugin.pType, par);
                 }
             }
@@ -702,14 +832,16 @@ namespace GpsRunningPlugin.Source
         //}
         private void addNode(IActivityCategory category, System.Collections.IList parentCategories)
         {
-            if (parentCategories == null)
+            if (parentCategories != null)
+            {
                 if (category.SubCategories.Count > 0) parentCategories.Add(category);
+            }
             foreach (IActivityCategory subcategory in category.SubCategories)
             {
                 addNode(subcategory, parentCategories);
             }
         }
-//xxx
+
         private void boxCategory_ButtonClicked(object sender, EventArgs e)
         {
             TreeListPopup treeListPopup = new TreeListPopup();
@@ -717,11 +849,11 @@ namespace GpsRunningPlugin.Source
             treeListPopup.Tree.Columns.Add(new TreeList.Column());
 
             IList<object> list = new List<object>();
+            list.Add(Util.StringResources.UseAllCategories);
             foreach (IActivityCategory category in Plugin.GetApplication().Logbook.ActivityCategories)
             {
                 list.Add(category);
             }
-            list.Add( Util.StringResources.UseAllCategories);
 
             treeListPopup.Tree.RowData = list;
             treeListPopup.Tree.ContentProvider = new ActivityCategoryContentProvider(list);
@@ -731,8 +863,8 @@ namespace GpsRunningPlugin.Source
             if (Settings.SelectedCategory != null)
             {
                 treeListPopup.Tree.Selected = new object[] { Settings.SelectedCategory };
-                treeListPopup.Tree.Expanded = new object[] { Settings.SelectedCategory };
             }
+            //Expand by default
             System.Collections.IList parentCategories = new System.Collections.ArrayList();
             foreach (IActivityCategory category in Plugin.GetApplication().Logbook.ActivityCategories)
             {
@@ -803,6 +935,63 @@ namespace GpsRunningPlugin.Source
                 RefreshColumns();
             }
         }
+
+        public static IList<UniqueRoutesResult> getListSelection(System.Collections.IList tlist)
+        {
+            IList<UniqueRoutesResult> aTr = new List<UniqueRoutesResult>();
+            if (tlist != null)
+            {
+                foreach (object t in tlist)
+                {
+                    if (t != null)
+                    {
+                        aTr.Add(((UniqueRoutesResult)t));
+                    }
+                }
+            }
+            return aTr;
+        }
+        void summaryList_SelectedItemsChanged(object sender, System.EventArgs e)
+        {
+            IList<UniqueRoutesResult> results = getListSelection(this.summaryList.SelectedItems);
+            IDictionary<string, MapPolyline> routes = new Dictionary<string, MapPolyline>();
+            foreach (UniqueRoutesResult ur in results)
+            {
+                //Possibly limit no of Trails shown, it slows down (show complete Activities?)
+                TrailResult tr = new TrailResult(ur);
+                TrailMapPolyline m = new TrailMapPolyline(tr);
+                m.Click += new MouseEventHandler(mapPoly_Click);
+                routes.Add(m.key, m);
+            }
+            m_layer.TrailRoutes = routes;
+        }
+
+        void summaryList_Click(object sender, System.EventArgs e)
+        {
+            object row;
+            TreeList.RowHitState hit;
+            row = summaryList.RowHitTest(((MouseEventArgs)e).Location, out hit);
+            if (row != null && hit == TreeList.RowHitState.Row)
+            {
+                UniqueRoutesResult utr = (UniqueRoutesResult)(row);
+                bool isMatch = false;
+                foreach (UniqueRoutesResult t in getListSelection(this.summaryList.SelectedItems))
+                {
+                    if (t == utr)
+                    {
+                        isMatch = true;
+                        break;
+                    }
+                }
+                IList<TrailResult> aTr = new List<TrailResult>();
+                if (isMatch)
+                {
+                    TrailResult tr = new TrailResult(utr);
+                        aTr.Add(tr);
+                }
+                this.MarkTrack(TrailResultMarked.TrailResultMarkAll(aTr));
+            }
+        }
 #endif
 
         private void activeMenuItem_Click(object sender, EventArgs e)
@@ -810,6 +999,23 @@ namespace GpsRunningPlugin.Source
             Settings.UseActive = !Settings.UseActive;
             activeMenuItem.CheckState = Settings.UseActive ? CheckState.Checked : CheckState.Unchecked;
             setTable();
+        }
+
+        void limitActivityMenuItem_Click(object sender, System.EventArgs e)
+        {
+#if !ST_2_1
+            if (this.summaryList.SelectedItems != null && this.summaryList.SelectedItems.Count > 0)
+            {
+                IList<IActivity> aAct = new List<IActivity>();
+                foreach (UniqueRoutesResult tr in this.summaryList.SelectedItems)
+                {
+                    aAct.Add(tr.Activity);
+                }
+                _allowActivityUpdate = false;
+                m_view.SelectionProvider.SelectedItems = (List<IActivity>)aAct;
+                _allowActivityUpdate = true;
+            }
+#endif
         }
 
         //ToolTip as used in DataGridView, not implemented for TreeList

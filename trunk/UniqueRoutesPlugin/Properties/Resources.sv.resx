@@ -189,4 +189,7 @@
   <data name="UI_Activity_List_LimitSelection" xml:space="preserve">
     <value>Välj markerade resultat i aktivitetslista</value>
   </data>
+  <data name="NoGpsActivitiesSelected" xml:space="preserve">
+    <value>Ingen aktivitet med GPS vald</value>
+  </data>
 </root>
