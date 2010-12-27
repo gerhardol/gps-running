@@ -66,7 +66,7 @@ namespace GpsRunningPlugin.Source
             points = findSimilarPoints(refRoute, activities);
             foreach (IActivity otherActivity in activities)
             {
-                double MinDistStretch = Settings.Bandwidth * 2;
+                double MinDistStretch = Settings.Radius*2*2;
                 double totTime = 0;
                 double totTimeRef = 0;
                 double totDist = 0;
@@ -138,7 +138,7 @@ namespace GpsRunningPlugin.Source
             {
                 const int ExtraGridIndex = 2;
                 const float MaxDistDiffFactor = 0.1F;
-                double MinDistStretch = Settings.Bandwidth * 2;
+                double MinDistStretch = Settings.Radius*2*2;
 
                 result.Add(otherActivity, new List<IList<PointInfo>>());
                 IDistanceDataTrack dist = otherActivity.GPSRoute.GetDistanceMetersTrack();
@@ -164,7 +164,7 @@ namespace GpsRunningPlugin.Source
                                 //Get the closest point - used in starts and could restart current stretch
                                 if (closeIndex == null ||
                                     //Close match in distance
-                                    (Math.Abs(IndDist.Dist - dist[i].Value) < 3*Settings.Bandwidth) ||
+                                    (Math.Abs(IndDist.Dist - dist[i].Value) < 3*Settings.Radius*2) ||
                                     //Close to other matches
                                     (Math.Abs(IndDist.Dist - dist[i].Value - cumulativeAverageDist) <
                                 Math.Abs(closeIndex.Dist - dist[i].Value - cumulativeAverageDist)))
@@ -217,7 +217,7 @@ namespace GpsRunningPlugin.Source
                             //back match
                             lastIndex.Index > nextIndex.Index ||
                             prio > 10 && (MinDistStretch < dist[i].Value - dist[startMatch].Value ||
-                                    (Math.Abs(nextIndex.Dist - dist[i].Value) > Settings.Bandwidth) ||
+                                    (Math.Abs(nextIndex.Dist - dist[i].Value) > Settings.Radius*2) ||
                                     (Math.Abs(nextIndex.Dist - dist[i].Value - cumulativeAverageDist) >
                                 Math.Abs(closeIndex.Dist - dist[i].Value - cumulativeAverageDist)))))
                         {

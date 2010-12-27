@@ -120,11 +120,11 @@
   <data name="AllowPointsOutsideBand" xml:space="preserve">
     <value>Tillåtna punkter utanför band</value>
   </data>
-  <data name="Bandwidth" xml:space="preserve">
-    <value>Bandvidd</value>
+  <data name="Radius" xml:space="preserve">
+    <value>Radie</value>
   </data>
-  <data name="BandwidthWarning" xml:space="preserve">
-    <value>Bandvidd måste vara ett nummer.</value>
+  <data name="RadiusWarning" xml:space="preserve">
+    <value>Radie måste vara ett nummer.</value>
   </data>
   <data name="BeginningMeterWarning" xml:space="preserve">
     <value>Ignorera meter i början måste vara ett nummer.</value>
@@ -185,5 +185,8 @@
   </data>
   <data name="TrailPointsControlLayer" xml:space="preserve">
     <value>Unique Routes lager</value>
+  </data>
+  <data name="UI_Activity_List_LimitSelection" xml:space="preserve">
+    <value>Välj markerade resultat i aktivitetslista</value>
   </data>
 </root>

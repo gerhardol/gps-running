@@ -67,7 +67,7 @@ namespace GpsRunningPlugin.Source
             resetSettings.Text = StringResources.ResetAllSettings;
             linkLabel1.Text = Resources.Webpage;
             groupBox1.Text = StringResources.Settings;
-            label1.Text = Resources.Bandwidth + ":";
+            label1.Text = Resources.Radius + ":";
             precedeControl(label1, bandwidthBox);
             label2.Text = Resources.AllowPointsOutsideBand + ":";
             precedeControl(label2, percentageOff);
@@ -89,7 +89,7 @@ namespace GpsRunningPlugin.Source
 
         private void presentSettings()
         {
-            bandwidthBox.Text = UnitUtil.Elevation.ToString(Settings.Bandwidth, "u");
+            bandwidthBox.Text = UnitUtil.Elevation.ToString(Settings.Radius, "u");
             percentageOff.Value = (int)Math.Round(Settings.ErrorMargin * 100);
             hasDirectionBox.Checked = Settings.HasDirection;
             ignoreBeginningBox.Text = UnitUtil.Distance.ToString(Settings.IgnoreBeginning, "u");
@@ -155,13 +155,13 @@ namespace GpsRunningPlugin.Source
             {
                 int value = (int)UnitUtil.Elevation.Parse(bandwidthBox.Text);
                 if (value <= 0) { throw new Exception(); }
-                Settings.Bandwidth = value;
+                Settings.Radius = value;
                 presentSettings();
             }
             catch (Exception)
             {
-                bandwidthBox.Text = UnitUtil.Elevation.ToString(Settings.Bandwidth);
-                new WarningDialog(Resources.BandwidthWarning);
+                bandwidthBox.Text = UnitUtil.Elevation.ToString(Settings.Radius);
+                new WarningDialog(Resources.RadiusWarning);
             }
         }
 

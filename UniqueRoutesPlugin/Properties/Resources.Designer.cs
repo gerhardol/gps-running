@@ -97,24 +97,6 @@ namespace GpsRunningPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bandwidth.
-        /// </summary>
-        internal static string Bandwidth {
-            get {
-                return ResourceManager.GetString("Bandwidth", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bandwidth must be a number..
-        /// </summary>
-        internal static string BandwidthWarning {
-            get {
-                return ResourceManager.GetString("BandwidthWarning", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Ignore beginning meters must be a number..
         /// </summary>
         internal static string BeginningMeterWarning {
@@ -239,6 +221,24 @@ namespace GpsRunningPlugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Radius.
+        /// </summary>
+        internal static string Radius {
+            get {
+                return ResourceManager.GetString("Radius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Radius must be a number..
+        /// </summary>
+        internal static string RadiusWarning {
+            get {
+                return ResourceManager.GetString("RadiusWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Routes have direction.
         /// </summary>
         internal static string RoutesHaveDirection {
@@ -262,6 +262,15 @@ namespace GpsRunningPlugin.Properties {
         internal static string TrailPointsControlLayer {
             get {
                 return ResourceManager.GetString("TrailPointsControlLayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select marked results in activity list.
+        /// </summary>
+        internal static string UI_Activity_List_LimitSelection {
+            get {
+                return ResourceManager.GetString("UI_Activity_List_LimitSelection", resourceCulture);
             }
         }
         
