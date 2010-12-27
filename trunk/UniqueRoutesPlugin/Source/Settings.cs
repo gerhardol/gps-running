@@ -125,11 +125,11 @@ namespace GpsRunningPlugin.Source
             set { errorMargin = value; }
         }
 
-        private static int bandwidth;
-        public static int Bandwidth
+        private static int radius;
+        public static int Radius
         {
-            get { return bandwidth; }
-            set { bandwidth = value; }
+            get { return radius; }
+            set { radius = value; }
         }
 
         private static bool hasDirection;
@@ -229,7 +229,7 @@ namespace GpsRunningPlugin.Source
             selectedPlugin = "";
             selectedCategory = null;
             errorMargin = 0.1;
-            bandwidth = 40;
+            radius = 20;
             hasDirection = false;
             useActive = false;
             ignoreBeginning = 0;
@@ -266,8 +266,13 @@ namespace GpsRunningPlugin.Source
             if (attr.Length > 0) { selectedCategory = parseCategory(attr); }
             attr = pluginNode.GetAttribute(xmlTags.errorMargin);
             if (attr.Length > 0) { errorMargin = (float)XmlConvert.ToDouble(attr); }
-            attr = pluginNode.GetAttribute(xmlTags.bandwidth);
-            if (attr.Length > 0) { bandwidth = XmlConvert.ToInt16(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.radius);
+            if (attr.Length > 0) { radius = XmlConvert.ToInt16(attr); }
+            else
+            { //Compatibility
+                attr = pluginNode.GetAttribute(xmlTags.bandwidth);
+                if (attr.Length > 0) { radius = XmlConvert.ToInt16(attr)/2; }
+            }
             attr = pluginNode.GetAttribute(xmlTags.hasDirection);
             if (attr.Length > 0) { hasDirection = XmlConvert.ToBoolean(attr); }
             attr = pluginNode.GetAttribute(xmlTags.useActive);
@@ -309,7 +314,7 @@ namespace GpsRunningPlugin.Source
             pluginNode.SetAttribute(xmlTags.selectedPlugin, selectedPlugin);
             pluginNode.SetAttribute(xmlTags.selectedCategory, printFullCategoryPath(selectedCategory,null, "|"));
             pluginNode.SetAttribute(xmlTags.errorMargin, XmlConvert.ToString(errorMargin));
-            pluginNode.SetAttribute(xmlTags.bandwidth, XmlConvert.ToString(bandwidth));
+            pluginNode.SetAttribute(xmlTags.radius, XmlConvert.ToString(radius));
             pluginNode.SetAttribute(xmlTags.hasDirection, XmlConvert.ToString(hasDirection));
             pluginNode.SetAttribute(xmlTags.useActive, XmlConvert.ToString(useActive));
             pluginNode.SetAttribute(xmlTags.ignoreBeginning, XmlConvert.ToString(ignoreBeginning));
@@ -340,7 +345,8 @@ namespace GpsRunningPlugin.Source
             public const string selectedPlugin = "selectedPlugin";
             public const string selectedCategory = "selectedCategory";
             public const string errorMargin = "errorMargin";
-            public const string bandwidth = "bandwidth";
+            public const string bandwidth = "bandwidth";//Compatibility
+            public const string radius = "radius";
             public const string hasDirection = "hasDirection";
             public const string useActive = "useActive";
             public const string ignoreBeginning = "ignoreBeginning";
@@ -370,7 +376,7 @@ namespace GpsRunningPlugin.Source
                 windowSize = new Size(int.Parse(elm.Attributes["viewWidth"].Value),
                                                     int.Parse(elm.Attributes["viewHeight"].Value));
                 errorMargin = GpsRunningPlugin.Source.Settings.parseDouble(elm.Attributes["errorMargin"].Value);
-                bandwidth = int.Parse(elm.Attributes["bandwidth"].Value);
+                radius = int.Parse(elm.Attributes["bandwidth"].Value)/2;
                 hasDirection = bool.Parse(elm.Attributes["hasDirection"].Value);
                 if (elm.Attributes["ignoreBeginning"] != null)
                     ignoreBeginning = GpsRunningPlugin.Source.Settings.parseDouble(elm.Attributes["ignoreBeginning"].Value);

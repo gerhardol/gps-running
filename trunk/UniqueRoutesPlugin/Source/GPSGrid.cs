@@ -65,9 +65,9 @@ namespace GpsRunningPlugin.Source
 
         public GPSGrid(IGPSRoute route, double BWidthFactor, bool isDist)
         {
-            Width = BWidthFactor * (Settings.Bandwidth) / (60 * 60 * 30.9);
+            Width = BWidthFactor * (Settings.Radius*2) / (60 * 60 * 30.9);
             if (Width < 0.001) Width = 0.001;
-            Distance = BWidthFactor * Settings.Bandwidth / 2;            
+            Distance = BWidthFactor * Settings.Radius;            
             Grid = new Dictionary<int, IDictionary<int, IList<int>>>();
             Route = route; //Just copy the reference
             if (isDist)
