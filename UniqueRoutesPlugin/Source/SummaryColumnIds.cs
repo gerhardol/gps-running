@@ -94,6 +94,8 @@ namespace GpsRunningPlugin.Source
         }
     }
     public static class SummaryColumnIds {
+        //public const string Order = "Order";
+        public const string Color = "Color";
         public const string StartDate = "StartDate";
 		public const string StartTime = "StartTime";
 		public const string Time = "Time";
@@ -104,6 +106,13 @@ namespace GpsRunningPlugin.Source
         public const string AvgHR = "AvgHR";
         public const string CommonStretches = "CommonStretches";
 
+        public static ICollection<IListColumnDefinition> PermanentMultiColumnDefs()
+        {
+            IList<IListColumnDefinition> columnDefs = new List<IListColumnDefinition>();
+            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.Color, "", "", 10, StringAlignment.Near));
+
+            return columnDefs;
+        }
         public static ICollection<IListColumnDefinition> ColumnDefs(IActivity activity)
         {
             IList<IListColumnDefinition> columnDefs = new List<IListColumnDefinition>();

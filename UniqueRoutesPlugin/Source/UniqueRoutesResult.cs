@@ -108,6 +108,32 @@ namespace GpsRunningPlugin.Source
                 return UnitUtil.HeartRate.ToString(getAvgHR());
             }
         }
+        public Color Color
+        {
+            get
+            {
+                return getColor(this.m_trailColor);
+            }
+        }
+        private static int nextTrailColor = 1;
+        private int m_trailColor = nextTrailColor++;
+        private Color getColor(int color)
+        {
+            switch (color % 10)
+            {
+                case 0: return Color.Blue;
+                case 1: return Color.Red;
+                case 2: return Color.Green;
+                case 3: return Color.Orange;
+                case 4: return Color.Plum;
+                case 5: return Color.HotPink;
+                case 6: return Color.Gold;
+                case 7: return Color.Silver;
+                case 8: return Color.YellowGreen;
+                case 9: return Color.Turquoise;
+            }
+            return Color.Black;
+        }
         private string m_commonStretch;
         public string CommonStretches
         {
@@ -246,6 +272,8 @@ namespace GpsRunningPlugin.Source
             //Should be using reflection....
             switch (id)
             {
+                case SummaryColumnIds.Color:
+                    return Color.ToArgb();
                 case SummaryColumnIds.StartDate:
                     return m_activity.StartTime.Ticks;
                 case SummaryColumnIds.StartTime:

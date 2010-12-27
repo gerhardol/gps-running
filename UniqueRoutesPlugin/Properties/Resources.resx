@@ -199,4 +199,7 @@
   <data name="UI_Activity_List_LimitSelection" xml:space="preserve">
     <value>Select marked results in activity list</value>
   </data>
+  <data name="NoGpsActivitiesSelected" xml:space="preserve">
+    <value>No activity with GPS selected</value>
+  </data>
 </root>

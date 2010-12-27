@@ -18,6 +18,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Source\ActivityLabelProvider.cs" />
     <Compile Include="Util\ActivityCategoryPopup.cs" />
     <Compile Include="Source\CommonStretches.cs" />
     <Compile Include="Source\GPSGrid.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Source\SummaryColumnIds.cs" />
     <Compile Include="Util\TrailsMapLayers\Data\TrailGPSLocation.cs" />
     <Compile Include="Util\TrailsMapLayers\Data\TrailResult.cs" />
+    <Compile Include="Util\TrailsMapLayers\Data\TrailResultMarked.cs" />
     <Compile Include="Util\TrailsMapLayers\Data\TrailsItemTrackSelectionInfo.cs" />
     <Compile Include="Util\TrailsMapLayers\ExtendMapControlLayers.cs" />
     <Compile Include="Util\TrailsMapLayers\MapControlLayer.cs" />
