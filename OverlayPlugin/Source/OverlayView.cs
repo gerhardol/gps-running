@@ -70,6 +70,17 @@ namespace GpsRunningPlugin.Source
         {
             //m_layer = TrailPointsLayer.Instance((IView)view);
         }
+        //UniqueRoutes sendto
+        public OverlayView(IList<IActivity> activities, IDailyActivityView view)
+            : this(view)
+        {
+            this.Activities = activities;
+        }
+        public OverlayView(IList<IActivity> activities, IActivityReportsView view)
+            : this(view)
+        {
+            this.Activities = activities;
+        }
 #endif
         //popup view
         public OverlayView(bool showDialog)
@@ -83,6 +94,12 @@ namespace GpsRunningPlugin.Source
                 _showPage = true;
                 this.ShowDialog();
             }
+        }
+        //Compatibility with old UniqueRoutes send to
+        public OverlayView(IList<IActivity> aAct, bool showDialog)
+            : this(showDialog)
+        {
+            this.Activities = aAct;
         }
 
         public OverlayView()
@@ -193,10 +210,6 @@ namespace GpsRunningPlugin.Source
                     | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom)));
             popupForm.SizeChanged += new EventHandler(form_SizeChanged);
             setSize();
-            if (activities.Count == 1)
-                popupForm.Text = Resources.O1;
-            else
-                popupForm.Text = String.Format(Resources.O2, activities.Count);
             popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_Overlay.GetHicon());
             Parent.SizeChanged += new EventHandler(Parent_SizeChanged);
             popupForm.StartPosition = FormStartPosition.CenterScreen;
@@ -243,6 +256,13 @@ namespace GpsRunningPlugin.Source
 
                 CommonData.refActWrapper = null;
                 RefreshPage();
+                if (popupForm != null)
+                {
+                    if (activities.Count == 1)
+                        popupForm.Text = Resources.O1;
+                    else
+                        popupForm.Text = String.Format(Resources.O2, activities.Count);
+                }
             }
         }
         public void RefreshPage()

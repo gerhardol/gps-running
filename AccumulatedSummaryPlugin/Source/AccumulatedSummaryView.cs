@@ -22,10 +22,11 @@ using System.Text;
 using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Data.Measurement;
+using ZoneFiveSoftware.Common.Visuals;
+using ZoneFiveSoftware.Common.Visuals.Fitness;
 
 using GpsRunningPlugin;
 using GpsRunningPlugin.Source;
-using ZoneFiveSoftware.Common.Visuals;
 using GpsRunningPlugin.Properties;
 using GpsRunningPlugin.Util;
 
@@ -37,7 +38,7 @@ namespace GpsRunningPlugin.Source
         private IList<IActivity> activities;
         private ITheme m_visualTheme;
 
-        public AccumulatedSummaryView(IList<IActivity> activities)
+        public AccumulatedSummaryView()
         {
             m_visualTheme =
 #if ST_2_1
@@ -47,16 +48,40 @@ namespace GpsRunningPlugin.Source
 #endif
 
             InitializeComponent();
-            this.activities = activities;
-            StringBuilder builder = new StringBuilder(10000);
-            makeReport(builder);
-            browser.DocumentText = builder.ToString();
-            if (activities.Count == 1)
-                Text = Resources.AS1;
-            else
-                Text = String.Format(Resources.AS2,activities.Count);
-            Icon = System.Drawing.Icon.FromHandle(Properties.Resources.Image_32_AccumulatedSummary.GetHicon());
-            ShowDialog();
+        }
+        public AccumulatedSummaryView(IList<IActivity> activities)
+            : this()
+        {
+            this.Activities = activities;
+        }
+#if !ST_2_1
+        //UniqueRoutes sendto
+        public AccumulatedSummaryView(IList<IActivity> activities, IDailyActivityView view)
+            : this(activities)
+        {
+            //m_layer = TrailPointsLayer.Instance((IView)view);
+        }
+        public AccumulatedSummaryView(IList<IActivity> activities, IActivityReportsView view)
+            : this(activities)
+        {
+            //m_layer = TrailPointsLayer.Instance((IView)view);
+        }
+#endif
+        public IList<IActivity> Activities
+        {
+            set
+            {
+                this.activities = value;
+                StringBuilder builder = new StringBuilder(10000);
+                makeReport(builder);
+                browser.DocumentText = builder.ToString();
+                if (activities.Count == 1)
+                    Text = Resources.AS1;
+                else
+                    Text = String.Format(Resources.AS2, activities.Count);
+                Icon = System.Drawing.Icon.FromHandle(Properties.Resources.Image_32_AccumulatedSummary.GetHicon());
+                ShowDialog();
+            }
         }
         string getRGB(System.Drawing.Color col)
         {
