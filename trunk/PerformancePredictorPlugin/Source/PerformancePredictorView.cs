@@ -68,6 +68,17 @@ namespace GpsRunningPlugin.Source
         {
             //m_layer = TrailPointsLayer.Instance((IView)view);
         }
+        //UniqueRoutes sendto
+        public PerformancePredictorView(IList<IActivity> activities, IDailyActivityView view)
+            : this(view)
+        {
+            this.Activities = activities;
+        }
+        public PerformancePredictorView(IList<IActivity> activities, IActivityReportsView view)
+            : this(view)
+        {
+            this.Activities = activities;
+        }
 #endif
         public PerformancePredictorView()
         {
@@ -89,6 +100,12 @@ namespace GpsRunningPlugin.Source
             //Settings.DistanceChanged += new PropertyChangedEventHandler(Settings_DistanceChanged);
         }
 
+        //Compatibility with old UniqueRoutes send to
+        public PerformancePredictorView(IList<IActivity> aAct, bool showDialog)
+            : this(showDialog)
+        {
+            this.Activities = aAct;
+        }
         public PerformancePredictorView(bool showDialog)
             : this()
         {

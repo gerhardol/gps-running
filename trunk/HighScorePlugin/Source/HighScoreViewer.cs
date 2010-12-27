@@ -73,6 +73,18 @@ namespace GpsRunningPlugin.Source
         {
             //m_layer = TrailPointsLayer.Instance((IView)view);
         }
+
+        //UniqueRoutes sendto
+        public HighScoreViewer(IList<IActivity> activities, IDailyActivityView view)
+            : this(view)
+        {
+            this.Activities = activities;
+        }
+        public HighScoreViewer(IList<IActivity> activities, IActivityReportsView view)
+            : this(view)
+        {
+            this.Activities = activities;
+        }
 #endif
         public HighScoreViewer()
         {
@@ -113,6 +125,12 @@ namespace GpsRunningPlugin.Source
             contextMenu.Click += new EventHandler(contextMenu_Click);
         }
 
+        //Compatibility with old UniqueRoutes send to
+        public HighScoreViewer(IList<IActivity> aAct, bool showDialog, bool dummy)
+            : this(showDialog)
+        {
+            this.Activities = aAct;
+        }
         public HighScoreViewer(bool showDialog)
             : this()
         {

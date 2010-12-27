@@ -24,6 +24,7 @@ using GpsRunningPlugin;
 using GpsRunningPlugin.Source;
 using System.Drawing;
 using ZoneFiveSoftware.Common.Visuals;
+using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Visuals.Chart;
 using ZoneFiveSoftware.Common.Data;
 using ZoneFiveSoftware.Common.Data.Fitness;
@@ -119,6 +120,19 @@ namespace GpsRunningPlugin.Source
             }
         }
 
+#if !ST_2_1
+        //UniqueRoutes sendto
+        public TRIMPView(IList<IActivity> activities, IDailyActivityView view)
+            : this(activities, true)
+        {
+            //m_layer = TrailPointsLayer.Instance((IView)view);
+        }
+        public TRIMPView(IList<IActivity> activities, IActivityReportsView view)
+            : this(activities, true)
+        {
+            //m_layer = TrailPointsLayer.Instance((IView)view);
+        }
+#endif
         void Settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             updateTable();
