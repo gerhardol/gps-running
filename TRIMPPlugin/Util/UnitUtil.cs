@@ -23,6 +23,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
 using System;
 using System.Globalization;
 using ZoneFiveSoftware.Common.Data.Measurement;
+using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Visuals;
 using GpsRunningPlugin;
 
@@ -541,6 +542,24 @@ namespace GpsRunningPlugin.Util
             public static double ConvertFrom(double p, Length.Units unit)
             {
                 return Length.Convert(p, Length.Units.Meter, unit);
+            }
+
+            public static double ConvertTo(double value, Length.Units du)
+            {
+                return Length.Convert(value, du, Length.Units.Meter);
+            }
+            public static double ConvertTo(double value, IActivity activity)
+            {
+                Length.Units du;
+                if (activity != null)
+                {
+                    du = activity.Category.DistanceUnits;
+                }
+                else
+                {
+                    du = Unit;
+                }
+                return ConvertTo(value, du);
             }
 
             public static double Parse(string p)
