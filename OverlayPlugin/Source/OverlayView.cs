@@ -39,10 +39,13 @@ using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Data.Algorithm;
 #if !ST_2_1
 using ZoneFiveSoftware.Common.Visuals.Forms;
+using ZoneFiveSoftware.Common.Visuals.Mapping;
 #endif
 
 using GpsRunningPlugin.Properties;
 using GpsRunningPlugin.Util;
+using TrailsPlugin.Data;
+using TrailsPlugin.UI.MapLayers;
 
 namespace GpsRunningPlugin.Source
 {
@@ -58,17 +61,18 @@ namespace GpsRunningPlugin.Source
             {
                 expandButton.Visible = true;
             }
+            m_layer = TrailPointsLayer.Instance((IView)view);
         }
         //popup dialog
         public OverlayView(IDailyActivityView view)
             : this(true)
         {
-            //m_layer = TrailPointsLayer.Instance((IView)view);
+            m_layer = TrailPointsLayer.Instance((IView)view);
         }
         public OverlayView(IActivityReportsView view)
             : this(true)
         {
-            //m_layer = TrailPointsLayer.Instance((IView)view);
+            m_layer = TrailPointsLayer.Instance((IView)view);
         }
         //UniqueRoutes sendto
         public OverlayView(IList<IActivity> activities, IDailyActivityView view)
@@ -128,8 +132,6 @@ namespace GpsRunningPlugin.Source
             }
 
             RefreshColumns();
-            treeListAct.CheckBoxes = true;
-            treeListAct.MultiSelect = true;
             treeListAct.RowDataRenderer.RowAlternatingColors = true;
             treeListAct.LabelProvider = new ActivityLabelProvider();
             treeListAct.CheckedChanged += new TreeList.ItemEventHandler(treeView_CheckedChanged);
@@ -271,6 +273,7 @@ namespace GpsRunningPlugin.Source
             {
                 updateActivities();
                 updateChart();
+                updateRoute();
             }
         }
         private void updateActivities()
@@ -296,6 +299,7 @@ namespace GpsRunningPlugin.Source
             {
                 CommonData.refActWrapper = actWrappers[0];
             }
+
         }
 
         private class ActivityDateComparer : Comparer<IActivity>
@@ -309,6 +313,10 @@ namespace GpsRunningPlugin.Source
         public bool HidePage()
         {
             _showPage = false;
+            if (m_layer != null)
+            {
+                m_layer.ShowPage = _showPage;
+            }
             return true;
         }
         public void ShowPage(string bookmark)
@@ -316,6 +324,10 @@ namespace GpsRunningPlugin.Source
             bool changed = !_showPage;
             _showPage = true;
             if (changed) { RefreshPage(); }
+            if (m_layer != null)
+            {
+                m_layer.ShowPage = _showPage;
+            }
         }
         public void ThemeChanged(ITheme visualTheme)
         {
@@ -1164,6 +1176,67 @@ namespace GpsRunningPlugin.Source
             chart.Visible = true;
         }
 
+        private void updateRoute()
+        {
+            IDictionary<string, MapPolyline> routes = new Dictionary<string, MapPolyline>();
+            foreach (ActivityWrapper ur in actWrappers)
+            {
+                //Possibly limit no of Trails shown, it slows down (show complete Activities?)
+                TrailResult tr = new TrailResult(ur);
+                TrailMapPolyline m = new TrailMapPolyline(tr);
+                m.Click += new MouseEventHandler(mapPoly_Click);
+                routes.Add(m.key, m);
+            }
+            m_layer.TrailRoutes = routes;
+        }
+
+        public void MarkTrack(IList<TrailResultMarked> atr)
+        {
+#if !ST_2_1
+            if (_showPage)
+            {
+                    IDictionary<string, MapPolyline> result = new Dictionary<string, MapPolyline>();
+                    foreach (TrailResultMarked trm in atr)
+                    {
+                        TrailMapPolyline m = new TrailMapPolyline(trm.trailResult, trm.selInfo);
+                        m.Click += new MouseEventHandler(mapPoly_Click);
+                        result.Add(m.key, m);
+                    }
+                    m_layer.MarkedTrailRoutes = result;
+            }
+#endif
+        }
+
+        public void EnsureVisible(IList<TrailResult> atr, bool chart)
+        {
+            if (atr != null && atr.Count > 0 && atr[0].Activity != null)
+            {
+                foreach (ActivityWrapper urr in (IList<ActivityWrapper>)treeListAct.RowData)
+                {
+                    if (atr[0].Activity == urr.Activity)
+                    {
+                        this.treeListAct.EnsureVisible(urr);
+                    }
+                }
+            }
+        }
+
+        public static IList<ActivityWrapper> getListSelection(System.Collections.IList tlist)
+        {
+            IList<ActivityWrapper> aTr = new List<ActivityWrapper>();
+            if (tlist != null)
+            {
+                foreach (object t in tlist)
+                {
+                    if (t != null)
+                    {
+                        aTr.Add(((ActivityWrapper)t));
+                    }
+                }
+            }
+            return aTr;
+        }
+
         private void CorrectTimeDataSeriesForPauses(ActivityInfo info, bool includeStopped, INumericTimeDataSeries dataSeries, out INumericTimeDataSeries newDataSeries)
         {
             IValueRangeSeries<DateTime> pauses;
@@ -1344,12 +1417,14 @@ namespace GpsRunningPlugin.Source
         private void Activity_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             updateChart();
+            updateRoute();
         }
 #endif
 
         private void treeView_CheckedChanged(object sender, EventArgs e)
         {
             updateChart();
+            updateRoute();
         }
 
         void chart_Click(object sender, EventArgs e)
@@ -1803,6 +1878,43 @@ namespace GpsRunningPlugin.Source
             //ShowChartToolBar = PluginMain.Settings.ShowChartToolBar;
         }
 
+#if !ST_2_1
+        void summaryList_Click(object sender, System.EventArgs e)
+        {
+            object row;
+            TreeList.RowHitState hit;
+            row = treeListAct.RowHitTest(((MouseEventArgs)e).Location, out hit);
+            if (row != null && hit == TreeList.RowHitState.Row)
+            {
+                ActivityWrapper utr = (ActivityWrapper)(row);
+                bool isMatch = false;
+                foreach (ActivityWrapper t in getListSelection(this.treeListAct.SelectedItems))
+                {
+                    if (t == utr)
+                    {
+                        isMatch = true;
+                        break;
+                    }
+                }
+                IList<TrailResult> aTr = new List<TrailResult>();
+                if (isMatch)
+                {
+                    TrailResult tr = new TrailResult(utr);
+                        aTr.Add(tr);
+                }
+                this.MarkTrack(TrailResultMarked.TrailResultMarkAll(aTr));
+            }
+        }
+
+        void mapPoly_Click(object sender, MouseEventArgs e)
+        {
+            if (sender is TrailMapPolyline)
+            {
+                IList<TrailResult> result = new List<TrailResult> { (sender as TrailMapPolyline).TrailRes };
+                this.EnsureVisible(result, true);
+            }
+        }
+#endif
         private ITheme m_visualTheme =
 #if ST_2_1
                 Plugin.GetApplication().VisualTheme;
@@ -1836,6 +1948,7 @@ namespace GpsRunningPlugin.Source
 #else
         private IDetailPage m_DetailPage = null;
         private IDailyActivityView m_view = null;
+        private TrailPointsLayer m_layer = null;
 #endif
         private bool m_boDetailPageExpanded = false;
 
