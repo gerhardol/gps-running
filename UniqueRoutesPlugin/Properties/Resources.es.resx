@@ -58,14 +58,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="AllowPointsOutsideBand" xml:space="preserve">
     <value>Puntos permitidos fuera de la banda</value>
   </data>
-  <data name="Bandwidth" xml:space="preserve">
-    <value>Amplitud de banda</value>
+  <data name="Radius" xml:space="preserve">
+    <value>Radio</value>
   </data>
-  <data name="BandwidthWarning" xml:space="preserve">
-    <value>Amplitud de banda debe de ser un número</value>
+  <data name="RadiusWarning" xml:space="preserve">
+    <value>Radio debe ser numerico</value>
   </data>
   <data name="BeginningMeterWarning" xml:space="preserve">
     <value>Ignorar principio debe de ser un número</value>
@@ -96,6 +97,7 @@
     <value>Ignorar final de ruta</value>
   </data>
   <data name="IncludeAllActivitiesInSearch" xml:space="preserve">
+    <comment>NoLongerVisible</comment>
     <value>Incluir todas las actividades en la búsqueda</value>
   </data>
   <data name="IncludeOnlyCategory" xml:space="preserve">
@@ -120,5 +122,18 @@
   <data name="All" xml:space="preserve">
     <comment>NoLongerVisible</comment>
     <value>todas</value>
+  </data>
+  <data name="LimitingToSelected" xml:space="preserve">
+    <value>Usando {0} actividades deleccionadas</value>
+  </data>
+  <data name="TrailPointsControlLayer" xml:space="preserve">
+    <comment>still unused (requires ST update)</comment>
+    <value>Unique Routes Map Overlay</value>
+  </data>
+  <data name="UI_Activity_List_LimitSelection" xml:space="preserve">
+    <value>Seleccione marcadso en la lista de actividades </value>
+  </data>
+  <data name="NoGpsActivitiesSelected" xml:space="preserve">
+    <value>No selecciono actividades con datos  GPS</value>
   </data>
 </root>

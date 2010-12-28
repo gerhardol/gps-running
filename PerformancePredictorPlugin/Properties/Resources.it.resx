@@ -110,7 +110,6 @@
     <value>Ritmi previsti per durate da 20 a 60 minuti a VDOT {0:0.0}</value>
   </data>
   <data name="PaceRunNotification" xml:space="preserve">
-    <comment>updated</comment>
     <value>20 minuti di attività sono al ritmo della soglia di lattato - i ritmi di attività più lunghe sono stati corretti per mantenere una idonea intensità.</value>
   </data>
   <data name="PositiveNumber" xml:space="preserve">
