@@ -126,10 +126,6 @@
   <data name="LimitingToSelected" xml:space="preserve">
     <value>Usando {0} actividades deleccionadas</value>
   </data>
-  <data name="TrailPointsControlLayer" xml:space="preserve">
-    <comment>still unused (requires ST update)</comment>
-    <value>Unique Routes Map Overlay</value>
-  </data>
   <data name="UI_Activity_List_LimitSelection" xml:space="preserve">
     <value>Seleccione marcadso en la lista de actividades </value>
   </data>

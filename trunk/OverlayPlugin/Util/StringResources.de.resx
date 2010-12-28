@@ -157,6 +157,9 @@
   <data name="MinutesFormat" xml:space="preserve">
     <value>mm</value>
   </data>
+  <data name="SecondsFormat" xml:space="preserve">
+    <value>ss</value>
+  </data>
   <data name="Activities" xml:space="preserve">
     <value>Aktivitäten</value>
   </data>
@@ -217,6 +220,9 @@
   <data name="Visible" xml:space="preserve">
     <value>Sichtbar</value>
   </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Versatz</value>
+  </data>
   <data name="Difference" xml:space="preserve">
     <value>Differenz</value>
   </data>
@@ -224,6 +230,6 @@
     <value>Breite</value>
   </data>
   <data name="SetRefActivity" xml:space="preserve">
-    <value>Referenzaktivität</value>
+    <value>Bezugsaktivität</value>
   </data>
 </root>

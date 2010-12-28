@@ -92,7 +92,7 @@
     <value>Anaerobe Trainingsphase</value>
   </data>
   <data name="HighScorePluginIntegration" xml:space="preserve">
-    <value>High Score plugin Integration</value>
+    <value>High-Score-Plugin Integration</value>
   </data>
   <data name="IntervalSplitTimes" xml:space="preserve">
     <value>Intervall der Split Zeiten</value>
@@ -202,6 +202,10 @@ ist angepasst um richtige Intensität zu erhalten.</value>
     <comment>ppx</comment>
     <value>Abgeschätzte Geschwindigkeit</value>
   </data>
+  <data name="IntervalNotification" xml:space="preserve">
+    <comment>pp</comment>
+    <value>Vorgeschlagenes Intervalltraining für bestimmte Wettkampfstrecken</value>
+  </data>
   <data name="PPHS" xml:space="preserve">
     <comment>ppx</comment>
     <value>Performance Predictor - High Score Hochrechnung</value>
@@ -216,5 +220,11 @@ ist angepasst um richtige Intensität zu erhalten.</value>
   </data>
   <data name="Velocity" xml:space="preserve">
     <value>Geschwindigkeit</value>
+  </data>
+  <data name="HighScorePrediction" xml:space="preserve">
+    <value>Highscore-Vorhersage</value>
+  </data>
+  <data name="HighScoreRequired" xml:space="preserve">
+    <value>Die Vorhersage verschiedener Aktivitäten benötigt das High-Score-Plugin.</value>
   </data>
 </root>
