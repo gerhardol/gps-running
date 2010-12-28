@@ -22,7 +22,7 @@ using ZoneFiveSoftware.Common.Data.Fitness;
 
 namespace GpsRunningPlugin.Source
 {
-    class ActivityWrapper
+    public class ActivityWrapper
     {
         private IActivity activity;
         private Color actColor;

@@ -176,4 +176,8 @@
   <data name="TableSettings" xml:space="preserve">
     <value>Table settings</value>
   </data>
+  <data name="TrailPointsControlLayer" xml:space="preserve">
+    <value>Overlay Map Overlay</value>
+    <comment>still unused (requires ST update)</comment>
+  </data>
 </root>
