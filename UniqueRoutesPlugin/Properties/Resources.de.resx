@@ -62,6 +62,12 @@
   <data name="AllowPointsOutsideBand" xml:space="preserve">
     <value>Erlaubte Punkte ausserhalb</value>
   </data>
+  <data name="Radius" xml:space="preserve">
+    <value>Radius</value>
+  </data>
+  <data name="RadiusWarning" xml:space="preserve">
+    <value>Der Radius muss eine Zahl sein.</value>
+  </data>
   <data name="BeginningMeterWarning" xml:space="preserve">
     <value>Die ignorierten Meter des Starts müssen eine Zahl sein.</value>
   </data>
@@ -116,5 +122,14 @@
   <data name="All" xml:space="preserve">
     <comment>NoLongerVisible</comment>
     <value>alle</value>
+  </data>
+  <data name="LimitingToSelected" xml:space="preserve">
+    <value>{0} gewählte Aktivitäten werden verwendet.</value>
+  </data>
+  <data name="UI_Activity_List_LimitSelection" xml:space="preserve">
+    <value>Wähle markierte Ergebnisse.</value>
+  </data>
+  <data name="NoGpsActivitiesSelected" xml:space="preserve">
+    <value>Keine Aktivität mit GPS-Daten ausgewählt.</value>
   </data>
 </root>
