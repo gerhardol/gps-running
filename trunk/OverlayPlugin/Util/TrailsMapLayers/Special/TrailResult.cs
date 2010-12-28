@@ -21,6 +21,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.ComponentModel;
+using ZoneFiveSoftware.Common.Data;
 using ZoneFiveSoftware.Common.Data.GPS;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 #if !ST_2_1
@@ -49,9 +50,64 @@ namespace TrailsPlugin.Data
             }
         }
         public int Order=0;
-        public IList<IGPSPoint> GpsPoints(TrailsItemTrackSelectionInfo sel)
+        public IList<IGPSPoint> GpsPoints(Data.TrailsItemTrackSelectionInfo t)
         {
-            return GpsPoints();
+            if (t.MarkedTimes != null && t.MarkedTimes.Count > 0)
+            {
+                return GpsPoints(t.MarkedTimes);
+            }
+            else if (t.MarkedDistances != null && t.MarkedDistances.Count > 0)
+            {
+                return GpsPoints(t.MarkedDistances);
+            }
+            return new List<IGPSPoint>();
+        }
+        private IList<IGPSPoint> GpsPoints(IValueRangeSeries<DateTime> t)
+        {
+            IList<IGPSPoint> result = new List<IGPSPoint>();
+
+            foreach (IValueRange<DateTime> r in t)
+            {
+                IGPSRoute GpsTrack = Activity.GPSRoute;
+                int i = 0;
+                while (i < GpsTrack.Count &&
+                    0 < r.Lower.CompareTo(GpsTrack.EntryDateTime(GpsTrack[i])))
+                {
+                    i++;
+                }
+                while (i < GpsTrack.Count &&
+                    0 <= r.Upper.CompareTo(GpsTrack.EntryDateTime(GpsTrack[i])))
+                {
+                    result.Add(GpsTrack[i].Value);
+                    i++;
+                }
+            }
+
+            return result;
+        }
+        private IList<IGPSPoint> GpsPoints(IValueRangeSeries<double> t)
+        {
+            IGPSRoute GpsTrack = Activity.GPSRoute;
+            IDistanceDataTrack DistanceMetersTrack = Activity.GPSRoute.GetDistanceMetersTrack();
+            IList<IGPSPoint> result = new List<IGPSPoint>();
+
+            foreach (IValueRange<double> r in t)
+            {
+                int i = 0;
+                while (i < GpsTrack.Count &&
+                    r.Lower - FirstDist > DistanceMetersTrack[i].Value)
+                {
+                    i++;
+                }
+                while (i < GpsTrack.Count &&
+                    r.Upper - FirstDist >= DistanceMetersTrack[i].Value)
+                {
+                    result.Add(GpsTrack[i].Value);
+                    i++;
+                }
+            }
+
+            return result;
         }
         public IList<IGPSPoint> GpsPoints()
         {
@@ -90,6 +146,16 @@ namespace TrailsPlugin.Data
                 }
                 return Activity.GPSRoute.EntryDateTime(Activity.GPSRoute[Activity.GPSRoute.Count-1]);
             }
+        }
+        public const double FirstDist = 0;
+
+        public DateTime getActivityTime(float t)
+        {
+            return FirstTime.AddSeconds(t);
+        }
+        public double getActivityDist(double t)
+        {
+            return FirstDist + t;
         }
     }
 }
