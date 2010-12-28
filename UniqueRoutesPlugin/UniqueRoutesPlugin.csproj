@@ -19,7 +19,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Source\ActivityLabelProvider.cs" />
-    <Compile Include="Util\ActivityCategoryPopup.cs" />
     <Compile Include="Source\CommonStretches.cs" />
     <Compile Include="Source\GPSGrid.cs" />
     <Compile Include="Source\UniqueRoutes.cs" />
@@ -89,6 +88,7 @@
       <LastGenOutput>StringResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Compile Include="Util\ActivityCategoryContentProvider.cs" />
     <Compile Include="Util\StringResources.Designer.cs">
       <DependentUpon>StringResources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
