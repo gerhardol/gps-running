@@ -1484,6 +1484,38 @@ namespace GpsRunningPlugin.Source
                 if (bSelectDataFlag)
                     chart_SelectingData(sender, e);
                 bSelectDataFlag = true;
+
+                //from Trails plugin
+                TrailResult tr = new TrailResult(actWrappers[activities.IndexOf(series2activity[e.DataSeries])]);
+                IList<float[]> regions;
+                e.DataSeries.GetSelectedRegions(out regions);
+
+                IList<TrailResultMarked> results = new List<TrailResultMarked>();
+                if (Settings.UseTimeXAxis)
+                {
+                    IValueRangeSeries<DateTime> t = new ValueRangeSeries<DateTime>();
+                    foreach (float[] at in regions)
+                    {
+                        t.Add(new ValueRange<DateTime>(
+                            tr.getActivityTime(at[0]),
+                            tr.getActivityTime(at[1])));
+                    }
+                    results.Add(new TrailResultMarked(tr, t));
+                }
+                else
+                {
+                    IValueRangeSeries<double> t = new ValueRangeSeries<double>();
+                    foreach (float[] at in regions)
+                    {
+                        t.Add(new ValueRange<double>(
+                            tr.getActivityDist(UnitUtil.Distance.SetDistance(at[0], CommonData.refActWrapper.Activity)),
+                            tr.getActivityDist(UnitUtil.Distance.SetDistance(at[1], CommonData.refActWrapper.Activity))));
+                    }
+                    results.Add(new TrailResultMarked(tr, t));
+                }
+
+                this.MarkTrack(results);
+                this.EnsureVisible(new List<TrailResult> { tr }, false);
             }
         }
 
