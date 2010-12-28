@@ -117,7 +117,7 @@ namespace GpsRunningPlugin.Source
             this.InputDescriptionLabel.Name = "InputDescriptionLabel";
             this.InputDescriptionLabel.Size = new System.Drawing.Size(56, 13);
             this.InputDescriptionLabel.TabIndex = 2;
-            this.InputDescriptionLabel.Text = "Enter XXX";
+            this.InputDescriptionLabel.Text = "<Enter value";
             // 
             // InputControl
             // 
