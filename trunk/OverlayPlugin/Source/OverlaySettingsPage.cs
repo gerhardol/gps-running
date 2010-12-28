@@ -32,8 +32,7 @@ namespace GpsRunningPlugin.Source
         public Guid Id
         {
             get {
-                Plugin plugin = new GpsRunningPlugin.Plugin();
-                return plugin.Id;
+                return GUIDs.Settings;
             }
         }
 

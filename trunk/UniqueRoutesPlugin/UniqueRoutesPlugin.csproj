@@ -127,12 +127,12 @@
     <Compile Include="Source\UniqueRoutesResult.cs" />
     <Compile Include="Source\SummaryColumnIds.cs" />
     <Compile Include="Util\TrailsMapLayers\Data\TrailGPSLocation.cs" />
-    <Compile Include="Util\TrailsMapLayers\Data\TrailResult.cs" />
     <Compile Include="Util\TrailsMapLayers\Data\TrailResultMarked.cs" />
     <Compile Include="Util\TrailsMapLayers\Data\TrailsItemTrackSelectionInfo.cs" />
     <Compile Include="Util\TrailsMapLayers\ExtendMapControlLayers.cs" />
     <Compile Include="Util\TrailsMapLayers\MapControlLayer.cs" />
     <Compile Include="Util\TrailsMapLayers\RouteControlLayerBase.cs" />
+    <Compile Include="Util\TrailsMapLayers\Special\TrailResult.cs" />
     <Compile Include="Util\TrailsMapLayers\TrailMapPolyline.cs" />
     <Compile Include="Util\TrailsMapLayers\TrailPointsLayer.cs" />
     <Compile Include="Util\TrailsMapLayers\TrailPointsProvider.cs" />
