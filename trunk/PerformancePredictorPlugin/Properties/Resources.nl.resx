@@ -110,7 +110,6 @@
     <value>Tempo voor tempotraining van 20 tot 60 minuten aan VDOT {0:0.0}</value>
   </data>
   <data name="PaceRunNotification" xml:space="preserve">
-    <comment>updated</comment>
     <value>20 min loop is aan omslagpunttempo - tempo van langere trainingen is aangepast om juiste intensiteit te bekomen.</value>
   </data>
   <data name="PositiveNumber" xml:space="preserve">

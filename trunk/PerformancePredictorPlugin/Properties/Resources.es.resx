@@ -110,7 +110,6 @@
     <value>Paso para Tempo de 20 hasta 60 minutes a VDOT {0:0.0}</value>
   </data>
   <data name="PaceRunNotification" xml:space="preserve">
-    <comment>updated</comment>
     <value>20 minutos al paso de umbral de lactato - el paso de carreras más largas deberá ser ajustado para mantener la intensidad apropiada.</value>
   </data>
   <data name="PositiveNumber" xml:space="preserve">
@@ -203,7 +202,7 @@
     <value>Velocidad estimada</value>
   </data>
   <data name="IntervalNotification" xml:space="preserve">
-    <comment>pp, new</comment>
+    <comment>pp</comment>
     <value>Tiempos sugeridos para repeticiones según la distancia de la competencia.</value>
   </data>
   <data name="PPHS" xml:space="preserve">
@@ -220,5 +219,11 @@
   </data>
   <data name="Velocity" xml:space="preserve">
     <value>Velocidad</value>
+  </data>
+  <data name="HighScorePrediction" xml:space="preserve">
+    <value>Prección de mejores marcas</value>
+  </data>
+  <data name="HighScoreRequired" xml:space="preserve">
+    <value>Predecir basado en varias actividades requiere del plugin Hig Score</value>
   </data>
 </root>

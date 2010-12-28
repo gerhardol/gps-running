@@ -110,7 +110,6 @@
     <value>Pace af tempoture af 20 til 60 minuters varighed ved VDOT {0:0.0}</value>
   </data>
   <data name="PaceRunNotification" xml:space="preserve">
-    <comment>updated</comment>
     <value>20 min løb er ved mælkesyregrænsepace - pace ved længere løb er korrigeret for at holde passende intensitet.</value>
   </data>
   <data name="PositiveNumber" xml:space="preserve">

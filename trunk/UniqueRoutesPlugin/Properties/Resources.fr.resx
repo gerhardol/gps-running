@@ -58,14 +58,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="AllowPointsOutsideBand" xml:space="preserve">
     <value>Nombre de points tolérés en dehors de la plage</value>
-  </data>
-  <data name="Bandwidth" xml:space="preserve">
-    <value>Plage</value>
-  </data>
-  <data name="BandwidthWarning" xml:space="preserve">
-    <value>La plage doit être un nombre</value>
   </data>
   <data name="BeginningMeterWarning" xml:space="preserve">
     <value>Les premiers mètres ignorés doivent être un nombre</value>
@@ -90,6 +85,7 @@
     <value>Ignorer la fin du parcours</value>
   </data>
   <data name="IncludeAllActivitiesInSearch" xml:space="preserve">
+    <comment>NoLongerVisible</comment>
     <value>Inclure toutes les catégories dans la recherche</value>
   </data>
   <data name="IncludeOnlyCategory" xml:space="preserve">
