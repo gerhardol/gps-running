@@ -283,18 +283,18 @@ namespace GpsRunningPlugin.Source
             _showPage = false;
             if (m_layer != null)
             {
-                m_layer.ShowPage = false;
+                m_layer.ShowPage = _showPage;
             }
             return true;
         }
         public void ShowPage(string bookmark)
         {
             _showPage = true;
+            calculate();
             if (m_layer != null)
             {
-                m_layer.ShowPage = true;
+                m_layer.ShowPage = _showPage;
             }
-            calculate();
         }
 
         private void RefreshColumns()
@@ -687,15 +687,6 @@ namespace GpsRunningPlugin.Source
 #endif
         }
 
-        void mapPoly_Click(object sender, MouseEventArgs e)
-        {
-            if (sender is TrailMapPolyline)
-            {
-                IList<TrailResult> result = new List<TrailResult> { (sender as TrailMapPolyline).TrailRes };
-                this.EnsureVisible(result, true);
-            }
-        }
-
         public void EnsureVisible(IList<TrailResult> atr, bool chart)
         {
             if (atr != null && atr.Count > 0 && atr[0].Activity!=null)
@@ -711,6 +702,15 @@ namespace GpsRunningPlugin.Source
         }
         /*******************************************************************************/
         //Event handlers
+
+        void mapPoly_Click(object sender, MouseEventArgs e)
+        {
+            if (sender is TrailMapPolyline)
+            {
+                IList<TrailResult> result = new List<TrailResult> { (sender as TrailMapPolyline).TrailRes };
+                this.EnsureVisible(result, true);
+            }
+        }
 
         void copyTableMenu_Click(object sender, EventArgs e)
         {

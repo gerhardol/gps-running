@@ -621,13 +621,13 @@ namespace GpsRunningPlugin.Source
             // 
             this.treeListAct.BackColor = System.Drawing.Color.Transparent;
             this.treeListAct.Border = ZoneFiveSoftware.Common.Visuals.ControlBorder.Style.SmallRoundShadow;
-            this.treeListAct.CheckBoxes = false;
+            this.treeListAct.CheckBoxes = true;
             this.treeListAct.DefaultIndent = 15;
             this.treeListAct.DefaultRowHeight = -1;
             this.treeListAct.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeListAct.HeaderRowHeight = 21;
             this.treeListAct.Location = new System.Drawing.Point(0, 0);
-            this.treeListAct.MultiSelect = false;
+            this.treeListAct.MultiSelect = true;
             this.treeListAct.Name = "treeListAct";
             this.treeListAct.NumHeaderRows = ZoneFiveSoftware.Common.Visuals.TreeList.HeaderRows.Auto;
             this.treeListAct.NumLockedColumns = 0;
@@ -642,6 +642,8 @@ namespace GpsRunningPlugin.Source
             this.treeListAct.ShowPlusMinus = false;
             this.treeListAct.Size = new System.Drawing.Size(652, 70);
             this.treeListAct.TabIndex = 0;
+            //this.treeListAct.SelectedItemsChanged += new System.EventHandler(summaryList_SelectedItemsChanged);
+            this.treeListAct.Click += new System.EventHandler(summaryList_Click);
             // 
             // treeListContextMenuStrip
             // 
