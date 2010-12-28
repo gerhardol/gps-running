@@ -381,56 +381,56 @@ namespace GpsRunningPlugin.Source
             this.showHRMenuItem.Name = "showHRMenuItem";
             this.showHRMenuItem.Size = new System.Drawing.Size(154, 22);
             this.showHRMenuItem.Text = "Show HR";
-            this.showHRMenuItem.Click += new System.EventHandler(this.showXXXMenuItem_click);
+            this.showHRMenuItem.Click += new System.EventHandler(this.showCommonYAxisMenuItem_click);
             // 
             // showPaceMenuItem
             // 
             this.showPaceMenuItem.Name = "showPaceMenuItem";
             this.showPaceMenuItem.Size = new System.Drawing.Size(154, 22);
             this.showPaceMenuItem.Text = "Show Pace";
-            this.showPaceMenuItem.Click += new System.EventHandler(this.showXXXMenuItem_click);
+            this.showPaceMenuItem.Click += new System.EventHandler(this.showCommonYAxisMenuItem_click);
             // 
             // showSpeedMenuItem
             // 
             this.showSpeedMenuItem.Name = "showSpeedMenuItem";
             this.showSpeedMenuItem.Size = new System.Drawing.Size(154, 22);
             this.showSpeedMenuItem.Text = "Show Speed";
-            this.showSpeedMenuItem.Click += new System.EventHandler(this.showXXXMenuItem_click);
+            this.showSpeedMenuItem.Click += new System.EventHandler(this.showCommonYAxisMenuItem_click);
             // 
             // showPowerMenuItem
             // 
             this.showPowerMenuItem.Name = "showPowerMenuItem";
             this.showPowerMenuItem.Size = new System.Drawing.Size(154, 22);
             this.showPowerMenuItem.Text = "Show Power";
-            this.showPowerMenuItem.Click += new System.EventHandler(this.showXXXMenuItem_click);
+            this.showPowerMenuItem.Click += new System.EventHandler(this.showCommonYAxisMenuItem_click);
             // 
             // showCadenceMenuItem
             // 
             this.showCadenceMenuItem.Name = "showCadenceMenuItem";
             this.showCadenceMenuItem.Size = new System.Drawing.Size(154, 22);
             this.showCadenceMenuItem.Text = "Show Cadence";
-            this.showCadenceMenuItem.Click += new System.EventHandler(this.showXXXMenuItem_click);
+            this.showCadenceMenuItem.Click += new System.EventHandler(this.showCommonYAxisMenuItem_click);
             // 
             // showElevationMenuItem
             // 
             this.showElevationMenuItem.Name = "showElevationMenuItem";
             this.showElevationMenuItem.Size = new System.Drawing.Size(154, 22);
             this.showElevationMenuItem.Text = "Show Elevation";
-            this.showElevationMenuItem.Click += new System.EventHandler(this.showXXXMenuItem_click);
+            this.showElevationMenuItem.Click += new System.EventHandler(this.showCommonYAxisMenuItem_click);
             // 
             // showTimeMenuItem
             // 
             this.showTimeMenuItem.Name = "showTimeMenuItem";
             this.showTimeMenuItem.Size = new System.Drawing.Size(154, 22);
             this.showTimeMenuItem.Text = "Show Time";
-            this.showTimeMenuItem.Click += new System.EventHandler(this.showXXXMenuItem_click);
+            this.showTimeMenuItem.Click += new System.EventHandler(this.showCommonYAxisMenuItem_click);
             // 
             // showDistanceMenuItem
             // 
             this.showDistanceMenuItem.Name = "showDistanceMenuItem";
             this.showDistanceMenuItem.Size = new System.Drawing.Size(154, 22);
             this.showDistanceMenuItem.Text = "Show Distance";
-            this.showDistanceMenuItem.Click += new System.EventHandler(this.showXXXMenuItem_click);
+            this.showDistanceMenuItem.Click += new System.EventHandler(this.showCommonYAxisMenuItem_click);
             // 
             // showDiffMenuItem
             // 
@@ -455,21 +455,21 @@ namespace GpsRunningPlugin.Source
             this.showTimeDiffMenuItem.Name = "showTimeDiffMenuItem";
             this.showTimeDiffMenuItem.Size = new System.Drawing.Size(173, 22);
             this.showTimeDiffMenuItem.Text = "Show Time Diff";
-            this.showTimeDiffMenuItem.Click += new System.EventHandler(this.showDiffXXXMenuItem_click);
+            this.showTimeDiffMenuItem.Click += new System.EventHandler(this.showDiffYAxisMenuItem_click);
             // 
             // showDistDiffMenuItem
             // 
             this.showDistDiffMenuItem.Name = "showDistDiffMenuItem";
             this.showDistDiffMenuItem.Size = new System.Drawing.Size(173, 22);
             this.showDistDiffMenuItem.Text = "Show Distance Diff";
-            this.showDistDiffMenuItem.Click += new System.EventHandler(this.showDiffXXXMenuItem_click);
+            this.showDistDiffMenuItem.Click += new System.EventHandler(this.showDiffYAxisMenuItem_click);
             // 
             // showHRDiffMenuItem
             // 
             this.showHRDiffMenuItem.Name = "showHRDiffMenuItem";
             this.showHRDiffMenuItem.Size = new System.Drawing.Size(173, 22);
             this.showHRDiffMenuItem.Text = "Show HR Diff";
-            this.showHRDiffMenuItem.Click += new System.EventHandler(this.showDiffXXXMenuItem_click);
+            this.showHRDiffMenuItem.Click += new System.EventHandler(this.showDiffYAxisMenuItem_click);
             // 
             // showMeanMenuItem
             // 

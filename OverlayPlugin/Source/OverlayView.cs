@@ -1807,7 +1807,7 @@ namespace GpsRunningPlugin.Source
             showDistanceMenuItem.Checked = Settings.ShowDistance;
         }
 
-        private void showXXXMenuItem_click(object sender, EventArgs e)
+        private void showCommonYAxisMenuItem_click(object sender, EventArgs e)
         {
             // Change the corresponding check box. Its event handler will change the settings.
             if (sender == showHRMenuItem)
@@ -1851,7 +1851,7 @@ namespace GpsRunningPlugin.Source
             showHRDiffMenuItem.Checked = Settings.ShowDiffHeartRate;
         }
 
-        private void showDiffXXXMenuItem_click(object sender, EventArgs e)
+        private void showDiffYAxisMenuItem_click(object sender, EventArgs e)
         {
             if (sender == showTimeDiffMenuItem)
                 Settings.ShowDiffTime = !Settings.ShowDiffTime;
