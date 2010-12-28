@@ -15,7 +15,8 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-//A special version of the TrailResult, to interface TrailMapLayers
+//A special version of TrailResult, to interface TrailMapLayers
+//Some parts are shared Overlay and Unique Routes. Some adaptions of the Trail class
 
 using System;
 using System.Drawing;
@@ -37,19 +38,28 @@ namespace TrailsPlugin.Data
 {
     public class TrailResult
     {
-        ActivityWrapper m_urResult;
+        ActivityWrapper m_result;
         public TrailResult(ActivityWrapper r)
         {
-            m_urResult = r;
+            m_result = r;
         }
         public IActivity Activity
         {
             get
             {
-                return m_urResult.Activity;
+                return m_result.Activity;
             }
         }
-        public int Order=0;
+        public Color TrailColor
+        {
+            get
+            {
+                return m_result.ActColor;
+            }
+        }
+        public int Order = 0;
+
+        /* Common UniqueRoutes and Overlay below */
         public IList<IGPSPoint> GpsPoints(Data.TrailsItemTrackSelectionInfo t)
         {
             if (t.MarkedTimes != null && t.MarkedTimes.Count > 0)
@@ -111,19 +121,12 @@ namespace TrailsPlugin.Data
         }
         public IList<IGPSPoint> GpsPoints()
         {
-            IList<IGPSPoint>  m_gpsPoints = new List<IGPSPoint>();
+            IList<IGPSPoint> m_gpsPoints = new List<IGPSPoint>();
             for (int i = 0; i < Activity.GPSRoute.Count; i++)
             {
                 m_gpsPoints.Add(Activity.GPSRoute[i].Value);
             }
             return m_gpsPoints;
-        }
-        public Color TrailColor
-        {
-            get
-            {
-                    return m_urResult.ActColor;
-            }
         }
         public DateTime FirstTime
         {
@@ -144,7 +147,7 @@ namespace TrailsPlugin.Data
                 {
                     return FirstTime;
                 }
-                return Activity.GPSRoute.EntryDateTime(Activity.GPSRoute[Activity.GPSRoute.Count-1]);
+                return Activity.GPSRoute.EntryDateTime(Activity.GPSRoute[Activity.GPSRoute.Count - 1]);
             }
         }
         public const double FirstDist = 0;

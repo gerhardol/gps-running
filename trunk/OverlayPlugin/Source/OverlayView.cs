@@ -1508,8 +1508,8 @@ namespace GpsRunningPlugin.Source
                     foreach (float[] at in regions)
                     {
                         t.Add(new ValueRange<double>(
-                            tr.getActivityDist(UnitUtil.Distance.SetDistance(at[0], CommonData.refActWrapper.Activity)),
-                            tr.getActivityDist(UnitUtil.Distance.SetDistance(at[1], CommonData.refActWrapper.Activity))));
+                            tr.getActivityDist(UnitUtil.Distance.ConvertTo(at[0], CommonData.refActWrapper.Activity)),
+                            tr.getActivityDist(UnitUtil.Distance.ConvertTo(at[1], CommonData.refActWrapper.Activity))));
                     }
                     results.Add(new TrailResultMarked(tr, t));
                 }

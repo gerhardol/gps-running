@@ -544,6 +544,24 @@ namespace GpsRunningPlugin.Util
                 return Length.Convert(p, Length.Units.Meter, unit);
             }
 
+            public static double ConvertTo(double value, Length.Units du)
+            {
+                return Length.Convert(value, du, Length.Units.Meter);
+            }
+            public static double ConvertTo(double value, IActivity activity)
+            {
+                Length.Units du;
+                if (activity != null)
+                {
+                    du = activity.Category.DistanceUnits;
+                }
+                else
+                {
+                    du = Unit;
+                }
+                return ConvertTo(value, du);
+            }
+
             public static double Parse(string p)
             {
                 Length.Units unit = Unit;
@@ -582,25 +600,6 @@ namespace GpsRunningPlugin.Util
                     return CommonResources.Text.LabelDistance + LabelAbbr2;
                 }
             }
-            //From Trails
-            public static double SetLength(double value, Length.Units du)
-            {
-                return (float)Length.Convert(value, du, Length.Units.Meter);
-            }
-            public static double SetDistance(double value, IActivity activity)
-            {
-                Length.Units du;
-                if (activity != null)
-                {
-                    du = activity.Category.DistanceUnits;
-                }
-                else
-                {
-                    du = Plugin.GetApplication().SystemPreferences.DistanceUnits;
-                }
-                return SetLength(value, du);
-            }
-
         }
 
         //Pace/speed handling
