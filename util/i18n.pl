@@ -15,29 +15,44 @@ my$savArg='&output=xls';
 my$localcopy="Resources.xls";
 #my$spreadsheetURL='https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key=tNZna7OU_2RlRYv5Iv_csgg';
 my$spreadsheetURL='https://spreadsheets.google.com/ccc?key=tNZna7OU_2RlRYv5Iv_csgg';
-my$sav="";
+my$sav="$spreadsheetURL$savArg";
 
 #Temp workaround
-my$storeCopy=0;
-$spreadsheetURL="file:g:/Users/go/dev/gc/gps-running/Resources.csv";
-$csvArg="";
+#$spreadsheetURL="file:g:/Users/go/dev/gc/gps-running/Resources.csv";
+#$csvArg="";
 
-my$data = $ARGV[0] || "$spreadsheetURL$csvArg";
+ my$data = $ARGV[0] || ".";#"$spreadsheetURL$csvArg";
 my$root = $ARGV[1] || ".";
 my$db;
 
-my$csv = get($data);
+my$csv;
+if($data ne ".")
+{
+$csv = get($data);
  die "Couldn't get $data" unless defined $csv;
 
-#Store a copy locally
-if($storeCopy && $data eq "$spreadsheetURL$csvArg")
+}
+else
 {
-  $sav="$spreadsheetURL$savArg";
+ #Retrieve from Google Spreadsheet
+  $data="$spreadsheetURL$csvArg";
+  my$tfile="g_csv.tmp.$$";
+  `wget  --no-check-certificate -O $tfile "$data"`;
+  open F, "$tfile";
+  $csv=<F>;
+  close F;
+  unlink $tfile;
+ die "Couldn't get $data" unless defined $csv;
+#Store a copy locally
+if($sav ne "")
+{
+  `wget  --no-check-certificate -O $localcopy "$sav"`;
   #my $browser = LWP::UserAgent->new;
   #my$response=$browser->get("$data$savArg");
   #die "Error at $data$savArg\n ", $response->status_line, "\n Aborting"
   # unless $response->is_success;
-  getstore($sav,$localcopy) != 200 || print "Warning: Cannot save copy of $sav in $localcopy\n";
+  #getstore($sav,$localcopy) != 200 || print "Warning: Cannot save copy of $sav in $localcopy\n";
+}
 }
 
 if ($csv =~ m/\<\?xlm/) {
