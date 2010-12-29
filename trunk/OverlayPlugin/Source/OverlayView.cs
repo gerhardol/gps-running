@@ -1179,10 +1179,9 @@ namespace GpsRunningPlugin.Source
         private void updateRoute()
         {
             IDictionary<string, MapPolyline> routes = new Dictionary<string, MapPolyline>();
-            foreach (ActivityWrapper ur in actWrappers)
+            foreach (ActivityWrapper actWrapper in getListSelection(treeListAct.CheckedElements))
             {
-                //Possibly limit no of Trails shown, it slows down (show complete Activities?)
-                TrailResult tr = new TrailResult(ur);
+                TrailResult tr = new TrailResult(actWrapper);
                 TrailMapPolyline m = new TrailMapPolyline(tr);
                 m.Click += new MouseEventHandler(mapPoly_Click);
                 routes.Add(m.key, m);
@@ -1767,7 +1766,7 @@ namespace GpsRunningPlugin.Source
                             if (value < 0) { throw new Exception(); }
                         }
                         valueOk = true;
-                        foreach (ActivityWrapper w in treeListAct.SelectedItems)
+                        foreach (ActivityWrapper w in getListSelection(treeListAct.SelectedItems))
                         {
                             // This parsing is done just to verify that they can be done and that the text in the box is valid
                             if (Settings.UseTimeXAxis)
@@ -1920,7 +1919,7 @@ namespace GpsRunningPlugin.Source
             {
                 ActivityWrapper utr = (ActivityWrapper)(row);
                 bool isMatch = false;
-                foreach (ActivityWrapper t in getListSelection(this.treeListAct.SelectedItems))
+                foreach (ActivityWrapper t in getListSelection(this.treeListAct.CheckedElements))
                 {
                     if (t == utr)
                     {
