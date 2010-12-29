@@ -6,28 +6,33 @@
 This page describes how to make translations of the GPS-Running or related plugins.
 
 = Details =
-
+https://spreadsheets.google.com/ccc?key=tNZna7OU_2RlRYv5Iv_csgg
 All the related projects are handled about the same:
-  * The master source to translate is in an Excel sheet, stored with the source code
-  * For each language updated and each project, the translator will update an issue for the project.
+  * The translation strings are stored in a Google SpreadSheet. Currently most plugins use the same spreadsheet: https://spreadsheets.google.com/ccc?key=tNZna7OU_2RlRYv5Iv_csgg
+  If the weblink does not work, there are copies of the spreadsheet in the code repositories.
+  To get access to write to the Spreadsheet, contact the project owner.
+  * For each language updated and each project, the translator should update an issue for the project. If you did not have write access, attach the spreadsheet to the issue.
 
 This simplifies if there are several translators or developers, keeps track of history both for the translated strings and when they are included in builds, make it possible to make minor updates etc.
 
 Links to resources for this and other plugins:
-  * http://code.google.com/p/gps-running/source/browse/trunk/GpsRunning.xls 
-  * http://code.google.com/p/sporttracks-miscplugin/source/browse/trunk/SportTracksPluginResources.xls 
-  * http://code.google.com/p/trails/source/browse/trunk/Resources.xls 
-  * https://sporttracks-activitypicture.googlecode.com/svn/trunk/ActivityPicturePlugin_Localization.xls
+  * General: https://spreadsheets.google.com/ccc?key=tNZna7OU_2RlRYv5Iv_csgg
+  * http://code.google.com/p/gps-running/source/browse/trunk/Resources.xls 
+  * http://code.google.com/p/sporttracks-miscplugin/source/browse/trunk/Resources.xls 
+  * http://code.google.com/p/trails/source/browse/trunk/Resources.xls
+  * http://code.google.com/p/sporttracks-activitypicture/source/browse/trunk/Resources.xls  
   * http://matrix.codeplex.com/SourceControl/list/changesets (It seems like the complete blob has to be downloaded for Matrix) 
+
+General question, add to the issues. PM/email at other questions. 
+
+Note: ApplyRoutes, Garmin Fitness and other plugins have a similar setup.
 
 = Hints =
 
 Some fitness related items have no generally accepted translation. There may not be a "perfect" translation. To get hints, you can peek at other plugins translations.
 
-= Workflow =
-  * Open an issue for each plugin and each language on Google Code or CodePlex. You need to have Google id or CodePlex id for this. 
-  * Take a note of the SVN revision and download the xls file
-  * Translate
-  * Attach the xls file to the issue.
-
-General question, add to the issues. PM/email at other questions. 
+ 
+ 
+ 
+ 
+ 
