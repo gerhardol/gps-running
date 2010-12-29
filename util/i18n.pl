@@ -10,13 +10,36 @@ use XML::Simple;
 use Storable qw(dclone);
 use LWP::Simple;
 
-my$data = $ARGV[0] || "file:g:/Users/go/dev/gc/gps-running/GpsRunning.csv";
-#'http://spreadsheets.google.com/pub?key=rrP7dbsqMO8l4yFo9HXO1ZA&output=csv';
+my$csvArg='&output=csv&gid=0';
+my$savArg='&output=xls';
+my$localcopy="Resources.xls";
+#my$spreadsheetURL='https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key=tNZna7OU_2RlRYv5Iv_csgg';
+my$spreadsheetURL='https://spreadsheets.google.com/ccc?key=tNZna7OU_2RlRYv5Iv_csgg';
+my$sav="";
+
+#Temp workaround
+my$storeCopy=0;
+$spreadsheetURL="file:g:/Users/go/dev/gc/gps-running/Resources.csv";
+$csvArg="";
+
+my$data = $ARGV[0] || "$spreadsheetURL$csvArg";
 my$root = $ARGV[1] || ".";
 my$db;
 
 my$csv = get($data);
  die "Couldn't get $data" unless defined $csv;
+
+#Store a copy locally
+if($storeCopy && $data eq "$spreadsheetURL$csvArg")
+{
+  $sav="$spreadsheetURL$savArg";
+  #my $browser = LWP::UserAgent->new;
+  #my$response=$browser->get("$data$savArg");
+  #die "Error at $data$savArg\n ", $response->status_line, "\n Aborting"
+  # unless $response->is_success;
+  getstore($sav,$localcopy) != 200 || print "Warning: Cannot save copy of $sav in $localcopy\n";
+}
+
 if ($csv =~ m/\<\?xlm/) {
     my$config = XMLin($csv, ForceArray => 1, KeyAttr => {});
 
@@ -96,7 +119,9 @@ foreach my$sname (keys %{$db->{sections}}) {
 		#Set binmode to allow wide characters in the csv
 		binmode OUT,":utf8";
         print OUT '<?xml version="1.0" encoding="utf-8"?>',"\n";
-        print OUT XMLout($sorter, $res, KeyAttr => {}, RootName => "root");
+        my$txt=XMLout($sorter, $res, KeyAttr => {}, RootName => "root");
+        $txt=~s/\r\n/\n/g;
+        print OUT $txt;
         close OUT or die "failed to close $out";
 		}
     }        
@@ -193,10 +218,10 @@ sub ParseWorksheet
             if (defined $cell->{"ss:Index"}) {
                 $colnum = $cell->{"ss:Index"};
             }
-            my$data = $cell->{Data}[0]{content};
-            if (defined $data) {
-                chomp $data;
-                $row[$colnum-1] = $data;
+            my$data2 = $cell->{Data}[0]{content};
+            if (defined $data2) {
+                chomp $data2;
+                $row[$colnum-1] = $data2;
             }
             $colnum += 1;
         }
