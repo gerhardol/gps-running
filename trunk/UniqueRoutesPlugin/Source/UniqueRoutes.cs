@@ -27,27 +27,11 @@ using GpsRunningPlugin.Source;
 using System.Windows.Forms;
 using System.Collections;
 
-namespace SportTracksUniqueRoutesPlugin.Source
-{
-    //Compatibility - namespace changed
-    class UniqueRoutes
-    {
-        public static IList<IActivity> findSimilarRoutes(IActivity activity, System.Windows.Forms.ProgressBar progressBar)
-        {
-            return GpsRunningPlugin.Source.UniqueRoutes.findSimilarRoutes(activity, progressBar);
-        }
-    }
-}
 namespace GpsRunningPlugin.Source
 {
-    public enum UniqueModel
-    {
-        GPS, ELEVATION
-    }
     class UniqueRoutes
     {
         private UniqueRoutes() { }
-        private static UniqueModel uniqueModel = UniqueModel.GPS;
 
         //This method is used by DotRacing, Matrix
         //Other methods are not considered "stable"
@@ -73,9 +57,7 @@ namespace GpsRunningPlugin.Source
         public static IList<IActivity> findSimilarRoutes(IActivity refActivity, IList<IActivity> activities, bool beginEndCheck, System.Windows.Forms.ProgressBar progressBar)
         {
             if (refActivity == null ||
-                uniqueModel == UniqueModel.ELEVATION && refActivity.ElevationMetersTrack == null ||
-                uniqueModel == UniqueModel.ELEVATION || //Not implemented
-                refActivity.GPSRoute == null || //GPS, ELEVATION
+                refActivity.GPSRoute == null ||
                 beginEndCheck && !isAllowedActivity(refActivity))
                 return new List<IActivity>();
             return findSimilarRoutes(refActivity.GPSRoute, refActivity.ReferenceId, activities, beginEndCheck, progressBar);

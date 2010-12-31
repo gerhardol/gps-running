@@ -58,6 +58,7 @@ namespace GpsRunningPlugin.Source
         private bool _showPage = false;
         private bool _needsRecalculation = true;
         private bool _allowActivityUpdate = true; //Ignore "automatic" activity update
+        private IDictionary<IActivity, IList<PointInfo[]>> m_commonStretches = null;
 
 #if ST_2_1
         private object m_DetailPage = null;
@@ -409,21 +410,13 @@ namespace GpsRunningPlugin.Source
                     similarToolTip = new Dictionary<string, string>();
                     RefreshColumns();
 
-                    //Debug info for stretches
                     IDictionary<IActivity, IList<double>> commonStretches = null;
-                    IDictionary<IActivity, string> similarPoints = new Dictionary<IActivity, string>();
                     bool doGetcommonStretches = true;// Plugin.Verbose > 0;
                     if (doGetcommonStretches)
                     {
-                        if (urRoute != null && urRoute.Count > 0)
-                        {
-                            commonStretches = CommonStretches.getCommonSpeed(urRoute, similar, false);
-                        }
-                        else if (refActivity != null)
-                        {
-                            commonStretches = CommonStretches.getCommonSpeed(refActivity, similar, Settings.UseActive);
-                            //similarPoints = CommonStretches.findSimilarDebug(this.activity, similar, Settings.UseActive);
-                        }
+                        //reset calculations
+                        m_commonStretches = null;
+                        commonStretches = CommonStretches.getCommonSpeed(SimilarPoints, similar, false);
                     }
                     foreach (IActivity activity in similar)
                     {
@@ -677,9 +670,11 @@ namespace GpsRunningPlugin.Source
                     IDictionary<string, MapPolyline> result = new Dictionary<string, MapPolyline>();
                     foreach (TrailResultMarked trm in atr)
                     {
-                        TrailMapPolyline m = new TrailMapPolyline(trm.trailResult, trm.selInfo);
-                        m.Click += new MouseEventHandler(mapPoly_Click);
-                        result.Add(m.key, m);
+                        foreach (TrailMapPolyline m in TrailMapPolyline.GetTrailMapPolyline(trm.trailResult, trm.selInfo))
+                        {
+                            m.Click += new MouseEventHandler(mapPoly_Click);
+                            result.Add(m.key, m);
+                        }
                     }
                     m_layer.MarkedTrailRoutes = result;
                 }
@@ -700,6 +695,30 @@ namespace GpsRunningPlugin.Source
                 }
             }
         }
+
+        private IDictionary<IActivity, IList<PointInfo[]>> SimilarPoints
+        {
+            get
+            {
+                if (m_commonStretches == null)
+                {
+                    if (urRoute != null && urRoute.Count > 0)
+                    {
+                        m_commonStretches = CommonStretches.findSimilarPoints(urRoute, similar);
+                    }
+                    else if (refActivity != null)
+                    {
+                        m_commonStretches = CommonStretches.findSimilarPoints(refActivity, similar);
+                    }
+                    else
+                    {
+                        m_commonStretches = new Dictionary<IActivity, IList<PointInfo[]>>();
+                    }
+                }
+                return m_commonStretches;
+            }
+        }
+
         /*******************************************************************************/
         //Event handlers
 
@@ -983,13 +1002,54 @@ namespace GpsRunningPlugin.Source
                         break;
                     }
                 }
-                IList<TrailResult> aTr = new List<TrailResult>();
+                IList<TrailResultMarked> aTrm = new List<TrailResultMarked>();
                 if (isMatch)
                 {
-                    TrailResult tr = new TrailResult(utr);
-                        aTr.Add(tr);
+                    IDictionary<IActivity, IList<PointInfo[]>> commonStretches = SimilarPoints;
+                    if (commonStretches.Count > 0 &&
+                        commonStretches.ContainsKey(utr.Activity) &&
+                        commonStretches[utr.Activity] != null &&
+                        commonStretches[utr.Activity].Count > 0)
+                    {
+                        TrailResult tr = new TrailResult(utr);
+
+                        PointInfo startPoint = null;
+                        PointInfo endPoint = null;
+                        IValueRangeSeries<DateTime> t = new ValueRangeSeries<DateTime>();
+                        foreach (PointInfo[] kp in commonStretches[utr.Activity])
+                        {
+                            if (kp[0].index < 0)
+                            {
+                                if (startPoint != null)
+                                {
+                                    if (endPoint != null)
+                                    {
+                                        t.Add(new ValueRange<DateTime>(
+                                        tr.getActivityTime((float)startPoint.time),
+                                        tr.getActivityTime((float)endPoint.time)));
+                                        endPoint = null;
+                                    }
+                                    else
+                                    {
+                                        //TODO: Debug breakpoint
+                                        startPoint = endPoint;
+                                    }
+                                    startPoint = null;
+                                }
+                            }
+                            else if (startPoint == null)
+                            {
+                                startPoint = kp[0];
+                            }
+                            else 
+                            {
+                                endPoint = kp[0];
+                            }
+                        }
+                        aTrm.Add(new TrailResultMarked(tr, t));
+                    }
                 }
-                this.MarkTrack(TrailResultMarked.TrailResultMarkAll(aTr));
+                this.MarkTrack(aTrm);
             }
         }
 #endif

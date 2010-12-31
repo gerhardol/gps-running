@@ -33,18 +33,6 @@ using ZoneFiveSoftware.Common.Data.Measurement;
 using ZoneFiveSoftware.Common.Visuals;
 using GpsRunningPlugin.Properties;
 
-namespace SportTracksUniqueRoutesPlugin.Source
-{
-    //Compatibility - namespace changed
-    class Settings
-    {
-        public static bool HasDirection
-        {
-            get { return GpsRunningPlugin.Source.Settings.HasDirection; }
-            set { GpsRunningPlugin.Source.Settings.HasDirection = value; }
-        }
-    }
-}
 namespace GpsRunningPlugin.Source
 {
     public class SendToPlugin

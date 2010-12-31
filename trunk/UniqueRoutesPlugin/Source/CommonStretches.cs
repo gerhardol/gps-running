@@ -28,7 +28,7 @@ using System.Collections;
 
 namespace GpsRunningPlugin.Source
 {
-    class PointInfo 
+    public class PointInfo 
     {
         public PointInfo(int index) : this (index, -1, -1, false)
         {
@@ -51,7 +51,7 @@ namespace GpsRunningPlugin.Source
         public bool restLap;
         public string debugInfo = "";
     }
-    class CommonStretches
+    public class CommonStretches
     {
         private CommonStretches() { }
 
@@ -61,9 +61,14 @@ namespace GpsRunningPlugin.Source
         }
         public static IDictionary<IActivity, IList<double>> getCommonSpeed(IGPSRoute refRoute, IList<IActivity> activities, bool useActive)
         {
-            IDictionary<IActivity, IList<IList<PointInfo>>> points = new Dictionary<IActivity, IList<IList<PointInfo>>>();
-            IDictionary<IActivity, IList<double>> result = new Dictionary<IActivity, IList<double>>();
+            IDictionary<IActivity, IList<PointInfo[]>> points = new Dictionary<IActivity, IList<PointInfo[]>>();
             points = findSimilarPoints(refRoute, activities);
+            return getCommonSpeed(points, activities, useActive);
+        }
+
+        public static IDictionary<IActivity, IList<double>> getCommonSpeed(IDictionary<IActivity, IList<PointInfo[]>> points, IList<IActivity> activities, bool useActive)
+        {
+            IDictionary<IActivity, IList<double>> result = new Dictionary<IActivity, IList<double>>();
             foreach (IActivity otherActivity in activities)
             {
                 double MinDistStretch = Settings.Radius*2*2;
@@ -78,36 +83,39 @@ namespace GpsRunningPlugin.Source
                 PointInfo prevIndexRef = null;
                 int noStretches = 0;
 
-                foreach (IList<PointInfo> i in points[otherActivity])
+                if (points.ContainsKey(otherActivity))
                 {
-                    if (i[0].index >= 0 && (!useActive || !(i[0].restLap || i[1].restLap)))
+                    foreach (PointInfo[] i in points[otherActivity])
                     {
-                        if (startIndex == null || startIndex.index < 0)
+                        if (i[0].index >= 0 && (!useActive || !(i[0].restLap || i[1].restLap)))
                         {
-                            startIndex = i[0];
-                            startIndexRef = i[1];
-                        }
-                        prevIndex = i[0];
-                        prevIndexRef = i[1];
-                    }
-                    else 
-                    {
-                        if (startIndex != null && startIndexRef != null && prevIndex != null && prevIndexRef != null &&
-                        startIndex.index > -1 && startIndexRef.index > -1 && prevIndex.index > -1 && prevIndexRef.index > -1)
-                        {
-                            //End - Update summary
-                            //Ignore single point matches
-                            if (startIndex.index < prevIndex.index)
+                            if (startIndex == null || startIndex.index < 0)
                             {
-                                totTime += prevIndex.time - startIndex.time;
-                                totTimeRef += prevIndexRef.time - startIndexRef.time;
-                                totDist += prevIndex.distance - startIndex.distance;
-                                totDistRef += prevIndexRef.distance - startIndexRef.distance;
-                                noStretches++;
+                                startIndex = i[0];
+                                startIndexRef = i[1];
                             }
+                            prevIndex = i[0];
+                            prevIndexRef = i[1];
                         }
-                        startIndex = null;
-                        prevIndex  = null;
+                        else
+                        {
+                            if (startIndex != null && startIndexRef != null && prevIndex != null && prevIndexRef != null &&
+                            startIndex.index > -1 && startIndexRef.index > -1 && prevIndex.index > -1 && prevIndexRef.index > -1)
+                            {
+                                //End - Update summary
+                                //Ignore single point matches
+                                if (startIndex.index < prevIndex.index)
+                                {
+                                    totTime += prevIndex.time - startIndex.time;
+                                    totTimeRef += prevIndexRef.time - startIndexRef.time;
+                                    totDist += prevIndex.distance - startIndex.distance;
+                                    totDistRef += prevIndexRef.distance - startIndexRef.distance;
+                                    noStretches++;
+                                }
+                            }
+                            startIndex = null;
+                            prevIndex = null;
+                        }
                     }
                 }
                 IList<double> s = new List<double>();
@@ -120,157 +128,160 @@ namespace GpsRunningPlugin.Source
             }
             return result;
         }
-        public static IDictionary<IActivity, IList<IList<PointInfo>>> findSimilarPoints(IActivity activity, IList<IActivity> activities)
+        public static IDictionary<IActivity, IList<PointInfo[]>> findSimilarPoints(IActivity activity, IList<IActivity> activities)
         {
             return findSimilarPoints(activity.GPSRoute, activity.Laps, activities);
         }
-        public static IDictionary<IActivity, IList<IList<PointInfo>>> findSimilarPoints(IGPSRoute refRoute, IList<IActivity> activities)
+        public static IDictionary<IActivity, IList<PointInfo[]>> findSimilarPoints(IGPSRoute refRoute, IList<IActivity> activities)
         {
             return findSimilarPoints(refRoute, null, activities);
         }
-        public static IDictionary<IActivity, IList<IList<PointInfo>>> findSimilarPoints(IGPSRoute refRoute, IActivityLaps refLaps, IList<IActivity> activities)
+        public static IDictionary<IActivity, IList<PointInfo[]>> findSimilarPoints(IGPSRoute refRoute, IActivityLaps refLaps, IList<IActivity> activities)
         {
             GPSGrid grid = new GPSGrid(refRoute, 1, true);
-            IDictionary<IActivity, IList<IList<PointInfo>>> result = new Dictionary<IActivity, IList<IList<PointInfo>>>();
+            IDictionary<IActivity, IList<PointInfo[]>> result = new Dictionary<IActivity, IList<PointInfo[]>>();
             double cumulativeAverageDist = 0;
             int noCumAv = 0;
-            foreach (IActivity otherActivity in activities)
+            if (activities != null)
             {
-                const int ExtraGridIndex = 2;
-                const float MaxDistDiffFactor = 0.1F;
-                double MinDistStretch = Settings.Radius*2*2;
-
-                result.Add(otherActivity, new List<IList<PointInfo>>());
-                IDistanceDataTrack dist = otherActivity.GPSRoute.GetDistanceMetersTrack();
-                int lastMatch = -1; //index of previous match
-                int startMatch = -1;
-                IndexDiffDist lastMatchRef = null;
-                IndexDiffDist startMatchRef = null;
-                IndexDiffDist lastIndex = null;
-                for (int i = 0; i < otherActivity.GPSRoute.Count; i++)
+                foreach (IActivity otherActivity in activities)
                 {
-                    IList<IndexDiffDist> currIndex = new List<IndexDiffDist>();
-                    IndexDiffDist closeIndex = null;
-                    bool isEnd = true; //This is the end of a stretch, unless a matching point is found
-                    currIndex = grid.getAllCloseStretch(otherActivity.GPSRoute[i].Value);
-                    if (currIndex.Count > 0)
-                    {
-                        IndexDiffDist nextIndex = null;
-                        int prio = int.MaxValue;
-                        foreach (IndexDiffDist IndDist in currIndex)
-                        {
-                            if (IndDist.Index > -1)
-                            {
-                                //Get the closest point - used in starts and could restart current stretch
-                                if (closeIndex == null ||
-                                    //Close match in distance
-                                    (Math.Abs(IndDist.Dist - dist[i].Value) < 3*Settings.Radius*2) ||
-                                    //Close to other matches
-                                    (Math.Abs(IndDist.Dist - dist[i].Value - cumulativeAverageDist) <
-                                Math.Abs(closeIndex.Dist - dist[i].Value - cumulativeAverageDist)))
-                                {
-                                    closeIndex = IndDist;
-                                }
+                    const int ExtraGridIndex = 2;
+                    const float MaxDistDiffFactor = 0.1F;
+                    double MinDistStretch = Settings.Radius * 2 * 2;
 
-                                if (lastMatch > -1 && lastIndex != null)
+                    result.Add(otherActivity, new List<PointInfo[]>());
+                    IDistanceDataTrack dist = otherActivity.GPSRoute.GetDistanceMetersTrack();
+                    int lastMatch = -1; //index of previous match
+                    int startMatch = -1;
+                    IndexDiffDist lastMatchRef = null;
+                    IndexDiffDist startMatchRef = null;
+                    IndexDiffDist lastIndex = null;
+                    for (int i = 0; i < otherActivity.GPSRoute.Count; i++)
+                    {
+                        IList<IndexDiffDist> currIndex = new List<IndexDiffDist>();
+                        IndexDiffDist closeIndex = null;
+                        bool isEnd = true; //This is the end of a stretch, unless a matching point is found
+                        currIndex = grid.getAllCloseStretch(otherActivity.GPSRoute[i].Value);
+                        if (currIndex.Count > 0)
+                        {
+                            IndexDiffDist nextIndex = null;
+                            int prio = int.MaxValue;
+                            foreach (IndexDiffDist IndDist in currIndex)
+                            {
+                                if (IndDist.Index > -1)
                                 {
-                                    //Only check forward, i.e follow the same direction
-                                    //Use a close enough stretch
-                                    //This is the iffiest part of the algorithm matching stretches...
-                                    if (IndDist.low >= lastIndex.low && IndDist.low <= lastIndex.high ||
-                                         IndDist.Index >= lastIndex.low && IndDist.Index <= lastIndex.high)
+                                    //Get the closest point - used in starts and could restart current stretch
+                                    if (closeIndex == null ||
+                                        //Close match in distance
+                                        (Math.Abs(IndDist.Dist - dist[i].Value) < 3 * Settings.Radius * 2) ||
+                                        //Close to other matches
+                                        (Math.Abs(IndDist.Dist - dist[i].Value - cumulativeAverageDist) <
+                                    Math.Abs(closeIndex.Dist - dist[i].Value - cumulativeAverageDist)))
                                     {
-                                        //The grid overlaps the old grid
-                                        //The matching index may be lower then this is a restart (this or prev match should then be dropped)
-                                        if (prio > 0 || nextIndex == null || IndDist.Diff < nextIndex.Diff)
-                                        {
-                                            nextIndex = IndDist;
-                                            prio = 0;
-                                        }
+                                        closeIndex = IndDist;
                                     }
-                                    else if (prio >= 10 &&
-                                         IndDist.low >= lastIndex.low && IndDist.low <= lastIndex.high + ExtraGridIndex ||
-                                         IndDist.Index >= lastIndex.low && IndDist.Index <= lastIndex.high + ExtraGridIndex)
+
+                                    if (lastMatch > -1 && lastIndex != null)
                                     {
-                                        //Grids are not overlapping, but adjacent points match forward
-                                        if (prio > 10 || nextIndex == null)
+                                        //Only check forward, i.e follow the same direction
+                                        //Use a close enough stretch
+                                        //This is the iffiest part of the algorithm matching stretches...
+                                        if (IndDist.low >= lastIndex.low && IndDist.low <= lastIndex.high ||
+                                             IndDist.Index >= lastIndex.low && IndDist.Index <= lastIndex.high)
                                         {
-                                            nextIndex = IndDist;
-                                            prio = 10;
+                                            //The grid overlaps the old grid
+                                            //The matching index may be lower then this is a restart (this or prev match should then be dropped)
+                                            if (prio > 0 || nextIndex == null || IndDist.Diff < nextIndex.Diff)
+                                            {
+                                                nextIndex = IndDist;
+                                                prio = 0;
+                                            }
                                         }
-                                    }
-                                    else if (prio >= 20 &&
-                                          Math.Abs(IndDist.Dist / lastIndex.Dist - 1) < MaxDistDiffFactor)
-                                    {
-                                        if (prio > 20 || nextIndex == null)
+                                        else if (prio >= 10 &&
+                                             IndDist.low >= lastIndex.low && IndDist.low <= lastIndex.high + ExtraGridIndex ||
+                                             IndDist.Index >= lastIndex.low && IndDist.Index <= lastIndex.high + ExtraGridIndex)
                                         {
-                                            nextIndex = IndDist;
-                                            prio = 20;
+                                            //Grids are not overlapping, but adjacent points match forward
+                                            if (prio > 10 || nextIndex == null)
+                                            {
+                                                nextIndex = IndDist;
+                                                prio = 10;
+                                            }
+                                        }
+                                        else if (prio >= 20 &&
+                                              Math.Abs(IndDist.Dist / lastIndex.Dist - 1) < MaxDistDiffFactor)
+                                        {
+                                            if (prio > 20 || nextIndex == null)
+                                            {
+                                                nextIndex = IndDist;
+                                                prio = 20;
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                        //tmpInd is best match for thwe stretch, but closeIndex could be a better 
-                        if (nextIndex == null ||
-                            (!nextIndex.Equals(closeIndex)) && (
-                            //back match
-                            lastIndex.Index > nextIndex.Index ||
-                            prio > 10 && (MinDistStretch < dist[i].Value - dist[startMatch].Value ||
-                                    (Math.Abs(nextIndex.Dist - dist[i].Value) > Settings.Radius*2) ||
-                                    (Math.Abs(nextIndex.Dist - dist[i].Value - cumulativeAverageDist) >
-                                Math.Abs(closeIndex.Dist - dist[i].Value - cumulativeAverageDist)))))
-                        {
-                            //switch to closeIndex and ignore nextIndex
-                            nextIndex = closeIndex;
-                            //start of new match - use best match to reference activity
-                            startMatch = i;
-                            lastIndex = closeIndex;
-                            startMatchRef = closeIndex;
-                        }
-                        else
-                        {
-                            //The stretch continues
-                            isEnd = false;
-                            cumulativeAverageDist += (lastIndex.Diff - dist[i].Value - cumulativeAverageDist) / ++noCumAv;
-                        }
-                        if (isEnd && lastMatch >= 0)
-                        {
-                            // end match
-                            IList<PointInfo> s = new List<PointInfo>();
-                            s.Add(new PointInfo(-i - 1));
-                            s.Add(new PointInfo(-lastMatchRef.Index - 1));
-                            result[otherActivity].Add(s);
-                        }
-                        if (nextIndex != null)
-                        {
-                            lastIndex = nextIndex;
-                            lastMatchRef = lastIndex;
-                            lastMatch = i;
+                            //tmpInd is best match for the stretch, but closeIndex could be a better 
+                            if (nextIndex == null ||
+                                (!nextIndex.Equals(closeIndex)) && (
+                                //back match
+                                lastIndex.Index > nextIndex.Index ||
+                                prio > 10 && (MinDistStretch < dist[i].Value - dist[startMatch].Value ||
+                                        (Math.Abs(nextIndex.Dist - dist[i].Value) > Settings.Radius * 2) ||
+                                        (Math.Abs(nextIndex.Dist - dist[i].Value - cumulativeAverageDist) >
+                                    Math.Abs(closeIndex.Dist - dist[i].Value - cumulativeAverageDist)))))
+                            {
+                                //switch to closeIndex and ignore nextIndex
+                                nextIndex = closeIndex;
+                                //start of new match - use best match to reference activity
+                                startMatch = i;
+                                lastIndex = closeIndex;
+                                startMatchRef = closeIndex;
+                            }
+                            else
+                            {
+                                //The stretch continues
+                                isEnd = false;
+                                cumulativeAverageDist += (lastIndex.Diff - dist[i].Value - cumulativeAverageDist) / ++noCumAv;
+                            }
+                            if (isEnd && lastMatch >= 0)
+                            {
+                                // end match
+                                PointInfo[] s = new PointInfo[2];
+                                s[0] = new PointInfo(-i - 1);
+                                s[1] = new PointInfo(-lastMatchRef.Index - 1);
+                                result[otherActivity].Add(s);
+                            }
+                            if (nextIndex != null)
+                            {
+                                lastIndex = nextIndex;
+                                lastMatchRef = lastIndex;
+                                lastMatch = i;
 
-                            IList<PointInfo> s = new List<PointInfo>();
-                            s.Add(new PointInfo(i, dist[i].Value, otherActivity.GPSRoute[i].ElapsedSeconds,
-                                getRestLap(i, otherActivity),
-                                startMatch + " " + lastMatch + " " + startMatchRef + " " + lastMatchRef));
-                            s.Add(new PointInfo(lastIndex.Index, lastIndex.Dist, refRoute[lastIndex.Index].ElapsedSeconds,
-                                getRestLap(lastIndex.Index, refRoute, refLaps)));
-                            result[otherActivity].Add(s);
+                                PointInfo[] s = new PointInfo[2];
+                                s[0] = new PointInfo(i, dist[i].Value, otherActivity.GPSRoute[i].ElapsedSeconds,
+                                    getRestLap(i, otherActivity),
+                                    startMatch + " " + lastMatch + " " + startMatchRef + " " + lastMatchRef);
+                                s[1] = new PointInfo(lastIndex.Index, lastIndex.Dist, refRoute[lastIndex.Index].ElapsedSeconds,
+                                    getRestLap(lastIndex.Index, refRoute, refLaps));
+                                result[otherActivity].Add(s);
+
+                            }
+                            else
+                            {
+                                lastMatch = -1;
+                            }
 
                         }
-                        else
-                        {
-                            lastMatch = -1;
-                        }
-
                     }
-                }
-                //add end marker if needed
-                if (lastMatch > - 1)
-                {
-                    IList<PointInfo> s = new List<PointInfo>();
-                    s.Add(new PointInfo(-otherActivity.GPSRoute.Count));
-                    s.Add(new PointInfo(-1));
-                    result[otherActivity].Add(s);
+                    //add end marker if needed
+                    if (lastMatch > -1)
+                    {
+                        PointInfo[] s = new PointInfo[2];
+                        s[0] = new PointInfo(-otherActivity.GPSRoute.Count);
+                        s[1] = new PointInfo(-1);
+                        result[otherActivity].Add(s);
+                    }
                 }
             }
 
