@@ -31,6 +31,20 @@ Overlay can be used from the daily activity view or the activity report view. Th
 
 First go to the activity reports and select the activities that you wish to compare. You do this either by pressing down control and then select some activities, or by holding down shift and then select a range of activities by clicking the start and end element. Once you have selected at least one activity you are able to apply the Overlay plugin as shown in the figure below.
 
+Insert picture here!
+Open Overlay in the Sporttracks program, with the possibility to show routes in the map.
+
+Insert picture here!
+Open Overlay in a popup window containing the table and the chart, allowing a larger chart to be used.
+
+Insert picture here!
+Chose the contents of the table.
+
+Insert picture here!
+Choose the tracks to plot in the chart using the bar or the menu.
+
+
+
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/ActivityReportView.png]
 Once you have applied the plugin a new window appear with the overlayed activities; see the two figures below to see the results. 
 
@@ -40,11 +54,20 @@ Once you have applied the plugin a new window appear with the overlayed activiti
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/Overlay4.png]
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/Overlay5.png]
 
+===Selecting the reference activity===
+The reference activity - the activity that other activities are compared to using the diff columns in the table of the diff plots in the chart - can be chosen using the context menu of the table. First select the desired reference activity, then open the context meny and select Reference Activity.
+
+Insert picture here!
+
 ===Category average===
 It is possible to see a category average for a collection of activities. Average is basically the average of each activity in some category, so, e.g., if you have three activities chosen and selected the heart rate track, then the category average is the average of each point of the three graphs. The category average is displayed as a black line.
 
+Insert picture here!
+
 ===Moving average===
-The moving average is the average of a single graph. If it is set to 0 seconds or 0 meters it will show the average from the start of the activity; i.e., each point is the average of all the preceding points on the graph. This is similar to looking at your average speed or average heart rate on your watch. If you set the moving average to something bigger than 0, then the average is the average over the past XX seconds or meters. If the moving average is set to 120 seconds then the average of each point, will be the average of the last two minutes. 
+The moving average is the average of a single graph. If it is set to 0 seconds or 0 meters it will show the average from the start of the activity; i.e., each point is the average of all the preceding points on the graph. This is similar to looking at your average speed or average heart rate on your watch. If you set the moving average to something bigger than 0, then the average is the average over the past XX seconds or meters. If the moving average is set to 120 seconds then the average of each point, will be the average of the last two minutes.
+
+Insert picture here!
 
 ===Feedback===
 For patches, bugreports or feature suggestions, use the Google Code issue list.
