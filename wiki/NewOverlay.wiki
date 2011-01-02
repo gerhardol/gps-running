@@ -44,6 +44,7 @@ Open Overlay in a popup window containing the table and the chart, allowing a la
 
 ===Working with the table===
 *Selecting table contents*
+
 You can customise the table to your own liking by selecting what columns you need and in which order you want them.
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/OverlayColumnChoice.png]
@@ -51,6 +52,7 @@ You can customise the table to your own liking by selecting what columns you nee
 Chose the contents of the table.
 
 *Choosing the reference*
+
 The "diff" columns display the difference between the reference activity and the activity on each row. They can be used to make it easier to compare activities. By default the reference is the first activity in the list, but a different reference can be chosen by selecting an activity, opening the table context menu and choosing Reference Activity.
 
 ===Working with the chart===
@@ -65,25 +67,29 @@ Opening the menu.
 The most common data series can also be selected in the bar above the chart.
 
 *Plotting comparisons to the reference activity*
+
 In the Show diff menu, you can select data series that for each point in time (or distance) show the difference between each activity and the reference activity. You can select time, distance or heart rate.
 
-Insert picture here!
+
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/ShowDiffTime.png]
+
 Choose the tracks to plot in the chart using the bar or the menu.
 
 *Selecting the reference activity*
+
 The reference activity can be chosen using the context menu of the table. First select the desired reference activity, then open the context meny and select Reference Activity.
 
-Insert picture here!
-
 *Category average*
+
 It is possible to see a category average for a collection of activities. Average is basically the average of each activity in some category, so, e.g., if you have three activities chosen and selected the heart rate track, then the category average is the average of each point of the three graphs. The category average is displayed as a black line.
 
-Insert picture here!
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/CategoryAverage.png]
 
 *Moving average*
+
 The moving average is the average of a single graph. If it is set to 0 seconds or 0 meters it will show the average from the start of the activity; i.e., each point is the average of all the preceding points on the graph. This is similar to looking at your average speed or average heart rate on your watch. If you set the moving average to something bigger than 0, then the average is the average over the past XX seconds or meters. If the moving average is set to 120 seconds then the average of each point, will be the average of the last two minutes.
 
-Insert picture here!
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/MovingAverage.png]
 
 *Offset???*
 
