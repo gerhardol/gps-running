@@ -12,6 +12,8 @@ Using the table you can compare values like, heart rate, distance, pace etc betw
 
 You can compare the routes taken using the map window where the routes for all of the compared activities are drawn.
 
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/OverlayOverview.png]
+
 ===Use case: Comparing races===
 Overlay makes it easy to compare your performance in different races over the year, or maybe the performance in the same race over the years. When you've chosen the relevant activities, you can set one of them as the reference that other activities will be compared to. But default, the first activity in the list will be the reference.
 
@@ -31,10 +33,13 @@ Overlay can be used from the daily activity view or the activity report view. Th
 
 First go to the activity reports and select the activities that you wish to compare. You do this either by pressing down control and then select some activities, or by holding down shift and then select a range of activities by clicking the start and end element. Once you have selected at least one activity you are able to apply the Overlay plugin as shown in the figure below.
 
-Insert picture here!
+
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/StartOverlay.png]
+
 Open Overlay in the Sporttracks program, with the possibility to show routes in the map.
 
-Insert picture here!
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/StartOverlayPopup.png]
+
 Open Overlay in a popup window containing the table and the chart, allowing a larger chart to be used.
 
 ===Working with the table===
