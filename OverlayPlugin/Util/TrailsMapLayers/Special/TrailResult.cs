@@ -60,6 +60,19 @@ namespace TrailsPlugin.Data
         public int Order = 0;
 
         /* Common UniqueRoutes and Overlay below */
+        public IList<IGPSPoint> GpsPoints()
+        {
+            IList<IGPSPoint> m_gpsPoints = new List<IGPSPoint>();
+            if (Activity.GPSRoute != null)
+            {
+                for (int i = 0; i < Activity.GPSRoute.Count; i++)
+                {
+                    m_gpsPoints.Add(Activity.GPSRoute[i].Value);
+                }
+            }
+            return m_gpsPoints;
+        }
+
         public IList<IGPSPoint> GpsPoints(Data.TrailsItemTrackSelectionInfo t)
         {
             if (t.MarkedTimes != null && t.MarkedTimes.Count > 0)
@@ -72,10 +85,13 @@ namespace TrailsPlugin.Data
             }
             return new List<IGPSPoint>();
         }
+		
         private IList<IGPSPoint> GpsPoints(IValueRangeSeries<DateTime> t)
         {
             IList<IGPSPoint> result = new List<IGPSPoint>();
 
+            if (Activity.GPSRoute != null)
+            {
             foreach (IValueRange<DateTime> r in t)
             {
                 IGPSRoute GpsTrack = Activity.GPSRoute;
@@ -92,14 +108,18 @@ namespace TrailsPlugin.Data
                     i++;
                 }
             }
+            }
 
             return result;
         }
+		
         private IList<IGPSPoint> GpsPoints(IValueRangeSeries<double> t)
         {
+            IList<IGPSPoint> result = new List<IGPSPoint>();
+            if (Activity.GPSRoute != null)
+            {
             IGPSRoute GpsTrack = Activity.GPSRoute;
             IDistanceDataTrack DistanceMetersTrack = Activity.GPSRoute.GetDistanceMetersTrack();
-            IList<IGPSPoint> result = new List<IGPSPoint>();
 
             foreach (IValueRange<double> r in t)
             {
@@ -116,18 +136,11 @@ namespace TrailsPlugin.Data
                     i++;
                 }
             }
+            }
 
             return result;
         }
-        public IList<IGPSPoint> GpsPoints()
-        {
-            IList<IGPSPoint> m_gpsPoints = new List<IGPSPoint>();
-            for (int i = 0; i < Activity.GPSRoute.Count; i++)
-            {
-                m_gpsPoints.Add(Activity.GPSRoute[i].Value);
-            }
-            return m_gpsPoints;
-        }
+
         public DateTime FirstTime
         {
             get
