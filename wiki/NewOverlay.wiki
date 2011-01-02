@@ -38,25 +38,58 @@ Insert picture here!
 Open Overlay in a popup window containing the table and the chart, allowing a larger chart to be used.
 
 ===Working with the table===
-*bold*Selecting table contents
+*Selecting table contents*
 You can customise the table to your own liking by selecting what columns you need and in which order you want them.
 
 Insert picture here!
 Chose the contents of the table.
 
+*Choosing the reference*
 The "diff" columns display the difference between the reference activity and the activity on each row. They can be used to make it easier to compare activities. By default the reference is the first activity in the list, but a different reference can be chosen by selecting an activity, opening the table context menu and choosing Reference Activity.
 
-======Working with the chart
-Selecting x-axis, selecting y-axis.
-Plotting diff compared to reference activity.
-Category average, moving average.
-Offset???
-Making activities visible/not visible
+===Working with the chart===
+The chart x-axis can be either time or distance. Your choose with the radio buttons in the bar above the chart,
 
+What data series that should be shown is selected using the context menu, which is opened by clicking the arrow to the right of the text "Overlay".
+Insert picture here!
+Opening the menu.
+
+The most common data series can also be selected in the bar above the chart.
+
+*Plotting comparisons to the reference activity*
+In the Show diff menu, you can select data series that for each point in time (or distance) show the difference between each activity and the reference activity. You can select time, distance or heart rate.
 
 Insert picture here!
 Choose the tracks to plot in the chart using the bar or the menu.
 
+*Selecting the reference activity*
+The reference activity can be chosen using the context menu of the table. First select the desired reference activity, then open the context meny and select Reference Activity.
+
+Insert picture here!
+
+*Category average*
+It is possible to see a category average for a collection of activities. Average is basically the average of each activity in some category, so, e.g., if you have three activities chosen and selected the heart rate track, then the category average is the average of each point of the three graphs. The category average is displayed as a black line.
+
+Insert picture here!
+
+*Moving average*
+The moving average is the average of a single graph. If it is set to 0 seconds or 0 meters it will show the average from the start of the activity; i.e., each point is the average of all the preceding points on the graph. This is similar to looking at your average speed or average heart rate on your watch. If you set the moving average to something bigger than 0, then the average is the average over the past XX seconds or meters. If the moving average is set to 120 seconds then the average of each point, will be the average of the last two minutes.
+
+Insert picture here!
+
+*Offset???*
+
+*Making activities visible/not visible*
+
+
+
+===Working with the map===
+Showing routes
+Making routes visible/not visible
+
+===Feedback===
+For patches, bugreports or feature suggestions, use the Google Code issue list.
+For feedback please use the thread for this plugin at !SportTracks forum [http://www.zonefivesoftware.com/SportTracks/Forums/viewforum.php?f=31 here].
 
 ===Old pictures, to be replaced===
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/ActivityReportView.png]
@@ -67,26 +100,3 @@ Once you have applied the plugin a new window appear with the overlayed activiti
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/Overlay3.png]
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/Overlay4.png]
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/Overlay5.png]
-
-===Selecting the reference activity===
-The reference activity - the activity that other activities are compared to using the diff columns in the table of the diff plots in the chart - can be chosen using the context menu of the table. First select the desired reference activity, then open the context meny and select Reference Activity.
-
-Insert picture here!
-
-===Category average===
-It is possible to see a category average for a collection of activities. Average is basically the average of each activity in some category, so, e.g., if you have three activities chosen and selected the heart rate track, then the category average is the average of each point of the three graphs. The category average is displayed as a black line.
-
-Insert picture here!
-
-===Moving average===
-The moving average is the average of a single graph. If it is set to 0 seconds or 0 meters it will show the average from the start of the activity; i.e., each point is the average of all the preceding points on the graph. This is similar to looking at your average speed or average heart rate on your watch. If you set the moving average to something bigger than 0, then the average is the average over the past XX seconds or meters. If the moving average is set to 120 seconds then the average of each point, will be the average of the last two minutes.
-
-Insert picture here!
-
-===Working with the map===
-Showing routes
-Making routes visible/not visible
-
-===Feedback===
-For patches, bugreports or feature suggestions, use the Google Code issue list.
-For feedback please use the thread for this plugin at !SportTracks forum [http://www.zonefivesoftware.com/SportTracks/Forums/viewforum.php?f=31 here].
