@@ -1,17 +1,26 @@
 #summary Overlay User's Guide, new UI
 
-===Word ongoing===
+===Work ongoing===
 This page is not ready yet. It will replace the current Overlay users guide when ready and the new UI has been released to the Sporttracks plugin catalog.
 
-===What does it do?===
+==What does it do?==
 Overlay is a plugin that lets you compare activities using a table for numeric values, a chart for data tracks and the map for routes.
 
 The original Overlay functionality is the chart that lets you compare data tracks like heart rate, pace, speed, power, cadence, distance and time between two or more activities. It does so by presenting each of these in the same graph, so you may visually see how well your form is progressing. You can also plot the difference between a selectable reference activity and other activities regarding heart rate, distance and time. It will be easy to determine how much faster you were after 5 km in the last race compared to the previous one.
 
 Using the table you can compare values like, heart rate, distance, pace etc between your activities. If you set a reference activity, you can also see relative values compared to the reference activity.
 
-This is a simple plugin that easily lets you compare the heart rate, pace, and speed tracks of two or more activities. It does so by presenting each of these in the same graph, so you may visually see how well your form is progressing. 
+You can compare the routes taken using the map window where the routes for all of the compared activities are drawn.
 
+==Use cases==
+===Comparing races===
+Overlay makes it easy to compare your performance in different races over the year, or maybe the performance in the same race over the years. When you've chosen the relevant activities, you can set one of them as the reference that other activities will be compared to. But default, the first activity in the list will be the reference.
+
+Choose the table columns that you are interested in. The heart difference in time, distance, speed or pace and heart rate rate should be particularly interesting for this use case.
+
+Use the chart in order to compare distance, time, heart rate, pace, speed, power and cadence over the course of the races. You can see if different strategies were used and what the end result was.
+
+===Evaluating progress regarding fitness===
 One way of monitoring improvement in fitness is by comparing your heart rate tracks of two similar activities (same distance, speed, time of day, and other parameters that may influence the heart rate) but with some time in between. So lets say there are four weeks between the two similar activities you are considering, and you then overlay the two heart rate graph using the plugin. If the graph of the latter is below the first, your form is improving, and vice versa if it is above. 
 
 Another way of seeing form improvement is to check how fast you heart rate drops after an exercise. I always get this information after a run, by reseting the laps, and starting it again to record my heart rate when I just walk around a bit and stretch before I go inside. So if you also do this, you can check you form progression using these stretch out sessions. 
