@@ -290,6 +290,7 @@ namespace GpsRunningPlugin.Source
 
             nextIndex = 0;
 
+            treeListAct.ClearAllChecked();
             treeListAct.RowData = actWrappers;
             foreach(ActivityWrapper wrapper in actWrappers)
             {
