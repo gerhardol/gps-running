@@ -46,7 +46,8 @@ Open Overlay in a popup window containing the table and the chart, allowing a la
 *Selecting table contents*
 You can customise the table to your own liking by selecting what columns you need and in which order you want them.
 
-Insert picture here!
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/OverlayColumnChoice.png]
+
 Chose the contents of the table.
 
 *Choosing the reference*
@@ -56,7 +57,9 @@ The "diff" columns display the difference between the reference activity and the
 The chart x-axis can be either time or distance. Your choose with the radio buttons in the bar above the chart,
 
 What data series that should be shown is selected using the context menu, which is opened by clicking the arrow to the right of the text "Overlay".
-Insert picture here!
+
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/OverlayChartMenu.png]
+
 Opening the menu.
 
 The most common data series can also be selected in the bar above the chart.
