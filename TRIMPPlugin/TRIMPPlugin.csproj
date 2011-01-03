@@ -8,15 +8,22 @@
     <AssemblyName>TRIMPPlugin</AssemblyName>
     <PluginId>F4C8F7D6-B4A5-4E69-9205-48044356D3CF</PluginId>
   </PropertyGroup>
+
   <Import Project="..\Common\Common-References.csproj" />
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);GPSRUNNING_TRIMP</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
+    <None Include="Resources\Image_16_TRIMP.jpg" />
+    <None Include="Resources\Image_24_TRIMP.jpg" />
+    <None Include="Resources\Image_32_TRIMP.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="GUIDs.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Source\TRIMPActivityDetailPage.cs" />
     <Compile Include="Source\TRIMPActivityDetail.cs" />
     <Compile Include="Source\TRIMPPage.cs" />
@@ -33,8 +40,22 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Source\Settings.cs" />
+    <EmbeddedResource Include="Source\TRIMPSettings.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TRIMPSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Source\TRIMPView.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TRIMPView.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
+
   <ItemGroup>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
@@ -68,73 +89,70 @@
       <SubType>Designer</SubType>
       <DependentUpon>Resources.resx</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Source\TRIMPSettings.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>TRIMPSettings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Source\TRIMPView.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>TRIMPView.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="Resources\Image_32_TRIMP.jpg" />
+    <Compile Include="..\Common\Util\UnitUtil.cs">
+      <Link>Util\UnitUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\Util\WarningDialog.cs">
+      <Link>Util\WarningDialog.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\Common\Util\YesNoDialog.cs">
+      <Link>Util\YesNoDialog.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
+  
   <ItemGroup>
-    <None Include="Resources\Image_16_TRIMP.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Resources\Image_24_TRIMP.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Util\StringResources.resx">
+    <EmbeddedResource Include="..\Common\Util\StringResources.resx">
+      <Link>Util\StringResources.resx</Link>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>StringResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Compile Include="Util\StringResources.Designer.cs">
+    <Compile Include="..\Common\Util\StringResources.Designer.cs">
+      <Link>Util\StringResources.Designer.resx</Link>
       <DependentUpon>StringResources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Util\StringResources.da.resx">
+    <EmbeddedResource Include="..\Common\Util\StringResources.da.resx">
+      <Link>Util\StringResources.da.resx</Link>
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Util\StringResources.de.resx">
+    <EmbeddedResource Include="..\Common\Util\StringResources.de.resx">
+      <Link>Util\StringResources.de.resx</Link>
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Util\StringResources.es.resx">
+    <EmbeddedResource Include="..\Common\Util\StringResources.es.resx">
+      <Link>Util\StringResources.es.resx</Link>
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Util\StringResources.fr.resx">
+    <EmbeddedResource Include="..\Common\Util\StringResources.fr.resx">
+      <Link>Util\StringResources.fr.resx</Link>
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Util\StringResources.it.resx">
+    <EmbeddedResource Include="..\Common\Util\StringResources.it.resx">
+      <Link>Util\StringResources.it.resx</Link>
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Util\StringResources.nl.resx">
+    <EmbeddedResource Include="..\Common\Util\StringResources.nl.resx">
+      <Link>Util\StringResources.nl.resx</Link>
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Util\StringResources.sv.resx">
+    <EmbeddedResource Include="..\Common\Util\StringResources.sv.resx">
+      <Link>Util\StringResources.sv.resx</Link>
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Util\UnitUtil.cs" />
-    <Compile Include="Util\WarningDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Util\YesNoDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
   </ItemGroup>
   <Import Project="..\Common\Common-Files.csproj" />
 </Project>
