@@ -294,4 +294,32 @@
   <data name="Width" xml:space="preserve">
     <value>width</value>
   </data>
+  <data name="SetRefActivity" xml:space="preserve">
+    <value>Reference Activity</value>
+  </data>
+  <data name="OtherPluginExceptionText" xml:space="preserve">
+    <value>Problem communicating with {0}
+Make sure that {1} is installed on your machine</value>
+  </data>
+  <data name="OtherPluginVersion" xml:space="preserve">
+    <value>Detected version {0} of {1}.</value>
+  </data>
+  <data name="UniqueRoutesCompatible" xml:space="preserve">
+    <value>Activities can be filtered using UniqueRoutes.</value>
+  </data>
+  <data name="UniqueRoutesPluginName" xml:space="preserve">
+    <value>Unique Routes plugin</value>
+  </data>
+  <data name="UniqueRoutesToInstall" xml:space="preserve">
+    <value>Install at least version {0} of {1} to filter activities using UniqueRoutes.</value>
+  </data>
+  <data name="UI_Activity_List_Advanced" xml:space="preserve">
+    <value>Advanced</value>
+  </data>
+  <data name="UI_Activity_List_LimitSelection" xml:space="preserve">
+    <value>Limit activities to activities selected in list</value>
+  </data>
+  <data name="UI_Activity_List_URSelect" xml:space="preserve">
+    <value>Add similar activities with Unique Routes from reference activity{0}</value>
+  </data>
 </root>

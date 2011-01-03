@@ -28,8 +28,11 @@ namespace TrailsPlugin.Data {
             this._gpsLocation = new GPSLocation(latitudeDegrees, longitudeDegrees);
             this._name = name;
         }
-		static public TrailGPSLocation FromXml(XmlNode node) {
 
+        //This code is shared in other plugins
+#if TRAILSPLUGIN
+		static public TrailGPSLocation FromXml(XmlNode node)
+        {
             string name = "";
             if (null != node.Attributes["name"] &&
                 null != node.Attributes["name"].Value)
@@ -37,11 +40,13 @@ namespace TrailsPlugin.Data {
                 name = node.Attributes["name"].Value;
             }
 			return new TrailGPSLocation(
-				float.Parse(node.Attributes["latitude"].Value), 
-				float.Parse(node.Attributes["longitude"].Value),
+                Settings.parseFloat(node.Attributes["latitude"].Value),
+                Settings.parseFloat(node.Attributes["longitude"].Value),
                 name
 			);
         }
+#endif
+
         private GPSLocation _gpsLocation;
         public GPSLocation GpsLocation
         {

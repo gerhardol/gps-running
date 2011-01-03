@@ -37,25 +37,55 @@ namespace TrailsPlugin.UI.MapLayers
     {
         private TrailResult m_trailResult;
         private string m_key;
-        public TrailMapPolyline(IList<IGPSPoint> g, int w, Color c, TrailResult tr)
+        private TrailMapPolyline(IList<IGPSPoint> g, int w, Color c, TrailResult tr)
             : base(g, w, c)
         {
             m_trailResult = tr;
             m_key = tr.Activity + ":" + tr.Order;
         }
-        //Marked part of a track
-        public TrailMapPolyline(TrailResult tr, TrailsItemTrackSelectionInfo sel)
-            : this(tr.GpsPoints(sel), GpsRunningPlugin.Plugin.GetApplication().SystemPreferences.RouteSettings.RouteWidth * 2, tr.TrailColor, tr)
-        { m_key += "m" + sel.ToString(); }
+        private TrailMapPolyline(IList<IGPSPoint> g, int w, Color c, TrailResult tr, string tkey)
+            : this(g, w, c, tr)
+        {
+            m_key += tkey;
+        }
+
         //Complete trail
         public TrailMapPolyline(TrailResult tr)
-            : this(tr.GpsPoints(), GpsRunningPlugin.Plugin.GetApplication().SystemPreferences.RouteSettings.RouteWidth, tr.TrailColor, tr)
+            : this(tr.GpsPoints(), GetApplication().SystemPreferences.RouteSettings.RouteWidth, tr.TrailColor, tr)
         { }
 
+        //Marked part of a track
+        public static IList<TrailMapPolyline> GetTrailMapPolyline(TrailResult tr, TrailsItemTrackSelectionInfo sel)
+        {
+            IList<TrailMapPolyline> results = new List<TrailMapPolyline>();
+            foreach (IList<IGPSPoint> gp in tr.GpsPoints(sel))
+            {
+                results.Add(new TrailMapPolyline(gp, GetApplication().SystemPreferences.RouteSettings.RouteWidth * 2, MarkedColor(tr.TrailColor), tr, "m" + results.Count));
+            }
+            return results;
+        }
+
+        private static Color MarkedColor(Color tColor)
+        {
+            //The Marked color can be adjusted, but several overlays makes it hard to find which is which
+            //return ControlPaint.Dark(tColor);
+            return tColor;
+        }
         public TrailResult TrailRes
         {
             get { return m_trailResult; }
         }
         public string key { get { return m_key; } }
+        private static IApplication GetApplication()
+        {
+#if GPSRUNNING_UNIQUEROUTES||GPSRUNNING_OVERLAY
+            return GpsRunningPlugin.Plugin.GetApplication();
+#elif MATRIXPLUGIN
+            return MatrixPlugin.MatrixPlugin.GetApplication();
+#else // TRAILSPLUGIN
+            return PluginMain.GetApplication();
+#endif
+        }
+            
     }
 }

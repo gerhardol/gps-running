@@ -410,35 +410,35 @@ namespace GpsRunningPlugin.Source
                     similarToolTip = new Dictionary<string, string>();
                     RefreshColumns();
 
-                    IDictionary<IActivity, IList<double>> commonStretches = null;
+                    IDictionary<IActivity, PointInfo[]> commonStretches = null;
                     bool doGetcommonStretches = true;// Plugin.Verbose > 0;
                     if (doGetcommonStretches)
                     {
                         //reset calculations
                         m_commonStretches = null;
-                        commonStretches = CommonStretches.getCommonSpeed(SimilarPoints, similar, false);
+                        commonStretches = CommonStretches.getCommonSpeed(SimilarPoints, similar, Settings.UseActive);
                     }
                     foreach (IActivity activity in similar)
                     {
                         string commonText = null;
                         if (commonStretches != null)
                         {
-                            if (commonStretches[activity][4] > 0)
+                            if (commonStretches[activity][0].index > 0)
                             {
                                 commonText =
                                     UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace,
-                                    commonStretches[activity][0] / commonStretches[activity][1], "u") +
+                                    commonStretches[activity][0].distance / commonStretches[activity][0].time, "u") +
                                     " (" + UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace,
-                                    commonStretches[activity][2] / commonStretches[activity][3]) + ")" +
-                                    " " + commonStretches[activity][4] + " " + Resources.Sections + " " +
-                                    UnitUtil.Distance.ToString(commonStretches[activity][0], "u") + " " +
-                                    UnitUtil.Time.ToString(commonStretches[activity][1]) +
-                                    " (" + UnitUtil.Distance.ToString(commonStretches[activity][2], "u") + " " +
-                                    " " + UnitUtil.Time.ToString(commonStretches[activity][3]) + ")";
+                                    commonStretches[activity][1].distance / commonStretches[activity][1].time) + ")" +
+                                    " " + commonStretches[activity][0].index + " " + Resources.Sections + " " +
+                                    UnitUtil.Distance.ToString(commonStretches[activity][0].distance, "u") + " " +
+                                    UnitUtil.Time.ToString(commonStretches[activity][0].time) +
+                                    " (" + UnitUtil.Distance.ToString(commonStretches[activity][1].distance, "u") + " " +
+                                    " " + UnitUtil.Time.ToString(commonStretches[activity][1].time) + ")";
                             }
                             else
                             {
-                                commonText = commonStretches[activity][4] + " " + Resources.Sections;
+                                commonText = commonStretches[activity][0].index + " " + Resources.Sections;
                             }
                         }
                         result.Add(new UniqueRoutesResult(activity, commonText));
@@ -637,6 +637,22 @@ namespace GpsRunningPlugin.Source
 #endif
                 return true;
             }
+        }
+        
+        //This works slightly different to i.e. Trails, as it marks the reference if possible
+        public void MarkRef(IItemTrackSelectionInfo res)
+        {
+#if !ST_2_1
+            if (_showPage)
+            {
+                if (m_view != null &&
+                    m_view.RouteSelectionProvider != null)
+                {
+                        m_view.RouteSelectionProvider.SelectedItems = new IItemTrackSelectionInfo[] {
+                            res };
+                }
+            }
+#endif
         }
         public void MarkTrack(IList<TrailResultMarked> atr)
         {
@@ -1003,7 +1019,7 @@ namespace GpsRunningPlugin.Source
                     }
                 }
                 IList<TrailResultMarked> aTrm = new List<TrailResultMarked>();
-                if (isMatch)
+                if (isMatch && refActivity != null)
                 {
                     IDictionary<IActivity, IList<PointInfo[]>> commonStretches = SimilarPoints;
                     if (commonStretches.Count > 0 &&
@@ -1012,41 +1028,12 @@ namespace GpsRunningPlugin.Source
                         commonStretches[utr.Activity].Count > 0)
                     {
                         TrailResult tr = new TrailResult(utr);
-
-                        PointInfo startPoint = null;
-                        PointInfo endPoint = null;
-                        IValueRangeSeries<DateTime> t = new ValueRangeSeries<DateTime>();
-                        foreach (PointInfo[] kp in commonStretches[utr.Activity])
-                        {
-                            if (kp[0].index < 0)
-                            {
-                                if (startPoint != null)
-                                {
-                                    if (endPoint != null)
-                                    {
-                                        t.Add(new ValueRange<DateTime>(
-                                        tr.getActivityTime((float)startPoint.time),
-                                        tr.getActivityTime((float)endPoint.time)));
-                                        endPoint = null;
-                                    }
-                                    else
-                                    {
-                                        //TODO: Debug breakpoint
-                                        startPoint = endPoint;
-                                    }
-                                    startPoint = null;
-                                }
-                            }
-                            else if (startPoint == null)
-                            {
-                                startPoint = kp[0];
-                            }
-                            else 
-                            {
-                                endPoint = kp[0];
-                            }
-                        }
-                        aTrm.Add(new TrailResultMarked(tr, t));
+                        IItemTrackSelectionInfo[] i = CommonStretches.getSelInfo(new DateTime[] { utr.Activity.StartTime, refActivity.StartTime },
+                                                commonStretches[utr.Activity], true);
+                        ((TrailsItemTrackSelectionInfo)i[0]).Activity = utr.Activity;
+                        ((TrailsItemTrackSelectionInfo)i[1]).Activity = refActivity;
+                        aTrm.Add(new TrailResultMarked(tr, i[0].MarkedTimes));
+                        this.MarkRef(i[1]);
                     }
                 }
                 this.MarkTrack(aTrm);

@@ -367,6 +367,25 @@ namespace GpsRunningPlugin.Util {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Problem communicating with {0}
+        ///Make sure that {1} is installed on your machine.
+        /// </summary>
+        internal static string OtherPluginExceptionText {
+            get {
+                return ResourceManager.GetString("OtherPluginExceptionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detected version {0} of {1}..
+        /// </summary>
+        internal static string OtherPluginVersion {
+            get {
+                return ResourceManager.GetString("OtherPluginVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to per specified.
         /// </summary>
         internal static string PerSpecified {
@@ -525,6 +544,60 @@ namespace GpsRunningPlugin.Util {
         internal static string Training {
             get {
                 return ResourceManager.GetString("Training", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Advanced.
+        /// </summary>
+        internal static string UI_Activity_List_Advanced {
+            get {
+                return ResourceManager.GetString("UI_Activity_List_Advanced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Limit activities to activities selected in list.
+        /// </summary>
+        internal static string UI_Activity_List_LimitSelection {
+            get {
+                return ResourceManager.GetString("UI_Activity_List_LimitSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add similar activities with Unique Routes from reference activity{0}.
+        /// </summary>
+        internal static string UI_Activity_List_URSelect {
+            get {
+                return ResourceManager.GetString("UI_Activity_List_URSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activities can be filtered using UniqueRoutes..
+        /// </summary>
+        internal static string UniqueRoutesCompatible {
+            get {
+                return ResourceManager.GetString("UniqueRoutesCompatible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unique Routes plugin.
+        /// </summary>
+        internal static string UniqueRoutesPluginName {
+            get {
+                return ResourceManager.GetString("UniqueRoutesPluginName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Install at least version {0} of {1} to filter activities using UniqueRoutes..
+        /// </summary>
+        internal static string UniqueRoutesToInstall {
+            get {
+                return ResourceManager.GetString("UniqueRoutesToInstall", resourceCulture);
             }
         }
         

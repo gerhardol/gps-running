@@ -1,6 +1,5 @@
 ﻿/*
 Copyright (C) 2010 Gerhard Olsson
-Copyright (C) 2010 Peter Furucz
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -16,9 +15,11 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Data.GPS;
+using ZoneFiveSoftware.Common.Visuals.Fitness;
 
 namespace SportTracksUniqueRoutesPlugin.Source
 {
@@ -47,13 +48,6 @@ namespace SportTracksUniqueRoutesPlugin.Source
 
 namespace UniqueRoutes.Export
 {
-    public static class UniqueRoutes
-    {
-        public static IList<IActivity> findSimilarRoutes(IActivity activity, System.Windows.Forms.ProgressBar progressBar)
-        {
-            return GpsRunningPlugin.Source.UniqueRoutes.findSimilarRoutes(activity, progressBar);
-        }
-    }
     class Settings
     {
         public static bool HasDirection
@@ -62,27 +56,33 @@ namespace UniqueRoutes.Export
             set { GpsRunningPlugin.Source.Settings.HasDirection = value; }
         }
     }
-    public static class CommonStretches
+    public static class UniqueRoutes
     {
-        public static IDictionary<IActivity, IList<double>> getCommonSpeed(IActivity refActivity, IList<IActivity> activities, bool useActive)
+        public static IList<IActivity> findSimilarRoutes(IActivity activity, System.Windows.Forms.ProgressBar progressBar)
         {
-            return GpsRunningPlugin.Source.CommonStretches.getCommonSpeed(refActivity.GPSRoute, activities, useActive);
-        }
-        public static IDictionary<IActivity, IList<double>> getCommonSpeed(IGPSRoute refRoute, IList<IActivity> activities, bool useActive)
-        {
-            return GpsRunningPlugin.Source.CommonStretches.getCommonSpeed(refRoute, activities, useActive);
+            return GpsRunningPlugin.Source.UniqueRoutes.findSimilarRoutes(activity, progressBar);
         }
 
-        public static IDictionary<IActivity, IList<double[,]>> findSimilarPoints(IActivity activity, IList<IActivity> activities)
+        public static IDictionary<IActivity, IItemTrackSelectionInfo[]> findCommonStretches(IActivity activity, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
+        {
+            IDictionary<IActivity, IItemTrackSelectionInfo[]> results = new Dictionary<IActivity, IItemTrackSelectionInfo[]>();
+            IDictionary<IActivity, IList<GpsRunningPlugin.Source.PointInfo[]>> p = GpsRunningPlugin.Source.CommonStretches.findSimilarPoints(activity.GPSRoute, activity.Laps, activities);
+            foreach (KeyValuePair<IActivity, IList<GpsRunningPlugin.Source.PointInfo[]>> kp in p)
+            {
+                    results[kp.Key] = GpsRunningPlugin.Source.CommonStretches.getSelInfo(new DateTime[]{kp.Key.StartTime,activity.StartTime}, kp.Value, GpsRunningPlugin.Source.Settings.UseActive);
+            }
+            return results;
+        }
+        public static IDictionary<IActivity, IList<double[,]>> findSimilarPoints(IActivity activity, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
         {
             IDictionary<IActivity, IList<double[,]>> results = new Dictionary<IActivity, IList<double[,]>>();
             IDictionary<IActivity, IList<GpsRunningPlugin.Source.PointInfo[]>> p = GpsRunningPlugin.Source.CommonStretches.findSimilarPoints(activity.GPSRoute, activity.Laps, activities);
-            foreach(KeyValuePair<IActivity, IList<GpsRunningPlugin.Source.PointInfo[]>> kp in p)
+            foreach (KeyValuePair<IActivity, IList<GpsRunningPlugin.Source.PointInfo[]>> kp in p)
             {
                 results.Add(kp.Key, new List<double[,]>());
-                foreach(GpsRunningPlugin.Source.PointInfo[] api in kp.Value)
+                foreach (GpsRunningPlugin.Source.PointInfo[] api in kp.Value)
                 {
-                    double[,] dpi = new double[2,4]{
+                    double[,] dpi = new double[2, 4]{
                      {api[0].index, api[0].distance, api[0].time, api[0].restLap ? 1 : 0},
                      {api[1].index, api[1].distance, api[1].time, api[1].restLap ? 1 : 0}
                     };

@@ -29,7 +29,6 @@ using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Visuals.Mapping;
 using System.Collections.Generic;
 using Microsoft.Win32;
-using TrailsPlugin;
 using TrailsPlugin.Data;
 
 namespace TrailsPlugin.UI.MapLayers
@@ -63,7 +62,16 @@ namespace TrailsPlugin.UI.MapLayers
 
         public string Name
         {
-            get { return GpsRunningPlugin.Properties.Resources.TrailPointsControlLayer; }
+            get
+            {
+#if GPSRUNNING_UNIQUEROUTES||GPSRUNNING_OVERLAY
+                return GpsRunningPlugin.Properties.Resources.TrailPointsControlLayer; 
+#elif MATRIXPLUGIN
+                return MatrixPlugin.Properties.Resources.TrailPointsControlLayer;
+#else // TRAILSPLUGIN
+                return Properties.Resources.TrailPointsControlLayer;
+#endif
+            }
         }
     }
 }

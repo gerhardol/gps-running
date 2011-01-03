@@ -44,6 +44,7 @@ using ZoneFiveSoftware.Common.Visuals.Mapping;
 
 using GpsRunningPlugin.Properties;
 using GpsRunningPlugin.Util;
+using TrailsPlugin.Integration;
 using TrailsPlugin.Data;
 using TrailsPlugin.UI.MapLayers;
 
@@ -194,7 +195,7 @@ namespace GpsRunningPlugin.Source
 #if !ST_2_1
             expandButton.BackgroundImage = CommonResources.Images.View2PaneLowerHalf16;
 #endif
-            //TODO:
+            //TODO: Implement Toolbar
             this.showToolBarMenuItem.Visible = false;
             //Enabled when possible
             expandButton.Visible = false;
@@ -278,14 +279,6 @@ namespace GpsRunningPlugin.Source
         }
         private void updateActivities()
         {
-            //Temporary
-            if (Plugin.Verbose > 100 && Settings.uniqueRoutes != null)
-            {
-                MethodInfo methodInfo = Settings.uniqueRoutes.GetMethod("findSimilarStretch");
-                IDictionary<IActivity, IList<IList<int>>> result =
-                    (IDictionary<IActivity, IList<IList<int>>>)methodInfo.Invoke(this, new object[] { activities[0], activities });
-
-            }
             activities.Sort(new ActivityDateComparer());
 
             nextIndex = 0;
@@ -388,6 +381,9 @@ namespace GpsRunningPlugin.Source
             setRollAvgWidthMenuItem.Text = Resources.SetMovingAveragePeriod;
 
             setRefActMenuItem.Text = StringResources.SetRefActivity;
+            this.advancedMenuItem.Text = StringResources.UI_Activity_List_Advanced;
+            this.limitActivityMenuItem.Text = StringResources.UI_Activity_List_LimitSelection;
+            this.selectWithURMenuItem.Text = string.Format(StringResources.UI_Activity_List_URSelect, "");
 
             showChartToolsMenuItem.Text = Resources.Menu_ShowChartBar;
             showToolBarMenuItem.Text = Resources.Menu_ShowToolBar; 
@@ -1185,7 +1181,10 @@ namespace GpsRunningPlugin.Source
                 TrailResult tr = new TrailResult(actWrapper);
                 TrailMapPolyline m = new TrailMapPolyline(tr);
                 m.Click += new MouseEventHandler(mapPoly_Click);
-                routes.Add(m.key, m);
+                if (!routes.ContainsKey(m.key))
+                {
+                    routes.Add(m.key, m);
+                }
             }
             m_layer.TrailRoutes = routes;
         }
@@ -1198,9 +1197,11 @@ namespace GpsRunningPlugin.Source
                     IDictionary<string, MapPolyline> result = new Dictionary<string, MapPolyline>();
                     foreach (TrailResultMarked trm in atr)
                     {
-                        TrailMapPolyline m = new TrailMapPolyline(trm.trailResult, trm.selInfo);
-                        m.Click += new MouseEventHandler(mapPoly_Click);
-                        result.Add(m.key, m);
+                        foreach (TrailMapPolyline m in TrailMapPolyline.GetTrailMapPolyline(trm.trailResult, trm.selInfo))
+                        {
+                            m.Click += new MouseEventHandler(mapPoly_Click);
+                            result.Add(m.key, m);
+                        }
                     }
                     m_layer.MarkedTrailRoutes = result;
             }
@@ -1668,12 +1669,74 @@ namespace GpsRunningPlugin.Source
 
         private void setRefActMenuItem_Click(object sender, EventArgs e)
         {
-            if (treeListAct.SelectedItems.Count == 1)
+            if (treeListAct.SelectedItems != null && treeListAct.SelectedItems.Count == 1)
             {
-                CommonData.refActWrapper = (ActivityWrapper)treeListAct.SelectedItems[0];
+                CommonData.refActWrapper = getListSelection(treeListAct.SelectedItems)[0];
             }
             treeListAct.Refresh();
             updateChart();
+        }
+
+        void limitActivityMenuItem_Click(object sender, System.EventArgs e)
+        {
+#if !ST_2_1
+            if (treeListAct.SelectedItems != null && treeListAct.SelectedItems.Count > 0)
+            {
+                IList<ActivityWrapper> atr = getListSelection(treeListAct.SelectedItems);
+                IList<IActivity> aAct = new List<IActivity>();
+                foreach (ActivityWrapper tr in atr)
+                {
+                    aAct.Add(tr.Activity);
+                }
+                m_view.SelectionProvider.SelectedItems = (List<IActivity>)aAct;
+            }
+#endif
+        }
+        void selectWithURMenuItem_Click(object sender, System.EventArgs e)
+        {
+            if (CommonData.refActWrapper != null)
+            {
+                IList<IActivity> similarActivities = UniqueRoutes.GetUniqueRoutesForActivity(CommonData.refActWrapper.Activity, null);
+                if (similarActivities != null)
+                {
+                    IList<IActivity> allActivities = new List<IActivity>();
+                    foreach (IActivity act in activities)
+                    {
+                        allActivities.Add(act);
+                    }
+                    foreach (IActivity act in similarActivities)
+                    {
+                        allActivities.Add(act);
+                    }
+                    this.Activities = allActivities;
+                }
+                //IDictionary<IActivity, IList<double[,]>> commonStretches = UniqueRoutes.GetCommonStretchesForActivity(CommonData.refActWrapper.Activity, similarActivities, null);
+                //IList<TrailResultMarked> results = new List<TrailResultMarked>();
+                //if (commonStretches.Count > 0 &&
+                //    commonStretches[actWrappers[0].Activity] != null &&
+                // commonStretches[actWrappers[0].Activity].Count > 0)
+                //{
+                //    if (Settings.UseTimeXAxis)
+                //    {
+                //        actWrappers[0].TimeOffset = new TimeSpan(0, 0, (int)commonStretches[actWrappers[0].Activity][0][0, 1]);
+                //    }
+                //    else
+                //    {
+                //        actWrappers[0].DistanceOffset = commonStretches[actWrappers[0].Activity][0][0, 2];
+                //    }
+                //    TrailResult tr = new TrailResult(actWrappers[0]);
+
+                //    foreach (double[,] kp in commonStretches[actWrappers[0].Activity])
+                //    {
+                //        IValueRangeSeries<DateTime> t = new ValueRangeSeries<DateTime>();
+                //        t.Add(new ValueRange<DateTime>(
+                //            tr.getActivityTime((float)kp[0, 1]),
+                //            tr.getActivityTime((float)kp[1, 1])));
+                //        results.Add(new TrailResultMarked(tr, t));
+                //    }
+                //}
+                //this.MarkTrack(results);
+            }
         }
 
         private void setRollAvgWidthMenuItem_Click(object sender, EventArgs e)
@@ -1736,7 +1799,7 @@ namespace GpsRunningPlugin.Source
             while (!valueOk && treeListAct.SelectedItems.Count > 0)
             {
                 String labelText = null;
-                ActivityWrapper wrapper = (ActivityWrapper)treeListAct.SelectedItems[0];
+                ActivityWrapper wrapper = getListSelection(treeListAct.SelectedItems)[0];
                 if (Settings.UseTimeXAxis)
                 {
                     labelText = Resources.SetOffset + " " + CommonResources.Text.LabelTime.ToLower() + ":";

@@ -47,12 +47,13 @@ namespace GpsRunningPlugin.Source
         private void InitializeComponent()
         {
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.lblUniqueRoutes = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(3, 14);
+            this.linkLabel1.Location = new System.Drawing.Point(3, 40);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(121, 13);
             this.linkLabel1.TabIndex = 0;
@@ -60,13 +61,23 @@ namespace GpsRunningPlugin.Source
             this.linkLabel1.Text = "Overlay plugin webpage";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // lblUniqueRoutes
+            // 
+            this.lblUniqueRoutes.AutoSize = true;
+            this.lblUniqueRoutes.Location = new System.Drawing.Point(3, 14);
+            this.lblUniqueRoutes.Name = "lblUniqueRoutes";
+            this.lblUniqueRoutes.Size = new System.Drawing.Size(93, 26);
+            this.lblUniqueRoutes.TabIndex = 1;
+            this.lblUniqueRoutes.Text = "<UR placeholder>\r\nline2";
+            // 
             // OverlaySettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.lblUniqueRoutes);
             this.Name = "OverlaySettings";
-            this.Size = new System.Drawing.Size(130, 42);
+            this.Size = new System.Drawing.Size(130, 61);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -75,5 +86,6 @@ namespace GpsRunningPlugin.Source
         #endregion
 
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label lblUniqueRoutes;
     }
 }
