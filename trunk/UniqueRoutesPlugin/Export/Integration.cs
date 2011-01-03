@@ -20,6 +20,9 @@ using System.Collections.Generic;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Data.GPS;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
+#if ST_2_1
+using TrailsPlugin.Data;
+#endif
 
 namespace SportTracksUniqueRoutesPlugin.Source
 {

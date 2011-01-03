@@ -8,18 +8,15 @@
     <AssemblyName>OverlayPlugin</AssemblyName>
     <PluginId>489FD22A-DB13-49DB-A77C-57E45CB1D049</PluginId>
   </PropertyGroup>
-  
   <Import Project="..\Common\Common-References.csproj" />
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);GPSRUNNING_OVERLAY</DefineConstants>
   </PropertyGroup>
-  
   <ItemGroup>
     <None Include="Resources\Image_32_Overlay.jpg" />
     <None Include="Resources\Image_16_Overlay.jpg" />
     <None Include="Resources\Image_24_Overlay.jpg" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Include="GUIDs.cs" />
     <Compile Include="Plugin.cs" />
@@ -54,7 +51,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  
   <ItemGroup>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -128,7 +124,6 @@
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
-  
   <ItemGroup>
     <EmbeddedResource Include="..\Common\Util\StringResources.resx">
       <Link>Util\StringResources.resx</Link>
@@ -178,31 +173,24 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-
   <ItemGroup Condition=" ('$(Configuration)' == 'ST2.1Release') or ('$(Configuration)' == 'ST2.1Debug') ">
-    <Compile Include="..\Common\Util\SaveImageInfoPage.cs">
+    <Compile Include="Util\SaveImageInfoPage.cs">
       <SubType>Form</SubType>
-      <Link>Util\SaveImageInfoPage.cs</Link>
     </Compile>
-    <EmbeddedResource Include="..\Common\Util\SaveImageInfoPage.resx">
+    <EmbeddedResource Include="Util\SaveImageInfoPage.resx">
       <DependentUpon>SaveImageInfoPage.cs</DependentUpon>
-      <Link>Util\SaveImageInfoPage.resx</Link>
     </EmbeddedResource>
-	
-    <EmbeddedResource Include="..\Common\Util\SaveImageResources.resx">
+    <EmbeddedResource Include="Util\SaveImageResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SaveImageResources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
-      <Link>Util\SaveImageResources.resx</Link>
     </EmbeddedResource>
-    <Compile Include="..\Common\Util\SaveImageResources.Designer.cs">
+    <Compile Include="Util\SaveImageResources.Designer.cs">
       <DependentUpon>SaveImageResources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <Link>Util\SaveImageResources.resx</Link>
     </Compile>
   </ItemGroup>
-
   <ItemGroup>
     <!-- TrailsMapLayers -->
     <Compile Include="..\Common\Util\TrailsMapLayers\Data\TrailGPSLocation.cs">

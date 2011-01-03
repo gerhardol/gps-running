@@ -175,6 +175,9 @@ namespace GpsRunningPlugin.Source
 #endif
             this.summaryListToolTipTimer.Tick += new System.EventHandler(ToolTipTimer_Tick);
             summaryList.LabelProvider = new ActivityLabelProvider();
+#if !ST_2_1
+            this.summaryList.SelectedItemsChanged += new System.EventHandler(summaryList_SelectedItemsChanged);
+#endif
         }
 
         public void ThemeChanged(ITheme visualTheme)
@@ -282,20 +285,24 @@ namespace GpsRunningPlugin.Source
         public bool HidePage()
         {
             _showPage = false;
+#if !ST_2_1
             if (m_layer != null)
             {
                 m_layer.ShowPage = _showPage;
             }
+#endif
             return true;
         }
         public void ShowPage(string bookmark)
         {
             _showPage = true;
             calculate();
+#if !ST_2_1
             if (m_layer != null)
             {
                 m_layer.ShowPage = _showPage;
             }
+#endif
         }
 
         private void RefreshColumns()
@@ -1000,9 +1007,11 @@ namespace GpsRunningPlugin.Source
             }
             m_layer.TrailRoutes = routes;
         }
+#endif
 
         void summaryList_Click(object sender, System.EventArgs e)
         {
+#if !ST_2_1
             object row;
             TreeList.RowHitState hit;
             row = summaryList.RowHitTest(((MouseEventArgs)e).Location, out hit);
@@ -1038,8 +1047,8 @@ namespace GpsRunningPlugin.Source
                 }
                 this.MarkTrack(aTrm);
             }
-        }
 #endif
+        }
 
         private void activeMenuItem_Click(object sender, EventArgs e)
         {
