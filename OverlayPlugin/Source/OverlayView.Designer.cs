@@ -645,8 +645,6 @@ namespace GpsRunningPlugin.Source
             this.treeListAct.ShowPlusMinus = false;
             this.treeListAct.Size = new System.Drawing.Size(652, 70);
             this.treeListAct.TabIndex = 0;
-            //this.treeListAct.SelectedItemsChanged += new System.EventHandler(summaryList_SelectedItemsChanged);
-            this.treeListAct.Click += new System.EventHandler(summaryList_Click);
             // 
             // treeListContextMenuStrip
             // 

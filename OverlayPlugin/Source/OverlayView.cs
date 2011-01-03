@@ -194,6 +194,8 @@ namespace GpsRunningPlugin.Source
 #endif
 #if !ST_2_1
             expandButton.BackgroundImage = CommonResources.Images.View2PaneLowerHalf16;
+            //this.treeListAct.SelectedItemsChanged += new System.EventHandler(summaryList_SelectedItemsChanged);
+            this.treeListAct.Click += new System.EventHandler(summaryList_Click);
 #endif
             //TODO: Implement Toolbar
             this.showToolBarMenuItem.Visible = false;
@@ -307,10 +309,12 @@ namespace GpsRunningPlugin.Source
         public bool HidePage()
         {
             _showPage = false;
+#if !ST_2_1
             if (m_layer != null)
             {
                 m_layer.ShowPage = _showPage;
             }
+#endif
             return true;
         }
         public void ShowPage(string bookmark)
@@ -318,10 +322,12 @@ namespace GpsRunningPlugin.Source
             bool changed = !_showPage;
             _showPage = true;
             if (changed) { RefreshPage(); }
+#if !ST_2_1
             if (m_layer != null)
             {
                 m_layer.ShowPage = _showPage;
             }
+#endif
         }
         public void ThemeChanged(ITheme visualTheme)
         {
@@ -1175,6 +1181,7 @@ namespace GpsRunningPlugin.Source
 
         private void updateRoute()
         {
+#if !ST_2_1
             IDictionary<string, MapPolyline> routes = new Dictionary<string, MapPolyline>();
             foreach (ActivityWrapper actWrapper in getListSelection(treeListAct.CheckedElements))
             {
@@ -1187,6 +1194,7 @@ namespace GpsRunningPlugin.Source
                 }
             }
             m_layer.TrailRoutes = routes;
+#endif
         }
 
         public void MarkTrack(IList<TrailResultMarked> atr)
@@ -2038,14 +2046,12 @@ namespace GpsRunningPlugin.Source
 
         private string saveImageProperties_fileName = "";
 
-#if ST_2_1
-        private object m_DetailPage = null;
-#else
+#if !ST_2_1
         private IDetailPage m_DetailPage = null;
         private IDailyActivityView m_view = null;
         private TrailPointsLayer m_layer = null;
-#endif
         private bool m_boDetailPageExpanded = false;
+#endif
 
         private void expandButton_Click(object sender, EventArgs e)
         {

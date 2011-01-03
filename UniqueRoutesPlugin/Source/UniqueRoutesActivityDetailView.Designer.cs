@@ -130,7 +130,6 @@ namespace GpsRunningPlugin.Source
             this.summaryList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.selectedRow_DoubleClick);
             this.summaryList.MouseLeave += new System.EventHandler(this.summaryList_MouseLeave);
             this.summaryList.MouseMove += new System.Windows.Forms.MouseEventHandler(this.summaryList_MouseMove);
-            this.summaryList.SelectedItemsChanged += new System.EventHandler(summaryList_SelectedItemsChanged);
             this.summaryList.Click += new System.EventHandler(summaryList_Click);
             // 
             // contextMenu

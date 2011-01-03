@@ -47,7 +47,7 @@ namespace GpsRunningPlugin.Source
         private IDictionary<GoalParameter, IDictionary<GoalParameter, IDictionary<bool, IList<Result>>>> cachedResults;
         private String speedUnit;
 #if ST_2_1
-        private object m_DetailPage = null;
+        //private object m_DetailPage = null;
 #else
         private IDetailPage m_DetailPage = null;
         private IDailyActivityView m_view = null;
