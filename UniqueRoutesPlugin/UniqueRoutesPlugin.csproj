@@ -9,6 +9,9 @@
     <PluginId>5c630517-46c4-478d-89d6-a8a6ca6337db</PluginId>
   </PropertyGroup>
   <Import Project="..\Common\Common-References.csproj" />
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);GPSRUNNING_UNIQUEROUTES</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Export\Integration.cs" />
     <Compile Include="GUIDs.cs" />

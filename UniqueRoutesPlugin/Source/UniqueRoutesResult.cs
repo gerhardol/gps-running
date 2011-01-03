@@ -108,7 +108,7 @@ namespace GpsRunningPlugin.Source
                 return UnitUtil.HeartRate.ToString(getAvgHR());
             }
         }
-        public Color Color
+        public Color ActColor
         {
             get
             {
@@ -272,8 +272,8 @@ namespace GpsRunningPlugin.Source
             //Should be using reflection....
             switch (id)
             {
-                case SummaryColumnIds.Color:
-                    return Color.ToArgb();
+                case SummaryColumnIds.ActColor:
+                    return ActColor.ToArgb();
                 case SummaryColumnIds.StartDate:
                     return m_activity.StartTime.Ticks;
                 case SummaryColumnIds.StartTime:

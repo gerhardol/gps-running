@@ -36,7 +36,7 @@ namespace GpsRunningPlugin.Source
 
             switch(column.Id)
             {
-                case SummaryColumnIds.Color:
+                case SummaryColumnIds.ActColor:
                     return null;
 //                case SummaryColumnIds.StartTime:
 //                    return wrapper.StartTime;
@@ -69,14 +69,14 @@ namespace GpsRunningPlugin.Source
         {
             UniqueRoutesResult wrapper = (UniqueRoutesResult)element;
 
-            if (column.Id == SummaryColumnIds.Color)
+            if (column.Id == SummaryColumnIds.ActColor)
             {
                 Bitmap image = new Bitmap(column.Width, 15);
                 for (int x = 0; x < image.Width; x++)
                 {
                     for (int y = 0; y < image.Height; y++)
                     {
-                        image.SetPixel(x, y, wrapper.Color);
+                        image.SetPixel(x, y, wrapper.ActColor);
                     }
                 }
                 return image;

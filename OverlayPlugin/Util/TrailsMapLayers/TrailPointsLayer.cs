@@ -196,34 +196,25 @@ namespace TrailsPlugin.UI.MapLayers
                                 }
                             }
                         }
-                        if (area != null)
-                        {
-                            this.MapControl.SetLocation(area.Center,
-                            this.MapControl.ComputeZoomToFit(area));
-                            if (m_reportMapInstance >= 0)
-                            {
-                                m_instances[m_reportMapInstance].MapControl.SetLocation(area.Center,
-                                m_instances[m_reportMapInstance].MapControl.ComputeZoomToFit(area));
-                            }
-                        }
+                        DoZoom(area);
                     }
                     RefreshOverlays(true);
                 }
             }
         }
-        public IList<IGPSPoint> ZoomRoute
+        public void DoZoom(IGPSBounds area)
         {
-            set
+            if (area != null)
             {
-                GPSBounds area = GPSBounds.FromGPSPoints(value);
-                if (area != null)
+                this.MapControl.SetLocation(area.Center,
+                this.MapControl.ComputeZoomToFit(area));
+                if (m_reportMapInstance >= 0)
                 {
-                    this.MapControl.SetLocation(area.Center,
-                    this.MapControl.ComputeZoomToFit(area));
+                    m_instances[m_reportMapInstance].MapControl.SetLocation(area.Center,
+                    m_instances[m_reportMapInstance].MapControl.ComputeZoomToFit(area));
                 }
             }
         }
-
         public float HighlightRadius
         {
             set

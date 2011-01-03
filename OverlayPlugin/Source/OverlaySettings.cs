@@ -29,6 +29,7 @@ using ZoneFiveSoftware.Common.Data.Fitness;
 using GpsRunningPlugin;
 using GpsRunningPlugin.Source;
 using GpsRunningPlugin.Properties;
+using TrailsPlugin.Integration;
 
 namespace GpsRunningPlugin.Source
 {
@@ -37,12 +38,11 @@ namespace GpsRunningPlugin.Source
         public OverlaySettings()
         {
             InitializeComponent();
-            linkLabel1.Text = Resources.Webpage;
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start(new ProcessStartInfo("IExplore",
+            System.Diagnostics.Process.Start(new ProcessStartInfo(
                 "http://code.google.com/p/gps-running/wiki/Overlay"));
         }
         public bool HidePage()
@@ -57,6 +57,8 @@ namespace GpsRunningPlugin.Source
         }
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
+            linkLabel1.Text = Resources.Webpage;
+            this.lblUniqueRoutes.Text = UniqueRoutes.CompabilityText;
         }
     }
 }

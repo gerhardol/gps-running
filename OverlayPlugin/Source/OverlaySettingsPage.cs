@@ -77,7 +77,7 @@ namespace GpsRunningPlugin.Source
 
         public void ThemeChanged(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme)
         {
-            if (control == null)
+            if (control != null)
             {
                 control.ThemeChanged(visualTheme);
             }
@@ -90,7 +90,7 @@ namespace GpsRunningPlugin.Source
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
-            if (control == null)
+            if (control != null)
             {
                 control.UICultureChanged(culture);
             }

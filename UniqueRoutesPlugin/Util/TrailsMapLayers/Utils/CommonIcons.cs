@@ -27,20 +27,43 @@ using System.Globalization;
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.IO;
+using ZoneFiveSoftware.Common.Visuals.Fitness;
 
 namespace TrailsPlugin
 {
     class CommonIcons
     {
 
+        private static IApplication GetApplication()
+        {
+#if GPSRUNNING_UNIQUEROUTES||GPSRUNNING_OVERLAY
+            return GpsRunningPlugin.Plugin.GetApplication();
+#elif MATRIXPLUGIN
+            return MatrixPlugin.MatrixPlugin.GetApplication();
+#else // TRAILSPLUGIN
+            return PluginMain.GetApplication();
+#endif
+        }
+
+        private static string GetMainGuid()
+        {
+#if GPSRUNNING_UNIQUEROUTES||GPSRUNNING_OVERLAY
+            return GpsRunningPlugin.GUIDs.PluginMain.ToString();
+#elif MATRIXPLUGIN
+            return MatrixPlugin.GUIDs.PluginMain.ToString();
+#else // TRAILSPLUGIN
+            return PluginMain.GUIDs.PluginMain.ToString();
+#endif
+        }
+
 #if !ST_2_1
         const int brushSize = 6; //Even
         //The outer radius defines the included area
         static public string Circle(int sizeX, int sizeY, out Size iconSize)
         {
-            string basePath = GpsRunningPlugin.Plugin.GetApplication().Configuration.CommonWebFilesFolder +
+            string basePath = GetApplication().Configuration.CommonWebFilesFolder +
                                   System.IO.Path.DirectorySeparatorChar +
-                                  GpsRunningPlugin.GUIDs.PluginMain.ToString() + System.IO.Path.DirectorySeparatorChar;
+                                  GetMainGuid() + System.IO.Path.DirectorySeparatorChar;
             if (!Directory.Exists(basePath))
             {
 

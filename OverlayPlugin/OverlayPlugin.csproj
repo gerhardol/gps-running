@@ -9,6 +9,9 @@
     <PluginId>489FD22A-DB13-49DB-A77C-57E45CB1D049</PluginId>
   </PropertyGroup>
   <Import Project="..\Common\Common-References.csproj" />
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);GPSRUNNING_OVERLAY</DefineConstants>
+  </PropertyGroup>
   <ItemGroup Condition=" ('$(Configuration)' == 'ST2.1Release') or ('$(Configuration)' == 'ST2.1Debug') ">
     <Compile Include="Util\SaveImageInfoPage.cs">
       <SubType>Form</SubType>
@@ -64,6 +67,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Integration\IntegrationUtility.cs" />
+    <Compile Include="Integration\UniqueRoutes.cs" />
     <Compile Include="Source\OverlayAction.cs" />
     <Compile Include="Source\OverlayActivityDetailPage.cs" />
     <Compile Include="Source\OverlayEdit.cs" />
@@ -117,6 +122,9 @@
     <EmbeddedResource Include="Properties\Resources.fr.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Resources.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Source\OverlaySettings.resx">
+      <DependentUpon>OverlaySettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Source\OverlayView.resx">
       <DependentUpon>OverlayView.cs</DependentUpon>

@@ -38,11 +38,20 @@ namespace TrailsPlugin.Data
 {
     public class TrailResult
     {
+#if GPSRUNNING_UNIQUEROUTES
         UniqueRoutesResult m_result;
         public TrailResult(UniqueRoutesResult r)
         {
             m_result = r;
         }
+#endif
+#if GPSRUNNING_OVERLAY
+        ActivityWrapper m_result;
+        public TrailResult(ActivityWrapper r)
+        {
+            m_result = r;
+        }
+#endif
         public IActivity Activity
         {
             get
@@ -54,12 +63,21 @@ namespace TrailsPlugin.Data
         {
             get
             {
-                return m_result.Color;
+                return m_result.ActColor;
             }
         }
         public int Order = 0;
 
         /* Common UniqueRoutes and Overlay below */
+        public IList<IGPSPoint> GpsPoints()
+        {
+            IList<IGPSPoint> m_gpsPoints = new List<IGPSPoint>();
+            for (int i = 0; i < Activity.GPSRoute.Count; i++)
+            {
+                m_gpsPoints.Add(Activity.GPSRoute[i].Value);
+            }
+            return m_gpsPoints;
+        }
         public IList<IList<IGPSPoint>> GpsPoints(Data.TrailsItemTrackSelectionInfo t)
         {
             if (t.MarkedTimes != null && t.MarkedTimes.Count > 0)
@@ -123,15 +141,7 @@ namespace TrailsPlugin.Data
 
             return result;
         }
-        public IList<IGPSPoint> GpsPoints()
-        {
-            IList<IGPSPoint> m_gpsPoints = new List<IGPSPoint>();
-            for (int i = 0; i < Activity.GPSRoute.Count; i++)
-            {
-                m_gpsPoints.Add(Activity.GPSRoute[i].Value);
-            }
-            return m_gpsPoints;
-        }
+
         public DateTime FirstTime
         {
             get

@@ -17,43 +17,42 @@ my$localcopy="Resources.xls";
 my$spreadsheetURL='http://spreadsheets.google.com/ccc?key=tNZna7OU_2RlRYv5Iv_csgg';
 my$sav="$spreadsheetURL$savArg";
 
-#Temp workaround
+#Set name on file if Google access does not work
 #$spreadsheetURL="file:g:/Users/go/dev/gc/gps-running/Resources.csv";
 #$csvArg="";
 
- my$data = $ARGV[0] || ".";#"$spreadsheetURL$csvArg";
+my$data = $ARGV[0] || ".";#"$spreadsheetURL$csvArg";
 my$root = $ARGV[1] || ".";
 my$db;
 
 my$csv;
 if($data ne ".")
 {
-$csv = get($data);
- die "Couldn't get $data" unless defined $csv;
-
+  $csv = get($data);
 }
 else
 {
- #Retrieve from Google Spreadsheet
-  $data="$spreadsheetURL$csvArg";
-  my$tfile="g_csv.tmp.$$";
-  `wget  --no-check-certificate -O $tfile "$data"`;
-  open F, "$tfile";
-  $csv=<F>;
-  close F;
-  unlink $tfile;
- die "Couldn't get $data" unless defined $csv;
-#Store a copy locally
-if($sav ne "")
-{
+  #Store a copy locally
+ if($sav ne "")
+ {
   `wget  --no-check-certificate -O $localcopy "$sav"`;
   #my $browser = LWP::UserAgent->new;
   #my$response=$browser->get("$data$savArg");
   #die "Error at $data$savArg\n ", $response->status_line, "\n Aborting"
   # unless $response->is_success;
   #getstore($sav,$localcopy) != 200 || print "Warning: Cannot save copy of $sav in $localcopy\n";
+ }
+
+ #Retrieve from Google Spreadsheet
+  $data="$spreadsheetURL$csvArg";
+  my$tfile="g_csv.tmp.$$";
+  `wget  --no-check-certificate -O $tfile "$data"`;
+  open F, "$tfile";
+  while(<F>){$csv.=$_;}
+  close F;
+  unlink $tfile;
 }
-}
+ die "Couldn't get $data" unless defined $csv;
 
 if ($csv =~ m/\<\?xlm/) {
     my$config = XMLin($csv, ForceArray => 1, KeyAttr => {});

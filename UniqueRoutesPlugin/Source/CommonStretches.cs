@@ -21,10 +21,12 @@ using System.Text;
 using ZoneFiveSoftware.Common.Data;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Data.GPS;
+using ZoneFiveSoftware.Common.Visuals.Fitness;
 using GpsRunningPlugin;
 using GpsRunningPlugin.Source;
 using System.Windows.Forms;
 using System.Collections;
+using TrailsPlugin.Data;
 
 namespace GpsRunningPlugin.Source
 {
@@ -45,86 +47,102 @@ namespace GpsRunningPlugin.Source
         {
             this.debugInfo = debugInfo;
         }
-        public int index;
-        public double distance;
-        public double time;
-        public bool restLap;
+        public int index =0;
+        public double distance=0;
+        public double time=0;
+        public bool restLap=false;
         public string debugInfo = "";
     }
     public class CommonStretches
     {
         private CommonStretches() { }
 
-        public static IDictionary<IActivity, IList<double>> getCommonSpeed(IActivity activity, IList<IActivity> activities, bool useActive)
+        public static IItemTrackSelectionInfo[] getSelInfo(DateTime[] st, IList<PointInfo[]> pi, bool useActive)
+        {
+            //Data.TrailsItemTrackSelectionInfo result = new Data.TrailsItemTrackSelectionInfo();
+            TrailsItemTrackSelectionInfo[] res = new TrailsItemTrackSelectionInfo[]{ new TrailsItemTrackSelectionInfo(), new TrailsItemTrackSelectionInfo() };
+            res[0].MarkedTimes = new ValueRangeSeries<DateTime>();
+            res[0].MarkedDistances = new ValueRangeSeries<double>();
+            res[1].MarkedTimes = new ValueRangeSeries<DateTime>();
+            res[1].MarkedDistances = new ValueRangeSeries<double>();
+
+            PointInfo[] startIndex = null;
+            PointInfo[] prevIndex = null;
+            foreach (PointInfo[] i in pi)
+            {
+                //TODO: Rest/lap transitions incorrect
+                if (i[0].index >= 0 && (!useActive || !(i[0].restLap || i[1].restLap)))
+                {
+                    if (startIndex == null || startIndex[0].index < 0)
+                    {
+                        startIndex = i;
+                    }
+                    prevIndex = i;
+                }
+                else
+                {
+                    if (startIndex != null && prevIndex != null && 
+                    startIndex[0].index > -1 && prevIndex[0].index > -1)
+                    {
+                        //End - Update summary
+                        //Ignore single point matches
+                        if (startIndex[0].index < prevIndex[0].index)
+                        {
+                            for (int j = 0; j <= 1; j++)
+                            {
+                                res[j].MarkedTimes.Add(new ValueRange<DateTime>(
+                                    st[j].AddSeconds(startIndex[j].time),
+                                    st[j].AddSeconds(prevIndex[j].time)));
+                                res[j].MarkedDistances.Add(new ValueRange<double>(
+                                    startIndex[j].distance, prevIndex[j].distance));
+                            }
+                        }
+                    }
+                    startIndex = null;
+                    prevIndex = null;
+                }
+            }
+            return res;
+        }
+        public static IDictionary<IActivity, PointInfo[]> getCommonSpeed(IActivity activity, IList<IActivity> activities, bool useActive)
         {
             return getCommonSpeed(activity.GPSRoute, activities, useActive);
         }
-        public static IDictionary<IActivity, IList<double>> getCommonSpeed(IGPSRoute refRoute, IList<IActivity> activities, bool useActive)
+        public static IDictionary<IActivity, PointInfo[]> getCommonSpeed(IGPSRoute refRoute, IList<IActivity> activities, bool useActive)
         {
             IDictionary<IActivity, IList<PointInfo[]>> points = new Dictionary<IActivity, IList<PointInfo[]>>();
             points = findSimilarPoints(refRoute, activities);
             return getCommonSpeed(points, activities, useActive);
         }
 
-        public static IDictionary<IActivity, IList<double>> getCommonSpeed(IDictionary<IActivity, IList<PointInfo[]>> points, IList<IActivity> activities, bool useActive)
+        public static IDictionary<IActivity, PointInfo[]> getCommonSpeed(IDictionary<IActivity, IList<PointInfo[]>> points, IList<IActivity> activities, bool useActive)
         {
-            IDictionary<IActivity, IList<double>> result = new Dictionary<IActivity, IList<double>>();
+            IDictionary<IActivity, PointInfo[]> result = new Dictionary<IActivity, PointInfo[]>();
             foreach (IActivity otherActivity in activities)
             {
-                double MinDistStretch = Settings.Radius*2*2;
-                double totTime = 0;
-                double totTimeRef = 0;
-                double totDist = 0;
-                double totDistRef = 0;
-
-                PointInfo startIndex = null;
-                PointInfo startIndexRef = null;
-                PointInfo prevIndex = null;
-                PointInfo prevIndexRef = null;
-                int noStretches = 0;
+                //double MinDistStretch = Settings.Radius*2*2;
+                //totDist, totTime, totDistRef, totTimeRef, noStretches
+                PointInfo[] res = new PointInfo[2];
 
                 if (points.ContainsKey(otherActivity))
                 {
-                    foreach (PointInfo[] i in points[otherActivity])
+                    IItemTrackSelectionInfo[] i = getSelInfo(new DateTime[] { otherActivity.StartTime, otherActivity.StartTime },
+                        points[otherActivity], useActive);
+
+                    for (int j = 0; j <= 1; j++)
                     {
-                        if (i[0].index >= 0 && (!useActive || !(i[0].restLap || i[1].restLap)))
+                        res[j] = new PointInfo(i[j].MarkedTimes.Count);
+                        foreach (ValueRange<DateTime> t in i[j].MarkedTimes)
                         {
-                            if (startIndex == null || startIndex.index < 0)
-                            {
-                                startIndex = i[0];
-                                startIndexRef = i[1];
-                            }
-                            prevIndex = i[0];
-                            prevIndexRef = i[1];
+                            res[j].time += t.Upper.Subtract(t.Lower).TotalSeconds;
                         }
-                        else
+                        foreach (ValueRange<double> t in i[j].MarkedDistances)
                         {
-                            if (startIndex != null && startIndexRef != null && prevIndex != null && prevIndexRef != null &&
-                            startIndex.index > -1 && startIndexRef.index > -1 && prevIndex.index > -1 && prevIndexRef.index > -1)
-                            {
-                                //End - Update summary
-                                //Ignore single point matches
-                                if (startIndex.index < prevIndex.index)
-                                {
-                                    totTime += prevIndex.time - startIndex.time;
-                                    totTimeRef += prevIndexRef.time - startIndexRef.time;
-                                    totDist += prevIndex.distance - startIndex.distance;
-                                    totDistRef += prevIndexRef.distance - startIndexRef.distance;
-                                    noStretches++;
-                                }
-                            }
-                            startIndex = null;
-                            prevIndex = null;
+                            res[j].distance += t.Upper - t.Lower;
                         }
                     }
+                    result.Add(otherActivity, res);
                 }
-                IList<double> s = new List<double>();
-                s.Add(totDist);
-                s.Add(totTime);
-                s.Add(totDistRef);
-                s.Add(totTimeRef);
-                s.Add(noStretches);
-                result.Add(otherActivity, s);
             }
             return result;
         }
@@ -136,6 +154,8 @@ namespace GpsRunningPlugin.Source
         {
             return findSimilarPoints(refRoute, null, activities);
         }
+
+        //TODO: Tune algorithm
         public static IDictionary<IActivity, IList<PointInfo[]>> findSimilarPoints(IGPSRoute refRoute, IActivityLaps refLaps, IList<IActivity> activities)
         {
             GPSGrid grid = new GPSGrid(refRoute, 1, true);
@@ -265,13 +285,11 @@ namespace GpsRunningPlugin.Source
                                 s[1] = new PointInfo(lastIndex.Index, lastIndex.Dist, refRoute[lastIndex.Index].ElapsedSeconds,
                                     getRestLap(lastIndex.Index, refRoute, refLaps));
                                 result[otherActivity].Add(s);
-
                             }
                             else
                             {
                                 lastMatch = -1;
                             }
-
                         }
                     }
                     //add end marker if needed

@@ -36,13 +36,10 @@ namespace GpsRunningPlugin.Source
     {
         static Settings()
         {
-            uniqueRoutes = getPlugin("UniqueRoutes", "GpsRunningPlugin.Source.UniqueRoutes");
             defaults();
         }
 
-        public readonly static Type uniqueRoutes;
-
-        private static IList<string> treeListActColumns;
+        private static IList<string> treeListActColumns = new List<string>();
         public static IList<string> TreeListActColumns
         {
             get
@@ -56,7 +53,7 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        private static IList<string> treeListPermanentActColumns;
+        private static IList<string> treeListPermanentActColumns = new List<string>();
         public static IList<string> TreeListPermanentActColumns
         {
             get
@@ -333,12 +330,10 @@ namespace GpsRunningPlugin.Source
             savedImageFolder = "";
 			savedImageFormat = ImageFormat.Jpeg;
 
-            treeListPermanentActColumns = new List<string>();
             treeListPermanentActColumns.Add(OverlayColumnIds.Visible);
             treeListPermanentActColumns.Add(OverlayColumnIds.Colour);
             treeListPermanentActColumns.Add(OverlayColumnIds.StartTime);
 
-            treeListActColumns = new List<string>();
             // Visible, colour and StartTime will always be shown anyway
             treeListActColumns.Add(OverlayColumnIds.Offset);
             treeListActColumns.Add(OverlayColumnIds.Time);
