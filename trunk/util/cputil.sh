@@ -1,3 +1,7 @@
+#!/bin/bash
+
+#No longer used
+
 p="AccumulatedSummary Overlay PerformancePredictor HighScore TRIMP UniqueRoutes"
 #s=PerformancePredictor
 
