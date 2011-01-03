@@ -72,9 +72,12 @@ namespace TrailsPlugin.Data
         public IList<IGPSPoint> GpsPoints()
         {
             IList<IGPSPoint> m_gpsPoints = new List<IGPSPoint>();
-            for (int i = 0; i < Activity.GPSRoute.Count; i++)
+            if (Activity.GPSRoute != null)
             {
-                m_gpsPoints.Add(Activity.GPSRoute[i].Value);
+                for (int i = 0; i < Activity.GPSRoute.Count; i++)
+                {
+                    m_gpsPoints.Add(Activity.GPSRoute[i].Value);
+                }
             }
             return m_gpsPoints;
         }
@@ -94,49 +97,55 @@ namespace TrailsPlugin.Data
         {
             IList<IList<IGPSPoint>> result = new List<IList<IGPSPoint>>();
 
-            foreach (IValueRange<DateTime> r in t)
+            if (Activity.GPSRoute != null)
             {
-                IGPSRoute GpsTrack = Activity.GPSRoute;
-                IList<IGPSPoint> track = new List<IGPSPoint>();
-                int i = 0;
-                while (i < GpsTrack.Count &&
-                    0 < r.Lower.CompareTo(GpsTrack.EntryDateTime(GpsTrack[i])))
+                foreach (IValueRange<DateTime> r in t)
                 {
-                    i++;
+                    IGPSRoute GpsTrack = Activity.GPSRoute;
+                    IList<IGPSPoint> track = new List<IGPSPoint>();
+                    int i = 0;
+                    while (i < GpsTrack.Count &&
+                        0 < r.Lower.CompareTo(GpsTrack.EntryDateTime(GpsTrack[i])))
+                    {
+                        i++;
+                    }
+                    while (i < GpsTrack.Count &&
+                        0 <= r.Upper.CompareTo(GpsTrack.EntryDateTime(GpsTrack[i])))
+                    {
+                        track.Add(GpsTrack[i].Value);
+                        i++;
+                    }
+                    result.Add(track);
                 }
-                while (i < GpsTrack.Count &&
-                    0 <= r.Upper.CompareTo(GpsTrack.EntryDateTime(GpsTrack[i])))
-                {
-                    track.Add(GpsTrack[i].Value);
-                    i++;
-                }
-                result.Add(track);
             }
 
             return result;
         }
         private IList<IList<IGPSPoint>> GpsPoints(IValueRangeSeries<double> t)
         {
-            IGPSRoute GpsTrack = Activity.GPSRoute;
-            IDistanceDataTrack DistanceMetersTrack = Activity.GPSRoute.GetDistanceMetersTrack();
             IList<IList<IGPSPoint>> result = new List<IList<IGPSPoint>>();
 
-            foreach (IValueRange<double> r in t)
+            if (Activity.GPSRoute != null)
             {
-                IList<IGPSPoint> track = new List<IGPSPoint>();
-                int i = 0;
-                while (i < GpsTrack.Count &&
-                    r.Lower - FirstDist > DistanceMetersTrack[i].Value)
+                IGPSRoute GpsTrack = Activity.GPSRoute;
+                IDistanceDataTrack DistanceMetersTrack = Activity.GPSRoute.GetDistanceMetersTrack();
+                foreach (IValueRange<double> r in t)
                 {
-                    i++;
+                    IList<IGPSPoint> track = new List<IGPSPoint>();
+                    int i = 0;
+                    while (i < GpsTrack.Count &&
+                        r.Lower - FirstDist > DistanceMetersTrack[i].Value)
+                    {
+                        i++;
+                    }
+                    while (i < GpsTrack.Count &&
+                        r.Upper - FirstDist >= DistanceMetersTrack[i].Value)
+                    {
+                        track.Add(GpsTrack[i].Value);
+                        i++;
+                    }
+                    result.Add(track);
                 }
-                while (i < GpsTrack.Count &&
-                    r.Upper - FirstDist >= DistanceMetersTrack[i].Value)
-                {
-                    track.Add(GpsTrack[i].Value);
-                    i++;
-                }
-                result.Add(track);
             }
 
             return result;
