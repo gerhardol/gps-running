@@ -17,13 +17,13 @@ This project is adapted to be used without user changes. To achieve this in a si
   # Build actions like creating .st3plugin
   # References to !SportTacks libraries etc are dependent on the ST version
 
-The same setup can be used in other plugins too, done in !MiscPlugin, !ST2Funbeat, Trails, !ActivityPicture, !NordicMaps (hitta.se), ApplyRoutes and Matrix (on CodePlex), as well as patches for exportcrs, HTML Export Plugin and CSV import. See one of the project files as an example. 
+The same setup can be used in other plugins too, done in !MiscPlugin, !ST2Funbeat, Trails, !ActivityPicture, !NordicMaps (hitta.se), ApplyRoutes and Matrix (on CodePlex), as well as patches for ExportCrs, HTML Export Plugin and CSV Import. See one of the project files as an example. 
 Each .csproj contains a few specific settings and the specific files for the plugin only. The common setting files are imported.
 The plugin GUID must be added manually. The GlobalSection in the .sln must be updated manually (you probably want to use your own .sln file, copy the file in the project).
 
 Note the following issues with the setup:
   # At startup, VSE warns that files are imported (can be avoided by adjusting the registry).
-  # There are build warnings that all references cannot be found at builds (if ST2 and ST3 are supported).
+  # There are build warnings that all references cannot be found at builds (if both ST2 and ST3 are supported).
   # You must adjust the Solution properties when using a configuration the first time, otherwise your project will not be build.
   
 This solution was contributed by old_man_biking on the !SportTracks forum.
@@ -65,7 +65,11 @@ To keep the .resx and spreadsheet consistent, diff the column contents. (I used 
  {{{$ util/i18n.pl file:g:/Users/go/dev/gc/gps-running/Resources.csv .}}}
 
 ===Util===
-Some code (and part of the translation) is shared between the plugins. Not in a separate library but in duplicated code (only the namespace differs). A simple script is used to copy and replace namespace. (There is a problem making this to a library, as there is a reference to the application.) A simple shell script (run in Cygwin) that copies .cs and !StringResources.resx from a "master" plugin to the others and updates namespace is available: 
+Some code (and part of the translation) is shared between the plugins. The source files (no libraries)  is put under Common/. 
+All plugins share the same namespace to get over limitations with a previous setup. To share the .resx files with separate name spaces, something like the following is needed to adjust namespace in the resx. (Another omb tip.)
+  <LogicalName>GpsRunning.Resources.Resources.fr.resources</LogicalName>
+
+Previous setup: Shared code was not in a separate library but in duplicated code (only the namespace differed originally). A simple script is used to copy and replace namespace. (There is a problem making this to a library, as there is a reference to the application.) A simple shell script (run in Cygwin) that copies .cs and !StringResources.resx from a "master" plugin to the others and updates namespace is available: 
 {{{$ util/cputil.sh PerformancePredictor}}}
 
 ===Problems===
