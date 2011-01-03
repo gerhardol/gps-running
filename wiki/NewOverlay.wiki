@@ -31,16 +31,15 @@ Another way of seeing form improvement is to check how fast you heart rate drops
 ===Selecting activities and opening Overlay===
 Overlay can be used from the daily activity view or the activity report view. The activity report view is a bit more flexible and gives you the possiblitiy to have the Overlay table and graph in a separate popup window.
 
-First go to the activity reports and select the activities that you wish to compare. You do this either by pressing down control and then select some activities, or by holding down shift and then select a range of activities by clicking the start and end element. Once you have selected at least one activity you are able to apply the Overlay plugin as shown in the figure below.
-
+First go to the activity reports and select the activities that you wish to compare. You do this either by pressing down control and then select some activities, or by holding down shift and then select a range of activities by clicking the start and end element. In the activity report view, you can also select a line that has subitems a line that has subitems (like the month of december 2010 if the activity report table is grouped by year, month). Once you have selected at least one activity you are able to apply the Overlay plugin as shown in the figure below.
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/StartOverlay.png]
 
-Open Overlay in the Sporttracks program, with the possibility to show routes in the map.
+Above: Open Overlay in the Sporttracks program, with the possibility to show routes in the map.
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/StartOverlayPopup.png]
 
-Open Overlay in a popup window containing the table and the chart, allowing a larger chart to be used.
+Above: Open Overlay in a popup window containing the table and the chart, allowing a larger chart to be used.
 
 ===Working with the table===
 *Selecting table contents*
@@ -49,7 +48,7 @@ You can customise the table to your own liking by selecting what columns you nee
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/OverlayColumnChoice.png]
 
-Chose the contents of the table.
+Above: Choose the contents of the table.
 
 *Choosing the reference*
 
@@ -58,13 +57,13 @@ The "diff" columns display the difference between the reference activity and the
 ===Working with the chart===
 The chart x-axis can be either time or distance. Your choose with the radio buttons in the bar above the chart,
 
-What data series that should be shown is selected using the context menu, which is opened by clicking the arrow to the right of the text "Overlay".
+What data series that should be shown is selected using the context menu, which is opened by clicking the arrow to the right of the text "Overlay chart".
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/OverlayChartMenu.png]
 
-Opening the menu.
+Above: Opening the menu.
 
-The most common data series can also be selected in the bar above the chart.
+The most common data series can also be selected in the chart bar just above the chart itself.
 
 *Plotting comparisons to the reference activity*
 
@@ -73,7 +72,7 @@ In the Show diff menu, you can select data series that for each point in time (o
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/ShowDiffTime.png]
 
-Choose the tracks to plot in the chart using the bar or the menu.
+Above: Choose the tracks to plot in the chart using the bar or the menu.
 
 *Selecting the reference activity*
 
@@ -87,19 +86,23 @@ It is possible to see a category average for a collection of activities. Average
 
 *Moving average*
 
-The moving average is the average of a single graph. If it is set to 0 seconds or 0 meters it will show the average from the start of the activity; i.e., each point is the average of all the preceding points on the graph. This is similar to looking at your average speed or average heart rate on your watch. If you set the moving average to something bigger than 0, then the average is the average over the past XX seconds or meters. If the moving average is set to 120 seconds then the average of each point, will be the average of the last two minutes.
+The moving average filters each single graph. If the filter width it is set to 0 seconds or 0 meters it will show the average from the start of the activity; i.e., each point is the average of all the preceding points on the graph. This is similar to looking at your average speed or average heart rate on your watch. If you set the moving average to something bigger than 0, then the average is the average over the past XX seconds or meters. If the moving average is set to 120 seconds then the average of each point, will be the average of the last two minutes.
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/MovingAverage.png]
 
-*Offset???*
+*Offset*
+If you want to compare two activities but the interesting parts are not located at exactly the same time or distance, it is possible to set an offset on one of the activities. Select the activity in the table or the chart, open the menu and select "Select activity offset". A popup dialog will open, allowing you to enter an offset. The offset will be in time or distance depending on your current x-axis selection.
 
 *Making activities visible/not visible*
-
-
+In the table, there is a column called Visible that contains checkboxes. Unselecting a checkbox removes the corresponding line from the chart and the route from the map. The unselected activity will still be included in calculations like category average.
 
 ===Working with the map===
-Showing routes
-Making routes visible/not visible
+When Overlay is opened inside Sporttracks and not as a popup, it will also have an effect on the map view. All of the selected activities will be displayed as routes on the map, assuming that they have GPS tracks. The routes will be color coded in the same way as in the chart and the table. The route for an activity can be removed by unselecting the checkbox in the Visible column of the activity in the table.
+
+Note: When selecting more than one line in the activity reports view, Sporttracks doesn't display the map. That is something that this plugin cannot affect. If a line that has subitems (like the month of december 2010 if the activity report table is grouped by year, month) is chosen, all of the activities will be displayed in the map.
+
+===Integration with Unique routes===
+
 
 ===Feedback===
 For patches, bugreports or feature suggestions, use the Google Code issue list.
