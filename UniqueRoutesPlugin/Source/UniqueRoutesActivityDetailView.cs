@@ -442,6 +442,22 @@ namespace GpsRunningPlugin.Source
                                     UnitUtil.Time.ToString(commonStretches[activity][0].time) +
                                     " (" + UnitUtil.Distance.ToString(commonStretches[activity][1].distance, "u") + " " +
                                     " " + UnitUtil.Time.ToString(commonStretches[activity][1].time) + ")";
+                                if (Plugin.Verbose > 0)
+                                {
+                                    //Extra info, also for additional info
+                                    IItemTrackSelectionInfo[] ii = CommonStretches.getSelInfo(
+                                        new DateTime[] { activity.StartTime, refActivity.StartTime },
+                                        SimilarPoints[activity], Settings.UseActive);
+                                    foreach (ValueRange<DateTime> d in ii[0].MarkedTimes)
+                                    {
+                                        commonText += System.Environment.NewLine + d;
+                                    }
+                                    commonText += System.Environment.NewLine;
+                                    foreach (ValueRange<DateTime> d in ii[1].MarkedTimes)
+                                    {
+                                        commonText += System.Environment.NewLine + d;
+                                    }
+                                }
                             }
                             else
                             {

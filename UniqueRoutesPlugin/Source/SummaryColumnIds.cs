@@ -117,7 +117,7 @@ namespace GpsRunningPlugin.Source
         {
             IList<IListColumnDefinition> columnDefs = new List<IListColumnDefinition>();
             columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.StartDate, CommonResources.Text.LabelDate, "", 100, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.StartTime, CommonResources.Text.LabelStartTime, "", 70, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.StartTime, CommonResources.Text.LabelStartTime, "", 120, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.Time, UnitUtil.Time.LabelAxis, "", 70, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.Distance, UnitUtil.Distance.LabelAxis, "", 60, StringAlignment.Near));
             string sSpeedPace = StringResources.ActivitySpeedOrPace;
