@@ -1193,6 +1193,7 @@ namespace GpsRunningPlugin.Source
                     routes.Add(m.key, m);
                 }
             }
+            m_layer.MarkedTrailRoutes = new Dictionary<string, MapPolyline>();
             m_layer.TrailRoutes = routes;
 #endif
         }

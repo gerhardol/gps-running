@@ -145,25 +145,25 @@ namespace GpsRunningPlugin.Source
                         {
                             int k = Math.Min(i, j);
                             int l = Math.Max(i, j);
-                                //Try merge with lower
-                                if ((result[k].high + 1 >= result[l].low && result[k].high <= result[l].high) ||
-                                    Math.Abs(result[k].Dist - result[l].Dist) < Distance)
+                            //Try merge with lower
+                            if ((result[k].high + 1 >= result[l].low && result[k].high <= result[l].high) ||
+                                Math.Abs(result[k].Dist - result[l].Dist) < Distance)
+                            {
+                                int tmp;
+                                if (result[k].Diff < result[l].Diff)
                                 {
-                                    int tmp;
-                                    if (result[k].Diff < result[l].Diff)
-                                    {
-                                        //Use lower also at equal
-                                        tmp = k;
-                                        result[l].Index = -1;
-                                    }
-                                    else
-                                    {
-                                        tmp = l;
-                                        result[k].Index = -1;
-                                    }
-                                    result[tmp].low = Math.Min(result[i].low, result[j].low);
-                                    result[tmp].high = Math.Max(result[i].high, result[j].high);
+                                    //Use lower also at equal
+                                    tmp = k;
+                                    result[l].Index = -1;
                                 }
+                                else
+                                {
+                                    tmp = l;
+                                    result[k].Index = -1;
+                                }
+                                result[tmp].low = Math.Min(result[i].low, result[j].low);
+                                result[tmp].high = Math.Max(result[i].high, result[j].high);
+                            }
                         }
                     }
                 }
