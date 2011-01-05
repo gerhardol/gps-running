@@ -107,13 +107,3 @@ Note: When selecting more than one line in the activity reports view, Sporttrack
 ===Feedback===
 For patches, bugreports or feature suggestions, use the Google Code issue list.
 For feedback please use the thread for this plugin at !SportTracks forum [http://www.zonefivesoftware.com/SportTracks/Forums/viewforum.php?f=31 here].
-
-===Old pictures, to be replaced===
-[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/ActivityReportView.png]
-Once you have applied the plugin a new window appear with the overlayed activities; see the two figures below to see the results. 
-
-[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/Overlay1.png]
-[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/Overlay2.png]
-[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/Overlay3.png]
-[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/Overlay4.png]
-[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/Overlay5.png]
