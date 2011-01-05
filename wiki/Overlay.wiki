@@ -2,58 +2,57 @@
 
 <wiki:toc max_depth="3" />
 
-===What does it do?===
-Overlay is a plugin that lets you compare activities using a table for numeric values, a chart for data tracks and the map for routes.
+==What does it do?==
+Overlay is a plugin that lets you compare activities using a list for numeric values, a chart for data tracks and the map for routes.
 
-The original Overlay functionality is the chart that lets you compare data tracks like heart rate, pace, speed, power, cadence, distance and time between two or more activities. It does so by presenting each of these in the same graph, so you may visually see how well your form is progressing. You can also plot the difference between a selectable reference activity and other activities regarding heart rate, distance and time. It will be easy to determine how much faster you were after 5 km in the last race compared to the previous one.
+Overlay plugin lets you compare data tracks like heart rate, pace, speed, power, cadence, distance and time between two or more activities. It does so by presenting each of these in the same graph, so you may visually see how well your form is progressing. You can also plot the difference between a selectable reference activity and other activities regarding heart rate, distance and time. It will be easy to determine how much faster you were after 5 km in the last race compared to the previous one.
 
-Using the table you can compare values like, heart rate, distance, pace etc between your activities. If you set a reference activity, you can also see relative values compared to the reference activity.
+Using the list you can compare values like, heart rate, distance, pace etc between your activities. If you set a reference activity, you can also see relative values compared to the reference activity.
 
-You can compare the routes taken using the map window where the routes for all of the compared activities are drawn.
+You can compare the routes taken using the Route window where the routes for all of the compared activities are drawn on the map.
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/OverlayOverview.png]
 
-===Use case: Comparing races===
-Overlay makes it easy to compare your performance in different races over the year, or maybe the performance in the same race over the years. When you've chosen the relevant activities, you can set one of them as the reference that other activities will be compared to. But default, the first activity in the list will be the reference.
+==Use case: Comparing races==
+Overlay makes it easy to compare your performance in different races over the year, or maybe the performance in the same race over the years. When you've chosen the relevant activities, you can set one of them as the reference that other activities will be compared to. By default, the first activity in the list will be the reference.
 
-Choose the table columns that you are interested in. The heart difference in time, distance, speed or pace and heart rate rate should be particularly interesting for this use case.
+Choose the list columns that you are interested in. The heart difference in time, distance, speed or pace and heart rate rate should be particularly interesting for this use case.
 
 Use the chart in order to compare distance, time, heart rate, pace, speed, power and cadence over the course of the races. You can see if different strategies were used and what the end result was.
 
 If you compare the same race from different years, the map will show you any differences regarding the race route.
 
-===Use case: Evaluating progress regarding fitness===
+==Use case: Evaluating progress regarding fitness==
 One way of monitoring improvement in fitness is by comparing your heart rate tracks of two similar activities (same distance, speed, time of day, and other parameters that may influence the heart rate) but with some time in between. So lets say there are four weeks between the two similar activities you are considering, and you then overlay the two heart rate graph using the plugin. If the graph of the latter is below the first, your form is improving, and vice versa if it is above. 
 
 Another way of seeing form improvement is to check how fast you heart rate drops after an exercise. I always get this information after a run, by reseting the laps, and starting it again to record my heart rate when I just walk around a bit and stretch before I go inside. So if you also do this, you can check you form progression using these stretch out sessions. 
 
-===Selecting activities and opening Overlay===
-Overlay can be used from the daily activity view or the activity report view. The activity report view is a bit more flexible and gives you the possiblitiy to have the Overlay table and graph in a separate popup window.
+==Selecting activities and opening Overlay==
+Overlay can be used from the daily activity view or the activity report view. The activity report view is a bit more flexible in how activities can be selected.
 
-First go to the activity reports and select the activities that you wish to compare. You do this either by pressing down control and then select some activities, or by holding down shift and then select a range of activities by clicking the start and end element. In the activity report view, you can also select a line that has subitems a line that has subitems (like the month of december 2010 if the activity report table is grouped by year, month). Once you have selected at least one activity you are able to apply the Overlay plugin as shown in the figure below.
+First go to the activity reports and select the activities that you wish to compare. You do this either by pressing down control and then select some activities, or by holding down shift and then select a range of activities by clicking the start and end element. In the activity report view, you can also select a line that has subitems a line that has subitems (like the month of december 2010 if the activity report list is grouped by year, month). Once you have selected at least one activity you are able to apply the Overlay plugin as shown in the figure below.
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/StartOverlay.png]
 
-Above: Open Overlay in the Sporttracks program, with the possibility to show routes in the map.
+Above: Open Overlay as an Activity Page inside Sporttracks.
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/StartOverlayPopup.png]
 
-Above: Open Overlay in a popup window containing the table and the chart, allowing a larger chart to be used.
+Above: Open Overlay in a popup window containing the list and the chart, allowing a larger chart to be used.
 
-===Working with the table===
-*Selecting table contents*
-
-You can customise the table to your own liking by selecting what columns you need and in which order you want them.
+==Working with the list==
+===Selecting list contents===
+You can customise the list to your own liking by selecting what columns you need and in which order you want them.
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/OverlayColumnChoice.png]
 
-Above: Choose the contents of the table.
+Above: Choose the contents of the list.
 
-*Choosing the reference*
+===Choosing the reference===
 
-The "diff" columns display the difference between the reference activity and the activity on each row. They can be used to make it easier to compare activities. By default the reference is the first activity in the list, but a different reference can be chosen by selecting an activity, opening the table context menu and choosing Reference Activity.
+The "diff" columns display the difference between the reference activity and the activity on each row. They can be used to make it easier to compare activities. By default the reference is the first activity in the list, but a different reference can be chosen by selecting an activity, opening the list context menu and choosing Reference Activity.
 
-===Working with the chart===
+==Working with the chart==
 The chart x-axis can be either time or distance. Your choose with the radio buttons in the bar above the chart,
 
 What data series that should be shown is selected using the context menu, which is opened by clicking the arrow to the right of the text "Overlay chart".
@@ -64,47 +63,48 @@ Above: Opening the menu.
 
 The most common data series can also be selected in the chart bar just above the chart itself.
 
-*Plotting comparisons to the reference activity*
-
+===Plotting comparisons to the reference activity===
 In the Show diff menu, you can select data series that for each point in time (or distance) show the difference between each activity and the reference activity. You can select time, distance or heart rate.
-
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/ShowDiffTime.png]
 
 Above: Choose the tracks to plot in the chart using the bar or the menu.
 
-*Selecting the reference activity*
+===Selecting the reference activity===
+The reference activity can be chosen using the context menu of the list. First select the desired reference activity, then open the context meny and select Reference Activity.
 
-The reference activity can be chosen using the context menu of the table. First select the desired reference activity, then open the context meny and select Reference Activity.
-
-*Category average*
-
+===Category average===
 It is possible to see a category average for a collection of activities. Average is basically the average of each activity in some category, so, e.g., if you have three activities chosen and selected the heart rate track, then the category average is the average of each point of the three graphs. The category average is displayed as a black line.
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/CategoryAverage.png]
 
-*Moving average*
-
-The moving average filters each single graph. If the filter width it is set to 0 seconds or 0 meters it will show the average from the start of the activity; i.e., each point is the average of all the preceding points on the graph. This is similar to looking at your average speed or average heart rate on your watch. If you set the moving average to something bigger than 0, then the average is the average over the past XX seconds or meters. If the moving average is set to 120 seconds then the average of each point, will be the average of the last two minutes.
+===Moving average===
+The moving average filters each single graph. If the filter width it is set to 0 seconds or 0 meters it will show the average from the start of the activity; i.e., each point is the average of all the preceding points on the graph. This is similar to looking at your average speed or average heart rate on your watch. If you set the moving average to something bigger than 0, then the average is the average over the past seconds or meters. If the moving average is set to 120 seconds then the average of each point, will be the average of the last two minutes.
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/MovingAverage.png]
 
-*Offset*
+===Offset===
+If you want to compare two activities but the interesting parts are not located at exactly the same time or distance, it is possible to set an offset on one of the activities. Select the activity in the list or the chart, open the menu and select "Select activity offset". A popup dialog will open, allowing you to enter an offset. The offset will be in time or distance depending on your current x-axis selection.
 
-If you want to compare two activities but the interesting parts are not located at exactly the same time or distance, it is possible to set an offset on one of the activities. Select the activity in the table or the chart, open the menu and select "Select activity offset". A popup dialog will open, allowing you to enter an offset. The offset will be in time or distance depending on your current x-axis selection.
+===Making activities visible/not visible===
+The list contains a Visible column with checkboxes. Unselecting a checkbox removes the corresponding line from the chart and the route from the map. The unselected activity will still be included in calculations like category average.
 
-*Making activities visible/not visible*
+==Working with the map==
+The selected activities will be displayed as routes on the map, assuming that they have GPS tracks. The routes will be color coded in the same way as in the chart and the list. The route for an activity can be removed by unselecting the checkbox in the Visible column of the activity in the list.
 
-In the table, there is a column called Visible that contains checkboxes. Unselecting a checkbox removes the corresponding line from the chart and the route from the map. The unselected activity will still be included in calculations like category average.
+Note: If you select individual activities instead of a group, the activities will not be displayed on the map. This is a limitation in the core SportTracks application, the plugin cannot overcome that.
 
-===Working with the map===
-When Overlay is opened inside Sporttracks and not as a popup, it will also have an effect on the map view. All of the selected activities will be displayed as routes on the map, assuming that they have GPS tracks. The routes will be color coded in the same way as in the chart and the table. The route for an activity can be removed by unselecting the checkbox in the Visible column of the activity in the table.
-
-Note: When selecting more than one line in the activity reports view, Sporttracks doesn't display the map. That is something that this plugin cannot affect. If a line that has subitems (like the month of december 2010 if the activity report table is grouped by year, month) is chosen, all of the activities will be displayed in the map.
-
-===Integration with Unique routes===
+==Advanced==
+The plugin has some features put in the list menu item advanced, to use in special cases.
+ * Process certain activities in other plugin, use as search selector. For the activities selected in the plugin list, the menu item will select the activities in the SportTracks list. This will allow processing in other plugins.
+ * Integration with Unique Routes. If Unique Routes plugin is installed, you can add all activities on a specific route to the plugin list. Alternative ways of doing this could be to send the activities from Unique Routes plugin.
 You can use the Unique routes plugin if you want to find activities with routes that are similar to one of your choice. Once you have found the activities, they can be sent to Overlay for further analysis. For further information, see the Unique routes wiki.
 
-===Feedback===
+==Feedback==
 For patches, bugreports or feature suggestions, use the Google Code issue list.
 For feedback please use the thread for this plugin at !SportTracks forum [http://www.zonefivesoftware.com/SportTracks/Forums/viewforum.php?f=31 here].
+
+==Related ST plugins==
+ * [http://www.zonefivesoftware.com/sporttracks/plugins/?p=unique-routes Unique Routes] View similar routes. Much of the functionality is integrated in Overlay plugin.
+ * [http://www.zonefivesoftware.com/sporttracks/plugins/?p=trails Trails] Has most fatures as in Overlay, activities can be compared. The plugin also allows you to compare sections and splits of activities.
+ * [http://www.zonefivesoftware.com/sporttracks/plugins/?p=dot-racing Dot Racing] Additional features, like integration with other old man biking plugins and as the name suggests, dot-racing.
