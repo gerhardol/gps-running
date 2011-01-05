@@ -57,7 +57,13 @@ namespace GpsRunningPlugin.Source
     {
         private CommonStretches() { }
 
+        //Note: Using IValueRangeSeries will automerge reference results. Ref may not have same no of stretches
         public static IItemTrackSelectionInfo[] getSelInfo(DateTime[] st, IList<PointInfo[]> pi, bool useActive)
+        {
+            PointInfo[] pi2;
+            return getSelInfo(st, pi, out pi2, useActive);
+        }
+        public static IItemTrackSelectionInfo[] getSelInfo(DateTime[] st, IList<PointInfo[]> pi, out PointInfo[] pi2, bool useActive)
         {
             //Data.TrailsItemTrackSelectionInfo result = new Data.TrailsItemTrackSelectionInfo();
             TrailsItemTrackSelectionInfo[] res = new TrailsItemTrackSelectionInfo[]{ new TrailsItemTrackSelectionInfo(), new TrailsItemTrackSelectionInfo() };
@@ -65,6 +71,7 @@ namespace GpsRunningPlugin.Source
             res[0].MarkedDistances = new ValueRangeSeries<double>();
             res[1].MarkedTimes = new ValueRangeSeries<DateTime>();
             res[1].MarkedDistances = new ValueRangeSeries<double>();
+            pi2 = new PointInfo[2] { new PointInfo(0,0,0,false), new PointInfo(0,0,0,false) };
 
             PointInfo[] startIndex = null;
             PointInfo[] prevIndex = null;
@@ -84,13 +91,17 @@ namespace GpsRunningPlugin.Source
                     if (startIndex != null && prevIndex != null && 
                     startIndex[0].index > -1 && prevIndex[0].index > -1)
                     {
+                        const int minStretchLength = 3;
                         //End - Update summary
-                        //Ignore single point matches and "reverse" reference matches
-                        if (startIndex[0].index <  prevIndex[0].index &&
+                        //Ignore single/double point matches and "reverse" reference matches
+                        if (prevIndex[0].index - startIndex[0].index >= minStretchLength &&
                             startIndex[1].index <= prevIndex[1].index)
                         {
                             for (int j = 0; j <= 1; j++)
                             {
+                                pi2[j].index++;
+                                pi2[j].time += prevIndex[j].time - startIndex[j].time;
+                                pi2[j].distance += prevIndex[j].distance - startIndex[j].distance;
                                 res[j].MarkedTimes.Add(new ValueRange<DateTime>(
                                     st[j].AddSeconds(startIndex[j].time),
                                     st[j].AddSeconds(prevIndex[j].time)));
@@ -123,25 +134,13 @@ namespace GpsRunningPlugin.Source
             {
                 //double MinDistStretch = Settings.Radius*2*2;
                 //totDist, totTime, totDistRef, totTimeRef, noStretches
-                PointInfo[] res = new PointInfo[2];
+                PointInfo[] res;
 
                 if (points.ContainsKey(otherActivity))
                 {
                     IItemTrackSelectionInfo[] i = getSelInfo(new DateTime[] { otherActivity.StartTime, otherActivity.StartTime },
-                        points[otherActivity], useActive);
+                        points[otherActivity], out res, useActive);
 
-                    for (int j = 0; j <= 1; j++)
-                    {
-                        res[j] = new PointInfo(i[j].MarkedTimes.Count);
-                        foreach (ValueRange<DateTime> t in i[j].MarkedTimes)
-                        {
-                            res[j].time += t.Upper.Subtract(t.Lower).TotalSeconds;
-                        }
-                        foreach (ValueRange<double> t in i[j].MarkedDistances)
-                        {
-                            res[j].distance += t.Upper - t.Lower;
-                        }
-                    }
                     result.Add(otherActivity, res);
                 }
             }
@@ -156,10 +155,9 @@ namespace GpsRunningPlugin.Source
             return findSimilarPoints(refRoute, null, activities);
         }
 
-        //TODO: Tune algorithm
         public static IDictionary<IActivity, IList<PointInfo[]>> findSimilarPoints(IGPSRoute refRoute, IActivityLaps refLaps, IList<IActivity> activities)
         {
-            GPSGrid grid = new GPSGrid(refRoute, 1, true);
+            GPSGrid grid = new GPSGrid(refRoute, 0.5F, 1F, true);
             IDictionary<IActivity, IList<PointInfo[]>> result = new Dictionary<IActivity, IList<PointInfo[]>>();
             double cumulativeAverageDist = 0;
             int noCumAv = 0;
@@ -209,28 +207,54 @@ namespace GpsRunningPlugin.Source
                                         //Only check forward, i.e follow the same direction
                                         //Use a close enough stretch
                                         //This is the iffiest part of the algorithm matching stretches...
-                                        if (((IndDist.low >= lastIndex.low && IndDist.low <= lastIndex.high ||
+                                        if ((IndDist.low >= lastIndex.low && IndDist.low <= lastIndex.high ||
                                              IndDist.Index >= lastIndex.low && IndDist.Index <= lastIndex.high) &&
-                                            IndDist.Index >= lastIndex.Index) &&
+                                            IndDist.Index >= lastIndex.Index)
+                                        {
                                             //The grid overlaps the old grid
                                             //The matching index may be lower then this is a restart (this or prev match should then be dropped)
-                                            (prio >= 0 && (IndDist.Index > lastIndex.Index && (nextIndex==null || nextIndex.Index <= lastIndex.Index) ||
-                                                           IndDist.Index == lastIndex.Index && (nextIndex==null || nextIndex.Index < lastIndex.Index)) ||
-                                            prio >= 10 ||
-                                            prio > 0 && (nextIndex==null || IndDist.Diff < nextIndex.Diff) && IndDist.Index >= lastIndex.Index))
-                                        {
-                                            nextIndex = IndDist;
-                                            prio = 0;
+                                            if ((prio > 0 && (nextIndex == null || IndDist.Diff < nextIndex.Diff) && IndDist.Index >= lastIndex.Index))
+                                            {
+                                                nextIndex = IndDist;
+                                                prio = 0;
+                                            }
+                                            else if (prio >= 0 && (IndDist.Index > lastIndex.Index && (nextIndex == null || nextIndex.Index <= lastIndex.Index)))
+                                            {
+                                                nextIndex = IndDist;
+                                                prio = 0;
+                                            }
+                                            else if (IndDist.Index == lastIndex.Index && (nextIndex == null || nextIndex.Index < lastIndex.Index))
+                                            {
+                                                nextIndex = IndDist;
+                                                prio = 0;
+                                            }
+                                            else if (prio > 10)
+                                            {
+                                                nextIndex = IndDist;
+                                                prio = 10;
+                                            }
+                                            else if (nextIndex == null)
+                                            {
+                                                nextIndex = IndDist;
+                                                prio = 10;
+                                            }
+                                            //else - not better
                                         }
                                         else if ((
                                              IndDist.low >= lastIndex.low && IndDist.low <= lastIndex.high + ExtraGridIndex ||
-                                             IndDist.Index >= lastIndex.low && IndDist.Index <= lastIndex.high + ExtraGridIndex) &&
-                                            //Grids are not overlapping, but adjacent points match forward
-                                             (prio >= 10 && IndDist.Index > lastIndex.Index ||
-                                            prio >= 20))
+                                             IndDist.Index >= lastIndex.low && IndDist.Index <= lastIndex.high + ExtraGridIndex))
                                         {
-                                            nextIndex = IndDist;
-                                            prio = 10;
+                                            //Grids are not overlapping, but adjacent points match forward
+                                            if (prio > 20 && IndDist.Index > lastIndex.Index)
+                                            {
+                                                nextIndex = IndDist;
+                                                prio = 20;
+                                            }
+                                            else if (prio >= 20)
+                                            {
+                                                nextIndex = IndDist;
+                                                prio = 20;
+                                            }
                                         }
                                         else if ((
                                               Math.Abs(IndDist.Dist / lastIndex.Dist - 1) < MaxDistDiffFactor) &&
@@ -246,6 +270,7 @@ namespace GpsRunningPlugin.Source
                             //Update if close enough
                             if (closeIndex != null)
                             {
+                                //TODO: This algorithm needs to prio correct direction better
                                 //nextInd is best match for the stretch, but closeIndex could be better 
                                 if (nextIndex == null ||
                                     (!nextIndex.Equals(closeIndex)) && (

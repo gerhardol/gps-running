@@ -72,7 +72,7 @@ namespace UniqueRoutes.Export
             IDictionary<IActivity, IList<GpsRunningPlugin.Source.PointInfo[]>> p = GpsRunningPlugin.Source.CommonStretches.findSimilarPoints(activity.GPSRoute, activity.Laps, activities);
             foreach (KeyValuePair<IActivity, IList<GpsRunningPlugin.Source.PointInfo[]>> kp in p)
             {
-                    results[kp.Key] = GpsRunningPlugin.Source.CommonStretches.getSelInfo(new DateTime[]{kp.Key.StartTime,activity.StartTime}, kp.Value, GpsRunningPlugin.Source.Settings.UseActive);
+                    results[kp.Key] = GpsRunningPlugin.Source.CommonStretches.getSelInfo(new DateTime[]{kp.Key.StartTime,activity.StartTime}, kp.Value, false/*GpsRunningPlugin.Source.Settings.UseActive*/);
             }
             return results;
         }

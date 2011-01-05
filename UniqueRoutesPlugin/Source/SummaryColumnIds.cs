@@ -116,19 +116,19 @@ namespace GpsRunningPlugin.Source
         public static ICollection<IListColumnDefinition> ColumnDefs(IActivity activity)
         {
             IList<IListColumnDefinition> columnDefs = new List<IListColumnDefinition>();
-            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.StartDate, CommonResources.Text.LabelDate, "", 100, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.StartTime, CommonResources.Text.LabelStartTime, "", 120, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.Time, UnitUtil.Time.LabelAxis, "", 70, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.StartDate, CommonResources.Text.LabelDate, "", 70, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.StartTime, CommonResources.Text.LabelStartTime, "", 40, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.Time, UnitUtil.Time.LabelAxis, "", 60, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.Distance, UnitUtil.Distance.LabelAxis, "", 60, StringAlignment.Near));
             string sSpeedPace = StringResources.ActivitySpeedOrPace;
             if (null != activity)
             {
                 sSpeedPace = UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace);
             }
-            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.AvgSpeedPace, sSpeedPace, "", 80, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.AvgSpeed, UnitUtil.Speed.LabelAxis, "", 80, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.AvgPace, UnitUtil.Pace.LabelAxis, "", 80, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.AvgHR, CommonResources.Text.LabelAvgHR + UnitUtil.HeartRate.LabelAbbr2, "", 80, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.AvgSpeedPace, sSpeedPace, "", 60, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.AvgSpeed, UnitUtil.Speed.LabelAxis, "", 60, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.AvgPace, UnitUtil.Pace.LabelAxis, "", 60, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.AvgHR, CommonResources.Text.LabelAvgHR + UnitUtil.HeartRate.LabelAbbr2, "", 60, StringAlignment.Near));
 
             columnDefs.Add(new ListColumnDefinition(SummaryColumnIds.CommonStretches, Resources.CommonStretches, "", 170, StringAlignment.Near));
 
