@@ -90,9 +90,11 @@ The moving average filters each single graph. If the filter width it is set to 0
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/MovingAverage.png]
 
 *Offset*
+
 If you want to compare two activities but the interesting parts are not located at exactly the same time or distance, it is possible to set an offset on one of the activities. Select the activity in the table or the chart, open the menu and select "Select activity offset". A popup dialog will open, allowing you to enter an offset. The offset will be in time or distance depending on your current x-axis selection.
 
 *Making activities visible/not visible*
+
 In the table, there is a column called Visible that contains checkboxes. Unselecting a checkbox removes the corresponding line from the chart and the route from the map. The unselected activity will still be included in calculations like category average.
 
 ===Working with the map===
@@ -101,7 +103,7 @@ When Overlay is opened inside Sporttracks and not as a popup, it will also have 
 Note: When selecting more than one line in the activity reports view, Sporttracks doesn't display the map. That is something that this plugin cannot affect. If a line that has subitems (like the month of december 2010 if the activity report table is grouped by year, month) is chosen, all of the activities will be displayed in the map.
 
 ===Integration with Unique routes===
-
+You can use the Unique routes plugin if you want to find activities with routes that are similar to one of your choice. Once you have found the activities, they can be sent to Overlay for further analysis. For further information, see the Unique routes wiki.
 
 ===Feedback===
 For patches, bugreports or feature suggestions, use the Google Code issue list.
