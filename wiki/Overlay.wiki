@@ -1,8 +1,8 @@
 #summary Overlay User's Guide, new UI
 
-<wiki:toc max_depth="2" />
+<wiki:toc max_depth="3" />
 
-==What does it do?==
+===What does it do?===
 Overlay is a plugin that lets you compare activities using a table for numeric values, a chart for data tracks and the map for routes.
 
 The original Overlay functionality is the chart that lets you compare data tracks like heart rate, pace, speed, power, cadence, distance and time between two or more activities. It does so by presenting each of these in the same graph, so you may visually see how well your form is progressing. You can also plot the difference between a selectable reference activity and other activities regarding heart rate, distance and time. It will be easy to determine how much faster you were after 5 km in the last race compared to the previous one.
