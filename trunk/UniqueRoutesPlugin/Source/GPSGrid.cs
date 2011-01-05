@@ -57,17 +57,17 @@ namespace GpsRunningPlugin.Source
             : this(activity, 1, false)
         { }
         public GPSGrid(IActivity activity, double BWidthFactor, bool isDist)
-            : this(activity.GPSRoute, BWidthFactor, isDist)
+            : this(activity.GPSRoute, BWidthFactor, BWidthFactor, isDist)
         { }
         public GPSGrid(IGPSRoute route)
-            : this(route, 1, false)
+            : this(route, 1, 1, false)
         { }
 
-        public GPSGrid(IGPSRoute route, double BWidthFactor, bool isDist)
+        public GPSGrid(IGPSRoute route, double BWidthFactor, double DistFactor, bool isDist)
         {
             Width = BWidthFactor * (Settings.Radius*2) / (60 * 60 * 30.9);
             if (Width < 0.001) Width = 0.001;
-            Distance = BWidthFactor * Settings.Radius;            
+            Distance = DistFactor * Settings.Radius*2;          
             Grid = new Dictionary<int, IDictionary<int, IList<int>>>();
             Route = route; //Just copy the reference
             if (isDist)
@@ -102,14 +102,15 @@ namespace GpsRunningPlugin.Source
         //Get all points close to the asking point, but merge in "stretches" to let caller find best match
         public IList<IndexDiffDist> getAllCloseStretch(IGPSPoint point)
         {
+            const int boxsize = 2;
             IList<IndexDiffDist> result = new List<IndexDiffDist>();
             int x = (int)Math.Floor(point.LongitudeDegrees / Width);
             int y = (int)Math.Floor(point.LatitudeDegrees / Width);
-            for (int i = x - 1; i <= x + 1; i++)
+            for (int i = x - boxsize; i <= x + boxsize; i++)
             {
                 if (Grid.ContainsKey(i))
                 {
-                    for (int j = y - 1; j <= y + 1; j++)
+                    for (int j = y - boxsize; j <= y + boxsize; j++)
                     {
                         if (Grid[i].ContainsKey(j))
                         {
@@ -165,6 +166,13 @@ namespace GpsRunningPlugin.Source
                                 result[tmp].high = Math.Max(result[i].high, result[j].high);
                             }
                         }
+                    }
+                }
+                for (int i = result.Count-1; i >= 0; i--)
+                {
+                    if (result[i].Index == -1)
+                    {
+                        result.RemoveAt(i);
                     }
                 }
             }

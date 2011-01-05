@@ -54,13 +54,17 @@ namespace GpsRunningPlugin.Source
             return activities;
         }
 
-        public static IList<IActivity> findSimilarRoutes(IActivity refActivity, IList<IActivity> activities, bool beginEndCheck, System.Windows.Forms.ProgressBar progressBar)
+        public static IList<IActivity> findSimilarRoutes(IActivity refActivity, IList<IActivity> activities, bool beginEndCheck, bool catCheck, System.Windows.Forms.ProgressBar progressBar)
         {
             if (refActivity == null ||
                 refActivity.GPSRoute == null ||
-                beginEndCheck && !isAllowedActivity(refActivity))
+                beginEndCheck && (false/*catCheck*/ && !isAllowedActivity(refActivity)))
                 return new List<IActivity>();
             return findSimilarRoutes(refActivity.GPSRoute, refActivity.ReferenceId, activities, beginEndCheck, progressBar);
+        }
+        public static IList<IActivity> findSimilarRoutes(IActivity refActivity, IList<IActivity> activities, bool beginEndCheck, System.Windows.Forms.ProgressBar progressBar)
+        {
+            return findSimilarRoutes(refActivity, activities, beginEndCheck, true, progressBar);
         }
         public static IList<IActivity> findSimilarRoutes(IGPSRoute refRoute, IList<IActivity> activities, bool beginEndCheck, System.Windows.Forms.ProgressBar progressBar)
         {

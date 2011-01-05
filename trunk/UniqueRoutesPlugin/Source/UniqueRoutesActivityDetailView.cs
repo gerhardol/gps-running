@@ -524,6 +524,8 @@ namespace GpsRunningPlugin.Source
         {
             if (_showPage && _needsRecalculation)
             {
+                m_layer.MarkedTrailRoutes = new Dictionary<string, MapPolyline>();
+                m_layer.TrailRoutes = new Dictionary<string, MapPolyline>();
                 if (refActivity != null)
                 {
                     summaryList.Visible = false;
@@ -560,7 +562,7 @@ namespace GpsRunningPlugin.Source
                     }
                     else
                     {
-                        similar = UniqueRoutes.findSimilarRoutes(refActivity, activities, true, progressBar);
+                        similar = UniqueRoutes.findSimilarRoutes(refActivity, activities, true, selectedActivities.Count ==1, progressBar);
                     }
                     progressBar.Visible = false;
                     categoryLabel.Visible = true;

@@ -38,8 +38,8 @@ namespace GpsRunningPlugin.Source
             {
                 case SummaryColumnIds.ActColor:
                     return null;
-//                case SummaryColumnIds.StartTime:
-//                    return wrapper.StartTime;
+                case SummaryColumnIds.StartTime:
+                    return wrapper.StartTime;
                 case SummaryColumnIds.StartDate:
                     return wrapper.StartDate;
                 case SummaryColumnIds.Time:
