@@ -1515,37 +1515,40 @@ namespace GpsRunningPlugin.Source
                     chart_SelectingData(sender, e);
                 bSelectDataFlag = true;
 
-                //from Trails plugin
-                TrailResult tr = new TrailResult(actWrappers[activities.IndexOf(series2activity[e.DataSeries])]);
-                IList<float[]> regions;
-                e.DataSeries.GetSelectedRegions(out regions);
-
-                IList<TrailResultMarked> results = new List<TrailResultMarked>();
-                if (Settings.UseTimeXAxis)
+                if (series2activity.ContainsKey(e.DataSeries) && activities.Contains(series2activity[e.DataSeries]))
                 {
-                    IValueRangeSeries<DateTime> t = new ValueRangeSeries<DateTime>();
-                    foreach (float[] at in regions)
-                    {
-                        t.Add(new ValueRange<DateTime>(
-                            tr.getActivityTime(at[0]),
-                            tr.getActivityTime(at[1])));
-                    }
-                    results.Add(new TrailResultMarked(tr, t));
-                }
-                else
-                {
-                    IValueRangeSeries<double> t = new ValueRangeSeries<double>();
-                    foreach (float[] at in regions)
-                    {
-                        t.Add(new ValueRange<double>(
-                            tr.getActivityDist(UnitUtil.Distance.ConvertTo(at[0], CommonData.refActWrapper.Activity)),
-                            tr.getActivityDist(UnitUtil.Distance.ConvertTo(at[1], CommonData.refActWrapper.Activity))));
-                    }
-                    results.Add(new TrailResultMarked(tr, t));
-                }
+                    //from Trails plugin
+                    TrailResult tr = new TrailResult(actWrappers[activities.IndexOf(series2activity[e.DataSeries])]);
+                    IList<float[]> regions;
+                    e.DataSeries.GetSelectedRegions(out regions);
 
-                this.MarkTrack(results);
-                this.EnsureVisible(new List<TrailResult> { tr }, false);
+                    IList<TrailResultMarked> results = new List<TrailResultMarked>();
+                    if (Settings.UseTimeXAxis)
+                    {
+                        IValueRangeSeries<DateTime> t = new ValueRangeSeries<DateTime>();
+                        foreach (float[] at in regions)
+                        {
+                            t.Add(new ValueRange<DateTime>(
+                                tr.getActivityTime(at[0]),
+                                tr.getActivityTime(at[1])));
+                        }
+                        results.Add(new TrailResultMarked(tr, t));
+                    }
+                    else
+                    {
+                        IValueRangeSeries<double> t = new ValueRangeSeries<double>();
+                        foreach (float[] at in regions)
+                        {
+                            t.Add(new ValueRange<double>(
+                                tr.getActivityDist(UnitUtil.Distance.ConvertTo(at[0], CommonData.refActWrapper.Activity)),
+                                tr.getActivityDist(UnitUtil.Distance.ConvertTo(at[1], CommonData.refActWrapper.Activity))));
+                        }
+                        results.Add(new TrailResultMarked(tr, t));
+                    }
+
+                    this.MarkTrack(results);
+                    this.EnsureVisible(new List<TrailResult> { tr }, false);
+                }
             }
         }
 
@@ -1681,7 +1684,12 @@ namespace GpsRunningPlugin.Source
             setRefActMenuItem.Enabled = (treeListAct.SelectedItems.Count == 1);
             showDiffMenuItem.Enabled = (CommonData.refActWrapper != null);
             this.offsetMenuItem.Enabled = (activities != null && activities.Count > 1 && treeListAct.SelectedItems.Count > 0);
-            showChartToolsMenuItem.Checked = Settings.ShowChartBar;
+            this.setRefActMenuItem.Text = StringResources.SetRefActivity;
+            if (CommonData.refActWrapper != null)
+            {
+                this.setRefActMenuItem.Text += " (" + CommonData.refActWrapper.Activity.StartTime.ToLocalTime().ToString() + ")";
+            }
+             showChartToolsMenuItem.Checked = Settings.ShowChartBar;
         }
 
         private void ShowMeanMenuItem_Click(object sender, EventArgs e)
@@ -1763,8 +1771,10 @@ namespace GpsRunningPlugin.Source
                         commonStretches[aw.Activity][0].MarkedTimes.Count > 0)
                     {
                         //set both dist/time offset, regardless Settings.UseTimeXAxis
-                        aw.TimeOffset = commonStretches[aw.Activity][0].MarkedTimes[0].Lower.Subtract(aw.Activity.StartTime);
-                        aw.DistanceOffset = commonStretches[aw.Activity][0].MarkedDistances[0].Lower;
+                        aw.TimeOffset = commonStretches[aw.Activity][1].MarkedTimes[0].Lower.Subtract(CommonData.refActWrapper.Activity.StartTime).Subtract(
+                            commonStretches[aw.Activity][0].MarkedTimes[0].Lower.Subtract(aw.Activity.StartTime));
+                        aw.DistanceOffset = commonStretches[aw.Activity][1].MarkedDistances[0].Lower - 
+                            commonStretches[aw.Activity][0].MarkedDistances[0].Lower;
                         TrailResult tr = new TrailResult(actWrappers[0]);
                     }
                 }
@@ -1842,7 +1852,7 @@ namespace GpsRunningPlugin.Source
                 else
                 {
                     labelText = Resources.SetOffset + " " + CommonResources.Text.LabelDistance.ToLower() + ":";
-                    textBoxInit = UnitUtil.Distance.ToString(UnitUtil.Distance.ConvertFrom(wrapper.DistanceOffset), "u");
+                    textBoxInit = UnitUtil.Distance.ToString(wrapper.DistanceOffset, "u");
                 }
                 InputDialog dialog = new InputDialog(Resources.SetOffset, labelText, textBoxInit);
                 dialog.ThemeChanged(m_visualTheme);
@@ -1982,6 +1992,11 @@ namespace GpsRunningPlugin.Source
         private void treeListContextMenuStrip_Opening(object sender, CancelEventArgs e)
         {
             setRefTreeListMenuItem.Enabled = (treeListAct.SelectedItems.Count == 1);
+            this.setRefTreeListMenuItem.Text = StringResources.SetRefActivity;
+            if (CommonData.refActWrapper != null)
+            {
+                this.setRefTreeListMenuItem.Text += " (" + CommonData.refActWrapper.Activity.StartTime.ToLocalTime().ToString() + ")";
+            }
         }
 
         private void tableSettingsMenuItem_Click(object sender, EventArgs e)
