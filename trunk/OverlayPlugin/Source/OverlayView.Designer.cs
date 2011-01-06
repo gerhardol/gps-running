@@ -107,6 +107,10 @@ namespace GpsRunningPlugin.Source
             this.treeListContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tableSettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setRefTreeListMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.visibleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.visibleMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.allVisibleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.noneVisibleMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.advancedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.limitActivityMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectWithURMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -125,12 +129,13 @@ namespace GpsRunningPlugin.Source
             this.splitContainer4.SuspendLayout();
             this.panel2.SuspendLayout();
             this.treeListContextMenuStrip.SuspendLayout();
+            this.visibleMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // xAxisTimeMenuItem
             // 
             this.xAxisTimeMenuItem.Name = "xAxisTimeMenuItem";
-            this.xAxisTimeMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.xAxisTimeMenuItem.Size = new System.Drawing.Size(119, 22);
             this.xAxisTimeMenuItem.Text = "Time";
             this.xAxisTimeMenuItem.Click += new System.EventHandler(this.commonXAxisMenuItem_click);
             // 
@@ -383,13 +388,14 @@ namespace GpsRunningPlugin.Source
             this.xAxisTimeMenuItem,
             this.xAxisDistanceMenuItem});
             this.bannerXAxisMenuStrip.Name = "bannerXAxisMenuStrip";
+            this.bannerXAxisMenuStrip.OwnerItem = this.xAxisMenuItem;
             this.bannerXAxisMenuStrip.Size = new System.Drawing.Size(120, 48);
             this.bannerXAxisMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.bannerXAxisMenuStrip_Opening);
             // 
             // xAxisDistanceMenuItem
             // 
             this.xAxisDistanceMenuItem.Name = "xAxisDistanceMenuItem";
-            this.xAxisDistanceMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.xAxisDistanceMenuItem.Size = new System.Drawing.Size(119, 22);
             this.xAxisDistanceMenuItem.Text = "Distance";
             this.xAxisDistanceMenuItem.Click += new System.EventHandler(this.commonXAxisMenuItem_click);
             // 
@@ -688,9 +694,10 @@ namespace GpsRunningPlugin.Source
             this.treeListContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tableSettingsMenuItem,
             this.setRefTreeListMenuItem,
+            this.visibleMenuItem,
             this.advancedMenuItem});
             this.treeListContextMenuStrip.Name = "treeListContextMenuStrip";
-            this.treeListContextMenuStrip.Size = new System.Drawing.Size(184, 70);
+            this.treeListContextMenuStrip.Size = new System.Drawing.Size(184, 92);
             this.treeListContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.treeListContextMenuStrip_Opening);
             // 
             // tableSettingsMenuItem
@@ -707,6 +714,35 @@ namespace GpsRunningPlugin.Source
             this.setRefTreeListMenuItem.Text = "Set reference activity";
             this.setRefTreeListMenuItem.Click += new System.EventHandler(this.setRefActMenuItem_Click);
             // 
+            // visibleMenuItem
+            // 
+            this.visibleMenuItem.DropDown = this.visibleMenuStrip;
+            this.visibleMenuItem.Name = "visibleMenuItem";
+            this.visibleMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.visibleMenuItem.Text = "Visible";
+            // 
+            // visibleMenuStrip
+            // 
+            this.visibleMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.allVisibleMenuItem,
+            this.noneVisibleMenuItem});
+            this.visibleMenuStrip.Name = "visibleMenuStrip";
+            this.visibleMenuStrip.Size = new System.Drawing.Size(104, 48);
+            // 
+            // allVisibleMenuItem
+            // 
+            this.allVisibleMenuItem.Name = "allVisibleMenuItem";
+            this.allVisibleMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.allVisibleMenuItem.Text = "All";
+            this.allVisibleMenuItem.Click += new System.EventHandler(this.allVisibleMenuItem_Click);
+            // 
+            // noneVisibleMenuItem
+            // 
+            this.noneVisibleMenuItem.Name = "noneVisibleMenuItem";
+            this.noneVisibleMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.noneVisibleMenuItem.Text = "None";
+            this.noneVisibleMenuItem.Click += new System.EventHandler(this.noneVisibleMenuItem_Click);
+            // 
             // advancedMenuItem
             // 
             this.advancedMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -720,21 +756,21 @@ namespace GpsRunningPlugin.Source
             // limitActivityMenuItem
             // 
             this.limitActivityMenuItem.Name = "limitActivityMenuItem";
-            this.limitActivityMenuItem.Size = new System.Drawing.Size(272, 22);
+            this.limitActivityMenuItem.Size = new System.Drawing.Size(288, 22);
             this.limitActivityMenuItem.Text = "<Limit selection to current activities...";
             this.limitActivityMenuItem.Click += new System.EventHandler(this.limitActivityMenuItem_Click);
             // 
             // selectWithURMenuItem
             // 
             this.selectWithURMenuItem.Name = "selectWithURMenuItem";
-            this.selectWithURMenuItem.Size = new System.Drawing.Size(272, 22);
+            this.selectWithURMenuItem.Size = new System.Drawing.Size(288, 22);
             this.selectWithURMenuItem.Text = "<Select with UR to current activities...";
             this.selectWithURMenuItem.Click += new System.EventHandler(this.selectWithURMenuItem_Click);
             // 
             // setOffsetWithURMenuItem
             // 
             this.setOffsetWithURMenuItem.Name = "setOffsetWithURMenuItem";
-            this.setOffsetWithURMenuItem.Size = new System.Drawing.Size(272, 22);
+            this.setOffsetWithURMenuItem.Size = new System.Drawing.Size(288, 22);
             this.setOffsetWithURMenuItem.Text = "<Set offset with UR to current activities...";
             this.setOffsetWithURMenuItem.Click += new System.EventHandler(this.setOffsetWithURMenuItem_Click);
             // 
@@ -759,6 +795,7 @@ namespace GpsRunningPlugin.Source
             this.splitContainer4.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.treeListContextMenuStrip.ResumeLayout(false);
+            this.visibleMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -827,5 +864,9 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.ContextMenuStrip bannerXAxisMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem xAxisDistanceMenuItem;
         private System.Windows.Forms.ToolStripMenuItem xAxisTimeMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem visibleMenuItem;
+        private System.Windows.Forms.ContextMenuStrip visibleMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem allVisibleMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem noneVisibleMenuItem;
     }
 }
