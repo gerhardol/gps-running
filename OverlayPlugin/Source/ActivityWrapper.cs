@@ -43,6 +43,10 @@ namespace GpsRunningPlugin.Source
             {
                 return actColor;
             }
+            set
+            {
+                actColor = value;
+            }
         }
 
         public TimeSpan TimeOffset

@@ -1030,42 +1030,96 @@ namespace GpsRunningPlugin.Source
         void summaryList_Click(object sender, System.EventArgs e)
         {
 #if !ST_2_1
-            object row;
-            TreeList.RowHitState hit;
-            row = summaryList.RowHitTest(((MouseEventArgs)e).Location, out hit);
-            if (row != null && hit == TreeList.RowHitState.Row)
+            //From Trails plugin
+            if (sender is TreeList)
             {
-                UniqueRoutesResult utr = (UniqueRoutesResult)(row);
-                bool isMatch = false;
-                foreach (UniqueRoutesResult t in getListSelection(this.summaryList.SelectedItems))
+                TreeList l = sender as TreeList;
+                object row;
+                TreeList.RowHitState hit;
+                row = summaryList.RowHitTest(((MouseEventArgs)e).Location, out hit);
+                if (row != null && hit == TreeList.RowHitState.Row)
                 {
-                    if (t == utr)
+                    UniqueRoutesResult utr = (UniqueRoutesResult)(row);
+                    bool colorSelected = false;
+                    if (hit != TreeList.RowHitState.PlusMinus)
                     {
-                        isMatch = true;
-                        break;
+                        int nStart = ((MouseEventArgs)e).X;
+                        int spos = l.Location.X;// +l.Parent.Location.X;
+                        for (int i = 0; i < l.Columns.Count; i++)
+                        {
+                            int epos = spos + l.Columns[i].Width;
+                            if (nStart > spos && nStart < epos)
+                            {
+                                if (l.Columns[i].Id == SummaryColumnIds.ActColor)
+                                {
+                                    colorSelected = true;
+                                    break;
+                                }
+                            }
+
+                            spos = epos;
+                        }
+                    }
+                    if (colorSelected)
+                    {
+                        ColorSelectorPopup cs = new ColorSelectorPopup();
+                        cs.Width = 70;
+                        cs.ThemeChanged(m_visualTheme);
+                        cs.DesktopLocation = ((Control)sender).PointToScreen(((MouseEventArgs)e).Location);
+                        cs.Selected = utr.ActColor;
+                        m_ColorSelectorResult = utr;
+                        cs.ItemSelected += new ColorSelectorPopup.ItemSelectedEventHandler(cs_ItemSelected);
+                        cs.Show();
+                    }
+                    else
+                    {
+                        bool isMatch = false;
+                        foreach (UniqueRoutesResult t in getListSelection(this.summaryList.SelectedItems))
+                        {
+                            if (t == utr)
+                            {
+                                isMatch = true;
+                                break;
+                            }
+                        }
+                        IList<TrailResultMarked> aTrm = new List<TrailResultMarked>();
+                        if (isMatch && refActivity != null)
+                        {
+                            IDictionary<IActivity, IList<PointInfo[]>> commonStretches = SimilarPoints;
+                            if (commonStretches.Count > 0 &&
+                                commonStretches.ContainsKey(utr.Activity) &&
+                                commonStretches[utr.Activity] != null &&
+                                commonStretches[utr.Activity].Count > 0)
+                            {
+                                TrailResult tr = new TrailResult(utr);
+                                IItemTrackSelectionInfo[] i = CommonStretches.getSelInfo(new DateTime[] { utr.Activity.StartTime, refActivity.StartTime },
+                                                        commonStretches[utr.Activity], true);
+                                ((TrailsItemTrackSelectionInfo)i[0]).Activity = utr.Activity;
+                                ((TrailsItemTrackSelectionInfo)i[1]).Activity = refActivity;
+                                aTrm.Add(new TrailResultMarked(tr, i[0].MarkedTimes));
+                                this.MarkRef(i[1]);
+                            }
+                        }
+                        this.MarkTrack(aTrm);
                     }
                 }
-                IList<TrailResultMarked> aTrm = new List<TrailResultMarked>();
-                if (isMatch && refActivity != null)
-                {
-                    IDictionary<IActivity, IList<PointInfo[]>> commonStretches = SimilarPoints;
-                    if (commonStretches.Count > 0 &&
-                        commonStretches.ContainsKey(utr.Activity) &&
-                        commonStretches[utr.Activity] != null &&
-                        commonStretches[utr.Activity].Count > 0)
-                    {
-                        TrailResult tr = new TrailResult(utr);
-                        IItemTrackSelectionInfo[] i = CommonStretches.getSelInfo(new DateTime[] { utr.Activity.StartTime, refActivity.StartTime },
-                                                commonStretches[utr.Activity], true);
-                        ((TrailsItemTrackSelectionInfo)i[0]).Activity = utr.Activity;
-                        ((TrailsItemTrackSelectionInfo)i[1]).Activity = refActivity;
-                        aTrm.Add(new TrailResultMarked(tr, i[0].MarkedTimes));
-                        this.MarkRef(i[1]);
-                    }
-                }
-                this.MarkTrack(aTrm);
             }
 #endif
+        }
+
+        private UniqueRoutesResult m_ColorSelectorResult = null;
+        void cs_ItemSelected(object sender, ColorSelectorPopup.ItemSelectedEventArgs e)
+        {
+            if (sender is ColorSelectorPopup && m_ColorSelectorResult != null)
+            {
+                ColorSelectorPopup cs = sender as ColorSelectorPopup;
+                if (cs.Selected != m_ColorSelectorResult.ActColor)
+                {
+                    m_ColorSelectorResult.ActColor = cs.Selected;
+                    summaryList_SelectedItemsChanged(sender, e);
+                }
+            }
+            m_ColorSelectorResult = null;
         }
 
         private void activeMenuItem_Click(object sender, EventArgs e)

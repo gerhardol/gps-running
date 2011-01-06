@@ -210,8 +210,8 @@ namespace GpsRunningPlugin.Source
 #if !ST_2_1
             expandButton.BackgroundImage = CommonResources.Images.View2PaneLowerHalf16;
             //this.treeListAct.SelectedItemsChanged += new System.EventHandler(summaryList_SelectedItemsChanged);
-            this.treeListAct.Click += new System.EventHandler(summaryList_Click);
 #endif
+            this.treeListAct.Click += new System.EventHandler(summaryList_Click);
             //TODO: Implement Toolbar
             this.showToolBarMenuItem.Visible = false;
             //Enabled when possible
@@ -1346,10 +1346,6 @@ namespace GpsRunningPlugin.Source
                     series2activity.Add(series, activity);
                     list.Add(series);
                 }
-                else
-                {
-                    newColor();
-                }
                 index++;
             }
             return list;
@@ -1367,7 +1363,6 @@ namespace GpsRunningPlugin.Source
             ChartDataSeries series = new ChartDataSeries(chart, axis);
             if (!canInterpolater(info))
             {
-                newColor();
                 return series;
             }
             bool first = true;
@@ -1425,7 +1420,15 @@ namespace GpsRunningPlugin.Source
                 priorElapsed = elapsed;
                 first = false;
             }
-            series.LineColor = newColor();
+            //activity color from activity
+            //The wrapper should be included here, but the structure is not changed
+            foreach (ActivityWrapper wrapper in actWrappers)
+            {
+                if (wrapper.Activity == info.Activity)
+                {
+                    series.LineColor = wrapper.ActColor;
+                }
+            }
             return series;
         }
         
@@ -2059,34 +2062,89 @@ namespace GpsRunningPlugin.Source
             treeView_CheckedChanged(sender, e);
         }
 
-#if !ST_2_1
         void summaryList_Click(object sender, System.EventArgs e)
         {
-            object row;
-            TreeList.RowHitState hit;
-            row = treeListAct.RowHitTest(((MouseEventArgs)e).Location, out hit);
-            if (row != null && hit == TreeList.RowHitState.Row)
+#if !ST_2_1
+            //From Trails plugin
+            if (sender is TreeList)
             {
-                ActivityWrapper utr = (ActivityWrapper)(row);
-                bool isMatch = false;
-                foreach (ActivityWrapper t in getListSelection(this.treeListAct.CheckedElements))
+                TreeList l = sender as TreeList;
+                object row;
+                TreeList.RowHitState hit;
+                row = treeListAct.RowHitTest(((MouseEventArgs)e).Location, out hit);
+                if (row != null && hit == TreeList.RowHitState.Row)
                 {
-                    if (t == utr)
+                    ActivityWrapper utr = (ActivityWrapper)(row);
+                    bool colorSelected = false;
+                    if (hit != TreeList.RowHitState.PlusMinus)
                     {
-                        isMatch = true;
-                        break;
+                        int nStart = ((MouseEventArgs)e).X;
+                        int spos = l.Location.X;// +l.Parent.Location.X;
+                        for (int i = 0; i < l.Columns.Count; i++)
+                        {
+                            int epos = spos + l.Columns[i].Width;
+                            if (nStart > spos && nStart < epos)
+                            {
+                                if (l.Columns[i].Id == OverlayColumnIds.Colour)
+                                {
+                                    colorSelected = true;
+                                    break;
+                                }
+                            }
+
+                            spos = epos;
+                        }
+                    }
+                    if (colorSelected)
+                    {
+                        ColorSelectorPopup cs = new ColorSelectorPopup();
+                        cs.Width = 70;
+                        cs.ThemeChanged(m_visualTheme);
+                        cs.DesktopLocation = ((Control)sender).PointToScreen(((MouseEventArgs)e).Location);
+                        cs.Selected = utr.ActColor;
+                        m_ColorSelectorResult = utr;
+                        cs.ItemSelected += new ColorSelectorPopup.ItemSelectedEventHandler(cs_ItemSelected);
+                        cs.Show();
+                    }
+                    else
+                    {
+                        bool isMatch = false;
+                        foreach (ActivityWrapper t in getListSelection(this.treeListAct.CheckedElements))
+                        {
+                            if (t == utr)
+                            {
+                                isMatch = true;
+                                break;
+                            }
+                        }
+                        IList<TrailResult> aTr = new List<TrailResult>();
+                        if (isMatch)
+                        {
+                            TrailResult tr = new TrailResult(utr);
+                            aTr.Add(tr);
+                        }
+                        this.MarkTrack(TrailResultMarked.TrailResultMarkAll(aTr));
                     }
                 }
-                IList<TrailResult> aTr = new List<TrailResult>();
-                if (isMatch)
-                {
-                    TrailResult tr = new TrailResult(utr);
-                        aTr.Add(tr);
-                }
-                this.MarkTrack(TrailResultMarked.TrailResultMarkAll(aTr));
             }
+#endif
         }
 
+        private ActivityWrapper m_ColorSelectorResult = null;
+        void cs_ItemSelected(object sender, ColorSelectorPopup.ItemSelectedEventArgs e)
+        {
+            if (sender is ColorSelectorPopup && m_ColorSelectorResult != null)
+            {
+                ColorSelectorPopup cs = sender as ColorSelectorPopup;
+                if (cs.Selected != m_ColorSelectorResult.ActColor)
+                {
+                    m_ColorSelectorResult.ActColor = cs.Selected;
+                    this.RefreshPage();
+                }
+            }
+            m_ColorSelectorResult = null;
+        }
+#if !ST_2_1
         void mapPoly_Click(object sender, MouseEventArgs e)
         {
             if (sender is TrailMapPolyline)

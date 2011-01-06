@@ -112,12 +112,16 @@ namespace GpsRunningPlugin.Source
         {
             get
             {
-                return getColor(this.m_trailColor);
+                return this.m_trailColor;
+            }
+            set
+            {
+                this.m_trailColor = value;
             }
         }
         private static int nextTrailColor = 1;
-        private int m_trailColor = nextTrailColor++;
-        private Color getColor(int color)
+        private Color m_trailColor = getColor(nextTrailColor++);
+        private static Color getColor(int color)
         {
             switch (color % 10)
             {
