@@ -102,14 +102,20 @@ namespace GpsRunningPlugin.Source
         public const string Offset = "Offset";
         public const string Name = "Name";
         public const string Location = "Location";
+        public const string Category = "Category";
         
         public const string Time = "Time";
         public const string Distance = "DistanceMeters";
         public const string AvgSpeed = "AverageSpeedMetersPerSecond";
         public const string AvgPace = "AvgPace";
         public const string AvgHR = "AverageHeartRate";
-        public const string AvgPower = "AveragePower";
         public const string AvgCad = "AverageCadence";
+        public const string AvgPower = "AveragePower";
+        public const string MaxSpeed = "FastestSpeedMetersPerSecond";
+        public const string MaxPace = "MaxPace";
+        public const string MaxHR = "MaximumHeartRate";
+        public const string MaxCad = "MaximumCadence";
+        public const string MaxPower = "MaximumPower";
         public const string TotAsc = "TotalAscendingMeters";
         public const string TotDesc = "TotalDescendingMeters";
 
@@ -126,6 +132,7 @@ namespace GpsRunningPlugin.Source
             IList<IListColumnDefinition> columnDefs = new List<IListColumnDefinition>();
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.Name, CommonResources.Text.LabelName, "", 70, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.Location, CommonResources.Text.LabelLocation, "", 70, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.Category, CommonResources.Text.LabelCategory, "", 70, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.Offset, StringResources.Offset, "", 70, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.Time, CommonResources.Text.LabelTime, "", 70, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.Distance, CommonResources.Text.LabelDistance, "", 60, StringAlignment.Near));
@@ -134,6 +141,11 @@ namespace GpsRunningPlugin.Source
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.AvgHR, CommonResources.Text.LabelAvgHR + UnitUtil.HeartRate.LabelAbbr2, "", 80, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.AvgCad, CommonResources.Text.LabelAvgCadence, "", 60, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.AvgPower, CommonResources.Text.LabelAvgPower, "", 60, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.MaxSpeed, CommonResources.Text.LabelFastestSpeed, "", 60, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.MaxPace, CommonResources.Text.LabelFastestPace, "", 60, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.MaxHR, CommonResources.Text.LabelMaxHR, "", 60, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.MaxCad, CommonResources.Text.LabelMaxCadence, "", 60, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.MaxPower, CommonResources.Text.LabelMaxPower, "", 60, StringAlignment.Near));
 #if ST_2_1
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.TotAsc, CommonResources.Text.LabelAscending, "", 60, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(OverlayColumnIds.TotDesc, CommonResources.Text.LabelDescending, "", 60, StringAlignment.Near));

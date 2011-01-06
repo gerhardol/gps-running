@@ -60,6 +60,10 @@ namespace GpsRunningPlugin.Source
                     return UnitUtil.Pace.ToString(actInfo.AverageSpeedMetersPerSecond);
                 case OverlayColumnIds.AvgHR:
                     return UnitUtil.HeartRate.ToString(actInfo.AverageHeartRate);
+                case OverlayColumnIds.MaxSpeed:
+                    return UnitUtil.Speed.ToString(actInfo.FastestSpeedMetersPerSecond);
+                case OverlayColumnIds.MaxPace:
+                    return UnitUtil.Pace.ToString(actInfo.FastestSpeedMetersPerSecond);
                 case OverlayColumnIds.TotAsc:
                     return UnitUtil.Elevation.ToString(actInfo.TotalAscendingMeters(Plugin.GetApplication().DisplayOptions.SelectedClimbZone));
                 case OverlayColumnIds.TotDesc:
