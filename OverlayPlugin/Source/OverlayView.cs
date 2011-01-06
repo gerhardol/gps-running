@@ -365,11 +365,8 @@ namespace GpsRunningPlugin.Source
             showMeanMenuItem.Text = Resources.BCA;
             showRollingAverageMenuItem.Text = Resources.BMA;
 
-            tableSettingsMenuItem.Text = Resources.TableSettings;
-            setRefTreeListMenuItem.Text = StringResources.SetRefActivity;
-
-            labelXaxis.Text = StringResources.XAxis + ":";
- 
+            // Chart bar text and buttons labels
+            labelXaxis.Text = StringResources.XAxis + ":"; 
             labelYaxis.Text = StringResources.YAxis + ":";
             useTime.Text = CommonResources.Text.LabelTime;
             useDistance.Text = CommonResources.Text.LabelDistance;
@@ -382,6 +379,7 @@ namespace GpsRunningPlugin.Source
             time.Text = CommonResources.Text.LabelTime;
             distance.Text = CommonResources.Text.LabelDistance;
 
+            // Chart context menu and submenus text
             xAxisMenuItem.Text = StringResources.XAxis;
             xAxisTimeMenuItem.Text = CommonResources.Text.LabelTime;
             xAxisDistanceMenuItem.Text = CommonResources.Text.LabelDistance;
@@ -406,13 +404,20 @@ namespace GpsRunningPlugin.Source
             setRollAvgWidthMenuItem.Text = Resources.SetMovingAveragePeriod;
 
             setRefActMenuItem.Text = StringResources.SetRefActivity;
+
+            showChartToolsMenuItem.Text = Resources.Menu_ShowChartBar;
+            showToolBarMenuItem.Text = Resources.Menu_ShowToolBar; 
+
+            // table context menu and submenus text
+            tableSettingsMenuItem.Text = Resources.TableSettings;
+            setRefTreeListMenuItem.Text = StringResources.SetRefActivity;
             this.advancedMenuItem.Text = StringResources.UI_Activity_List_Advanced;
             this.limitActivityMenuItem.Text = StringResources.UI_Activity_List_LimitSelection;
             this.selectWithURMenuItem.Text = string.Format(StringResources.UI_Activity_List_URSelect, "");
             this.setOffsetWithURMenuItem.Text = Resources.SetOffsetWithUR;
-
-            showChartToolsMenuItem.Text = Resources.Menu_ShowChartBar;
-            showToolBarMenuItem.Text = Resources.Menu_ShowToolBar; 
+            visibleMenuItem.Text = StringResources.Visible;
+            allVisibleMenuItem.Text = CommonResources.Text.ActionSelectAll;
+            noneVisibleMenuItem.Text = CommonResources.Text.ActionSelectNone;
 
             int max = Math.Max(labelXaxis.Location.X + labelXaxis.Size.Width,
                                 labelYaxis.Location.X + labelYaxis.Size.Width) + 5;
@@ -1902,6 +1907,17 @@ namespace GpsRunningPlugin.Source
             }
         }
 
+        private void showChartToolsMenuItem_Click(object sender, EventArgs e)
+        {
+            Settings.ShowChartBar = !Settings.ShowChartBar;
+            UpdateChartBar();
+        }
+        private void showToolBarMenuItem_Click(object sender, EventArgs e)
+        {
+            //PluginMain.Settings.ShowChartToolBar = !PluginMain.Settings.ShowChartToolBar;
+            //ShowChartToolBar = PluginMain.Settings.ShowChartToolBar;
+        }
+
         private void bannerXAxisMenuStrip_Opening(object sender, CancelEventArgs e)
         {
             xAxisTimeMenuItem.Checked = Settings.UseTimeXAxis;
@@ -2023,15 +2039,24 @@ namespace GpsRunningPlugin.Source
 
 #endif
         }
-        private void showChartToolsMenuItem_Click(object sender, EventArgs e)
+
+        private void allVisibleMenuItem_Click(object sender, EventArgs e)
         {
-            Settings.ShowChartBar = !Settings.ShowChartBar;
-            UpdateChartBar();
+            foreach (ActivityWrapper wrapper in actWrappers)
+            {
+                treeListAct.SetChecked(wrapper, true);
+            }
+            treeView_CheckedChanged(sender, e);
+
         }
-        private void showToolBarMenuItem_Click(object sender, EventArgs e)
+
+        private void noneVisibleMenuItem_Click(object sender, EventArgs e)
         {
-            //PluginMain.Settings.ShowChartToolBar = !PluginMain.Settings.ShowChartToolBar;
-            //ShowChartToolBar = PluginMain.Settings.ShowChartToolBar;
+            foreach (ActivityWrapper wrapper in actWrappers)
+            {
+                treeListAct.SetChecked(wrapper, false);
+            }
+            treeView_CheckedChanged(sender, e);
         }
 
 #if !ST_2_1
@@ -2124,8 +2149,6 @@ namespace GpsRunningPlugin.Source
             }
 #endif
         }
-
-
     }
 
     static class CommonData
