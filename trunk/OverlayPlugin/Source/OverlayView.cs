@@ -145,8 +145,22 @@ namespace GpsRunningPlugin.Source
             chart.SelectData += new ChartBase.SelectDataHandler(chart_SelectData);
             chart.SelectingData += new ChartBase.SelectDataHandler(chart_SelectingData);
             chart.Click += new EventHandler(chart_Click);
+
+            UpdateChartBar();
         }
 
+        private void UpdateChartBar()
+        {
+            if (Settings.ShowChartBar)
+            {
+                this.tableLayoutPanel1.RowStyles[1].Height = 50;
+            }
+            else
+            {
+                this.tableLayoutPanel1.RowStyles[1].Height = 0;
+            }
+        }
+        
         private void RefreshColumns()
         {
             treeListAct.Columns.Clear();
@@ -1997,14 +2011,7 @@ namespace GpsRunningPlugin.Source
         private void showChartToolsMenuItem_Click(object sender, EventArgs e)
         {
             Settings.ShowChartBar = !Settings.ShowChartBar;
-            if (Settings.ShowChartBar)
-            {
-                this.tableLayoutPanel1.RowStyles[1].Height = 50;
-            }
-            else
-            {
-                this.tableLayoutPanel1.RowStyles[1].Height = 0;
-            }
+            UpdateChartBar();
         }
         private void showToolBarMenuItem_Click(object sender, EventArgs e)
         {
