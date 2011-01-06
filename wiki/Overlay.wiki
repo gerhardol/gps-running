@@ -1,4 +1,5 @@
-#summary Overlay User's Guide, new UI
+#summary Overlay User's Guide
+#labels Featured
 
 <wiki:toc max_depth="3" />
 
@@ -96,9 +97,8 @@ Note: If you select individual activities instead of a group, the activities wil
 
 ==Advanced==
 The plugin has some features put in the list menu item advanced, to use in special cases.
- * Process certain activities in other plugin, use as search selector. For the activities selected in the plugin list, the menu item will select the activities in the SportTracks list. This will allow processing in other plugins.
- * Integration with Unique Routes. If Unique Routes plugin is installed, you can add all activities on a specific route to the plugin list. Alternative ways of doing this could be to send the activities from Unique Routes plugin.
-You can use the Unique routes plugin if you want to find activities with routes that are similar to one of your choice. Once you have found the activities, they can be sent to Overlay for further analysis. For further information, see the Unique routes wiki.
+ * Process certain activities in other plugin, use as search selector. For the activities selected in Overlays activity list, the menu item will select the activities in the SportTracks list. This will allow processing in other plugins.
+ * Integration with Unique Routes. UR finds activities with routes that are similar to one of your choice. If Unique Routes plugin is installed, you can add all activities on a specific route to Overlays activity list. Alternative ways of doing this could be to send the activities from Unique Routes plugin.
 
 ==Feedback==
 For patches, bugreports or feature suggestions, use the Google Code issue list.
@@ -106,5 +106,5 @@ For feedback please use the thread for this plugin at !SportTracks forum [http:/
 
 ==Related ST plugins==
  * [http://www.zonefivesoftware.com/sporttracks/plugins/?p=unique-routes Unique Routes] View similar routes. Much of the functionality is integrated in Overlay plugin.
- * [http://www.zonefivesoftware.com/sporttracks/plugins/?p=trails Trails] Has most fatures as in Overlay, activities can be compared. The plugin also allows you to compare sections and splits of activities.
- * [http://www.zonefivesoftware.com/sporttracks/plugins/?p=dot-racing Dot Racing] Additional features, like integration with other old man biking plugins and as the name suggests, dot-racing.
+ * [http://www.zonefivesoftware.com/sporttracks/plugins/?p=trails Trails] While Overlay concentrates on comparing complete activities, Trails is specialized to compare parts of activities. Trails can also compare complete activities
+ * [http://www.zonefivesoftware.com/sporttracks/plugins/?p=dot-racing Dot Racing] Non-free plugin with additional features, like integration with other old man biking plugins and as the name suggests, dot-racing.
