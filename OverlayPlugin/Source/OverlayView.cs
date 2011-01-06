@@ -69,11 +69,13 @@ namespace GpsRunningPlugin.Source
             : this(true)
         {
             m_layer = TrailPointsLayer.Instance((IView)view);
+            ShowPage("");
         }
         public OverlayView(IActivityReportsView view)
             : this(true)
         {
             m_layer = TrailPointsLayer.Instance((IView)view);
+            ShowPage("");
         }
         //UniqueRoutes sendto
         public OverlayView(IList<IActivity> activities, IDailyActivityView view)
@@ -96,7 +98,6 @@ namespace GpsRunningPlugin.Source
                 //Theme and Culture must be set manually
                 this.ThemeChanged(m_visualTheme);
                 this.UICultureChanged(m_culture);
-                _showPage = true;
                 this.ShowDialog();
             }
         }
