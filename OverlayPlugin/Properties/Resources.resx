@@ -180,4 +180,7 @@
     <value>Overlay Map Overlay</value>
     <comment>still unused (requires ST update)</comment>
   </data>
+  <data name="SetOffsetWithUR" xml:space="preserve">
+    <value>Set activity offset with Unique Routes Common Stretches</value>
+  </data>
 </root>

@@ -208,6 +208,15 @@ namespace GpsRunningPlugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set activity offset with Unique Routes Common Stretches.
+        /// </summary>
+        internal static string SetOffsetWithUR {
+            get {
+                return ResourceManager.GetString("SetOffsetWithUR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Table settings.
         /// </summary>
         internal static string TableSettings {
