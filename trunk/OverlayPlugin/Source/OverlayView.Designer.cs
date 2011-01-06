@@ -382,7 +382,7 @@ namespace GpsRunningPlugin.Source
             this.xAxisTimeMenuItem,
             this.xAxisDistanceMenuItem});
             this.bannerXAxisMenuStrip.Name = "bannerXAxisMenuStrip";
-            this.bannerXAxisMenuStrip.Size = new System.Drawing.Size(153, 70);
+            this.bannerXAxisMenuStrip.Size = new System.Drawing.Size(120, 48);
             this.bannerXAxisMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.bannerXAxisMenuStrip_Opening);
             // 
             // xAxisDistanceMenuItem
@@ -579,7 +579,7 @@ namespace GpsRunningPlugin.Source
             this.expandButton.HyperlinkStyle = false;
             this.expandButton.ImageMargin = 2;
             this.expandButton.LeftImage = null;
-            this.expandButton.Location = new System.Drawing.Point(2130, 2);
+            this.expandButton.Location = new System.Drawing.Point(602, 2);
             this.expandButton.Name = "expandButton";
             this.expandButton.PushStyle = true;
             this.expandButton.RightImage = null;
