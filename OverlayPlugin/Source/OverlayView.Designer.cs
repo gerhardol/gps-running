@@ -51,6 +51,7 @@ namespace GpsRunningPlugin.Source
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OverlayView));
+            this.xAxisTimeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chart = new ZoneFiveSoftware.Common.Visuals.Chart.LineChart();
             this.heartRate = new System.Windows.Forms.CheckBox();
             this.pace = new System.Windows.Forms.CheckBox();
@@ -70,6 +71,9 @@ namespace GpsRunningPlugin.Source
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.actionBanner1 = new ZoneFiveSoftware.Common.Visuals.ActionBanner();
             this.bannerContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.xAxisMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bannerXAxisMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.xAxisDistanceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bannerShowContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showHRMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -110,6 +114,7 @@ namespace GpsRunningPlugin.Source
             this.tableLayoutPanel1.SuspendLayout();
             this.actionBanner1.SuspendLayout();
             this.bannerContextMenuStrip.SuspendLayout();
+            this.bannerXAxisMenuStrip.SuspendLayout();
             this.bannerShowContextMenuStrip.SuspendLayout();
             this.bannerShowDiffContextMenuStrip.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -120,6 +125,13 @@ namespace GpsRunningPlugin.Source
             this.panel2.SuspendLayout();
             this.treeListContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // xAxisTimeMenuItem
+            // 
+            this.xAxisTimeMenuItem.Name = "xAxisTimeMenuItem";
+            this.xAxisTimeMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.xAxisTimeMenuItem.Text = "Time";
+            this.xAxisTimeMenuItem.Click += new System.EventHandler(this.commonXAxisMenuItem_click);
             // 
             // chart
             // 
@@ -339,6 +351,7 @@ namespace GpsRunningPlugin.Source
             // bannerContextMenuStrip
             // 
             this.bannerContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.xAxisMenuItem,
             this.showMenuItem,
             this.showDiffMenuItem,
             this.showMeanMenuItem,
@@ -353,8 +366,31 @@ namespace GpsRunningPlugin.Source
             this.bannerContextMenuStrip.Name = "bannerContextMenuStrip";
             this.bannerContextMenuStrip.ShowCheckMargin = true;
             this.bannerContextMenuStrip.ShowImageMargin = false;
-            this.bannerContextMenuStrip.Size = new System.Drawing.Size(212, 214);
+            this.bannerContextMenuStrip.Size = new System.Drawing.Size(212, 236);
             this.bannerContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.bannerContextMenuStrip_Opening);
+            // 
+            // xAxisMenuItem
+            // 
+            this.xAxisMenuItem.DropDown = this.bannerXAxisMenuStrip;
+            this.xAxisMenuItem.Name = "xAxisMenuItem";
+            this.xAxisMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.xAxisMenuItem.Text = "X Axis";
+            // 
+            // bannerXAxisMenuStrip
+            // 
+            this.bannerXAxisMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.xAxisTimeMenuItem,
+            this.xAxisDistanceMenuItem});
+            this.bannerXAxisMenuStrip.Name = "bannerXAxisMenuStrip";
+            this.bannerXAxisMenuStrip.Size = new System.Drawing.Size(153, 70);
+            this.bannerXAxisMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.bannerXAxisMenuStrip_Opening);
+            // 
+            // xAxisDistanceMenuItem
+            // 
+            this.xAxisDistanceMenuItem.Name = "xAxisDistanceMenuItem";
+            this.xAxisDistanceMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.xAxisDistanceMenuItem.Text = "Distance";
+            this.xAxisDistanceMenuItem.Click += new System.EventHandler(this.commonXAxisMenuItem_click);
             // 
             // showMenuItem
             // 
@@ -543,7 +579,7 @@ namespace GpsRunningPlugin.Source
             this.expandButton.HyperlinkStyle = false;
             this.expandButton.ImageMargin = 2;
             this.expandButton.LeftImage = null;
-            this.expandButton.Location = new System.Drawing.Point(602, 2);
+            this.expandButton.Location = new System.Drawing.Point(2130, 2);
             this.expandButton.Name = "expandButton";
             this.expandButton.PushStyle = true;
             this.expandButton.RightImage = null;
@@ -653,7 +689,7 @@ namespace GpsRunningPlugin.Source
             this.setRefTreeListMenuItem,
             this.advancedMenuItem});
             this.treeListContextMenuStrip.Name = "treeListContextMenuStrip";
-            this.treeListContextMenuStrip.Size = new System.Drawing.Size(184, 48);
+            this.treeListContextMenuStrip.Size = new System.Drawing.Size(184, 70);
             this.treeListContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.treeListContextMenuStrip_Opening);
             // 
             // tableSettingsMenuItem
@@ -676,22 +712,22 @@ namespace GpsRunningPlugin.Source
             this.limitActivityMenuItem,
             this.selectWithURMenuItem});
             this.advancedMenuItem.Name = "advancedMenuItem";
-            this.advancedMenuItem.Size = new System.Drawing.Size(199, 48);
+            this.advancedMenuItem.Size = new System.Drawing.Size(183, 22);
             this.advancedMenuItem.Text = "<Advanced>";
             // 
             // limitActivityMenuItem
             // 
             this.limitActivityMenuItem.Name = "limitActivityMenuItem";
-            this.limitActivityMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.limitActivityMenuItem.Size = new System.Drawing.Size(272, 22);
             this.limitActivityMenuItem.Text = "<Limit selection to current activities...";
             this.limitActivityMenuItem.Click += new System.EventHandler(this.limitActivityMenuItem_Click);
             // 
             // selectWithURMenuItem
             // 
             this.selectWithURMenuItem.Name = "selectWithURMenuItem";
-            this.selectWithURMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.selectWithURMenuItem.Size = new System.Drawing.Size(272, 22);
             this.selectWithURMenuItem.Text = "<Select with UR to current activities...";
-            this.selectWithURMenuItem.Click += new System.EventHandler(selectWithURMenuItem_Click);
+            this.selectWithURMenuItem.Click += new System.EventHandler(this.selectWithURMenuItem_Click);
             // 
             // OverlayView
             // 
@@ -703,6 +739,7 @@ namespace GpsRunningPlugin.Source
             this.tableLayoutPanel1.ResumeLayout(false);
             this.actionBanner1.ResumeLayout(false);
             this.bannerContextMenuStrip.ResumeLayout(false);
+            this.bannerXAxisMenuStrip.ResumeLayout(false);
             this.bannerShowContextMenuStrip.ResumeLayout(false);
             this.bannerShowDiffContextMenuStrip.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
@@ -776,5 +813,9 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.ToolStripMenuItem showChartToolsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showToolBarMenuItem;
         private ZoneFiveSoftware.Common.Visuals.Button expandButton;
+        private System.Windows.Forms.ToolStripMenuItem xAxisMenuItem;
+        private System.Windows.Forms.ContextMenuStrip bannerXAxisMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem xAxisDistanceMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem xAxisTimeMenuItem;
     }
 }
