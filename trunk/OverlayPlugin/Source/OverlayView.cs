@@ -368,6 +368,10 @@ namespace GpsRunningPlugin.Source
             time.Text = CommonResources.Text.LabelTime;
             distance.Text = CommonResources.Text.LabelDistance;
 
+            xAxisMenuItem.Text = StringResources.XAxis;
+            xAxisTimeMenuItem.Text = CommonResources.Text.LabelTime;
+            xAxisDistanceMenuItem.Text = CommonResources.Text.LabelDistance;
+            
             showMenuItem.Text = StringResources.Show;
             showDiffMenuItem.Text = StringResources.Show + " " + StringResources.Difference.ToLower();
 
@@ -1868,6 +1872,25 @@ namespace GpsRunningPlugin.Source
             }
         }
 
+        private void bannerXAxisMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            xAxisTimeMenuItem.Checked = Settings.UseTimeXAxis;
+            xAxisDistanceMenuItem.Checked = !Settings.UseTimeXAxis;
+        }
+
+        private void commonXAxisMenuItem_click(object sender, EventArgs e)
+        {
+            // Change the corresponding radio button. Its event handler will change the settings.
+            if (sender == xAxisTimeMenuItem)
+            {
+                useTime.Checked = true;
+            }
+            else if (sender == xAxisDistanceMenuItem)
+            {
+                useDistance.Checked = true;
+            }
+        }
+        
         private void bannerShowContextMenuStrip_Opening(object sender, CancelEventArgs e)
         {
             showHRMenuItem.Checked = Settings.ShowHeartRate;
@@ -2073,6 +2096,8 @@ namespace GpsRunningPlugin.Source
             }
 #endif
         }
+
+
     }
 
     static class CommonData
