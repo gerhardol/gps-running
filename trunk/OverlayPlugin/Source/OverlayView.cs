@@ -395,6 +395,7 @@ namespace GpsRunningPlugin.Source
             this.advancedMenuItem.Text = StringResources.UI_Activity_List_Advanced;
             this.limitActivityMenuItem.Text = StringResources.UI_Activity_List_LimitSelection;
             this.selectWithURMenuItem.Text = string.Format(StringResources.UI_Activity_List_URSelect, "");
+            this.setOffsetWithURMenuItem.Text = Resources.SetOffsetWithUR;
 
             showChartToolsMenuItem.Text = Resources.Menu_ShowChartBar;
             showToolBarMenuItem.Text = Resources.Menu_ShowToolBar; 
@@ -1720,36 +1721,41 @@ namespace GpsRunningPlugin.Source
                     }
                     foreach (IActivity act in similarActivities)
                     {
-                        allActivities.Add(act);
+                        if (!allActivities.Contains(act))
+                        {
+                            allActivities.Add(act);
+                        }
                     }
                     this.Activities = allActivities;
                 }
-                //IDictionary<IActivity, IList<double[,]>> commonStretches = UniqueRoutes.GetCommonStretchesForActivity(CommonData.refActWrapper.Activity, similarActivities, null);
-                //IList<TrailResultMarked> results = new List<TrailResultMarked>();
-                //if (commonStretches.Count > 0 &&
-                //    commonStretches[actWrappers[0].Activity] != null &&
-                // commonStretches[actWrappers[0].Activity].Count > 0)
-                //{
-                //    if (Settings.UseTimeXAxis)
-                //    {
-                //        actWrappers[0].TimeOffset = new TimeSpan(0, 0, (int)commonStretches[actWrappers[0].Activity][0][0, 1]);
-                //    }
-                //    else
-                //    {
-                //        actWrappers[0].DistanceOffset = commonStretches[actWrappers[0].Activity][0][0, 2];
-                //    }
-                //    TrailResult tr = new TrailResult(actWrappers[0]);
-
-                //    foreach (double[,] kp in commonStretches[actWrappers[0].Activity])
-                //    {
-                //        IValueRangeSeries<DateTime> t = new ValueRangeSeries<DateTime>();
-                //        t.Add(new ValueRange<DateTime>(
-                //            tr.getActivityTime((float)kp[0, 1]),
-                //            tr.getActivityTime((float)kp[1, 1])));
-                //        results.Add(new TrailResultMarked(tr, t));
-                //    }
-                //}
-                //this.MarkTrack(results);
+            }
+        }
+        void setOffsetWithURMenuItem_Click(object sender, System.EventArgs e)
+        {
+            if (CommonData.refActWrapper != null)
+            {
+                IList<IActivity> activities = new List<IActivity>();
+                foreach (ActivityWrapper aw in getListSelection(treeListAct.SelectedItems))
+                {
+                    activities.Add(aw.Activity);
+                }
+                IDictionary<IActivity, IItemTrackSelectionInfo[]> commonStretches = UniqueRoutes.GetCommonStretchesForActivity(CommonData.refActWrapper.Activity, activities, null);
+                foreach (ActivityWrapper aw in getListSelection(treeListAct.SelectedItems))
+                {
+                    if (commonStretches.Count > 0 &&
+                        commonStretches.ContainsKey(aw.Activity) &&
+                        commonStretches[aw.Activity] != null &&
+                        commonStretches[aw.Activity][0].MarkedDistances.Count > 0 &&
+                        commonStretches[aw.Activity][0].MarkedTimes.Count > 0)
+                    {
+                        //set both dist/time offset, regardless Settings.UseTimeXAxis
+                        aw.TimeOffset = commonStretches[aw.Activity][0].MarkedTimes[0].Lower.Subtract(aw.Activity.StartTime);
+                        aw.DistanceOffset = commonStretches[aw.Activity][0].MarkedDistances[0].Lower;
+                        TrailResult tr = new TrailResult(actWrappers[0]);
+                    }
+                }
+                treeListAct.Refresh();
+                updateChart();
             }
         }
 

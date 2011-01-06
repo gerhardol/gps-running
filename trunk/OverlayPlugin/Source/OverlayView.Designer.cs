@@ -110,6 +110,7 @@ namespace GpsRunningPlugin.Source
             this.advancedMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.limitActivityMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectWithURMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setOffsetWithURMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.actionBanner1.SuspendLayout();
@@ -710,7 +711,8 @@ namespace GpsRunningPlugin.Source
             // 
             this.advancedMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.limitActivityMenuItem,
-            this.selectWithURMenuItem});
+            this.selectWithURMenuItem,
+            this.setOffsetWithURMenuItem});
             this.advancedMenuItem.Name = "advancedMenuItem";
             this.advancedMenuItem.Size = new System.Drawing.Size(183, 22);
             this.advancedMenuItem.Text = "<Advanced>";
@@ -728,6 +730,13 @@ namespace GpsRunningPlugin.Source
             this.selectWithURMenuItem.Size = new System.Drawing.Size(272, 22);
             this.selectWithURMenuItem.Text = "<Select with UR to current activities...";
             this.selectWithURMenuItem.Click += new System.EventHandler(this.selectWithURMenuItem_Click);
+            // 
+            // setOffsetWithURMenuItem
+            // 
+            this.setOffsetWithURMenuItem.Name = "setOffsetWithURMenuItem";
+            this.setOffsetWithURMenuItem.Size = new System.Drawing.Size(272, 22);
+            this.setOffsetWithURMenuItem.Text = "<Set offset with UR to current activities...";
+            this.setOffsetWithURMenuItem.Click += new System.EventHandler(this.setOffsetWithURMenuItem_Click);
             // 
             // OverlayView
             // 
@@ -792,6 +801,7 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.ToolStripMenuItem advancedMenuItem;
         private System.Windows.Forms.ToolStripMenuItem limitActivityMenuItem;
         private System.Windows.Forms.ToolStripMenuItem selectWithURMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setOffsetWithURMenuItem;
         private System.Windows.Forms.ContextMenuStrip bannerShowContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem showHRMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showPaceMenuItem;

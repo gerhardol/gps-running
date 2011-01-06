@@ -104,4 +104,7 @@
   <data name="TableSettings" xml:space="preserve">
     <value>Tabellinställningar</value>
   </data>
+  <data name="SetOffsetWithUR" xml:space="preserve">
+    <value>Sätt offset för aktivitet med Unique Routes Common Stretches</value>
+  </data>
 </root>
