@@ -65,6 +65,14 @@ namespace UniqueRoutes.Export
         {
             return GpsRunningPlugin.Source.UniqueRoutes.findSimilarRoutes(activity, progressBar);
         }
+        public static IList<IActivity> findSimilarRoutesActivities(IActivity activity, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
+        {
+            return GpsRunningPlugin.Source.UniqueRoutes.findSimilarRoutes(activity, activities, progressBar);
+        }
+        public static IList<IActivity> findSimilarRouteSnippets(IGPSRoute route, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
+        {
+            return GpsRunningPlugin.Source.UniqueRoutes.findSimilarRoutes(route, activities, progressBar);
+        }
 
         public static IDictionary<IActivity, IItemTrackSelectionInfo[]> findCommonStretches(IActivity activity, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
         {

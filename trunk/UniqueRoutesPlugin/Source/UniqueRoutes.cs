@@ -39,6 +39,22 @@ namespace GpsRunningPlugin.Source
         {
             return findSimilarRoutes(refActivity, getBaseActivities(), true, progressBar);
         }
+        public static IList<IActivity> findSimilarRoutes(IActivity refActivity, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
+        {
+            if (activities == null)
+            {
+                activities = getBaseActivities();
+            }
+            return findSimilarRoutes(refActivity, activities, true, progressBar);
+        }
+        public static IList<IActivity> findSimilarRoutes(IGPSRoute refRoute, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
+        {
+            if (activities == null)
+            {
+                activities = getBaseActivities();
+            }
+            return findSimilarRoutes(refRoute, activities, false, progressBar);
+        }
 
         public static IList<IActivity> getBaseActivities()
         {
@@ -58,7 +74,7 @@ namespace GpsRunningPlugin.Source
         {
             if (refActivity == null ||
                 refActivity.GPSRoute == null ||
-                beginEndCheck && (false/*catCheck*/ && !isAllowedActivity(refActivity)))
+                beginEndCheck && (false/*catCheck && !isAllowedActivity(refActivity)*/))
                 return new List<IActivity>();
             return findSimilarRoutes(refActivity.GPSRoute, refActivity.ReferenceId, activities, beginEndCheck, progressBar);
         }
@@ -72,6 +88,10 @@ namespace GpsRunningPlugin.Source
         }
         public static IList<IActivity> findSimilarRoutes(IGPSRoute refRoute, string refId, IList<IActivity> activities, bool beginEndCheck, System.Windows.Forms.ProgressBar progressBar)
         {
+            if (progressBar == null)
+            {
+                progressBar = new System.Windows.Forms.ProgressBar();
+            }
             IList<IActivity> result = new List<IActivity>();
             if (refRoute == null)
                 return result;
