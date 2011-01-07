@@ -5,37 +5,47 @@
 
 Note: This wiki is only partly updated to the features in this plugin.
 
-==What does it do?==
+=What does it do?=
 When you run outside it really matters what route you take if want to make a personal record. This is why it does not always make sense to compare, e.g., two 5k run on two different routes if one route is very hilly and the other is not. And worse, it may not make sense to compare two activities that cover the same route but are in the opposite direction. For example a route such as A -> B -> C (the route from A to C via B) may be more difficult than a route that cover the same points but are in the opposite direction; C -> B -> A. For example, running a route with a long slow ascend that ends with a sharp descent are often (that is what I experience) different in difficulty than the route that start with a sharp ascend and ends with a long slow descend. Therefore, manually trying weeding out all the routes that are similar to some activity that you are considering in SportTracks is - and I think you agree - very tidious.
 
 So what is that this plugin does? It finds, for some activity, any activities with routes that are similar to that activity. This way you can get an overview of all the activities that you consider. 
 
 The way it goes about evaluating if two activities are similar it tests if the two respective GPS tracks are close to each other. You may wonder what is meant by <i>close to each other</i>. Since GPS devices are not perfect we may expect that two routes, even though we know they are similar, may be dissimilar locally, due to error GPS measurements. Therefore it is possible to state in the settings for the plugin that two routes are similar even though some <i>X</i> percent of the routes are not.
 
-==Search for Similar Routes==
-The plugin can be used in several ways.
+=Search for Similar Routes=
+The plugin can be used in several ways, also from other plugins.
 
-===From Other Plugins===
-Several other plugins has implemented support for using the Unique Routes plugin directly from other plugins.
- * Search for similar activities:  [http://www.zonefivesoftware.com/sporttracks/plugins/?p=overlay Overlay], [http://www.zonefivesoftware.com/sporttracks/plugins/?p=matrix Matrix], [http://www.zonefivesoftware.com/sporttracks/plugins/?p=dot-racing Dot Racing]
- * Search for similar trails (parts of activities): [http://www.zonefivesoftware.com/sporttracks/plugins/?p=trails Trails] * use [UniqueRoutes#CommonStretches] to set offset.
- * Mark [UniqueRoutes#CommonStretches] to mark the parts matching the reference result.
- 
+The plugin is activitated by selecting the [http://gps-running.googlecode.com/svn/wiki/images/plugins/uniqueroutes/ActivityDetailView.png activity detail page], both in Daily Activity View and Activity Reports view.
+
+==Activities searched==
 ===Single Activity===
-The plugin is activitated by selecting it from the activity detail [http://gps-running.googlecode.com/svn/wiki/images/plugins/uniqueroutes/ActivityDetailView.png page].
+If a single activity is selected, the all activities matching the configured category is used.
+The single activity is always used as the reference activity.
 
 ===Multiple Activities===
-Select several activities in SportTracks
+If several activities are selected, the activities are used. The category is not used as a filter. So if you select a month in Daily Activity, those activities are used in the search. 
+
+==Reference selection==
+===Reference activity===
+The normal way to use the plugin is to select a single actity and find activities similar to it. The activity used can be changed in the list context menu (right click the table or the refresh button).
 
 ===Selected Route Snippet===
-Select part of a track and apply the plugin on a subsection of an activitys route.
+Instead of using a complete activity, the plugin can use a part of an activity, or a route "snippet".
+Select part of a track (right click and drag), then press refresh button to use a "snippet" of an activity.
 
-==Features in this plugin==
- * Show track on map
- * Click to mark Common Stretches
- * Select activities to show them on the map.
+==From Other Plugins==
+Several other plugins has implemented support for using the Unique Routes plugin directly from other plugins. Other plugins use the same settings as in Unique Routes (Radius, Category filter etc).
 
- * To other plugins
+ * Search for similar activities:  [http://www.zonefivesoftware.com/sporttracks/plugins/?p=overlay Overlay], [http://www.zonefivesoftware.com/sporttracks/plugins/?p=matrix Matrix], [http://www.zonefivesoftware.com/sporttracks/plugins/?p=dot-racing Dot Racing]
+ * Search for similar trails (parts of activities): [http://www.zonefivesoftware.com/sporttracks/plugins/?p=trails Trails]
+ * Mark [UniqueRoutes#Common_Stretches Common Stretches] to mark the parts matching the reference result. [http://www.zonefivesoftware.com/sporttracks/plugins/?p=trails Trails]
+ * Use [UniqueRoutes#Common_Stretches Common Stretches] to set offset. [http://www.zonefivesoftware.com/sporttracks/plugins/?p=overlay Overlay]
+ 
+=Features in this plugin=
+ * Show track on map. Select activities in the list, and they will show on the map.
+ * Click on an activity in the list to mark [UniqueRoutes#Common_Stretches Common Stretches]. If a single actity is shown (the standard SportTracks track in the Route pane) the corresponding parts in the reference activity is shown too.
+
+ * Send to other plugins
 Unique Routes can send results for analyze directly to other GPS-Running plugins:
   * [http://www.zonefivesoftware.com/sporttracks/plugins/?p=overlay Overlay]
   * [http://www.zonefivesoftware.com/sporttracks/plugins/?p=high-score High Score]
@@ -43,19 +53,29 @@ Unique Routes can send results for analyze directly to other GPS-Running plugins
   * [http://www.zonefivesoftware.com/sporttracks/plugins/?p=accumulated-summary Accumulated Summary]
   * TRIMP - depreciated plugin
  
-===CommonStretches===
-TODO
-The sections matching the reference activity.
-Single Activity view will mark the used sections on the reference activity too.
+==CommonStretches==
+The Unique Route plugin is relative forgiving in how routes are considered identical. A configurable part of points can differ, there is also possibilities to skip start and end of activities.
 
-==Settings==
+The Common Stretches functionality will try to match activities to the reference activity, so each snippet corresponds to the reference activity.
+This functionality is still experimental.
+
+=Settings=
 The settings for the plugin are shown below, and it is here you specify when the plugin should identify two routes as being identical.
+
+There are also some configrations from the lst context menu.
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/uniqueroutes/Settings.png]
 
-==Internals==
-TODO describe how UR detects routes
+=Internals=
+The plugin generally works fine detecting similar routes, but due to optimizations it can detect routes that are in the same area, but the route isgoing differently. Using the Common Stretches approach will be very slow with many activities.
 
-==Feedback==
+The plugin works by setting up a "matrix with twice the radius for the quadrant size. If the GPS points for the reference activity and the tested activity is in the same boxes, the activities are considered the same (there is a special trick for direction too). So the plugin will not work well in the following situations for instance:
+ * If the radius is close to or shorter to the distance between GPS points. 
+ * As the grid lines are not related from the reference activity, the plugin could in rare situations not find activities if the grid line is between the reference and the tested activity.
+ * Zig-zag may confuse the algorithm.
+ 
+A general recommendation is therefore to set the radius higher than what you would expect.
+
+=Feedback=
 For patches, bugreports or feature suggestions, use the Google Code issue list.
 For feedback please use the thread for this plugin at !SportTracks forum [http://www.zonefivesoftware.com/SportTracks/Forums/viewforum.php?f=32 here].

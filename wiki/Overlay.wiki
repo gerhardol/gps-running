@@ -98,7 +98,7 @@ A workaround is to use Overlay in a popup (from Analyze menu), then select a sin
 
 ==Advanced==
 The plugin has some features put in the list menu item advanced, to use in special cases.
- * Process certain activities in other plugin, use as search selector. For the activities selected in Overlays activity list, the menu item will select the activities in the SportTracks list. This will allow processing in other plugins.
+ * Process certain activities in other plugin, use as search selector. For the activities selected in Overlays activity list, the menu item will select the activities in the SportTracks list. This will allow processing in other plugins. One use case can be to mark all actities that a "special" in some way, make sure only they are selected and use *Edit->Find and Replace* to for instance change the name for many activities.
  * Integration with Unique Routes. If Unique Routes plugin is installed, you can add activities similar to the reference activity to the Overlay activity list. Alternative ways of doing this could be to send the activities from Unique Routes plugin.
  You can also use the Unique Routes plugin if you want to find activities with routes that are similar to one of your choice. Once you have found the activities, they can be sent to Overlay for further analysis. For further information, see the Unique Routes wiki.
  * Setting offset from Unique Routes Common Stretches. The Common Stretches feature in Unique Routes is used to find the first common part of the marked activities compared to the reference activity. So if the first part differs, this feature will auto-sync the offset.
