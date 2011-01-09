@@ -283,6 +283,8 @@ namespace GpsRunningPlugin.Source
                     else
                         popupForm.Text = String.Format(Resources.O2, activities.Count);
                 }
+
+                m_layer.DoZoom();
             }
         }
         public void RefreshPage()
@@ -341,6 +343,11 @@ namespace GpsRunningPlugin.Source
             if (m_layer != null)
             {
                 m_layer.ShowPage = _showPage;
+                if (m_firstZoom)
+                {
+                    m_layer.DoZoom();
+                }
+                m_firstZoom = false;
             }
 #endif
         }
@@ -2187,6 +2194,7 @@ namespace GpsRunningPlugin.Source
         private IDailyActivityView m_view = null;
         private TrailPointsLayer m_layer = null;
         private bool m_boDetailPageExpanded = false;
+        private bool m_firstZoom = true; //Force zoom first update - the page is not visible when activities are updated
 #endif
 
         private void expandButton_Click(object sender, EventArgs e)
