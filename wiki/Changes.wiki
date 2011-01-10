@@ -1,45 +1,89 @@
 #summary Summary Changes
 #labels Featured
 
+<wiki:toc max_depth="3" />
+
+More or less official beta releases are available in the Downloads section. See each plugin for detailed description of functions.
+
+=Latest updates=
+Next version will be called 2.0
+
+1.9.237 2011-01-11
+ * UR, Overlay: Add ColorSelector
+ * Slightly darker marked tracks
+
+ * Overlay can use CommonStretches in Unique Routes to set Offset
+ * Overlay: Zoom to all activities at activty change
+ * Overlay: Show current reference activity in the menues
+ * Overlay: At startup, the chart bar was always shown independently on the settings.
+ * Overlay: Add list colums: Category, FastestSpeedMetersPerSecond, MaxPace, MaximumHeartRate, MaximumCadence, MaximumPower
+
+ * Unique Routes: Improved Common Stretches, enable upcoming support in Trails
+ 
+=Changes in SportTracks 3 before 1.9.224=
+Very brief summary, see the specific plugin documentation for details.
+
+==All plugins==
+ * Support for multiple activities in Activity Pages
+ * Corrections and UI updates
+
+==Overlay==
+ * Overlay has a redesigned UI, better confirming with ST interface.
+ * Show activities on the Route view
+ * Many new features like diff charts
+ * Offset in Graphs
+
+==Unique Routes==
+ * Show activities on the Route
+ * Route Snippets: Find parts of routes in other activities
+ * Improved Common Stretches algorithm
+ * Updated UI, using ST lists
+
+==SportTracks 2==
+ * SportTracks 2 is now no longer supported. ST2 has been supported when possible also for some new functions mentioned. There are builds from the end of December for ST2 users. ST2 support will also be removed from the code over time.
+
+==TRIMP==
+ * TRIMP is not in the official ST3 plugin catalog but has so far been updated. This will no longer be done.
+ 
+==Changes from Kristian Bisgaard Lassen's version to initial ST3 version==
+
+===Background===
 Kristian Helkjaer Lassen (Kristian Bisgaard Lassen before he got married) has put up the code for his plugin here at Google Code. I enjoy Kristian's plugins very much, they have worked really well for me. Most of the issues posted for the plugins has been that the download site is down or that there are exceptions when installing in other locations. It is likely that some work is required for next major ST version and Kristian has indicated that he not really has time/interest to maintain the plugins right now. Every thing has it it time. Open sourcing the code lets everyone take over the maintenance. Right now, ST user gerhard has access rights to the code and has started to do some work with the plugins.
 
 Kristian has added me as a committer on Google Code, I have done some work with the plugins (a lot of the changes were started when I was home with a cold but not had to stay in bed all day). There are not many visible changes. See the Changes page on Google Code for details.
 
-More or less official beta releases are availble in the Downloads section.
-
-===Changes===
-  * Plugin settings are now stored in the ST file Preferences.System.xml file instead of in individual preferences.xml files. The plugin will currently try to parse the old settings file if no information is found in the Preferences.System.xml.
-  * Plugins are adapted to .st2plugin format. The plugins were created before the format existed and required some changes to work. Note that most exceptions reported in the forums seem to occur when users have repackaged the plugins in .st2plugin format.
-  * Works in Mono/Linux, except AccumulatedSummary that uses browser integration. There are no specific changes to achieve this, just the change of storage for preferneces was necessary.
-  * Cleaned up labels in graphs/tables and table format. Using the translation information built in to !SportTracks for common information like speed/pace etc. This decreases the job required to make translations, both for making the translations, but even more to handle the strings when building. Another benefit is that this makes the user experience more consistent (always the same format for something like km/h). Note that this information was not available in ST when the plugins were first written, it has been added in a later update.
-  * More localisation, following the ST settings for distance, temperature etc.
-  * Input of distance, time can be done in the ST way, i.e. "5km" is handled correctly even if you have the distance set to Miles. For Speed this not available. For Pace, the time is always per "distance unit" and can be entered as standard time (like 5:30) or in minutes (5.5 or 5,5 depending on your !DecimalSeparator settings).
-  * Documentation is just transferred from the old site at gpsrunning.nicolajsen.nl
-  * UniqueRoutes, HighScore: Doubleclick on activity to go to it. UR saves sorting of tables.
-  * UniqueRoutes tries to match "Common Stretches" with the reference activity (visible as tool tips).
+===Details===
+ * Plugin settings are now stored in the ST file Preferences.System.xml file instead of in individual preferences.xml files. The plugin will currently try to parse the old settings file if no information is found in the Preferences.System.xml.
+ * Plugins are adapted to .st3plugin/.st2plugin format. The plugins were created before the format existed and required some changes to work. Note that most exceptions reported in the forums seem to occur when users have repackaged the plugins in .st2plugin format.
+ * Works in Mono/Linux, except AccumulatedSummary that uses browser integration. There are no specific changes to achieve this, just the change of storage for preferences was necessary.
+ * Cleaned up labels in graphs/tables and table format. Using the translation information built in to !SportTracks for common information like speed/pace etc. This decreases the job required to make translations, both for making the translations, but even more to handle the strings when building. Another benefit is that this makes the user experience more consistent (always the same format for something like km/h). Note that this information was not available in ST when the plugins were first written, it has been added in a later update.
+ * More localization, following the ST settings for distance, temperature etc.
+ * Input of distance, time can be done in the ST way, i.e. "5km" is handled correctly even if you have the distance set to Miles. For Speed this not available. For Pace, the time is always per "distance unit" and can be entered as standard time (like 5:30) or in minutes (5.5 or 5,5 depending on your !DecimalSeparator settings).
+ * Documentation is just transferred from the old site at gpsrunning.nicolajsen.nl
+ * UniqueRoutes, HighScore: Double click on activity to go to it. UR saves sorting of tables.
+ * UniqueRoutes tries to match "Common Stretches" with the reference activity (visible as tool tips).
   
 ===Bugfixes===
-  * Various update issues, like ST restart was required to see changed settings for UniqueRoutes.
-  * Some unit display issues, like Elevation summaries in AccumulatedSummary were always in meters, not in the elevation unit settings.
+ * Various update issues, like ST restart was required to see changed settings for UniqueRoutes.
+ * Some unit display issues, like Elevation summaries in AccumulatedSummary were always in meters, not in the elevation unit settings.
 
-===Future plans===
-Gerhard currently drives development, the current job is to only minor changes to the functionality, just updating the structure. There will likely be more additions over time. Some thoughts:
+=Future plans=
+If you want to participate, please join. gerhard and staffann currently drives development, the current job is to only minor changes to the functionality, just updating the structure. There will likely be more additions over time. Some thoughts:
 
-  * UniqueRoutes "hints" to other plugins where matches were found, using the "Common Stretches". This is for Overlay and !DotRacing to match graphs better.
-  * PerformancePredictor: Age tables?
+ * UniqueRoutes "hints" to other plugins where matches were found, using the "Common Stretches". This is for Overlay and !DotRacing to match graphs better.
+ * PerformancePredictor: Age tables?
 
-  * TRIMP plugin: No plans for it, I would like recommend users to use Training Load instead.
-  * Accumulated Summary: No immediate plans.
+ * TRIMP plugin: No plans for it, I would like recommend users to use Training Load instead.
+ * Accumulated Summary: No immediate plans.
 
 ===Related plugins===
 The Unique Routes plugin is integrated in other plugins.
 !MapOverlay/!DotRacing should work without changes.
-Matrix plugin requires a patch: http://matrix.codeplex.com/Project/Download/FileDownload.aspx?DownloadId=102155
-(I could put up a build if there are interest if there is no official release).
+Matrix plugin requires an update.
 
 ===Migration===
-  * The old plugins under %!ProgramFiles%\Zone Five Software\!SportTracks 2.1\Plugins must be removed manually.
-  * The settings files can be removed after first startup (but there is no harm keeping them if you delete the Preferences.System.xml file, without a backup).
+ * The old plugins under %!ProgramFiles%\Zone Five Software\!SportTracks 2.1\Plugins must be removed manually.
+ * The settings files can be removed after first startup (but there is no harm keeping them if you delete the Preferences.System.xml file, without a backup).
 {{{
 %APPDATA%\
   AccumlatedSummaryPlugin (always empty)
@@ -50,6 +94,6 @@ Matrix plugin requires a patch: http://matrix.codeplex.com/Project/Download/File
   UniqueRoutesPlugin
 }}}
 
-===Feedback===
-For patches, bugreports or feature suggestions, use the Google Code issue list.
+=Feedback=
+For patches, bug reports or feature suggestions, use the Google Code issue list.
 For other feedback please use the !SportTracks forum or this wiki.
