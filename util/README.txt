@@ -1,1 +1,0 @@
-See the Developer wiki for more information
