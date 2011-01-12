@@ -26,12 +26,19 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Collections;
 
+using ZoneFiveSoftware.Common.Data;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Visuals.Chart;
+using ZoneFiveSoftware.Common.Visuals.Util;
+using ZoneFiveSoftware.Common.Visuals.Mapping;
 using GpsRunningPlugin.Properties;
 using GpsRunningPlugin.Util;
+using TrailsPlugin;
+using TrailsPlugin.Data;
+using TrailsPlugin.Utils;
+using TrailsPlugin.UI.MapLayers;
 
 namespace GpsRunningPlugin.Source
 {
@@ -51,12 +58,14 @@ namespace GpsRunningPlugin.Source
 #else
         private IDetailPage m_DetailPage = null;
         private IDailyActivityView m_view = null;
+        private TrailPointsLayer m_layer = null;
 
         public HighScoreViewer(IDetailPage detailPage, IDailyActivityView view)
            : this()
         {
             m_DetailPage = detailPage;
             m_view = view;
+            m_layer = TrailPointsLayer.Instance(m_view);
             if (m_DetailPage != null)
             {
                 //expandButton.Visible = true;
@@ -66,12 +75,12 @@ namespace GpsRunningPlugin.Source
         public HighScoreViewer(IDailyActivityView view)
             : this(true)
         {
-            //m_layer = TrailPointsLayer.Instance((IView)view);
+            m_layer = TrailPointsLayer.Instance((IView)view);
         }
         public HighScoreViewer(IActivityReportsView view)
             : this(true)
         {
-            //m_layer = TrailPointsLayer.Instance((IView)view);
+            m_layer = TrailPointsLayer.Instance((IView)view);
         }
 
         //UniqueRoutes sendto
@@ -92,8 +101,8 @@ namespace GpsRunningPlugin.Source
             InitControls();
 
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
-            dataGrid.CellContentDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
-
+            dataGrid.CellDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
+            dataGrid.CellMouseClick += new DataGridViewCellMouseEventHandler(dataGrid_CellMouseClick);
             domainBox.DropDownStyle = ComboBoxStyle.DropDownList;
             imageBox.DropDownStyle = ComboBoxStyle.DropDownList;
             boundsBox.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -286,6 +295,10 @@ namespace GpsRunningPlugin.Source
         public bool HidePage()
         {
             _showPage = false;
+            if (m_layer != null)
+            {
+                m_layer.ShowPage = _showPage;
+            }
             return true;
         }
         public void ShowPage(string bookmark)
@@ -293,6 +306,10 @@ namespace GpsRunningPlugin.Source
             bool changed = (_showPage != true);
             _showPage = true;
 //            if (changed) { makeData(); }
+            if (m_layer != null)
+            {
+                m_layer.ShowPage = _showPage;
+            }
         }
         private void setSize()
         {
@@ -777,8 +794,6 @@ namespace GpsRunningPlugin.Source
 
         private void selectedRow_DoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            Guid view = new Guid("1dc82ca0-88aa-45a5-a6c6-c25f56ad1fc3");
-
             int rowIndex = e.RowIndex;
             if (rowIndex >= 0 && dataGrid.Columns[ActivityIdColumn] != null)
             {
@@ -786,9 +801,102 @@ namespace GpsRunningPlugin.Source
                 if (id != null)
                 {
                     string bookmark = "id=" + id;
-                    Plugin.GetApplication().ShowView(view, bookmark);
+                    Plugin.GetApplication().ShowView(GUIDs.OpenView, bookmark);
                 }
             }
+        }
+
+        //Maphandling copy&paste from Overlay/UniqueRoutes
+        void dataGrid_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            if (rowIndex >= 0 && dataGrid.Columns[ActivityIdColumn] != null)
+            {
+                string actid = (string)dataGrid.Rows[rowIndex].Cells[ActivityIdColumn].Value;
+
+                IActivity id = null;
+                foreach (IActivity act in activities)
+                {
+                    if (act.ReferenceId == actid)
+                    {
+                        id = act;
+                    }
+                }
+                if (id != null)
+                {
+                    if (_showPage && isSingleView != true)
+                    {
+                        IDictionary<string, MapPolyline> routes = new Dictionary<string, MapPolyline>();
+                        TrailMapPolyline m = new TrailMapPolyline(
+                            new TrailResult(new ActivityWrapper(id, Plugin.GetApplication().SystemPreferences.RouteSettings.RouteColor)));
+                        routes.Add(m.key, m);
+                        m_layer.TrailRoutes = routes;
+                    }
+                    IValueRangeSeries<double> t = new ValueRangeSeries<double>();
+                    t.Add(new ValueRange<double>(
+                        UnitUtil.Distance.Parse((string)dataGrid.Rows[rowIndex].Cells[4].Value),
+                        UnitUtil.Distance.Parse((string)dataGrid.Rows[rowIndex].Cells[4].Value) +
+                        UnitUtil.Distance.Parse((string)dataGrid.Rows[rowIndex].Cells[0].Value)));
+                    IList<TrailResultMarked> aTrm = new List<TrailResultMarked>();
+                    aTrm.Add(new TrailResultMarked(
+                        new TrailResult(new ActivityWrapper(id, Plugin.GetApplication().SystemPreferences.RouteSettings.RouteSelectedColor)),
+                        t));
+                    this.MarkTrack(aTrm);
+                }
+            }
+        }
+
+        //Some views like mapping is only working in single view - there are likely better tests
+        public bool isSingleView
+        {
+            get
+            {
+#if !ST_2_1
+                if (CollectionUtils.GetSingleItemOfType<IActivity>(m_view.SelectionProvider.SelectedItems) == null)
+                {
+                    return false;
+                }
+#endif
+                return true;
+            }
+        }
+
+        public void MarkTrack(IList<TrailResultMarked> atr)
+        {
+#if !ST_2_1
+            if (_showPage)
+            {
+                IDictionary<string, MapPolyline> result = new Dictionary<string, MapPolyline>();
+                if (m_view != null &&
+                    m_view.RouteSelectionProvider != null &&
+                    isSingleView == true)
+                {
+                    if (atr.Count > 0)
+                    {
+                        //Only one activity, OK to merge selections on one track
+                        TrailsItemTrackSelectionInfo r = TrailResultMarked.SelInfoUnion(atr);
+                        r.Activity = atr[0].trailResult.Activity;
+                        m_view.RouteSelectionProvider.SelectedItems = new IItemTrackSelectionInfo[] { r };
+                        m_layer.DoZoom(GPS.GetBounds(atr[0].trailResult.GpsPoints(r)));
+
+                    }
+                }
+                else
+                {
+                    foreach (TrailResultMarked trm in atr)
+                    {
+                        foreach (TrailMapPolyline m in TrailMapPolyline.GetTrailMapPolyline(trm.trailResult, trm.selInfo))
+                        {
+                            //m.Click += new MouseEventHandler(mapPoly_Click);
+                            string id = m.key;
+                            result.Add(id, m);
+                        }
+                    }
+                }
+                //Update or clear
+                m_layer.MarkedTrailRoutes = result;
+            }
+#endif
         }
 
         public const string ActivityIdColumn = "ActivityId";

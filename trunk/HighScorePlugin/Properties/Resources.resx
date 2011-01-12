@@ -239,4 +239,8 @@
     <value>High Score</value>
     <comment>Name of application, displayed in GUI</comment>
   </data>
+  <data name="TrailPointsControlLayer" xml:space="preserve">
+    <value>Overlay Map Overlay</value>
+    <comment>still unused (requires ST update)</comment>
+  </data>
 </root>
