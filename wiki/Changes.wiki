@@ -8,6 +8,9 @@ More or less official beta releases are available in the Downloads section. See 
 =Latest updates=
 Next version will be called 2.0
 
+1.9.240 2011-01-11
+ * HighScore: Click in table to show where the HighScore occurs
+
 1.9.237 2011-01-11
  * UR, Overlay: Add ColorSelector
  * Slightly darker marked tracks
