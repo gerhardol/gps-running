@@ -45,7 +45,7 @@ namespace TrailsPlugin.Data
             m_result = r;
         }
 #endif
-#if GPSRUNNING_OVERLAY
+#if GPSRUNNING_OVERLAY||GPSRUNNING_HIGHSCORE
         ActivityWrapper m_result;
         public TrailResult(ActivityWrapper r)
         {

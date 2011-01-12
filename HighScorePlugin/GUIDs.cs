@@ -20,9 +20,20 @@ using System;
 namespace GpsRunningPlugin
 {
 	class GUIDs {
-//        public static readonly Guid PluginMain = new Guid("5c630517-46c4-478d-89d6-a8a6ca6337db");
-//        public static readonly Guid Settings = new Guid("9f4625e0-1108-11e0-ac64-0800200c9a66");
-//        public static readonly Guid Activity = new Guid("0af379d0-5ebe-11df-a08a-0800200c9a66");
-//        public static readonly Guid OpenView = new Guid("1dc82ca0-88aa-45a5-a6c6-c25f56ad1fc3");
+        public static readonly Guid PluginMain = new Guid("5c630517-46c4-478d-89d6-a8a6ca6337db");
+        //public static readonly Guid Settings = new Guid("626c0731-1dc3-11e0-ac64-0800200c9a66");
+        public static readonly Guid Activity = new Guid("626c0730-1dc3-11e0-ac64-0800200c9a66");
+        public static readonly Guid OpenView = new Guid("1dc82ca0-88aa-45a5-a6c6-c25f56ad1fc3");
+    }
+}
+namespace TrailsPlugin
+{
+    class GUIDs
+    {
+#if ST_2_1
+        public static readonly Guid MapControlLayer = new Guid("626c0732-1dc3-11e0-ac64-0800200c9a66");
+#else
+        public static readonly Guid TrailPointsControlLayerProvider = new Guid("626c0732-1dc3-11e0-ac64-0800200c9a66");
+#endif
     }
 }
