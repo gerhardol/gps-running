@@ -297,7 +297,7 @@ namespace GpsRunningPlugin.Source
             _showPage = false;
             if (m_layer != null)
             {
-                m_layer.ShowPage = _showPage;
+                m_layer.HidePage();
             }
             return true;
         }
@@ -308,7 +308,7 @@ namespace GpsRunningPlugin.Source
 //            if (changed) { makeData(); }
             if (m_layer != null)
             {
-                m_layer.ShowPage = _showPage;
+                m_layer.ShowPage(bookmark);
             }
         }
         private void setSize()
