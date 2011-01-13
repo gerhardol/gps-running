@@ -329,7 +329,7 @@ namespace GpsRunningPlugin.Source
 #if !ST_2_1
             if (m_layer != null)
             {
-                m_layer.ShowPage = _showPage;
+                m_layer.HidePage();
             }
 #endif
             return true;
@@ -342,7 +342,7 @@ namespace GpsRunningPlugin.Source
 #if !ST_2_1
             if (m_layer != null)
             {
-                m_layer.ShowPage = _showPage;
+                m_layer.ShowPage(bookmark);
                 if (m_firstZoom)
                 {
                     m_layer.DoZoom();
