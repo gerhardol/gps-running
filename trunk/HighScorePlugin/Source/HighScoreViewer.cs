@@ -75,6 +75,7 @@ namespace GpsRunningPlugin.Source
         public HighScoreViewer(IDailyActivityView view)
             : this(true)
         {
+            m_view = view;
             m_layer = TrailPointsLayer.Instance((IView)view);
         }
         public HighScoreViewer(IActivityReportsView view)
@@ -229,6 +230,7 @@ namespace GpsRunningPlugin.Source
 
                     showResults();
                 }
+                m_layer.ClearOverlays();
             }
         }
 
@@ -297,6 +299,7 @@ namespace GpsRunningPlugin.Source
             _showPage = false;
             if (m_layer != null)
             {
+                m_layer.ClearOverlays();
                 m_layer.HidePage();
             }
             return true;
@@ -852,7 +855,7 @@ namespace GpsRunningPlugin.Source
             get
             {
 #if !ST_2_1
-                if (CollectionUtils.GetSingleItemOfType<IActivity>(m_view.SelectionProvider.SelectedItems) == null)
+                if (m_view != null && CollectionUtils.GetSingleItemOfType<IActivity>(m_view.SelectionProvider.SelectedItems) == null)
                 {
                     return false;
                 }

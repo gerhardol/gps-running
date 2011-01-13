@@ -299,4 +299,8 @@ intensity.</value>
   <data name="HighScoreRequired" xml:space="preserve">
     <value>Predicting using several activities requires High Score plugin</value>
   </data>
+  <data name="TrailPointsControlLayer" xml:space="preserve">
+    <value>Overlay Map Overlay</value>
+    <comment>still unused (requires ST update)</comment>
+  </data>
 </root>

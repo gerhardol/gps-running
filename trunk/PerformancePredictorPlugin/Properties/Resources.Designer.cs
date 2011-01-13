@@ -443,6 +443,15 @@ namespace GpsRunningPlugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Overlay Map Overlay.
+        /// </summary>
+        internal static string TrailPointsControlLayer {
+            get {
+                return ResourceManager.GetString("TrailPointsControlLayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Train / race HR..
         /// </summary>
         internal static string TrainRaceHR {

@@ -68,6 +68,7 @@ namespace GpsRunningPlugin.Source
         public OverlayView(IDailyActivityView view)
             : this(true)
         {
+            m_view = view;
             m_layer = TrailPointsLayer.Instance((IView)view);
             ShowPage("");
         }
@@ -1732,7 +1733,7 @@ namespace GpsRunningPlugin.Source
         void limitActivityMenuItem_Click(object sender, System.EventArgs e)
         {
 #if !ST_2_1
-            if (treeListAct.SelectedItems != null && treeListAct.SelectedItems.Count > 0)
+            if (m_view != null && treeListAct.SelectedItems != null && treeListAct.SelectedItems.Count > 0)
             {
                 IList<ActivityWrapper> atr = getListSelection(treeListAct.SelectedItems);
                 IList<IActivity> aAct = new List<IActivity>();
