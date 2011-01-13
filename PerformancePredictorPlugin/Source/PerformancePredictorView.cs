@@ -793,8 +793,6 @@ new System.Globalization.CultureInfo("en"));
         }
         private void selectedRow_DoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            Guid view = new Guid("1dc82ca0-88aa-45a5-a6c6-c25f56ad1fc3");
-
             int rowIndex = e.RowIndex;
             if (rowIndex >= 0 && dataGrid.Columns[ActivityIdColumn] != null)
             {
@@ -802,7 +800,7 @@ new System.Globalization.CultureInfo("en"));
                 if (id != null)
                 {
                     string bookmark = "id=" + id;
-                    Plugin.GetApplication().ShowView(view, bookmark);
+                    Plugin.GetApplication().ShowView(GpsRunningPlugin.GUIDs.OpenView, bookmark);
                 }
             }
         }
