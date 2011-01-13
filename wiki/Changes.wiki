@@ -8,7 +8,10 @@ More or less official beta releases are available in the Downloads section. See 
 =Latest updates=
 Next version will be called 2.0
 
-1.9.240 2011-01-11
+1.9.244 2011-01-13
+ * PerformancePredictor: Click in table to see part that HighScore integration used to predict performance.
+ 
+1.9.240 2011-01-12
  * HighScore: Click in table to show where the HighScore occurs
 
 1.9.237 2011-01-11

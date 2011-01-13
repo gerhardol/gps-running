@@ -1,17 +1,19 @@
 #summary Performance Predictor User's Guide
 #labels Featured
 
-===What does it do?===
+<wiki:toc max_depth="3" />
+
+=What does it do?=
 Ever wondered after running a killer race, how well you would perform at other distances. This plugin does this by using various models. So far the plugin implements the Dave Cameron and Pete Riegel models to predict your performance, but more models could be added. Note that the current models applies to Running only, not applicable for other types of activities.
 
 The prediction models works better in some situations:
   * The distance used to base a prediction on must be comparable to the distance to predict for. So predicting a marathon from a 1km activity will be unreliable, but predicting a marathon from a half marathon is better.
   * You have to be trained for both the activity you base the prediction on and the distance you predict for. So you have to train for a marathon to predict it.
-  * The models do not use the physological effect often seen that activities longer than 2h will be slower. So for instance predict a marathon from a half marathon will give a little too optimistic result.
+  * The models do not use the physological effect often seen that activities longer than 2h will be slower. So for instance predict a marathon from a half marathon often give a little too optimistic result.
 
 In all, the predictions are often considered a little too optimistic. Still, if you are interested in analysis of your best performances this sort of plugin should definitely  also be a part of your !SportTracks plugin setup.
 
-===Models===
+=Models=
 The Dave Cameron model works as follows:
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/davecameron.png]
 
@@ -21,32 +23,31 @@ Once you have understood the Dave Cameron model, it should be easy understand th
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/peteriegel.png]
 
-===Training===
+=Training=
 Besides predicting times the plugin also give suggestions regards to training. These suggestions are based on Jack Daniels's training philosophies. Currently, the plugin suggests training paces, pace for tempo races, interval split times, temperature impact, and weight impact. 
 
-===How do I use it?===
+=How do I use it?=
 The predictor works in two modes:
   * Single activity in [PerformancePredictor#Activity_Page]. This uses the complete activity to predict other distances.
-  * One or more activities from [PerformancePredictor#Edit_menu]. This mode uses High Score plugin to get the fastest parts, then scales them up to predict other distances.
+  * One or more activities from [PerformancePredictor#Activity_Page] or [PerformancePredictor#Edit_menu]. This mode uses High Score plugin to get the fastest parts, then scales them up to predict other distances.
 
-The modes give slightly different results. For instance, if you want to use a half marathon to predict other distances, the [PerformancePredictor#Activity_Page] uses the complete activity scaling up and down the distance to other distances. This is using the predictor formulas in the way they are designed for and gives most optimistic predictions for steady activities. Note though that the base activity and the distance to predict for should be similar. Using a 1km activity to predict a marathon is not reliable.
+The modes give slightly different results. For instance, if you want to use a half marathon to predict other distances, using a single activity in the [PerformancePredictor#Activity_Page] uses the complete activity scaling up and down the distance to other distances. This is using the predictor formulas in the way they are designed for and gives most optimistic predictions for steady activities. Note though that the base activity and the distance to predict for should be similar. Using a 1km activity to predict a marathon is not reliable.
 
-On the other hand, invoking from the [PerformancePredictor#Edit_menu] will get the fastest stretches from many activities to get the potentially most optimistic prediction. The distance to use is configurable, by default 40%. So by default to predict a 10km, HighScore plugin is used to get the fastest 4km, for a marathon the fastest 16.878km is used. The 4km is then scaled to 10km with the selected formula, and 16.9km to a marathon. In general, this gives more optimistic predictions for activities where the pace varies, it can be seen as "what would happen if the pace for steadier". For steady performances though, the predictions are less optimistic than using 100% of a single activity.
+On the other hand, using many activities (select many activities or invoke the popup from the [PerformancePredictor#Edit_menu]) will get the fastest stretches from many activities to get the potentially most optimistic prediction. The distance to use is configurable, by default 40%. So by default to predict a 10km, HighScore plugin is used to get the fastest 4km, for a marathon the fastest 16.878km is used. The 4km is then scaled to 10km with the selected formula, and 16.9km to a marathon. In general, this gives more optimistic predictions for activities where the pace varies, it can be seen as "what would happen if the pace was steadier". For consistent performances though, the predictions are less optimistic than using 100% of a single activity.
+If you click the table when several activities are used to predict, the activity and the corresponding used part of the activity is marked on the Route view.
 
-==Activity Page==
-Go to the activity detail view and select the Performance Predictor plugin from the menu as shown in this figure:
-
-[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/ActivityDetailView.png]
+=Activity Page=
+Go to the activity detail view and select the Performance Predictor plugin from the menu as shown [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/ActivityDetailView.png here].
 
 Here is a couple of images of the plugin in action:
 
-===Predictor View===
+==Predictor View==
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TimePredictionChart.png]
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TimePredictionTable.png]
 
-===Training suggestions===
+==Training suggestions==
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/Training.png]
 
@@ -58,18 +59,18 @@ Here is a couple of images of the plugin in action:
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TrainingWeightImpact.png]
 
-==Edit menu==
+=Edit menu=
 
 Select one or more activities in Daily Activity or Report View, go to the Edit menu and select the "Performance Predictor with High Score" item. The information is the same as the Predictor View when invoked as an Activity Page. Training view is not available (as Training suggestions need to be based on a single activity.)
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/EditFunctionResults.png]
 
-==Settings==
+=Settings=
 
 It is possibe to add and remove the distances that the plugin use in its calculation by going to the settings panel for the Performance Predictor plugin as shown in this figure:
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/Settings.png]
 
-===Feedback===
+=Feedback=
 For patches, bugreports or feature suggestions, use the Google Code issue list.
 For feedback please use the thread for this plugin at !SportTracks forum [http://www.zonefivesoftware.com/SportTracks/Forums/viewforum.php?f=30 here].
