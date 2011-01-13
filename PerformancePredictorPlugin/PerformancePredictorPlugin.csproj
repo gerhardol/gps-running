@@ -24,6 +24,8 @@
     <Compile Include="GUIDs.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+
+    <Compile Include="Source\ActivityWrapper.cs" />
     <Compile Include="Source\PerformancePredictorAction.cs" />
     <Compile Include="Source\PerformancePredictorActivityDetail.cs" />
     <Compile Include="Source\PerformancePredictorActivityEdit.cs" />
@@ -163,6 +165,48 @@
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- TrailsMapLayers -->
+    <Compile Include="..\Common\Util\TrailsMapLayers\Data\TrailGPSLocation.cs">
+      <Link>Util\TrailsMapLayers\Data\TrailGPSLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\Util\TrailsMapLayers\Data\TrailResultMarked.cs">
+      <Link>Util\TrailsMapLayers\Data\TrailResultMarked.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\Util\TrailsMapLayers\Data\TrailsItemTrackSelectionInfo.cs">
+      <Link>Util\TrailsMapLayers\Data\TrailsItemTrackSelectionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\Util\TrailsMapLayers\ExtendMapControlLayers.cs">
+      <Link>Util\TrailsMapLayers\ExtendMapControlLayers.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\Util\TrailsMapLayers\MapControlLayer.cs">
+      <Link>Util\TrailsMapLayers\MapControlLayer.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\Util\TrailsMapLayers\RouteControlLayerBase.cs">
+      <Link>Util\TrailsMapLayers\RouteControlLayerBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\Util\TrailsMapLayers\TrailMapPolyline.cs">
+      <Link>Util\TrailsMapLayers\TrailMapPolyline.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\Util\TrailsMapLayers\TrailPointsLayer.cs">
+      <Link>Util\TrailsMapLayers\TrailPointsLayer.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\Util\TrailsMapLayers\TrailPointsProvider.cs">
+      <Link>Util\TrailsMapLayers\TrailPointsProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\Util\TrailsMapLayers\Special\TrailResult.cs">
+      <Link>Util\TrailsMapLayers\Special\TrailResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\Util\TrailsMapLayers\Utils\CommonIcons.cs">
+      <Link>Util\TrailsMapLayers\Utils\CommonIcons.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\Util\TrailsMapLayers\Utils\GPS.cs">
+      <Link>Util\TrailsMapLayers\Utils\GPS.cs</Link>
+    </Compile>
+    <Content Include="..\Common\Util\TrailsMapLayers\ReadMe.txt">
+      <Link>Util\TrailsMapLayers\ReadMe.txt</Link>
+    </Content>
   </ItemGroup>
   <Import Project="..\Common\Common-Files.csproj" />
 </Project>
