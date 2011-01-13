@@ -57,7 +57,7 @@ namespace GpsRunningPlugin.Source
             }
             RefreshPage();
         }
-        public System.Guid Id { get { return new Guid("{ee9dde60-5ed6-11df-a08a-0800200c9a66}"); } }
+        public System.Guid Id { get { return GUIDs.Activity; } }
 
 #else
         public IActivity Activity
