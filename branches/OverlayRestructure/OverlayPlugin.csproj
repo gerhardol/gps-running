@@ -172,6 +172,9 @@
       <DependentUpon>StringResources.resx</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Source\GenericLineChart.resx">
+      <DependentUpon>GenericLineChart.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup Condition=" ('$(Configuration)' == 'ST2.1Release') or ('$(Configuration)' == 'ST2.1Debug') ">
     <Compile Include="Util\SaveImageInfoPage.cs">
@@ -229,9 +232,16 @@
     <Compile Include="..\Common\Util\TrailsMapLayers\Utils\GPS.cs">
       <Link>Util\TrailsMapLayers\Utils\GPS.cs</Link>
     </Compile>
+    <Compile Include="Source\GenericLineChart.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Source\GenericLineChart.Designer.cs">
+      <DependentUpon>GenericLineChart.cs</DependentUpon>
+    </Compile>
     <Content Include="..\Common\Util\TrailsMapLayers\ReadMe.txt">
       <Link>Util\TrailsMapLayers\ReadMe.txt</Link>
     </Content>
+    <Content Include="Resources\ZoomToContent.png" />
   </ItemGroup>
   <Import Project="..\Common\Common-Files.csproj" />
 </Project>

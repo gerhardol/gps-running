@@ -101,6 +101,7 @@ namespace GpsRunningPlugin.Source
             this.expandButton = new ZoneFiveSoftware.Common.Visuals.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.chartBackgroundPanel = new System.Windows.Forms.Panel();
+            this.trailLineChart2 = new GenericLineChart.GenericLineChart();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.panel2 = new ZoneFiveSoftware.Common.Visuals.Panel();
             this.treeListAct = new ZoneFiveSoftware.Common.Visuals.TreeList();
@@ -317,7 +318,7 @@ namespace GpsRunningPlugin.Source
             this.panel1.HeadingTopMargin = 3;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(652, 211);
+            this.panel1.Size = new System.Drawing.Size(652, 276);
             this.panel1.TabIndex = 25;
             // 
             // tableLayoutPanel1
@@ -327,14 +328,16 @@ namespace GpsRunningPlugin.Source
             this.tableLayoutPanel1.Controls.Add(this.actionBanner1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel3, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.chartBackgroundPanel, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.trailLineChart2, 0, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(652, 211);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(652, 276);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // actionBanner1
@@ -586,7 +589,7 @@ namespace GpsRunningPlugin.Source
             this.expandButton.HyperlinkStyle = false;
             this.expandButton.ImageMargin = 2;
             this.expandButton.LeftImage = null;
-            this.expandButton.Location = new System.Drawing.Point(602, 2);
+            this.expandButton.Location = new System.Drawing.Point(2512, 2);
             this.expandButton.Name = "expandButton";
             this.expandButton.PushStyle = true;
             this.expandButton.RightImage = null;
@@ -627,6 +630,23 @@ namespace GpsRunningPlugin.Source
             this.chartBackgroundPanel.Size = new System.Drawing.Size(646, 135);
             this.chartBackgroundPanel.TabIndex = 2;
             // 
+            // trailLineChart2
+            // 
+            this.trailLineChart2.AutoSize = true;
+            this.trailLineChart2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.trailLineChart2.ChartFillColor = System.Drawing.Color.WhiteSmoke;
+            this.trailLineChart2.ChartLineColor = System.Drawing.Color.Black;
+            this.trailLineChart2.ChartSelectedColor = System.Drawing.Color.AliceBlue;
+            this.trailLineChart2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.trailLineChart2.Location = new System.Drawing.Point(0, 211);
+            this.trailLineChart2.Margin = new System.Windows.Forms.Padding(0);
+            this.trailLineChart2.MinimumSize = new System.Drawing.Size(250, 100);
+            this.trailLineChart2.Name = "trailLineChart2";
+            this.trailLineChart2.ShowPage = true;
+            this.trailLineChart2.Size = new System.Drawing.Size(652, 100);
+            this.trailLineChart2.TabIndex = 3;
+            this.trailLineChart2.XAxisReferential = GenericLineChart.GenericLineChart.XAxisValue.Time;
+            // 
             // splitContainer4
             // 
             this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -642,8 +662,8 @@ namespace GpsRunningPlugin.Source
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.panel1);
-            this.splitContainer4.Size = new System.Drawing.Size(652, 285);
-            this.splitContainer4.SplitterDistance = 70;
+            this.splitContainer4.Size = new System.Drawing.Size(652, 371);
+            this.splitContainer4.SplitterDistance = 91;
             this.splitContainer4.TabIndex = 26;
             // 
             // panel2
@@ -660,7 +680,7 @@ namespace GpsRunningPlugin.Source
             this.panel2.HeadingTopMargin = 3;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(652, 70);
+            this.panel2.Size = new System.Drawing.Size(652, 91);
             this.panel2.TabIndex = 0;
             // 
             // treeListAct
@@ -686,7 +706,7 @@ namespace GpsRunningPlugin.Source
             this.treeListAct.RowSeparatorLines = true;
             this.treeListAct.ShowLines = false;
             this.treeListAct.ShowPlusMinus = false;
-            this.treeListAct.Size = new System.Drawing.Size(652, 70);
+            this.treeListAct.Size = new System.Drawing.Size(652, 91);
             this.treeListAct.TabIndex = 0;
             // 
             // treeListContextMenuStrip
@@ -727,6 +747,7 @@ namespace GpsRunningPlugin.Source
             this.allVisibleMenuItem,
             this.noneVisibleMenuItem});
             this.visibleMenuStrip.Name = "visibleMenuStrip";
+            this.visibleMenuStrip.OwnerItem = this.visibleMenuItem;
             this.visibleMenuStrip.Size = new System.Drawing.Size(104, 48);
             // 
             // allVisibleMenuItem
@@ -779,9 +800,10 @@ namespace GpsRunningPlugin.Source
             this.AutoSize = true;
             this.Controls.Add(this.splitContainer4);
             this.Name = "OverlayView";
-            this.Size = new System.Drawing.Size(652, 285);
+            this.Size = new System.Drawing.Size(652, 371);
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.actionBanner1.ResumeLayout(false);
             this.bannerContextMenuStrip.ResumeLayout(false);
             this.bannerXAxisMenuStrip.ResumeLayout(false);
@@ -868,5 +890,6 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.ContextMenuStrip visibleMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem allVisibleMenuItem;
         private System.Windows.Forms.ToolStripMenuItem noneVisibleMenuItem;
+        private GenericLineChart.GenericLineChart trailLineChart2;
     }
 }
