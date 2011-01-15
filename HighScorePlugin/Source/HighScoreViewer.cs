@@ -130,6 +130,7 @@ namespace GpsRunningPlugin.Source
             boundsBox.SelectedIndexChanged += new EventHandler(boundsBox_SelectedIndexChanged);
             paceBox.SelectedIndexChanged += new EventHandler(paceBox_SelectedIndexChanged);
             viewBox.SelectedIndexChanged += new EventHandler(viewBox_SelectedIndexChanged);
+            minGradeBoxUpdate();
 
             dataGrid.CellToolTipTextNeeded += new DataGridViewCellToolTipTextNeededEventHandler(dataGrid_CellToolTipTextNeeded);
             contextMenu.Click += new EventHandler(contextMenu_Click);
@@ -227,7 +228,6 @@ namespace GpsRunningPlugin.Source
                 resetCachedResults();
                 if (activities.Count > 0)
                 {
-
                     showResults();
                 }
                 m_layer.ClearOverlays();
@@ -270,6 +270,7 @@ namespace GpsRunningPlugin.Source
             //RefreshPage();
             //m_visualTheme = visualTheme;
             this.chart.ThemeChanged(visualTheme);
+            this.minGradeBox.ThemeChanged(visualTheme);
 
             this.splitContainer1.Panel1.BackColor = visualTheme.Control;
             this.splitContainer1.Panel2.BackColor = visualTheme.Control;
@@ -285,7 +286,9 @@ namespace GpsRunningPlugin.Source
             label1.Text = StringResources.Find;
             label2.Text = StringResources.PerSpecified;
             label3.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelShow;
-            correctUI(new Control[] { boundsBox, domainBox, label2, imageBox });
+            minGradeLbl.Text = " " + ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelGrade + ">";
+            correctUI(new Control[] { boundsBox, domainBox, label2, imageBox, minGradeLbl, minGradeBox });
+
             label1.Location = new Point(boundsBox.Location.X - 5 - label1.Width, label1.Location.Y);
             correctUI(new Control[] { paceBox, viewBox, Remarks });
             label3.Location = new Point(paceBox.Location.X - 5 - label3.Width, label3.Location.Y);
@@ -418,7 +421,7 @@ namespace GpsRunningPlugin.Source
             throw new Exception();
         }
 
-        private string getMostUsedSpeedUnit(IList<IActivity> activities)
+        public static string getMostUsedSpeedUnit(IList<IActivity> activities)
         {
             int speed = 0, pace = 0;
             foreach (IActivity activity in activities)
@@ -542,6 +545,25 @@ namespace GpsRunningPlugin.Source
         private void boundsBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             setSettings();
+            showResults();
+        }
+
+        private void minGradeBoxUpdate()
+        {
+            this.minGradeBox.TextChanged -= new System.EventHandler(minGradeBox_TextChanged);
+            minGradeBox.Text = Settings.MinGrade.ToString("0.0 %");
+            this.minGradeBox.TextChanged += new System.EventHandler(minGradeBox_TextChanged);
+        }
+        void minGradeBox_TextChanged(object sender, System.EventArgs e)
+        {
+            try
+            {
+                Settings.MinGrade = Double.Parse(minGradeBox.Text.Replace("%", "")) / 100;
+            }
+            catch (Exception)
+            { }
+            minGradeBoxUpdate();
+            resetCachedResults();
             showResults();
         }
 

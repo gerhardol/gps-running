@@ -37,7 +37,7 @@ namespace GpsRunningPlugin.Source
         public Result(Goal goal, IActivity activity,
             double domainStart, double domainEnd, 
             int timeStart, int timeEnd, double meterStart, double meterEnd, double elevationStart,
-            double elevationEnd, double averagePulse)
+            double elevationEnd, double averagePulse, DateTime firstDate, DateTime endDate)
         {
             this.Goal = goal;
             this.DomainDiff = domainEnd - domainStart;
@@ -54,6 +54,8 @@ namespace GpsRunningPlugin.Source
             this.ElevationEnd = elevationEnd;
             this.Elevations = elevationEnd - elevationStart;
             this.AveragePulse = averagePulse;
+            this.DateStart = firstDate;
+            this.DateEnd = endDate;
         }
 
         public Goal Goal;
@@ -65,13 +67,14 @@ namespace GpsRunningPlugin.Source
             AveragePulse;
 
         public int TimeStart, TimeEnd, Seconds;
+        public DateTime DateStart, DateEnd;
 
         public override String ToString()
         {
             string str = Time.LabelPlural(Time.TimeRange.Second);
             //The label from ST is empty
             if (str == null || str.Equals("")) { str = "s"; }
-            return String.Format("{0} : {1} {3}, {2} {4}", Goal.ToString(), MeterEnd - MeterEnd, Seconds,Length.LabelPlural(Length.Units.Meter), str);
+            return String.Format("{0} : {1} {3}, {2} {4}", Goal.ToString(), MeterEnd - MeterStart, Seconds,Length.LabelPlural(Length.Units.Meter), str);
         }
     }
 }

@@ -67,6 +67,10 @@ namespace GpsRunningPlugin.Source
         public static Result[] calculate(IList<IActivity> activities, IList<Goal> goals, System.Windows.Forms.ProgressBar progress)
         {
             Result[] results = new Result[goals.Count];
+            if (progress == null)
+            {
+                progress = new System.Windows.Forms.ProgressBar();
+            }
             progress.Minimum = 0;
             progress.Maximum = activities.Count;
             progress.Value = 0;
@@ -93,6 +97,7 @@ namespace GpsRunningPlugin.Source
         {
             ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
             double[] distance, time, elevation, pulse, speed;
+            DateTime[] aDateTime;
             int increment = 5;
             restart:
             {
@@ -105,6 +110,7 @@ namespace GpsRunningPlugin.Source
                 elevation = new double[length];
                 pulse = new double[length];
                 speed = new double[length];
+                aDateTime = new DateTime[length];
                 DateTime dateTime = activity.StartTime;
                 ITimeValueEntry<float> value = info.SmoothedElevationTrack.GetInterpolatedValue(dateTime);
                 if (value != null)
@@ -122,6 +128,7 @@ namespace GpsRunningPlugin.Source
                     speed[0] = value.Value;
                 else
                     speed[0] = 0;
+                aDateTime[0] = dateTime;
                 //double d = 0;
                 //TimeSpan t;
                 //foreach (LapDetailInfo lap in laps)
@@ -157,6 +164,7 @@ namespace GpsRunningPlugin.Source
                         speed[index] = value.Value;
                     else
                         speed[index] = 0;
+                    aDateTime[index] = dateTime;
                     index++;
                 }
             }
@@ -202,18 +210,18 @@ namespace GpsRunningPlugin.Source
                             result = calculate(activity, (IntervalsGoal)goals[i],
                                                 getRightType(goals[i].Domain, distance, time, elevation),
                                                 getRightType(goals[i].Image, pulse, speed),
-                                                time, distance, elevation, pulse);
+                                                time, distance, elevation, pulse, aDateTime);
                         break; 
                     default:
                         result = calculate(activity, (PointGoal)goals[i],
                                             getRightType(goals[i].Domain, distance, time, elevation),
                                             getRightType(goals[i].Image, distance, time, elevation),
-                                            time, distance, elevation, pulse);
+                                            time, distance, elevation, pulse, aDateTime);
                         break;
                 }
+                int upperBound = goals[i].UpperBound ? 1 : -1;
                 if (result != null && (results[i] == null ||
-                                        ((goals[i].UpperBound && result.DomainDiff > results[i].DomainDiff) ||
-                                            (!goals[i].UpperBound && result.DomainDiff < results[i].DomainDiff))))
+                   (upperBound * result.DomainDiff > upperBound * results[i].DomainDiff)))
 
                     results[i] = result;
             }
@@ -262,15 +270,11 @@ namespace GpsRunningPlugin.Source
 
         private static Result calculate(IActivity activity, IntervalsGoal goal, 
             double[] domain, IList<double[]> image,
-            double[] time, double[] distance, double[] elevation, double[] pulse)
+            double[] time, double[] distance, double[] elevation, double[] pulse, DateTime[] aDateTime)
         {
             bool foundAny = false;
             int back = 0, front = 0;
             int bestBack = 0, bestFront = 0;
-            double domainStart = 0, domainEnd = 0;
-            double distanceStart = 0, distanceEnd = 0;
-            double elevationStart = 0, elevationEnd = 0;
-            double timeStart = 0, timeEnd = 0;
             
             double best;
             if (goal.UpperBound) best = double.MinValue;
@@ -293,21 +297,15 @@ namespace GpsRunningPlugin.Source
                 if (inWindow)
                 {
                     double domainDiff = domain[front] - domain[back];
-                    if ((goal.UpperBound && best < domainDiff) ||
-                        (!goal.UpperBound && best > domainDiff))
+                    int upperBound = goal.UpperBound ? 1 : -1;
+                    if (upperBound*best < upperBound*domainDiff &&
+                        (elevation[front] - elevation[back]) / (distance[front] - distance[back]) >= 
+                        Settings.MinGrade)
                     {
                         foundAny = true;
                         best = domainDiff;
                         bestBack = back;
                         bestFront = front;
-                        domainStart = domain[back];
-                        domainEnd = domain[front];
-                        timeStart = time[back];
-                        timeEnd = time[front];
-                        distanceStart = distance[back];
-                        distanceEnd = distance[front];
-                        elevationStart = elevation[back];
-                        elevationEnd = elevation[front];
                     }
                     if (back == front || 
                         (front < length - 1 && isInZone(image, goal, front + 1))) 
@@ -328,9 +326,10 @@ namespace GpsRunningPlugin.Source
 
             if (foundAny)
             {
-                return new Result(goal, activity, domainStart, domainEnd, (int)timeStart, (int)timeEnd,
-                    distanceStart, distanceEnd, elevationStart, elevationEnd, 
-                    averagePulse(pulse, time, bestBack, bestFront));
+                return new Result(goal, activity, domain[bestBack], domain[bestFront], (int)time[bestBack], (int)time[bestFront],
+                    distance[bestBack], distance[bestFront], elevation[bestBack], elevation[bestFront], 
+                    averagePulse(pulse, time, bestBack, bestFront),
+                    aDateTime[bestBack], aDateTime[bestFront]);
             }
             return null;
         }
@@ -358,16 +357,12 @@ namespace GpsRunningPlugin.Source
         }
 
         private static Result calculate(IActivity activity, PointGoal goal, 
-            double[] domain, double[] image, 
-            double[] time, double[] distance, double[] elevation, double[] pulse)
+            double[] domain, double[] image,
+            double[] time, double[] distance, double[] elevation, double[] pulse, DateTime[] aDateTime)
         {
             bool foundAny = false;
             int back = 0, front = 0;
             int bestBack = 0, bestFront = 0;
-            double domainStart = 0, domainEnd = 0;
-            double distanceStart = 0, distanceEnd = 0;
-            double elevationStart = 0, elevationEnd = 0;
-            double timeStart = 0, timeEnd = 0;
 
             double best;
             if (goal.UpperBound) best = double.MinValue;
@@ -378,21 +373,15 @@ namespace GpsRunningPlugin.Source
                 if (image[front] - image[back] >= goal.Value)
                 {
                     double domainDiff = domain[front] - domain[back];
-                    if ((goal.UpperBound && best < domainDiff) ||
-                        (!goal.UpperBound && best > domainDiff))
+                    int upperBound = goal.UpperBound ? 1 : -1;
+                    if (upperBound*best < upperBound*domainDiff &&
+                        (elevation[front] - elevation[back]) / (distance[front] - distance[back]) >=
+                        Settings.MinGrade)
                     {
                         foundAny = true;
                         best = domainDiff;
                         bestBack = back;
                         bestFront = front;
-                        domainStart = domain[back];
-                        domainEnd = domain[front];
-                        timeStart = time[back];
-                        timeEnd = time[front];
-                        distanceStart = distance[back];
-                        distanceEnd = distance[front];
-                        elevationStart = elevation[back];
-                        elevationEnd = elevation[front];
                     }
                     back++;
                 }
@@ -402,9 +391,12 @@ namespace GpsRunningPlugin.Source
                 }
             }
             if (foundAny)
-                return new Result(goal, activity, domainStart, domainEnd,
-                    (int) timeStart, (int) timeEnd, distanceStart, distanceEnd, elevationStart, elevationEnd,
-                    averagePulse(pulse, time, bestBack, bestFront));
+            {
+                return new Result(goal, activity, domain[bestBack], domain[bestFront], (int)time[bestBack], (int)time[bestFront],
+                    distance[bestBack], distance[bestFront], elevation[bestBack], elevation[bestFront],
+                    averagePulse(pulse, time, bestBack, bestFront),
+                    aDateTime[bestBack], aDateTime[bestFront]);
+            }
             return null;
         }
 

@@ -151,7 +151,7 @@
     <value>Ignored {0} activities</value>
   </data>
   <data name="IgnoreManualEnteredBox" xml:space="preserve">
-    <value>Ignored activities with manual entered data</value>
+    <value>Ignore activities with manual entered data</value>
   </data>
   <data name="LongestDistanceTraveled" xml:space="preserve">
     <value>Longest distance traveled</value>
