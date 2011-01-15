@@ -187,7 +187,7 @@ namespace GpsRunningPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ignored activities with manual entered data.
+        ///   Looks up a localized string similar to Ignore activities with manual entered data.
         /// </summary>
         internal static string IgnoreManualEnteredBox {
             get {

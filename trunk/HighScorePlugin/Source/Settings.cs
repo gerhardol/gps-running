@@ -89,55 +89,62 @@ namespace GpsRunningPlugin.Source
             get { return windowSize; }
         }
 
+        private static double minGrade;
+        public static double MinGrade
+        {
+            set { minGrade = value; }
+            get { return minGrade; }
+        }
+
         public static void resetDistances()
         {
             distances.Clear();
-            distances.Add(100, true);
-            distances.Add(200, true);
+            //distances.Add(100, true);
+            //distances.Add(200, true);
             distances.Add(400, true);
-            distances.Add(500, true);
+            //distances.Add(500, true);
             distances.Add(800, true);
             distances.Add(1000, true);
-            distances.Add(1500, true);
+            //distances.Add(1500, true);
             distances.Add(convertTo(1, Length.Units.Mile), true);
             distances.Add(2000, true);
-            distances.Add(3000, true);
+            //distances.Add(3000, true);
             distances.Add(convertTo(2, Length.Units.Mile), true);
-            distances.Add(4000, true);
+            //distances.Add(4000, true);
             distances.Add(convertTo(3, Length.Units.Mile), true);
             distances.Add(convertTo(5, Length.Units.Kilometer), true);
-            distances.Add(convertTo(4, Length.Units.Mile), true);
-            distances.Add(convertTo(8, Length.Units.Kilometer), true);
+            //distances.Add(convertTo(4, Length.Units.Mile), true);
+            //distances.Add(convertTo(8, Length.Units.Kilometer), true);
             distances.Add(convertTo(5, Length.Units.Mile), true);
             distances.Add(convertTo(10, Length.Units.Kilometer), true);
-            distances.Add(convertTo(15, Length.Units.Kilometer), true);
+            //distances.Add(convertTo(15, Length.Units.Kilometer), true);
             distances.Add(convertTo(10, Length.Units.Mile), true);
             distances.Add(convertTo(20, Length.Units.Kilometer), true);
             distances.Add(convertTo(21.0975, Length.Units.Kilometer), true);
-            distances.Add(convertTo(15, Length.Units.Mile), true);
-            distances.Add(convertTo(25, Length.Units.Kilometer), true);
+            //distances.Add(convertTo(15, Length.Units.Mile), true);
+            //distances.Add(convertTo(25, Length.Units.Kilometer), true);
             distances.Add(convertTo(30, Length.Units.Kilometer), true);
             distances.Add(convertTo(20, Length.Units.Mile), true);
-            distances.Add(convertTo(25, Length.Units.Mile), true);
+            //distances.Add(convertTo(25, Length.Units.Mile), true);
             distances.Add(convertTo(42.195, Length.Units.Kilometer), true);
         }
 
         public static void resetTimes()
         {
             times.Clear();
-            times.Add(tt(0, 0, 10), new TimeSpan(0, 0, 10));
-            times.Add(tt(0, 0, 30), new TimeSpan(0, 0, 30));
+            //times.Add(tt(0, 0, 10), new TimeSpan(0, 0, 10));
+            //times.Add(tt(0, 0, 30), new TimeSpan(0, 0, 30));
             times.Add(tt(0, 1, 0), new TimeSpan(0, 1, 0));
             times.Add(tt(0, 2, 0), new TimeSpan(0, 2, 0));
-            times.Add(tt(0, 3, 0), new TimeSpan(0, 3, 0));
+            //times.Add(tt(0, 3, 0), new TimeSpan(0, 3, 0));
             times.Add(tt(0, 5, 0), new TimeSpan(0, 5, 0));
             times.Add(tt(0, 10, 0), new TimeSpan(0, 10, 0));
-            times.Add(tt(0, 15, 0), new TimeSpan(0, 15, 0));
+            //times.Add(tt(0, 15, 0), new TimeSpan(0, 15, 0));
             times.Add(tt(0, 20, 0), new TimeSpan(0, 20, 0));
-            times.Add(tt(0, 25, 0), new TimeSpan(0, 25, 0));
+            //times.Add(tt(0, 25, 0), new TimeSpan(0, 25, 0));
             times.Add(tt(0, 30, 0), new TimeSpan(0, 30, 0));
-            times.Add(tt(0, 40, 0), new TimeSpan(0, 40, 0));
-            times.Add(tt(0, 50, 0), new TimeSpan(0, 50, 0));
+            //times.Add(tt(0, 40, 0), new TimeSpan(0, 40, 0));
+            //times.Add(tt(0, 50, 0), new TimeSpan(0, 50, 0));
             times.Add(tt(1, 0, 0), new TimeSpan(1, 0, 0));
             times.Add(tt(1, 30, 0), new TimeSpan(1, 30, 0));
             times.Add(tt(2, 0, 0), new TimeSpan(2, 0, 0));
@@ -152,23 +159,23 @@ namespace GpsRunningPlugin.Source
             elevations.Clear();
             elevations.Add(10, true);
             elevations.Add(20, true);
-            elevations.Add(30, true);
+            //elevations.Add(30, true);
             elevations.Add(50, true);
-            elevations.Add(75, true);
+            //elevations.Add(75, true);
             elevations.Add(100, true);
-            elevations.Add(150, true);
+            //elevations.Add(150, true);
             elevations.Add(200, true);
-            elevations.Add(300, true);
-            elevations.Add(400, true);
+            //elevations.Add(300, true);
+            //elevations.Add(400, true);
             elevations.Add(500, true);
-            elevations.Add(600, true);
-            elevations.Add(700, true);
-            elevations.Add(800, true);
+            //elevations.Add(600, true);
+            //elevations.Add(700, true);
+            //elevations.Add(800, true);
             elevations.Add(1000, true);
-            elevations.Add(1200, true);
-            elevations.Add(1400, true);
-            elevations.Add(1600, true);
-            elevations.Add(1800, true);
+            //elevations.Add(1200, true);
+            //elevations.Add(1400, true);
+            //elevations.Add(1600, true);
+            //elevations.Add(1800, true);
             elevations.Add(2000, true);
         }
 
@@ -328,6 +335,8 @@ namespace GpsRunningPlugin.Source
             if (attr.Length > 0) { showTable = XmlConvert.ToBoolean(attr); }
             attr = pluginNode.GetAttribute(xmlTags.ignoreManualData);
             if (attr.Length > 0) { ignoreManualData = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.minGrade);
+            if (attr.Length > 0) { minGrade = XmlConvert.ToDouble(attr); }
 
             attr = pluginNode.GetAttribute(xmlTags.viewWidth);
             attr2 = pluginNode.GetAttribute(xmlTags.viewHeight);
@@ -394,6 +403,7 @@ namespace GpsRunningPlugin.Source
             pluginNode.SetAttribute(xmlTags.upperBound, XmlConvert.ToString(upperBound));
             pluginNode.SetAttribute(xmlTags.showTable, XmlConvert.ToString(showTable));
             pluginNode.SetAttribute(xmlTags.ignoreManualData, XmlConvert.ToString(ignoreManualData));
+            pluginNode.SetAttribute(xmlTags.minGrade, XmlConvert.ToString(minGrade));
 
             pluginNode.SetAttribute(xmlTags.viewWidth, XmlConvert.ToString(windowSize.Width));
             pluginNode.SetAttribute(xmlTags.viewHeight, XmlConvert.ToString(windowSize.Height));
@@ -417,6 +427,7 @@ namespace GpsRunningPlugin.Source
             public const string upperBound = "upperBound";
             public const string showTable = "showTable";
             public const string ignoreManualData = "ignoreManualData";
+            public const string minGrade = "minGrade";
 
             public const string viewWidth = "viewWidth";
             public const string viewHeight = "viewHeight";

@@ -62,6 +62,8 @@ namespace GpsRunningPlugin.Source
             this.chart = new ZoneFiveSoftware.Common.Visuals.Chart.ChartBase();
             this.Remarks = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.minGradeLbl = new System.Windows.Forms.Label();
+            this.minGradeBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.contextMenu.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -86,7 +88,7 @@ namespace GpsRunningPlugin.Source
             this.dataGrid.ReadOnly = true;
             this.dataGrid.RowHeadersVisible = false;
             this.dataGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGrid.Size = new System.Drawing.Size(414, 65);
+            this.dataGrid.Size = new System.Drawing.Size(490, 65);
             this.dataGrid.TabIndex = 2;
             this.dataGrid.Visible = false;
             // 
@@ -145,6 +147,22 @@ namespace GpsRunningPlugin.Source
             this.domainBox.Size = new System.Drawing.Size(63, 21);
             this.domainBox.TabIndex = 8;
             // 
+            // minGradeLbl
+            // 
+            this.minGradeLbl.AutoSize = true;
+            this.minGradeLbl.Location = new System.Drawing.Point(414, 7);
+            this.minGradeLbl.Name = "minGradeLbl";
+            this.minGradeLbl.Size = new System.Drawing.Size(50, 13);
+            this.minGradeLbl.TabIndex = 18;
+            this.minGradeLbl.Text = "<Grade>";
+            // 
+            // minGradeBox
+            // 
+            this.minGradeBox.Location = new System.Drawing.Point(456, 4);
+            this.minGradeBox.Name = "minGradeBox";
+            this.minGradeBox.Size = new System.Drawing.Size(50, 20);
+            this.minGradeBox.TabIndex = 19;
+            // 
             // paceBox
             // 
             this.paceBox.FormattingEnabled = true;
@@ -159,7 +177,7 @@ namespace GpsRunningPlugin.Source
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(6, 54);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(402, 23);
+            this.progressBar.Size = new System.Drawing.Size(478, 23);
             this.progressBar.TabIndex = 12;
             this.progressBar.Visible = false;
             // 
@@ -189,7 +207,7 @@ namespace GpsRunningPlugin.Source
             this.chart.Location = new System.Drawing.Point(0, 0);
             this.chart.Name = "chart";
             this.chart.Padding = new System.Windows.Forms.Padding(5);
-            this.chart.Size = new System.Drawing.Size(414, 65);
+            this.chart.Size = new System.Drawing.Size(490, 65);
             this.chart.TabIndex = 16;
             // 
             // Remarks
@@ -212,6 +230,8 @@ namespace GpsRunningPlugin.Source
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.minGradeBox);
+            this.splitContainer1.Panel1.Controls.Add(this.minGradeLbl);
             this.splitContainer1.Panel1.Controls.Add(this.Remarks);
             this.splitContainer1.Panel1.Controls.Add(this.viewBox);
             this.splitContainer1.Panel1.Controls.Add(this.label3);
@@ -228,7 +248,7 @@ namespace GpsRunningPlugin.Source
             this.splitContainer1.Panel2.AutoScroll = true;
             this.splitContainer1.Panel2.Controls.Add(this.dataGrid);
             this.splitContainer1.Panel2.Controls.Add(this.chart);
-            this.splitContainer1.Size = new System.Drawing.Size(414, 116);
+            this.splitContainer1.Size = new System.Drawing.Size(490, 116);
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 18;
             // 
@@ -241,7 +261,7 @@ namespace GpsRunningPlugin.Source
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.splitContainer1);
             this.Name = "HighScoreViewer";
-            this.Size = new System.Drawing.Size(414, 116);
+            this.Size = new System.Drawing.Size(490, 116);
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();
             this.contextMenu.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -261,6 +281,8 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox imageBox;
         private System.Windows.Forms.ComboBox domainBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox minGradeBox;
+        private System.Windows.Forms.Label minGradeLbl;
         private System.Windows.Forms.ComboBox paceBox;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Label label3;

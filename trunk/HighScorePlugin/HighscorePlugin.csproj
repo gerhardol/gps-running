@@ -18,6 +18,7 @@
     <None Include="Resources\Image_32_HighScore.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Export\Integration.cs" />
     <Compile Include="GUIDs.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
