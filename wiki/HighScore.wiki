@@ -54,6 +54,9 @@ The popup dialog looks similar to the one shown below.
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/highscore/ActivityReportHighScore.png]
 
+=Trails Integration=
+If [http://code.google.com/p/trails/wiki/Features Trails plugin] is installed, HighScoes can be viewed with detailed information in charts too.
+
 =Caveats=
  * I have experienced that the GPS points measured by my Forerunner 305 may be off by a lot if on small distances. For example, I found that I once ran 200 meters in 9 seconds (which, if you are in doubt, did not happen). I expect other GPS devices have the same weakness on measuring short distances, so you may find that high scores for small distances, time periods as well, are not that reliable.
  * The plugin use the GPS points for an activity, and do not use manually entered distance.

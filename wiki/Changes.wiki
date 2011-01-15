@@ -8,7 +8,12 @@ More or less official beta releases are available in the Downloads section. See 
 =Latest updates=
 Next version will be called 2.0
 
-1.9.244 2011-01-13
+1.9.246 2011-01-12
+ * HighScore: Prepare for integration in Trails
+ * HighScore: Possibility to set "min grade" to accept for High scores - to avoid that all (shorter) high scores are down hill
+  * Limited number of default values at settings reset (and for new installations).
+
+ 1.9.244 2011-01-13
  * PerformancePredictor: Click in table to see part that HighScore integration used to predict performance.
  
 1.9.240 2011-01-12
