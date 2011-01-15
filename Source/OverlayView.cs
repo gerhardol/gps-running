@@ -47,6 +47,7 @@ using GpsRunningPlugin.Util;
 using TrailsPlugin.Integration;
 using TrailsPlugin.Data;
 using TrailsPlugin.UI.MapLayers;
+using GenericLineChart;
 
 namespace GpsRunningPlugin.Source
 {
@@ -485,9 +486,9 @@ namespace GpsRunningPlugin.Source
 
         private void addSeries(Interpolator interpolator, 
             CanInterpolater canInterpolator, IAxis axis,
-            GetDataSeries getDataSeries)
+            GetDataSeries getDataSeries, LineChartTypes lineChartType)
         {
-            IList<ChartDataSeries> list = buildSeries(interpolator, canInterpolator, axis, getDataSeries);
+            IList<ChartDataSeries> list = buildSeries(interpolator, canInterpolator, axis, getDataSeries, lineChartType);
             IList<ChartDataSeries> averages = new List<ChartDataSeries>();
             foreach (ChartDataSeries series in list)
             {
@@ -635,6 +636,8 @@ namespace GpsRunningPlugin.Source
             series2activity.Clear();
             bool useRight = false;
 
+            trailLineChart2.ClearDataSeries();
+
             if (Settings.UseTimeXAxis)
             {
                 chart.XAxis.Formatter = new Formatter.SecondsToTime();
@@ -665,7 +668,8 @@ namespace GpsRunningPlugin.Source
                     delegate(ActivityInfo info)
                     {
                         return info.Activity.HeartRatePerMinuteTrack;
-                    }
+                    },
+                    LineChartTypes.HeartRateBPM
                     );
             }
             if (Settings.ShowPace)
@@ -698,7 +702,9 @@ namespace GpsRunningPlugin.Source
                     delegate(ActivityInfo info)
                     {
                         return info.SmoothedSpeedTrack;
-                    });
+                    },
+                    LineChartTypes.Pace
+                    );
             }
             if (Settings.ShowSpeed)
             {
@@ -729,7 +735,8 @@ namespace GpsRunningPlugin.Source
                     delegate(ActivityInfo info)
                     {
                         return info.SmoothedSpeedTrack;
-                    });
+                    },
+                    LineChartTypes.Speed);
             }
             if (Settings.ShowPower)
             {
@@ -757,7 +764,8 @@ namespace GpsRunningPlugin.Source
                     delegate(ActivityInfo info)
                     {
                         return info.SmoothedPowerTrack;
-                    });
+                    },
+                    LineChartTypes.Power);
             }
             if (Settings.ShowCadence)
             {
@@ -785,7 +793,8 @@ namespace GpsRunningPlugin.Source
                     delegate(ActivityInfo info)
                     {
                         return info.SmoothedCadenceTrack;
-                    });
+                    },
+                    LineChartTypes.Cadence);
             }
             if (Settings.ShowElevation)
             {
@@ -817,7 +826,8 @@ namespace GpsRunningPlugin.Source
                     delegate(ActivityInfo info)
                     {
                         return info.SmoothedElevationTrack;
-                    });
+                    },
+                    LineChartTypes.Elevation);
             }
             if (Settings.ShowTime)
             {
@@ -871,7 +881,8 @@ namespace GpsRunningPlugin.Source
                         }
                         
                         return TimeTrack;
-                    });
+                    },
+                    LineChartTypes.Time);
             }
             if (Settings.ShowDistance)
             {
@@ -936,7 +947,8 @@ namespace GpsRunningPlugin.Source
                         { 
                             return info.MovingDistanceMetersTrack; 
                         }
-                    });
+                    },
+                    LineChartTypes.Distance);
             }
             if (Settings.ShowDiffHeartRate)
             {
@@ -1004,7 +1016,8 @@ namespace GpsRunningPlugin.Source
                         }
                         AddPausesToTimeDataSeries(info, includeStopped, track, out modTrack);
                         return modTrack;
-                    }
+                    },
+                    LineChartTypes.DiffHeartRateBPM
                     );
             }
             if (Settings.ShowDiffTime)
@@ -1100,7 +1113,8 @@ namespace GpsRunningPlugin.Source
                         }
                         AddPausesToTimeDataSeries(info, includeStopped, track, out modTrack);
                         return modTrack;
-                    });
+                    },
+                    LineChartTypes.DiffTime);
             }
             if (Settings.ShowDiffDistance)
             {
@@ -1199,7 +1213,8 @@ namespace GpsRunningPlugin.Source
                         AddPausesToTimeDataSeries(info, includeStopped, track, out modTrack);
                         return modTrack;
 
-                    });
+                    },
+                    LineChartTypes.DiffDist);
             }
 
 
@@ -1323,13 +1338,14 @@ namespace GpsRunningPlugin.Source
         
         private IList<ChartDataSeries> buildSeries(
             Interpolator interpolator, CanInterpolater canInterpolator, IAxis axis,
-            GetDataSeries getDataSeriess)
+            GetDataSeries getDataSeriess, LineChartTypes chartType)
         {
             IList<ChartDataSeries> list = new List<ChartDataSeries>();
-            int index = 0;            
-            
+            int index = 0;
+
             foreach (ActivityWrapper actWrapper in actWrappers)
             {
+                ChartDataSeries series;
                 IActivity activity = actWrapper.Activity;
                 ArrayList checkedWrappers = (ArrayList)treeListAct.CheckedElements;
                 if (checkedWrappers.Contains(actWrapper))
@@ -1343,7 +1359,7 @@ namespace GpsRunningPlugin.Source
                     {
                         offset = actWrapper.DistanceOffset;
                     }
-                    ChartDataSeries series = getDataSeries(
+                    series = getDataSeries(
                         interpolator, 
                         canInterpolator, 
                         ActivityInfoCache.Instance.GetInfo(activity),
@@ -1354,6 +1370,11 @@ namespace GpsRunningPlugin.Source
                     list.Add(series);
                 }
                 index++;
+                GenericChartDataSeries gcs = new GenericChartDataSeries();
+                gcs.dataSeries = getDataSeriess(ActivityInfoCache.Instance.GetInfo(activity));
+                gcs.lineColor = actWrapper.ActColor;
+                gcs.lineChartType = chartType;
+                trailLineChart2.AddDataSeries(gcs);
             }
             return list;
         }
@@ -2214,6 +2235,11 @@ namespace GpsRunningPlugin.Source
                 this.expandButton.BackgroundImage = CommonResources.Images.View2PaneLowerHalf16;
             }
 #endif
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 
