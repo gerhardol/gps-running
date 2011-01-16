@@ -40,26 +40,26 @@ namespace GenericLineChart {
         private GenericChartDataSeries m_refDataSeries = null;
         private IList<GenericChartDataSeries> m_dataSeries = new List<GenericChartDataSeries>();
         //TODO: Add the possibility to set the distance track for the x-axis
-        private IDistanceDataTrack m_XAxisDistanceSeries = null;
         private XAxisValue m_XAxisReferential = XAxisValue.Time;
         private IList<LineChartTypes> m_YAxisReferentials = new List<LineChartTypes>();
-        private LineChartTypes m_DefaultYAxisReferential = LineChartTypes.Speed;
-        private Color m_ChartFillColor = Color.WhiteSmoke;
-        private Color m_ChartLineColor = Color.LightSkyBlue;
-        private Color m_ChartSelectedColor = Color.AliceBlue;
+        private LineChartTypes m_defaultYAxisReferential = LineChartTypes.Speed;
+        private Color m_chartFillColor = Color.WhiteSmoke;
+        private Color m_chartLineColor = Color.LightSkyBlue;
+        private Color m_chartSelectedColor = Color.AliceBlue;
         private ITheme m_visualTheme;
 //        private ActivityDetailPageControl m_page = null;
 //        private MultiChartsControl m_multiple = null;
-        private bool m_visible;
+        private bool m_visible = false;
+        private bool m_updateInProgress = false;
+        //TODO: Add possibility to choose alwaysUseSeriesColor
+        private bool m_alwaysUseSeriesColor = true;
         //TODO: Add possibility to set units from outside of this class
         private Length.Units m_lengthUnit = Length.Units.Kilometer;
         private Length.Units m_elevationUnit = Length.Units.Meter;
         private Length.Units m_speedDistanceUnit = Length.Units.Kilometer;
         private Length.Units m_paceDistanceUnit = Length.Units.Kilometer;
 
-        //TODO: Add possibility to set split points
-        private IList<DateTime> m_timeSplitsPoints = null;
-        private IList<float> m_distanceSplitPoints = null;
+        private IList<DateTime> m_timeSplitsPoints = new List<DateTime>();
 
         //TODO: Add possibility to set precision
         private int m_distancePrecision = 0;
@@ -284,10 +284,8 @@ namespace GenericLineChart {
 			this.ZoomToData();
 		}
 
- 		public void ZoomToData() {
-            //        IList<float[]> regions;
-            //MainChart.DataSeries[1].GetSelectedRegions(out regions);
-            //        if(regions.Count>0))
+ 		public void ZoomToData() 
+        {
             MainChart.AutozoomToData(true);
 			MainChart.Refresh();
 		}
@@ -569,7 +567,7 @@ namespace GenericLineChart {
             }
             else if (sel.MarkedDistances != null)
             {
-                foreach (IValueRange<DateTime> v in sel.MarkedDistances)
+                foreach (IValueRange<double> v in sel.MarkedDistances)
                 {
                     result.Add(GetSingleSelection(tr, v));
                 }
@@ -633,7 +631,7 @@ namespace GenericLineChart {
         {
 			MainChart.DataSeries.Clear();
             MainChart.XAxis.Markers.Clear();
-            if (m_visible)
+            if (m_visible && !m_updateInProgress)
             {
                 hasValues = null;
 
@@ -649,18 +647,15 @@ namespace GenericLineChart {
                         IAxis axis = FindAxis(GenSeriesEntry.lineChartType);
                         if (graphPoints.Count <= 1)
                         {
-                            if (m_dataSeries.Count > 1)
-                            {
-                                //Add empty, Dataseries index must match results 
-                                MainChart.DataSeries.Add(new ChartDataSeries(MainChart, axis));
-                            }
+                            //Add empty - Dataseries index must match results. Also required for axis to be shown.
+                            MainChart.DataSeries.Add(new ChartDataSeries(MainChart, axis));
                         }
                         else
                         {
                             Color chartFillColor = ChartFillColor;
                             Color chartLineColor = ChartLineColor;
                             Color chartSelectedColor = ChartSelectedColor;
-                            if (m_dataSeries.Count > 1)
+                            if (m_dataSeries.Count > 1 || m_alwaysUseSeriesColor)
                             {
                                 chartFillColor = GenSeriesEntry.lineColor;
                                 chartLineColor = chartFillColor;
@@ -668,10 +663,9 @@ namespace GenericLineChart {
                             }
 
                             ChartDataSeries dataFill = null;
-                            ChartDataSeries dataLine = new ChartDataSeries(MainChart, axis);
 
                             // If there is only one line, fill the area below the line
-                            if (m_dataSeries.Count == 1)
+                            if (m_dataSeries.Count == 1 && !m_alwaysUseSeriesColor)
                             {
                                 dataFill = new ChartDataSeries(MainChart, axis);
                                 MainChart.DataSeries.Add(dataFill);
@@ -681,9 +675,8 @@ namespace GenericLineChart {
                                 dataFill.LineColor = chartLineColor;
                                 dataFill.SelectedColor = chartSelectedColor;
                                 dataFill.LineWidth = 2;
-
-                                MainChart.XAxis.Markers.Clear();
                             }
+                            ChartDataSeries dataLine = new ChartDataSeries(MainChart, axis);
                             MainChart.DataSeries.Add(dataLine);
 
                             dataLine.ChartType = ChartDataSeries.Type.Line;
@@ -692,20 +685,25 @@ namespace GenericLineChart {
 
                             if (XAxisReferential == XAxisValue.Time)
                             {
+                                float oldElapsedSeconds = -1;
                                 foreach (ITimeValueEntry<float> entry in graphPoints)
                                 {
-                                    if (null != dataFill)
+                                    float value = ConvertUnit(entry.Value, GenSeriesEntry.lineChartType);
+                                    if (oldElapsedSeconds != entry.ElapsedSeconds)
                                     {
-                                        dataFill.Points.Add(entry.ElapsedSeconds, new PointF(entry.ElapsedSeconds, entry.Value));
+                                        if (null != dataFill)
+                                        {
+                                            dataFill.Points.Add(entry.ElapsedSeconds, new PointF(entry.ElapsedSeconds, value));
+                                        }
+                                        dataLine.Points.Add(entry.ElapsedSeconds, new PointF(entry.ElapsedSeconds, value));
                                     }
-                                    dataLine.Points.Add(entry.ElapsedSeconds, new PointF(entry.ElapsedSeconds, entry.Value));
+                                    oldElapsedSeconds = entry.ElapsedSeconds;
                                 }
                             }
                             else
                             {
-
                                 IDistanceDataTrack distanceTrack = GenSeriesEntry.xAxisDistanceSeries;
-                                float oldElapsedSeconds = 0;
+                                float oldElapsedSeconds = -1;
                                 foreach (ITimeValueEntry<float> dtEntry in distanceTrack)
                                 {
                                     float elapsedSeconds = dtEntry.ElapsedSeconds;
@@ -713,7 +711,7 @@ namespace GenericLineChart {
                                     {
                                         ITimeValueEntry<float> valueEntry = graphPoints.GetInterpolatedValue(graphPoints.StartTime.Add(new TimeSpan(0,0,(int)elapsedSeconds)));
                                         float value = ConvertUnit(valueEntry.Value, GenSeriesEntry.lineChartType);
-                                        float distanceValue = (float)Length.Convert(dtEntry.Value, Length.Units.Meter, m_lengthUnit);
+                                        float distanceValue = ConvertUnit(dtEntry.Value, LineChartTypes.Distance);
 
                                         if (oldElapsedSeconds != elapsedSeconds)
                                         {
@@ -732,44 +730,48 @@ namespace GenericLineChart {
                 }
                 
                 // Set split markers
-                INumericTimeDataSeries refSeries;
+                GenericChartDataSeries refSeries;
                 //If only one result is used, it can be confusing if the trail points are set for ref
                 if (m_dataSeries.Count == 1 ||
                     m_dataSeries.Count > 0 && m_refDataSeries == null)
                 {
                     
-                    refSeries = m_dataSeries[0].dataSeries;
+                    refSeries = m_dataSeries[0];
                 }
                 else if (m_refDataSeries != null)
                 {
-                    refSeries = m_refDataSeries.dataSeries;
+                    refSeries = m_refDataSeries;
                 }
                 else
                 {
                     refSeries = null;
                 }
 
-                if (m_timeSplitsPoints != null && refSeries != null)
+                if (m_timeSplitsPoints.Count != 0 && refSeries != null && refSeries.dataSeries != null)
                 {
                     Image icon = null; // new Bitmap(TrailsPlugin.CommonIcons.fileCircle(11, 11));
-                    if (XAxisReferential == XAxisValue.Time)
+                    IDistanceDataTrack distanceTrack = refSeries.xAxisDistanceSeries; 
+                    foreach (DateTime t in m_timeSplitsPoints)
                     {
-                        foreach (DateTime t in m_timeSplitsPoints)
+                        AxisMarker a;
+                        if (XAxisReferential == XAxisValue.Time)
                         {
-                            AxisMarker a = new AxisMarker(t.Subtract(refSeries.StartTime).TotalSeconds, icon);
+                            a = new AxisMarker(t.Subtract(refSeries.dataSeries.StartTime).TotalSeconds, icon);
                             a.Line1Style = System.Drawing.Drawing2D.DashStyle.Solid;
                             a.Line1Color = Color.Black;
                             MainChart.XAxis.Markers.Add(a);
                         }
-                    }
-                    else
-                    {
-                        foreach (double t in m_distanceSplitPoints)
+                        else
                         {
-                            AxisMarker a = new AxisMarker(Length.Convert(t, Length.Units.Meter, m_lengthUnit), icon);
-                            a.Line1Style = System.Drawing.Drawing2D.DashStyle.Solid;
-                            a.Line1Color = Color.Black;
-                            MainChart.XAxis.Markers.Add(a);
+                            ITimeValueEntry<float> entry = refSeries.dataSeries.GetInterpolatedValue(t);
+                            if (entry != null)
+                            {
+                                ITimeValueEntry<float> distEntry = distanceTrack.GetInterpolatedValue(distanceTrack.StartTime.Add(new TimeSpan(0, 0, (int)entry.ElapsedSeconds)));
+                                a = new AxisMarker(ConvertUnit(distEntry.Value, LineChartTypes.Distance), icon);
+                                a.Line1Style = System.Drawing.Drawing2D.DashStyle.Solid;
+                                a.Line1Color = Color.Black;
+                                MainChart.XAxis.Markers.Add(a);
+                            }
                         }
                     }
                 }
@@ -779,7 +781,7 @@ namespace GenericLineChart {
 
         private void SetupAxes()
         {
-            if (m_visible)
+            if (m_visible && !m_updateInProgress)
             {
                 // X axis
                 switch (XAxisReferential)
@@ -810,7 +812,7 @@ namespace GenericLineChart {
                 m_YAxisReferentials.Clear();
                 if (m_dataSeries.Count == 0)
                 {
-                    CreateAxis(m_DefaultYAxisReferential, true);
+                    CreateAxis(m_defaultYAxisReferential, true);
                 }
                 else
                 {
@@ -1149,10 +1151,10 @@ namespace GenericLineChart {
 
         public Color ChartFillColor
         {
-			get { return m_ChartFillColor; }
+			get { return m_chartFillColor; }
 			set {
-				if (m_ChartFillColor != value) {
-					m_ChartFillColor = value;
+				if (m_chartFillColor != value) {
+					m_chartFillColor = value;
 
 					foreach (ChartDataSeries dataSerie in MainChart.DataSeries) {
 						dataSerie.FillColor = ChartFillColor;
@@ -1162,10 +1164,10 @@ namespace GenericLineChart {
 		}
 
 		public Color ChartLineColor {
-			get { return m_ChartLineColor; }
+			get { return m_chartLineColor; }
 			set {
 				if (ChartLineColor != value) {
-					m_ChartLineColor = value;
+					m_chartLineColor = value;
 
 					foreach (ChartDataSeries dataSerie in MainChart.DataSeries) {
 						dataSerie.LineColor = ChartLineColor;
@@ -1175,10 +1177,10 @@ namespace GenericLineChart {
 		}
 
 		public Color ChartSelectedColor {
-			get { return m_ChartSelectedColor; }
+			get { return m_chartSelectedColor; }
 			set {
 				if (ChartSelectedColor != value) {
-					m_ChartSelectedColor = value;
+					m_chartSelectedColor = value;
 
 					foreach (ChartDataSeries dataSerie in MainChart.DataSeries) {
 						dataSerie.SelectedColor = ChartSelectedColor;
@@ -1211,6 +1213,27 @@ namespace GenericLineChart {
         public void ClearDataSeries()
         {
             m_dataSeries.Clear();
+            SetupAxes();
+            SetupDataSeries();
+        }
+
+        public void SetTimeSplits(IList<DateTime> timeSplitsPoints)
+        {
+            m_timeSplitsPoints = timeSplitsPoints;
+            SetupAxes();
+            SetupDataSeries();
+        }
+
+        public void AddTimeSplit(DateTime timeSplit)
+        {
+            m_timeSplitsPoints.Add(timeSplit);
+            SetupAxes();
+            SetupDataSeries();
+        }
+
+        public void ClearTimeSplits()
+        {
+            m_timeSplitsPoints.Clear();
             SetupAxes();
             SetupDataSeries();
         }
@@ -1273,12 +1296,18 @@ namespace GenericLineChart {
             }
         }
 
-		public bool BeginUpdate() {
-			return MainChart.BeginUpdate();
+		public bool BeginUpdate() 
+        {
+            m_updateInProgress = true;
+            return MainChart.BeginUpdate();
 		}
 
-		public void EndUpdate() {
-			MainChart.EndUpdate();
+		public void EndUpdate() 
+        {
+            m_updateInProgress = false;
+            SetupAxes();
+            SetupDataSeries();
+            MainChart.EndUpdate();
 		}
 	}
 
