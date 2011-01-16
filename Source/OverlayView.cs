@@ -361,6 +361,7 @@ namespace GpsRunningPlugin.Source
             this.panel2.ThemeChanged(visualTheme);
             this.actionBanner1.ThemeChanged(visualTheme);
             this.treeListAct.ThemeChanged(visualTheme);
+            this.trailLineChart2.ThemeChanged(visualTheme);
             //Non ST controls
             chartBackgroundPanel.BackColor = visualTheme.Window;
             this.BackColor = visualTheme.Control;
@@ -642,11 +643,13 @@ namespace GpsRunningPlugin.Source
             {
                 chart.XAxis.Formatter = new Formatter.SecondsToTime();
                 chart.XAxis.Label = UnitUtil.Time.LabelAxis;
+                trailLineChart2.XAxisReferential = GenericLineChart.GenericLineChart.XAxisValue.Time;
             }
             else
             {
                 chart.XAxis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
                 chart.XAxis.Label = UnitUtil.Distance.LabelAxis; ;
+                trailLineChart2.XAxisReferential = GenericLineChart.GenericLineChart.XAxisValue.Distance;
             }
 
             if (Settings.ShowHeartRate)
@@ -1368,13 +1371,15 @@ namespace GpsRunningPlugin.Source
                         offset);
                     series2activity.Add(series, activity);
                     list.Add(series);
+
+                    GenericChartDataSeries gcs = new GenericChartDataSeries();
+                    gcs.dataSeries = getDataSeriess(ActivityInfoCache.Instance.GetInfo(activity));
+                    gcs.lineColor = actWrapper.ActColor;
+                    gcs.lineChartType = chartType;
+                    gcs.xAxisDistanceSeries = ActivityInfoCache.Instance.GetInfo(activity).ActualDistanceMetersTrack;
+                    trailLineChart2.AddDataSeries(gcs);
                 }
                 index++;
-                GenericChartDataSeries gcs = new GenericChartDataSeries();
-                gcs.dataSeries = getDataSeriess(ActivityInfoCache.Instance.GetInfo(activity));
-                gcs.lineColor = actWrapper.ActColor;
-                gcs.lineChartType = chartType;
-                trailLineChart2.AddDataSeries(gcs);
             }
             return list;
         }
