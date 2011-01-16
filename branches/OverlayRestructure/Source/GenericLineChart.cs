@@ -39,7 +39,7 @@ namespace GenericLineChart {
 	public partial class GenericLineChart : UserControl {
         private GenericChartDataSeries m_refDataSeries = null;
         private IList<GenericChartDataSeries> m_dataSeries = new List<GenericChartDataSeries>();
-        // Add the possibility to set the distance track for the x-axis
+        //TODO: Add the possibility to set the distance track for the x-axis
         private IDistanceDataTrack m_XAxisDistanceSeries = null;
         private XAxisValue m_XAxisReferential = XAxisValue.Time;
         private IList<LineChartTypes> m_YAxisReferentials = new List<LineChartTypes>();
@@ -51,19 +51,29 @@ namespace GenericLineChart {
 //        private ActivityDetailPageControl m_page = null;
 //        private MultiChartsControl m_multiple = null;
         private bool m_visible;
-        // Add possibility to set units
-        private Length.Units m_lengthUnit = Length.Units.Meter;
+        //TODO: Add possibility to set units from outside of this class
+        private Length.Units m_lengthUnit = Length.Units.Kilometer;
         private Length.Units m_elevationUnit = Length.Units.Meter;
         private Length.Units m_speedDistanceUnit = Length.Units.Kilometer;
         private Length.Units m_paceDistanceUnit = Length.Units.Kilometer;
 
-        // Add possibility to set split points
+        //TODO: Add possibility to set split points
         private IList<DateTime> m_timeSplitsPoints = null;
         private IList<float> m_distanceSplitPoints = null;
+
+        //TODO: Add possibility to set precision
+        private int m_distancePrecision = 0;
+        private int m_heartRateBPMPrecision = 0;
+        private int m_speedPrecision = 1;
+        private int m_powerPrecision = 0;
+        private int m_cadencePrecision = 0;
+        private int m_elevationPrecision = 0;
 
 
         public GenericLineChart()
         {
+            m_distancePrecision = Length.DefaultDecimalPrecision(m_lengthUnit);
+            m_elevationPrecision = Length.DefaultDecimalPrecision(m_elevationUnit);;
             InitializeComponent();
             InitControls();
         }
@@ -99,6 +109,7 @@ namespace GenericLineChart {
             saveImageMenuItem.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionSaveImage;
             fitToWindowMenuItem.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionRefresh;
             SetupAxes();
+            ZoomToData();
         }
 
         public bool ShowPage
@@ -234,23 +245,20 @@ namespace GenericLineChart {
         }
 
         /********************************************/ 
-		private void SaveImageButton_Click(object sender, EventArgs e) {
-#if ST_2_1
-            SaveImage dlg = new SaveImage();
-#else
+		private void SaveImageButton_Click(object sender, EventArgs e) 
+        {
             SaveImageDialog dlg = new SaveImageDialog();
-#endif
-            dlg.ThemeChanged(m_visualTheme);
+            if (m_visualTheme != null)
+            {
+                dlg.ThemeChanged(m_visualTheme);
+            }
             dlg.FileName = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + Path.DirectorySeparatorChar + "Trails";
             dlg.ImageFormat = System.Drawing.Imaging.ImageFormat.Jpeg;
-			if (dlg.ShowDialog() == DialogResult.OK) {
+			if (dlg.ShowDialog() == DialogResult.OK) 
+            {
 				Size imgSize = dlg.CustomImageSize;
 
-#if ST_2_1
-                if (dlg.ImageSize != SaveImage.ImageSizeType.Custom)
-#else
                 if (dlg.ImageSize != SaveImageDialog.ImageSizeType.Custom)
-#endif
                 {
 					imgSize = dlg.ImageSizes[dlg.ImageSize];
 				}
@@ -662,6 +670,7 @@ namespace GenericLineChart {
                             ChartDataSeries dataFill = null;
                             ChartDataSeries dataLine = new ChartDataSeries(MainChart, axis);
 
+                            // If there is only one line, fill the area below the line
                             if (m_dataSeries.Count == 1)
                             {
                                 dataFill = new ChartDataSeries(MainChart, axis);
@@ -694,22 +703,27 @@ namespace GenericLineChart {
                             }
                             else
                             {
-                                IDistanceDataTrack distanceTrack = m_XAxisDistanceSeries;
 
-                                //Debug.Assert(distanceTrack.Count == graphPoints.Count);
-                                for (int j = 0; j < distanceTrack.Count; ++j)
+                                IDistanceDataTrack distanceTrack = GenSeriesEntry.xAxisDistanceSeries;
+                                float oldElapsedSeconds = 0;
+                                foreach (ITimeValueEntry<float> dtEntry in distanceTrack)
                                 {
-                                    float distanceValue = (float)Length.Convert(distanceTrack[j].Value, Length.Units.Meter, m_lengthUnit);
-                                    if (j < graphPoints.Count)
+                                    float elapsedSeconds = dtEntry.ElapsedSeconds;
+                                    if(elapsedSeconds <= graphPoints.TotalElapsedSeconds)
                                     {
-                                        ITimeValueEntry<float> entry = graphPoints[j];
+                                        ITimeValueEntry<float> valueEntry = graphPoints.GetInterpolatedValue(graphPoints.StartTime.Add(new TimeSpan(0,0,(int)elapsedSeconds)));
+                                        float value = ConvertUnit(valueEntry.Value, GenSeriesEntry.lineChartType);
+                                        float distanceValue = (float)Length.Convert(dtEntry.Value, Length.Units.Meter, m_lengthUnit);
 
-                                        ///Debug.Assert(distanceTrack[j].ElapsedSeconds == entry.ElapsedSeconds);
-                                        if (null != dataFill)
+                                        if (oldElapsedSeconds != elapsedSeconds)
                                         {
-                                            dataFill.Points.Add(entry.ElapsedSeconds, new PointF(distanceValue, entry.Value));
+                                            if (null != dataFill)
+                                            {
+                                                dataFill.Points.Add(elapsedSeconds, new PointF(distanceValue, value));
+                                            }
+                                            dataLine.Points.Add(elapsedSeconds, new PointF(distanceValue, value));
                                         }
-                                        dataLine.Points.Add(entry.ElapsedSeconds, new PointF(distanceValue, entry.Value));
+                                        oldElapsedSeconds = elapsedSeconds;
                                     }
                                 }
                             }
@@ -772,7 +786,7 @@ namespace GenericLineChart {
                 {
                     case XAxisValue.Distance:
                         {
-                            MainChart.XAxis.Formatter = new Formatter.General();
+                            MainChart.XAxis.Formatter = new Formatter.General(m_distancePrecision);
                             MainChart.XAxis.Label = CommonResources.Text.LabelDistance + " (" +
                                                     Length.LabelAbbr(m_lengthUnit) + ")";
                             break;
@@ -861,6 +875,7 @@ namespace GenericLineChart {
             {
                 case LineChartTypes.Cadence:
                     {
+                        axis.Formatter = new Formatter.General(m_cadencePrecision);
                         axis.Label = CommonResources.Text.LabelCadence + " (" +
                                                 CommonResources.Text.LabelRPM + ")";
                         break;
@@ -873,6 +888,7 @@ namespace GenericLineChart {
                     }
                 case LineChartTypes.Elevation:
                     {
+                        axis.Formatter = new Formatter.General(m_elevationPrecision);
                         axis.Label = CommonResources.Text.LabelElevation + " (" +
                                                    Length.LabelAbbr(m_elevationUnit) + ")";
                         break;
@@ -880,6 +896,7 @@ namespace GenericLineChart {
                 case LineChartTypes.HeartRateBPM:
                 case LineChartTypes.DiffHeartRateBPM:
                     {
+                        axis.Formatter = new Formatter.General(m_heartRateBPMPrecision);
                         axis.Label = CommonResources.Text.LabelHeartRate + " (" +
                                                 CommonResources.Text.LabelBPM + ")";
                         break;
@@ -892,12 +909,14 @@ namespace GenericLineChart {
                     }
                 case LineChartTypes.Power:
                     {
+                        axis.Formatter = new Formatter.General(m_powerPrecision);
                         axis.Label = CommonResources.Text.LabelPower + " (" +
                                                 CommonResources.Text.LabelWatts + ")";
                         break;
                     }
                 case LineChartTypes.Speed:
                     {
+                        axis.Formatter = new Formatter.General(m_speedPrecision);
                         axis.Label = CommonResources.Text.LabelSpeed + " (" +
                                                 Speed.Label(Speed.Units.Speed, new Length(1, m_speedDistanceUnit)) + ")";
                         break;
@@ -920,7 +939,7 @@ namespace GenericLineChart {
                 case LineChartTypes.Distance:
                     {
 
-                        axis.Formatter = new Formatter.General();
+                        axis.Formatter = new Formatter.General(m_distancePrecision);
                         axis.Label = CommonResources.Text.LabelDistance + " (" +
                                                 Length.LabelAbbr(m_lengthUnit) +")";
                         break;
@@ -933,7 +952,65 @@ namespace GenericLineChart {
             }
         }
 
-        //private INumericTimeDataSeries GetSmoothedActivityTrack(Data.TrailResult result) {
+
+        private float ConvertUnit(float value, LineChartTypes valueType)
+        {
+            float result;
+            switch (valueType)
+            {
+                case LineChartTypes.Cadence:
+                case LineChartTypes.HeartRateBPM:
+                case LineChartTypes.DiffHeartRateBPM:
+                case LineChartTypes.Power:
+                case LineChartTypes.Grade:
+                    {
+                        result = value;
+                        break;
+                    }
+                case LineChartTypes.Elevation:
+                    {
+                        result = (float)Length.Convert(value, Length.Units.Meter, m_elevationUnit);
+                        break;
+                    }
+                case LineChartTypes.Speed:
+                    {
+                        result = (float)Length.Convert(value, Length.Units.Meter, m_speedDistanceUnit);
+                        if (m_speedDistanceUnit == Length.Units.Kilometer || m_speedDistanceUnit == Length.Units.Mile)
+                        {
+                            result = result * 3600; // Convert to length unit per hour
+                        }
+                        break;
+                    }
+                case LineChartTypes.Pace:
+                    {
+                        result = (float)Length.Convert(value, Length.Units.Meter, m_paceDistanceUnit);
+                        // Do not converet from seconds - the axis formatter does that
+                        result = 1 / result; // Convert speed to pace
+                        break;
+                    }
+                case LineChartTypes.Time:
+                case LineChartTypes.DiffTime:
+                    {
+                        // Do not converet from seconds - the axis formatter does that
+                        result = value;
+                        break;
+                    }
+                case LineChartTypes.Distance:
+                case LineChartTypes.DiffDist:
+                    {
+                        result = (float)Length.Convert(value, Length.Units.Meter, m_lengthUnit);
+                        break;
+                    }
+                default:
+                {
+                    throw new Exception("Unit conversion not implemented for the used member of LineChartTypes in GenericLineChart");
+                }
+
+
+            }
+            return result;
+        }
+        //private INumericTimeDataSeries ConvertSeriesUnit(Data.TrailResult result) {
         //    // Fail safe
         //    INumericTimeDataSeries track = new NumericTimeDataSeries();
 
@@ -1138,6 +1215,7 @@ namespace GenericLineChart {
             SetupDataSeries();
         }
 
+        // Could [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] work???
         //[Browsable(false)]
         //public GenericChartDataSeries ReferenceDataSeries
         //{
@@ -1161,6 +1239,7 @@ namespace GenericLineChart {
         //    }
         //}
 
+        // Could [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] work???
         //[Browsable(false)]
         //public IList<GenericChartDataSeries> DataSeries
         //{
@@ -1224,10 +1303,11 @@ namespace GenericLineChart {
 
     public class GenericChartDataSeries
     {
-        public INumericTimeDataSeries dataSeries;
-        public LineChartTypes lineChartType;
-        public Color lineColor;
-    } ;
+        public INumericTimeDataSeries dataSeries = new NumericTimeDataSeries(); // Data series to be displayed
+        public LineChartTypes lineChartType = LineChartTypes.Speed; 
+        public Color lineColor = Color.Blue;
+        public IDistanceDataTrack xAxisDistanceSeries = new DistanceDataTrack(); // Used when the line is plotted against distance
+    } 
 
 }
 
