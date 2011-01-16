@@ -637,7 +637,19 @@ namespace GpsRunningPlugin.Source
             series2activity.Clear();
             bool useRight = false;
 
+            trailLineChart2.BeginUpdate();
             trailLineChart2.ClearDataSeries();
+            trailLineChart2.ClearTimeSplits();
+            ArrayList checkedWrappers = (ArrayList)treeListAct.CheckedElements;
+            if (checkedWrappers.Count == 1)
+            {
+                ActivityWrapper actWrapper = (ActivityWrapper)checkedWrappers[0];
+                for (int i = 1; i < actWrapper.Activity.Laps.Count; i++)
+                {
+                    trailLineChart2.AddTimeSplit(actWrapper.Activity.Laps[i].StartTime);
+                }
+            }
+
 
             if (Settings.UseTimeXAxis)
             {
@@ -1220,6 +1232,7 @@ namespace GpsRunningPlugin.Source
                     LineChartTypes.DiffDist);
             }
 
+            trailLineChart2.EndUpdate();
 
             //chart.AutozoomToData is the slowest part of this plugin
             chart.AutozoomToData(true);
@@ -1372,11 +1385,36 @@ namespace GpsRunningPlugin.Source
                     series2activity.Add(series, activity);
                     list.Add(series);
 
+                    
+                    // Code for updating the GenericLineChart starts here
+                    INumericTimeDataSeries dataSeries, timeModDataSeries;
+                    ActivityInfo actInfo = ActivityInfoCache.Instance.GetInfo(activity);
+
+                    bool includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;                    
+                    dataSeries = getDataSeriess(actInfo);
+                    CorrectTimeDataSeriesForPauses(actInfo, includeStopped, dataSeries, out timeModDataSeries);
+                    if (Settings.UseTimeXAxis)
+                        dataSeries = timeModDataSeries; // x-axis is time, use time with pauses excluded
+                    else
+                    {
+                        // x-axis is distance. Distance need to be looked up using original time.
+                    }
+
+                    IDistanceDataTrack distanceRefSeries;
+                    if (includeStopped)
+                    {
+                        distanceRefSeries = actInfo.ActualDistanceMetersTrack;
+                    }
+                    else
+                    {
+                        distanceRefSeries = actInfo.MovingDistanceMetersTrack;
+                    }
+
                     GenericChartDataSeries gcs = new GenericChartDataSeries();
-                    gcs.dataSeries = getDataSeriess(ActivityInfoCache.Instance.GetInfo(activity));
+                    gcs.dataSeries = dataSeries;
                     gcs.lineColor = actWrapper.ActColor;
                     gcs.lineChartType = chartType;
-                    gcs.xAxisDistanceSeries = ActivityInfoCache.Instance.GetInfo(activity).ActualDistanceMetersTrack;
+                    gcs.xAxisDistanceSeries = distanceRefSeries;
                     trailLineChart2.AddDataSeries(gcs);
                 }
                 index++;
