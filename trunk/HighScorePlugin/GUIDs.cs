@@ -20,7 +20,7 @@ using System;
 namespace GpsRunningPlugin
 {
 	class GUIDs {
-        public static readonly Guid PluginMain = new Guid("5c630517-46c4-478d-89d6-a8a6ca6337db");
+        public static readonly Guid PluginMain = new Guid("4B84E5C0-EC2B-4C0C-8B8E-3FAEB09F74C6");
         //public static readonly Guid Settings = new Guid("626c0731-1dc3-11e0-ac64-0800200c9a66");
         public static readonly Guid Activity = new Guid("626c0730-1dc3-11e0-ac64-0800200c9a66");
         public static readonly Guid OpenView = new Guid("1dc82ca0-88aa-45a5-a6c6-c25f56ad1fc3");
