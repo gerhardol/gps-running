@@ -107,11 +107,10 @@
     <value>Tempo för snabblöpturer</value>
   </data>
   <data name="PaceForTempoRuns_label" xml:space="preserve">
-    <value>Tempo för snabblöpturer på 20 till 60 minuter vid VDOT {0:0.0}</value>
+    <value>Tempo för snabblöpturer på 20 till 60 minuter vid VDOT {0:0.0}.</value>
   </data>
   <data name="PaceRunNotification" xml:space="preserve">
-    <value>20 min löptur är i mjölksyre tempo – tempo vid längre löpturer anpassade för att
-upprätthålla lämplig intensitet.</value>
+    <value>20 min löptur är i mjölksyre tempo – tempo vid längre löpturer anpassade för att upprätthålla lämplig intensitet.</value>
   </data>
   <data name="PositiveNumber" xml:space="preserve">
     <value>Distans måste vara ett positivt nummer, eventuellt följt av enhet.</value>
