@@ -39,7 +39,6 @@ namespace GenericLineChart {
 	public partial class GenericLineChart : UserControl {
         private GenericChartDataSeries m_refDataSeries = null;
         private IList<GenericChartDataSeries> m_dataSeries = new List<GenericChartDataSeries>();
-        //TODO: Add the possibility to set the distance track for the x-axis
         private XAxisValue m_XAxisReferential = XAxisValue.Time;
         private IList<LineChartTypes> m_YAxisReferentials = new List<LineChartTypes>();
         private LineChartTypes m_defaultYAxisReferential = LineChartTypes.Speed;
@@ -51,7 +50,6 @@ namespace GenericLineChart {
 //        private MultiChartsControl m_multiple = null;
         private bool m_visible = false;
         private bool m_updateInProgress = false;
-        //TODO: Add possibility to choose alwaysUseSeriesColor
         private bool m_alwaysUseSeriesColor = true;
         //TODO: Add possibility to set units from outside of this class
         private Length.Units m_lengthUnit = Length.Units.Kilometer;
@@ -82,6 +80,7 @@ namespace GenericLineChart {
         {
             this.MainChart.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
             MainChart.YAxis.SmartZoom = true;
+            MainChart.XAxis.SmartZoom = true;
             copyChartMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
             copyChartMenuItem.Visible = false;
             saveImageMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Save16;
@@ -641,10 +640,10 @@ namespace GenericLineChart {
 
                 foreach (GenericChartDataSeries GenSeriesEntry in m_dataSeries)
                 {
-                    if (GenSeriesEntry.dataSeries != null)
+                    if (GenSeriesEntry.DataSeries != null)
                     {
-                        INumericTimeDataSeries graphPoints = GenSeriesEntry.dataSeries;
-                        IAxis axis = FindAxis(GenSeriesEntry.lineChartType);
+                        INumericTimeDataSeries graphPoints = GenSeriesEntry.DataSeries;
+                        IAxis axis = FindAxis(GenSeriesEntry.LineChartType);
                         if (graphPoints.Count <= 1)
                         {
                             //Add empty - Dataseries index must match results. Also required for axis to be shown.
@@ -657,7 +656,7 @@ namespace GenericLineChart {
                             Color chartSelectedColor = ChartSelectedColor;
                             if (m_dataSeries.Count > 1 || m_alwaysUseSeriesColor)
                             {
-                                chartFillColor = GenSeriesEntry.lineColor;
+                                chartFillColor = GenSeriesEntry.LineColor;
                                 chartLineColor = chartFillColor;
                                 chartSelectedColor = chartFillColor;
                             }
@@ -688,7 +687,7 @@ namespace GenericLineChart {
                                 float oldElapsedSeconds = -1;
                                 foreach (ITimeValueEntry<float> entry in graphPoints)
                                 {
-                                    float value = ConvertUnit(entry.Value, GenSeriesEntry.lineChartType);
+                                    float value = ConvertUnit(entry.Value, GenSeriesEntry.LineChartType);
                                     if (oldElapsedSeconds != entry.ElapsedSeconds)
                                     {
                                         if (null != dataFill)
@@ -710,7 +709,7 @@ namespace GenericLineChart {
                                     if(elapsedSeconds <= graphPoints.TotalElapsedSeconds)
                                     {
                                         ITimeValueEntry<float> valueEntry = graphPoints.GetInterpolatedValue(graphPoints.StartTime.Add(new TimeSpan(0,0,(int)elapsedSeconds)));
-                                        float value = ConvertUnit(valueEntry.Value, GenSeriesEntry.lineChartType);
+                                        float value = ConvertUnit(valueEntry.Value, GenSeriesEntry.LineChartType);
                                         float distanceValue = ConvertUnit(dtEntry.Value, LineChartTypes.Distance);
 
                                         if (oldElapsedSeconds != elapsedSeconds)
@@ -747,7 +746,7 @@ namespace GenericLineChart {
                     refSeries = null;
                 }
 
-                if (m_timeSplitsPoints.Count != 0 && refSeries != null && refSeries.dataSeries != null)
+                if (m_timeSplitsPoints.Count != 0 && refSeries != null && refSeries.DataSeries != null)
                 {
                     Image icon = null; // new Bitmap(TrailsPlugin.CommonIcons.fileCircle(11, 11));
                     IDistanceDataTrack distanceTrack = refSeries.xAxisDistanceSeries; 
@@ -756,14 +755,14 @@ namespace GenericLineChart {
                         AxisMarker a;
                         if (XAxisReferential == XAxisValue.Time)
                         {
-                            a = new AxisMarker(t.Subtract(refSeries.dataSeries.StartTime).TotalSeconds, icon);
+                            a = new AxisMarker(t.Subtract(refSeries.DataSeries.StartTime).TotalSeconds, icon);
                             a.Line1Style = System.Drawing.Drawing2D.DashStyle.Solid;
-                            a.Line1Color = Color.Black;
+                            a.Line1Color = Color.Goldenrod;
                             MainChart.XAxis.Markers.Add(a);
                         }
                         else
                         {
-                            ITimeValueEntry<float> entry = refSeries.dataSeries.GetInterpolatedValue(t);
+                            ITimeValueEntry<float> entry = refSeries.DataSeries.GetInterpolatedValue(t);
                             if (entry != null)
                             {
                                 ITimeValueEntry<float> distEntry = distanceTrack.GetInterpolatedValue(distanceTrack.StartTime.Add(new TimeSpan(0, 0, (int)entry.ElapsedSeconds)));
@@ -819,10 +818,10 @@ namespace GenericLineChart {
                     bool boFirst = true;
                     foreach (GenericChartDataSeries series in m_dataSeries)
                     {
-                        IAxis axis = FindAxis(series.lineChartType);
+                        IAxis axis = FindAxis(series.LineChartType);
                         if (axis == null)
                         {
-                            CreateAxis(series.lineChartType, boFirst);
+                            CreateAxis(series.LineChartType, boFirst);
                             boFirst = false;
                         }
                     }
@@ -869,6 +868,7 @@ namespace GenericLineChart {
             else
             {
                 axis = new RightVerticalAxis(MainChart);
+                axis.SmartZoom = true;
                 MainChart.YAxisRight.Add(axis);
             }
 
@@ -1189,6 +1189,17 @@ namespace GenericLineChart {
 			}
 		}
 
+        public bool AlwaysUseDataSeriesColor
+        {
+            get { return m_alwaysUseSeriesColor; }
+            set
+            {
+                m_alwaysUseSeriesColor = value;
+                SetupAxes();
+                SetupDataSeries();
+            }
+        }
+
         public void SetReference(GenericChartDataSeries refSeries)
         {
             m_refDataSeries = refSeries;
@@ -1309,7 +1320,7 @@ namespace GenericLineChart {
             SetupDataSeries();
             MainChart.EndUpdate();
 		}
-	}
+    }
 
     public enum LineChartTypes
     {
@@ -1329,14 +1340,43 @@ namespace GenericLineChart {
         Distance
     }
 
-
     public class GenericChartDataSeries
     {
-        public INumericTimeDataSeries dataSeries = new NumericTimeDataSeries(); // Data series to be displayed
-        public LineChartTypes lineChartType = LineChartTypes.Speed; 
-        public Color lineColor = Color.Blue;
-        public IDistanceDataTrack xAxisDistanceSeries = new DistanceDataTrack(); // Used when the line is plotted against distance
+        private INumericTimeDataSeries m_dataSeries = new NumericTimeDataSeries(); // Data series to be displayed
+        private LineChartTypes m_lineChartType = LineChartTypes.Speed;
+        private Color m_lineColor = Color.Blue;
+        private IDistanceDataTrack m_xAxisDistanceSeries = new DistanceDataTrack(); // Used when the line is plotted against distance
+
+        public GenericChartDataSeries(INumericTimeDataSeries dataSeries,
+            LineChartTypes lineChartType, Color lineColor, IDistanceDataTrack xAxisDistanceSeries)
+        {
+            m_dataSeries = dataSeries;
+            m_lineChartType = lineChartType;
+            m_lineColor = lineColor;
+            m_xAxisDistanceSeries = xAxisDistanceSeries;
+        }
+
+        public INumericTimeDataSeries DataSeries
+        {
+            get { return m_dataSeries; }
+        }
+
+        public LineChartTypes LineChartType
+        {
+            get { return m_lineChartType; }
+        }
+
+        public Color LineColor
+        {
+            get { return m_lineColor; }
+        }
+
+        public IDistanceDataTrack xAxisDistanceSeries
+        {
+            get { return m_xAxisDistanceSeries; }
+        }
     } 
+
 
 }
 

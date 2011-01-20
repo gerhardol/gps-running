@@ -589,7 +589,7 @@ namespace GpsRunningPlugin.Source
             this.expandButton.HyperlinkStyle = false;
             this.expandButton.ImageMargin = 2;
             this.expandButton.LeftImage = null;
-            this.expandButton.Location = new System.Drawing.Point(2512, 2);
+            this.expandButton.Location = new System.Drawing.Point(2894, 2);
             this.expandButton.Name = "expandButton";
             this.expandButton.PushStyle = true;
             this.expandButton.RightImage = null;
@@ -632,10 +632,11 @@ namespace GpsRunningPlugin.Source
             // 
             // trailLineChart2
             // 
+            this.trailLineChart2.AlwaysUseDataSeriesColor = true;
             this.trailLineChart2.AutoSize = true;
             this.trailLineChart2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.trailLineChart2.ChartFillColor = System.Drawing.Color.WhiteSmoke;
-            this.trailLineChart2.ChartLineColor = System.Drawing.Color.Black;
+            this.trailLineChart2.ChartLineColor = System.Drawing.Color.LightSkyBlue;
             this.trailLineChart2.ChartSelectedColor = System.Drawing.Color.AliceBlue;
             this.trailLineChart2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.trailLineChart2.Location = new System.Drawing.Point(0, 211);

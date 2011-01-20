@@ -1359,11 +1359,12 @@ namespace GpsRunningPlugin.Source
             IList<ChartDataSeries> list = new List<ChartDataSeries>();
             int index = 0;
 
+            IList<GenericChartDataSeries> chartDataSeriesList = new List<GenericChartDataSeries>();
+            ArrayList checkedWrappers = (ArrayList)treeListAct.CheckedElements;
             foreach (ActivityWrapper actWrapper in actWrappers)
             {
                 ChartDataSeries series;
                 IActivity activity = actWrapper.Activity;
-                ArrayList checkedWrappers = (ArrayList)treeListAct.CheckedElements;
                 if (checkedWrappers.Contains(actWrapper))
                 {
                     double offset=0;
@@ -1392,33 +1393,182 @@ namespace GpsRunningPlugin.Source
 
                     bool includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;                    
                     dataSeries = getDataSeriess(actInfo);
-                    CorrectTimeDataSeriesForPauses(actInfo, includeStopped, dataSeries, out timeModDataSeries);
-                    if (Settings.UseTimeXAxis)
-                        dataSeries = timeModDataSeries; // x-axis is time, use time with pauses excluded
-                    else
+                    if (dataSeries != null)
                     {
-                        // x-axis is distance. Distance need to be looked up using original time.
-                    }
+                        CorrectTimeDataSeriesForPauses(actInfo, includeStopped, dataSeries, out timeModDataSeries);
+                        if (Settings.UseTimeXAxis)
+                            dataSeries = timeModDataSeries; // x-axis is time, use time with pauses excluded
+                        else
+                        {
+                            // x-axis is distance. Distance need to be looked up using original time.
+                        }
 
-                    IDistanceDataTrack distanceRefSeries;
-                    if (includeStopped)
-                    {
-                        distanceRefSeries = actInfo.ActualDistanceMetersTrack;
-                    }
-                    else
-                    {
-                        distanceRefSeries = actInfo.MovingDistanceMetersTrack;
-                    }
+                        IDistanceDataTrack distanceRefSeries;
+                        if (includeStopped)
+                        {
+                            distanceRefSeries = actInfo.ActualDistanceMetersTrack;
+                        }
+                        else
+                        {
+                            distanceRefSeries = actInfo.MovingDistanceMetersTrack;
+                        }
 
-                    GenericChartDataSeries gcs = new GenericChartDataSeries();
-                    gcs.dataSeries = dataSeries;
-                    gcs.lineColor = actWrapper.ActColor;
-                    gcs.lineChartType = chartType;
-                    gcs.xAxisDistanceSeries = distanceRefSeries;
-                    trailLineChart2.AddDataSeries(gcs);
+                        GenericChartDataSeries gcs = new GenericChartDataSeries(dataSeries,
+                                                                                chartType,
+                                                                                actWrapper.ActColor,
+                                                                                distanceRefSeries);
+                        trailLineChart2.AddDataSeries(gcs);
+                        chartDataSeriesList.Add(gcs);
+                    }
                 }
                 index++;
             }
+
+            if (Settings.ShowCategoryAverage)
+            {
+                INumericTimeDataSeries valueSeries = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
+                IDistanceDataTrack distanceSeries = new DistanceDataTrack();
+                if (chartDataSeriesList.Count > 1)
+                {
+                    if (Settings.UseTimeXAxis)
+                    {
+                        int maxElapsedSeconds = 0;
+                        foreach (GenericChartDataSeries ds in chartDataSeriesList)
+                        {
+                            if(ds.DataSeries != null && ds.DataSeries.TotalElapsedSeconds > maxElapsedSeconds)
+                            {
+                                maxElapsedSeconds = (int)ds.DataSeries.TotalElapsedSeconds;
+                            }
+                        }
+                        //for(int i=0; i<chartDataSeriesList[0].DataSeries.Count; i++)
+                        //    valueSeries.Add(chartDataSeriesList[0].DataSeries.StartTime.AddSeconds(chartDataSeriesList[0].DataSeries[i].ElapsedSeconds), chartDataSeriesList[0].DataSeries.GetInterpolatedValue(chartDataSeriesList[0].DataSeries.StartTime.AddSeconds(chartDataSeriesList[0].DataSeries[i].ElapsedSeconds)).Value);                                               
+                        for (int elapsedSeconds = 0; elapsedSeconds <= maxElapsedSeconds; elapsedSeconds++)
+                        {
+                            float valueSum = 0;
+                            uint noOfTracksWithPoints = 0;
+                            foreach (GenericChartDataSeries ds in chartDataSeriesList)
+                            {
+                                ITimeValueEntry<float> newValueEntry;
+                                newValueEntry = ds.DataSeries.GetInterpolatedValue(ds.DataSeries.StartTime.AddSeconds(elapsedSeconds));
+                                if (newValueEntry != null)
+                                {
+                                    valueSum = valueSum + newValueEntry.Value;
+                                    noOfTracksWithPoints++;
+                                }
+                            }
+                            if (noOfTracksWithPoints >= 2)
+                            {
+                                // Don't add to distance series, not used anyway. Only add points to value series
+                                valueSeries.Add(chartDataSeriesList[0].DataSeries.StartTime.AddSeconds(elapsedSeconds), valueSum / noOfTracksWithPoints);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        float maxDistance = 0;
+                        int maxNoOfSamples = 0;
+                        foreach (GenericChartDataSeries ds in chartDataSeriesList)
+                        {
+                            if(ds.xAxisDistanceSeries != null && ds.xAxisDistanceSeries.Max > maxDistance)
+                            {
+                                maxDistance = ds.xAxisDistanceSeries.Max;
+                            }
+                            if(ds.xAxisDistanceSeries != null && ds.xAxisDistanceSeries.Count > maxNoOfSamples)
+                            {
+                                maxNoOfSamples = ds.xAxisDistanceSeries.Count;
+                            }
+
+                        }
+                        int i = 0;
+                        for(float distance=0; distance <= maxDistance; distance+=maxDistance/maxNoOfSamples)
+                        {
+                            float valueSum = 0;
+                            uint noOfTracksWithPoints = 0;
+                            DateTime dt=new DateTime();
+                            i++;
+                                foreach (GenericChartDataSeries ds in chartDataSeriesList)
+                                {
+                                    ITimeValueEntry<float> newValueEntry;
+                                    dt = ds.xAxisDistanceSeries.GetTimeAtDistanceMeters(distance);
+                                    
+                                    if (distance <= ds.xAxisDistanceSeries.Max)
+                                    {
+                                        if (dt.CompareTo(ds.DataSeries.StartTime) < 0)
+                                        {
+                                            dt = ds.DataSeries.StartTime;
+                                        }
+                                        newValueEntry = ds.DataSeries.GetInterpolatedValue(dt);
+                                        if (newValueEntry != null)
+                                        {
+                                            valueSum = valueSum + newValueEntry.Value;
+                                            noOfTracksWithPoints++;
+                                        }
+                                    }
+                                }
+                            if (noOfTracksWithPoints >=2)
+                            {
+                                // Absolute time/date not interesting, start at fixed time/date.
+                                valueSeries.Add(new DateTime(2000, 01, 01).AddSeconds(i), valueSum / noOfTracksWithPoints);
+                                distanceSeries.Add(new DateTime(2000, 01, 01).AddSeconds(i), distance);
+                            }
+                        }
+                    }
+                    //foreach (ITimeValueEntry<float> entry in chartDataSeriesList[0].DataSeries)
+                    //{
+                    //    float valueSum = 0;
+                    //    float distance = 0;
+                    //    try
+                    //    {
+                    //        if (Settings.UseTimeXAxis)
+                    //        {
+                    //            foreach (GenericChartDataSeries ds in chartDataSeriesList)
+                    //            {
+                    //                ITimeValueEntry<float> newValueEntry;
+                    //                newValueEntry = ds.DataSeries.GetInterpolatedValue(ds.DataSeries.EntryDateTime(entry));
+                    //                valueSum = valueSum + newValueEntry.Value;
+                    //            }
+                    //        }
+                    //        else
+                    //        {
+                    //            ITimeValueEntry<float> dEntry = chartDataSeriesList[0].xAxisDistanceSeries.GetInterpolatedValue(chartDataSeriesList[0].xAxisDistanceSeries.EntryDateTime(entry));
+                    //            distance = dEntry.Value;
+                    //            foreach (GenericChartDataSeries ds in chartDataSeriesList)
+                    //            {
+                    //                ITimeValueEntry<float> newValueEntry;
+                    //                DateTime dt = ds.xAxisDistanceSeries.GetTimeAtDistanceMeters(distance);
+                    //                if (distance > ds.xAxisDistanceSeries.Max)
+                    //                {
+                    //                    throw new Exception(); // GetTimeAtDistanceMeter returns stop time when the distance is larger than max in track
+                    //                }
+                    //                if (dt.CompareTo(ds.DataSeries.StartTime) < 0)
+                    //                {
+                    //                    dt = ds.DataSeries.StartTime;
+                    //                }
+                    //                newValueEntry = ds.DataSeries.GetInterpolatedValue(dt);
+                    //                valueSum = valueSum + newValueEntry.Value;
+                    //            }
+                    //        }
+                    //    }
+                    //    catch
+                    //    {
+                    //        //break;
+                    //    }
+                    //    if(stop)
+                    //        break;
+                    //    else
+                    //    {
+                    //        valueSeries.Add(chartDataSeriesList[0].DataSeries.EntryDateTime(entry), valueSum / chartDataSeriesList.Count);
+                    //        distanceSeries.Add(chartDataSeriesList[0].xAxisDistanceSeries.EntryDateTime(entry), distance);
+                    //    }                        
+                    //}
+                    GenericChartDataSeries gcs = new GenericChartDataSeries(valueSeries, 
+                                                                            chartType, 
+                                                                            Color.Black, 
+                                                                            distanceSeries);
+                    trailLineChart2.AddDataSeries(gcs);
+                }
+            }
+            
             return list;
         }
 
