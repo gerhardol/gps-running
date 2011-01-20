@@ -165,7 +165,7 @@
     <value>Pace for tempo runs</value>
   </data>
   <data name="PaceForTempoRuns_label" xml:space="preserve">
-    <value>Pace for tempo runs of 20 to 60 minutes at VDOT {0:0.0}. 20 min run is at lactate threshold pace - pace of longer runs adjusted to maintain proper intensity.</value>
+    <value>Pace for tempo runs of 20 to 60 minutes at VDOT {0:0.0}.</value>
   </data>
   <data name="PaceRunNotification" xml:space="preserve">
     <value>20 min run is at lactate threshold pace - pace of longer runs adjusted to maintain proper 

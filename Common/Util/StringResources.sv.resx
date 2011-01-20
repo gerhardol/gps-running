@@ -121,6 +121,9 @@
   <data name="StartZone" xml:space="preserve">
     <value>Start zon:</value>
   </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Sammanfattning</value>
+  </data>
   <data name="Use" xml:space="preserve">
     <value>Använd</value>
   </data>
@@ -213,6 +216,9 @@
   </data>
   <data name="ActivitySpeedOrPace" xml:space="preserve">
     <value>Aktivitet Hastighet/Tempo</value>
+  </data>
+  <data name="ListSettings" xml:space="preserve">
+    <value>Inställningar för tabell</value>
   </data>
   <data name="Colour" xml:space="preserve">
     <value>Färg</value>
