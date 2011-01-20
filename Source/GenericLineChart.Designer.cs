@@ -52,7 +52,7 @@ namespace GenericLineChart
             this.chartTablePanel.AutoSize = true;
             this.chartTablePanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.chartTablePanel.ColumnCount = 1;
-            this.chartTablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.chartTablePanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.chartTablePanel.Controls.Add(this.ButtonPanel, 0, 0);
             this.chartTablePanel.Controls.Add(this.MainChart, 0, 1);
             this.chartTablePanel.Dock = System.Windows.Forms.DockStyle.Fill;
