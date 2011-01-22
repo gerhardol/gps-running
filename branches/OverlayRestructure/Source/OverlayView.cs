@@ -142,7 +142,8 @@ namespace GpsRunningPlugin.Source
 
             actionBanner1.Text = Resources.OverlayChart;
             actionBanner1.MenuClicked += actionBanner1_MenuClicked;
-            
+
+            genericLineChart.SelectData += new GenericLineChart.GenericLineChart.SelectEventHandler(genericChart_SelectData);
             chart.SelectData += new ChartBase.SelectDataHandler(chart_SelectData);
             chart.SelectingData += new ChartBase.SelectDataHandler(chart_SelectingData);
             chart.Click += new EventHandler(chart_Click);
@@ -361,7 +362,7 @@ namespace GpsRunningPlugin.Source
             this.panel2.ThemeChanged(visualTheme);
             this.actionBanner1.ThemeChanged(visualTheme);
             this.treeListAct.ThemeChanged(visualTheme);
-            this.trailLineChart2.ThemeChanged(visualTheme);
+            this.genericLineChart.ThemeChanged(visualTheme);
             //Non ST controls
             chartBackgroundPanel.BackColor = visualTheme.Window;
             this.BackColor = visualTheme.Control;
@@ -637,16 +638,16 @@ namespace GpsRunningPlugin.Source
             series2activity.Clear();
             bool useRight = false;
 
-            trailLineChart2.BeginUpdate();
-            trailLineChart2.ClearDataSeries();
-            trailLineChart2.ClearTimeSplits();
+            genericLineChart.BeginUpdate();
+            genericLineChart.ClearDataSeries();
+            genericLineChart.ClearTimeSplits();
             ArrayList checkedWrappers = (ArrayList)treeListAct.CheckedElements;
             if (checkedWrappers.Count == 1)
             {
                 ActivityWrapper actWrapper = (ActivityWrapper)checkedWrappers[0];
                 for (int i = 1; i < actWrapper.Activity.Laps.Count; i++)
                 {
-                    trailLineChart2.AddTimeSplit(actWrapper.Activity.Laps[i].StartTime);
+                    genericLineChart.AddTimeSplit(actWrapper.Activity.Laps[i].StartTime);
                 }
             }
 
@@ -655,13 +656,13 @@ namespace GpsRunningPlugin.Source
             {
                 chart.XAxis.Formatter = new Formatter.SecondsToTime();
                 chart.XAxis.Label = UnitUtil.Time.LabelAxis;
-                trailLineChart2.XAxisReferential = GenericLineChart.GenericLineChart.XAxisValue.Time;
+                genericLineChart.XAxisReferential = GenericLineChart.GenericLineChart.XAxisValue.Time;
             }
             else
             {
                 chart.XAxis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
                 chart.XAxis.Label = UnitUtil.Distance.LabelAxis; ;
-                trailLineChart2.XAxisReferential = GenericLineChart.GenericLineChart.XAxisValue.Distance;
+                genericLineChart.XAxisReferential = GenericLineChart.GenericLineChart.XAxisValue.Distance;
             }
 
             if (Settings.ShowHeartRate)
@@ -1232,7 +1233,7 @@ namespace GpsRunningPlugin.Source
                     LineChartTypes.DiffDist);
             }
 
-            trailLineChart2.EndUpdate();
+            genericLineChart.EndUpdate();
 
             //chart.AutozoomToData is the slowest part of this plugin
             chart.AutozoomToData(true);
@@ -1416,8 +1417,9 @@ namespace GpsRunningPlugin.Source
                         GenericChartDataSeries gcs = new GenericChartDataSeries(dataSeries,
                                                                                 chartType,
                                                                                 actWrapper.ActColor,
-                                                                                distanceRefSeries);
-                        trailLineChart2.AddDataSeries(gcs);
+                                                                                distanceRefSeries,
+                                                                                actWrapper);
+                        genericLineChart.AddDataSeries(gcs);
                         chartDataSeriesList.Add(gcs);
                     }
                 }
@@ -1564,8 +1566,9 @@ namespace GpsRunningPlugin.Source
                     GenericChartDataSeries gcs = new GenericChartDataSeries(valueSeries, 
                                                                             chartType, 
                                                                             Color.Black, 
-                                                                            distanceSeries);
-                    trailLineChart2.AddDataSeries(gcs);
+                                                                            distanceSeries,
+                                                                            null);
+                    genericLineChart.AddDataSeries(gcs);
                 }
             }
             
@@ -1717,6 +1720,36 @@ namespace GpsRunningPlugin.Source
 			bSelectingDataFlag = true;
 		}
 
+
+        void genericChart_SelectData(object sender, GenericLineChart.GenericLineChart.SelectEventArgs e)
+        {
+            if (e != null)
+            {
+                ActivityWrapper actWrapper = null;
+                foreach (ActivityWrapper wr in actWrappers)
+                {
+                    if (wr == e.dataSeries.RefObject)
+                    {
+                        actWrapper = wr;
+                        break;
+                    }
+                }
+
+                if (actWrapper != null)
+                {
+                    treeListAct.SelectedItems = new object[] { actWrapper };
+
+                    TrailResult tr = new TrailResult(actWrapper);
+                    IList<TrailResultMarked> results = new List<TrailResultMarked>();
+                    results.Add(new TrailResultMarked(tr, e.selectedDateTimeRanges));
+                    this.MarkTrack(results);
+                    this.EnsureVisible(new List<TrailResult> { tr }, false);
+                }
+            }
+
+        }
+        
+        
         void chart_SelectData(object sender, ChartBase.SelectDataEventArgs e)
         {
             if (e != null && e.DataSeries != null)
@@ -2247,12 +2280,12 @@ namespace GpsRunningPlugin.Source
 			dialog.ColumnsAvailable = OverlayColumnIds.ColumnDefs();
 #else
             ListSettingsDialog dialog = new ListSettingsDialog();
-            dialog.AvailableColumns = OverlayColumnIds.ColumnDefs(); // TrailResultColumnIds.ColumnDefs(m_controller.CurrentActivity);
+            dialog.AvailableColumns = OverlayColumnIds.ColumnDefs();
 #endif
             dialog.ThemeChanged(m_visualTheme);
             dialog.AllowFixedColumnSelect = false;
-            dialog.SelectedColumns = Settings.TreeListActColumns; // PluginMain.Settings.ActivityPageColumns;
-            dialog.NumFixedColumns = 3; // PluginMain.Settings.ActivityPageNumFixedColumns;
+            dialog.SelectedColumns = Settings.TreeListActColumns;
+            dialog.NumFixedColumns = 3;
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {

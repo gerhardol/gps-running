@@ -67,6 +67,21 @@ namespace GenericLineChart {
         private int m_cadencePrecision = 0;
         private int m_elevationPrecision = 0;
 
+        public event SelectEventHandler SelectData;
+        public delegate void SelectEventHandler(object sender, SelectEventArgs e);
+
+        public class SelectEventArgs : EventArgs
+        {
+            public GenericChartDataSeries dataSeries;
+            public IValueRangeSeries<DateTime> selectedDateTimeRanges = new ValueRangeSeries<DateTime>();
+            public int index;
+
+            public SelectEventArgs(GenericChartDataSeries dataSeries, int index)
+            {
+                this.dataSeries = dataSeries;
+                this.index = index;
+            }
+        }
 
         public GenericLineChart()
         {
@@ -297,6 +312,64 @@ namespace GenericLineChart {
 
         void MainChart_SelectData(object sender, ZoneFiveSoftware.Common.Visuals.Chart.ChartBase.SelectDataEventArgs e)
         {
+            if (e != null && e.DataSeries != null)
+            {
+                //Get index for dataseries - same as for data series
+                int i = -1;
+                if (MainChart.DataSeries.Count == 2 &&
+                    m_dataSeries.Count == 1)
+                {
+                    //Match the result, the first is the fill chart
+                    i = 0;
+                }
+                else
+                {
+                    for (int j = 0; j < MainChart.DataSeries.Count; j++)
+                    {
+                        if (e.DataSeries.Equals(MainChart.DataSeries[j]))
+                        {
+                            i = j;
+                            break;
+                        }
+                    }
+                }
+                if (i >= 0)
+                {
+                    GenericChartDataSeries series = m_dataSeries[i];
+                    SelectEventArgs eventArgs = new SelectEventArgs(series, i);
+
+                    IList<float[]> regions;
+                    e.DataSeries.GetSelectedRegions(out regions);
+
+                    if (XAxisReferential == XAxisValue.Time)
+                    {
+                        foreach (float[] at in regions)
+                        {
+                            eventArgs.selectedDateTimeRanges.Add(new ValueRange<DateTime>(
+                                series.DataSeries.StartTime.AddSeconds(at[0]),
+                                series.DataSeries.StartTime.AddSeconds(at[1])));
+                        }
+                    }
+                    else
+                    {
+                        //IValueRangeSeries<double> t = new ValueRangeSeries<double>();
+                        foreach (float[] at in regions)
+                        {
+                            DateTime dt1 = series.xAxisDistanceSeries.GetTimeAtDistanceMeters((float)Length.Convert(at[0], m_lengthUnit, Length.Units.Meter));
+                            TimeSpan ts1 = dt1.Subtract(series.xAxisDistanceSeries.StartTime);
+                            DateTime dt2 = series.xAxisDistanceSeries.GetTimeAtDistanceMeters((float)Length.Convert(at[1], m_lengthUnit, Length.Units.Meter));
+                            TimeSpan ts2 = dt2.Subtract(series.xAxisDistanceSeries.StartTime);
+                            eventArgs.selectedDateTimeRanges.Add(new ValueRange<DateTime>(
+                                series.DataSeries.StartTime.Add(ts1),
+                                series.DataSeries.StartTime.Add(ts2)));
+                        }
+                    }
+                    if (this.SelectData != null)
+                    {
+                        this.SelectData(this, eventArgs);
+                    }
+                }
+            }
         }
 #if false
         void MainChart_SelectData(object sender, ZoneFiveSoftware.Common.Visuals.Chart.ChartBase.SelectDataEventArgs e)
@@ -708,7 +781,7 @@ namespace GenericLineChart {
                                     float elapsedSeconds = dtEntry.ElapsedSeconds;
                                     if(elapsedSeconds <= graphPoints.TotalElapsedSeconds)
                                     {
-                                        ITimeValueEntry<float> valueEntry = graphPoints.GetInterpolatedValue(graphPoints.StartTime.Add(new TimeSpan(0,0,(int)elapsedSeconds)));
+                                        ITimeValueEntry<float> valueEntry = graphPoints.GetInterpolatedValue(graphPoints.StartTime.AddSeconds(elapsedSeconds));
                                         float value = ConvertUnit(valueEntry.Value, GenSeriesEntry.LineChartType);
                                         float distanceValue = ConvertUnit(dtEntry.Value, LineChartTypes.Distance);
 
@@ -768,7 +841,7 @@ namespace GenericLineChart {
                                 ITimeValueEntry<float> distEntry = distanceTrack.GetInterpolatedValue(distanceTrack.StartTime.Add(new TimeSpan(0, 0, (int)entry.ElapsedSeconds)));
                                 a = new AxisMarker(ConvertUnit(distEntry.Value, LineChartTypes.Distance), icon);
                                 a.Line1Style = System.Drawing.Drawing2D.DashStyle.Solid;
-                                a.Line1Color = Color.Black;
+                                a.Line1Color = Color.Goldenrod;
                                 MainChart.XAxis.Markers.Add(a);
                             }
                         }
@@ -1346,14 +1419,16 @@ namespace GenericLineChart {
         private LineChartTypes m_lineChartType = LineChartTypes.Speed;
         private Color m_lineColor = Color.Blue;
         private IDistanceDataTrack m_xAxisDistanceSeries = new DistanceDataTrack(); // Used when the line is plotted against distance
+        private object m_refObject; // Can be used to tie this object to the source of the data. May be omitted - the caller can use a dictionary of similar instead.
 
         public GenericChartDataSeries(INumericTimeDataSeries dataSeries,
-            LineChartTypes lineChartType, Color lineColor, IDistanceDataTrack xAxisDistanceSeries)
+            LineChartTypes lineChartType, Color lineColor, IDistanceDataTrack xAxisDistanceSeries, object refObject)
         {
             m_dataSeries = dataSeries;
             m_lineChartType = lineChartType;
             m_lineColor = lineColor;
             m_xAxisDistanceSeries = xAxisDistanceSeries;
+            m_refObject = refObject; 
         }
 
         public INumericTimeDataSeries DataSeries
@@ -1375,6 +1450,12 @@ namespace GenericLineChart {
         {
             get { return m_xAxisDistanceSeries; }
         }
+
+        public object RefObject
+        {
+            get { return m_refObject; }
+        }
+
     } 
 
 
