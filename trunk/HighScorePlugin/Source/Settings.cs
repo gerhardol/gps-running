@@ -225,6 +225,7 @@ namespace GpsRunningPlugin.Source
             upperBound = false;
             showTable = true;
             ignoreManualData = true;
+            minGrade = -0.01;
             windowSize = new Size(800, 600);
         }
 
