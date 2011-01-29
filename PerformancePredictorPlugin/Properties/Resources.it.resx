@@ -64,14 +64,14 @@
   </data>
   <data name="AdjustedPace" xml:space="preserve">
     <comment>ppx</comment>
-    <value>ritmo corretto</value>
+    <value>Passo corretto</value>
   </data>
   <data name="AdjustedSpeed" xml:space="preserve">
     <comment>ppx</comment>
-    <value>velocità corretta</value>
+    <value>Velocità corretta</value>
   </data>
   <data name="AdjustedTime" xml:space="preserve">
-    <value>tempo corretto</value>
+    <value>Tempo corretto</value>
   </data>
   <data name="AdjustedVDOT" xml:space="preserve">
     <value>VDOT corretto</value>
@@ -86,25 +86,25 @@
     <value>Fine della parte</value>
   </data>
   <data name="EstimatedTime" xml:space="preserve">
-    <value>tempo stimato</value>
+    <value>Tempo stimato</value>
   </data>
   <data name="HighAerobicZone" xml:space="preserve">
-    <value>zona aerobica alta</value>
+    <value>Zona aerobica alta</value>
   </data>
   <data name="HighScorePluginIntegration" xml:space="preserve">
-    <value>integrazione plugin 'High Score'</value>
+    <value>Integrazione plugin 'High Score'</value>
   </data>
   <data name="IntervalSplitTimes" xml:space="preserve">
-    <value>Intervallo tempi/velocità</value>
+    <value>Tempi di intervallo</value>
   </data>
   <data name="ModAerobicZone" xml:space="preserve">
-    <value>zona aerobica intermedia</value>
+    <value>Zona aerobica intermedia</value>
   </data>
   <data name="NoMaxHR" xml:space="preserve">
-    <value>per favore, vai alle impostazioni dell'atleta e imposta la tua frequenza cardiaca massima per ottenere un risultato</value>
+    <value>Vai alle impostazioni dell'atleta e imposta la tua frequenza cardiaca massima per vedere il risultato</value>
   </data>
   <data name="PaceForTempoRuns" xml:space="preserve">
-    <value>Ritmi previsti per durate esercizio</value>
+    <value>Ritmi previsti per esercizi “Tempo”</value>
   </data>
   <data name="PaceForTempoRuns_label" xml:space="preserve">
     <value>Ritmi previsti per durate da 20 a 60 minuti a VDOT {0:0.0}</value>
@@ -113,79 +113,79 @@
     <value>20 minuti di attività sono al ritmo della soglia di lattato - i ritmi di attività più lunghe sono stati corretti per mantenere una idonea intensità.</value>
   </data>
   <data name="PositiveNumber" xml:space="preserve">
-    <value>la distanza deve essere un numero positivo</value>
+    <value>La distanza deve essere un numero positivo</value>
   </data>
   <data name="PredictedTime" xml:space="preserve">
-    <value>tempo previsto</value>
+    <value>Tempo previsto</value>
   </data>
   <data name="PredictionModel" xml:space="preserve">
-    <value>modello di previsione</value>
+    <value>Modello di previsione</value>
   </data>
   <data name="PredictionResults" xml:space="preserve">
-    <value>risultato previsto</value>
+    <value>Risultati previsto</value>
   </data>
   <data name="ProcDistUsed" xml:space="preserve">
     <value>% della distanza per prevedere il tempo</value>
   </data>
   <data name="ProjectedTemperatureImpact" xml:space="preserve">
     <comment>ppx</comment>
-    <value>effetto negativo delle alte temperature su</value>
+    <value>Effetto negativo delle alte temperature su</value>
   </data>
   <data name="Recovery" xml:space="preserve">
-    <value>recupero</value>
+    <value>Recupero</value>
   </data>
   <data name="RemoveDistance" xml:space="preserve">
-    <value>rimuovi distanza</value>
+    <value>Rimuovi la distanza</value>
   </data>
   <data name="SetWeight" xml:space="preserve">
-    <value>per favore, vai alle impostazioni dell'atleta e imposta il peso per ottenere un risultato</value>
+    <value>Vai alle impostazioni dell'atleta e imposta il peso per vedere il risultato</value>
   </data>
   <data name="StartOfPart" xml:space="preserve">
     <comment>ppx</comment>
-    <value>inizio della parte</value>
+    <value>Inizio della parte</value>
   </data>
   <data name="TemperatureImpact" xml:space="preserve">
     <value>Effetto della Temperatura</value>
   </data>
   <data name="TemperatureNotification" xml:space="preserve">
     <comment>ppx</comment>
-    <value>il risultato non è penalizzato per temperature inferiori ai {0}.</value>
+    <value>Il risultato non è penalizzato per temperature inferiori ai {0}.</value>
   </data>
   <data name="TimePrediction" xml:space="preserve">
     <value>Tempo previsto</value>
   </data>
   <data name="TrainRaceHR" xml:space="preserve">
-    <value>Allenamento / gara HR.</value>
+    <value>Allenamento / gara Battito Cardiaco.</value>
   </data>
   <data name="UsedActivityStartDate" xml:space="preserve">
-    <value>Data inizio attività</value>
+    <value>Data inizio attività utilizzata</value>
   </data>
   <data name="UsedActivityStartTime" xml:space="preserve">
-    <value>Ora inizio attivitò</value>
+    <value>Ora inizio attività utilizzata</value>
   </data>
   <data name="UsedLengthOfActivity" xml:space="preserve">
-    <value>Lunghezza della attività</value>
+    <value>Lunghezza della attività utilizzata</value>
   </data>
   <data name="UsedTimeOfActivity" xml:space="preserve">
-    <value>Durata della attività</value>
+    <value>Durata della attività utilizzata</value>
   </data>
   <data name="ViewInChart" xml:space="preserve">
-    <value>Visualizza in Grafico</value>
+    <value>Visualizza nel grafico</value>
   </data>
   <data name="ViewInTable" xml:space="preserve">
-    <value>Visualizza in Tabella</value>
+    <value>Visualizza nella tabella</value>
   </data>
   <data name="VO2MaxVDOT" xml:space="preserve">
     <value>% VO2 max: {0:0.0}%, VDOT: {1:0.0}</value>
   </data>
   <data name="Webpage" xml:space="preserve">
-    <value>pagina web del plugin 'Performance Predictor'</value>
+    <value>Pagina web del plugin 'Performance Predictor'</value>
   </data>
   <data name="WeighImpact" xml:space="preserve">
     <value>Effetto del Peso</value>
   </data>
   <data name="WeightNotification" xml:space="preserve">
-    <value>Tempi e ritmi stimati sono +/- {0} per {1}.</value>
+    <value>Tempi e passi stimati sono +/- {0} per {1}.</value>
   </data>
   <data name="ZoneDistance" xml:space="preserve">
     <value>Zona / Distanza</value>
@@ -195,11 +195,15 @@
   </data>
   <data name="EstimatedPace" xml:space="preserve">
     <comment>ppx</comment>
-    <value>ritmo stimato</value>
+    <value>Passo stimato</value>
   </data>
   <data name="EstimatedSpeed" xml:space="preserve">
     <comment>ppx</comment>
     <value>Velocità stimata</value>
+  </data>
+  <data name="IntervalNotification" xml:space="preserve">
+    <comment>pp</comment>
+    <value>Tempi più brevi dell'attività sono suggeriti per certe distanze di gara</value>
   </data>
   <data name="PPHS" xml:space="preserve">
     <comment>ppx</comment>
@@ -207,13 +211,19 @@
   </data>
   <data name="ProjectedWeight" xml:space="preserve">
     <comment>ppx</comment>
-    <value>peso previsto</value>
+    <value>Peso previsto</value>
   </data>
   <data name="ProjectedWeightImpact" xml:space="preserve">
     <comment>ppx</comment>
-    <value>effetto previsto del peso</value>
+    <value>Effetto previsto del peso su </value>
   </data>
   <data name="Velocity" xml:space="preserve">
-    <value>velocità</value>
+    <value>Velocità</value>
+  </data>
+  <data name="HighScorePrediction" xml:space="preserve">
+    <value>Previsione “High Score”</value>
+  </data>
+  <data name="HighScoreRequired" xml:space="preserve">
+    <value>La previsione usando attività multiple richiede il plugin High Score</value>
   </data>
 </root>
