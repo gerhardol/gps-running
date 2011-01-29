@@ -59,19 +59,22 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="End" xml:space="preserve">
-    <value>fine</value>
+    <value>Fine</value>
   </data>
   <data name="Find" xml:space="preserve">
-    <value>trova</value>
+    <value>Trova</value>
   </data>
   <data name="Goal" xml:space="preserve">
-    <value>Goal</value>
+    <value>Obiettivo</value>
   </data>
   <data name="HRZone" xml:space="preserve">
     <value>Zona di frequenza cardiaca</value>
   </data>
+  <data name="Hours" xml:space="preserve">
+    <value>Ore</value>
+  </data>
   <data name="Minutes" xml:space="preserve">
-    <value>min</value>
+    <value>Minuti</value>
   </data>
   <data name="Seconds" xml:space="preserve">
     <value>secondi</value>
@@ -80,46 +83,49 @@
     <value>per specifica</value>
   </data>
   <data name="Question" xml:space="preserve">
-    <value>domande?</value>
+    <value>Domande?</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>ripristina</value>
+    <value>Ripristina</value>
   </data>
   <data name="ResetAllSettings" xml:space="preserve">
     <value>Ripristina tutte le impostazioni</value>
   </data>
   <data name="Show" xml:space="preserve">
-    <value>visualizza</value>
+    <value>Visualizza</value>
   </data>
   <data name="SpeedZone" xml:space="preserve">
-    <value>Zona velocità</value>
+    <value>Zona Velocità</value>
   </data>
   <data name="TimeFormat" xml:space="preserve">
     <value>hh:mm:ss</value>
   </data>
   <data name="Warning" xml:space="preserve">
-    <value>attenzione</value>
+    <value>Attenzione</value>
   </data>
   <data name="Factor" xml:space="preserve">
     <value>Fattore</value>
   </data>
   <data name="Graph" xml:space="preserve">
-    <value>grafico</value>
+    <value>Grafico</value>
   </data>
   <data name="NoSelectedActivities" xml:space="preserve">
-    <value>Attività non selezionata</value>
+    <value>Nessuna attività selezionata</value>
   </data>
   <data name="NumberOfZones" xml:space="preserve">
-    <value>Numero di Zone</value>
+    <value>Numero di Zone:</value>
   </data>
   <data name="ResetQuestion" xml:space="preserve">
-    <value>Sei sicuro di voler reimpostare tutti i valori? L'azione non sarà recuperabile</value>
+    <value>Sei sicuro di voler reimpostare tutti i valori? L'azione non sarà reversibile</value>
   </data>
   <data name="StartZone" xml:space="preserve">
     <value>Zona di Partenza</value>
   </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Sommario</value>
+  </data>
   <data name="Use" xml:space="preserve">
-    <value>Usa</value>
+    <value>Usare</value>
   </data>
   <data name="ChangeCategory" xml:space="preserve">
     <value>Cambia categoria</value>
@@ -134,7 +140,7 @@
     <value>Invia</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Settaggi</value>
+    <value>Impostazioni</value>
   </data>
   <data name="UseAllCategories" xml:space="preserve">
     <value>Utilizza tutte le categorie</value>
@@ -145,8 +151,14 @@
   <data name="ClimbZones" xml:space="preserve">
     <value>Zone di Ascesa</value>
   </data>
+  <data name="DaysFormat" xml:space="preserve">
+    <value>gg</value>
+  </data>
   <data name="HoursFormat" xml:space="preserve">
-    <value>Ore</value>
+    <value>hh</value>
+  </data>
+  <data name="MinutesFormat" xml:space="preserve">
+    <value>mm</value>
   </data>
   <data name="SecondsFormat" xml:space="preserve">
     <value>sec</value>
@@ -184,16 +196,71 @@
   <data name="Marathon" xml:space="preserve">
     <value>Maratona</value>
   </data>
+  <data name="MinutesShort" xml:space="preserve">
+    <value>min</value>
+  </data>
   <data name="Training" xml:space="preserve">
     <value>Allenamento</value>
   </data>
   <data name="Unit" xml:space="preserve">
-    <value>unità</value>
+    <value>Unità</value>
   </data>
   <data name="NoutofM" xml:space="preserve">
     <value>{0} su {1} attività utilizzate</value>
   </data>
+  <data name="Active" xml:space="preserve">
+    <value>Attivo</value>
+  </data>
   <data name="And" xml:space="preserve">
     <value>e</value>
+  </data>
+  <data name="ActivitySpeedOrPace" xml:space="preserve">
+    <value>Attività Velocità/Passo</value>
+  </data>
+  <data name="ListSettings" xml:space="preserve">
+    <value>Impostazione lista</value>
+  </data>
+  <data name="Colour" xml:space="preserve">
+    <value>Colore</value>
+  </data>
+  <data name="Visible" xml:space="preserve">
+    <value>Visibile</value>
+  </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Offset</value>
+  </data>
+  <data name="Difference" xml:space="preserve">
+    <value>Differenza</value>
+  </data>
+  <data name="Width" xml:space="preserve">
+    <value>larghezza</value>
+  </data>
+  <data name="SetRefActivity" xml:space="preserve">
+    <value>Attività di riferimento</value>
+  </data>
+  <data name="OtherPluginExceptionText" xml:space="preserve">
+    <value>Problema di comunicazione con  {0}
+Assicurarsi che {1} sia installato sul proprio computer</value>
+  </data>
+  <data name="OtherPluginVersion" xml:space="preserve">
+    <value>Riscontrata versione {0} di {1}.</value>
+  </data>
+  <data name="UniqueRoutesCompatible" xml:space="preserve">
+    <value>Le attività possono essere filtrate usando Unique Routes</value>
+  </data>
+  <data name="UniqueRoutesPluginName" xml:space="preserve">
+    <value>Plugin Unique Routes</value>
+  </data>
+  <data name="UniqueRoutesToInstall" xml:space="preserve">
+    <value>Installare almeno la versione {0} di {1} per filtrare le attività usando il plugin Unique Routes.</value>
+  </data>
+  <data name="UI_Activity_List_Advanced" xml:space="preserve">
+    <value>Avanzato</value>
+  </data>
+  <data name="UI_Activity_List_LimitSelection" xml:space="preserve">
+    <value>Limitare le attività a quelle selezionate nella lista</value>
+  </data>
+  <data name="UI_Activity_List_URSelect" xml:space="preserve">
+    <value>Aggiungere con Unique Routes attività simili a partire dall'attività di riferimento {0}</value>
   </data>
 </root>

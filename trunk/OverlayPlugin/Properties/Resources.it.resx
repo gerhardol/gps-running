@@ -69,7 +69,7 @@
     <value>Imposta a 0 per la media dall'inizio della attività</value>
   </data>
   <data name="NonNegativeNumber" xml:space="preserve">
-    <value>Il valore non può essere negativo</value>
+    <value>Il valore non può essere negativo!</value>
   </data>
   <data name="O1" xml:space="preserve">
     <value>Overlay di una attività</value>
@@ -79,5 +79,29 @@
   </data>
   <data name="Webpage" xml:space="preserve">
     <value>Pagina Web del Plugin</value>
+  </data>
+  <data name="Menu_ShowChartBar" xml:space="preserve">
+    <value>Mostra grafico a barre</value>
+  </data>
+  <data name="Menu_ShowToolBar" xml:space="preserve">
+    <value>Mostra opzioni grafico</value>
+  </data>
+  <data name="MovingAverage" xml:space="preserve">
+    <value>Media mobile</value>
+  </data>
+  <data name="OverlayChart" xml:space="preserve">
+    <value>Grafico Overlay</value>
+  </data>
+  <data name="SetMovingAveragePeriod" xml:space="preserve">
+    <value>Imposta larghezza filtro</value>
+  </data>
+  <data name="SetOffset" xml:space="preserve">
+    <value>Imposta l'offset per l'attività</value>
+  </data>
+  <data name="TableSettings" xml:space="preserve">
+    <value>Impostazioni della lista</value>
+  </data>
+  <data name="SetOffsetWithUR" xml:space="preserve">
+    <value>Imposta l'offset dell'attività utilizzando i tratti comuni di Unique Routes</value>
   </data>
 </root>
