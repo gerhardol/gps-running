@@ -232,4 +232,29 @@
   <data name="SetRefActivity" xml:space="preserve">
     <value>Actividad Referente</value>
   </data>
+  <data name="OtherPluginExceptionText" xml:space="preserve">
+    <value>Problemas de comunicación con {0}
+Asegurese de que {1} este instalado en su maquina</value>
+  </data>
+  <data name="OtherPluginVersion" xml:space="preserve">
+    <value>Detectada la versión {0} de {1}.</value>
+  </data>
+  <data name="UniqueRoutesCompatible" xml:space="preserve">
+    <value>Las actividades pueden ser filtradas por medio del plugin UR</value>
+  </data>
+  <data name="UniqueRoutesPluginName" xml:space="preserve">
+    <value>Unique Routes plugin</value>
+  </data>
+  <data name="UniqueRoutesToInstall" xml:space="preserve">
+    <value>Se necesita la versión {0} de {1} para filtrar usando Unique Routes.</value>
+  </data>
+  <data name="UI_Activity_List_Advanced" xml:space="preserve">
+    <value>Avanzado</value>
+  </data>
+  <data name="UI_Activity_List_LimitSelection" xml:space="preserve">
+    <value>Límite de actividades a las seleccionadas en la lista</value>
+  </data>
+  <data name="UI_Activity_List_URSelect" xml:space="preserve">
+    <value>Agrega actividades similares por medio del plugin Unique Routes {0}</value>
+  </data>
 </root>

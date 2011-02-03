@@ -501,7 +501,8 @@ namespace GpsRunningPlugin.Source
                 {
                     IValueRange<double> di = item.SelectedDistance;
                     if (di == null) { continue; }
-                    IDistanceDataTrack dt = activity.GPSRoute.GetDistanceMetersTrack();
+                    IDistanceDataTrack dt = ActivityInfoCache.Instance.GetInfo(activity).ActualDistanceMetersTrack;
+                    //IDistanceDataTrack dt = activity.GPSRoute.GetDistanceMetersTrack();
                     s0 = dt.GetTimeAtDistanceMeters(di.Lower);
                     s1 = dt.GetTimeAtDistanceMeters(di.Upper);
                 }
