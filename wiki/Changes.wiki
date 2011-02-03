@@ -8,6 +8,15 @@ More or less official beta releases are available in the Downloads section. See 
 =Latest updates=
 Next version will be called 2.0
 
+1.9.258 2011-02-03
+ * Spanish translation
+
+1.9.257 2011-01-29
+ * Italian translation
+
+1.9.256 2011-01-22
+ * HighScore: issue 20 Default value for min grade
+ 
 1.9.252 2011-01-18
  * HighScore: GUID fix
 

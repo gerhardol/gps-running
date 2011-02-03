@@ -104,4 +104,7 @@
   <data name="TableSettings" xml:space="preserve">
     <value>Tabla de configuraciones</value>
   </data>
+  <data name="SetOffsetWithUR" xml:space="preserve">
+    <value>Establecer la actividad compensado con Unique Routes los desplazamientos comunes</value>
+  </data>
 </root>
