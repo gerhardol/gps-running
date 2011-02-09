@@ -311,6 +311,7 @@ namespace GpsRunningPlugin.Source
             }
             if (actWrappers.Count > 0)
             {
+                //TODO: Try to keep refAct
                 CommonData.refActWrapper = actWrappers[0];
             }
 
@@ -1457,13 +1458,19 @@ namespace GpsRunningPlugin.Source
 #if ST_2_1
         private void activity_DataChanged(object sender, NotifyDataChangedEventArgs e)
         {
-            updateChart();
+            if (_showPage)
+            {
+                updateChart();
+            }
         }
 #else
         private void Activity_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            updateChart();
-            updateRoute();
+            if (_showPage)
+            {
+                updateChart();
+                updateRoute();
+            }
         }
 #endif
 
