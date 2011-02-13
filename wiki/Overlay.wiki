@@ -50,7 +50,6 @@ You can customize the list to your own liking by selecting what columns you need
 Above: Choose the contents of the list.
 
 ===Choosing the reference===
-
 The "diff" columns display the difference between the reference activity and the activity on each row. They can be used to make it easier to compare activities. By default the reference is the first activity in the list, but a different reference can be chosen by selecting an activity, opening the list context menu and choosing Reference Activity.
 
 ==Working with the chart==
@@ -93,7 +92,7 @@ The list contains a Visible column with checkboxes. Deselecting a checkbox remov
 ==Working with the map==
 The selected activities will be displayed as routes on the map, assuming that they have GPS tracks. The routes will be color coded in the same way as in the chart and the list. The route for an activity can be removed by deselecting the checkbox in the Visible column of the activity in the list.
 
-Note: If you select individual activities instead of a group, the activities will not be displayed on the map. This is a limitation in the core SportTracks application, the plugin cannot overcome that.
+Note for ST before 3.0.4059: If you select individual activities instead of a group, the activities will not be displayed on the map. This is a limitation in the core SportTracks application, the plugin cannot overcome that.
 A workaround is to use Overlay in a popup (from Analyze menu), then select a single activity or a group.
 
 ==Advanced==
