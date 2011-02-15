@@ -44,6 +44,8 @@ namespace GpsRunningPlugin.Source
 {
     public partial class PerformancePredictorView : UserControl
     {
+        private TrainingView trainingView;
+
         private IActivity lastActivity = null;
 #if ST_2_1
         private const object m_DetailPage = null;
@@ -53,10 +55,54 @@ namespace GpsRunningPlugin.Source
         private TrailPointsLayer m_layer = null;
 #endif
 
-       public PerformancePredictorView()
+#if !ST_2_1
+        public PerformancePredictorView(IDetailPage detailPage, IDailyActivityView view)
+           : this()
+        {
+            m_DetailPage = detailPage;
+            m_view = view;
+            m_layer = TrailPointsLayer.Instance(m_view);
+            if (m_DetailPage != null)
+            {
+                //expandButton.Visible = true;
+            }
+        }
+        //popup dialog
+        public PerformancePredictorView(IDailyActivityView view)
+            : this(true)
+        {
+            m_view = view;
+            m_layer = TrailPointsLayer.Instance((IView)view);
+        }
+        public PerformancePredictorView(IActivityReportsView view)
+            : this(true)
+        {
+            m_layer = TrailPointsLayer.Instance((IView)view);
+        }
+        //UniqueRoutes sendto
+        public PerformancePredictorView(IList<IActivity> activities, IDailyActivityView view)
+            : this(view)
+        {
+            this.Activities = activities;
+        }
+        public PerformancePredictorView(IList<IActivity> activities, IActivityReportsView view)
+            : this(view)
+        {
+            this.Activities = activities;
+        }
+#endif
+        public PerformancePredictorView()
         {
             InitializeComponent();
-            //InitControls();
+            InitControls();
+
+            Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
+            if (Parent != null)
+            {
+                Parent.Resize += new EventHandler(Parent_Resize);
+            }
+            Resize += new EventHandler(PerformancePredictorView_Resize);
+            Settings settings = new Settings();
 
             setSize();
             chart.YAxis.Formatter = new Formatter.SecondsToTime();
@@ -65,16 +111,58 @@ namespace GpsRunningPlugin.Source
             //Settings.DistanceChanged += new PropertyChangedEventHandler(Settings_DistanceChanged);
         }
 
-        void InitControls(IDetailPage detailPage, IDailyActivityView view, TrailPointsLayer layer)
+        //Compatibility with old UniqueRoutes send to
+        public PerformancePredictorView(IList<IActivity> aAct, bool showDialog)
+            : this(showDialog)
         {
-#if !ST_2_1
-            m_DetailPage = detailPage;
-            m_view = view;
-            m_layer = layer;
+            this.Activities = aAct;
+        }
+        public PerformancePredictorView(bool showDialog)
+            : this()
+        {
+            if (showDialog)
+            {
+                //Theme and Culture must be set manually
+                this.ThemeChanged(
+#if ST_2_1
+Plugin.GetApplication().VisualTheme);
+#else
+                  Plugin.GetApplication().SystemPreferences.VisualTheme);
 #endif
+                this.UICultureChanged(
+#if ST_2_1
+new System.Globalization.CultureInfo("en"));
+#else
+                  Plugin.GetApplication().SystemPreferences.UICulture);
+#endif
+                popupForm = new Form();
+                popupForm.Controls.Add(this);
+                popupForm.Size = Settings.WindowSize;
+                //Fill would be simpler here, but then edges are cut
+                this.Size = new Size(Parent.Size.Width - 17, Parent.Size.Height - 38);
+                this.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom)));
+                Parent.SizeChanged += new EventHandler(Parent_SizeChanged);
 
+                popupForm.StartPosition = FormStartPosition.CenterScreen;
+                popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_PerformancePredictor.GetHicon());
+                popupForm.Show();
+                this.ShowPage("");
+            }
+        }
+
+        void InitControls()
+        {
             cameronSeries = new ChartDataSeries(chart, chart.YAxis);
             riegelSeries = new ChartDataSeries(chart, chart.YAxis);
+
+            trainingView = new TrainingView();
+            trainingView.Location = chart.Location;
+            //Note ThemeChanged set as for components init by default
+            this.splitContainer1.Panel2.Controls.Add(trainingView);
+            trainingView.Dock = DockStyle.Fill;
+            trainingView.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            progressBar.Visible = false;
 
             dataGrid.CellDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
             dataGrid.CellMouseClick += new DataGridViewCellMouseEventHandler(dataGrid_CellMouseClick); 
@@ -97,10 +185,32 @@ namespace GpsRunningPlugin.Source
             this.dataGrid.GridColor = visualTheme.Border;
             this.dataGrid.DefaultCellStyle.BackColor = visualTheme.Window;
             this.dataGrid.ColumnHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
+
+            if (null != trainingView)
+            {
+                trainingView.ThemeChanged(visualTheme);
+            }
         }
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
+            groupBox3.Text = StringResources.Settings;
+            groupBox1.Text = Resources.PredictionModel;
+            groupBox2.Text = Resources.Velocity;
+            resultBox.Text = Resources.PredictionResults;
+            timePrediction.Text = Resources.TimePrediction;
+            training.Text = StringResources.Training;
+            pace.Text = CommonResources.Text.LabelPace;
+            speed.Text = CommonResources.Text.LabelSpeed;
+            chartButton.Text = Resources.ViewInChart;
+            table.Text = Resources.ViewInTable;
+            this.chkHighScore.Text = Properties.Resources.HighScorePrediction;
+            lblHighScoreRequired.Text = Properties.Resources.HighScoreRequired;
+
+            if (null != trainingView)
+            {
+                trainingView.UICultureChanged(culture);
+            }
         }
 
         private IList<IActivity> activities = new List<IActivity>();
@@ -116,6 +226,23 @@ namespace GpsRunningPlugin.Source
                 if (null == value) { activities.Clear(); }
                 else { activities = value; }
 
+                //No settings for HS, separate check in makeData(), enabled in setView
+                //For Activity page use Predict/Training by default for single activities
+                lblHighScoreRequired.Visible = false;
+                if (Settings.HighScore != null && (activities.Count > 1 || popupForm != null))
+                {
+                    chkHighScore.Checked = true;
+                }
+                else
+                {
+                    chkHighScore.Checked = false;
+                    if (activities.Count > 1)
+                    {
+                        lblHighScoreRequired.Visible = true;
+                        activities.Clear();
+                    }
+                }
+
                 //Reset settings
                 if (lastActivity != null)
                 {
@@ -126,6 +253,10 @@ namespace GpsRunningPlugin.Source
 #else
                         lastActivity.PropertyChanged -= new PropertyChangedEventHandler(Activity_PropertyChanged);
 #endif
+                    }
+                    if (activities.Count != 1 || (activities.Count == 1 && null != activities[0]))
+                    {
+                        trainingView.Activity = null;
                     }
                 }
                 if (1 == activities.Count && activities[0] != null)
@@ -138,11 +269,30 @@ namespace GpsRunningPlugin.Source
 #else
                         lastActivity.PropertyChanged += new PropertyChangedEventHandler(Activity_PropertyChanged);
 #endif
+                        trainingView.Activity = lastActivity;
                     }
                 }
                 else
                 {
                     lastActivity = null;
+                }
+
+                string title = Resources.PPHS;
+                if (activities.Count > 0)
+                {
+                    if (activities.Count == 1)
+                    {
+                        title = Resources.PPHS + " " + StringResources.ForOneActivity;
+                    }
+                    else
+                    {
+                        title = Resources.PPHS + " " + String.Format(StringResources.ForManyActivities, activities.Count);
+                    }
+                }
+                //title cant be set directly on activity page
+                if (null != popupForm)
+                {
+                    popupForm.Text = title;
                 }
 
                 _showPage = showPage;
@@ -167,10 +317,13 @@ namespace GpsRunningPlugin.Source
         private DataTable cameronSet = new DataTable();
         private DataTable riegelSet = new DataTable();
 
+        private Form popupForm = null;
+
         private bool _showPage = false;
         public bool HidePage()
         {
             _showPage = false;
+            if (null != trainingView) { trainingView.HidePage(); }
             if (m_layer != null)
             {
                 m_layer.ClearOverlays();
@@ -182,6 +335,7 @@ namespace GpsRunningPlugin.Source
         {
             bool changed = (_showPage != true);
             _showPage = true;
+            if (null != trainingView) { trainingView.ShowPage(bookmark); }
             if (changed) { makeData(); }
             if (m_layer != null)
             {
@@ -189,7 +343,7 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        public void setSize()
+        private void setSize()
         {
             if (dataGrid.Columns.Count > 0 && dataGrid.Rows.Count > 0)
             {
@@ -211,14 +365,80 @@ namespace GpsRunningPlugin.Source
         }
 
         private const string ActivityIdColumn = "ActivityId";
-        public void setView()
+        private void setView()
         {
             if (_showPage)
             {
                 bool showPage = _showPage;
                 _showPage = false;
+                //Static settings
+                switch (Settings.Model)
+                {
+                    default:
+                    case PredictionModel.DAVE_CAMERON:
+                        daveCameron.Checked = true;
+                        trainingView.Predictor = Cameron;
+                        break;
+                    case PredictionModel.PETE_RIEGEL:
+                        reigel.Checked = true;
+                        trainingView.Predictor = Riegel;
+                        break;
+                }
+                pace.Checked = Settings.ShowPace;
+                speed.Checked = !Settings.ShowPace;
+
                 dataGrid.Visible = false;
                 chart.Visible = false;
+                trainingView.Visible = false;
+                this.table.Enabled = false;
+                chartButton.Enabled = false;
+                chkHighScore.Enabled = false;
+
+                this.table.Enabled = true;
+                this.chartButton.Enabled = true;
+
+                if (activities.Count == 1)
+                {
+                    //chkHighScore.Checked set in Activities (as it may clear selection)
+                    if (Settings.HighScore != null) { chkHighScore.Enabled = true; }
+                }
+                if (activities.Count == 1 && !chkHighScore.Checked)
+                {
+                    timePrediction.Enabled = true;
+                    training.Enabled = true;
+
+                    if (!Settings.ShowPrediction)
+                    {
+                        timePrediction.Checked = false;
+                        training.Checked = true;
+                        chartButton.Checked = false;
+                        this.table.Checked = true;
+
+                        this.table.Enabled = false;
+                        this.chartButton.Enabled = false;
+
+                        trainingView.Visible = true;
+                    }
+                    else
+                    {
+                        timePrediction.Checked = true;
+                    }
+                }
+                else
+                {
+                    timePrediction.Checked = true;
+
+                    timePrediction.Enabled = false;
+                    training.Enabled = false;
+                }
+
+                if (timePrediction.Checked)
+                {
+                    training.Checked = false;
+                    timePrediction.Checked = true;
+                    chartButton.Checked = Settings.ShowChart;
+                    table.Checked = !Settings.ShowChart;
+                }
                 _showPage = showPage;
             }
         }
@@ -235,7 +455,7 @@ namespace GpsRunningPlugin.Source
                 cameronSet.Clear(); cameronSet.Rows.Clear(); cameronSeries.Points.Clear();
                 riegelSet.Clear(); riegelSet.Rows.Clear(); riegelSeries.Points.Clear();
 
-                if (activities.Count > 1 || (activities.Count == 1 && ChkHighScore))
+                if (activities.Count > 1 || (activities.Count == 1 && chkHighScore.Checked))
                 {
                     //Predict using one or many activities (check done that HS enabled prior)
                     makeData(cameronSet, cameronSeries, Cameron);
@@ -313,7 +533,7 @@ namespace GpsRunningPlugin.Source
                     };
 
         private void makeData(DataTable set, ChartDataSeries series,
-            PredictTime predict, System.Windows.Forms.ProgressBar progressBar)
+            PredictTime predict)
         {
             set.Clear();
             set.Columns.Clear();
@@ -462,9 +682,85 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        public void updateChartVisibility()
+        /**************************************************/
+
+        void Parent_SizeChanged(object sender, EventArgs e)
         {
-            if (_showPage && Settings.ShowPrediction && activities.Count > 0)
+            if (popupForm != null)
+            {
+                Settings.WindowSize = popupForm.Size;
+            }
+            setSize();
+        }
+
+        private void Settings_DistanceChanged(object sender, PropertyChangedEventArgs e)
+        {
+            makeData();
+        }
+
+        private void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            makeData();
+        }
+
+        private void form_Resize(object sender, EventArgs e)
+        {
+            setSize();
+        }
+
+        private void PerformancePredictorView_Resize(object sender, EventArgs e)
+        {
+            setSize();
+        }
+
+        private void Parent_Resize(object sender, EventArgs e)
+        {
+            setSize();
+        }
+        
+        private void daveCameron_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_showPage && daveCameron.Checked)
+            {
+                Settings.Model = PredictionModel.DAVE_CAMERON;
+                setView();
+                setData();
+                trainingView.Predictor = Cameron;
+            }
+        }
+
+        private void reigel_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_showPage && reigel.Checked)
+            {
+                Settings.Model = PredictionModel.PETE_RIEGEL;
+                setView();
+                setData();
+                trainingView.Predictor = Riegel;
+            }
+        }
+
+        private void chartButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_showPage && chartButton.Checked)
+            {
+                Settings.ShowChart = true;
+                updateChartVisibility();
+            }
+        }
+
+        private void table_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_showPage && table.Checked)
+            {
+                Settings.ShowChart = false;
+                updateChartVisibility();
+            }
+        }
+
+        private void updateChartVisibility()
+        {
+            if (_showPage && timePrediction.Checked && activities.Count > 0)
             {
                 if (Settings.ShowChart)
                 {
@@ -478,8 +774,46 @@ namespace GpsRunningPlugin.Source
                 }
             }
         }
-        /**************************************************/
 
+        private void timePrediction_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_showPage && timePrediction.Checked && activities.Count == 1)
+            {
+                Settings.ShowPrediction = true;
+                setView();
+                setData();
+            }
+        }
+
+        private void training_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_showPage && training.Checked && activities.Count == 1)
+            {
+                Settings.ShowPrediction = false;
+                setView();
+                setData();
+            }
+        }
+
+        private void pace_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_showPage && pace.Checked)
+            {
+                Settings.ShowPace = true;
+                makeData();
+                trainingView.setPages();
+            }
+        }
+
+        private void speed_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_showPage && speed.Checked)
+            {
+                Settings.ShowPace = false;
+                makeData();
+                trainingView.setPages();
+            }
+        }
         private void selectedRow_DoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             int rowIndex = e.RowIndex;
@@ -592,4 +926,6 @@ namespace GpsRunningPlugin.Source
             makeData();
         }
     }
+
+    public delegate double PredictTime(double new_dist, double old_dist, double old_time);
 }

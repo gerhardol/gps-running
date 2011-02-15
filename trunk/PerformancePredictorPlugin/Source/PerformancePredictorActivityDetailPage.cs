@@ -114,7 +114,7 @@ namespace GpsRunningPlugin.Source
             if (control == null)
             {
 #if !ST_2_1
-                control = new PerformancePredictorControl(this, view);
+                control = new PerformancePredictorView(this, view);
 #else
                 control = new PerformancePredictorView();
 #endif
@@ -188,7 +188,7 @@ namespace GpsRunningPlugin.Source
         private IDailyActivityView view = null;
 #endif
         private IList<IActivity> activities = new List<IActivity>();
-        private PerformancePredictorControl control = null;
+        private PerformancePredictorView control = null;
         private IList<string> menuPath = null;
         private bool menuEnabled = true;
         private bool menuVisible = true;
