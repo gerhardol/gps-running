@@ -38,9 +38,26 @@ namespace GpsRunningPlugin.Source
             bool boRefExists = (CommonData.refActWrapper != null);
             if (boRefExists)
                 refActInfo = actInfoCache.GetInfo(CommonData.refActWrapper.Activity);
+            bool includeStopped = false;
+#if ST_2_1
+                        // If UseEnteredData is set, exclude Stopped
+                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
+                        {
+                            includeStopped = true;
+                        }
+#else
+            includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
+#endif
 
             switch(column.Id)
             {
+                case OverlayColumnIds.Time:
+                    if (includeStopped && !wrapper.Activity.UseEnteredData)
+                    {
+                        //ST bug?
+                        return actInfo.ActualTrackTime.ToString();
+                    }
+                    return actInfo.Time.ToString();
                 case OverlayColumnIds.StartTime:
                     return wrapper.Activity.StartTime.ToLocalTime().ToString();
                 case OverlayColumnIds.Colour:
@@ -53,7 +70,13 @@ namespace GpsRunningPlugin.Source
                 case OverlayColumnIds.Visible:
                     return "";
                 case OverlayColumnIds.Distance:
-                    return UnitUtil.Distance.ToString(actInfo.DistanceMeters);
+                    double dist = actInfo.DistanceMeters;
+                    if (includeStopped && !wrapper.Activity.UseEnteredData)
+                    {
+                        //ST bug?
+                        dist = actInfo.DistanceMetersNonPaused;
+                    }
+                    return UnitUtil.Distance.ToString(dist);
                 case OverlayColumnIds.AvgSpeed:
                     return UnitUtil.Speed.ToString(actInfo.AverageSpeedMetersPerSecond);
                 case OverlayColumnIds.AvgPace:
