@@ -31,32 +31,18 @@ namespace GpsRunningPlugin.Source
         public override string GetText(object element, ZoneFiveSoftware.Common.Visuals.TreeList.Column column)
         {
             ActivityWrapper wrapper = (ActivityWrapper)element;
-            ActivityInfoCache actInfoCache = new ActivityInfoCache();
-            ActivityInfo actInfo = actInfoCache.GetInfo(wrapper.Activity);
+            ActivityInfo actInfo = ActivityInfoCache.Instance.GetInfo(wrapper.Activity);
             ActivityInfo refActInfo = null;
 
             bool boRefExists = (CommonData.refActWrapper != null);
             if (boRefExists)
-                refActInfo = actInfoCache.GetInfo(CommonData.refActWrapper.Activity);
-            bool includeStopped = false;
-#if ST_2_1
-                        // If UseEnteredData is set, exclude Stopped
-                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
-                        {
-                            includeStopped = true;
-                        }
-#else
-            includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
-#endif
+            {
+                refActInfo = ActivityInfoCache.Instance.GetInfo(CommonData.refActWrapper.Activity);
+            }
 
             switch(column.Id)
             {
                 case OverlayColumnIds.Time:
-                    if (includeStopped && !wrapper.Activity.UseEnteredData)
-                    {
-                        //ST bug?
-                        return actInfo.ActualTrackTime.ToString();
-                    }
                     return actInfo.Time.ToString();
                 case OverlayColumnIds.StartTime:
                     return wrapper.Activity.StartTime.ToLocalTime().ToString();
@@ -70,13 +56,7 @@ namespace GpsRunningPlugin.Source
                 case OverlayColumnIds.Visible:
                     return "";
                 case OverlayColumnIds.Distance:
-                    double dist = actInfo.DistanceMeters;
-                    if (includeStopped && !wrapper.Activity.UseEnteredData)
-                    {
-                        //ST bug?
-                        dist = actInfo.DistanceMetersNonPaused;
-                    }
-                    return UnitUtil.Distance.ToString(dist);
+                    return UnitUtil.Distance.ToString(actInfo.DistanceMeters);
                 case OverlayColumnIds.AvgSpeed:
                     return UnitUtil.Speed.ToString(actInfo.AverageSpeedMetersPerSecond);
                 case OverlayColumnIds.AvgPace:

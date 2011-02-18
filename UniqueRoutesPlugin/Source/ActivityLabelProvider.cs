@@ -57,7 +57,7 @@ namespace GpsRunningPlugin.Source
                 case SummaryColumnIds.CommonStretches:
                     return wrapper.CommonStretches;
                 default:
-                    string text = base.GetText(new ActivityInfoCache().GetInfo(wrapper.Activity), column);
+                    string text = base.GetText(ActivityInfoCache.Instance.GetInfo(wrapper.Activity), column);
                     if (text != "")
                         return text;
                     else
