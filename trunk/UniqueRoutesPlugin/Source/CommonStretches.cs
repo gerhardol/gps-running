@@ -53,10 +53,8 @@ namespace GpsRunningPlugin.Source
         public bool restLap=false;
         public string debugInfo = "";
     }
-    public class CommonStretches
+    public static class CommonStretches
     {
-        private CommonStretches() { }
-
         //Note: Using IValueRangeSeries will automerge reference results. Ref may not have same no of stretches
         public static IItemTrackSelectionInfo[] getSelInfo(DateTime[] st, IList<PointInfo[]> pi, bool useActive)
         {
@@ -123,7 +121,7 @@ namespace GpsRunningPlugin.Source
         public static IDictionary<IActivity, PointInfo[]> getCommonSpeed(IGPSRoute refRoute, IList<IActivity> activities, bool useActive)
         {
             IDictionary<IActivity, IList<PointInfo[]>> points = new Dictionary<IActivity, IList<PointInfo[]>>();
-            points = findSimilarPoints(refRoute, activities);
+            points = findSimilarPoints(refRoute, activities, null);
             return getCommonSpeed(points, activities, useActive, null);
         }
 
@@ -156,16 +154,16 @@ namespace GpsRunningPlugin.Source
             }
             return result;
         }
-        public static IDictionary<IActivity, IList<PointInfo[]>> findSimilarPoints(IActivity activity, IList<IActivity> activities)
+        public static IDictionary<IActivity, IList<PointInfo[]>> findSimilarPoints(IActivity activity, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
         {
-            return findSimilarPoints(activity.GPSRoute, activity.Laps, activities);
+            return findSimilarPoints(activity.GPSRoute, activity.Laps, activities, progressBar);
         }
-        public static IDictionary<IActivity, IList<PointInfo[]>> findSimilarPoints(IGPSRoute refRoute, IList<IActivity> activities)
+        public static IDictionary<IActivity, IList<PointInfo[]>> findSimilarPoints(IGPSRoute refRoute, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
         {
-            return findSimilarPoints(refRoute, null, activities);
+            return findSimilarPoints(refRoute, null, activities, progressBar);
         }
 
-        public static IDictionary<IActivity, IList<PointInfo[]>> findSimilarPoints(IGPSRoute refRoute, IActivityLaps refLaps, IList<IActivity> activities)
+        public static IDictionary<IActivity, IList<PointInfo[]>> findSimilarPoints(IGPSRoute refRoute, IActivityLaps refLaps, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
         {
             GPSGrid refGrid = new GPSGrid(null, refRoute, 1F, 0.5F, true);
             IDictionary<IActivity, IList<PointInfo[]>> result = new Dictionary<IActivity, IList<PointInfo[]>>();
@@ -173,6 +171,12 @@ namespace GpsRunningPlugin.Source
             int noCumAv = 0;
             if (activities != null)
             {
+                if (progressBar != null)
+                {
+                    progressBar.Value = 0;
+                    progressBar.Minimum = 0;
+                    progressBar.Maximum = activities.Count;
+                }
                 foreach (IActivity otherActivity in activities)
                 {
                     const int ExtraGridIndex = 2;
@@ -340,6 +344,10 @@ namespace GpsRunningPlugin.Source
                         s[0] = new PointInfo(-otherActivity.GPSRoute.Count);
                         s[1] = new PointInfo(-1);
                         result[otherActivity].Add(s);
+                    }
+                    if (progressBar != null)
+                    {
+                        progressBar.Increment(1);
                     }
                 }
             }
