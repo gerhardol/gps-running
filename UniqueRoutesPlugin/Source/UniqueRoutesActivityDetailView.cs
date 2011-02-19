@@ -421,13 +421,12 @@ namespace GpsRunningPlugin.Source
                     bool doGetcommonStretches = true;// Plugin.Verbose > 0;
                     if (doGetcommonStretches)
                     {
-                        progressBar.Value = 0;
-                        progressBar.Visible = true;
-                        progressBar.BringToFront();
+                        m_progressBar.Visible = true;
+                        m_progressBar.BringToFront();
                         //reset calculations
                         m_commonStretches = null;
-                        commonStretches = CommonStretches.getCommonSpeed(SimilarPoints, similar, Settings.UseActive, progressBar);
-                        progressBar.Visible = false;
+                        commonStretches = CommonStretches.getCommonSpeed(SimilarPoints, similar, Settings.UseActive, m_progressBar);
+                        m_progressBar.Visible = false;
                     }
                     foreach (IActivity activity in similar)
                     {
@@ -472,11 +471,9 @@ namespace GpsRunningPlugin.Source
                         similarToolTip[activity.ReferenceId] = Resources.CommonStretches + ": " + commonText;
                     }
                     summaryList.RowData = result;
-                    //summaryLabel.Text = String.Format(Resources.FoundActivities, similar.Count - 1);
                     toolTipInfo.SetToolTip(infoIcon, String.Format(Resources.FoundActivities, similar.Count - 1));
                     summaryView_Sort();
                     summaryList.Visible = true;
-                    //summaryLabel.Visible = true;
                 }
                 else
                 {
@@ -539,8 +536,8 @@ namespace GpsRunningPlugin.Source
                     //categoryLabel.Visible = false;
                     //btnChangeCategory.Visible = false;
                     //boxCategory.Visible = true;
-                    progressBar.BringToFront(); //Kept at back to work with designer...
-                    progressBar.Visible = true;
+                    m_progressBar.BringToFront(); //Kept at back to work with designer...
+                    m_progressBar.Visible = true;
                     urRoute.Clear();
 #if !ST_2_1
                     IList<IItemTrackSelectionInfo> selectedGPS = m_view.RouteSelectionProvider.SelectedItems;
@@ -563,14 +560,14 @@ namespace GpsRunningPlugin.Source
                     }
                     if (urRoute.Count > 0)
                     {
-                        similar = UniqueRoutes.findSimilarRoutes(urRoute, activities, false, progressBar);
+                        similar = UniqueRoutes.findSimilarRoutes(urRoute, activities, false, m_progressBar);
                     }
                     else
                     {
-                        similar = UniqueRoutes.findSimilarRoutes(refActivity, activities, true, selectedActivities.Count ==1, progressBar);
+                        similar = UniqueRoutes.findSimilarRoutes(refActivity, activities, true, selectedActivities.Count ==1, m_progressBar);
                     }
                     determinePaceOrSpeed();
-                    progressBar.Visible = false;
+                    m_progressBar.Visible = false;
                     //categoryLabel.Visible = true;
 
                     setTable();
@@ -750,11 +747,11 @@ namespace GpsRunningPlugin.Source
                 {
                     if (urRoute != null && urRoute.Count > 0)
                     {
-                        m_commonStretches = CommonStretches.findSimilarPoints(urRoute, similar);
+                        m_commonStretches = CommonStretches.findSimilarPoints(urRoute, similar, m_progressBar);
                     }
                     else if (refActivity != null)
                     {
-                        m_commonStretches = CommonStretches.findSimilarPoints(refActivity, similar);
+                        m_commonStretches = CommonStretches.findSimilarPoints(refActivity, similar, m_progressBar);
                     }
                     else
                     {

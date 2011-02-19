@@ -77,7 +77,7 @@ namespace UniqueRoutes.Export
         public static IDictionary<IActivity, IItemTrackSelectionInfo[]> findCommonStretches(IActivity activity, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
         {
             IDictionary<IActivity, IItemTrackSelectionInfo[]> results = new Dictionary<IActivity, IItemTrackSelectionInfo[]>();
-            IDictionary<IActivity, IList<GpsRunningPlugin.Source.PointInfo[]>> p = GpsRunningPlugin.Source.CommonStretches.findSimilarPoints(activity.GPSRoute, activity.Laps, activities);
+            IDictionary<IActivity, IList<GpsRunningPlugin.Source.PointInfo[]>> p = GpsRunningPlugin.Source.CommonStretches.findSimilarPoints(activity.GPSRoute, activity.Laps, activities, progressBar);
             foreach (KeyValuePair<IActivity, IList<GpsRunningPlugin.Source.PointInfo[]>> kp in p)
             {
                     results[kp.Key] = GpsRunningPlugin.Source.CommonStretches.getSelInfo(new DateTime[]{kp.Key.StartTime,activity.StartTime}, kp.Value, false/*GpsRunningPlugin.Source.Settings.UseActive*/);
@@ -87,7 +87,7 @@ namespace UniqueRoutes.Export
         public static IDictionary<IActivity, IList<double[,]>> findSimilarPoints(IActivity activity, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
         {
             IDictionary<IActivity, IList<double[,]>> results = new Dictionary<IActivity, IList<double[,]>>();
-            IDictionary<IActivity, IList<GpsRunningPlugin.Source.PointInfo[]>> p = GpsRunningPlugin.Source.CommonStretches.findSimilarPoints(activity.GPSRoute, activity.Laps, activities);
+            IDictionary<IActivity, IList<GpsRunningPlugin.Source.PointInfo[]>> p = GpsRunningPlugin.Source.CommonStretches.findSimilarPoints(activity.GPSRoute, activity.Laps, activities, progressBar);
             foreach (KeyValuePair<IActivity, IList<GpsRunningPlugin.Source.PointInfo[]>> kp in p)
             {
                 results.Add(kp.Key, new List<double[,]>());

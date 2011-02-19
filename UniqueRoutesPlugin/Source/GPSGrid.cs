@@ -46,6 +46,9 @@ namespace GpsRunningPlugin.Source
 
     class GPSGrid
     {
+        //Create grid in which gps points are put. Each grid size is the configured radius
+        //As a point can be located close to the border of each cell, cells close by must be checked too
+        //Decreasing the cell size and including more cells decreases speed 
         private readonly double m_Distance;
         private readonly double m_latWidth;
         private readonly double m_lngWidth;
@@ -73,8 +76,8 @@ namespace GpsRunningPlugin.Source
             {
                 //Set grid size from aprox distance for reference
                 //See Trails plugin, TrailsGPSLocation.getGPSBounds()
-                m_latWidth = 1*BWidthFactor * Settings.Radius / 110574 * 1.005F;
-                m_lngWidth = 1*BWidthFactor * Settings.Radius / 111132 / Math.Cos(m_Route[0].Value.LongitudeDegrees * Math.PI / 180);
+                m_latWidth = BWidthFactor * Settings.Radius / 110574 * 1.005F;
+                m_lngWidth = BWidthFactor * Settings.Radius / 111132 / Math.Cos(m_Route[0].Value.LongitudeDegrees * Math.PI / 180);
             }
             else
             {

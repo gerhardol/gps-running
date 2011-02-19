@@ -47,7 +47,6 @@ namespace GpsRunningPlugin.Source
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.summaryLabel = new System.Windows.Forms.Label();
             this.summaryListLabel = new System.Windows.Forms.Label();
             this.summaryList = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -57,7 +56,7 @@ namespace GpsRunningPlugin.Source
             this.sendToMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxMenuItemRefActivity = new System.Windows.Forms.ToolStripMenuItem();
             this.limitActivityMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.m_progressBar = new System.Windows.Forms.ProgressBar();
             this.btnRefresh = new ZoneFiveSoftware.Common.Visuals.Button();
             this.speedBox = new System.Windows.Forms.ComboBox();
             this.sendResultToLabel1 = new System.Windows.Forms.Label();
@@ -78,16 +77,6 @@ namespace GpsRunningPlugin.Source
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // summaryLabel
-            // 
-            this.summaryLabel.AutoSize = true;
-            this.summaryLabel.Location = new System.Drawing.Point(4, 4);
-            this.summaryLabel.Name = "summaryLabel";
-            this.summaryLabel.Size = new System.Drawing.Size(166, 13);
-            this.summaryLabel.TabIndex = 0;
-            this.summaryLabel.Text = "Found nn activities on same route";
-            this.summaryLabel.Visible = false;
             // 
             // summaryListLabel
             // 
@@ -184,13 +173,13 @@ namespace GpsRunningPlugin.Source
             // 
             // progressBar
             // 
-            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.m_progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(0, 0);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(391, 24);
-            this.progressBar.TabIndex = 2;
-            this.progressBar.Visible = false;
+            this.m_progressBar.Location = new System.Drawing.Point(0, 0);
+            this.m_progressBar.Name = "progressBar";
+            this.m_progressBar.Size = new System.Drawing.Size(391, 24);
+            this.m_progressBar.TabIndex = 2;
+            this.m_progressBar.Visible = false;
             // 
             // btnRefresh
             // 
@@ -356,8 +345,7 @@ namespace GpsRunningPlugin.Source
             this.splitContainer1.Panel1.Controls.Add(this.btnRefresh);
             this.splitContainer1.Panel1.Controls.Add(this.boxCategory);
             this.splitContainer1.Panel1.Controls.Add(this.infoIcon);
-            this.splitContainer1.Panel2.Controls.Add(this.progressBar);
-            this.splitContainer1.Panel1.Controls.Add(this.summaryLabel);
+            this.splitContainer1.Panel2.Controls.Add(this.m_progressBar);
             this.splitContainer1.Panel1.Controls.Add(this.sendLabel2);
             this.splitContainer1.Panel1.Controls.Add(this.pluginBox);
             this.splitContainer1.Panel1.Controls.Add(this.labelLaps);
@@ -398,10 +386,9 @@ namespace GpsRunningPlugin.Source
 
         #endregion
 
-        private System.Windows.Forms.Label summaryLabel;
         private System.Windows.Forms.Label summaryListLabel;
         private ZoneFiveSoftware.Common.Visuals.TreeList summaryList;
-        private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.ProgressBar m_progressBar;
         private ZoneFiveSoftware.Common.Visuals.Button btnRefresh;
         private System.Windows.Forms.ComboBox speedBox;
         private System.Windows.Forms.ContextMenuStrip contextMenu;
