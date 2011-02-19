@@ -177,7 +177,7 @@ namespace GpsRunningPlugin.Source
                 {
                     const int ExtraGridIndex = 2;
                     const float MaxDistDiffFactor = 0.1F;
-                    double MinDistStretch = Settings.Radius * 2 * 2;
+                    double MinDistStretch = Settings.Radius * 2;
 
                     result.Add(otherActivity, new List<PointInfo[]>());
                     IDistanceDataTrack dist = otherActivity.GPSRoute.GetDistanceMetersTrack();
@@ -203,7 +203,7 @@ namespace GpsRunningPlugin.Source
                                     //Get the closest good enough point - used at start and could restart current stretch
                                     if (closeIndex == null ||
                                         //Close match in distance
-                                        (Math.Abs(IndDist.Dist - dist[i].Value) < 3 * Settings.Radius * 2) ||
+                                        (Math.Abs(IndDist.Dist - dist[i].Value) < 3 * Settings.Radius) ||
                                         //Close to other matches
                                         (Math.Abs(IndDist.Dist - dist[i].Value - cumulativeAverageDist) <
                                     Math.Abs(closeIndex.Dist - dist[i].Value - cumulativeAverageDist)))
@@ -287,7 +287,7 @@ namespace GpsRunningPlugin.Source
                                     //back match - prefer closer
                                     lastIndex.Index > nextIndex.Index ||
                                     prio > 10 && (MinDistStretch < dist[i].Value - dist[startMatch].Value ||
-                                            (Math.Abs(nextIndex.Dist - dist[i].Value) > Settings.Radius * 2) ||
+                                            (Math.Abs(nextIndex.Dist - dist[i].Value) > Settings.Radius) ||
                                             (Math.Abs(nextIndex.Dist - dist[i].Value - cumulativeAverageDist) >
                                         Math.Abs(closeIndex.Dist - dist[i].Value - cumulativeAverageDist)))))
                                 {
