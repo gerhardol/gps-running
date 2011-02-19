@@ -124,12 +124,18 @@ namespace GpsRunningPlugin.Source
         {
             IDictionary<IActivity, IList<PointInfo[]>> points = new Dictionary<IActivity, IList<PointInfo[]>>();
             points = findSimilarPoints(refRoute, activities);
-            return getCommonSpeed(points, activities, useActive);
+            return getCommonSpeed(points, activities, useActive, null);
         }
 
-        public static IDictionary<IActivity, PointInfo[]> getCommonSpeed(IDictionary<IActivity, IList<PointInfo[]>> points, IList<IActivity> activities, bool useActive)
+        public static IDictionary<IActivity, PointInfo[]> getCommonSpeed(IDictionary<IActivity, IList<PointInfo[]>> points, IList<IActivity> activities, bool useActive, System.Windows.Forms.ProgressBar progressBar)
         {
             IDictionary<IActivity, PointInfo[]> result = new Dictionary<IActivity, PointInfo[]>();
+            if (progressBar != null)
+            {
+                progressBar.Value = 0;
+                progressBar.Minimum = 0;
+                progressBar.Maximum = activities.Count;
+            }
             foreach (IActivity otherActivity in activities)
             {
                 //double MinDistStretch = Settings.Radius*2*2;
@@ -142,6 +148,10 @@ namespace GpsRunningPlugin.Source
                         points[otherActivity], out res, useActive);
 
                     result.Add(otherActivity, res);
+                }
+                if (progressBar != null)
+                {
+                    progressBar.Increment(1);
                 }
             }
             return result;

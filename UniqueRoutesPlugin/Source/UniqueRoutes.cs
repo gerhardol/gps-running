@@ -70,30 +70,30 @@ namespace GpsRunningPlugin.Source
             return activities;
         }
 
-        public static IList<IActivity> findSimilarRoutes(IActivity refActivity, IList<IActivity> activities, bool beginEndCheck, bool catCheck, System.Windows.Forms.ProgressBar progressBar)
+        public static IList<IActivity> findSimilarRoutes(IActivity refActivity, IList<IActivity> activities, bool activityCompare, bool catCheck, System.Windows.Forms.ProgressBar progressBar)
         {
             if (refActivity == null ||
                 refActivity.GPSRoute == null ||
-                beginEndCheck && (false/*catCheck && !isAllowedActivity(refActivity)*/))
+                activityCompare && (false/*catCheck && !isAllowedActivity(refActivity)*/))
                 return new List<IActivity>();
-            return findSimilarRoutes(refActivity.GPSRoute, refActivity.ReferenceId, activities, beginEndCheck, progressBar);
+            return findSimilarRoutes(refActivity.GPSRoute, refActivity.ReferenceId, activities, activityCompare, progressBar);
         }
-        public static IList<IActivity> findSimilarRoutes(IActivity refActivity, IList<IActivity> activities, bool beginEndCheck, System.Windows.Forms.ProgressBar progressBar)
+        public static IList<IActivity> findSimilarRoutes(IActivity refActivity, IList<IActivity> activities, bool activityCompare, System.Windows.Forms.ProgressBar progressBar)
         {
-            return findSimilarRoutes(refActivity, activities, beginEndCheck, true, progressBar);
+            return findSimilarRoutes(refActivity, activities, activityCompare, true, progressBar);
         }
-        public static IList<IActivity> findSimilarRoutes(IGPSRoute refRoute, IList<IActivity> activities, bool beginEndCheck, System.Windows.Forms.ProgressBar progressBar)
+        public static IList<IActivity> findSimilarRoutes(IGPSRoute refRoute, IList<IActivity> activities, bool activityCompare, System.Windows.Forms.ProgressBar progressBar)
         {
-            return findSimilarRoutes(refRoute, "", activities, beginEndCheck, progressBar);
+            return findSimilarRoutes(refRoute, "", activities, activityCompare, progressBar);
         }
-        public static IList<IActivity> findSimilarRoutes(IGPSRoute refRoute, string refId, IList<IActivity> activities, bool beginEndCheck, System.Windows.Forms.ProgressBar progressBar)
+        public static IList<IActivity> findSimilarRoutes(IGPSRoute refRoute, string refId, IList<IActivity> activities, bool activityCompare, System.Windows.Forms.ProgressBar progressBar)
         {
             if (progressBar == null)
             {
                 progressBar = new System.Windows.Forms.ProgressBar();
             }
             IList<IActivity> result = new List<IActivity>();
-            if (refRoute == null)
+            if (refRoute == null || refRoute.Count == 0)
                 return result;
             progressBar.Value = 0;
             progressBar.Minimum = 0;
@@ -103,7 +103,7 @@ namespace GpsRunningPlugin.Source
             IDictionary<string, int> beginningPoints = new Dictionary<string, int>();
             IDictionary<string, int> endPoints = new Dictionary<string, int>();
 
-            setBeginningAndEndPoints(refId, refRoute, beginEndCheck, beginningPoints, endPoints);
+            setBeginningAndEndPoints(refId, refRoute, activityCompare, beginningPoints, endPoints);
             if (!beginningPoints.ContainsKey(refId) ||
                 beginningPoints[refId] <= -1 ||
                         endPoints[refId] <= -1)
@@ -113,21 +113,70 @@ namespace GpsRunningPlugin.Source
             }
             foreach (IActivity otherActivity in activities)
             {
-                int pointsOutside = 0;
-                bool inBand = false;
-                int direction = 0;
-                if (otherActivity.GPSRoute != null && otherActivity.GPSRoute.Count > 0)
-                {
-                    setBeginningAndEndPoints(otherActivity, beginEndCheck, beginningPoints, endPoints);
-                    int noOfPoints = otherActivity.GPSRoute.Count;
-                    if (beginningPoints[otherActivity.ReferenceId] > -1 && endPoints[otherActivity.ReferenceId] > -1 &&
-                        //Simple prune, eliminating routes not possible common
+                if (otherActivity.GPSRoute != null && otherActivity.GPSRoute.Count > 0 &&
+                    //Simple prune, eliminating routes not possibly common
                         otherActivity.GPSRoute[0].Value.DistanceMetersToPoint(refRoute[0].Value)
                         < otherActivity.GPSRoute.TotalDistanceMeters + refRoute.TotalDistanceMeters)
+                {
+                    setBeginningAndEndPoints(otherActivity, activityCompare, beginningPoints, endPoints);
+                    //int noOfPoints = otherActivity.GPSRoute.Count;
+                    if (beginningPoints[otherActivity.ReferenceId] > -1 && endPoints[otherActivity.ReferenceId] > -1)
                     {
-                        inBand = true;
-                        if (beginEndCheck)
+                        int pointsOutside = 0;
+                        bool inBand = true;
+                        int direction = 0;
+                        int prevMatch = -1;
+
+                        //IGPSBounds otherBounds = GPSBounds.FromGPSRoute(otherActivity.GPSRoute);
+                        GPSGrid otherGrid = new GPSGrid(otherActivity);
+
+                        //Check if the reference route fits in the other activity
+                        for (int i = beginningPoints[refId]; i <= endPoints[refId]; i++)
                         {
+                            IGPSPoint point = refRoute[i].Value;
+                            int closests = otherGrid.getClosePoint(point);
+                            if (closests < 0)
+                            {
+                                pointsOutside++;
+                                if (pointsOutside / ((double)refRoute.Count) > Settings.ErrorMargin)
+                                {
+                                    inBand = false;
+                                    break;
+                                }
+                            }
+                            else if (Settings.HasDirection)
+                            {
+                                int currMatch = closests;// grid.getCloseSinglePoint(point);
+                                if (currMatch > prevMatch)
+                                {
+                                    direction++;
+                                }
+                                else if (currMatch < prevMatch)
+                                {
+                                    direction--;
+                                }
+                                prevMatch = currMatch;
+
+                                ////Find direction. Works well when the routes are not overlapping and have similar length
+                                ////Use all matching points to get majority decision
+                                ////All matching points from grid.getAllClose would be better but is significantly slower
+                                //bool inOtherLowerHalf = i < otherActivity.GPSRoute.Count / 2;
+                                //bool inLowerHalf = closests < refRoute.Count / 2;
+
+                                //if ((inLowerHalf && inOtherLowerHalf) ||
+                                //    (!inLowerHalf && !inOtherLowerHalf))
+                                //    direction++;
+                                //else
+                                //    direction--;
+
+                            }
+                        }
+
+                        //Check if the other activity matches the reference route 
+                        //Only used when comparing activities
+                        if (inBand && activityCompare)
+                        {
+                            pointsOutside = 0;
                             for (int i = beginningPoints[otherActivity.ReferenceId]; i <= endPoints[otherActivity.ReferenceId]; i++)
                             {
                                 IGPSPoint point = otherActivity.GPSRoute[i].Value;
@@ -135,42 +184,7 @@ namespace GpsRunningPlugin.Source
                                 if (closests < 0)
                                 {
                                     pointsOutside++;
-                                }
-                                else
-                                {
-                                    //Find direction. Works well when the routes are not overlapping and have similar length
-                                    //Use all matching points to get majority decision
-                                    //All matching points from grid.getAllClose would be better but is significantly slower
-                                    bool inOtherLowerHalf = i < otherActivity.GPSRoute.Count / 2;
-
-                                    bool inLowerHalf = closests < refRoute.Count / 2;
-                                    if ((inLowerHalf && inOtherLowerHalf) ||
-                                        (!inLowerHalf && !inOtherLowerHalf))
-                                        direction++;
-                                    else
-                                        direction--;
-
-                                }
-                                if (pointsOutside / ((double)otherActivity.GPSRoute.Count) > Settings.ErrorMargin)
-                                {
-                                    inBand = false;
-                                    break;
-                                }
-                            }
-                        }
-                        if (inBand)
-                        {
-                            pointsOutside = 0;
-                            IGPSBounds otherBounds = GPSBounds.FromGPSRoute(otherActivity.GPSRoute);
-                            GPSGrid otherGrid = new GPSGrid(otherActivity);
-                            for (int i = beginningPoints[refId]; i <= endPoints[refId]; i++)
-                            {
-                                IGPSPoint point = refRoute[i].Value;
-                                int closests = otherGrid.getClosePoint(point);
-                                if (closests < 0)
-                                {
-                                    pointsOutside++;
-                                    if (pointsOutside / ((double)refRoute.Count) > Settings.ErrorMargin)
+                                    if (pointsOutside / ((double)otherActivity.GPSRoute.Count) > Settings.ErrorMargin)
                                     {
                                         inBand = false;
                                         break;
@@ -178,13 +192,15 @@ namespace GpsRunningPlugin.Source
                                 }
                             }
                         }
+                        if (inBand && direction >= 0)
+                        {
+                            result.Add(otherActivity);
+                        }
                     }
                 }
-                if (inBand && (!Settings.HasDirection ||
-                    (Settings.HasDirection && direction >= 0)))
-                    result.Add(otherActivity);
                 progressBar.Increment(1);
             }
+
             return result;
         }
 
