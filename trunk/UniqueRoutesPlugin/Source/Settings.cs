@@ -223,7 +223,7 @@ namespace GpsRunningPlugin.Source
             selectedPlugin = "";
             selectedCategory = null;
             errorMargin = 0.1;
-            radius = 20;
+            radius = 40;
             hasDirection = false;
             useActive = false;
             ignoreBeginning = 0;
@@ -250,7 +250,7 @@ namespace GpsRunningPlugin.Source
             if (attr.Length > 0) { settingsVersion = (Int16)XmlConvert.ToInt16(attr); }
             if (0 == settingsVersion)
             {
-                // No settings in Preferences.System found, try read old files
+                // No settings in Preferences.System found, try read old files (ST2)
                 load();
             }
 
@@ -261,11 +261,20 @@ namespace GpsRunningPlugin.Source
             attr = pluginNode.GetAttribute(xmlTags.errorMargin);
             if (attr.Length > 0) { errorMargin = (float)XmlConvert.ToDouble(attr); }
             attr = pluginNode.GetAttribute(xmlTags.radius);
-            if (attr.Length > 0) { radius = XmlConvert.ToInt16(attr); }
+            if (attr.Length > 0)
+            { 
+                radius = XmlConvert.ToInt16(attr);
+                //Compatibility svn 165-265
+                if (settingsVersion == 1)
+                {
+                    radius *= 2;
+                }
+            }
             else
-            { //Compatibility
+            { 
+                //Compatibility before svn 165, no setting version changed
                 attr = pluginNode.GetAttribute(xmlTags.bandwidth);
-                if (attr.Length > 0) { radius = XmlConvert.ToInt16(attr)/2; }
+                if (attr.Length > 0) { radius = XmlConvert.ToInt16(attr); }
             }
             attr = pluginNode.GetAttribute(xmlTags.hasDirection);
             if (attr.Length > 0) { hasDirection = XmlConvert.ToBoolean(attr); }
@@ -329,7 +338,7 @@ namespace GpsRunningPlugin.Source
         }
 
         private static int settingsVersion = 0; //default when not existing
-        private const int settingsVersionCurrent = 1;
+        private const int settingsVersionCurrent = 2;
 
         private class xmlTags
         {
