@@ -99,7 +99,7 @@ namespace GpsRunningPlugin.Source
             progressBar.Minimum = 0;
             progressBar.Maximum = activities.Count;
 
-            GPSGrid grid = new GPSGrid(refRoute);
+            GPSGrid refGrid = new GPSGrid(null, refRoute);
             IDictionary<string, int> beginningPoints = new Dictionary<string, int>();
             IDictionary<string, int> endPoints = new Dictionary<string, int>();
 
@@ -128,7 +128,7 @@ namespace GpsRunningPlugin.Source
                         int prevMatch = -1;
 
                         //IGPSBounds otherBounds = GPSBounds.FromGPSRoute(otherActivity.GPSRoute);
-                        GPSGrid otherGrid = new GPSGrid(otherActivity);
+                        GPSGrid otherGrid = new GPSGrid(refGrid, otherActivity);
 
                         //Check if the reference route fits in the other activity
                         for (int i = beginningPoints[refId]; i <= endPoints[refId]; i++)
@@ -180,7 +180,7 @@ namespace GpsRunningPlugin.Source
                             for (int i = beginningPoints[otherActivity.ReferenceId]; i <= endPoints[otherActivity.ReferenceId]; i++)
                             {
                                 IGPSPoint point = otherActivity.GPSRoute[i].Value;
-                                int closests = grid.getClosePoint(point);
+                                int closests = refGrid.getClosePoint(point);
                                 if (closests < 0)
                                 {
                                     pointsOutside++;
