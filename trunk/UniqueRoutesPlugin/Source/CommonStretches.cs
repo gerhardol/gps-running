@@ -167,7 +167,7 @@ namespace GpsRunningPlugin.Source
 
         public static IDictionary<IActivity, IList<PointInfo[]>> findSimilarPoints(IGPSRoute refRoute, IActivityLaps refLaps, IList<IActivity> activities)
         {
-            GPSGrid grid = new GPSGrid(refRoute, 0.5F, 1F, true);
+            GPSGrid refGrid = new GPSGrid(null, refRoute, 1F, 0.5F, true);
             IDictionary<IActivity, IList<PointInfo[]>> result = new Dictionary<IActivity, IList<PointInfo[]>>();
             double cumulativeAverageDist = 0;
             int noCumAv = 0;
@@ -177,10 +177,10 @@ namespace GpsRunningPlugin.Source
                 {
                     const int ExtraGridIndex = 2;
                     const float MaxDistDiffFactor = 0.1F;
-                    double MinDistStretch = Settings.Radius * 2;
+                    double minDistStretch = Settings.Radius * 2;
 
                     result.Add(otherActivity, new List<PointInfo[]>());
-                    IDistanceDataTrack dist = otherActivity.GPSRoute.GetDistanceMetersTrack();
+                    IDistanceDataTrack distTrack = otherActivity.GPSRoute.GetDistanceMetersTrack();
                     int lastMatch = -1; //index of previous match
                     int startMatch = -1;
                     IndexDiffDist lastMatchRef = null;
@@ -192,7 +192,7 @@ namespace GpsRunningPlugin.Source
                         IndexDiffDist closeIndex = null; //Closest to current point
                         IndexDiffDist nextIndex = null; //The best match in this stretch
                         bool isEnd = true; //This is the end of a stretch, unless a matching point is found
-                        currIndex = grid.getAllCloseStretch(otherActivity.GPSRoute[i].Value);
+                        currIndex = refGrid.getAllCloseStretch(otherActivity.GPSRoute[i].Value);
                         if (currIndex.Count > 0)
                         {
                             int prio = int.MaxValue;
@@ -203,10 +203,10 @@ namespace GpsRunningPlugin.Source
                                     //Get the closest good enough point - used at start and could restart current stretch
                                     if (closeIndex == null ||
                                         //Close match in distance
-                                        (Math.Abs(IndDist.Dist - dist[i].Value) < 3 * Settings.Radius) ||
+                                        (Math.Abs(IndDist.Dist - distTrack[i].Value) < 3 * Settings.Radius) ||
                                         //Close to other matches
-                                        (Math.Abs(IndDist.Dist - dist[i].Value - cumulativeAverageDist) <
-                                    Math.Abs(closeIndex.Dist - dist[i].Value - cumulativeAverageDist)))
+                                        (Math.Abs(IndDist.Dist - distTrack[i].Value - cumulativeAverageDist) <
+                                    Math.Abs(closeIndex.Dist - distTrack[i].Value - cumulativeAverageDist)))
                                     {
                                         closeIndex = IndDist;
                                     }
@@ -286,10 +286,10 @@ namespace GpsRunningPlugin.Source
                                     (!nextIndex.Equals(closeIndex)) && (
                                     //back match - prefer closer
                                     lastIndex.Index > nextIndex.Index ||
-                                    prio > 10 && (MinDistStretch < dist[i].Value - dist[startMatch].Value ||
-                                            (Math.Abs(nextIndex.Dist - dist[i].Value) > Settings.Radius) ||
-                                            (Math.Abs(nextIndex.Dist - dist[i].Value - cumulativeAverageDist) >
-                                        Math.Abs(closeIndex.Dist - dist[i].Value - cumulativeAverageDist)))))
+                                    prio > 10 && (minDistStretch < distTrack[i].Value - distTrack[startMatch].Value ||
+                                            (Math.Abs(nextIndex.Dist - distTrack[i].Value) > Settings.Radius) ||
+                                            (Math.Abs(nextIndex.Dist - distTrack[i].Value - cumulativeAverageDist) >
+                                        Math.Abs(closeIndex.Dist - distTrack[i].Value - cumulativeAverageDist)))))
                                 {
                                     //switch to closeIndex and ignore nextIndex
                                     nextIndex = closeIndex;
@@ -302,7 +302,7 @@ namespace GpsRunningPlugin.Source
                                 {
                                     //The stretch continues
                                     isEnd = false;
-                                    cumulativeAverageDist += (lastIndex.Diff - dist[i].Value - cumulativeAverageDist) / ++noCumAv;
+                                    cumulativeAverageDist += (lastIndex.Diff - distTrack[i].Value - cumulativeAverageDist) / ++noCumAv;
                                 }
                             }
                         }
@@ -321,7 +321,7 @@ namespace GpsRunningPlugin.Source
                             lastMatch = i;
 
                             PointInfo[] s = new PointInfo[2];
-                            s[0] = new PointInfo(i, dist[i].Value, otherActivity.GPSRoute[i].ElapsedSeconds,
+                            s[0] = new PointInfo(i, distTrack[i].Value, otherActivity.GPSRoute[i].ElapsedSeconds,
                                 getRestLap(i, otherActivity),
                                 startMatch + " " + lastMatch + " " + startMatchRef + " " + lastMatchRef);
                             s[1] = new PointInfo(lastIndex.Index, lastIndex.Dist, refRoute[lastIndex.Index].ElapsedSeconds,
