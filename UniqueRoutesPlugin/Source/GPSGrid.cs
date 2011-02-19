@@ -49,9 +49,9 @@ namespace GpsRunningPlugin.Source
         private readonly double m_Width;
         private readonly double m_Distance;
 
-        private IDictionary<int, IDictionary<int, IList<int>>> Grid;
-        private readonly IGPSRoute Route;
-        private IDistanceDataTrack Dist;
+        private IDictionary<int, IDictionary<int, IList<int>>> m_Grid;
+        private readonly IGPSRoute m_Route;
+        private IDistanceDataTrack m_Dist;
 
         public GPSGrid(IActivity activity)
             : this(activity, 1, false)
@@ -68,15 +68,15 @@ namespace GpsRunningPlugin.Source
             m_Width = BWidthFactor * Settings.Radius / (60 * 60 * 30.9);
             if (m_Width < 0.001) m_Width = 0.001;
             m_Distance = DistFactor * Settings.Radius;          
-            Grid = new Dictionary<int, IDictionary<int, IList<int>>>();
-            Route = route; //Just copy the reference
+            m_Grid = new Dictionary<int, IDictionary<int, IList<int>>>();
+            m_Route = route; //Just copy the reference
             if (isDist)
             {
-                Dist = route.GetDistanceMetersTrack();
+                m_Dist = route.GetDistanceMetersTrack();
             }
             else
             {
-                Dist = null;
+                m_Dist = null;
             }
             for (int i = 0; i < route.Count; i++ )
             {
@@ -86,17 +86,17 @@ namespace GpsRunningPlugin.Source
 
         private void add(int i)
         {
-            int x = (int)Math.Floor(Route[i].Value.LongitudeDegrees / m_Width);
-            int y = (int)Math.Floor(Route[i].Value.LatitudeDegrees / m_Width);
-            if (!Grid.ContainsKey(x))
+            int x = (int)Math.Floor(m_Route[i].Value.LongitudeDegrees / m_Width);
+            int y = (int)Math.Floor(m_Route[i].Value.LatitudeDegrees / m_Width);
+            if (!m_Grid.ContainsKey(x))
             {
-                Grid.Add(x, new Dictionary<int, IList<int>>());
+                m_Grid.Add(x, new Dictionary<int, IList<int>>());
             }
-            if (!Grid[x].ContainsKey(y))
+            if (!m_Grid[x].ContainsKey(y))
             {
-                Grid[x].Add(y, new List<int>());
+                m_Grid[x].Add(y, new List<int>());
             }
-            Grid[x][y].Add(i);
+            m_Grid[x][y].Add(i);
         }
 
         //Get all points close to the asking point, but merge in "stretches" to let caller find best match
@@ -108,22 +108,22 @@ namespace GpsRunningPlugin.Source
             int y = (int)Math.Floor(point.LatitudeDegrees / m_Width);
             for (int i = x - boxsize; i <= x + boxsize; i++)
             {
-                if (Grid.ContainsKey(i))
+                if (m_Grid.ContainsKey(i))
                 {
                     for (int j = y - boxsize; j <= y + boxsize; j++)
                     {
-                        if (Grid[i].ContainsKey(j))
+                        if (m_Grid[i].ContainsKey(j))
                         {
-                            foreach (int p in Grid[i][j])
+                            foreach (int p in m_Grid[i][j])
                             {
-                                IGPSPoint pointInGrid = Route[p].Value;
+                                IGPSPoint pointInGrid = m_Route[p].Value;
                                 double diffDist = point.DistanceMetersToPoint(pointInGrid);
                                 if (diffDist < m_Distance)
                                 {
                                     double totDist = double.MaxValue;
-                                    if (null != Dist)
+                                    if (null != m_Dist)
                                     {
-                                        totDist = Dist[p].Value;
+                                        totDist = m_Dist[p].Value;
                                     }
                                     IndexDiffDist t = new IndexDiffDist(p, p, p, diffDist, totDist);
                                     result.Add(t);
@@ -187,15 +187,15 @@ namespace GpsRunningPlugin.Source
             int y = (int)Math.Floor(point.LatitudeDegrees / m_Width);
             foreach (int i in new int[] { x, x - 1, x + 1 })
             {
-                if (Grid.ContainsKey(i))
+                if (m_Grid.ContainsKey(i))
                 {
                     foreach (int j in new int[] { y, y - 1, y + 1 })
                     {
-                        if (Grid[i].ContainsKey(j))
+                        if (m_Grid[i].ContainsKey(j))
                         {
-                            foreach (int p in Grid[i][j])
+                            foreach (int p in m_Grid[i][j])
                             {
-                                IGPSPoint pointInGrid = Route[p].Value;
+                                IGPSPoint pointInGrid = m_Route[p].Value;
                                 double diffDist = point.DistanceMetersToPoint(pointInGrid);
                                 if (diffDist < m_Distance)
                                 {
