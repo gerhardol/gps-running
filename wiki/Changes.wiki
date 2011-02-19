@@ -8,8 +8,11 @@ More or less official beta releases are available in the Downloads section. See 
 =Latest updates=
 Next version will be called 2.0
 
+1.9.262 2011-02-17
+ * Overlay: Stopped time excluded in list summary
+
 1.9.258 2011-02-03
- * Spanish translation
+ * Overlay: Spanish translation update
 
 1.9.257 2011-01-29
  * Italian translation

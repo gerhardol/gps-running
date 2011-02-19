@@ -32,6 +32,7 @@ The normal way to use the plugin is to select a single actity and find activitie
 ===Selected Route Snippet===
 Instead of using a complete activity, the plugin can use a part of an activity, or a route "snippet".
 Select part of a track (right click and drag), then press refresh button to use a "snippet" of an activity.
+In this case, the complete route snippet (with a percent outside) must be included in the tested activities, the begin/end settings are not used.
 
 ==From Other Plugins==
 Several other plugins has implemented support for using the Unique Routes plugin directly from other plugins. Other plugins use the same settings as in Unique Routes (Radius, Category filter etc).
@@ -42,10 +43,13 @@ Several other plugins has implemented support for using the Unique Routes plugin
  * Use [UniqueRoutes#Common_Stretches Common Stretches] to set offset. [http://www.zonefivesoftware.com/sporttracks/plugins/?p=overlay Overlay]
  
 =Features in this plugin=
- * Show track on map. Select activities in the list, and they will show on the map.
- * Click on an activity in the list to mark [UniqueRoutes#Common_Stretches Common Stretches]. If a single actity is shown (the standard SportTracks track in the Route pane) the corresponding parts in the reference activity is shown too.
+==Mark on the Route panel==
+ * Click activities (ctrl-click or shift-click for multiple activities) in the list, and they will show on the map.
+ * Click on an activity in the list to mark [UniqueRoutes#Common_Stretches Common Stretches]. If a single actity is shown (the standard SportTracks track in the Route panel) the corresponding parts in the reference activity is shown too.
 
- * Send to other plugins
+==Send to other plugins== 
+ * Search plugin: Select activity results, then right-click in list, Analyze -> Select marked results in activity list.
+
 Unique Routes can send results for analyze directly to other GPS-Running plugins:
   * [http://www.zonefivesoftware.com/sporttracks/plugins/?p=overlay Overlay]
   * [http://www.zonefivesoftware.com/sporttracks/plugins/?p=high-score High Score]
@@ -62,19 +66,20 @@ This functionality is still experimental.
 =Settings=
 The settings for the plugin are shown below, and it is here you specify when the plugin should identify two routes as being identical.
 
-There are also some configrations from the lst context menu.
+There are also some configrations from the list context menu.
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/uniqueroutes/Settings.png]
 
 =Internals=
-The plugin generally works fine detecting similar routes, but due to optimizations it can detect routes that are in the same area, but the route isgoing differently. Using the Common Stretches approach will be very slow with many activities.
+The plugin generally works fine detecting similar routes, but due to optimizations it can detect routes that are in the same area, but but can be considered to follow other areas. Using the Common Stretches approach will be very slow with many activities.
 
-The plugin works by setting up a "matrix with twice the radius for the quadrant size. If the GPS points for the reference activity and the tested activity is in the same boxes, the activities are considered the same (there is a special trick for direction too). So the plugin will not work well in the following situations for instance:
+The plugin works by setting up a matrix with twice the radius for the quadrant size. If the GPS points for the reference activity and the tested activity is in the same boxes, the activities are considered the same (there is a special trick for direction too). So the plugin will not work well in the following situations for instance:
  * If the radius is close to or shorter to the distance between GPS points. 
  * As the grid lines are not related from the reference activity, the plugin could in rare situations not find activities if the grid line is between the reference and the tested activity.
  * Zig-zag may confuse the algorithm.
+ * Direction check can be exclude activities for out and back activities where the path is very alike.
  
-A general recommendation is therefore to set the radius higher than what you would expect.
+A general recommendation is therefore to set the radius higher "than what you would expect".
 
 =Feedback=
 For patches, bugreports or feature suggestions, use the Google Code issue list.

@@ -34,7 +34,7 @@ namespace GpsRunningPlugin.Source
         public IndexDiffDist() : this(-1,-1,-1, double.MaxValue,double.MaxValue)
         {
         }
-       public IndexDiffDist(int Index, int low, int high, double Diff, double Dist)
+        public IndexDiffDist(int Index, int low, int high, double Diff, double Dist)
         {
             this.Index = Index;
             this.low = low;
@@ -46,8 +46,8 @@ namespace GpsRunningPlugin.Source
 
     class GPSGrid
     {
-        private readonly double Width;
-        private readonly double Distance;
+        private readonly double m_Width;
+        private readonly double m_Distance;
 
         private IDictionary<int, IDictionary<int, IList<int>>> Grid;
         private readonly IGPSRoute Route;
@@ -65,9 +65,9 @@ namespace GpsRunningPlugin.Source
 
         public GPSGrid(IGPSRoute route, double BWidthFactor, double DistFactor, bool isDist)
         {
-            Width = BWidthFactor * (Settings.Radius*2) / (60 * 60 * 30.9);
-            if (Width < 0.001) Width = 0.001;
-            Distance = DistFactor * Settings.Radius*2;          
+            m_Width = BWidthFactor * (Settings.Radius*2) / (60 * 60 * 30.9);
+            if (m_Width < 0.001) m_Width = 0.001;
+            m_Distance = DistFactor * Settings.Radius*2;          
             Grid = new Dictionary<int, IDictionary<int, IList<int>>>();
             Route = route; //Just copy the reference
             if (isDist)
@@ -86,8 +86,8 @@ namespace GpsRunningPlugin.Source
 
         private void add(int i)
         {
-            int x = (int)Math.Floor(Route[i].Value.LongitudeDegrees / Width);
-            int y = (int)Math.Floor(Route[i].Value.LatitudeDegrees / Width);
+            int x = (int)Math.Floor(Route[i].Value.LongitudeDegrees / m_Width);
+            int y = (int)Math.Floor(Route[i].Value.LatitudeDegrees / m_Width);
             if (!Grid.ContainsKey(x))
             {
                 Grid.Add(x, new Dictionary<int, IList<int>>());
@@ -104,8 +104,8 @@ namespace GpsRunningPlugin.Source
         {
             const int boxsize = 2;
             IList<IndexDiffDist> result = new List<IndexDiffDist>();
-            int x = (int)Math.Floor(point.LongitudeDegrees / Width);
-            int y = (int)Math.Floor(point.LatitudeDegrees / Width);
+            int x = (int)Math.Floor(point.LongitudeDegrees / m_Width);
+            int y = (int)Math.Floor(point.LatitudeDegrees / m_Width);
             for (int i = x - boxsize; i <= x + boxsize; i++)
             {
                 if (Grid.ContainsKey(i))
@@ -118,7 +118,7 @@ namespace GpsRunningPlugin.Source
                             {
                                 IGPSPoint pointInGrid = Route[p].Value;
                                 double diffDist = point.DistanceMetersToPoint(pointInGrid);
-                                if (diffDist < Distance)
+                                if (diffDist < m_Distance)
                                 {
                                     double totDist = double.MaxValue;
                                     if (null != Dist)
@@ -148,7 +148,7 @@ namespace GpsRunningPlugin.Source
                             int l = Math.Max(i, j);
                             //Try merge with lower
                             if ((result[k].high + 1 >= result[l].low && result[k].high <= result[l].high) ||
-                                Math.Abs(result[k].Dist - result[l].Dist) < Distance)
+                                Math.Abs(result[k].Dist - result[l].Dist) < m_Distance)
                             {
                                 int tmp;
                                 if (result[k].Diff < result[l].Diff)
@@ -179,17 +179,17 @@ namespace GpsRunningPlugin.Source
             return result;
         }
 
-        //Get a close point, not necessarily the closest or best match
+        //Get a close enough point, not necessarily the closest or best match
         public int getClosePoint(IGPSPoint point)
         {
             IList<int> result = new List<int>();
-            int x = (int)Math.Floor(point.LongitudeDegrees / Width);
-            int y = (int)Math.Floor(point.LatitudeDegrees / Width);
+            int x = (int)Math.Floor(point.LongitudeDegrees / m_Width);
+            int y = (int)Math.Floor(point.LatitudeDegrees / m_Width);
             foreach (int i in new int[] { x, x - 1, x + 1 })
             {
                 if (Grid.ContainsKey(i))
                 {
-                    foreach (int j in new int[] { y, y-1, y+1 })
+                    foreach (int j in new int[] { y, y - 1, y + 1 })
                     {
                         if (Grid[i].ContainsKey(j))
                         {
@@ -197,7 +197,7 @@ namespace GpsRunningPlugin.Source
                             {
                                 IGPSPoint pointInGrid = Route[p].Value;
                                 double diffDist = point.DistanceMetersToPoint(pointInGrid);
-                                if (diffDist < Distance)
+                                if (diffDist < m_Distance)
                                 {
                                     return p;
                                 }

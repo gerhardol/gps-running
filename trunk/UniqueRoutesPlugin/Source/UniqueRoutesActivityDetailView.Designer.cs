@@ -356,7 +356,7 @@ namespace GpsRunningPlugin.Source
             this.splitContainer1.Panel1.Controls.Add(this.btnRefresh);
             this.splitContainer1.Panel1.Controls.Add(this.boxCategory);
             this.splitContainer1.Panel1.Controls.Add(this.infoIcon);
-            this.splitContainer1.Panel1.Controls.Add(this.progressBar);
+            this.splitContainer1.Panel2.Controls.Add(this.progressBar);
             this.splitContainer1.Panel1.Controls.Add(this.summaryLabel);
             this.splitContainer1.Panel1.Controls.Add(this.sendLabel2);
             this.splitContainer1.Panel1.Controls.Add(this.pluginBox);

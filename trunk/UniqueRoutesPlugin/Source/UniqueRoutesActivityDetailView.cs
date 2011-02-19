@@ -421,9 +421,13 @@ namespace GpsRunningPlugin.Source
                     bool doGetcommonStretches = true;// Plugin.Verbose > 0;
                     if (doGetcommonStretches)
                     {
+                        progressBar.Value = 0;
+                        progressBar.Visible = true;
+                        progressBar.BringToFront();
                         //reset calculations
                         m_commonStretches = null;
-                        commonStretches = CommonStretches.getCommonSpeed(SimilarPoints, similar, Settings.UseActive);
+                        commonStretches = CommonStretches.getCommonSpeed(SimilarPoints, similar, Settings.UseActive, progressBar);
+                        progressBar.Visible = false;
                     }
                     foreach (IActivity activity in similar)
                     {
@@ -530,11 +534,11 @@ namespace GpsRunningPlugin.Source
                 if (refActivity != null)
                 {
                     summaryList.Visible = false;
-                    summaryLabel.Visible = false;
+                    //summaryLabel.Visible = false;
                     summaryListLabel.Visible = false;
-                    categoryLabel.Visible = false;
+                    //categoryLabel.Visible = false;
                     //btnChangeCategory.Visible = false;
-                    boxCategory.Visible = true;
+                    //boxCategory.Visible = true;
                     progressBar.BringToFront(); //Kept at back to work with designer...
                     progressBar.Visible = true;
                     urRoute.Clear();
@@ -555,7 +559,7 @@ namespace GpsRunningPlugin.Source
                     {
                         activities = UniqueRoutes.getBaseActivities();
                         //btnChangeCategory.Visible = true;
-                        boxCategory.Visible = true;
+                        //boxCategory.Visible = true;
                     }
                     if (urRoute.Count > 0)
                     {
@@ -565,9 +569,9 @@ namespace GpsRunningPlugin.Source
                     {
                         similar = UniqueRoutes.findSimilarRoutes(refActivity, activities, true, selectedActivities.Count ==1, progressBar);
                     }
-                    progressBar.Visible = false;
-                    categoryLabel.Visible = true;
                     determinePaceOrSpeed();
+                    progressBar.Visible = false;
+                    //categoryLabel.Visible = true;
 
                     setTable();
                     
