@@ -78,11 +78,7 @@ namespace GpsRunningPlugin.Source
             new SendToPlugin("Overlay", "Overlay", "GpsRunningPlugin.Source.OverlayView", new object[] { null, null }),
             new SendToPlugin("PerformancePredictor", "Performance Predictor", "GpsRunningPlugin.Source.PerformancePredictorView", new object[] { null, null }),
             new SendToPlugin("TRIMP", "TRIMP", "GpsRunningPlugin.Source.TRIMPView", new object[] { null, null })};
-            //new SendToPlugin("AccumulatedSummary", "Accumulated Summary", "GpsRunningPlugin.Source.AccumulatedSummaryView", new object[] { null }),
-            //new SendToPlugin("HighScore", "High Score", "GpsRunningPlugin.Source.HighScoreViewer", new object[] { null, true, true }),
-            //new SendToPlugin("Overlay", "Overlay", "GpsRunningPlugin.Source.OverlayView", new object[] { null, true }),
-            //new SendToPlugin("PerformancePredictor", "Performance Predictor", "GpsRunningPlugin.Source.PerformancePredictorView", new object[] { null, true }),
-            //new SendToPlugin("TRIMP", "TRIMP", "GpsRunningPlugin.Source.TRIMPView", new object[] { null, true })};
+
         static Settings()
         {
             defaults();
@@ -379,7 +375,7 @@ namespace GpsRunningPlugin.Source
                 windowSize = new Size(int.Parse(elm.Attributes["viewWidth"].Value),
                                                     int.Parse(elm.Attributes["viewHeight"].Value));
                 errorMargin = GpsRunningPlugin.Source.Settings.parseDouble(elm.Attributes["errorMargin"].Value);
-                radius = int.Parse(elm.Attributes["bandwidth"].Value)/2;
+                radius = int.Parse(elm.Attributes["bandwidth"].Value);
                 hasDirection = bool.Parse(elm.Attributes["hasDirection"].Value);
                 if (elm.Attributes["ignoreBeginning"] != null)
                     ignoreBeginning = GpsRunningPlugin.Source.Settings.parseDouble(elm.Attributes["ignoreBeginning"].Value);
