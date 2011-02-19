@@ -46,7 +46,6 @@ namespace GpsRunningPlugin.Source
 
     class GPSGrid
     {
-        //private readonly double m_Width;
         private readonly double m_Distance;
         private readonly double m_latWidth;
         private readonly double m_lngWidth;
