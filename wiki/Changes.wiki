@@ -9,7 +9,7 @@ More or less official beta releases are available in the Downloads section. See 
 Next version will be called 2.0
 
 1.9.268 2011-02-19
- * UR: Direction check also for route nippets
+ * UR: Direction check also for route snippets
  * UR: GPS Radius display should be displayed as twice the prev distance
  * UR: Longitude internal grid was smaller than latitude grid away from the equator - plugin could fail to find a few routes (low probability).
 
