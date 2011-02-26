@@ -90,7 +90,7 @@
     <value>Herzfrequenz- und Geschwindigkeitszone</value>
   </data>
   <data name="IgnoredActivities" xml:space="preserve">
-    <value>Unberücksichtigte Aktivitäten</value>
+    <value>Unberücksichtigte Aktivitäten ({0})</value>
   </data>
   <data name="IgnoreManualEnteredBox" xml:space="preserve">
     <value>Unberücksichtigte Aktivitäten mit manueller Dateneingabe</value>
