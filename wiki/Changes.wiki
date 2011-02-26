@@ -12,6 +12,7 @@ Next version will be called 2.0
  * UR: Direction check also for route snippets
  * UR: GPS Radius display should be displayed as twice the prev distance
  * UR: Longitude internal grid was smaller than latitude grid away from the equator - plugin could fail to find a few routes (low probability).
+ * Some GUI cleanups
 
 1.9.262 2011-02-17
  * Overlay: Stopped time excluded in list summary

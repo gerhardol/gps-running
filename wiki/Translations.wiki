@@ -8,10 +8,11 @@ This page describes how to make translations of the GPS-Running or related plugi
 = Details =
 https://spreadsheets.google.com/ccc?key=tNZna7OU_2RlRYv5Iv_csgg
 All the related projects are handled about the same:
-  * The translation strings are stored in a Google SpreadSheet. Currently most plugins use the same spreadsheet: https://spreadsheets.google.com/ccc?key=tNZna7OU_2RlRYv5Iv_csgg
+  * The translation strings are stored in a Google SpreadSheet. Currently Several plugins currently use the same spreadsheet: https://spreadsheets.google.com/ccc?key=tNZna7OU_2RlRYv5Iv_csgg
   If the weblink does not work, there are copies of the spreadsheet in the code repositories.
   To get access to write to the Spreadsheet, contact the project owner.
   * For each language updated and each project, the translator should update an issue for the project. If you did not have write access, attach the spreadsheet to the issue.
+  * Use marker ##NOTRANSLATE## if a string should not be translated (for instance the name of the plugin).
 
 This simplifies if there are several translators or developers, keeps track of history both for the translated strings and when they are included in builds, make it possible to make minor updates etc.
 
