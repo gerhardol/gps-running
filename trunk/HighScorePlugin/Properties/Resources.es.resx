@@ -167,4 +167,8 @@
     <comment>hsx</comment>
     <value>con velocidad entre</value>
   </data>
+  <data name="ApplicationName" xml:space="preserve">
+    <comment>Name of application, displayed in GUI</comment>
+    <value>High Score</value>
+  </data>
 </root>
