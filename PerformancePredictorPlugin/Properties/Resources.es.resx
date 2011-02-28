@@ -221,7 +221,7 @@
     <value>Velocidad</value>
   </data>
   <data name="HighScorePrediction" xml:space="preserve">
-    <value>Prección de mejores marcas</value>
+    <value>Predicción de mejores marcas</value>
   </data>
   <data name="HighScoreRequired" xml:space="preserve">
     <value>Predecir basado en varias actividades requiere del plugin Hig Score</value>

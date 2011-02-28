@@ -121,6 +121,9 @@
   <data name="StartZone" xml:space="preserve">
     <value>Zona inicial:</value>
   </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Resumen</value>
+  </data>
   <data name="Use" xml:space="preserve">
     <value>Usar</value>
   </data>
@@ -213,6 +216,9 @@
   </data>
   <data name="ActivitySpeedOrPace" xml:space="preserve">
     <value>Velocidad/Paso</value>
+  </data>
+  <data name="ListSettings" xml:space="preserve">
+    <value>Configuración…</value>
   </data>
   <data name="Colour" xml:space="preserve">
     <value>Color</value>
