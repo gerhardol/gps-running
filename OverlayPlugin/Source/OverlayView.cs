@@ -1297,7 +1297,8 @@ namespace GpsRunningPlugin.Source
             foreach (TimeValueEntry<float> entry in dataSeries)
             {
                 DateTime entryTime = dataSeries.EntryDateTime(entry);
-                TimeSpan elapsed = DateTimeRangeSeries.TimeNotPaused(info.Activity.StartTime, entryTime, pauses);                
+                TimeSpan elapsed = DateTimeRangeSeries.TimeNotPaused(dataSeries.StartTime, entryTime, pauses);
+                //xxx TimeSpan elapsed = DateTimeRangeSeries.TimeNotPaused(info.Activity.StartTime, entryTime, pauses);
                 newDataSeries.Add(dataSeries.StartTime.Add(elapsed), entry.Value);
             }
         }
@@ -1317,7 +1318,8 @@ namespace GpsRunningPlugin.Source
             newDataSeries.AllowMultipleAtSameTime = true;
             foreach (TimeValueEntry<float> entry in dataSeries)
             {
-                DateTime newEntryTime = DateTimeRangeSeries.AddTimeAndPauses(info.Activity.StartTime, new TimeSpan(0,0, (int)entry.ElapsedSeconds), pauses);
+                DateTime newEntryTime = DateTimeRangeSeries.AddTimeAndPauses(dataSeries.StartTime, new TimeSpan(0, 0, (int)entry.ElapsedSeconds), pauses);
+                //xxx DateTime newEntryTime = DateTimeRangeSeries.AddTimeAndPauses(info.Activity.StartTime, new TimeSpan(0, 0, (int)entry.ElapsedSeconds), pauses);
                 newDataSeries.Add(newEntryTime, entry.Value);
             }
         }
@@ -1408,11 +1410,13 @@ namespace GpsRunningPlugin.Source
                         ITimeValueEntry<float> entryMoving;
                         if (includeStopped)
                         {
-                            entryMoving = info.ActualDistanceMetersTrack.GetInterpolatedValue(info.Activity.StartTime.AddSeconds(entry.ElapsedSeconds));
+                            entryMoving = info.ActualDistanceMetersTrack.GetInterpolatedValue(info.ActualDistanceMetersTrack.StartTime.AddSeconds(entry.ElapsedSeconds));
+                            //xxx entryMoving = info.ActualDistanceMetersTrack.GetInterpolatedValue(info.Activity.StartTime.AddSeconds(entry.ElapsedSeconds));
                         }
                         else
                         {
-                            entryMoving = info.MovingDistanceMetersTrack.GetInterpolatedValue(info.Activity.StartTime.AddSeconds(entry.ElapsedSeconds));
+                            entryMoving = info.MovingDistanceMetersTrack.GetInterpolatedValue(info.MovingDistanceMetersTrack.StartTime.AddSeconds(entry.ElapsedSeconds));
+                            //xxx entryMoving = info.MovingDistanceMetersTrack.GetInterpolatedValue(info.Activity.StartTime.AddSeconds(entry.ElapsedSeconds));
                         }
                         if (entryMoving != null && (first || (!first && entryMoving.Value > 0)))
 						{
