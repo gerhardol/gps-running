@@ -25,12 +25,24 @@ using System.Globalization;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Visuals;
+using ZoneFiveSoftware.Common.Visuals.Fitness;
 using GpsRunningPlugin;
 
 namespace GpsRunningPlugin.Util
 {
     class UnitUtil
     {
+        public static IApplication GetApplication()
+        {
+#if GPSRUNNING_UNIQUEROUTES||GPSRUNNING_OVERLAY||GPSRUNNING_HIGHSCORE||GPSRUNNING_PERFORMANCEPREDICTOR||GPSRUNNING_ACCUMULATEDSUMMARY||GPSRUNNING_TRIMP
+            return GpsRunningPlugin.Plugin.GetApplication();
+#elif MATRIXPLUGIN
+            return MatrixPlugin.MatrixPlugin.GetApplication();
+#else // TRAILSPLUGIN
+            return TrailsPlugin.PluginMain.GetApplication();
+#endif
+        }
+        
         //Helpfunction for common format
         private static string encPar(string p)
         {
@@ -212,7 +224,7 @@ namespace GpsRunningPlugin.Util
 
         public static class Energy
         {
-            private static ZoneFiveSoftware.Common.Data.Measurement.Energy.Units Unit { get { return Plugin.GetApplication().SystemPreferences.EnergyUnits; } }
+            private static ZoneFiveSoftware.Common.Data.Measurement.Energy.Units Unit { get { return GetApplication().SystemPreferences.EnergyUnits; } }
             public static int DefaultDecimalPrecision { get { return 0; } }
             private static string DefFmt { get { return "F" + DefaultDecimalPrecision; } }
 
@@ -273,7 +285,7 @@ namespace GpsRunningPlugin.Util
 
         public static class Temperature
         {
-            private static ZoneFiveSoftware.Common.Data.Measurement.Temperature.Units Unit { get { return Plugin.GetApplication().SystemPreferences.TemperatureUnits; } }
+            private static ZoneFiveSoftware.Common.Data.Measurement.Temperature.Units Unit { get { return GetApplication().SystemPreferences.TemperatureUnits; } }
             public static int DefaultDecimalPrecision { get { return 1; } }
             private static string DefFmt { get { return "F" + DefaultDecimalPrecision; } }
 
@@ -330,7 +342,7 @@ namespace GpsRunningPlugin.Util
 
         public static class Weight
         {
-            private static ZoneFiveSoftware.Common.Data.Measurement.Weight.Units Unit { get { return Plugin.GetApplication().SystemPreferences.WeightUnits; } }
+            private static ZoneFiveSoftware.Common.Data.Measurement.Weight.Units Unit { get { return GetApplication().SystemPreferences.WeightUnits; } }
             public static int DefaultDecimalPrecision { get { return 1; } }
             private static string DefFmt { get { return "F" + DefaultDecimalPrecision; } }
 
@@ -386,10 +398,23 @@ namespace GpsRunningPlugin.Util
 
         public static class Elevation
         {
-            private static Length.Units Unit { get { return Plugin.GetApplication().SystemPreferences.ElevationUnits; } }
+            private static Length.Units Unit { get { return GetApplication().SystemPreferences.ElevationUnits; } }
             public static int DefaultDecimalPrecision { get { return Length.DefaultDecimalPrecision(Unit); } }
             private static string DefFmt { get { return defFmt(Unit); } }
             private static string defFmt(Length.Units unit) { return "F" + Length.DefaultDecimalPrecision(unit); }
+            public static Length.Units GetUnit(IActivity activity)
+            {
+                Length.Units du;
+                if (activity != null)
+                {
+                    du = activity.Category.ElevationUnits;
+                }
+                else
+                {
+                    du = Unit;
+                }
+                return du;
+            }
 
             public static string ToString(double p)
             {
@@ -400,9 +425,18 @@ namespace GpsRunningPlugin.Util
                 if (fmt.ToLower().Equals("u")) { fmt = DefFmt + fmt; }
                 return Length.ToString(ConvertFrom(p), Unit, fmt);
             }
+
             public static double ConvertFrom(double p)
             {
-                return Length.Convert(p, Length.Units.Meter, Unit);
+                return ConvertFrom(p, Unit);
+            }
+            public static double ConvertFrom(double p, Length.Units unit)
+            {
+                return Length.Convert(p, Length.Units.Meter, unit);
+            }
+            public static double ConvertFrom(double value, IActivity activity)
+            {
+                return ConvertFrom(value, GetUnit(activity));
             }
 
             public static double Parse(string p)
@@ -438,6 +472,10 @@ namespace GpsRunningPlugin.Util
                 {
                     return CommonResources.Text.LabelElevation + LabelAbbr2;
                 }
+            }
+            public static string LabelAbbrAct(IActivity activity)
+            {
+                return Length.LabelAbbr(GetUnit(activity));
             }
         }
 
@@ -515,10 +553,23 @@ namespace GpsRunningPlugin.Util
         public static class Distance
         {
             //Some lists uses unit when storing user entered data, why this is public
-            public static Length.Units Unit { get { return Plugin.GetApplication().SystemPreferences.DistanceUnits; } }
+            public static Length.Units Unit { get { return GetApplication().SystemPreferences.DistanceUnits; } }
             public static int DefaultDecimalPrecision { get { return Length.DefaultDecimalPrecision(Unit); } }
             private static string DefFmt { get { return defFmt(Unit); } }
             private static string defFmt(Length.Units unit) { return "F" + Length.DefaultDecimalPrecision(unit); }
+            public static Length.Units GetUnit(IActivity activity)
+            {
+                Length.Units du;
+                if (activity != null)
+                {
+                    du = activity.Category.DistanceUnits;
+                }
+                else
+                {
+                    du = Unit;
+                }
+                return du;
+            }
 
             public static string ToString(double p)
             {
@@ -535,6 +586,8 @@ namespace GpsRunningPlugin.Util
                 if (fmt.ToLower().Equals("u")) { fmt = defFmt(unit) + fmt; }
                 return Length.ToString(ConvertFrom(p, unit), unit, fmt);
             }
+
+            //From SI unit (ST internal) to display
             public static double ConvertFrom(double p)
             {
                 return ConvertFrom(p, Unit);
@@ -543,6 +596,10 @@ namespace GpsRunningPlugin.Util
             {
                 return Length.Convert(p, Length.Units.Meter, unit);
             }
+            public static double ConvertFrom(double value, IActivity activity)
+            {
+                return ConvertFrom(value, GetUnit(activity));
+            }
 
             public static double ConvertTo(double value, Length.Units du)
             {
@@ -550,16 +607,7 @@ namespace GpsRunningPlugin.Util
             }
             public static double ConvertTo(double value, IActivity activity)
             {
-                Length.Units du;
-                if (activity != null)
-                {
-                    du = activity.Category.DistanceUnits;
-                }
-                else
-                {
-                    du = Unit;
-                }
-                return ConvertTo(value, du);
+                return ConvertTo(value, GetUnit(activity));
             }
 
             public static double Parse(string p)
@@ -600,6 +648,10 @@ namespace GpsRunningPlugin.Util
                     return CommonResources.Text.LabelDistance + LabelAbbr2;
                 }
             }
+            public static string LabelAbbrAct(IActivity activity)
+            {
+                return Length.LabelAbbr(GetUnit(activity));
+            }
         }
 
         //Pace/speed handling
@@ -608,7 +660,7 @@ namespace GpsRunningPlugin.Util
 
         private static Length.Units getDistUnit(bool isPace)
         {
-            Length.Units distUnit = Plugin.GetApplication().SystemPreferences.DistanceUnits;
+            Length.Units distUnit = GetApplication().SystemPreferences.DistanceUnits;
             //Add all known statute length units, in case they are added to ST
             if (distUnit.Equals(Length.Units.Mile) || distUnit.Equals(Length.Units.Inch) ||
                 distUnit.Equals(Length.Units.Foot) || distUnit.Equals(Length.Units.Yard))
@@ -629,6 +681,19 @@ namespace GpsRunningPlugin.Util
             private static Length.Units Unit { get { return getDistUnit(false); } }
             public static int DefaultDecimalPrecision { get { return 1; } }
             private static string DefFmt { get { return "F" + DefaultDecimalPrecision; } }
+            public static Length GetLength(IActivity activity)
+            {
+                Length du;
+                if (activity != null)
+                {
+                    du = activity.Category.SpeedDistance;
+                }
+                else
+                {
+                    du = new Length(1, GetApplication().SystemPreferences.DistanceUnits);
+                }
+                return du;
+            }
 
             public static string ToString(double p)
             {
@@ -642,9 +707,18 @@ namespace GpsRunningPlugin.Util
                 if (string.IsNullOrEmpty(fmt)) { fmt = DefFmt; }
                 return ConvertFrom(p).ToString((fmt)) + str;
             }
-            public static double ConvertFrom(double speedMS)
+
+            public static double ConvertFrom(double p)
             {
-                return Length.Convert(speedMS, Length.Units.Meter, Unit) * 60 * 60;
+                return ConvertFrom(p, Unit);
+            }
+            public static double ConvertFrom(double p, Length.Units unit)
+            {
+                return Length.Convert(p, Length.Units.Meter, unit) * 60 * 60;
+            }
+            public static double ConvertFrom(double value, IActivity activity)
+            {
+                return PaceOrSpeed.ConvertFrom(false, value, activity);
             }
 
             public static double Parse(string p)
@@ -653,6 +727,10 @@ namespace GpsRunningPlugin.Util
             }
 
             private static String getLabel()
+            {
+                return getLabel(null);
+            }
+            private static String getLabel(IActivity activity)
             {
                 String unit;
 #if ST_2_1
@@ -667,7 +745,7 @@ namespace GpsRunningPlugin.Util
 #else
                 unit = ZoneFiveSoftware.Common.Data.Measurement.Speed.Label(
                     ZoneFiveSoftware.Common.Data.Measurement.Speed.Units.Speed,
-                    new Length(1, Plugin.GetApplication().SystemPreferences.DistanceUnits));
+                    GetLength(activity));
 #endif
                 return unit;
             }
@@ -699,6 +777,10 @@ namespace GpsRunningPlugin.Util
                     return CommonResources.Text.LabelSpeed + LabelAbbr2;
                 }
             }
+            public static string LabelAbbrAct(IActivity activity)
+            {
+                return getLabel(activity);
+            }
         }
 
         public static class Pace
@@ -709,6 +791,19 @@ namespace GpsRunningPlugin.Util
             private static Length.Units Unit { get { return getDistUnit(true); } }
             public static int DefaultDecimalPrecision { get { return 1; } } //Not really applicable
             private static string DefFmt { get { return ""; } }
+            public static Length GetLength(IActivity activity)
+            {
+                Length du;
+                if (activity != null)
+                {
+                    du = activity.Category.PaceDistance;
+                }
+                else
+                {
+                    du = new Length(1, GetApplication().SystemPreferences.DistanceUnits);
+                }
+                return du;
+            }
 
             public static string ToString(double p)
             {
@@ -732,9 +827,18 @@ namespace GpsRunningPlugin.Util
                 }
                 return str;
             }
-            public static double ConvertFrom(double speedMS)
+
+            public static double ConvertFrom(double p)
             {
-                return 1 / Length.Convert(speedMS, Length.Units.Meter, Unit);
+                return ConvertFrom(p, Unit);
+            }
+            public static double ConvertFrom(double p, Length.Units unit)
+            {
+                return 1 / Length.Convert(p, Length.Units.Meter, unit);
+            }
+            public static double ConvertFrom(double value, IActivity activity)
+            {
+                return PaceOrSpeed.ConvertFrom(true, value, activity);
             }
 
             public static double Parse(string p)
@@ -762,6 +866,10 @@ namespace GpsRunningPlugin.Util
 
             private static String getLabel()
             {
+                return getLabel(null);
+            }
+            private static String getLabel(IActivity activity)
+            {
                 String unit;
 #if ST_2_1
                 if (Unit.Equals(Length.Units.Mile))
@@ -775,7 +883,7 @@ namespace GpsRunningPlugin.Util
 #else
                 unit = ZoneFiveSoftware.Common.Data.Measurement.Speed.Label(
                     ZoneFiveSoftware.Common.Data.Measurement.Speed.Units.Pace,
-                    new Length(1, Plugin.GetApplication().SystemPreferences.DistanceUnits));
+                    new Length(1, GetApplication().SystemPreferences.DistanceUnits));
 #endif
                 return unit;
             }
@@ -818,15 +926,56 @@ namespace GpsRunningPlugin.Util
 #else
                     label.Equals(ZoneFiveSoftware.Common.Data.Measurement.Speed.Label(
                     ZoneFiveSoftware.Common.Data.Measurement.Speed.Units.Pace,
-                    new Length(1, Plugin.GetApplication().SystemPreferences.DistanceUnits)))
+                    new Length(1, GetApplication().SystemPreferences.DistanceUnits)))
 #endif
                     || label.Contains("min/")
                     );
+            }
+            public static string LabelAbbrAct(IActivity activity)
+            {
+                return getLabel(activity);
             }
         }
 
         public static class PaceOrSpeed
         {
+            public static float ConvertFrom(bool isPace, double value, IActivity activity)
+            {
+                //speed is in m/s
+                double speed = value;
+                Length.Units du;
+                if (activity != null)
+                {
+#if ST_2_1
+                    du = activity.Category.DistanceUnits;
+#else
+                    du = (isPace) ? 
+                        activity.Category.PaceDistance.ValueUnits : activity.Category.SpeedDistance.ValueUnits;
+                    //scale, custom unit may be other than one
+                    speed = speed /
+                        (float)((isPace) ? 
+                        activity.Category.PaceDistance.Value : activity.Category.SpeedDistance.Value);
+#endif
+                }
+                else
+                {
+                    du = GetApplication().SystemPreferences.DistanceUnits;
+                }
+                //convert from (x*)m/s to (x*)<unit>/s
+                speed = Distance.ConvertFrom(speed, du);
+
+                if (isPace)
+                {
+                    //pace is <time (s)>/<unit>
+                    speed = 1 / speed;
+                }
+                else
+                {
+                    //speed is <unit>/h
+                    speed = speed * 60 * 60;
+                }
+                return (float)speed;
+            }
             public static int DefaultDecimalPrecision(bool isPace)
             {
                 if (isPace)
