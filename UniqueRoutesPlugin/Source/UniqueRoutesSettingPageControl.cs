@@ -153,15 +153,14 @@ namespace GpsRunningPlugin.Source
         {
             try
             {
-                //TODO store as float
-                int value = (int)UnitUtil.Elevation.Parse(bandwidthBox.Text);
-                if (value <= 0) { throw new Exception(); }
+                double value = UnitUtil.Elevation.Parse(bandwidthBox.Text);
+                if (double.IsNaN(value) || value <= 0) { throw new Exception(); }
                 Settings.Radius = value;
                 presentSettings();
             }
             catch (Exception)
             {
-                bandwidthBox.Text = UnitUtil.Elevation.ToString(Settings.Radius);
+                presentSettings();
                 new WarningDialog(Resources.RadiusWarning);
             }
         }

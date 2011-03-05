@@ -115,8 +115,8 @@ namespace GpsRunningPlugin.Source
             set { errorMargin = value; }
         }
 
-        private static int radius;
-        public static int Radius
+        private static double radius;
+        public static double Radius
         {
             get { return radius; }
             set { radius = value; }
@@ -259,7 +259,7 @@ namespace GpsRunningPlugin.Source
             attr = pluginNode.GetAttribute(xmlTags.radius);
             if (attr.Length > 0)
             { 
-                radius = XmlConvert.ToInt16(attr);
+                radius = XmlConvert.ToDouble(attr);
                 //Compatibility svn 165-265
                 if (settingsVersion == 1)
                 {
