@@ -1844,7 +1844,7 @@ namespace GpsRunningPlugin.Source
                         else
                         {
                             double value = UnitUtil.Distance.Parse(dialog.TextResult);
-                            if (value < 0) { throw new Exception(); }
+                            if (double.IsNaN(value) || value < 0) { throw new Exception(); }
                             Settings.MovingAverageLength = value;
                         }
                         valueOk = true;
@@ -1898,7 +1898,7 @@ namespace GpsRunningPlugin.Source
                         else
                         {
                             value = UnitUtil.Distance.Parse(dialog.TextResult);
-                            if (value < 0) { throw new Exception(); }
+                            if (double.IsNaN(value) || value < 0) { throw new Exception(); }
                         }
                         valueOk = true;
                         foreach (ActivityWrapper w in getListSelection(treeListAct.SelectedItems))
