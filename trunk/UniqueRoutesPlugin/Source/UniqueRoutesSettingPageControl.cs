@@ -110,7 +110,7 @@ namespace GpsRunningPlugin.Source
             try
             {
                 double value = UnitUtil.Distance.Parse(ignoreEndBox.Text);
-                if (value < 0) { throw new Exception(); }
+                if (double.IsNaN(value) || value < 0) { throw new Exception(); }
                 Settings.IgnoreEnd = value;
                 presentSettings();
             }
@@ -126,7 +126,7 @@ namespace GpsRunningPlugin.Source
             try
             {
                 double value = UnitUtil.Distance.Parse(ignoreBeginningBox.Text);
-                if (value < 0) {  throw new Exception(); }
+                if (double.IsNaN(value) || value < 0) { throw new Exception(); }
                 Settings.IgnoreBeginning = value;
                 presentSettings();
             }
@@ -153,6 +153,7 @@ namespace GpsRunningPlugin.Source
         {
             try
             {
+                //TODO store as float
                 int value = (int)UnitUtil.Elevation.Parse(bandwidthBox.Text);
                 if (value <= 0) { throw new Exception(); }
                 Settings.Radius = value;

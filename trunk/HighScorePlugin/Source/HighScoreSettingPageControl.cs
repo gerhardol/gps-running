@@ -227,7 +227,7 @@ namespace GpsRunningPlugin.Source
             try
             {
                 double distance = UnitUtil.Distance.Parse(distanceInputBox.Text);
-                if (distance <= 0) { throw new Exception(); }
+                if (double.IsNaN(distance) || distance <= 0) { throw new Exception(); }
                 if (!Settings.distances.ContainsKey(distance))
                 {
                     Settings.distances.Add(distance, true);
@@ -281,7 +281,7 @@ namespace GpsRunningPlugin.Source
             try
             {
                 double elevation = UnitUtil.Elevation.Parse(elevationInputBox.Text);
-                if (elevation <= 0) { throw new Exception(); }
+                if (double.IsNaN(elevation) || elevation <= 0) { throw new Exception(); }
                 if (!Settings.elevations.ContainsKey(elevation))
                 {
                     Settings.elevations.Add(elevation, true);
@@ -318,7 +318,7 @@ namespace GpsRunningPlugin.Source
             {
                 double min = UnitUtil.HeartRate.Parse(minPulseBox.Text);
                 double max = UnitUtil.HeartRate.Parse(maxPulseBox.Text);
-                if (min < 0 || max < 0 || min > max) throw new Exception();
+                if (double.IsNaN(min) || double.IsNaN(max) || min < 0 || max < 0 || min > max) throw new Exception();
                 Settings.addPulse(min, max);
                 populatePulseList();
             }
@@ -356,7 +356,7 @@ namespace GpsRunningPlugin.Source
                     min = UnitUtil.Speed.Parse(minSpeedBox.Text);
                     max = UnitUtil.Speed.Parse(maxSpeedBox.Text);
                 }
-                if (min <= 0 || max <= 0 || max <= min) throw new Exception();
+                if (double.IsNaN(min) || double.IsNaN(max) || min < 0 || max < 0 || min > max) throw new Exception();
                 Settings.addSpeed(min, max);
                 populateSpeedList();
             }
