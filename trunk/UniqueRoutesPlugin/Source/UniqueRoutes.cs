@@ -64,7 +64,8 @@ namespace GpsRunningPlugin.Source
                 if (isAllowedActivity(otherActivity) &&
                     otherActivity.GPSRoute != null && otherActivity.GPSRoute.Count > 0)
                 {
-                    activities.Add(otherActivity);
+                    //Insert so the newest activity is inserted first
+                    activities.Insert(0, otherActivity);
                 }
             }
             return activities;
