@@ -146,6 +146,7 @@ new System.Globalization.CultureInfo("en"));
 
                 popupForm.StartPosition = FormStartPosition.CenterScreen;
                 popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_PerformancePredictor.GetHicon());
+                popupForm.FormClosed += new FormClosedEventHandler(popupForm_FormClosed);
                 popupForm.Show();
                 this.ShowPage("");
             }
@@ -222,6 +223,7 @@ new System.Globalization.CultureInfo("en"));
                 bool showPage = m_showPage;
                 m_showPage = false;
 
+                deactivateListeners();
                 //Make sure activities is not null
                 if (null == value) { m_activities.Clear(); }
                 else { m_activities = value; }
@@ -244,39 +246,12 @@ new System.Globalization.CultureInfo("en"));
                 }
 
                 //Reset settings
-                if (lastActivity != null)
-                {
-                    if (lastActivity != null && (m_activities.Count != 1 || lastActivity != m_activities[0]))
-                    {
-#if ST_2_1
-                    lastActivity.DataChanged -= new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(dataChanged);
-#else
-                        lastActivity.PropertyChanged -= new PropertyChangedEventHandler(Activity_PropertyChanged);
-#endif
-                    }
                     if (m_activities.Count != 1 || (m_activities.Count == 1 && null != m_activities[0]))
                     {
                         trainingView.Activity = null;
                     }
-                }
-                if (1 == m_activities.Count && m_activities[0] != null)
-                {
-                    if (lastActivity != m_activities[0])
-                    {
-                        lastActivity = m_activities[0];
-#if ST_2_1
-                        lastActivity.DataChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(dataChanged);
-#else
-                        lastActivity.PropertyChanged += new PropertyChangedEventHandler(Activity_PropertyChanged);
-#endif
-                        trainingView.Activity = lastActivity;
-                    }
-                }
-                else
-                {
-                    lastActivity = null;
-                }
-
+                    activateListeners();
+                
                 string title = Resources.PPHS;
                 if (m_activities.Count > 0)
                 {
@@ -323,9 +298,23 @@ new System.Globalization.CultureInfo("en"));
         private Form popupForm = null;
 
         private bool m_showPage = false;
+
+        public void ShowPage(string bookmark)
+        {
+            m_showPage = true;
+            if (null != trainingView) { trainingView.ShowPage(bookmark); }
+            makeData();
+            activateListeners();
+            if (m_layer != null)
+            {
+                m_layer.ShowPage(bookmark);
+            }
+        }
+
         public bool HidePage()
         {
             m_showPage = false;
+            deactivateListeners();
             if (null != trainingView) { trainingView.HidePage(); }
             if (m_layer != null)
             {
@@ -334,16 +323,46 @@ new System.Globalization.CultureInfo("en"));
             }
             return true;
         }
-        public void ShowPage(string bookmark)
+
+        private void activateListeners()
         {
-            bool changed = (m_showPage != true);
-            m_showPage = true;
-            if (null != trainingView) { trainingView.ShowPage(bookmark); }
-            if (changed) { makeData(); }
-            if (m_layer != null)
+            if (m_showPage)
             {
-                m_layer.ShowPage(bookmark);
+                if (1 == m_activities.Count && m_activities[0] != null)
+                {
+                    if (lastActivity != m_activities[0])
+                    {
+                        lastActivity = m_activities[0];
+#if ST_2_1
+                        lastActivity.DataChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(dataChanged);
+#else
+                        lastActivity.PropertyChanged += new PropertyChangedEventHandler(Activity_PropertyChanged);
+#endif
+                        trainingView.Activity = lastActivity;
+                    }
+                }
+                else
+                {
+                    lastActivity = null;
+                }
             }
+        }
+
+        private void deactivateListeners()
+        {
+            if (lastActivity != null && (m_activities.Count != 1 || lastActivity != m_activities[0]))
+            {
+#if ST_2_1
+                lastActivity.DataChanged -= new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(dataChanged);
+#else
+                lastActivity.PropertyChanged -= new PropertyChangedEventHandler(Activity_PropertyChanged);
+#endif
+            }
+        }
+
+        void popupForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.HidePage();
         }
 
         private void setSize()

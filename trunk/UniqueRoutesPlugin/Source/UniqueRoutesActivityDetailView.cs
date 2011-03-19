@@ -98,7 +98,6 @@ namespace GpsRunningPlugin.Source
             speedBox.SelectedItem = CommonResources.Text.LabelPace;
             summaryList.ColumnClicked += new TreeList.ColumnEventHandler(summaryView_ColumnHeaderMouseClick);
 
-            Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
             setSize();
 
             bool isPluginMatch = false;
@@ -285,6 +284,7 @@ namespace GpsRunningPlugin.Source
         public bool HidePage()
         {
             m_showPage = false;
+            deactivateListeners();
 #if !ST_2_1
             if (m_layer != null)
             {
@@ -293,16 +293,28 @@ namespace GpsRunningPlugin.Source
 #endif
             return true;
         }
+
         public void ShowPage(string bookmark)
         {
             m_showPage = true;
             calculate();
+            activateListeners();
 #if !ST_2_1
             if (m_layer != null)
             {
                 m_layer.ShowPage(bookmark);
             }
 #endif
+        }
+
+        private void activateListeners()
+        {
+            Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
+        }
+
+        private void deactivateListeners()
+        {
+            Plugin.GetApplication().SystemPreferences.PropertyChanged -= new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
         }
 
         private void RefreshColumns()

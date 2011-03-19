@@ -101,7 +101,6 @@ namespace GpsRunningPlugin.Source
             InitializeComponent();
             InitControls();
 
-            Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
             dataGrid.CellDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
             dataGrid.CellMouseClick += new DataGridViewCellMouseEventHandler(dataGrid_CellMouseClick);
             domainBox.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -173,6 +172,7 @@ namespace GpsRunningPlugin.Source
                         | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom)));
                 Parent.SizeChanged += new EventHandler(Parent_SizeChanged);
                 popupForm.StartPosition = FormStartPosition.CenterScreen;
+                popupForm.FormClosed += new FormClosedEventHandler(popupForm_FormClosed);
                 popupForm.Show();
             }
             else
@@ -300,6 +300,7 @@ namespace GpsRunningPlugin.Source
         public bool HidePage()
         {
             m_showPage = false;
+            deactivateListeners();
             if (m_layer != null)
             {
                 m_layer.ClearOverlays();
@@ -309,14 +310,30 @@ namespace GpsRunningPlugin.Source
         }
         public void ShowPage(string bookmark)
         {
-            bool changed = (m_showPage != true);
             m_showPage = true;
-//            if (changed) { makeData(); }
+            //makeData();
+            activateListeners();
             if (m_layer != null)
             {
                 m_layer.ShowPage(bookmark);
             }
         }
+
+        private void activateListeners()
+        {
+            Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
+        }
+
+        private void deactivateListeners()
+        {
+            Plugin.GetApplication().SystemPreferences.PropertyChanged -= new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
+        }
+
+        void popupForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.HidePage();
+        }
+
         private void setSize()
         {
             if (dataGrid.Columns.Count > 0 && dataGrid.Rows.Count > 0)
