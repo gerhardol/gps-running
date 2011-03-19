@@ -25,7 +25,7 @@ namespace GpsRunningPlugin.Source
 {
     class AccumulatedSummarySettingsPage: ISettingsPage
     {
-        AccumulatedSummarySettings control = null;
+        AccumulatedSummarySettings m_control = null;
 
         #region ISettingsPage Members
 
@@ -49,11 +49,11 @@ namespace GpsRunningPlugin.Source
 
         public System.Windows.Forms.Control CreatePageControl()
         {
-            if (control == null)
+            if (m_control == null)
             {
-                control = new AccumulatedSummarySettings();
+                m_control = new AccumulatedSummarySettings();
             }
-            return control;
+            return m_control;
         }
 
         public bool HidePage()
@@ -77,9 +77,9 @@ namespace GpsRunningPlugin.Source
 
         public void ThemeChanged(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme)
         {
-            if (control != null)
+            if (m_control != null)
             {
-                control.ThemeChanged(visualTheme);
+                m_control.ThemeChanged(visualTheme);
             }
         }
 
@@ -90,9 +90,9 @@ namespace GpsRunningPlugin.Source
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
-            if (control != null)
+            if (m_control != null)
             {
-                control.UICultureChanged(culture);
+                m_control.UICultureChanged(culture);
             }
         }
 

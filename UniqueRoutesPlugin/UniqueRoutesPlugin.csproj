@@ -8,16 +8,10 @@
     <AssemblyName>UniqueRoutesPlugin</AssemblyName>
     <PluginId>5c630517-46c4-478d-89d6-a8a6ca6337db</PluginId>
   </PropertyGroup>
-  
   <Import Project="..\Common\Common-References.csproj" />
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);GPSRUNNING_UNIQUEROUTES</DefineConstants>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <None Include="Resources\DropDown.png" />
-  </ItemGroup>
-
   <ItemGroup>
     <Compile Include="Export\Integration.cs" />
     <Compile Include="GUIDs.cs" />
@@ -159,7 +153,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
- 
   <ItemGroup>
     <!-- TrailsMapLayers -->
     <Compile Include="..\Common\Util\TrailsMapLayers\Data\TrailGPSLocation.cs">
@@ -202,5 +195,5 @@
       <Link>Util\TrailsMapLayers\ReadMe.txt</Link>
     </Content>
   </ItemGroup>
- <Import Project="..\Common\Common-Files.csproj" />
+  <Import Project="..\Common\Common-Files.csproj" />
 </Project>
