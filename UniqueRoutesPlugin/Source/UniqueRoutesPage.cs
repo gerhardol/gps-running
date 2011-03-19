@@ -59,16 +59,24 @@ namespace GpsRunningPlugin.Source
 
         public bool HidePage()
         {
+            if (control != null)
+            {
+                control.HidePage();
+            }
             return true;
         }
 
         public string PageName
         {
-            get { return "Unique Routes"; }
+            get { return Properties.Resources.ApplicationName; }
         }
 
         public void ShowPage(string bookmark)
-        {            
+        {
+            if (control != null)
+            {
+                control.ShowPage(bookmark);
+            }
         }
 
         public IPageStatus Status

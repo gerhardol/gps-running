@@ -781,7 +781,10 @@ namespace GpsRunningPlugin.Source
 
         void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            setTable();
+            if (_showPage)
+            {
+                setTable();
+            }
         }
 
         private void UniqueRoutesActivityDetailView_Resize(object sender, EventArgs e)

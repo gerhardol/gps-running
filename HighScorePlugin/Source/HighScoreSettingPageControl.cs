@@ -41,6 +41,7 @@ namespace GpsRunningPlugin.Source
     public partial class HighScoreSettingPageControl : UserControl
     {
         IList<IList<double>> speedZoneIndex;
+        private bool m_showPage = false;
 
         public HighScoreSettingPageControl()
         {
@@ -99,6 +100,16 @@ namespace GpsRunningPlugin.Source
             reset();
         }
 
+        public bool HidePage()
+        {
+            m_showPage = false;
+            return true;
+        }
+        public void ShowPage(string bookmark)
+        {
+            m_showPage = true;
+        }
+
         private void reset()
         {
             groupBox1.Text = UnitUtil.Distance.LabelAxis;
@@ -122,7 +133,7 @@ namespace GpsRunningPlugin.Source
 
         void HighScoreSettingPageControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName.Equals("DistanceUnits")||e.PropertyName.Equals("ElevationUnits"))
+            if ( e.PropertyName.Equals("DistanceUnits")||e.PropertyName.Equals("ElevationUnits"))
             {
                 reset();
             }
