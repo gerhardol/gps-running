@@ -162,7 +162,7 @@ namespace TrailsPlugin.UI.MapLayers
         public void DoZoom()
         {
             IGPSBounds area1 = TrailMapPolyline.getGPSBounds(m_TrailRoutes);
-                IGPSBounds area2 = TrailGPSLocation.getGPSBounds(m_TrailPoints, 2 * this.m_highlightRadius);
+            IGPSBounds area2 = TrailGPSLocation.getGPSBounds(m_TrailPoints, 2 * this.m_highlightRadius);
             area1 = Union(area1, area2);
             DoZoom(area1);
         }
