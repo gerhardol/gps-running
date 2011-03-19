@@ -70,14 +70,6 @@ namespace GpsRunningPlugin.Source
             InitializeComponent();
             InitControls();
             SizeChanged += new EventHandler(TrainingView_SizeChanged);            
-#if ST_2_1
-            Plugin.GetApplication().Logbook.DataChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(Logbook_DataChanged);
-            Plugin.GetApplication().Logbook.Athlete.DataChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(Athlete_DataChanged);
-#else
-            Plugin.GetApplication().Logbook.Athlete.PropertyChanged += new PropertyChangedEventHandler(Athlete_PropertyChanged);
-            Plugin.GetApplication().Logbook.PropertyChanged += new PropertyChangedEventHandler(Logbook_PropertyChanged);
-#endif
-            Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
         }
 
         void InitControls()
@@ -183,17 +175,53 @@ namespace GpsRunningPlugin.Source
         }
 
         private bool m_showPage = false;
+
+        public void ShowPage(string bookmark)
+        {
+            m_showPage = true;
+            setPages();
+            activateListeners();
+        }
+
         public bool HidePage()
         {
             m_showPage = false;
+            deactivateListeners();
             return true;
         }
-        public void ShowPage(string bookmark)
+
+        private void activateListeners()
         {
-            bool changed = (m_showPage != true);
-            m_showPage = true;
-            if (changed) { setPages(); }
+            if (m_showPage)
+            {
+#if ST_2_1
+                Plugin.GetApplication().Logbook.DataChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(Logbook_DataChanged);
+                Plugin.GetApplication().Logbook.Athlete.DataChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(Athlete_DataChanged);
+#else
+                Plugin.GetApplication().Logbook.Athlete.PropertyChanged += new PropertyChangedEventHandler(Athlete_PropertyChanged);
+                Plugin.GetApplication().Logbook.PropertyChanged += new PropertyChangedEventHandler(Logbook_PropertyChanged);
+#endif
+                Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
+            }
         }
+
+        private void deactivateListeners()
+        {
+#if ST_2_1
+            Plugin.GetApplication().Logbook.DataChanged -= new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(Logbook_DataChanged);
+            Plugin.GetApplication().Logbook.Athlete.DataChanged -= new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(Athlete_DataChanged);
+#else
+            Plugin.GetApplication().Logbook.Athlete.PropertyChanged -= new PropertyChangedEventHandler(Athlete_PropertyChanged);
+            Plugin.GetApplication().Logbook.PropertyChanged -= new PropertyChangedEventHandler(Logbook_PropertyChanged);
+#endif
+            Plugin.GetApplication().SystemPreferences.PropertyChanged -= new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
+        }
+
+        void popupForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.HidePage();
+        }
+
         private void setSize()
         {
             foreach (TabPage tab in this.tabControl1.TabPages)
