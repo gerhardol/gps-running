@@ -44,16 +44,16 @@ namespace GpsRunningPlugin.Source
 #if !ST_2_1
         public PerformancePredictorActivityDetailPage(IDailyActivityView view)
         {
-            this.view = view;
+            this.m_view = view;
             view.SelectionProvider.SelectedItemsChanged += new EventHandler(OnViewSelectedItemsChanged);
         }
 
         private void OnViewSelectedItemsChanged(object sender, EventArgs e)
         {
-            activities = CollectionUtils.GetAllContainedItemsOfType<IActivity>(view.SelectionProvider.SelectedItems);
-            if ((control != null))
+            m_activities = CollectionUtils.GetAllContainedItemsOfType<IActivity>(m_view.SelectionProvider.SelectedItems);
+            if ((m_control != null))
             {
-                control.Activities = activities;
+                m_control.Activities = m_activities;
             }
             RefreshPage();
         }
@@ -76,32 +76,32 @@ namespace GpsRunningPlugin.Source
 
         public IList<string> MenuPath
         {
-            get { return menuPath; }
-            set { menuPath = value; OnPropertyChanged("MenuPath"); }
+            get { return m_menuPath; }
+            set { m_menuPath = value; OnPropertyChanged("MenuPath"); }
         }
 
         public bool MenuEnabled
         {
-            get { return menuEnabled; }
-            set { menuEnabled = value; OnPropertyChanged("MenuEnabled"); }
+            get { return m_menuEnabled; }
+            set { m_menuEnabled = value; OnPropertyChanged("MenuEnabled"); }
         }
 
         public bool MenuVisible
         {
-            get { return menuVisible; }
-            set { menuVisible = value; OnPropertyChanged("MenuVisible"); }
+            get { return m_menuVisible; }
+            set { m_menuVisible = value; OnPropertyChanged("MenuVisible"); }
         }
 
         public bool PageMaximized
         {
-            get { return pageMaximized; }
-            set { pageMaximized = value; OnPropertyChanged("PageMaximized"); }
+            get { return m_pageMaximized; }
+            set { m_pageMaximized = value; OnPropertyChanged("PageMaximized"); }
         }
         public void RefreshPage()
         {
-            if (control != null)
+            if (m_control != null)
             {
-                control.Refresh();
+                m_control.Refresh();
             }
         }
 
@@ -111,26 +111,26 @@ namespace GpsRunningPlugin.Source
 
         public Control CreatePageControl()
         {
-            if (control == null)
+            if (m_control == null)
             {
 #if !ST_2_1
-                control = new PerformancePredictorView(this, view);
+                m_control = new PerformancePredictorView(this, m_view);
 #else
                 control = new PerformancePredictorView();
 #endif
-                if ((control != null))
+                if ((m_control != null))
                 {
-                    control.Activities = activities;
+                    m_control.Activities = m_activities;
                 }
             }
-            return control;
+            return m_control;
         }
 
         public bool HidePage()
         {
-            if (null != control)
+            if (null != m_control)
             {
-                control.HidePage();
+                m_control.HidePage();
             }
             return true;
         }
@@ -142,9 +142,9 @@ namespace GpsRunningPlugin.Source
 
         public void ShowPage(string bookmark)
         {
-            if (control != null)
+            if (m_control != null)
             {
-                control.ShowPage(bookmark);
+                m_control.ShowPage(bookmark);
             }
         }
 
@@ -156,9 +156,9 @@ namespace GpsRunningPlugin.Source
         public void ThemeChanged(ITheme visualTheme)
         {
             RefreshPage();
-            if (control != null)
+            if (m_control != null)
             {
-                control.ThemeChanged(visualTheme);
+                m_control.ThemeChanged(visualTheme);
             }
         }
 
@@ -169,9 +169,9 @@ namespace GpsRunningPlugin.Source
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
-            if (control != null)
+            if (m_control != null)
             {
-                control.UICultureChanged(culture);
+                m_control.UICultureChanged(culture);
             }
             RefreshPage();
         }
@@ -185,14 +185,14 @@ namespace GpsRunningPlugin.Source
 
         #endregion
 #if !ST_2_1
-        private IDailyActivityView view = null;
+        private IDailyActivityView m_view = null;
 #endif
-        private IList<IActivity> activities = new List<IActivity>();
-        private PerformancePredictorView control = null;
-        private IList<string> menuPath = null;
-        private bool menuEnabled = true;
-        private bool menuVisible = true;
-        private bool pageMaximized = false;
+        private IList<IActivity> m_activities = new List<IActivity>();
+        private PerformancePredictorView m_control = null;
+        private IList<string> m_menuPath = null;
+        private bool m_menuEnabled = true;
+        private bool m_menuVisible = true;
+        private bool m_pageMaximized = false;
 
         private void OnPropertyChanged(string propertyName)
         {

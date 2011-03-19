@@ -26,7 +26,7 @@ namespace GpsRunningPlugin.Source
 {
     class UniqueRoutesPage : ISettingsPage
     {
-        private UniqueRoutesSettingPageControl control = null;
+        private UniqueRoutesSettingPageControl m_control = null;
 
         #region ISettingsPage Members
 
@@ -50,18 +50,18 @@ namespace GpsRunningPlugin.Source
 
         public System.Windows.Forms.Control CreatePageControl()
         {
-            if (control == null)
+            if (m_control == null)
             {
-                control = new UniqueRoutesSettingPageControl();
+                m_control = new UniqueRoutesSettingPageControl();
             }
-            return control;
+            return m_control;
         }
 
         public bool HidePage()
         {
-            if (control != null)
+            if (m_control != null)
             {
-                control.HidePage();
+                m_control.HidePage();
             }
             return true;
         }
@@ -73,9 +73,9 @@ namespace GpsRunningPlugin.Source
 
         public void ShowPage(string bookmark)
         {
-            if (control != null)
+            if (m_control != null)
             {
-                control.ShowPage(bookmark);
+                m_control.ShowPage(bookmark);
             }
         }
 
@@ -86,22 +86,22 @@ namespace GpsRunningPlugin.Source
 
         public void ThemeChanged(ITheme visualTheme)
         {
-            if (control != null)
+            if (m_control != null)
             {
-                control.ThemeChanged(visualTheme);
+                m_control.ThemeChanged(visualTheme);
             }
         }
 
         public string Title
         {
-            get { return "Unique Routes"; }
+            get { return Properties.Resources.ApplicationName; }
         }
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
-            if (control != null)
+            if (m_control != null)
             {
-                control.UICultureChanged(culture);
+                m_control.UICultureChanged(culture);
             }
         }
 

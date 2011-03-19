@@ -114,7 +114,7 @@ namespace GpsRunningPlugin.Source
             imageBox.SelectedItem = translateToLanguage(Settings.Image);
 
             boundsBox.SelectedItem = Settings.UpperBound ? StringResources.Maximal : StringResources.Minimal;
-            speedUnit = getMostUsedSpeedUnit(activities);
+            speedUnit = getMostUsedSpeedUnit(m_activities);
             paceBox.SelectedItem = speedUnit;
             if (Settings.ShowTable)
                 viewBox.SelectedItem = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelList;
@@ -207,26 +207,26 @@ namespace GpsRunningPlugin.Source
             this.dataGrid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
         }
 
-        private IList<IActivity> activities = new List<IActivity>();
+        private IList<IActivity> m_activities = new List<IActivity>();
         public IList<IActivity> Activities
         {
             set
             {
                 //Make sure activities is not null
-                if (null == value) { activities.Clear(); }
-                else { activities = value; }
+                if (null == value) { m_activities.Clear(); }
+                else { m_activities = value; }
                 if (popupForm != null)
                 {
-                    if (activities.Count > 1)
-                        popupForm.Text = Resources.HSV + " " + String.Format(StringResources.OfManyActivities, activities.Count);
-                    else if (activities.Count == 1)
+                    if (m_activities.Count > 1)
+                        popupForm.Text = Resources.HSV + " " + String.Format(StringResources.OfManyActivities, m_activities.Count);
+                    else if (m_activities.Count == 1)
                         popupForm.Text = Resources.HSV + " " + StringResources.OfOneActivity;
                     else
                         popupForm.Text = Resources.HSV + " " + StringResources.OfNoActivities;
                 }
-                this.includeLocationAndDate = (activities.Count > 1);
+                this.includeLocationAndDate = (m_activities.Count > 1);
                 resetCachedResults();
-                if (activities.Count > 0)
+                if (m_activities.Count > 0)
                 {
                     showResults();
                 }
@@ -296,10 +296,10 @@ namespace GpsRunningPlugin.Source
             label2.Location = new Point(label2.Location.X, label1.Location.Y);
         }
 
-        private bool _showPage = false;
+        private bool m_showPage = false;
         public bool HidePage()
         {
-            _showPage = false;
+            m_showPage = false;
             if (m_layer != null)
             {
                 m_layer.ClearOverlays();
@@ -309,8 +309,8 @@ namespace GpsRunningPlugin.Source
         }
         public void ShowPage(string bookmark)
         {
-            bool changed = (_showPage != true);
-            _showPage = true;
+            bool changed = (m_showPage != true);
+            m_showPage = true;
 //            if (changed) { makeData(); }
             if (m_layer != null)
             {
@@ -366,7 +366,7 @@ namespace GpsRunningPlugin.Source
 
         void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (_showPage && (e.PropertyName.Equals("DistanceUnits") || e.PropertyName.Equals("ElevationUnits")))
+            if (m_showPage && (e.PropertyName.Equals("DistanceUnits") || e.PropertyName.Equals("ElevationUnits")))
             {
                 resetCachedTables();
                 showResults();
@@ -486,10 +486,10 @@ namespace GpsRunningPlugin.Source
                   cachedResults.Add(domain, imageResultCache);
             }
             progressBar.Minimum = 0;
-            progressBar.Maximum = activities.Count;
+            progressBar.Maximum = m_activities.Count;
             progressBar.Value = 0;
             progressBar.Visible = true;
-            IList<Result> results = HighScore.calculate(activities, goals, progressBar);
+            IList<Result> results = HighScore.calculate(m_activities, goals, progressBar);
             progressBar.Visible = false;
             foreach (GoalParameter domain in Enum.GetValues(typeof(GoalParameter)))
                 foreach (GoalParameter image in Enum.GetValues(typeof(GoalParameter)))
@@ -615,7 +615,7 @@ namespace GpsRunningPlugin.Source
         private void showRemarks()
         {
             int manualEntered = 0, noStartTime = 0;
-            foreach (IActivity activity in activities)
+            foreach (IActivity activity in m_activities)
             {
                 if (null != activity && activity.HasStartTime)
                 {
@@ -665,7 +665,7 @@ namespace GpsRunningPlugin.Source
                 {
                     IList<Goal> goals = HighScore.generateGoals();
                     progressBar.Visible = true;
-                    results = HighScore.calculate(activities, goals, progressBar);
+                    results = HighScore.calculate(m_activities, goals, progressBar);
                     progressBar.Visible = false;
                 }
                 table = HighScore.generateTable(results, speedUnit, includeLocationAndDate,
@@ -715,7 +715,7 @@ namespace GpsRunningPlugin.Source
                 {
                     IList<Goal> goals = HighScore.generateGoals();
                     progressBar.Visible = true;
-                    results = HighScore.calculate(activities, goals, progressBar);
+                    results = HighScore.calculate(m_activities, goals, progressBar);
                     progressBar.Visible = false;
                 }
             }
@@ -840,7 +840,7 @@ namespace GpsRunningPlugin.Source
                 string actid = (string)dataGrid.Rows[rowIndex].Cells[ActivityIdColumn].Value;
 
                 IActivity id = null;
-                foreach (IActivity act in activities)
+                foreach (IActivity act in m_activities)
                 {
                     if (act.ReferenceId == actid)
                     {
@@ -849,7 +849,7 @@ namespace GpsRunningPlugin.Source
                 }
                 if (id != null)
                 {
-                    if (_showPage && isSingleView != true)
+                    if (m_showPage && isSingleView != true)
                     {
                         IDictionary<string, MapPolyline> routes = new Dictionary<string, MapPolyline>();
                         TrailMapPolyline m = new TrailMapPolyline(
@@ -889,7 +889,7 @@ namespace GpsRunningPlugin.Source
         public void MarkTrack(IList<TrailResultMarked> atr)
         {
 #if !ST_2_1
-            if (_showPage)
+            if (m_showPage)
             {
                 IDictionary<string, MapPolyline> result = new Dictionary<string, MapPolyline>();
                 if (m_view != null &&

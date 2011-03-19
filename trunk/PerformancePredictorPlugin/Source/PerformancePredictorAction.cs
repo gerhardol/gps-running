@@ -36,11 +36,11 @@ namespace GpsRunningPlugin.Source
 #if !ST_2_1
         public PerformancePredictorAction(IDailyActivityView view)
         {
-            this.dailyView = view;
+            this.m_dailyView = view;
         }
         public PerformancePredictorAction(IActivityReportsView view)
         {
-            this.reportView = view;
+            this.m_reportView = view;
         }
 #else
         public PerformancePredictorAction(IList<IActivity> activities)
@@ -83,13 +83,13 @@ namespace GpsRunningPlugin.Source
 #if ST_2_1
                 t = new PerformancePredictorView(true);
 #else
-            if (reportView != null)
+            if (m_reportView != null)
             {
-                t = new PerformancePredictorView(reportView);
+                t = new PerformancePredictorView(m_reportView);
             }
             else
             {
-                t = new PerformancePredictorView(dailyView);
+                t = new PerformancePredictorView(m_dailyView);
             }
 #endif
             t.Activities = activities;
@@ -103,14 +103,14 @@ namespace GpsRunningPlugin.Source
                 return Resources.PPHS + " " + String.Format(StringResources.ForManyActivities,activities.Count);
             }
         }
-        private bool firstRun = true;
+        private bool m_firstRun = true;
         public bool Visible
         {
             get
             {
                 //Analyze menu must be Visible at first call, otherwise it is hidden
                 //Could be done with listeners too
-                if (true == firstRun) { firstRun = false; return true; }
+                if (true == m_firstRun) { m_firstRun = false; return true; }
                 if (activities.Count == 0) return false;
                 return true;
             }
@@ -125,10 +125,10 @@ namespace GpsRunningPlugin.Source
 
         #endregion
 #if !ST_2_1
-        private IDailyActivityView dailyView = null;
-        private IActivityReportsView reportView = null;
+        private IDailyActivityView m_dailyView = null;
+        private IActivityReportsView m_reportView = null;
 #endif
-        private IList<IActivity> _activities = null;
+        private IList<IActivity> m_activities = null;
         private IList<IActivity> activities
         {
             get
@@ -136,15 +136,15 @@ namespace GpsRunningPlugin.Source
 #if !ST_2_1
                 //activities are set either directly or by selection,
                 //not by more than one view
-                if (_activities == null)
+                if (m_activities == null)
                 {
-                    if (dailyView != null)
+                    if (m_dailyView != null)
                     {
-                        return CollectionUtils.GetAllContainedItemsOfType<IActivity>(dailyView.SelectionProvider.SelectedItems); 
+                        return CollectionUtils.GetAllContainedItemsOfType<IActivity>(m_dailyView.SelectionProvider.SelectedItems); 
                     }
-                    else if (reportView != null)
+                    else if (m_reportView != null)
                     {
-                        return CollectionUtils.GetAllContainedItemsOfType<IActivity>(reportView.SelectionProvider.SelectedItems);
+                        return CollectionUtils.GetAllContainedItemsOfType<IActivity>(m_reportView.SelectionProvider.SelectedItems);
                     }
                     else
                     {
@@ -152,11 +152,11 @@ namespace GpsRunningPlugin.Source
                     }
                 }
 #endif
-                return _activities;
+                return m_activities;
             }
             set
             {
-                _activities = value;
+                m_activities = value;
             }
         }
     }

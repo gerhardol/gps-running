@@ -25,7 +25,7 @@ namespace GpsRunningPlugin.Source
 {
     class OverlaySettingsPage: ISettingsPage
     {
-        OverlaySettings control = null;
+        OverlaySettings m_control = null;
 
         #region ISettingsPage Members
 
@@ -47,16 +47,16 @@ namespace GpsRunningPlugin.Source
 
         public System.Windows.Forms.Control CreatePageControl()
         {
-            if (control == null)
+            if (m_control == null)
             {
-                control = new OverlaySettings();
+                m_control = new OverlaySettings();
             }
-            return control;
+            return m_control;
         }
 
         public bool HidePage()
         {
-            if (control != null) { return control.HidePage(); }
+            if (m_control != null) { return m_control.HidePage(); }
             return true;
         }
 
@@ -67,7 +67,7 @@ namespace GpsRunningPlugin.Source
 
         public void ShowPage(string bookmark)
         {
-            if (control != null){ control.ShowPage(bookmark); }
+            if (m_control != null){ m_control.ShowPage(bookmark); }
         }
 
         public IPageStatus Status
@@ -77,9 +77,9 @@ namespace GpsRunningPlugin.Source
 
         public void ThemeChanged(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme)
         {
-            if (control != null)
+            if (m_control != null)
             {
-                control.ThemeChanged(visualTheme);
+                m_control.ThemeChanged(visualTheme);
             }
         }
 
@@ -90,9 +90,9 @@ namespace GpsRunningPlugin.Source
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
-            if (control != null)
+            if (m_control != null)
             {
-                control.UICultureChanged(culture);
+                m_control.UICultureChanged(culture);
             }
         }
 

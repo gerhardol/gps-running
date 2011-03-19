@@ -49,15 +49,15 @@ namespace GpsRunningPlugin.Source
     {
         private ITheme m_visualTheme;
         private System.Globalization.CultureInfo m_culture;
-        private IList<IActivity> similar;
+        private IList<IActivity> m_similarActivities;
         private IDictionary<string, string> similarToolTip;
-        private IActivity refActivity = null;
-        private IGPSRoute urRoute = new GPSRoute();
-        private IList<IActivity> selectedActivities = new List<IActivity>();
+        private IActivity m_refActivity = null;
+        private IGPSRoute m_urRoute = new GPSRoute();
+        private IList<IActivity> m_selectedActivities = new List<IActivity>();
         private IDictionary<ToolStripMenuItem, SendToPlugin> aSendToMenu = new Dictionary<ToolStripMenuItem, SendToPlugin>();
-        private bool _showPage = false;
-        private bool _needsRecalculation = true;
-        private bool _allowActivityUpdate = true; //Ignore "automatic" activity update
+        private bool m_showPage = false;
+        private bool m_needsRecalculation = true;
+        private bool m_allowActivityUpdate = true; //Ignore "automatic" activity update
         private IDictionary<IActivity, IList<PointInfo[]>> m_commonStretches = null;
 
 #if ST_2_1
@@ -239,19 +239,19 @@ namespace GpsRunningPlugin.Source
         {
             set
             {
-                if (_allowActivityUpdate)
+                if (m_allowActivityUpdate)
                 {
-                    selectedActivities = new List<IActivity>();
+                    m_selectedActivities = new List<IActivity>();
                     foreach (IActivity t in value)
                     {
                         if (t.GPSRoute != null && t.GPSRoute.Count > 1)
                         {
-                            selectedActivities.Add(t);
+                            m_selectedActivities.Add(t);
                         }
                     }
-                    if (selectedActivities.Count == 0)
+                    if (m_selectedActivities.Count == 0)
                     {
-                        this.refActivity = null;
+                        this.m_refActivity = null;
                         summaryList.Visible = false;
                         summaryListLabel.Text = Resources.NoGpsActivitiesSelected;
                         summaryListLabel.Visible = true;
@@ -259,11 +259,11 @@ namespace GpsRunningPlugin.Source
                     else
                     {
                         bool isMatch = false;
-                        if (this.refActivity != null)
+                        if (this.m_refActivity != null)
                         {
-                            foreach (IActivity t in selectedActivities)
+                            foreach (IActivity t in m_selectedActivities)
                             {
-                                if (t.Equals(this.refActivity))
+                                if (t.Equals(this.m_refActivity))
                                 {
                                     isMatch = true;
                                     break;
@@ -272,19 +272,19 @@ namespace GpsRunningPlugin.Source
                         }
                         if (!isMatch)
                         {
-                            this.refActivity = selectedActivities[0];
+                            this.m_refActivity = m_selectedActivities[0];
                         }
                     }
-                    _needsRecalculation = true;
+                    m_needsRecalculation = true;
                     calculate();
                 }
             }
-            get { return selectedActivities; }
+            get { return m_selectedActivities; }
         }
 
         public bool HidePage()
         {
-            _showPage = false;
+            m_showPage = false;
 #if !ST_2_1
             if (m_layer != null)
             {
@@ -295,7 +295,7 @@ namespace GpsRunningPlugin.Source
         }
         public void ShowPage(string bookmark)
         {
-            _showPage = true;
+            m_showPage = true;
             calculate();
 #if !ST_2_1
             if (m_layer != null)
@@ -308,7 +308,7 @@ namespace GpsRunningPlugin.Source
         private void RefreshColumns()
         {
             summaryList.Columns.Clear();
-            ICollection<IListColumnDefinition> allCols = SummaryColumnIds.ColumnDefs(this.refActivity);
+            ICollection<IListColumnDefinition> allCols = SummaryColumnIds.ColumnDefs(this.m_refActivity);
             //Permanent fields
             foreach (IListColumnDefinition columnDef in SummaryColumnIds.PermanentMultiColumnDefs())
             {
@@ -356,9 +356,9 @@ namespace GpsRunningPlugin.Source
 
         private void setCategoryLabel()
         {
-            if (selectedActivities.Count > 1)
+            if (m_selectedActivities.Count > 1)
             {
-                this.boxCategory.Text = string.Format(Resources.LimitingToSelected, selectedActivities.Count);
+                this.boxCategory.Text = string.Format(Resources.LimitingToSelected, m_selectedActivities.Count);
                 //categoryLabel.Text = string.Format(Resources.LimitingToSelected, selectedActivities.Count);
             }
             else
@@ -409,9 +409,9 @@ namespace GpsRunningPlugin.Source
         {
             summaryList.Columns.Clear();
             summaryList.RowData = null;
-            if (similar != null)
+            if (m_similarActivities != null)
             {
-                if (similar.Count > 1)
+                if (m_similarActivities.Count > 1)
                 {
                     IList<UniqueRoutesResult> result = new List<UniqueRoutesResult>();
                     similarToolTip = new Dictionary<string, string>();
@@ -425,10 +425,10 @@ namespace GpsRunningPlugin.Source
                         m_progressBar.BringToFront();
                         //reset calculations
                         m_commonStretches = null;
-                        commonStretches = CommonStretches.getCommonSpeed(SimilarPoints, similar, Settings.UseActive, m_progressBar);
+                        commonStretches = CommonStretches.getCommonSpeed(SimilarPoints, m_similarActivities, Settings.UseActive, m_progressBar);
                         m_progressBar.Visible = false;
                     }
-                    foreach (IActivity activity in similar)
+                    foreach (IActivity activity in m_similarActivities)
                     {
                         string commonText = null;
                         if (commonStretches != null)
@@ -449,7 +449,7 @@ namespace GpsRunningPlugin.Source
                                 {
                                     //Extra info, also for additional info
                                     IItemTrackSelectionInfo[] ii = CommonStretches.getSelInfo(
-                                        new DateTime[] { activity.StartTime, refActivity.StartTime },
+                                        new DateTime[] { activity.StartTime, m_refActivity.StartTime },
                                         SimilarPoints[activity], Settings.UseActive);
                                     foreach (ValueRange<DateTime> d in ii[0].MarkedTimes)
                                     {
@@ -471,7 +471,7 @@ namespace GpsRunningPlugin.Source
                         similarToolTip[activity.ReferenceId] = Resources.CommonStretches + ": " + commonText;
                     }
                     summaryList.RowData = result;
-                    toolTipInfo.SetToolTip(infoIcon, String.Format(Resources.FoundActivities, similar.Count - 1));
+                    toolTipInfo.SetToolTip(infoIcon, String.Format(Resources.FoundActivities, m_similarActivities.Count - 1));
                     summaryView_Sort();
                     summaryList.Visible = true;
                 }
@@ -524,11 +524,11 @@ namespace GpsRunningPlugin.Source
         }
         private void calculate(bool useSelection)
         {
-            if (_showPage && _needsRecalculation)
+            if (m_showPage && m_needsRecalculation)
             {
                 m_layer.MarkedTrailRoutes = new Dictionary<string, MapPolyline>();
                 m_layer.TrailRoutes = new Dictionary<string, MapPolyline>();
-                if (refActivity != null)
+                if (m_refActivity != null)
                 {
                     summaryList.Visible = false;
                     //summaryLabel.Visible = false;
@@ -538,19 +538,19 @@ namespace GpsRunningPlugin.Source
                     //boxCategory.Visible = true;
                     m_progressBar.BringToFront(); //Kept at back to work with designer...
                     m_progressBar.Visible = true;
-                    urRoute.Clear();
+                    m_urRoute.Clear();
 #if !ST_2_1
                     IList<IItemTrackSelectionInfo> selectedGPS = m_view.RouteSelectionProvider.SelectedItems;
                     if (useSelection && selectedGPS.Count > 0)
                     {
-                        urRoute = getRoute(refActivity, selectedGPS);
+                        m_urRoute = getRoute(m_refActivity, selectedGPS);
                     }
 #endif
                     IList<IActivity> activities;
 
-                    if (selectedActivities.Count > 1)
+                    if (m_selectedActivities.Count > 1)
                     {
-                        activities = selectedActivities;
+                        activities = m_selectedActivities;
                     }
                     else
                     {
@@ -558,13 +558,13 @@ namespace GpsRunningPlugin.Source
                         //btnChangeCategory.Visible = true;
                         //boxCategory.Visible = true;
                     }
-                    if (urRoute.Count > 0)
+                    if (m_urRoute.Count > 0)
                     {
-                        similar = UniqueRoutes.findSimilarRoutes(urRoute, activities, false, m_progressBar);
+                        m_similarActivities = UniqueRoutes.findSimilarRoutes(m_urRoute, activities, false, m_progressBar);
                     }
                     else
                     {
-                        similar = UniqueRoutes.findSimilarRoutes(refActivity, activities, true, selectedActivities.Count ==1, m_progressBar);
+                        m_similarActivities = UniqueRoutes.findSimilarRoutes(m_refActivity, activities, true, m_selectedActivities.Count ==1, m_progressBar);
                     }
                     determinePaceOrSpeed();
                     m_progressBar.Visible = false;
@@ -574,17 +574,17 @@ namespace GpsRunningPlugin.Source
                     
                     //Add the activities to the menu
                     IList<IActivity> remaining = new List<IActivity>();
-                    foreach (IActivity t in selectedActivities)
+                    foreach (IActivity t in m_selectedActivities)
                     {
                         remaining.Add(t);
                     }
                     this.ctxMenuItemRefActivity.DropDownItems.Clear();
-                    foreach (IActivity act in similar)
+                    foreach (IActivity act in m_similarActivities)
                     {
                         string tt = act.StartTime + " " + act.Name + " " + UnitUtil.Distance.ToString(act.TotalDistanceMetersEntered, "u") + " " + UnitUtil.Time.ToString(act.TotalTimeEntered, "u");
                         ToolStripMenuItem childMenuItem = new ToolStripMenuItem(tt);
                         childMenuItem.Tag = act;
-                        if (act.Equals(refActivity) && urRoute.Count == 0)
+                        if (act.Equals(m_refActivity) && m_urRoute.Count == 0)
                         {
                             childMenuItem.Checked = true;
                         }
@@ -596,9 +596,9 @@ namespace GpsRunningPlugin.Source
                         childMenuItem.Click += new System.EventHandler(this.ctxRefActivityItemActivities_Click);
                         remaining.Remove(act);
                     }
-                    if (urRoute.Count > 0)
+                    if (m_urRoute.Count > 0)
                     {
-                        string tt = urRoute.StartTime + " " + urRoute.TotalDistanceMeters + " " + urRoute.TotalElapsedSeconds;
+                        string tt = m_urRoute.StartTime + " " + m_urRoute.TotalDistanceMeters + " " + m_urRoute.TotalElapsedSeconds;
                         ToolStripMenuItem childMenuItem = new ToolStripMenuItem(tt);
                         childMenuItem.Checked = true;
                         childMenuItem.Enabled = false;
@@ -613,7 +613,7 @@ namespace GpsRunningPlugin.Source
                             string tt = act.StartTime + " " + act.Name + " " +UnitUtil.Distance.ToString(act.TotalDistanceMetersEntered, "u") + " " + UnitUtil.Time.ToString(act.TotalTimeEntered, "u");
                             ToolStripMenuItem childMenuItem = new ToolStripMenuItem(tt);
                             childMenuItem.Tag = act;
-                            if (act.Equals(refActivity) && urRoute.Count == 0)
+                            if (act.Equals(m_refActivity) && m_urRoute.Count == 0)
                             {
                                 childMenuItem.Checked = true;
                             }
@@ -644,9 +644,9 @@ namespace GpsRunningPlugin.Source
         //            pace++;
         //    }
         //    Settings.ShowPace = pace >= speed;
-            if (refActivity != null)
+            if (m_refActivity != null)
             {
-                Settings.ShowPace = (refActivity.Category.SpeedUnits == ZoneFiveSoftware.Common.Data.Measurement.Speed.Units.Pace) ?
+                Settings.ShowPace = (m_refActivity.Category.SpeedUnits == ZoneFiveSoftware.Common.Data.Measurement.Speed.Units.Pace) ?
                     true : false;
             }
         }
@@ -670,7 +670,7 @@ namespace GpsRunningPlugin.Source
         public void MarkRef(IItemTrackSelectionInfo res)
         {
 #if !ST_2_1
-            if (_showPage)
+            if (m_showPage)
             {
                 if (m_view != null &&
                     m_view.RouteSelectionProvider != null)
@@ -684,7 +684,7 @@ namespace GpsRunningPlugin.Source
         public void MarkTrack(IList<TrailResultMarked> atr)
         {
 #if !ST_2_1
-            if (_showPage)
+            if (m_showPage)
             {
                 //if (m_view != null &&
                 //    m_view.RouteSelectionProvider != null &&
@@ -745,13 +745,13 @@ namespace GpsRunningPlugin.Source
             {
                 if (m_commonStretches == null)
                 {
-                    if (urRoute != null && urRoute.Count > 0)
+                    if (m_urRoute != null && m_urRoute.Count > 0)
                     {
-                        m_commonStretches = CommonStretches.findSimilarPoints(urRoute, similar, m_progressBar);
+                        m_commonStretches = CommonStretches.findSimilarPoints(m_urRoute, m_similarActivities, m_progressBar);
                     }
-                    else if (refActivity != null)
+                    else if (m_refActivity != null)
                     {
-                        m_commonStretches = CommonStretches.findSimilarPoints(refActivity, similar, m_progressBar);
+                        m_commonStretches = CommonStretches.findSimilarPoints(m_refActivity, m_similarActivities, m_progressBar);
                     }
                     else
                     {
@@ -781,7 +781,7 @@ namespace GpsRunningPlugin.Source
 
         void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (_showPage)
+            if (m_showPage)
             {
                 setTable();
             }
@@ -797,13 +797,13 @@ namespace GpsRunningPlugin.Source
             ToolStripMenuItem sourceMenuItem = (ToolStripMenuItem)sender;
             if (sourceMenuItem != null && sourceMenuItem.Tag != null)
             {
-                refActivity = (IActivity)(sourceMenuItem.Tag);
+                m_refActivity = (IActivity)(sourceMenuItem.Tag);
                 calculate(false); //update, without using selected points
             }
         }
         private void refreshButton_Click(object sender, EventArgs e)
         {
-            _needsRecalculation = true;
+            m_needsRecalculation = true;
             calculate();
         }
 
@@ -821,7 +821,7 @@ namespace GpsRunningPlugin.Source
             }
             else
             {
-                list = similar;
+                list = m_similarActivities;
             }
 
             string pluginName = Settings.SelectedPlugin;
@@ -837,7 +837,7 @@ namespace GpsRunningPlugin.Source
                     //Honor selected box
                     if (!selectedBox.SelectedItem.Equals(StringResources.Selected))
                     {
-                        list = similar;
+                        list = m_similarActivities;
                     }
 
                     foreach (SendToPlugin p in Settings.aSendToPlugin)
@@ -948,7 +948,7 @@ namespace GpsRunningPlugin.Source
                     Settings.SelectedCategory = null;
                 }
                 setCategoryLabel();
-                _needsRecalculation = true;
+                m_needsRecalculation = true;
                 calculate();
             };
             treeListPopup.Popup(this.boxCategory.Parent.RectangleToScreen(this.boxCategory.Bounds));
@@ -1088,7 +1088,7 @@ namespace GpsRunningPlugin.Source
                             }
                         }
                         IList<TrailResultMarked> aTrm = new List<TrailResultMarked>();
-                        if (isMatch && refActivity != null)
+                        if (isMatch && m_refActivity != null)
                         {
                             IDictionary<IActivity, IList<PointInfo[]>> commonStretches = SimilarPoints;
                             if (commonStretches.Count > 0 &&
@@ -1097,10 +1097,10 @@ namespace GpsRunningPlugin.Source
                                 commonStretches[utr.Activity].Count > 0)
                             {
                                 TrailResult tr = new TrailResult(utr);
-                                IItemTrackSelectionInfo[] i = CommonStretches.getSelInfo(new DateTime[] { utr.Activity.StartTime, refActivity.StartTime },
+                                IItemTrackSelectionInfo[] i = CommonStretches.getSelInfo(new DateTime[] { utr.Activity.StartTime, m_refActivity.StartTime },
                                                         commonStretches[utr.Activity], true);
                                 ((TrailsItemTrackSelectionInfo)i[0]).Activity = utr.Activity;
-                                ((TrailsItemTrackSelectionInfo)i[1]).Activity = refActivity;
+                                ((TrailsItemTrackSelectionInfo)i[1]).Activity = m_refActivity;
                                 aTrm.Add(new TrailResultMarked(tr, i[0].MarkedTimes));
                                 this.MarkRef(i[1]);
                             }
@@ -1144,9 +1144,9 @@ namespace GpsRunningPlugin.Source
                 {
                     aAct.Add(tr.Activity);
                 }
-                _allowActivityUpdate = false;
+                m_allowActivityUpdate = false;
                 m_view.SelectionProvider.SelectedItems = (List<IActivity>)aAct;
-                _allowActivityUpdate = true;
+                m_allowActivityUpdate = true;
             }
 #endif
         }

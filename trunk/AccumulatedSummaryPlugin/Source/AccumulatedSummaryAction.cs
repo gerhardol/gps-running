@@ -37,11 +37,11 @@ namespace GpsRunningPlugin.Source
 #if !ST_2_1
         public AccumulatedSummaryAction(IDailyActivityView view)
         {
-            this.dailyView = view;
+            this.m_dailyView = view;
         }
         public AccumulatedSummaryAction(IActivityReportsView view)
         {
-            this.reportView = view;
+            this.m_reportView = view;
         }
 #else
         public AccumulatedSummaryAction(IList<IActivity> activities)
@@ -113,10 +113,10 @@ namespace GpsRunningPlugin.Source
 
         #endregion
 #if !ST_2_1
-        private IDailyActivityView dailyView = null;
-        private IActivityReportsView reportView = null;
+        private IDailyActivityView m_dailyView = null;
+        private IActivityReportsView m_reportView = null;
 #endif
-        private IList<IActivity> _activities = null;
+        private IList<IActivity> m_activities = null;
         private IList<IActivity> activities
         {
             get
@@ -124,15 +124,15 @@ namespace GpsRunningPlugin.Source
 #if !ST_2_1
                 //activities are set either directly or by selection,
                 //not by more than one view
-                if (_activities == null)
+                if (m_activities == null)
                 {
-                    if (dailyView != null)
+                    if (m_dailyView != null)
                     {
-                        return CollectionUtils.GetAllContainedItemsOfType<IActivity>(dailyView.SelectionProvider.SelectedItems); 
+                        return CollectionUtils.GetAllContainedItemsOfType<IActivity>(m_dailyView.SelectionProvider.SelectedItems); 
                     }
-                    else if (reportView != null)
+                    else if (m_reportView != null)
                     {
-                        return CollectionUtils.GetAllContainedItemsOfType<IActivity>(reportView.SelectionProvider.SelectedItems);
+                        return CollectionUtils.GetAllContainedItemsOfType<IActivity>(m_reportView.SelectionProvider.SelectedItems);
                     }
                     else
                     {
@@ -140,11 +140,11 @@ namespace GpsRunningPlugin.Source
                     }
                 }
 #endif
-                return _activities;
+                return m_activities;
             }
             set
             {
-                _activities = value;
+                m_activities = value;
             }
         }
     }
