@@ -366,7 +366,7 @@ namespace GpsRunningPlugin.Source
 
         void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName.Equals("DistanceUnits") || e.PropertyName.Equals("ElevationUnits"))
+            if (_showPage && (e.PropertyName.Equals("DistanceUnits") || e.PropertyName.Equals("ElevationUnits")))
             {
                 resetCachedTables();
                 showResults();

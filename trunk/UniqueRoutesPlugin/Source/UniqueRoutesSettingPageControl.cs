@@ -40,6 +40,8 @@ namespace GpsRunningPlugin.Source
 {
     public partial class UniqueRoutesSettingPageControl : UserControl
     {
+        private bool m_showPage = false;
+
         public UniqueRoutesSettingPageControl()
         {
             InitializeComponent();
@@ -82,6 +84,16 @@ namespace GpsRunningPlugin.Source
             beginningLabel.Text = UnitUtil.Distance.Label;
             endLabel.Text = UnitUtil.Distance.Label;
         }
+
+        public bool HidePage()
+        {
+            m_showPage = false;
+            return true;
+        }
+        public void ShowPage(string bookmark)
+        {
+            m_showPage = true;
+        }
         private void precedeControl(Control a, Control b)
         {
             a.Location = new Point(b.Location.X - a.Size.Width - 5, a.Location.Y);
@@ -102,7 +114,10 @@ namespace GpsRunningPlugin.Source
 
         void UniqueRoutesSettingPageControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            presentSettings();
+            if (m_showPage)
+            {
+                presentSettings();
+            }
         }
         
         void ignoreEndBox_LostFocus(object sender, EventArgs e)
