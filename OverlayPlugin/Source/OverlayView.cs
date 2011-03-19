@@ -234,6 +234,7 @@ namespace GpsRunningPlugin.Source
             popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_Overlay.GetHicon());
             Parent.SizeChanged += new EventHandler(Parent_SizeChanged);
             popupForm.StartPosition = FormStartPosition.CenterScreen;
+            popupForm.FormClosed += new FormClosedEventHandler(popupForm_FormClosed);
             popupForm.Show();
         }
 
@@ -241,117 +242,39 @@ namespace GpsRunningPlugin.Source
         {
             get
             {
-                return activities;
+                return m_activities;
             }
             set
             {
-                if (activities != null)
-                {
-                    foreach (IActivity activity in activities)
-                    {
-#if ST_2_1
-                        activity.DataChanged -= new NotifyDataChangedEventHandler(activity_DataChanged);
-#else
-                        activity.PropertyChanged -= new PropertyChangedEventHandler(Activity_PropertyChanged);
-#endif
-                    }
-                }
-                activities.Clear();
+                //Deactivate listeners for activities
+                this.deactivateListeners();
+                m_activities.Clear();
                 foreach (IActivity activity in value)
                 {
-                    activities.Add(activity);
-#if ST_2_1
-                    activity.DataChanged += new NotifyDataChangedEventHandler(activity_DataChanged);
-#else
-                    activity.PropertyChanged += new PropertyChangedEventHandler(Activity_PropertyChanged);
-#endif
-
+                    m_activities.Add(activity);
                 }
-                activities.Sort(new ActivityDateComparer());
+                this.activateListeners();
+
+                m_activities.Sort(new ActivityDateComparer());
                 nextIndex = 0;
-                actWrappers.Clear();
-                foreach (IActivity activity in activities)
+                m_actWrappers.Clear();
+                foreach (IActivity activity in m_activities)
                 {
-                    actWrappers.Add(new ActivityWrapper(activity, newColor()));
+                    m_actWrappers.Add(new ActivityWrapper(activity, newColor()));
                 }
 
                 CommonData.refActWrapper = null;
                 RefreshPage();
                 if (popupForm != null)
                 {
-                    if (activities.Count == 1)
+                    if (m_activities.Count == 1)
                         popupForm.Text = Resources.O1;
                     else
-                        popupForm.Text = String.Format(Resources.O2, activities.Count);
+                        popupForm.Text = String.Format(Resources.O2, m_activities.Count);
                 }
 
                 m_layer.DoZoom();
             }
-        }
-        public void RefreshPage()
-        {
-            if (_showPage)
-            {
-                updateActivities();
-                updateChart();
-                updateRoute();
-            }
-        }
-        private void updateActivities()
-        {
-            activities.Sort(new ActivityDateComparer());
-
-            nextIndex = 0;
-
-            treeListAct.ClearAllChecked();
-            treeListAct.RowData = actWrappers;
-            foreach(ActivityWrapper wrapper in actWrappers)
-            {
-                treeListAct.SetChecked(wrapper, true);
-            }
-            if (actWrappers.Count > 0)
-            {
-                //TODO: Try to keep refAct
-                CommonData.refActWrapper = actWrappers[0];
-            }
-
-        }
-
-        private class ActivityDateComparer : Comparer<IActivity>
-        {
-            public override int Compare(IActivity x, IActivity y)
-            {
-                return x.StartTime.CompareTo(y.StartTime);
-            }
-        }
-
-        public bool HidePage()
-        {
-            _showPage = false;
-#if !ST_2_1
-            if (m_layer != null)
-            {
-                m_layer.HidePage();
-            }
-#endif
-            return true;
-        }
-        public void ShowPage(string bookmark)
-        {
-            bool changed = !_showPage;
-            _showPage = true;
-            if (changed) { RefreshPage(); }
-#if !ST_2_1
-            if (m_layer != null)
-            {
-                m_layer.ShowPage(bookmark);
-                if (m_firstZoom)
-                {
-                    m_layer.DoZoom();
-                }
-                m_firstZoom = false;
-            }
-#endif
         }
         public void ThemeChanged(ITheme visualTheme)
         {
@@ -436,9 +359,114 @@ namespace GpsRunningPlugin.Source
             correctUI(new Control[] { heartRate, pace, speed, power, cadence, elevation, time, distance });
 
             RefreshColumns();
-
             RefreshPage();
         }
+
+        public bool HidePage()
+        {
+            m_showPage = false;
+            this.deactivateListeners();
+#if !ST_2_1
+            if (m_layer != null)
+            {
+                m_layer.HidePage();
+            }
+#endif
+            return true;
+        }
+
+        public void ShowPage(string bookmark)
+        {
+            m_showPage = true;
+            activateListeners();
+#if !ST_2_1
+            if (m_layer != null)
+            {
+                m_layer.ShowPage(bookmark);
+                if (m_firstZoom)
+                {
+                    //m_layer.DoZoom();
+                }
+                m_firstZoom = false;
+            }
+#endif
+            RefreshPage();
+        }
+
+        private void activateListeners()
+        {
+            if (m_showPage)
+            {
+                if (m_activities != null)
+                {
+                    foreach (IActivity activity in m_activities)
+                    {
+#if ST_2_1
+                        activity.DataChanged += new NotifyDataChangedEventHandler(activity_DataChanged);
+#else
+                        activity.PropertyChanged += new PropertyChangedEventHandler(Activity_PropertyChanged);
+#endif
+                    }
+                }
+            }
+        }
+        private void deactivateListeners()
+        {
+            if (m_activities != null)
+            {
+                foreach (IActivity activity in m_activities)
+                {
+#if ST_2_1
+                    activity.DataChanged -= new NotifyDataChangedEventHandler(activity_DataChanged);
+#else
+                    activity.PropertyChanged -= new PropertyChangedEventHandler(Activity_PropertyChanged);
+#endif
+                }
+            }
+        }
+
+        void popupForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.HidePage();
+        }
+
+        public void RefreshPage()
+        {
+            if (m_showPage)
+            {
+                updateActivities();
+                updateChart();
+                updateRoute();
+            }
+        }
+        private void updateActivities()
+        {
+            m_activities.Sort(new ActivityDateComparer());
+
+            nextIndex = 0;
+
+            treeListAct.ClearAllChecked();
+            treeListAct.RowData = m_actWrappers;
+            foreach (ActivityWrapper wrapper in m_actWrappers)
+            {
+                treeListAct.SetChecked(wrapper, true);
+            }
+            if (m_actWrappers.Count > 0)
+            {
+                //TODO: Try to keep refAct
+                CommonData.refActWrapper = m_actWrappers[0];
+            }
+
+        }
+
+        private class ActivityDateComparer : Comparer<IActivity>
+        {
+            public override int Compare(IActivity x, IActivity y)
+            {
+                return x.StartTime.CompareTo(y.StartTime);
+            }
+        }
+
         private void correctUI(IList<Control> comp)
         {
             Control prev = null;
@@ -500,7 +528,7 @@ namespace GpsRunningPlugin.Source
                     averages.Add(makeMovingAverage(series, axis));
                 }
             }
-            if (Settings.ShowCategoryAverage && activities.Count > 1)
+            if (Settings.ShowCategoryAverage && m_activities.Count > 1)
             {
                 chart.DataSeries.Add(getCategoryAverage(axis,list));
                 if (Settings.ShowMovingAverage)
@@ -581,7 +609,7 @@ namespace GpsRunningPlugin.Source
             chart.DataSeries.Add(average);
             average.LineColor = series.LineColor;
             average.LineWidth = 2;
-            series2activity.Add(average, series2activity[series]);
+            m_series2activity.Add(average, m_series2activity[series]);
             return average;
         }
         
@@ -634,7 +662,7 @@ namespace GpsRunningPlugin.Source
             chart.AutozoomToData(false);
             chart.DataSeries.Clear();
             chart.YAxisRight.Clear();
-            series2activity.Clear();
+            m_series2activity.Clear();
             bool useRight = false;
 
             if (Settings.UseTimeXAxis)
@@ -1235,7 +1263,7 @@ namespace GpsRunningPlugin.Source
         public void MarkTrack(IList<TrailResultMarked> atr)
         {
 #if !ST_2_1
-            if (_showPage)
+            if (m_showPage)
             {
                     IDictionary<string, MapPolyline> result = new Dictionary<string, MapPolyline>();
                     foreach (TrailResultMarked trm in atr)
@@ -1297,8 +1325,7 @@ namespace GpsRunningPlugin.Source
             foreach (TimeValueEntry<float> entry in dataSeries)
             {
                 DateTime entryTime = dataSeries.EntryDateTime(entry);
-                TimeSpan elapsed = DateTimeRangeSeries.TimeNotPaused(dataSeries.StartTime, entryTime, pauses);
-                //xxx TimeSpan elapsed = DateTimeRangeSeries.TimeNotPaused(info.Activity.StartTime, entryTime, pauses);
+                TimeSpan elapsed = DateTimeRangeSeries.TimeNotPaused(info.ActualTrackStart, entryTime, pauses);
                 newDataSeries.Add(dataSeries.StartTime.Add(elapsed), entry.Value);
             }
         }
@@ -1318,8 +1345,7 @@ namespace GpsRunningPlugin.Source
             newDataSeries.AllowMultipleAtSameTime = true;
             foreach (TimeValueEntry<float> entry in dataSeries)
             {
-                DateTime newEntryTime = DateTimeRangeSeries.AddTimeAndPauses(dataSeries.StartTime, new TimeSpan(0, 0, (int)entry.ElapsedSeconds), pauses);
-                //xxx DateTime newEntryTime = DateTimeRangeSeries.AddTimeAndPauses(info.Activity.StartTime, new TimeSpan(0, 0, (int)entry.ElapsedSeconds), pauses);
+                DateTime newEntryTime = DateTimeRangeSeries.AddTimeAndPauses(info.ActualTrackStart, new TimeSpan(0, 0, (int)entry.ElapsedSeconds), pauses);
                 newDataSeries.Add(newEntryTime, entry.Value);
             }
         }
@@ -1332,7 +1358,7 @@ namespace GpsRunningPlugin.Source
             IList<ChartDataSeries> list = new List<ChartDataSeries>();
             int index = 0;            
             
-            foreach (ActivityWrapper actWrapper in actWrappers)
+            foreach (ActivityWrapper actWrapper in m_actWrappers)
             {
                 IActivity activity = actWrapper.Activity;
                 ArrayList checkedWrappers = (ArrayList)treeListAct.CheckedElements;
@@ -1354,7 +1380,7 @@ namespace GpsRunningPlugin.Source
                         axis,
                         getDataSeriess,
                         offset);
-                    series2activity.Add(series, activity);
+                    m_series2activity.Add(series, activity);
                     list.Add(series);
                 }
                 index++;
@@ -1410,13 +1436,11 @@ namespace GpsRunningPlugin.Source
                         ITimeValueEntry<float> entryMoving;
                         if (includeStopped)
                         {
-                            entryMoving = info.ActualDistanceMetersTrack.GetInterpolatedValue(info.ActualDistanceMetersTrack.StartTime.AddSeconds(entry.ElapsedSeconds));
-                            //xxx entryMoving = info.ActualDistanceMetersTrack.GetInterpolatedValue(info.Activity.StartTime.AddSeconds(entry.ElapsedSeconds));
+                            entryMoving = info.ActualDistanceMetersTrack.GetInterpolatedValue(info.ActualTrackStart.AddSeconds(entry.ElapsedSeconds));
                         }
                         else
                         {
-                            entryMoving = info.MovingDistanceMetersTrack.GetInterpolatedValue(info.MovingDistanceMetersTrack.StartTime.AddSeconds(entry.ElapsedSeconds));
-                            //xxx entryMoving = info.MovingDistanceMetersTrack.GetInterpolatedValue(info.Activity.StartTime.AddSeconds(entry.ElapsedSeconds));
+                            entryMoving = info.MovingDistanceMetersTrack.GetInterpolatedValue(info.ActualTrackStart.AddSeconds(entry.ElapsedSeconds));
                         }
                         if (entryMoving != null && (first || (!first && entryMoving.Value > 0)))
 						{
@@ -1435,7 +1459,7 @@ namespace GpsRunningPlugin.Source
             }
             //activity color from activity
             //The wrapper should be included here, but the structure is not changed
-            foreach (ActivityWrapper wrapper in actWrappers)
+            foreach (ActivityWrapper wrapper in m_actWrappers)
             {
                 if (wrapper.Activity == info.Activity)
                 {
@@ -1447,16 +1471,22 @@ namespace GpsRunningPlugin.Source
         
         private void form_SizeChanged(object sender, EventArgs e)
         {
-            if (popupForm != null)
+            if (m_showPage)
             {
-                Settings.WindowSize = popupForm.Size;
+                if (popupForm != null)
+                {
+                    Settings.WindowSize = popupForm.Size;
+                }
+                OverlayView_SizeChanged(sender, e);
             }
-            OverlayView_SizeChanged(sender, e);
         }
 
         private void OverlayView_SizeChanged(object sender, EventArgs e)
         {
-            setSize();
+            if (m_showPage)
+            {
+                setSize();
+            }
         }
 
 #if ST_2_1
@@ -1470,7 +1500,8 @@ namespace GpsRunningPlugin.Source
 #else
         private void Activity_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (_showPage)
+            //Note: ST3 fires the event several times. Just use one of them
+            if (m_showPage && e.PropertyName == "GPSRoute")
             {
                 updateChart();
                 updateRoute();
@@ -1491,28 +1522,28 @@ namespace GpsRunningPlugin.Source
 #else
             treeListAct.SelectedItems = new object[] { };
 #endif
-            bSelectDataFlag = false;
+            m_bSelectDataFlag = false;
 
-			if ( bSelectingDataFlag )
+			if ( m_bSelectingDataFlag )
 			{
-				bSelectingDataFlag = false;
+				m_bSelectingDataFlag = false;
 				return;
 			}
         }
 
 		void chart_SelectingData(object sender, ChartBase.SelectDataEventArgs e)
 		{
-            if ((lastSelectedSeries != null) && (lastSelectedSeries != e.DataSeries))
+            if ((m_lastSelectedSeries != null) && (m_lastSelectedSeries != e.DataSeries))
             {
 #if ST_2_1
                 treeListAct.Selected = new object[] { };
 #else
                 treeListAct.SelectedItems = new object[] { };
 #endif
-                lastSelectedSeries.ValueAxis.LabelColor = Color.Black;
+                m_lastSelectedSeries.ValueAxis.LabelColor = Color.Black;
             }
-			lastSelectedSeries = e.DataSeries;
-			bSelectingDataFlag = true;
+			m_lastSelectedSeries = e.DataSeries;
+			m_bSelectingDataFlag = true;
 		}
 
         void chart_SelectData(object sender, ChartBase.SelectDataEventArgs e)
@@ -1520,12 +1551,12 @@ namespace GpsRunningPlugin.Source
             if (e != null && e.DataSeries != null)
             {
                 // Select the row of the treeview
-                if (series2activity.ContainsKey(e.DataSeries))
+                if (m_series2activity.ContainsKey(e.DataSeries))
                 {
 #if ST_2_1
                     treeListAct.Selected = new object[] { actWrappers[activities.IndexOf(series2activity[e.DataSeries])] };
 #else
-                    treeListAct.SelectedItems = new object[] { actWrappers[activities.IndexOf(series2activity[e.DataSeries])] };
+                    treeListAct.SelectedItems = new object[] { m_actWrappers[m_activities.IndexOf(m_series2activity[e.DataSeries])] };
 #endif
                 }
                 else
@@ -1537,15 +1568,15 @@ namespace GpsRunningPlugin.Source
 #endif
                 }
                 e.DataSeries.ValueAxis.LabelColor = e.DataSeries.SelectedColor;
-                bSelectingDataFlag = false;
-                if (bSelectDataFlag)
+                m_bSelectingDataFlag = false;
+                if (m_bSelectDataFlag)
                     chart_SelectingData(sender, e);
-                bSelectDataFlag = true;
+                m_bSelectDataFlag = true;
 
-                if (series2activity.ContainsKey(e.DataSeries) && activities.Contains(series2activity[e.DataSeries]))
+                if (m_series2activity.ContainsKey(e.DataSeries) && m_activities.Contains(m_series2activity[e.DataSeries]))
                 {
                     //from Trails plugin
-                    TrailResult tr = new TrailResult(actWrappers[activities.IndexOf(series2activity[e.DataSeries])]);
+                    TrailResult tr = new TrailResult(m_actWrappers[m_activities.IndexOf(m_series2activity[e.DataSeries])]);
                     IList<float[]> regions;
                     e.DataSeries.GetSelectedRegions(out regions);
 
@@ -1581,7 +1612,10 @@ namespace GpsRunningPlugin.Source
 
         private void Parent_SizeChanged(object sender, EventArgs e)
         {
-            setSize();
+            if (m_showPage)
+            {
+                setSize();
+            }
         }
 
         private void useTime_CheckedChanged(object sender, EventArgs e)
@@ -1710,7 +1744,7 @@ namespace GpsRunningPlugin.Source
 
             setRefActMenuItem.Enabled = (treeListAct.SelectedItems.Count == 1);
             showDiffMenuItem.Enabled = (CommonData.refActWrapper != null);
-            this.offsetMenuItem.Enabled = (activities != null && activities.Count > 1 && treeListAct.SelectedItems.Count > 0);
+            this.offsetMenuItem.Enabled = (m_activities != null && m_activities.Count > 1 && treeListAct.SelectedItems.Count > 0);
             this.setRefActMenuItem.Text = StringResources.SetRefActivity;
             if (CommonData.refActWrapper != null)
             {
@@ -1764,7 +1798,7 @@ namespace GpsRunningPlugin.Source
                 if (similarActivities != null)
                 {
                     IList<IActivity> allActivities = new List<IActivity>();
-                    foreach (IActivity act in activities)
+                    foreach (IActivity act in m_activities)
                     {
                         allActivities.Add(act);
                     }
@@ -1802,7 +1836,7 @@ namespace GpsRunningPlugin.Source
                             commonStretches[aw.Activity][0].MarkedTimes[0].Lower.Subtract(aw.Activity.StartTime));
                         aw.DistanceOffset = commonStretches[aw.Activity][1].MarkedDistances[0].Lower - 
                             commonStretches[aw.Activity][0].MarkedDistances[0].Lower;
-                        TrailResult tr = new TrailResult(actWrappers[0]);
+                        TrailResult tr = new TrailResult(m_actWrappers[0]);
                     }
                 }
                 treeListAct.Refresh();
@@ -2064,7 +2098,7 @@ namespace GpsRunningPlugin.Source
 
         private void allVisibleMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (ActivityWrapper wrapper in actWrappers)
+            foreach (ActivityWrapper wrapper in m_actWrappers)
             {
                 treeListAct.SetChecked(wrapper, true);
             }
@@ -2074,7 +2108,7 @@ namespace GpsRunningPlugin.Source
 
         private void noneVisibleMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (ActivityWrapper wrapper in actWrappers)
+            foreach (ActivityWrapper wrapper in m_actWrappers)
             {
                 treeListAct.SetChecked(wrapper, false);
             }
@@ -2186,18 +2220,18 @@ namespace GpsRunningPlugin.Source
  Plugin.GetApplication().SystemPreferences.UICulture;
 #endif
 
-        private bool _showPage = false;
-        private ChartDataSeries lastSelectedSeries = null;
+        private bool m_showPage = false;
+        private ChartDataSeries m_lastSelectedSeries = null;
 
-        private List<IActivity> activities = new List<IActivity>();
-        private List<ActivityWrapper> actWrappers = new List<ActivityWrapper>();
-        private IDictionary<ChartDataSeries, IActivity> series2activity = new Dictionary<ChartDataSeries, IActivity>();
+        private List<IActivity> m_activities = new List<IActivity>();
+        private List<ActivityWrapper> m_actWrappers = new List<ActivityWrapper>();
+        private IDictionary<ChartDataSeries, IActivity> m_series2activity = new Dictionary<ChartDataSeries, IActivity>();
 
         //bSelectingDataFlag and bSelectDataFlag are used to coordinate the chart 
         //click/select/selecting events to minimize 'movingAverage' and 'box' control flicker.
         //I'm sure there's a better way, but at this time this is all I've got.
-        private bool bSelectingDataFlag = false;
-        private bool bSelectDataFlag = false;
+        private bool m_bSelectingDataFlag = false;
+        private bool m_bSelectDataFlag = false;
 
         private string saveImageProperties_fileName = "";
 

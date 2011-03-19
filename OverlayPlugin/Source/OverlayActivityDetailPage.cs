@@ -45,19 +45,39 @@ namespace GpsRunningPlugin.Source
 #if !ST_2_1
         public OverlayActivityDetailPage(IDailyActivityView view)
         {
-            this.view = view;
+            this.m_view = view;
+            m_prevViewId = view.Id;
             view.SelectionProvider.SelectedItemsChanged += new EventHandler(OnViewSelectedItemsChanged);
+            Plugin.GetApplication().PropertyChanged += new PropertyChangedEventHandler(Application_PropertyChanged);
         }
 
         private void OnViewSelectedItemsChanged(object sender, EventArgs e)
         {
-            activities = CollectionUtils.GetAllContainedItemsOfType<IActivity>(view.SelectionProvider.SelectedItems);
-            if ((control != null))
+            m_activities = CollectionUtils.GetAllContainedItemsOfType<IActivity>(m_view.SelectionProvider.SelectedItems);
+            if ((m_control != null))
             {
-                control.Activities = activities;
+                m_control.Activities = m_activities;
             }
         }
         public System.Guid Id { get { return GUIDs.Activity; } }
+
+        void Application_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            //Hide/Show the page if view is changing, to handle listeners and refresh
+            if (m_showPage && e.PropertyName == "ActiveView")
+            {
+                Guid viewId = Plugin.GetApplication().ActiveView.Id;
+                if (viewId == m_view.Id)
+                {
+                    if (m_control != null) { m_control.ShowPage(m_bookmark); }
+                }
+                else if (m_prevViewId == m_view.Id)
+                {
+                    if (m_control != null) { m_control.HidePage(); }
+                }
+                m_prevViewId = viewId; 
+            }
+        }
 #else
         public IActivity Activity
         {
@@ -76,32 +96,32 @@ namespace GpsRunningPlugin.Source
 
         public IList<string> MenuPath
         {
-            get { return menuPath; }
-            set { menuPath = value; OnPropertyChanged("MenuPath"); }
+            get { return m_menuPath; }
+            set { m_menuPath = value; OnPropertyChanged("MenuPath"); }
         }
 
         public bool MenuEnabled
         {
-            get { return menuEnabled; }
-            set { menuEnabled = value; OnPropertyChanged("MenuEnabled"); }
+            get { return m_menuEnabled; }
+            set { m_menuEnabled = value; OnPropertyChanged("MenuEnabled"); }
         }
 
         public bool MenuVisible
         {
-            get { return menuVisible; }
-            set { menuVisible = value; OnPropertyChanged("MenuVisible"); }
+            get { return m_menuVisible; }
+            set { m_menuVisible = value; OnPropertyChanged("MenuVisible"); }
         }
 
         public bool PageMaximized
         {
-            get { return pageMaximized; }
-            set { pageMaximized = value; OnPropertyChanged("PageMaximized"); }
+            get { return m_pageMaximized; }
+            set { m_pageMaximized = value; OnPropertyChanged("PageMaximized"); }
         }
         public void RefreshPage()
         {
-            if (control != null)
+            if (m_control != null)
             {
-                control.RefreshPage();
+                m_control.RefreshPage();
             }
         }
 
@@ -111,21 +131,22 @@ namespace GpsRunningPlugin.Source
 
         public Control CreatePageControl()
         {
-            if (control == null)
+            if (m_control == null)
             {
 #if !ST_2_1
-                control = new OverlayView(this, view);
+                m_control = new OverlayView(this, m_view);
 #else
                 control = new OverlayView();
 #endif
             }
-            control.Activities = activities;
-            return control;
+            m_control.Activities = m_activities;
+            return m_control;
         }
 
         public bool HidePage()
         {
-            if (control != null) { return control.HidePage(); }
+            m_showPage = false;
+            if (m_control != null) { return m_control.HidePage(); }
             return true;
         }
 
@@ -139,7 +160,9 @@ namespace GpsRunningPlugin.Source
 
         public void ShowPage(string bookmark)
         {
-            if (control != null) { control.ShowPage(bookmark); }
+            m_showPage = true;
+            m_bookmark=bookmark;
+            if (m_control != null) { m_control.ShowPage(bookmark); }
         }
         public IPageStatus Status
         {
@@ -151,9 +174,9 @@ namespace GpsRunningPlugin.Source
 
         public void ThemeChanged(ITheme visualTheme)
         {
-            if (control != null)
+            if (m_control != null)
             {
-                control.ThemeChanged(visualTheme);
+                m_control.ThemeChanged(visualTheme);
             }
         }
 
@@ -167,9 +190,9 @@ namespace GpsRunningPlugin.Source
 
         public void UICultureChanged(CultureInfo culture)
         {
-            if (control != null)
+            if (m_control != null)
             {
-                control.UICultureChanged(culture);
+                m_control.UICultureChanged(culture);
             }
         }
 
@@ -182,14 +205,17 @@ namespace GpsRunningPlugin.Source
 
         #endregion
 #if !ST_2_1
-        private IDailyActivityView view = null;
+        private IDailyActivityView m_view = null;
+        private Guid m_prevViewId;
 #endif
-        private IList<IActivity> activities = new List<IActivity>();
-        private OverlayView control = null;
-        private IList<string> menuPath = null;
-        private bool menuEnabled = true;
-        private bool menuVisible = true;
-        private bool pageMaximized = false;
+        private bool m_showPage = false;
+        private string m_bookmark = null;
+        private IList<IActivity> m_activities = new List<IActivity>();
+        private OverlayView m_control = null;
+        private IList<string> m_menuPath = null;
+        private bool m_menuEnabled = true;
+        private bool m_menuVisible = true;
+        private bool m_pageMaximized = false;
 
         private void OnPropertyChanged(string propertyName)
         {
