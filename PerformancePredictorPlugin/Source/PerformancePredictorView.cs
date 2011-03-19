@@ -213,40 +213,40 @@ new System.Globalization.CultureInfo("en"));
             }
         }
 
-        private IList<IActivity> activities = new List<IActivity>();
+        private IList<IActivity> m_activities = new List<IActivity>();
         public IList<IActivity> Activities
         {
-            get { return activities; }
+            get { return m_activities; }
             set
             {
-                bool showPage = _showPage;
-                _showPage = false;
+                bool showPage = m_showPage;
+                m_showPage = false;
 
                 //Make sure activities is not null
-                if (null == value) { activities.Clear(); }
-                else { activities = value; }
+                if (null == value) { m_activities.Clear(); }
+                else { m_activities = value; }
 
                 //No settings for HS, separate check in makeData(), enabled in setView
                 //For Activity page use Predict/Training by default for single activities
                 lblHighScoreRequired.Visible = false;
-                if (Settings.HighScore != null && (activities.Count > 1 || popupForm != null))
+                if (Settings.HighScore != null && (m_activities.Count > 1 || popupForm != null))
                 {
                     chkHighScore.Checked = true;
                 }
                 else
                 {
                     chkHighScore.Checked = false;
-                    if (activities.Count > 1)
+                    if (m_activities.Count > 1)
                     {
                         lblHighScoreRequired.Visible = true;
-                        activities.Clear();
+                        m_activities.Clear();
                     }
                 }
 
                 //Reset settings
                 if (lastActivity != null)
                 {
-                    if (lastActivity != null && (activities.Count != 1 || lastActivity != activities[0]))
+                    if (lastActivity != null && (m_activities.Count != 1 || lastActivity != m_activities[0]))
                     {
 #if ST_2_1
                     lastActivity.DataChanged -= new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(dataChanged);
@@ -254,16 +254,16 @@ new System.Globalization.CultureInfo("en"));
                         lastActivity.PropertyChanged -= new PropertyChangedEventHandler(Activity_PropertyChanged);
 #endif
                     }
-                    if (activities.Count != 1 || (activities.Count == 1 && null != activities[0]))
+                    if (m_activities.Count != 1 || (m_activities.Count == 1 && null != m_activities[0]))
                     {
                         trainingView.Activity = null;
                     }
                 }
-                if (1 == activities.Count && activities[0] != null)
+                if (1 == m_activities.Count && m_activities[0] != null)
                 {
-                    if (lastActivity != activities[0])
+                    if (lastActivity != m_activities[0])
                     {
-                        lastActivity = activities[0];
+                        lastActivity = m_activities[0];
 #if ST_2_1
                         lastActivity.DataChanged += new ZoneFiveSoftware.Common.Data.NotifyDataChangedEventHandler(dataChanged);
 #else
@@ -278,15 +278,15 @@ new System.Globalization.CultureInfo("en"));
                 }
 
                 string title = Resources.PPHS;
-                if (activities.Count > 0)
+                if (m_activities.Count > 0)
                 {
-                    if (activities.Count == 1)
+                    if (m_activities.Count == 1)
                     {
                         title = Resources.PPHS + " " + StringResources.ForOneActivity;
                     }
                     else
                     {
-                        title = Resources.PPHS + " " + String.Format(StringResources.ForManyActivities, activities.Count);
+                        title = Resources.PPHS + " " + String.Format(StringResources.ForManyActivities, m_activities.Count);
                     }
                 }
                 //title cant be set directly on activity page
@@ -295,7 +295,7 @@ new System.Globalization.CultureInfo("en"));
                     popupForm.Text = title;
                 }
 
-                _showPage = showPage;
+                m_showPage = showPage;
                 makeData();
                 m_layer.ClearOverlays();
             }
@@ -309,7 +309,10 @@ new System.Globalization.CultureInfo("en"));
 #else
         private void Activity_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            makeData();
+            if (m_showPage)
+            {
+                makeData();
+            }
         }
 #endif
         private ChartDataSeries cameronSeries;// = new ChartDataSeries(chart, chart.YAxis);
@@ -319,10 +322,10 @@ new System.Globalization.CultureInfo("en"));
 
         private Form popupForm = null;
 
-        private bool _showPage = false;
+        private bool m_showPage = false;
         public bool HidePage()
         {
-            _showPage = false;
+            m_showPage = false;
             if (null != trainingView) { trainingView.HidePage(); }
             if (m_layer != null)
             {
@@ -333,8 +336,8 @@ new System.Globalization.CultureInfo("en"));
         }
         public void ShowPage(string bookmark)
         {
-            bool changed = (_showPage != true);
-            _showPage = true;
+            bool changed = (m_showPage != true);
+            m_showPage = true;
             if (null != trainingView) { trainingView.ShowPage(bookmark); }
             if (changed) { makeData(); }
             if (m_layer != null)
@@ -367,10 +370,10 @@ new System.Globalization.CultureInfo("en"));
         private const string ActivityIdColumn = "ActivityId";
         private void setView()
         {
-            if (_showPage)
+            if (m_showPage)
             {
-                bool showPage = _showPage;
-                _showPage = false;
+                bool showPage = m_showPage;
+                m_showPage = false;
                 //Static settings
                 switch (Settings.Model)
                 {
@@ -397,12 +400,12 @@ new System.Globalization.CultureInfo("en"));
                 this.table.Enabled = true;
                 this.chartButton.Enabled = true;
 
-                if (activities.Count == 1)
+                if (m_activities.Count == 1)
                 {
                     //chkHighScore.Checked set in Activities (as it may clear selection)
                     if (Settings.HighScore != null) { chkHighScore.Enabled = true; }
                 }
-                if (activities.Count == 1 && !chkHighScore.Checked)
+                if (m_activities.Count == 1 && !chkHighScore.Checked)
                 {
                     timePrediction.Enabled = true;
                     training.Enabled = true;
@@ -439,32 +442,32 @@ new System.Globalization.CultureInfo("en"));
                     chartButton.Checked = Settings.ShowChart;
                     table.Checked = !Settings.ShowChart;
                 }
-                _showPage = showPage;
+                m_showPage = showPage;
             }
         }
 
         private void makeData()
         {
-            if (_showPage)
+            if (m_showPage)
             {
                 setView();
 
-                bool showPage = _showPage;
-                _showPage = false;
+                bool showPage = m_showPage;
+                m_showPage = false;
 
                 cameronSet.Clear(); cameronSet.Rows.Clear(); cameronSeries.Points.Clear();
                 riegelSet.Clear(); riegelSet.Rows.Clear(); riegelSeries.Points.Clear();
 
-                if (activities.Count > 1 || (activities.Count == 1 && chkHighScore.Checked))
+                if (m_activities.Count > 1 || (m_activities.Count == 1 && chkHighScore.Checked))
                 {
                     //Predict using one or many activities (check done that HS enabled prior)
                     makeData(cameronSet, cameronSeries, Cameron);
                     makeData(riegelSet, riegelSeries, Riegel);
                 }
-                else if (activities.Count == 1)
+                else if (m_activities.Count == 1)
                 {
                     //Predict and training info
-                    ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activities[0]);
+                    ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_activities[0]);
 
                     if (info.DistanceMeters > 0 && info.Time.TotalSeconds > 0)
                     {
@@ -475,7 +478,7 @@ new System.Globalization.CultureInfo("en"));
                     }
                 }
                 //else: no activity selected
-                _showPage = showPage;
+                m_showPage = showPage;
 
                 setData();
                 setSize();
@@ -484,8 +487,8 @@ new System.Globalization.CultureInfo("en"));
 
         private void setData()
         {
-            bool showPage = _showPage;
-            _showPage = false;
+            bool showPage = m_showPage;
+            m_showPage = false;
             DataTable table = null;
             ChartDataSeries series = null;
             switch (Settings.Model)
@@ -512,7 +515,7 @@ new System.Globalization.CultureInfo("en"));
                 chart.XAxis.Label = UnitUtil.Distance.LabelAxis;
                 chart.YAxis.Label = UnitUtil.Time.LabelAxis;
             }
-            _showPage = showPage;
+            m_showPage = showPage;
             updateChartVisibility();
         }
 
@@ -565,10 +568,10 @@ new System.Globalization.CultureInfo("en"));
             }
             progressBar.Visible = true;
             progressBar.Minimum = 0;
-            progressBar.Maximum = activities.Count;
+            progressBar.Maximum = m_activities.Count;
             results = (IList<IList<Object>>)
                 Settings.HighScore.GetMethod("getFastestTimesOfDistances").Invoke(null,
-                new object[] { activities, partialDistances, progressBar });
+                new object[] { m_activities, partialDistances, progressBar });
             progressBar.Visible = false;
 
             int index = 0;
@@ -700,7 +703,10 @@ new System.Globalization.CultureInfo("en"));
 
         private void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            makeData();
+            if (m_showPage)
+            {
+                makeData();
+            }
         }
 
         private void form_Resize(object sender, EventArgs e)
@@ -720,7 +726,7 @@ new System.Globalization.CultureInfo("en"));
         
         private void daveCameron_CheckedChanged(object sender, EventArgs e)
         {
-            if (_showPage && daveCameron.Checked)
+            if (m_showPage && daveCameron.Checked)
             {
                 Settings.Model = PredictionModel.DAVE_CAMERON;
                 setView();
@@ -731,7 +737,7 @@ new System.Globalization.CultureInfo("en"));
 
         private void reigel_CheckedChanged(object sender, EventArgs e)
         {
-            if (_showPage && reigel.Checked)
+            if (m_showPage && reigel.Checked)
             {
                 Settings.Model = PredictionModel.PETE_RIEGEL;
                 setView();
@@ -742,7 +748,7 @@ new System.Globalization.CultureInfo("en"));
 
         private void chartButton_CheckedChanged(object sender, EventArgs e)
         {
-            if (_showPage && chartButton.Checked)
+            if (m_showPage && chartButton.Checked)
             {
                 Settings.ShowChart = true;
                 updateChartVisibility();
@@ -751,7 +757,7 @@ new System.Globalization.CultureInfo("en"));
 
         private void table_CheckedChanged(object sender, EventArgs e)
         {
-            if (_showPage && table.Checked)
+            if (m_showPage && table.Checked)
             {
                 Settings.ShowChart = false;
                 updateChartVisibility();
@@ -760,7 +766,7 @@ new System.Globalization.CultureInfo("en"));
 
         private void updateChartVisibility()
         {
-            if (_showPage && timePrediction.Checked && activities.Count > 0)
+            if (m_showPage && timePrediction.Checked && m_activities.Count > 0)
             {
                 if (Settings.ShowChart)
                 {
@@ -777,7 +783,7 @@ new System.Globalization.CultureInfo("en"));
 
         private void timePrediction_CheckedChanged(object sender, EventArgs e)
         {
-            if (_showPage && timePrediction.Checked && activities.Count == 1)
+            if (m_showPage && timePrediction.Checked && m_activities.Count == 1)
             {
                 Settings.ShowPrediction = true;
                 setView();
@@ -787,7 +793,7 @@ new System.Globalization.CultureInfo("en"));
 
         private void training_CheckedChanged(object sender, EventArgs e)
         {
-            if (_showPage && training.Checked && activities.Count == 1)
+            if (m_showPage && training.Checked && m_activities.Count == 1)
             {
                 Settings.ShowPrediction = false;
                 setView();
@@ -797,7 +803,7 @@ new System.Globalization.CultureInfo("en"));
 
         private void pace_CheckedChanged(object sender, EventArgs e)
         {
-            if (_showPage && pace.Checked)
+            if (m_showPage && pace.Checked)
             {
                 Settings.ShowPace = true;
                 makeData();
@@ -807,7 +813,7 @@ new System.Globalization.CultureInfo("en"));
 
         private void speed_CheckedChanged(object sender, EventArgs e)
         {
-            if (_showPage && speed.Checked)
+            if (m_showPage && speed.Checked)
             {
                 Settings.ShowPace = false;
                 makeData();
@@ -837,7 +843,7 @@ new System.Globalization.CultureInfo("en"));
                 string actid = (string)dataGrid.Rows[rowIndex].Cells[ActivityIdColumn].Value;
 
                 IActivity id = null;
-                foreach (IActivity act in activities)
+                foreach (IActivity act in m_activities)
                 {
                     if (act.ReferenceId == actid)
                     {
@@ -846,7 +852,7 @@ new System.Globalization.CultureInfo("en"));
                 }
                 if (id != null)
                 {
-                    if (_showPage && isSingleView != true)
+                    if (m_showPage && isSingleView != true)
                     {
                         IDictionary<string, MapPolyline> routes = new Dictionary<string, MapPolyline>();
                         TrailMapPolyline m = new TrailMapPolyline(
@@ -886,7 +892,7 @@ new System.Globalization.CultureInfo("en"));
         public void MarkTrack(IList<TrailResultMarked> atr)
         {
 #if !ST_2_1
-            if (_showPage)
+            if (m_showPage)
             {
                 IDictionary<string, MapPolyline> result = new Dictionary<string, MapPolyline>();
                 if (m_view != null &&

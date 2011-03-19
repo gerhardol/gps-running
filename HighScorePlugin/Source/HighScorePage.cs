@@ -26,7 +26,7 @@ namespace GpsRunningPlugin.Source
 {
     class HighScorePage : ISettingsPage
     {
-        private HighScoreSettingPageControl control = null;
+        private HighScoreSettingPageControl m_control = null;
 
         #region ISettingsPage Members
 
@@ -50,18 +50,18 @@ namespace GpsRunningPlugin.Source
 
         public System.Windows.Forms.Control CreatePageControl()
         {
-            if (control == null)
+            if (m_control == null)
             {
-                control = new HighScoreSettingPageControl();
+                m_control = new HighScoreSettingPageControl();
             }
-            return control;
+            return m_control;
         }
 
         public bool HidePage()
         {
-            if (control != null)
+            if (m_control != null)
             {
-                control.HidePage();
+                m_control.HidePage();
             }
             return true;
         }
@@ -73,9 +73,9 @@ namespace GpsRunningPlugin.Source
 
         public void ShowPage(string bookmark)
         {
-            if (control != null)
+            if (m_control != null)
             {
-                control.ShowPage(bookmark);
+                m_control.ShowPage(bookmark);
             }
         }
 
@@ -86,9 +86,9 @@ namespace GpsRunningPlugin.Source
 
         public void ThemeChanged(ITheme visualTheme)
         {
-            if (control != null)
+            if (m_control != null)
             {
-                control.ThemeChanged(visualTheme);
+                m_control.ThemeChanged(visualTheme);
             }
         }
 
@@ -99,9 +99,9 @@ namespace GpsRunningPlugin.Source
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
-            if (control != null)
+            if (m_control != null)
             {
-                control.UICultureChanged(culture);
+                m_control.UICultureChanged(culture);
             }
         }
 

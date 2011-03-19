@@ -24,7 +24,7 @@ using ZoneFiveSoftware.Common.Visuals;
 
 namespace GpsRunningPlugin.Source
 {
-    class TrainingPlannerPage : IExtendSettingsPages
+    class OverlayPage : IExtendSettingsPages
     {
         #region IExtendSettingsPages Members
 

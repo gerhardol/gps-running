@@ -37,13 +37,13 @@ namespace GpsRunningPlugin.Source
 {
     public partial class TrainingView : UserControl
     {
-        private IActivity activity;
+        private IActivity m_activity;
         public IActivity Activity
         {
-            get { return activity; }
+            get { return m_activity; }
             set
             {
-                activity = value;
+                m_activity = value;
                 if (value != null)
                 {
                     setPages();
@@ -58,7 +58,7 @@ namespace GpsRunningPlugin.Source
             set
             {
                 predictor = value;
-                if (activity != null && value != null)
+                if (m_activity != null && value != null)
                 {
                     setPages();
                 }
@@ -117,17 +117,26 @@ namespace GpsRunningPlugin.Source
 #else
         private void Athlete_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            setPages();
+            if (m_showPage)
+            {
+                setPages();
+            }
         }
         private void Logbook_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            setPages();
+            if (m_showPage)
+            {
+                setPages();
+            }
         }
 #endif
 
         private void TrainingView_SizeChanged(object sender, EventArgs e)
         {
-            setSize();
+            if (m_showPage)
+            {
+                setSize();
+            }
         }
 
         private ITheme m_visualTheme;
@@ -173,16 +182,16 @@ namespace GpsRunningPlugin.Source
                 UnitUtil.Distance.ToString(1000, "u"));
         }
 
-        private bool _showPage = false;
+        private bool m_showPage = false;
         public bool HidePage()
         {
-            _showPage = false;
+            m_showPage = false;
             return true;
         }
         public void ShowPage(string bookmark)
         {
-            bool changed = (_showPage != true);
-            _showPage = true;
+            bool changed = (m_showPage != true);
+            m_showPage = true;
             if (changed) { setPages(); }
         }
         private void setSize()
@@ -203,7 +212,7 @@ namespace GpsRunningPlugin.Source
 
         public void setPages()
         {
-            if (_showPage && activity != null && predictor != null)
+            if (m_showPage && m_activity != null && predictor != null)
             {
                 setTraining();
                 setPaceTempo();
@@ -215,7 +224,7 @@ namespace GpsRunningPlugin.Source
         }
         private void setWeight()
         {
-            double weight = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(activity.StartTime).WeightKilograms;
+            double weight = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(m_activity.StartTime).WeightKilograms;
             if (weight.Equals(double.NaN))
             {
                 weightLabel.Text = Resources.SetWeight;
@@ -225,7 +234,7 @@ namespace GpsRunningPlugin.Source
             }
             weightLabel2.Visible = true;
             weightGrid.Visible = true;
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
+            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_activity);
             weightLabel.Text = Resources.ProjectedWeightImpact + " " +
                 UnitUtil.Distance.ToString(info.DistanceMeters, "u");
             TimeSpan time = info.Time;
@@ -242,7 +251,7 @@ namespace GpsRunningPlugin.Source
                 set.Columns.Add(Resources.EstimatedSpeed + UnitUtil.Speed.LabelAbbr2);
             }            
             double inc = 1.4;
-            double vdot = getVdot(activity);
+            double vdot = getVdot(m_activity);
             for (int i = 0; i < 13; i++)
             {
                 set.Rows.Add(getWeightRow(6 - i, vdot, weight, inc, time, info));
@@ -275,7 +284,7 @@ namespace GpsRunningPlugin.Source
 
         private void setTemperature()
         {
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
+            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_activity);
             TimeSpan time = info.Time;
             temperatureLabel.Text = Resources.ProjectedTemperatureImpact+" "+UnitUtil.Distance.ToString(info.DistanceMeters,"u");
             double speed = info.DistanceMeters * 1000 / time.TotalMilliseconds;
@@ -290,7 +299,7 @@ namespace GpsRunningPlugin.Source
             {
                 set.Columns.Add(Resources.AdjustedSpeed + UnitUtil.Speed.LabelAbbr2);
             }
-            float actualTemp = activity.Weather.TemperatureCelsius;
+            float actualTemp = m_activity.Weather.TemperatureCelsius;
             if (!isValidtemperature(actualTemp)){actualTemp = 15;}
             double[] aTemperature = new double[] { 16, 18, 21, 24, 27, 29, 32, 35, 38 };
             for (int i = 0; i < aTemperature.Length; i++)
@@ -328,7 +337,7 @@ namespace GpsRunningPlugin.Source
             set.Columns.Add(Length.ToString(1, Length.Units.Mile, "F0u"));
             set.Columns.Add(Length.ToString(5, Length.Units.Kilometer, "F0u"));
             set.Columns.Add(Length.ToString(10, Length.Units.Kilometer, "F0u"));
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
+            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_activity);
             double distance = info.DistanceMeters;
             double seconds = info.Time.TotalSeconds;
             double mileSpeed = getTrainingSpeed(1609.344, distance, seconds);
@@ -358,13 +367,13 @@ namespace GpsRunningPlugin.Source
 
         private void setPaceTempo()
         {
-            paceTempoLabel.Text = String.Format(Resources.PaceForTempoRuns_label, getVdot(activity));
+            paceTempoLabel.Text = String.Format(Resources.PaceForTempoRuns_label, getVdot(m_activity));
             DataTable set = new DataTable();
             set.Columns.Add(CommonResources.Text.LabelDuration + " (" + StringResources.MinutesShort + ")");
             set.Columns.Add(UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace));
             string[] durations = new string[] { "20", "25",  "30",  "35",  "40",  "45",  "50",    "55", "60" };
             double[] factors = new double[]    { 1,  1.012, 1.022, 1.027, 1.033, 1.038, 1.043, 1.04866, 1.055};
-            double vdot = getVdot(activity);
+            double vdot = getVdot(m_activity);
 
             double speed = getTrainingSpeed(vdot, 0.93);
             for (int i = 0; i < durations.Length; i++)
@@ -405,8 +414,8 @@ namespace GpsRunningPlugin.Source
                 set.Columns.Add(UnitUtil.Speed.LabelAxis, typeof(double));
             }
             //addTrainingRow(set, percent);
-            double vo2max = getVo2max(activity);
-            double vdot = getVdot(activity);
+            double vo2max = getVo2max(m_activity);
+            double vdot = getVdot(m_activity);
             IList<String> zones = getZones();
             IList<double> percentages = getPercentages(vdot);
             IList<double> hrs = getHeartRates(percentages);
@@ -448,7 +457,7 @@ namespace GpsRunningPlugin.Source
 
         private IList<double> getSpeeds(double vdot, IList<double> percentages)
         {
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
+            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_activity);
             double seconds = info.Time.TotalSeconds;
             double distance = info.DistanceMeters;
             double[] result = new double[15];

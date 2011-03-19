@@ -34,8 +34,8 @@ namespace GpsRunningPlugin.Source
 {
     class AccumulatedSummaryView : Form
     {
-        private WebBrowser browser;
-        private IList<IActivity> activities;
+        private WebBrowser m_browser;
+        private IList<IActivity> m_activities;
         private ITheme m_visualTheme;
 
         public AccumulatedSummaryView()
@@ -71,14 +71,14 @@ namespace GpsRunningPlugin.Source
         {
             set
             {
-                this.activities = value;
+                this.m_activities = value;
                 StringBuilder builder = new StringBuilder(10000);
                 makeReport(builder);
-                browser.DocumentText = builder.ToString();
-                if (activities.Count == 1)
+                m_browser.DocumentText = builder.ToString();
+                if (m_activities.Count == 1)
                     Text = Resources.AS1;
                 else
-                    Text = String.Format(Resources.AS2, activities.Count);
+                    Text = String.Format(Resources.AS2, m_activities.Count);
                 Icon = System.Drawing.Icon.FromHandle(Properties.Resources.Image_32_AccumulatedSummary.GetHicon());
                 ShowDialog();
             }
@@ -121,7 +121,7 @@ namespace GpsRunningPlugin.Source
         private TimeSpan getRealTotalTimeForWorkout(TimeSpan totalTime)
         {
             TimeSpan result = totalTime;
-            foreach (IActivity activity in activities)
+            foreach (IActivity activity in m_activities)
             {
                 if (activity.HeartRatePerMinuteTrack == null)
                 {
@@ -138,12 +138,12 @@ namespace GpsRunningPlugin.Source
         private string getWorkoutRatio()
         {
             int good = 0;
-            foreach (IActivity activity in activities)
+            foreach (IActivity activity in m_activities)
             {
                 if (activity.HeartRatePerMinuteTrack != null)
                     good++;
             }
-            return String.Format(StringResources.NoutofM, good, activities.Count);
+            return String.Format(StringResources.NoutofM, good, m_activities.Count);
         }
 
         private string getClimbZones(TimeSpan totalTime)
@@ -164,7 +164,7 @@ namespace GpsRunningPlugin.Source
         private string getAverageHeartRate(TimeSpan totalTime)
         {
             double result = 0;
-            foreach (IActivity activity in activities)
+            foreach (IActivity activity in m_activities)
             {
                 ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
                 if (activity.HeartRatePerMinuteTrack != null)
@@ -187,9 +187,9 @@ namespace GpsRunningPlugin.Source
         private string printCategories(IZoneCategory zones, TimeSpan totalTime,
             bool speed, bool climb, bool heart)
         {
-            bool evenStart = even;
+            bool evenStart = m_even;
             IDictionary<String, TimeSpan> dict = new Dictionary<String, TimeSpan>();
-            foreach (IActivity activity in activities)
+            foreach (IActivity activity in m_activities)
             {
                 ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
                 ZoneCategoryInfo zinfos = null;
@@ -244,7 +244,7 @@ namespace GpsRunningPlugin.Source
                     " (" + (dict[name].TotalSeconds / totalTime.TotalSeconds).ToString("P2") + ")");
             }
             builder.Append("</table>");
-            even = evenStart;
+            m_even = evenStart;
             return builder.ToString();
         }
 
@@ -257,7 +257,7 @@ namespace GpsRunningPlugin.Source
         private string getCalories()
         {
             double result = 0;
-            foreach (IActivity activity in activities)
+            foreach (IActivity activity in m_activities)
             {
                 result += activity.TotalCalories;
             }
@@ -267,7 +267,7 @@ namespace GpsRunningPlugin.Source
         private double getFastestSpeed()
         {
             double result = double.MinValue;
-            foreach (IActivity activity in activities)
+            foreach (IActivity activity in m_activities)
             {
                 ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
                 double tmp = info.FastestSpeedMetersPerSecond;
@@ -280,7 +280,7 @@ namespace GpsRunningPlugin.Source
         private string getTotalUpsAndDowns()
         {
             double ups = 0, downs = 0;
-            foreach (IActivity activity in activities)
+            foreach (IActivity activity in m_activities)
             {
                 ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
                 IZoneCategory cat = Plugin.GetApplication().DisplayOptions.SelectedClimbZone;
@@ -315,7 +315,7 @@ namespace GpsRunningPlugin.Source
         private TimeSpan getTotalTime()
         {
             TimeSpan result = new TimeSpan();
-            foreach (IActivity activity in activities)
+            foreach (IActivity activity in m_activities)
             {
                 ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
                 result = result.Add(info.Time);
@@ -323,20 +323,20 @@ namespace GpsRunningPlugin.Source
             return result;
         }
 
-        private bool even = false;
+        private bool m_even = false;
 
         private void addEntry(StringBuilder builder, string name, string value)
         {
-            builder.Append("<tr style=\"background:" + (even ? getRGB(m_visualTheme.Window) : getRGB(m_visualTheme.Border)) +
+            builder.Append("<tr style=\"background:" + (m_even ? getRGB(m_visualTheme.Window) : getRGB(m_visualTheme.Border)) +
                 "\"><td>" + name + "</td><td align=\"right\">"
                 + value + "</td></tr>");
-            even = !even;
+            m_even = !m_even;
         }
 
         private double getTotalDistance()
         {
             double result = 0;
-            foreach (IActivity activity in activities)
+            foreach (IActivity activity in m_activities)
             {
                 ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
                 result += info.DistanceMeters;
@@ -346,22 +346,22 @@ namespace GpsRunningPlugin.Source
 
         private void InitializeComponent()
         {
-            this.browser = new System.Windows.Forms.WebBrowser();
+            this.m_browser = new System.Windows.Forms.WebBrowser();
             this.SuspendLayout();
             // 
             // browser
             // 
-            this.browser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.browser.Location = new System.Drawing.Point(0, 0);
-            this.browser.MinimumSize = new System.Drawing.Size(20, 20);
-            this.browser.Name = "browser";
-            this.browser.Size = new System.Drawing.Size(440, 349);
-            this.browser.TabIndex = 0;
+            this.m_browser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_browser.Location = new System.Drawing.Point(0, 0);
+            this.m_browser.MinimumSize = new System.Drawing.Size(20, 20);
+            this.m_browser.Name = "browser";
+            this.m_browser.Size = new System.Drawing.Size(440, 349);
+            this.m_browser.TabIndex = 0;
             // 
             // AccumulatedSummaryView
             // 
             this.ClientSize = new System.Drawing.Size(440, 349);
-            this.Controls.Add(this.browser);
+            this.Controls.Add(this.m_browser);
             this.Name = "AccumulatedSummaryView";
             this.ResumeLayout(false);
 

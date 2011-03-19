@@ -26,10 +26,10 @@ namespace GpsRunningPlugin
 {
     public class ActivityCategoryContentProvider : IContentProvider
     {
-        IList<object> list = new List<object>();
+        IList<object> m_list = new List<object>();
         public ActivityCategoryContentProvider(IList<object> list)
         {
-            this.list = list;
+            this.m_list = list;
         }
 
         public System.Collections.IList GetChildren(object parentElement)
@@ -49,7 +49,7 @@ namespace GpsRunningPlugin
         public System.Collections.IList GetElements(object inputElement)
         {
             System.Collections.IList result = new System.Collections.ArrayList();
-            foreach (object obj in list)
+            foreach (object obj in m_list)
             {
                 result.Add(obj);
             }
@@ -77,7 +77,7 @@ namespace GpsRunningPlugin
 
         public void InputChanged(object oldInput, object newInput)
         {
-            list = newInput as IList<object>;
+            m_list = newInput as IList<object>;
         }
     }
 
