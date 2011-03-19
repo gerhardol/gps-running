@@ -13,11 +13,6 @@
     <DefineConstants>$(DefineConstants);GPSRUNNING_OVERLAY</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="Resources\Image_32_Overlay.jpg" />
-    <None Include="Resources\Image_16_Overlay.jpg" />
-    <None Include="Resources\Image_24_Overlay.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="GUIDs.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -233,5 +228,6 @@
       <Link>Util\TrailsMapLayers\ReadMe.txt</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\Common\Common-Files.csproj" />
 </Project>

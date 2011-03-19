@@ -8,23 +8,14 @@
     <AssemblyName>PerformancePredictorPlugin</AssemblyName>
     <PluginId>0AA49FDF-ADA0-4522-9488-A698A7E197AA</PluginId>
   </PropertyGroup>
-  
   <Import Project="..\Common\Common-References.csproj" />
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);GPSRUNNING_PERFORMANCEPREDICTOR</DefineConstants>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="Resources\Image_32_PerformancePredictor.jpg" />
-    <None Include="Resources\Image_16_PerformancePredictor.jpg" />
-    <None Include="Resources\Image_24_PerformancePredictor.jpg" />
-  </ItemGroup>
-
   <ItemGroup>
     <Compile Include="GUIDs.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-
     <Compile Include="Source\ActivityWrapper.cs" />
     <Compile Include="Source\PerformancePredictorAction.cs" />
     <Compile Include="Source\PerformancePredictorActivityDetail.cs" />
@@ -61,7 +52,6 @@
       <DependentUpon>PerformancePredictorView.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-
   <ItemGroup>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -102,7 +92,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-
   <ItemGroup>
     <Compile Include="..\Common\Util\UnitUtil.cs">
       <Link>Util\UnitUtil.cs</Link>
@@ -116,7 +105,6 @@
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
-  
   <ItemGroup>
     <EmbeddedResource Include="..\Common\Util\StringResources.resx">
       <Link>Util\StringResources.resx</Link>

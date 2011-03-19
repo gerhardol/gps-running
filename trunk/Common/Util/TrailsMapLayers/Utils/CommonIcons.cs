@@ -39,9 +39,9 @@ namespace TrailsPlugin
 #if GPSRUNNING_UNIQUEROUTES||GPSRUNNING_OVERLAY||GPSRUNNING_HIGHSCORE||GPSRUNNING_PERFORMANCEPREDICTOR
             return GpsRunningPlugin.Plugin.GetApplication();
 #elif MATRIXPLUGIN
-            return MatrixPlugin.MatrixPlugin.GetApplication();
+            return MatrixPlugin.Plugin.GetApplication();
 #else // TRAILSPLUGIN
-            return PluginMain.GetApplication();
+            return Plugin.GetApplication();
 #endif
         }
 
@@ -52,7 +52,7 @@ namespace TrailsPlugin
 #elif MATRIXPLUGIN
             return MatrixPlugin.GUIDs.PluginMain.ToString();
 #else // TRAILSPLUGIN
-            return PluginMain.GUIDs.PluginMain.ToString();
+            return Plugin.GUIDs.PluginMain.ToString();
 #endif
         }
 

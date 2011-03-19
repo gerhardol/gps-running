@@ -8,18 +8,10 @@
     <AssemblyName>AccumulatedSummaryPlugin</AssemblyName>
     <PluginId>859F81F4-8272-4183-BA53-FDF1DD809FD6</PluginId>
   </PropertyGroup>
-
   <Import Project="..\Common\Common-References.csproj" />
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);GPSRUNNING_ACCUMULATEDSUMMARY</DefineConstants>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="Resources\Image_16_AccumulatedSummary.jpg" />
-    <None Include="Resources\Image_24_AccumulatedSummary.jpg" />
-    <None Include="Resources\Image_32_AccumulatedSummary.jpg" />
-  </ItemGroup>
-  
   <ItemGroup>
     <Compile Include="GUIDs.cs" />
     <Compile Include="Plugin.cs" />
@@ -39,7 +31,6 @@
     </Compile>
     <Compile Include="Source\Settings.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -80,7 +71,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-
   <ItemGroup>
     <Compile Include="..\Common\Util\UnitUtil.cs">
       <Link>Util\UnitUtil.cs</Link>
@@ -94,7 +84,6 @@
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
-  
   <ItemGroup>
     <EmbeddedResource Include="..\Common\Util\StringResources.resx">
       <Link>Util\StringResources.resx</Link>

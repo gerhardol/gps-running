@@ -43,7 +43,9 @@ namespace GpsRunningPlugin.Source
         public HighScoreActivityDetailPage(IDailyActivityView view)
         {
             this.m_view = view;
+            m_prevViewId = view.Id;
             view.SelectionProvider.SelectedItemsChanged += new EventHandler(OnViewSelectedItemsChanged);
+            Plugin.GetApplication().PropertyChanged += new PropertyChangedEventHandler(Application_PropertyChanged);
         }
 
         private void OnViewSelectedItemsChanged(object sender, EventArgs e)
@@ -54,6 +56,24 @@ namespace GpsRunningPlugin.Source
                 m_control.Activities = m_activities;
             }
         }
+        void Application_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            //Hide/Show the page if view is changing, to handle listeners and refresh
+            if (m_showPage && e.PropertyName == "ActiveView")
+            {
+                Guid viewId = Plugin.GetApplication().ActiveView.Id;
+                if (viewId == m_view.Id)
+                {
+                    if (m_control != null) { m_control.ShowPage(m_bookmark); }
+                }
+                else if (m_prevViewId == m_view.Id)
+                {
+                    if (m_control != null) { m_control.HidePage(); }
+                }
+                m_prevViewId = viewId;
+            }
+        }
+
         public System.Guid Id { get { return GUIDs.Activity; } }
 
 #else
@@ -121,6 +141,7 @@ namespace GpsRunningPlugin.Source
 
         public bool HidePage()
         {
+            m_showPage = false;
             if (m_control != null) { return m_control.HidePage(); }
             return true;
         }
@@ -135,6 +156,8 @@ namespace GpsRunningPlugin.Source
 
         public void ShowPage(string bookmark)
         {
+            m_showPage = true;
+            m_bookmark = bookmark;
             if (m_control != null) { m_control.ShowPage(bookmark); }
         }
 
@@ -145,7 +168,7 @@ namespace GpsRunningPlugin.Source
 
         public void ThemeChanged(ITheme visualTheme)
         {
-            //			m_visualTheme = visualTheme;
+            //m_visualTheme = visualTheme;
             if (m_control != null)
             {
                 m_control.ThemeChanged(visualTheme);
@@ -176,7 +199,10 @@ namespace GpsRunningPlugin.Source
 
 #if !ST_2_1
         private IDailyActivityView m_view = null;
+        private Guid m_prevViewId;
 #endif
+        private bool m_showPage = false;
+        private string m_bookmark = null;
         private IList<IActivity> m_activities = new List<IActivity>();
         private HighScoreViewer m_control = null;
         private IList<string> m_menuPath = null;
