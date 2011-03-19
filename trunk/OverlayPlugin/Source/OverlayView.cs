@@ -379,18 +379,18 @@ namespace GpsRunningPlugin.Source
         {
             m_showPage = true;
             activateListeners();
+            RefreshPage();
 #if !ST_2_1
             if (m_layer != null)
             {
                 m_layer.ShowPage(bookmark);
-                if (m_firstZoom)
+                if (popupForm==null && m_firstZoom)
                 {
-                    //m_layer.DoZoom();
+                    m_layer.DoZoom();
                 }
                 m_firstZoom = false;
             }
 #endif
-            RefreshPage();
         }
 
         private void activateListeners()
@@ -1500,8 +1500,8 @@ namespace GpsRunningPlugin.Source
 #else
         private void Activity_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            //Note: ST3 fires the event several times. Just use one of them
-            if (m_showPage && e.PropertyName == "GPSRoute")
+            //Note: ST3 normally fires the event several times. Just use e.PropertyName == "GPSRoute"?
+            if (m_showPage)
             {
                 updateChart();
                 updateRoute();

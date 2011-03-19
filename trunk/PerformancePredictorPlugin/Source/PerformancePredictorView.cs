@@ -651,6 +651,7 @@ new System.Globalization.CultureInfo("en"));
                 }
 
                 row[4] = Resources.NoSeedActivity;
+                row[ActivityIdColumn] = "";
                 set.Rows.Add(row);
             }
         }
@@ -699,6 +700,7 @@ new System.Globalization.CultureInfo("en"));
                     row[2] = UnitUtil.Time.ToString(new_time);
                     double speed = new_dist / new_time;
                     row[3] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed);
+                    row[ActivityIdColumn] = "";
                     set.Rows.Add(row);
                 }
             }
@@ -857,7 +859,8 @@ new System.Globalization.CultureInfo("en"));
         void dataGrid_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             int rowIndex = e.RowIndex;
-            if (rowIndex >= 0 && dataGrid.Columns[ActivityIdColumn] != null)
+            if (rowIndex >= 0 && 
+                dataGrid.Columns[ActivityIdColumn] != null)
             {
                 string actid = (string)dataGrid.Rows[rowIndex].Cells[ActivityIdColumn].Value;
 
