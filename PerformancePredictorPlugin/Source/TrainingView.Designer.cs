@@ -51,9 +51,9 @@ namespace GpsRunningPlugin.Source
             this.trainingLabel = new System.Windows.Forms.Label();
             this.trainingGrid = new System.Windows.Forms.DataGridView();
             this.paceTempoTab = new System.Windows.Forms.TabPage();
+            this.paceTempoLabel = new System.Windows.Forms.Label();
             this.paceTempoGrid = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
-            this.paceTempoLabel = new System.Windows.Forms.Label();
             this.intervalTab = new System.Windows.Forms.TabPage();
             this.interval2Label = new System.Windows.Forms.Label();
             this.interval1Label = new System.Windows.Forms.Label();
@@ -80,7 +80,7 @@ namespace GpsRunningPlugin.Source
             this.SuspendLayout();
             // 
             // tabControl1
-            // 
+            //
             this.tabControl1.Controls.Add(this.trainingTab);
             this.tabControl1.Controls.Add(this.paceTempoTab);
             this.tabControl1.Controls.Add(this.intervalTab);
@@ -94,7 +94,7 @@ namespace GpsRunningPlugin.Source
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.Padding = new System.Drawing.Point(0, 0);
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(243, 137);
+            this.tabControl1.Size = new System.Drawing.Size(242, 137);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabControl1_DrawItem);
             // 
@@ -147,10 +147,20 @@ namespace GpsRunningPlugin.Source
             this.paceTempoTab.Location = new System.Drawing.Point(4, 22);
             this.paceTempoTab.Name = "paceTempoTab";
             this.paceTempoTab.Padding = new System.Windows.Forms.Padding(3);
-            this.paceTempoTab.Size = new System.Drawing.Size(234, 111);
+            this.paceTempoTab.Size = new System.Drawing.Size(235, 111);
             this.paceTempoTab.TabIndex = 1;
             this.paceTempoTab.Text = "Pace for tempo runs";
             this.paceTempoTab.UseVisualStyleBackColor = true;
+            // 
+            // paceTempoLabel
+            // 
+            this.paceTempoLabel.AutoSize = true;
+            this.paceTempoLabel.Location = new System.Drawing.Point(6, 3);
+            this.paceTempoLabel.Name = "paceTempoLabel";
+            this.paceTempoLabel.Size = new System.Drawing.Size(390, 26);
+            this.paceTempoLabel.TabIndex = 0;
+            this.paceTempoLabel.Text = "Pace for tempo runs of 20 to 60 minutes at VDOT {0:0.0}. 20 min run is at lactate" +
+                " \r\nthreshold pace - pace of longer runs adjusted to maintain proper intensity.";
             // 
             // paceTempoGrid
             // 
@@ -167,7 +177,7 @@ namespace GpsRunningPlugin.Source
             this.paceTempoGrid.ReadOnly = true;
             this.paceTempoGrid.RowHeadersVisible = false;
             this.paceTempoGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.paceTempoGrid.Size = new System.Drawing.Size(231, 81);
+            this.paceTempoGrid.Size = new System.Drawing.Size(231, 64);
             this.paceTempoGrid.TabIndex = 2;
             // 
             // label1
@@ -175,20 +185,10 @@ namespace GpsRunningPlugin.Source
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(168, 13);
+            this.label1.Size = new System.Drawing.Size(368, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "20 min run is at lactate threshold pace - pace of longer runs adjusted to >>>>";
             this.label1.Visible = false;
-            // 
-            // paceTempoLabel
-            // 
-            this.paceTempoLabel.AutoSize = true;
-            this.paceTempoLabel.Location = new System.Drawing.Point(6, 3);
-            this.paceTempoLabel.Name = "paceTempoLabel";
-            this.paceTempoLabel.Size = new System.Drawing.Size(190, 26);
-            this.paceTempoLabel.TabIndex = 0;
-            this.paceTempoLabel.Text = "Pace for tempo runs of 20 to 60 minutes at VDOT {0:0.0}. 20 min run is at lactate" +
-                " \r\nthreshold pace - pace of longer runs adjusted to maintain proper intensity.";
             // 
             // intervalTab
             // 
@@ -198,7 +198,7 @@ namespace GpsRunningPlugin.Source
             this.intervalTab.Controls.Add(this.intervalGrid);
             this.intervalTab.Location = new System.Drawing.Point(4, 22);
             this.intervalTab.Name = "intervalTab";
-            this.intervalTab.Size = new System.Drawing.Size(234, 111);
+            this.intervalTab.Size = new System.Drawing.Size(235, 111);
             this.intervalTab.TabIndex = 2;
             this.intervalTab.Text = "Interval split times";
             this.intervalTab.UseVisualStyleBackColor = true;
@@ -248,7 +248,7 @@ namespace GpsRunningPlugin.Source
             this.temperatureTab.Controls.Add(this.temperatureGrid);
             this.temperatureTab.Location = new System.Drawing.Point(4, 22);
             this.temperatureTab.Name = "temperatureTab";
-            this.temperatureTab.Size = new System.Drawing.Size(234, 111);
+            this.temperatureTab.Size = new System.Drawing.Size(235, 111);
             this.temperatureTab.TabIndex = 3;
             this.temperatureTab.Text = "Temperature impact";
             this.temperatureTab.UseVisualStyleBackColor = true;
@@ -288,7 +288,7 @@ namespace GpsRunningPlugin.Source
             this.temperatureGrid.ReadOnly = true;
             this.temperatureGrid.RowHeadersVisible = false;
             this.temperatureGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.temperatureGrid.Size = new System.Drawing.Size(234, 81);
+            this.temperatureGrid.Size = new System.Drawing.Size(234, 64);
             this.temperatureGrid.TabIndex = 2;
             // 
             // weightTab
@@ -299,7 +299,7 @@ namespace GpsRunningPlugin.Source
             this.weightTab.Controls.Add(this.weightGrid);
             this.weightTab.Location = new System.Drawing.Point(4, 22);
             this.weightTab.Name = "weightTab";
-            this.weightTab.Size = new System.Drawing.Size(234, 111);
+            this.weightTab.Size = new System.Drawing.Size(235, 111);
             this.weightTab.TabIndex = 4;
             this.weightTab.Text = "Weight impact";
             this.weightTab.UseVisualStyleBackColor = true;
@@ -309,7 +309,7 @@ namespace GpsRunningPlugin.Source
             this.weightLabel2.AutoSize = true;
             this.weightLabel2.Location = new System.Drawing.Point(6, 15);
             this.weightLabel2.Name = "weightLabel2";
-            this.weightLabel2.Size = new System.Drawing.Size(220, 13);
+            this.weightLabel2.Size = new System.Drawing.Size(259, 13);
             this.weightLabel2.TabIndex = 7;
             this.weightLabel2.Text = "Estimated times and paces are +/- 2 seconds per mile";
             // 
@@ -339,11 +339,12 @@ namespace GpsRunningPlugin.Source
             this.weightGrid.ReadOnly = true;
             this.weightGrid.RowHeadersVisible = false;
             this.weightGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.weightGrid.Size = new System.Drawing.Size(234, 81);
+            this.weightGrid.Size = new System.Drawing.Size(234, 64);
             this.weightGrid.TabIndex = 5;
             // 
             // TrainingView
-            // 
+            //
+            this.AutoScroll = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;

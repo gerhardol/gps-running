@@ -32,48 +32,43 @@ using GpsRunningPlugin.Util;
 #if !ST_2_1
 using ZoneFiveSoftware.Common.Data;
 #endif
+using ZoneFiveSoftware.Common.Visuals.Fitness;
+using ZoneFiveSoftware.Common.Visuals.Mapping;
+using TrailsPlugin;
+using TrailsPlugin.Data;
+using TrailsPlugin.Utils;
+using TrailsPlugin.UI.MapLayers;
 
 namespace GpsRunningPlugin.Source
 {
     public partial class TrainingView : UserControl
     {
-        private IActivity m_activity;
-        public IActivity Activity
-        {
-            get { return m_activity; }
-            set
-            {
-                m_activity = value;
-                if (value != null)
-                {
-                    setPages();
-                }
-            }
-        }
-
-        private PredictTime predictor;
-        public PredictTime Predictor
-        {
-            get { return predictor; }
-            set
-            {
-                predictor = value;
-                if (m_activity != null && value != null)
-                {
-                    setPages();
-                }
-            }
-        }
+#if ST_2_1
+        private const object m_DetailPage = null;
+#else
+        private IDetailPage m_DetailPage = null;
+        private IDailyActivityView m_view = null;
+        private TrailPointsLayer m_layer = null;
+#endif
+        private PerformancePredictorControl m_ppcontrol = null;
+        private System.Windows.Forms.ProgressBar m_progressBar = null;
 
         public TrainingView()
         {
             InitializeComponent();
-            InitControls();
             SizeChanged += new EventHandler(TrainingView_SizeChanged);            
         }
 
-        void InitControls()
+        public void InitControls(IDetailPage detailPage, IDailyActivityView view, TrailPointsLayer layer, PerformancePredictorControl ppControl, System.Windows.Forms.ProgressBar progressBar)
         {
+#if !ST_2_1
+            m_DetailPage = detailPage;
+            m_view = view;
+            m_layer = layer;
+#endif
+            m_ppcontrol = ppControl;
+            m_progressBar = progressBar;
+
             foreach (TabPage tab in this.tabControl1.TabPages)
             {
                 foreach (Control grid0 in tab.Controls)
@@ -91,34 +86,44 @@ namespace GpsRunningPlugin.Source
             }
             setSize();
         }
+
         private void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            setPages();
+            if (m_showPage)
+            {
+                RefreshData();
+            }
         }
 
 #if ST_2_1
         private void Athlete_DataChanged(object sender, ZoneFiveSoftware.Common.Data.NotifyDataChangedEventArgs e)
-        {
-            setPages();
-        }
-
-        private void Logbook_DataChanged(object sender, ZoneFiveSoftware.Common.Data.NotifyDataChangedEventArgs e)
-        {
-            setPages();
-        }
-#else
-        private void Athlete_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (m_showPage)
             {
                 setPages();
             }
         }
-        private void Logbook_PropertyChanged(object sender, PropertyChangedEventArgs e)
+
+        private void Logbook_DataChanged(object sender, ZoneFiveSoftware.Common.Data.NotifyDataChangedEventArgs e)
         {
             if (m_showPage)
             {
                 setPages();
+            }
+        }
+#else
+        private void Athlete_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (m_showPage)
+            {
+                RefreshData();
+            }
+        }
+        private void Logbook_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (m_showPage)
+            {
+                RefreshData();
             }
         }
 #endif
@@ -179,13 +184,15 @@ namespace GpsRunningPlugin.Source
         public void ShowPage(string bookmark)
         {
             m_showPage = true;
-            setPages();
+            RefreshData();
             activateListeners();
+            this.Visible = true;
         }
 
         public bool HidePage()
         {
             m_showPage = false;
+            this.Visible = false;
             deactivateListeners();
             return true;
         }
@@ -217,11 +224,6 @@ namespace GpsRunningPlugin.Source
             Plugin.GetApplication().SystemPreferences.PropertyChanged -= new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
         }
 
-        void popupForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            this.HidePage();
-        }
-
         private void setSize()
         {
             foreach (TabPage tab in this.tabControl1.TabPages)
@@ -238,9 +240,9 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        public void setPages()
+        public void RefreshData()
         {
-            if (m_showPage && m_activity != null && predictor != null)
+            if (m_showPage && m_ppcontrol.SingleActivity != null && m_ppcontrol.Predictor != null)
             {
                 setTraining();
                 setPaceTempo();
@@ -252,7 +254,7 @@ namespace GpsRunningPlugin.Source
         }
         private void setWeight()
         {
-            double weight = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(m_activity.StartTime).WeightKilograms;
+            double weight = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(m_ppcontrol.SingleActivity.StartTime).WeightKilograms;
             if (weight.Equals(double.NaN))
             {
                 weightLabel.Text = Resources.SetWeight;
@@ -262,7 +264,7 @@ namespace GpsRunningPlugin.Source
             }
             weightLabel2.Visible = true;
             weightGrid.Visible = true;
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_activity);
+            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
             weightLabel.Text = Resources.ProjectedWeightImpact + " " +
                 UnitUtil.Distance.ToString(info.DistanceMeters, "u");
             TimeSpan time = info.Time;
@@ -279,7 +281,7 @@ namespace GpsRunningPlugin.Source
                 set.Columns.Add(Resources.EstimatedSpeed + UnitUtil.Speed.LabelAbbr2);
             }            
             double inc = 1.4;
-            double vdot = getVdot(m_activity);
+            double vdot = getVdot(m_ppcontrol.SingleActivity);
             for (int i = 0; i < 13; i++)
             {
                 set.Rows.Add(getWeightRow(6 - i, vdot, weight, inc, time, info));
@@ -312,7 +314,7 @@ namespace GpsRunningPlugin.Source
 
         private void setTemperature()
         {
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_activity);
+            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
             TimeSpan time = info.Time;
             temperatureLabel.Text = Resources.ProjectedTemperatureImpact+" "+UnitUtil.Distance.ToString(info.DistanceMeters,"u");
             double speed = info.DistanceMeters * 1000 / time.TotalMilliseconds;
@@ -327,7 +329,7 @@ namespace GpsRunningPlugin.Source
             {
                 set.Columns.Add(Resources.AdjustedSpeed + UnitUtil.Speed.LabelAbbr2);
             }
-            float actualTemp = m_activity.Weather.TemperatureCelsius;
+            float actualTemp = m_ppcontrol.SingleActivity.Weather.TemperatureCelsius;
             if (!isValidtemperature(actualTemp)){actualTemp = 15;}
             double[] aTemperature = new double[] { 16, 18, 21, 24, 27, 29, 32, 35, 38 };
             for (int i = 0; i < aTemperature.Length; i++)
@@ -365,7 +367,7 @@ namespace GpsRunningPlugin.Source
             set.Columns.Add(Length.ToString(1, Length.Units.Mile, "F0u"));
             set.Columns.Add(Length.ToString(5, Length.Units.Kilometer, "F0u"));
             set.Columns.Add(Length.ToString(10, Length.Units.Kilometer, "F0u"));
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_activity);
+            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
             double distance = info.DistanceMeters;
             double seconds = info.Time.TotalSeconds;
             double mileSpeed = getTrainingSpeed(1609.344, distance, seconds);
@@ -395,13 +397,13 @@ namespace GpsRunningPlugin.Source
 
         private void setPaceTempo()
         {
-            paceTempoLabel.Text = String.Format(Resources.PaceForTempoRuns_label, getVdot(m_activity));
+            paceTempoLabel.Text = String.Format(Resources.PaceForTempoRuns_label, getVdot(m_ppcontrol.SingleActivity));
             DataTable set = new DataTable();
             set.Columns.Add(CommonResources.Text.LabelDuration + " (" + StringResources.MinutesShort + ")");
             set.Columns.Add(UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace));
             string[] durations = new string[] { "20", "25",  "30",  "35",  "40",  "45",  "50",    "55", "60" };
             double[] factors = new double[]    { 1,  1.012, 1.022, 1.027, 1.033, 1.038, 1.043, 1.04866, 1.055};
-            double vdot = getVdot(m_activity);
+            double vdot = getVdot(m_ppcontrol.SingleActivity);
 
             double speed = getTrainingSpeed(vdot, 0.93);
             for (int i = 0; i < durations.Length; i++)
@@ -442,8 +444,8 @@ namespace GpsRunningPlugin.Source
                 set.Columns.Add(UnitUtil.Speed.LabelAxis, typeof(double));
             }
             //addTrainingRow(set, percent);
-            double vo2max = getVo2max(m_activity);
-            double vdot = getVdot(m_activity);
+            double vo2max = getVo2max(m_ppcontrol.SingleActivity);
+            double vdot = getVdot(m_ppcontrol.SingleActivity);
             IList<String> zones = getZones();
             IList<double> percentages = getPercentages(vdot);
             IList<double> hrs = getHeartRates(percentages);
@@ -485,7 +487,7 @@ namespace GpsRunningPlugin.Source
 
         private IList<double> getSpeeds(double vdot, IList<double> percentages)
         {
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_activity);
+            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
             double seconds = info.Time.TotalSeconds;
             double distance = info.DistanceMeters;
             double[] result = new double[15];
@@ -509,7 +511,7 @@ namespace GpsRunningPlugin.Source
 
         private double getTrainingSpeed(double new_dist, double old_dist, double old_time)
         {
-            return new_dist / Predictor(new_dist, old_dist, old_time);
+            return new_dist / m_ppcontrol.Predictor(new_dist, old_dist, old_time);
         }
         //Get training speed from vdot
         private double getTrainingSpeed(double vdot, double percentZone)

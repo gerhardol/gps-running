@@ -79,17 +79,17 @@ namespace GpsRunningPlugin.Source
 
         public void Run(System.Drawing.Rectangle rectButton)
         {
-            PerformancePredictorView t;
+            PerformancePredictorControl t;
 #if ST_2_1
-                t = new PerformancePredictorView(true);
+                t = new PerformancePredictorControl(true);
 #else
             if (m_reportView != null)
             {
-                t = new PerformancePredictorView(m_reportView);
+                t = new PerformancePredictorControl(m_reportView);
             }
             else
             {
-                t = new PerformancePredictorView(m_dailyView);
+                t = new PerformancePredictorControl(m_dailyView);
             }
 #endif
             t.Activities = activities;

@@ -17,6 +17,13 @@
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\ActivityWrapper.cs" />
+    <Compile Include="Source\PerformancePredictorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Source\PerformancePredictorControl.Designer.cs">
+      <DependentUpon>PerformancePredictorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Source\PredictTime.cs" />
     <Compile Include="Source\PerformancePredictorAction.cs" />
     <Compile Include="Source\PerformancePredictorActivityDetail.cs" />
     <Compile Include="Source\PerformancePredictorActivityEdit.cs" />
@@ -42,6 +49,9 @@
       <DependentUpon>TrainingView.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\Settings.cs" />
+    <EmbeddedResource Include="Source\PerformancePredictorControl.resx">
+      <DependentUpon>PerformancePredictorControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Source\PerformancePredictorSettings.resx">
       <DependentUpon>PerformancePredictorSettings.cs</DependentUpon>
     </EmbeddedResource>

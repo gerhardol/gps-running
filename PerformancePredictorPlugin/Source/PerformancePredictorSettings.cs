@@ -120,8 +120,8 @@ namespace GpsRunningPlugin.Source
                     }
                 }
                 double d = UnitUtil.Distance.Parse(distanceBox.Text, ref unit);
+                if (double.IsNaN(d) || d <= 0) { throw new Exception(); }
                 d = UnitUtil.Distance.ConvertFrom(d, unit);
-                if (d <= 0) { throw new Exception(); }
                 Settings.addDistance(d, unit, false);
                 updateList();
             }
