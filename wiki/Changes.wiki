@@ -9,7 +9,7 @@ More or less official beta releases are available in the Downloads section. See 
 Next version will be called 2.0
 
 1.9.286 2011-03-19
- * All: Release resources when popup is closed. This could goive a crash when editing an activity after or slower performance. See issue 24.
+ * All: Release resources when popup is closed. This could give a crash when editing an activity after or slower performance. See issue 24.
  * Overlay using Track start time when displaying charts, to handle misformatted activities.
  
 1.9.271 2011-02-19

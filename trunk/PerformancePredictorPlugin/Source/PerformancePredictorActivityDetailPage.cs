@@ -133,7 +133,7 @@ namespace GpsRunningPlugin.Source
             if (m_control == null)
             {
 #if !ST_2_1
-                m_control = new PerformancePredictorView(this, m_view);
+                m_control = new PerformancePredictorControl(this, m_view);
 #else
                 control = new PerformancePredictorView();
 #endif
@@ -210,7 +210,7 @@ namespace GpsRunningPlugin.Source
         private bool m_showPage = false;
         private string m_bookmark = null;
         private IList<IActivity> m_activities = new List<IActivity>();
-        private PerformancePredictorView m_control = null;
+        private PerformancePredictorControl m_control = null;
         private IList<string> m_menuPath = null;
         private bool m_menuEnabled = true;
         private bool m_menuVisible = true;
