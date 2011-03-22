@@ -107,7 +107,7 @@
     <value>Facteur</value>
   </data>
   <data name="Graph" xml:space="preserve">
-    <value>graphique</value>
+    <value>Graphique</value>
   </data>
   <data name="NoSelectedActivities" xml:space="preserve">
     <value>Aucune activité sélectionnée.</value>
@@ -120,6 +120,9 @@
   </data>
   <data name="StartZone" xml:space="preserve">
     <value>Zone de début :</value>
+  </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Résumé</value>
   </data>
   <data name="Use" xml:space="preserve">
     <value>Utiliser</value>
@@ -212,7 +215,10 @@
     <value>et</value>
   </data>
   <data name="ActivitySpeedOrPace" xml:space="preserve">
-    <value>Vitesse/allure activité</value>
+    <value>Vitesse/allure de l'activité</value>
+  </data>
+  <data name="ListSettings" xml:space="preserve">
+    <value>Paramètres de la liste</value>
   </data>
   <data name="Colour" xml:space="preserve">
     <value>Couleur</value>
@@ -220,7 +226,41 @@
   <data name="Visible" xml:space="preserve">
     <value>Visible</value>
   </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Compensation</value>
+  </data>
+  <data name="Difference" xml:space="preserve">
+    <value>diff</value>
+  </data>
   <data name="Width" xml:space="preserve">
     <value>largeur</value>
+  </data>
+  <data name="SetRefActivity" xml:space="preserve">
+    <value>Activité référence</value>
+  </data>
+  <data name="OtherPluginExceptionText" xml:space="preserve">
+    <value>Problème de communication avec {0}
+Vérifiez que {1} est installé sur votre machine</value>
+  </data>
+  <data name="OtherPluginVersion" xml:space="preserve">
+    <value>Detecté version {0} de {1}</value>
+  </data>
+  <data name="UniqueRoutesCompatible" xml:space="preserve">
+    <value>Les activités peuvent être filtrées en utilisant UniqueRoutes.</value>
+  </data>
+  <data name="UniqueRoutesPluginName" xml:space="preserve">
+    <value>Plug-in Unique Routes</value>
+  </data>
+  <data name="UniqueRoutesToInstall" xml:space="preserve">
+    <value>Installer au moins la version {0} de {1} pour filtrer les activités en utilisant UniqueRoutes.</value>
+  </data>
+  <data name="UI_Activity_List_Advanced" xml:space="preserve">
+    <value>Avancé</value>
+  </data>
+  <data name="UI_Activity_List_LimitSelection" xml:space="preserve">
+    <value>Limiter les activités aux activités selectionnés dans la liste</value>
+  </data>
+  <data name="UI_Activity_List_URSelect" xml:space="preserve">
+    <value>Ajouter des activités similaires avec Unique Routes d'activité référence {0}</value>
   </data>
 </root>

@@ -62,8 +62,20 @@
   <data name="AllowPointsOutsideBand" xml:space="preserve">
     <value>Nombre de points tolérés en dehors de la plage</value>
   </data>
+  <data name="Radius" xml:space="preserve">
+    <value>Rayon</value>
+  </data>
+  <data name="RadiusWarning" xml:space="preserve">
+    <value>Le rayon doit être un nombre</value>
+  </data>
   <data name="BeginningMeterWarning" xml:space="preserve">
     <value>Les premiers mètres ignorés doivent être un nombre</value>
+  </data>
+  <data name="CommonStretches" xml:space="preserve">
+    <value>Etirements communs</value>
+  </data>
+  <data name="ctxActiveLaps" xml:space="preserve">
+    <value>Seulement les tours actifs</value>
   </data>
   <data name="DidNotFindAnyRoutes" xml:space="preserve">
     <value>Aucune autre activité n'a été touvée avec le même parcours.\n Si vous pensez qu'il y en a, veuillez ajuster les paramètres et réessayez.</value>
@@ -97,6 +109,9 @@
   <data name="RoutesHaveDirection" xml:space="preserve">
     <value>Les parcours ont un sens</value>
   </data>
+  <data name="Sections" xml:space="preserve">
+    <value>sections</value>
+  </data>
   <data name="Webpage" xml:space="preserve">
     <value>Page internet du plugin Unique Route</value>
   </data>
@@ -107,5 +122,14 @@
   <data name="All" xml:space="preserve">
     <comment>NoLongerVisible</comment>
     <value>Tout</value>
+  </data>
+  <data name="LimitingToSelected" xml:space="preserve">
+    <value>Utilisant {0} les activités sélectionnés</value>
+  </data>
+  <data name="UI_Activity_List_LimitSelection" xml:space="preserve">
+    <value>Sélectionner les résultats marqués dans la liste d'activité</value>
+  </data>
+  <data name="NoGpsActivitiesSelected" xml:space="preserve">
+    <value>Pas d'activité avec le GPS sélectionné</value>
   </data>
 </root>
