@@ -30,21 +30,24 @@ namespace TrailsPlugin.Data {
             IValueRangeSeries<DateTime> t = new ValueRangeSeries<DateTime>();
             t.Add(new ValueRange<DateTime>(tr.FirstTime, tr.LastTime));
             selInfo.MarkedTimes = t;
+            selInfo.Activity = tr.Activity;
         }
         public TrailResultMarked(TrailResult tr, IValueRangeSeries<DateTime> t)
         {
             trailResult = tr;
             selInfo.MarkedTimes = t;
+            selInfo.Activity = tr.Activity;
         }
         public TrailResultMarked(TrailResult tr, IValueRangeSeries<double> t)
         {
             trailResult = tr;
             selInfo.MarkedDistances = t;
+            selInfo.Activity = tr.Activity;
         }
         public TrailResultMarked(TrailResult tr, IItemTrackSelectionInfo t)
         {
             trailResult = tr;
-            selInfo.SetFromSelection(t);
+            selInfo.SetFromSelection(t, tr.Activity);
         }
         public TrailResult trailResult;
         public Data.TrailsItemTrackSelectionInfo selInfo = new Data.TrailsItemTrackSelectionInfo();
@@ -64,6 +67,7 @@ namespace TrailsPlugin.Data {
             foreach (TrailResultMarked trm in atrm)
             {
                 result.Union(trm.selInfo);
+                result.Activity = trm.trailResult.Activity; //TODO: verfify only one activity
             }
             return result;
         }

@@ -52,6 +52,10 @@ namespace GpsRunningPlugin.Source
         private IDailyActivityView m_view = null;
         private TrailPointsLayer m_layer = null;
 #endif
+        private Form m_popupForm = null;
+
+        private bool m_showPage = false;
+        private IList<IActivity> m_activities = new List<IActivity>();
 
 #if !ST_2_1
         public PerformancePredictorControl(IDetailPage detailPage, IDailyActivityView view)
@@ -107,9 +111,7 @@ namespace GpsRunningPlugin.Source
             //Resize += new EventHandler(PerformancePredictorView_Resize);
             //Settings settings = new Settings();
 
-            //setSize();
-            //Remove this listener - let user explicitly update after changing settings, to avoid crashes
-            //Settings.DistanceChanged += new PropertyChangedEventHandler(Settings_DistanceChanged);
+            //Set control state before listeners are activated
             setView();
             this.daveCameronButton.CheckedChanged += new System.EventHandler(this.daveCameron_CheckedChanged);
             this.reigelButton.CheckedChanged += new System.EventHandler(this.reigel_CheckedChanged);
@@ -146,19 +148,19 @@ new System.Globalization.CultureInfo("en"));
 #else
                   Plugin.GetApplication().SystemPreferences.UICulture);
 #endif
-                popupForm = new Form();
-                popupForm.Controls.Add(this);
-                popupForm.Size = Settings.WindowSize;
+                m_popupForm = new Form();
+                m_popupForm.Controls.Add(this);
+                m_popupForm.Size = Settings.WindowSize;
                 //Fill would be simpler here, but then edges are cut
                 this.Size = new Size(Parent.Size.Width - 17, Parent.Size.Height - 38);
                 this.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom)));
                 //Parent.SizeChanged += new EventHandler(Parent_SizeChanged);
 
-                popupForm.StartPosition = FormStartPosition.CenterScreen;
-                popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_PerformancePredictor.GetHicon());
-                popupForm.FormClosed += new FormClosedEventHandler(popupForm_FormClosed);
-                popupForm.Show();
+                m_popupForm.StartPosition = FormStartPosition.CenterScreen;
+                m_popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_PerformancePredictor.GetHicon());
+                m_popupForm.FormClosed += new FormClosedEventHandler(popupForm_FormClosed);
+                m_popupForm.Show();
                 this.ShowPage("");
             }
         }
@@ -197,7 +199,6 @@ new System.Globalization.CultureInfo("en"));
             trainingView.UICultureChanged(culture);
         }
 
-        private IList<IActivity> m_activities = new List<IActivity>();
         public IList<IActivity> Activities
         {
             get { return m_activities; }
@@ -225,50 +226,48 @@ new System.Globalization.CultureInfo("en"));
 
                 //No settings for HS, separate check in makeData(), enabled in setView
                 //For Activity page use Predict/Training by default for single activities
-                if (Settings.HighScore != null && (m_activities.Count > 1 || popupForm != null))
+                //Enabling/disabling is done based on settings
+                if (Settings.HighScore != null && (m_activities.Count > 1 || m_popupForm != null))
                 {
                     chkHighScoreBox.Checked = true;
                 }
                 else
                 {
                     chkHighScoreBox.Checked = false;
-                    //if (m_activities.Count > 1)
-                    //{
-                    //    m_activities.Clear();
-                    //}
                 }
 
-                
-                    //if (m_activities.Count != 1 || (m_activities.Count == 1 && null != m_activities[0]))
-                    //{
-                    //    trainingView.Activity = null;
-                    //}
-                    predictorView.Activities = m_activities;
-                    activateListeners();
 
-                string title = Resources.PPHS;
-                if (m_activities.Count > 0)
-                {
-                    if (m_activities.Count == 1)
-                    {
-                        title = Resources.PPHS + " " + StringResources.ForOneActivity;
-                    }
-                    else
-                    {
-                        title = Resources.PPHS + " " + String.Format(StringResources.ForManyActivities, m_activities.Count);
-                    }
-                }
+                //if (m_activities.Count != 1 || (m_activities.Count == 1 && null != m_activities[0]))
+                //{
+                //    trainingView.Activity = null;
+                //}
+                //predictorView.Activities = m_activities;
+
                 //title cant be set directly on activity page
-                if (null != popupForm)
+                if (null != m_popupForm)
                 {
-                    popupForm.Text = title;
+                    string title = Resources.PPHS;
+                    if (m_activities.Count > 0)
+                    {
+                        if (m_activities.Count == 1)
+                        {
+                            title = Resources.PPHS + " " + StringResources.ForOneActivity;
+                        }
+                        else
+                        {
+                            title = Resources.PPHS + " " + String.Format(StringResources.ForManyActivities, m_activities.Count);
+                        }
+                    }
+                    m_popupForm.Text = title;
                 }
 
                 m_showPage = showPage;
+                activateListeners();
                 m_layer.ClearOverlays();
                 setView();
             }
         }
+
         public IActivity SingleActivity
         {
             get
@@ -292,14 +291,11 @@ new System.Globalization.CultureInfo("en"));
         }
 #endif
 
-        private Form popupForm = null;
-
-        private bool m_showPage = false;
         public bool HidePage()
         {
             m_showPage = false;
             deactivateListeners();
-            this.predictorView.HidePage();
+            predictorView.HidePage();
             trainingView.HidePage();
             if (m_layer != null)
             {
@@ -307,6 +303,7 @@ new System.Globalization.CultureInfo("en"));
             }
             return true;
         }
+
         public void ShowPage(string bookmark)
         {
             m_showPage = true;
@@ -348,20 +345,18 @@ new System.Globalization.CultureInfo("en"));
             this.HidePage();
         }
 
-        public Predict.PredictTime Predictor
+        public Predict.PredictTime Predictor(PredictionModel model)
         {
-            get
+            switch (model)
             {
-                switch (Settings.Model)
-                {
-                    default:
-                    case PredictionModel.DAVE_CAMERON:
-                        return Predict.Cameron;
-                    case PredictionModel.PETE_RIEGEL:
-                        return Predict.Riegel;
-                 }
+                default:
+                case PredictionModel.DAVE_CAMERON:
+                    return Predict.Cameron;
+                case PredictionModel.PETE_RIEGEL:
+                    return Predict.Riegel;
             }
         }
+
         private void setView()
         {
             switch (Settings.Model)
@@ -409,7 +404,10 @@ new System.Globalization.CultureInfo("en"));
                 if (m_activities.Count == 1)
                 {
                     //chkHighScore.Checked set in Activities (as it may clear selection)
-                    if (Settings.HighScore != null) { chkHighScoreBox.Enabled = true; }
+                    if (Settings.HighScore != null)
+                    {
+                        chkHighScoreBox.Enabled = true;
+                    }
                 }
                 if (m_showPage)
                 {

@@ -74,14 +74,16 @@ namespace TrailsPlugin.Data
             set { m_Activity = value; }
         }
 
-        public void SetFromSelection(IItemTrackSelectionInfo t)
+        public void SetFromSelection(IItemTrackSelectionInfo t, IActivity activity)
         {
             // Set from activity: this.ItemReferenceId = t.ItemReferenceId;
             this.MarkedDistances = t.MarkedDistances;
             this.m_MarkedTimes = t.MarkedTimes;
             this.m_SelectedDistance = t.SelectedDistance;
             this.m_SelectedTime = t.SelectedTime;
+            this.Activity = activity;
         }
+
         public override string ToString()
         {
             TrailsItemTrackSelectionInfo sel = this.FirstSelection();

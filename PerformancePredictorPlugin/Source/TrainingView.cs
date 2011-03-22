@@ -242,7 +242,7 @@ namespace GpsRunningPlugin.Source
 
         public void RefreshData()
         {
-            if (m_showPage && m_ppcontrol.SingleActivity != null && m_ppcontrol.Predictor != null)
+            if (m_showPage && m_ppcontrol.SingleActivity != null && m_ppcontrol.Predictor(Settings.Model) != null)
             {
                 setTraining();
                 setPaceTempo();
@@ -511,7 +511,7 @@ namespace GpsRunningPlugin.Source
 
         private double getTrainingSpeed(double new_dist, double old_dist, double old_time)
         {
-            return new_dist / m_ppcontrol.Predictor(new_dist, old_dist, old_time);
+            return new_dist / (m_ppcontrol.Predictor(Settings.Model))(new_dist, old_dist, old_time);
         }
         //Get training speed from vdot
         private double getTrainingSpeed(double vdot, double percentZone)

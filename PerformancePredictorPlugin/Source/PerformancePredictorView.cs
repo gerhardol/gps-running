@@ -53,12 +53,19 @@ namespace GpsRunningPlugin.Source
 #endif
         private PerformancePredictorControl m_ppcontrol = null;
         private System.Windows.Forms.ProgressBar m_progressBar;
-        private ChartDataSeries cameronSeries;
-        private ChartDataSeries riegelSeries;
-        private DataTable cameronSet = new DataTable();
-        private DataTable riegelSet = new DataTable();
-
         private bool m_showPage = false;
+
+        private class PredictorData
+        {
+            public bool isData;
+            public ChartDataSeries series;
+            public DataTable set;
+        }
+        private IDictionary<PredictionModel, PredictorData> m_predictorData = new Dictionary<PredictionModel, PredictorData>()
+        {
+            { PredictionModel.DAVE_CAMERON, new PredictorData() },
+            { PredictionModel.PETE_RIEGEL, new PredictorData() }
+        };
 
         public PerformancePredictorView()
         {
@@ -79,8 +86,12 @@ namespace GpsRunningPlugin.Source
             m_ppcontrol = ppControl;
             m_progressBar = progressBar;
 
-            cameronSeries = new ChartDataSeries(chart, chart.YAxis);
-            riegelSeries = new ChartDataSeries(chart, chart.YAxis);
+            foreach (PredictorData p in m_predictorData.Values)
+            {
+                p.isData = false;
+                p.series = new ChartDataSeries(chart, chart.YAxis);
+                p.set = new DataTable();
+            }
 
             dataGrid.CellDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
             dataGrid.CellMouseClick += new DataGridViewCellMouseEventHandler(dataGrid_CellMouseClick); 
@@ -108,27 +119,27 @@ namespace GpsRunningPlugin.Source
             lblHighScoreRequired.Text = Properties.Resources.HighScoreRequired;
         }
 
-        private IList<IActivity> activities = new List<IActivity>();
-        public IList<IActivity> Activities
-        {
-            get { return activities; }
-            set
-            {
-                bool showPage = m_showPage;
-                m_showPage = false;
-                deactivateListeners();
+        //private IList<IActivity> activities = new List<IActivity>();
+        //public IList<IActivity> Activities
+        //{
+        //    get { return activities; }
+        //    set
+        //    {
+        //        bool showPage = m_showPage;
+        //        m_showPage = false;
+        //        deactivateListeners();
 
-                //Make sure activities is not null
-                if (null == value) { activities.Clear(); }
-                else { activities = value; }
+        //        //Make sure activities is not null
+        //        if (null == value) { activities.Clear(); }
+        //        else { activities = value; }
 
-                m_showPage = showPage;
-                //Reset settings
-                activateListeners();
+        //        m_showPage = showPage;
+        //        //Reset settings
+        //        activateListeners();
 
-                RefreshData();
-            }
-        }
+        //        RefreshData();
+        //    }
+        //}
 
         public bool HidePage()
         {
@@ -194,33 +205,14 @@ namespace GpsRunningPlugin.Source
         {
             if (m_showPage)
             {
-                bool showPage = m_showPage;
-                m_showPage = false;
-
-                cameronSet.Clear(); cameronSet.Rows.Clear(); cameronSeries.Points.Clear();
-                riegelSet.Clear(); riegelSet.Rows.Clear(); riegelSeries.Points.Clear();
-
-                if (activities.Count > 1 || (activities.Count == 1 && m_ppcontrol.ChkHighScore))
+                //Reset settings
+                foreach (PredictorData p in m_predictorData.Values)
                 {
-                    //Predict using one or many activities (check done that HS enabled prior)
-                    makeData(cameronSet, cameronSeries, Predict.Cameron);
-                    makeData(riegelSet, riegelSeries, Predict.Riegel);
+                    p.isData = false;
+                    p.series.Points.Clear();
+                    p.set.Clear();
+                    p.set.Rows.Clear();
                 }
-                else if (activities.Count == 1)
-                {
-                    //Predict and training info
-                    ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activities[0]);
-
-                    if (info.DistanceMeters > 0 && info.Time.TotalSeconds > 0)
-                    {
-                        makeData(cameronSet, cameronSeries, Predict.Cameron,
-                            info.DistanceMeters, info.Time.TotalSeconds);
-                        makeData(riegelSet, riegelSeries, Predict.Riegel,
-                            info.DistanceMeters, info.Time.TotalSeconds);
-                    }
-                }
-                //else: no activity selected
-                m_showPage = showPage;
 
                 setData();
                 setSize();
@@ -256,30 +248,43 @@ namespace GpsRunningPlugin.Source
         {
             bool showPage = m_showPage;
             m_showPage = false;
-            DataTable table = null;
-            ChartDataSeries series = null;
-            switch (Settings.Model)
-            {
-                default:
-                case PredictionModel.DAVE_CAMERON:
-                    table = cameronSet;
-                    series = cameronSeries;
-                    break;
-                case PredictionModel.PETE_RIEGEL:
-                    table = riegelSet;
-                    series = riegelSeries;
-                    break;
-            }
 
-            dataGrid.DataSource = table;
+            makeData(Settings.Model);
+            dataGrid.DataSource = m_predictorData[Settings.Model].set;
             if (chart != null && !chart.IsDisposed)
             {
                 chart.DataSeries.Clear();
-                chart.DataSeries.Add(series);
+                chart.DataSeries.Add(m_predictorData[Settings.Model].series);
                 chart.AutozoomToData(true);
             }
             m_showPage = showPage;
             updateChartVisibility();
+        }
+
+        private void makeData(PredictionModel model)
+        {
+            if (!m_predictorData[model].isData)
+            {
+                m_predictorData[model].isData = true;
+                if (m_ppcontrol.Activities.Count > 1 ||
+                    (m_ppcontrol.Activities.Count == 1 && m_ppcontrol.ChkHighScore))
+                {
+                    //Predict using one or many activities (check done that HS enabled prior)
+                    makeData(m_predictorData[model].set, m_predictorData[model].series, m_ppcontrol.Predictor(model));
+                }
+                else if (m_ppcontrol.SingleActivity != null)
+                {
+                    //Predict and training info
+                    ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
+
+                    if (info.DistanceMeters > 0 && info.Time.TotalSeconds > 0)
+                    {
+                        makeData(m_predictorData[model].set, m_predictorData[model].series, m_ppcontrol.Predictor(model),
+                            info.DistanceMeters, info.Time.TotalSeconds);
+                    }
+                }
+                //else: no activity selected
+            }
         }
 
         private void makeData(DataTable set, ChartDataSeries series,
@@ -317,10 +322,10 @@ namespace GpsRunningPlugin.Source
                 }
                 m_progressBar.Visible = true;
                 m_progressBar.Minimum = 0;
-                m_progressBar.Maximum = activities.Count;
+                m_progressBar.Maximum = m_ppcontrol.Activities.Count;
                 results = (IList<IList<Object>>)
                     Settings.HighScore.GetMethod("getFastestTimesOfDistances").Invoke(null,
-                    new object[] { activities, partialDistances, m_progressBar });
+                    new object[] { m_ppcontrol.Activities, partialDistances, m_progressBar });
                 m_progressBar.Visible = false;
             }
 
@@ -405,6 +410,7 @@ namespace GpsRunningPlugin.Source
                 {
                     set.Columns.Add(UnitUtil.Speed.LabelAxis, typeof(double));
                 }
+                //set.Columns.Add(ActivityIdColumn);
 
                 series.Points.Clear();
 
@@ -431,7 +437,7 @@ namespace GpsRunningPlugin.Source
                     row[2] = UnitUtil.Time.ToString(new_time);
                     double speed = new_dist / new_time;
                     row[3] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed);
-                    //xxx row[ActivityIdColumn] = "";
+                    //row[ActivityIdColumn] = "";
                     set.Rows.Add(row);
                 }
             }
@@ -441,8 +447,9 @@ namespace GpsRunningPlugin.Source
         {
             if (m_showPage)
             {
+                //Note: Should possibly be checking for data in table/chart
                 if (Settings.HighScore == null &&
-                    (activities.Count > 1 || m_ppcontrol.ChkHighScore))
+                    (m_ppcontrol.Activities.Count > 1 || m_ppcontrol.ChkHighScore))
                 {
                     lblHighScoreRequired.Visible = true;
                     dataGrid.Visible = false;
@@ -480,37 +487,40 @@ namespace GpsRunningPlugin.Source
             {
                 string actid = (string)dataGrid.Rows[rowIndex].Cells[ActivityIdColumn].Value;
 
-                IActivity id = null;
-                foreach (IActivity act in activities)
+                if (actid != null && actid != "")
                 {
-                    if (act.ReferenceId == actid)
+                    IActivity id = null;
+                    foreach (IActivity act in m_ppcontrol.Activities)
                     {
-                        id = act;
-                    }
-                }
-                if (id != null)
-                {
-                    if (m_showPage && isSingleView != true)
-                    {
-                        IDictionary<string, MapPolyline> routes = new Dictionary<string, MapPolyline>();
-                        TrailMapPolyline m = new TrailMapPolyline(
-                            new TrailResult(new ActivityWrapper(id, Plugin.GetApplication().SystemPreferences.RouteSettings.RouteColor)));
-                        routes.Add(m.key, m);
-                        if (m_layer != null)
+                        if (act.ReferenceId == actid)
                         {
-                            m_layer.TrailRoutes = routes;
+                            id = act;
                         }
                     }
-                    IValueRangeSeries<double> t = new ValueRangeSeries<double>();
-                    t.Add(new ValueRange<double>(
-                        UnitUtil.Distance.Parse((string)dataGrid.Rows[rowIndex].Cells[7].Value),
-                        UnitUtil.Distance.Parse((string)dataGrid.Rows[rowIndex].Cells[7].Value) +
-                        UnitUtil.Distance.Parse((string)dataGrid.Rows[rowIndex].Cells[8].Value)));
-                    IList<TrailResultMarked> aTrm = new List<TrailResultMarked>();
-                    aTrm.Add(new TrailResultMarked(
-                        new TrailResult(new ActivityWrapper(id, Plugin.GetApplication().SystemPreferences.RouteSettings.RouteSelectedColor)),
-                        t));
-                    this.MarkTrack(aTrm);
+                    if (id != null)
+                    {
+                        if (m_showPage && isSingleView != true)
+                        {
+                            IDictionary<string, MapPolyline> routes = new Dictionary<string, MapPolyline>();
+                            TrailMapPolyline m = new TrailMapPolyline(
+                                new TrailResult(new ActivityWrapper(id, Plugin.GetApplication().SystemPreferences.RouteSettings.RouteColor)));
+                            routes.Add(m.key, m);
+                            if (m_layer != null)
+                            {
+                                m_layer.TrailRoutes = routes;
+                            }
+                        }
+                        IValueRangeSeries<double> t = new ValueRangeSeries<double>();
+                        t.Add(new ValueRange<double>(
+                            UnitUtil.Distance.Parse((string)dataGrid.Rows[rowIndex].Cells[7].Value),
+                            UnitUtil.Distance.Parse((string)dataGrid.Rows[rowIndex].Cells[7].Value) +
+                            UnitUtil.Distance.Parse((string)dataGrid.Rows[rowIndex].Cells[8].Value)));
+                        IList<TrailResultMarked> aTrm = new List<TrailResultMarked>();
+                        aTrm.Add(new TrailResultMarked(
+                            new TrailResult(new ActivityWrapper(id, Plugin.GetApplication().SystemPreferences.RouteSettings.RouteSelectedColor)),
+                            t));
+                        this.MarkTrack(aTrm);
+                    }
                 }
             }
         }
@@ -535,40 +545,42 @@ namespace GpsRunningPlugin.Source
 #if !ST_2_1
             if (m_showPage)
             {
-                IDictionary<string, MapPolyline> result = new Dictionary<string, MapPolyline>();
                 if (m_view != null &&
-                    m_view.RouteSelectionProvider != null &&
-                    isSingleView == true)
+                    m_view.RouteSelectionProvider != null)
                 {
-                    if (atr.Count > 0)
-                    {
-                        //Only one activity, OK to merge selections on one track
-                        TrailsItemTrackSelectionInfo r = TrailResultMarked.SelInfoUnion(atr);
-                        r.Activity = atr[0].trailResult.Activity;
-                        m_view.RouteSelectionProvider.SelectedItems = new IItemTrackSelectionInfo[] { r };
-                        if (m_layer != null)
-                        {
-                            m_layer.DoZoom(GPS.GetBounds(atr[0].trailResult.GpsPoints(r)));
-                        }
-                    }
-                }
-                else
-                {
+                    //For activities drawn by default, use common marking
+                    IList<TrailResultMarked> atr2 = new List<TrailResultMarked>();
                     foreach (TrailResultMarked trm in atr)
                     {
-                        foreach (TrailMapPolyline m in TrailMapPolyline.GetTrailMapPolyline(trm.trailResult, trm.selInfo))
+                        if (trm.trailResult.Activity == m_ppcontrol.SingleActivity)
+                        {
+                            atr2.Add(trm);
+                        }
+                    }
+                    //Only one activity, OK to merge selections on one track
+                    TrailsItemTrackSelectionInfo result = TrailResultMarked.SelInfoUnion(atr2);
+                    m_view.RouteSelectionProvider.SelectedItems = new IItemTrackSelectionInfo[] { result };
+                    if (atr != null && atr.Count > 0)
+                    {
+                        m_layer.DoZoom(GPS.GetBounds(atr[0].trailResult.GpsPoints(result)));
+                    }
+                }
+                IDictionary<string, MapPolyline> mresult = new Dictionary<string, MapPolyline>();
+                foreach (TrailResultMarked trm in atr)
+                {
+                    foreach (TrailMapPolyline m in TrailMapPolyline.GetTrailMapPolyline(trm.trailResult, trm.selInfo))
+                    {
+                        if (trm.trailResult.Activity != m_ppcontrol.SingleActivity)
                         {
                             //m.Click += new MouseEventHandler(mapPoly_Click);
-                            string id = m.key;
-                            result.Add(id, m);
+                            if (!mresult.ContainsKey(m.key))
+                            {
+                                mresult.Add(m.key, m);
+                            }
                         }
                     }
                 }
-                //Update or clear
-                if (m_layer != null)
-                {
-                    m_layer.MarkedTrailRoutes = result;
-                }
+                m_layer.MarkedTrailRoutes = mresult;
             }
 #endif
         }
