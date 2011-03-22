@@ -38,17 +38,22 @@ namespace GpsRunningPlugin.Source
             defaults();
         }
 
-        private static Type highScore;
-        private static bool isHighScoreChecked = false;
+        private static Type highScore = null;
+        //not stored in settings 
+        //private static bool isHighScoreChecked = false;
+        private static bool highScoreTested = false;
         public static Type HighScore
         {
             get {
-                if(!isHighScoreChecked) {
+                if (!highScoreTested)
+                {
                     highScore = getPlugin("HighScore", "GpsRunningPlugin.Source.HighScore");
+                    highScoreTested = true;
                 }
                 return highScore;
             }
         }
+
         private static bool showPace;
         public static bool ShowPace
         {
