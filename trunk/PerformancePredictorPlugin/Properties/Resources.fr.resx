@@ -201,6 +201,10 @@
     <comment>ppx</comment>
     <value>Vitesse estimée</value>
   </data>
+  <data name="IntervalNotification" xml:space="preserve">
+    <comment>pp</comment>
+    <value>Suggérées de court intervalle de temps d'entrainement pour certaine distances de course.</value>
+  </data>
   <data name="PPHS" xml:space="preserve">
     <comment>ppx</comment>
     <value>Estimation des performances avec le plugin High Score</value>
@@ -215,5 +219,11 @@
   </data>
   <data name="Velocity" xml:space="preserve">
     <value>Vitesse</value>
+  </data>
+  <data name="HighScorePrediction" xml:space="preserve">
+    <value>Prédiction de High Score</value>
+  </data>
+  <data name="HighScoreRequired" xml:space="preserve">
+    <value>Prédire en utilisant plusieurs activités exige le plugin High Score</value>
   </data>
 </root>
