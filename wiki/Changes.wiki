@@ -8,6 +8,9 @@ More or less official beta releases are available in the Downloads section. See 
 =Latest updates=
 Next version will be called 2.0
 
+1.9.289 2011-03-22
+ * Overlay, UniqueRoutes, PerformancePredictor: Updated French translation
+
 1.9.286 2011-03-19
  * All: Release resources when popup is closed. This could give a crash when editing an activity after or slower performance. See issue 24.
  * Overlay using Track start time when displaying charts, to handle misformatted activities.
