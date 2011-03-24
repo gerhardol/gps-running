@@ -84,6 +84,47 @@ namespace TrailsPlugin.Data
             this.Activity = activity;
         }
 
+        //SelectedDistances is in Activity without pauses distance
+        //Add SelectedTime instead
+        public static IList<IItemTrackSelectionInfo> SetAndAdjustFromSelection
+            (IList<IItemTrackSelectionInfo> selected, IList<IActivity> activities)
+        {
+            if (selected.Count == 0 || activities == null)
+            {
+                //Do not adjust selection
+                return selected;
+            }
+            for(int i = 0; i<selected.Count; i++)
+            {
+                IActivity activity = null;
+                foreach(IActivity a in activities)
+                {
+                    //In ST3.0.4068 (at least) only one activity is selected
+                    if (selected[i].ItemReferenceId == a.ReferenceId)
+                    {
+                        activity = a;
+                        break;
+                    }
+                }
+                if (activity != null)
+                {
+                    IDistanceDataTrack m_activityUnpausedDistanceMetersTrack =
+                        ActivityInfoCache.Instance.GetInfo(activity).ActualDistanceMetersTrack;
+                    TrailsItemTrackSelectionInfo tmpSel = new TrailsItemTrackSelectionInfo();
+                    tmpSel.SetFromSelection(selected[i], activity);
+                    if (selected[i].SelectedDistance != null)
+                    {
+                        tmpSel.SelectedTime = new ValueRange<DateTime>(
+                                m_activityUnpausedDistanceMetersTrack.GetTimeAtDistanceMeters(selected[i].SelectedDistance.Lower),
+                                m_activityUnpausedDistanceMetersTrack.GetTimeAtDistanceMeters(selected[i].SelectedDistance.Upper));
+                        tmpSel.SelectedDistance = null;
+                    }
+                    selected[i] = tmpSel;
+                }
+            }
+            return selected;
+        }
+
         public override string ToString()
         {
             TrailsItemTrackSelectionInfo sel = this.FirstSelection();
@@ -97,7 +138,7 @@ namespace TrailsPlugin.Data
             }
             return string.Empty;
         }
-        public TrailsItemTrackSelectionInfo FirstSelection()
+        private TrailsItemTrackSelectionInfo FirstSelection()
         {
             //Many commands can only handle one selection - this will set only one of them
             TrailsItemTrackSelectionInfo res = new TrailsItemTrackSelectionInfo();

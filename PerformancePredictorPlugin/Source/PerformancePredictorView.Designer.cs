@@ -49,6 +49,7 @@ namespace GpsRunningPlugin.Source
             this.dataGrid = new System.Windows.Forms.DataGridView();
             this.chart = new ZoneFiveSoftware.Common.Visuals.Chart.LineChart();
             this.lblHighScoreRequired = new System.Windows.Forms.Label();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -90,6 +91,14 @@ namespace GpsRunningPlugin.Source
             this.lblHighScoreRequired.Text = "HS required to predict using several activities";
             this.lblHighScoreRequired.Visible = false;
             // 
+            // progressBar
+            // 
+            this.progressBar.Location = new System.Drawing.Point(0, 0);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.TabIndex = 9;
+            // 
             // PerformancePredictorView
             //
             this.AutoScroll = true;
@@ -99,6 +108,7 @@ namespace GpsRunningPlugin.Source
             this.Controls.Add(this.dataGrid);
             this.Controls.Add(this.chart);
             this.Controls.Add(this.lblHighScoreRequired);
+            this.Controls.Add(this.progressBar);
             this.Name = "PerformancePredictorView";
             this.Size = new System.Drawing.Size(336, 316);
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();
@@ -111,5 +121,6 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.DataGridView dataGrid;
         private ZoneFiveSoftware.Common.Visuals.Chart.LineChart chart;
         private System.Windows.Forms.Label lblHighScoreRequired;
+        private System.Windows.Forms.ProgressBar progressBar;
     }
 }
