@@ -52,7 +52,6 @@ namespace GpsRunningPlugin.Source
             this.resultBox = new System.Windows.Forms.GroupBox();
             this.tableButton = new System.Windows.Forms.RadioButton();
             this.chartButton = new System.Windows.Forms.RadioButton();
-            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.trainingButton = new System.Windows.Forms.RadioButton();
             this.timePredictionButton = new System.Windows.Forms.RadioButton();
@@ -139,13 +138,6 @@ namespace GpsRunningPlugin.Source
             this.chartButton.Text = "View in chart";
             this.chartButton.UseVisualStyleBackColor = true;
             // 
-            // progressBar
-            // 
-            this.progressBar.Location = new System.Drawing.Point(148, 4);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(184, 23);
-            this.progressBar.TabIndex = 9;
-            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.trainingButton);
@@ -231,7 +223,6 @@ namespace GpsRunningPlugin.Source
             // 
             this.splitContainer1.Panel2.Controls.Add(this.predictorView);
             this.splitContainer1.Panel2.Controls.Add(this.trainingView);
-            this.splitContainer1.Panel2.Controls.Add(this.progressBar);
             this.splitContainer1.Size = new System.Drawing.Size(336, 316);
             this.splitContainer1.SplitterDistance = 145;
             this.splitContainer1.SplitterWidth = 1;
@@ -299,7 +290,6 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.GroupBox resultBox;
         private System.Windows.Forms.RadioButton tableButton;
         private System.Windows.Forms.RadioButton chartButton;
-        private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.RadioButton trainingButton;
         private System.Windows.Forms.RadioButton timePredictionButton;

@@ -68,8 +68,8 @@ namespace GpsRunningPlugin.Source
             {
                 //expandButton.Visible = true;
             }
-            this.predictorView.InitControls(m_DetailPage, m_view, m_layer, this, progressBar);
-            this.trainingView.InitControls(m_DetailPage, m_view, m_layer, this, progressBar);
+            this.predictorView.InitControls(m_DetailPage, m_view, m_layer, this);
+            this.trainingView.InitControls(m_DetailPage, m_view, m_layer, this);
         }
         //popup dialog
         public PerformancePredictorControl(IDailyActivityView view)
@@ -77,15 +77,15 @@ namespace GpsRunningPlugin.Source
         {
             m_view = view;
             m_layer = TrailPointsLayer.Instance((IView)view);
-            this.predictorView.InitControls(m_DetailPage, m_view, m_layer, this, progressBar);
-            this.trainingView.InitControls(m_DetailPage, m_view, m_layer, this, progressBar);
+            this.predictorView.InitControls(m_DetailPage, m_view, m_layer, this);
+            this.trainingView.InitControls(m_DetailPage, m_view, m_layer, this);
         }
         public PerformancePredictorControl(IActivityReportsView view)
             : this(true)
         {
             m_layer = TrailPointsLayer.Instance((IView)view);
-            this.predictorView.InitControls(m_DetailPage, m_view, m_layer, this, progressBar);
-            this.trainingView.InitControls(m_DetailPage, m_view, m_layer, this, progressBar);
+            this.predictorView.InitControls(m_DetailPage, m_view, m_layer, this);
+            this.trainingView.InitControls(m_DetailPage, m_view, m_layer, this);
         }
         //UniqueRoutes sendto
         public PerformancePredictorControl(IList<IActivity> activities, IDailyActivityView view)
@@ -167,7 +167,6 @@ new System.Globalization.CultureInfo("en"));
 
         void InitControls()
         {
-            progressBar.Visible = false;
         }
 
         public void ThemeChanged(ITheme visualTheme)
@@ -204,9 +203,6 @@ new System.Globalization.CultureInfo("en"));
             get { return m_activities; }
             set
             {
-                bool showPage = m_showPage;
-                m_showPage = false;
-
                 //Make sure activities is not null
                 deactivateListeners();
                 if (null == value) { m_activities.Clear(); }
@@ -227,6 +223,7 @@ new System.Globalization.CultureInfo("en"));
                 //No settings for HS, separate check in makeData(), enabled in setView
                 //For Activity page use Predict/Training by default for single activities
                 //Enabling/disabling is done based on settings
+                this.chkHighScoreBox.CheckedChanged -= new System.EventHandler(this.chkHighScore_CheckedChanged);
                 if (Settings.HighScore != null && (m_activities.Count > 1 || m_popupForm != null))
                 {
                     chkHighScoreBox.Checked = true;
@@ -235,6 +232,7 @@ new System.Globalization.CultureInfo("en"));
                 {
                     chkHighScoreBox.Checked = false;
                 }
+                this.chkHighScoreBox.CheckedChanged += new System.EventHandler(this.chkHighScore_CheckedChanged);
 
 
                 //if (m_activities.Count != 1 || (m_activities.Count == 1 && null != m_activities[0]))
@@ -261,7 +259,6 @@ new System.Globalization.CultureInfo("en"));
                     m_popupForm.Text = title;
                 }
 
-                m_showPage = showPage;
                 activateListeners();
                 m_layer.ClearOverlays();
                 setView();
@@ -383,6 +380,8 @@ new System.Globalization.CultureInfo("en"));
             this.tableButton.Enabled = true;
             this.chartButton.Enabled = true;
 
+            this.trainingButton.CheckedChanged -= new System.EventHandler(this.training_CheckedChanged);
+            this.timePredictionButton.CheckedChanged -= new System.EventHandler(this.timePrediction_CheckedChanged);
             if (m_activities.Count == 1)
             {
                 timePredictionButton.Enabled = true;
@@ -396,9 +395,11 @@ new System.Globalization.CultureInfo("en"));
             }
 
             trainingButton.Checked = !timePredictionButton.Checked;
+            this.trainingButton.CheckedChanged += new System.EventHandler(this.training_CheckedChanged);
+            this.timePredictionButton.CheckedChanged += new System.EventHandler(this.timePrediction_CheckedChanged);
+
             if (timePredictionButton.Checked)
             {
-                trainingButton.Checked = false;
                 chartButton.Checked = Settings.ShowChart;
                 tableButton.Checked = !Settings.ShowChart;
                 if (m_activities.Count == 1)
@@ -476,7 +477,7 @@ new System.Globalization.CultureInfo("en"));
             if (m_showPage && daveCameronButton.Checked)
             {
                 Settings.Model = PredictionModel.DAVE_CAMERON;
-                setView();
+                //setView();
                 predictorView.setData();
                 trainingView.RefreshData();
             }
@@ -487,7 +488,7 @@ new System.Globalization.CultureInfo("en"));
             if (m_showPage && reigelButton.Checked)
             {
                 Settings.Model = PredictionModel.PETE_RIEGEL;
-                setView();
+                //setView();
                 predictorView.setData();
                 trainingView.RefreshData();
             }
@@ -499,6 +500,7 @@ new System.Globalization.CultureInfo("en"));
             {
                 Settings.ShowChart = true;
                 predictorView.updateChartVisibility();
+                //No effect for Training
             }
         }
 
@@ -508,6 +510,7 @@ new System.Globalization.CultureInfo("en"));
             {
                 Settings.ShowChart = false;
                 predictorView.updateChartVisibility();
+                //No effect for Training
             }
         }
 
@@ -517,7 +520,7 @@ new System.Globalization.CultureInfo("en"));
             {
                 Settings.ShowPrediction = true;
                 setView();
-                predictorView.setData();
+                //predictorView.setData();
             }
         }
 
@@ -527,7 +530,7 @@ new System.Globalization.CultureInfo("en"));
             {
                 Settings.ShowPrediction = false;
                 setView();
-                predictorView.setData();
+                //predictorView.setData();
             }
         }
 
@@ -553,7 +556,10 @@ new System.Globalization.CultureInfo("en"));
 
         private void chkHighScore_CheckedChanged(object sender, EventArgs e)
         {
-            predictorView.RefreshData();
+            if (m_showPage)
+            {
+                predictorView.RefreshData();
+            }
         }
     }
 }

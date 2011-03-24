@@ -51,7 +51,6 @@ namespace GpsRunningPlugin.Source
         private TrailPointsLayer m_layer = null;
 #endif
         private PerformancePredictorControl m_ppcontrol = null;
-        private System.Windows.Forms.ProgressBar m_progressBar = null;
 
         public TrainingView()
         {
@@ -59,7 +58,7 @@ namespace GpsRunningPlugin.Source
             SizeChanged += new EventHandler(TrainingView_SizeChanged);            
         }
 
-        public void InitControls(IDetailPage detailPage, IDailyActivityView view, TrailPointsLayer layer, PerformancePredictorControl ppControl, System.Windows.Forms.ProgressBar progressBar)
+        public void InitControls(IDetailPage detailPage, IDailyActivityView view, TrailPointsLayer layer, PerformancePredictorControl ppControl)
         {
 #if !ST_2_1
             m_DetailPage = detailPage;
@@ -67,7 +66,6 @@ namespace GpsRunningPlugin.Source
             m_layer = layer;
 #endif
             m_ppcontrol = ppControl;
-            m_progressBar = progressBar;
 
             foreach (TabPage tab in this.tabControl1.TabPages)
             {

@@ -183,5 +183,13 @@ namespace TrailsPlugin.Data
         {
             return FirstDist + t;
         }
+        //All of result including pauses/stopped
+        //This is how FilteredStatistics want the info
+        public IValueRangeSeries<DateTime> getSelInfo()
+        {
+            IValueRangeSeries<DateTime> t = new ValueRangeSeries<DateTime>();
+            t.Add(new ValueRange<DateTime>(this.Activity.StartTime, this.Activity.StartTime.Add(this.Activity.TotalTimeEntered)));
+            return t;
+        }
     }
 }

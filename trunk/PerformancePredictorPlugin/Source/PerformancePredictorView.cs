@@ -52,7 +52,6 @@ namespace GpsRunningPlugin.Source
         private TrailPointsLayer m_layer = null;
 #endif
         private PerformancePredictorControl m_ppcontrol = null;
-        private System.Windows.Forms.ProgressBar m_progressBar;
         private bool m_showPage = false;
 
         private class PredictorData
@@ -76,7 +75,7 @@ namespace GpsRunningPlugin.Source
             chart.XAxis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
         }
 
-        public void InitControls(IDetailPage detailPage, IDailyActivityView view, TrailPointsLayer layer, PerformancePredictorControl ppControl, System.Windows.Forms.ProgressBar progressBar)
+        public void InitControls(IDetailPage detailPage, IDailyActivityView view, TrailPointsLayer layer, PerformancePredictorControl ppControl)
         {
 #if !ST_2_1
             //m_DetailPage = detailPage;
@@ -84,7 +83,6 @@ namespace GpsRunningPlugin.Source
             m_layer = layer;
 #endif
             m_ppcontrol = ppControl;
-            m_progressBar = progressBar;
 
             foreach (PredictorData p in m_predictorData.Values)
             {
@@ -249,6 +247,7 @@ namespace GpsRunningPlugin.Source
             bool showPage = m_showPage;
             m_showPage = false;
 
+            //Get the (cached?) list/chart
             makeData(Settings.Model);
             dataGrid.DataSource = m_predictorData[Settings.Model].set;
             if (chart != null && !chart.IsDisposed)
@@ -320,13 +319,15 @@ namespace GpsRunningPlugin.Source
                     //Scale down the distances, so we get the high scores
                     partialDistances.Add(distance * Settings.PercentOfDistance / 100.0);
                 }
-                m_progressBar.Visible = true;
-                m_progressBar.Minimum = 0;
-                m_progressBar.Maximum = m_ppcontrol.Activities.Count;
+                progressBar.Visible = true;
+                progressBar.BringToFront();
+                progressBar.Size = new Size(this.Width, progressBar.Height);
+                progressBar.Minimum = 0;
+                progressBar.Maximum = m_ppcontrol.Activities.Count;
                 results = (IList<IList<Object>>)
                     Settings.HighScore.GetMethod("getFastestTimesOfDistances").Invoke(null,
-                    new object[] { m_ppcontrol.Activities, partialDistances, m_progressBar });
-                m_progressBar.Visible = false;
+                    new object[] { m_ppcontrol.Activities, partialDistances, progressBar });
+                progressBar.Visible = false;
             }
 
             int index = 0;

@@ -24,29 +24,16 @@ using System.Collections.Generic;
 
 namespace TrailsPlugin.Data {
 	public class TrailGPSLocation {
-		public TrailGPSLocation(float latitudeDegrees, float longitudeDegrees, string name)
+        public TrailGPSLocation(float latitudeDegrees, float longitudeDegrees, string name)
+            : this(latitudeDegrees, longitudeDegrees, name, true)
+        {
+        }
+		public TrailGPSLocation(float latitudeDegrees, float longitudeDegrees, string name, bool required)
         {
             this._gpsLocation = new GPSLocation(latitudeDegrees, longitudeDegrees);
             this._name = name;
+            this._required = required;
         }
-
-        //This code is shared in other plugins
-#if TRAILSPLUGIN
-		static public TrailGPSLocation FromXml(XmlNode node)
-        {
-            string name = "";
-            if (null != node.Attributes["name"] &&
-                null != node.Attributes["name"].Value)
-            {
-                name = node.Attributes["name"].Value;
-            }
-			return new TrailGPSLocation(
-                Settings.parseFloat(node.Attributes["latitude"].Value),
-                Settings.parseFloat(node.Attributes["longitude"].Value),
-                name
-			);
-        }
-#endif
 
         private GPSLocation _gpsLocation;
         public GPSLocation GpsLocation
@@ -82,20 +69,69 @@ namespace TrailsPlugin.Data {
                 this._name = value;
             }
         }
+        private bool _required;
+        public bool Required
+        {
+            get
+            {
+                return _required;
+            }
+            set
+            {
+                this._required = value;
+            }
+        }
 
-		public XmlNode ToXml(XmlDocument doc) {
-			XmlNode TrailGPSLocationNode = doc.CreateElement("TrailGPSLocation");
-			XmlAttribute a = doc.CreateAttribute("latitude");
+        //This code is shared in other plugins
+#if TRAILSPLUGIN
+        static public TrailGPSLocation FromXml(XmlNode node)
+        {
+            string name = "";
+            if (null != node.Attributes[xmlTags.sName] &&
+                null != node.Attributes[xmlTags.sName].Value)
+            {
+                name = node.Attributes[xmlTags.sName].Value;
+            }
+            bool required = true;
+            if (null != node.Attributes[xmlTags.sRequired] &&
+                null != node.Attributes[xmlTags.sRequired].Value)
+            {
+                required = XmlConvert.ToBoolean(node.Attributes[xmlTags.sRequired].Value);
+            }
+            return new TrailGPSLocation(
+                Settings.parseFloat(node.Attributes[xmlTags.sLatitude].Value),
+                Settings.parseFloat(node.Attributes[xmlTags.sLongitude].Value),
+                name, required
+            );
+        }
+#endif
+
+        public XmlNode ToXml(XmlDocument doc)
+        {
+			XmlNode TrailGPSLocationNode = doc.CreateElement(xmlTags.sTrailGPSLocation);
+			XmlAttribute a = doc.CreateAttribute(xmlTags.sLatitude);
 			a.Value = this.LatitudeDegrees.ToString();
 			TrailGPSLocationNode.Attributes.Append(a);
-            a = doc.CreateAttribute("longitude");
+            a = doc.CreateAttribute(xmlTags.sLongitude);
             a.Value = this.LongitudeDegrees.ToString();
             TrailGPSLocationNode.Attributes.Append(a);
-            a = doc.CreateAttribute("name");
+            a = doc.CreateAttribute(xmlTags.sName);
             a.Value = this.Name.ToString();
+            TrailGPSLocationNode.Attributes.Append(a);
+            a = doc.CreateAttribute(xmlTags.sRequired);
+            a.Value = XmlConvert.ToString(this.Required);
             TrailGPSLocationNode.Attributes.Append(a);
             return TrailGPSLocationNode;
 		}
+
+        private class xmlTags
+        {
+            public const string sTrailGPSLocation = "TrailGPSLocation";
+            public const string sLatitude = "latitude";
+            public const string sLongitude = "longitude";
+            public const string sName = "name";
+            public const string sRequired = "required";
+        }
 
 		public float DistanceMetersToPoint(IGPSPoint point) {
 			GPSPoint thisPoint = new GPSPoint(
@@ -111,31 +147,63 @@ namespace TrailsPlugin.Data {
 
         public static GPSBounds getGPSBounds(IList<TrailGPSLocation> list, float radius)
         {
-            float north = -180;
-            float south = +180;
-            float east = -90;
-            float west = 90;
+            return getGPSBounds(list, radius, false);
+        }
+        public static GPSBounds getGPSBounds(IList<TrailGPSLocation> list, float radius, bool requiredCheck)
+        {
+            float north = -90;
+            float south = +90;
+            float east = -180;
+            float west = 180;
+            int noRequired = 0;
+            const int minRequired = 1; //list.Count-trail.MaxRequiredMisses
             foreach (TrailGPSLocation g in list)
             {
-                north = Math.Max(north, g.GpsLocation.LatitudeDegrees);
-                south = Math.Min(south, g.GpsLocation.LatitudeDegrees);
-                east = Math.Max(east, g.GpsLocation.LongitudeDegrees);
-                west = Math.Min(west, g.GpsLocation.LongitudeDegrees);
+                //Check if there are too few required - then all points must be considered
+                if (g.Required)
+                {
+                    noRequired++;
+                }
             }
+            foreach (TrailGPSLocation g in list)
+            {
+                if (g.Required || !requiredCheck || noRequired < minRequired)
+                {
+                    north = Math.Max(north, g.GpsLocation.LatitudeDegrees);
+                    south = Math.Min(south, g.GpsLocation.LatitudeDegrees);
+                    east = Math.Max(east, g.GpsLocation.LongitudeDegrees);
+                    west = Math.Min(west, g.GpsLocation.LongitudeDegrees);
+                }
+            }
+            //Overlapping, could be an exception
             if (north < south || east < west)
             {
                 return null;
             }
-            //Get approx degrees for the radius offset
+            //Get approx degrees for the radius offset increasing/(decreasing) the bounds
             //The magic numbers are size of a degree at the equator
             //latitude increases about 1% at the poles
             //longitude is up to 40% longer than linear extension - compensate 20%
-            float lat = 2 * radius / 110574 * 1.005F;
-            float lng = 2 * radius / 111320 * Math.Abs(south) / 90 * 1.2F;
+            float lat = radius / 110574 * 1.005F;
+            float lng = (float)(radius / 111132 / Math.Cos(Math.Abs(north) * Math.PI / 180));
             north += lat;
             south -= lat;
             east += lng;
             west -= lng;
+            //if radius is negative, area may have to be adjusted
+            //With no required points, use center of trail
+            if (north < south || noRequired < minRequired)
+            {
+                float tmp = (north+south)/2;
+                north = tmp;
+                south = tmp;
+            }
+            if (east < west || noRequired < minRequired)
+            {
+                float tmp = (west+east)/2;
+                west = tmp;
+                east = tmp;
+            }
             return new GPSBounds(new GPSLocation(north, west), new GPSLocation(south, east));
         }
 
@@ -146,9 +214,10 @@ namespace TrailsPlugin.Data {
             switch (subItemSelected)
             {
                 case 0:
+                case 1:
                     subItemText = this.LongitudeDegrees.ToString();
                     break;
-                case 1:
+                case 2:
                     subItemText = this.LatitudeDegrees.ToString();
                     break;
                 default:
@@ -162,7 +231,7 @@ namespace TrailsPlugin.Data {
             float pos = float.NaN;
             int valid = 1;
             TrailGPSLocation result = this;
-            if (subItemSelected < 2)
+            if (subItemSelected <= 2)
             {
                 //check valid numbers
                 try
@@ -177,8 +246,8 @@ namespace TrailsPlugin.Data {
                     pos = float.NaN;
                 }
                 if (float.NaN == pos
-                    || subItemSelected == 0 && 180 < Math.Abs(pos)
                     || subItemSelected == 1 && 90 < Math.Abs(pos)
+                    || subItemSelected == 2 && 180 < Math.Abs(pos)
                     )
                 {
                     valid = 0;
@@ -189,10 +258,10 @@ namespace TrailsPlugin.Data {
             {
                 switch (subItemSelected)
                 {
-                    case 0:
+                    case 1:
                         _gpsLocation = new GPSLocation(this.LatitudeDegrees, pos);
                         break;
-                    case 1:
+                    case 2:
                         _gpsLocation = new GPSLocation(pos, this.LongitudeDegrees);
                         break;
                     default:
@@ -201,7 +270,6 @@ namespace TrailsPlugin.Data {
                 }
             }
             return result;
-
         }
 	}
 }
