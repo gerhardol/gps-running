@@ -110,18 +110,6 @@ namespace GpsRunningPlugin.Source
             //}
             //Resize += new EventHandler(PerformancePredictorView_Resize);
             //Settings settings = new Settings();
-
-            //Set control state before listeners are activated
-            setView();
-            this.daveCameronButton.CheckedChanged += new System.EventHandler(this.daveCameron_CheckedChanged);
-            this.reigelButton.CheckedChanged += new System.EventHandler(this.reigel_CheckedChanged);
-            this.tableButton.CheckedChanged += new System.EventHandler(this.table_CheckedChanged);
-            this.chartButton.CheckedChanged += new System.EventHandler(this.chartButton_CheckedChanged);
-            this.trainingButton.CheckedChanged += new System.EventHandler(this.training_CheckedChanged);
-            this.timePredictionButton.CheckedChanged += new System.EventHandler(this.timePrediction_CheckedChanged);
-            this.speedButton.CheckedChanged += new System.EventHandler(this.speed_CheckedChanged);
-            this.paceButton.CheckedChanged += new System.EventHandler(this.pace_CheckedChanged);
-            this.chkHighScoreBox.CheckedChanged += new System.EventHandler(this.chkHighScore_CheckedChanged);
         }
 
         //Compatibility with old UniqueRoutes send to
@@ -167,6 +155,30 @@ new System.Globalization.CultureInfo("en"));
 
         void InitControls()
         {
+            //Set control state before listeners are activated
+            switch (Settings.Model)
+            {
+                default:
+                case PredictionModel.DAVE_CAMERON:
+                    daveCameronButton.Checked = true;
+                    break;
+                case PredictionModel.PETE_RIEGEL:
+                    reigelButton.Checked = true;
+                    break;
+            }
+            paceButton.Checked = Settings.ShowPace;
+            speedButton.Checked = !Settings.ShowPace;
+
+            setView();
+            this.daveCameronButton.CheckedChanged += new System.EventHandler(this.daveCameron_CheckedChanged);
+            this.reigelButton.CheckedChanged += new System.EventHandler(this.reigel_CheckedChanged);
+            this.tableButton.CheckedChanged += new System.EventHandler(this.table_CheckedChanged);
+            this.chartButton.CheckedChanged += new System.EventHandler(this.chartButton_CheckedChanged);
+            this.trainingButton.CheckedChanged += new System.EventHandler(this.training_CheckedChanged);
+            this.timePredictionButton.CheckedChanged += new System.EventHandler(this.timePrediction_CheckedChanged);
+            this.speedButton.CheckedChanged += new System.EventHandler(this.speed_CheckedChanged);
+            this.paceButton.CheckedChanged += new System.EventHandler(this.pace_CheckedChanged);
+            this.chkHighScoreBox.CheckedChanged += new System.EventHandler(this.chkHighScore_CheckedChanged);
         }
 
         public void ThemeChanged(ITheme visualTheme)
@@ -356,21 +368,9 @@ new System.Globalization.CultureInfo("en"));
 
         private void setView()
         {
-            switch (Settings.Model)
-            {
-                default:
-                case PredictionModel.DAVE_CAMERON:
-                    daveCameronButton.Checked = true;
-                    break;
-                case PredictionModel.PETE_RIEGEL:
-                    reigelButton.Checked = true;
-                    break;
-            }
-            paceButton.Checked = Settings.ShowPace;
-            speedButton.Checked = !Settings.ShowPace;
-
             predictorView.HidePage();
             trainingView.HidePage();
+
             timePredictionButton.Enabled = false;
             trainingButton.Enabled = false;
             this.tableButton.Enabled = false;
