@@ -218,6 +218,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
             this.chkHighScoreBox.Text = Properties.Resources.HighScorePrediction;
             this.chkHighScoreMenuItem.Text = this.chkHighScoreBox.Text;
+            showToolBarMenuItem.Text = StringResources.Menu_ShowToolBar;
 
             predictorView.UICultureChanged(culture);
             trainingView.UICultureChanged(culture);
@@ -438,6 +439,19 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             syncMenuToState();
         }
 
+        private void UpdateToolBar()
+        {
+             
+            if (Settings.ShowToolBar)
+            {
+                this.splitContainer1.SplitterDistance = 145;
+            }
+            else
+            {
+                this.splitContainer1.SplitterDistance = 0;
+            }
+        }
+
         private void syncMenuToState()
         {
             timePredictionMenuItem.Checked = timePredictionButton.Checked;
@@ -462,6 +476,8 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
             chkHighScoreMenuItem.Checked = chkHighScoreBox.Checked;
             chkHighScoreMenuItem.Enabled = chkHighScoreBox.Enabled;
+
+            showToolBarMenuItem.Checked = Settings.ShowToolBar;
         }
         public bool ChkHighScore
         {
@@ -636,6 +652,12 @@ Plugin.GetApplication().SystemPreferences.UICulture);
         {
             if (m_showPage)
             {
+                if (sender is ToolStripMenuItem)
+                {
+                    this.chkHighScoreBox.Checked = !this.chkHighScoreBox.Checked;
+                    this.chkHighScoreMenuItem.Checked = this.chkHighScoreBox.Checked;
+                }
+
                 predictorView.RefreshData();
             }
         }
@@ -646,5 +668,12 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             actionBanner1.ContextMenuStrip.Show(actionBanner1.Parent.PointToScreen(new System.Drawing.Point(actionBanner1.Right - actionBanner1.ContextMenuStrip.Width - 2,
                 actionBanner1.Bottom + 1)));
         }
+
+        private void showToolBarMenuItem_Click(object sender, EventArgs e)
+        {
+            Settings.ShowToolBar = !Settings.ShowToolBar;
+            UpdateToolBar();
+        }
+
     }
 }

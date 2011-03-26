@@ -268,6 +268,15 @@ namespace GpsRunningPlugin.Util {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Tool Bar.
+        /// </summary>
+        internal static string Menu_ShowToolBar {
+            get {
+                return ResourceManager.GetString("Menu_ShowToolBar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Minimal.
         /// </summary>
         internal static string Minimal {

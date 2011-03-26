@@ -103,6 +103,16 @@ namespace GpsRunningPlugin.Source
             }
         }
 
+        private static bool showToolBar;
+        public static bool ShowToolBar
+        {
+            get { return showToolBar; }
+            set
+            {
+                showToolBar = value;
+            }
+        }
+
         private static int percentOfDistance;
         public static int PercentOfDistance
         {
@@ -130,6 +140,7 @@ namespace GpsRunningPlugin.Source
             showChart = false;//show chart by default
             percentOfDistance = 40;
             model = PredictionModel.DAVE_CAMERON;
+            showToolBar = true;
             distances.Clear();
             //Some distances removed by default
             //addDistance(100, Length.Units.Meter, false);
@@ -186,6 +197,8 @@ namespace GpsRunningPlugin.Source
 
             attr = pluginNode.GetAttribute(xmlTags.model);
             if (attr.Length > 0) { model = (PredictionModel)Enum.Parse(typeof(PredictionModel), attr); }
+            attr = pluginNode.GetAttribute(xmlTags.showToolBar);
+            if (attr.Length > 0) { showToolBar = XmlConvert.ToBoolean(attr); }
             attr = pluginNode.GetAttribute(xmlTags.distances);
             if (attr.Length > 0) { distances = parseDistances(attr.Split(';')); }
 
@@ -207,6 +220,7 @@ namespace GpsRunningPlugin.Source
             pluginNode.SetAttribute(xmlTags.percentOfDistance, XmlConvert.ToString(percentOfDistance));
 
             pluginNode.SetAttribute(xmlTags.model, model.ToString());
+            pluginNode.SetAttribute(xmlTags.showToolBar, XmlConvert.ToString(showToolBar));
             String att = "";
             bool first = true;
             foreach (double d in distances.Keys)
@@ -232,6 +246,7 @@ namespace GpsRunningPlugin.Source
             public const string showPace = "showPace";
             public const string showChart = "showChart";
             public const string model = "model";
+            public const string showToolBar = "showToolBar";
             public const string percentOfDistance = "percentOfDistance";
             public const string distances = "distances";
 
