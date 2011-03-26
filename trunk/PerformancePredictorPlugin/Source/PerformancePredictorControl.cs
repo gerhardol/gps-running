@@ -59,7 +59,7 @@ namespace GpsRunningPlugin.Source
 
 #if !ST_2_1
         public PerformancePredictorControl(IDetailPage detailPage, IDailyActivityView view)
-           : this()
+            : this()
         {
             m_DetailPage = detailPage;
             m_view = view;
@@ -128,13 +128,13 @@ namespace GpsRunningPlugin.Source
 #if ST_2_1
 Plugin.GetApplication().VisualTheme);
 #else
-                  Plugin.GetApplication().SystemPreferences.VisualTheme);
+Plugin.GetApplication().SystemPreferences.VisualTheme);
 #endif
                 this.UICultureChanged(
 #if ST_2_1
 new System.Globalization.CultureInfo("en"));
 #else
-                  Plugin.GetApplication().SystemPreferences.UICulture);
+Plugin.GetApplication().SystemPreferences.UICulture);
 #endif
                 m_popupForm = new Form();
                 m_popupForm.Controls.Add(this);
@@ -155,30 +155,23 @@ new System.Globalization.CultureInfo("en"));
 
         void InitControls()
         {
-            //Set control state before listeners are activated
-            switch (Settings.Model)
-            {
-                default:
-                case PredictionModel.DAVE_CAMERON:
-                    daveCameronButton.Checked = true;
-                    break;
-                case PredictionModel.PETE_RIEGEL:
-                    reigelButton.Checked = true;
-                    break;
-            }
+            //menu set separately
+            timePredictionButton.Checked = Settings.ShowPrediction;
+            trainingButton.Checked = !Settings.ShowPrediction;
+
+            daveCameronButton.Checked = Settings.Model == PredictionModel.DAVE_CAMERON;
+            peteRiegelButton.Checked = Settings.Model == PredictionModel.PETE_RIEGEL;
+
             paceButton.Checked = Settings.ShowPace;
             speedButton.Checked = !Settings.ShowPace;
 
+            tableButton.Checked = Settings.ShowChart;
+            chartButton.Checked = Settings.ShowChart;
+
+            chkHighScoreBox.Checked = Settings.HighScore != null;
+
+            //Correct possibly misaligned settings
             setView();
-            this.daveCameronButton.CheckedChanged += new System.EventHandler(this.daveCameron_CheckedChanged);
-            this.reigelButton.CheckedChanged += new System.EventHandler(this.reigel_CheckedChanged);
-            this.tableButton.CheckedChanged += new System.EventHandler(this.table_CheckedChanged);
-            this.chartButton.CheckedChanged += new System.EventHandler(this.chartButton_CheckedChanged);
-            this.trainingButton.CheckedChanged += new System.EventHandler(this.training_CheckedChanged);
-            this.timePredictionButton.CheckedChanged += new System.EventHandler(this.timePrediction_CheckedChanged);
-            this.speedButton.CheckedChanged += new System.EventHandler(this.speed_CheckedChanged);
-            this.paceButton.CheckedChanged += new System.EventHandler(this.pace_CheckedChanged);
-            this.chkHighScoreBox.CheckedChanged += new System.EventHandler(this.chkHighScore_CheckedChanged);
         }
 
         public void ThemeChanged(ITheme visualTheme)
@@ -188,23 +181,43 @@ new System.Globalization.CultureInfo("en"));
             this.splitContainer1.Panel1.BackColor = visualTheme.Control;
             this.splitContainer1.Panel2.BackColor = visualTheme.Control;
 
+            this.actionBanner1.ThemeChanged(visualTheme);
             this.predictorView.ThemeChanged(visualTheme);
             this.trainingView.ThemeChanged(visualTheme);
         }
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
-            groupBox3.Text = StringResources.Settings;
-            groupBox1.Text = Resources.PredictionModel;
-            groupBox2.Text = Resources.Velocity;
-            resultBox.Text = Resources.PredictionResults;
+            settingsBox.Text = StringResources.Settings;
+            settingsMenuItem.Text = settingsBox.Text;
             timePredictionButton.Text = Resources.TimePrediction;
+            timePredictionMenuItem.Text = timePredictionButton.Text;
             trainingButton.Text = StringResources.Training;
+            trainingMenuItem.Text = trainingButton.Text;
+
+            modelBox.Text = Resources.PredictionModel;
+            this.modelMenuItem.Text = modelBox.Text;
+            this.daveCameronButton.Text = "Dave Cameron";
+            this.daveCameronMenuItem.Text = this.daveCameronButton.Text;
+            this.peteRiegelButton.Text = "Pete Riegel";
+            this.peteRiegelMenuItem.Text = this.peteRiegelButton.Text;
+
+            velocityBox.Text = Resources.Velocity;
+            velocityMenuItem.Text = velocityBox.Text;
             paceButton.Text = CommonResources.Text.LabelPace;
+            paceMenuItem.Text = paceButton.Text;
             speedButton.Text = CommonResources.Text.LabelSpeed;
-            chartButton.Text = Resources.ViewInChart;
+            speedMenuItem.Text = speedButton.Text;
+
+            resultBox.Text = Resources.PredictionResults;
+            resultMenuItem.Text = resultBox.Text;
             tableButton.Text = Resources.ViewInTable;
+            tableMenuItem.Text = tableButton.Text;
+            chartButton.Text = Resources.ViewInChart;
+            chartMenuItem.Text = chartButton.Text;
+
             this.chkHighScoreBox.Text = Properties.Resources.HighScorePrediction;
+            this.chkHighScoreMenuItem.Text = this.chkHighScoreBox.Text;
 
             predictorView.UICultureChanged(culture);
             trainingView.UICultureChanged(culture);
@@ -235,7 +248,6 @@ new System.Globalization.CultureInfo("en"));
                 //No settings for HS, separate check in makeData(), enabled in setView
                 //For Activity page use Predict/Training by default for single activities
                 //Enabling/disabling is done based on settings
-                this.chkHighScoreBox.CheckedChanged -= new System.EventHandler(this.chkHighScore_CheckedChanged);
                 if (Settings.HighScore != null && (m_activities.Count > 1 || m_popupForm != null))
                 {
                     chkHighScoreBox.Checked = true;
@@ -244,7 +256,6 @@ new System.Globalization.CultureInfo("en"));
                 {
                     chkHighScoreBox.Checked = false;
                 }
-                this.chkHighScoreBox.CheckedChanged += new System.EventHandler(this.chkHighScore_CheckedChanged);
 
 
                 //if (m_activities.Count != 1 || (m_activities.Count == 1 && null != m_activities[0]))
@@ -380,8 +391,6 @@ new System.Globalization.CultureInfo("en"));
             this.tableButton.Enabled = true;
             this.chartButton.Enabled = true;
 
-            this.trainingButton.CheckedChanged -= new System.EventHandler(this.training_CheckedChanged);
-            this.timePredictionButton.CheckedChanged -= new System.EventHandler(this.timePrediction_CheckedChanged);
             if (m_activities.Count == 1)
             {
                 timePredictionButton.Enabled = true;
@@ -395,11 +404,10 @@ new System.Globalization.CultureInfo("en"));
             }
 
             trainingButton.Checked = !timePredictionButton.Checked;
-            this.trainingButton.CheckedChanged += new System.EventHandler(this.training_CheckedChanged);
-            this.timePredictionButton.CheckedChanged += new System.EventHandler(this.timePrediction_CheckedChanged);
 
             if (timePredictionButton.Checked)
             {
+                actionBanner1.Text = Properties.Resources.TimePrediction;
                 chartButton.Checked = Settings.ShowChart;
                 tableButton.Checked = !Settings.ShowChart;
                 if (m_activities.Count == 1)
@@ -417,22 +425,44 @@ new System.Globalization.CultureInfo("en"));
             }
             else
             {
+                actionBanner1.Text = StringResources.Training;
                 this.tableButton.Enabled = false;
                 this.chartButton.Enabled = false;
-                if (this.chartButton.Checked)
-                {
-                    this.tableButton.CheckedChanged -= new System.EventHandler(this.table_CheckedChanged);
-                    this.chartButton.Checked = false;
-                    this.tableButton.Checked = true;
-                    this.tableButton.CheckedChanged += new System.EventHandler(this.table_CheckedChanged);
-                }
+                this.chartButton.Checked = false;
+                this.tableButton.Checked = true;
                 if (m_showPage)
                 {
                     trainingView.ShowPage("");
                 }
             }
+            syncMenuToState();
         }
 
+        private void syncMenuToState()
+        {
+            timePredictionMenuItem.Checked = timePredictionButton.Checked;
+            timePredictionMenuItem.Enabled = timePredictionButton.Enabled;
+            trainingMenuItem.Checked = trainingButton.Checked;
+            trainingMenuItem.Enabled = trainingButton.Enabled;
+
+            daveCameronMenuItem.Checked = daveCameronButton.Checked;
+            daveCameronMenuItem.Enabled = daveCameronButton.Enabled;
+            peteRiegelMenuItem.Checked = peteRiegelButton.Checked;
+            peteRiegelMenuItem.Enabled = peteRiegelButton.Enabled;
+
+            paceMenuItem.Checked = paceButton.Checked;
+            paceMenuItem.Enabled = paceButton.Enabled;
+            speedMenuItem.Checked = speedButton.Checked;
+            speedMenuItem.Enabled = speedButton.Enabled;
+
+            tableMenuItem.Checked = tableButton.Checked;
+            tableMenuItem.Enabled = tableButton.Enabled;
+            chartMenuItem.Checked = chartButton.Checked;
+            chartMenuItem.Enabled = chartButton.Enabled;
+
+            chkHighScoreMenuItem.Checked = chkHighScoreBox.Checked;
+            chkHighScoreMenuItem.Enabled = chkHighScoreBox.Enabled;
+        }
         public bool ChkHighScore
         {
             get
@@ -471,95 +501,150 @@ new System.Globalization.CultureInfo("en"));
         //{
         //    setSize();
         //}
-        
-        private void daveCameron_CheckedChanged(object sender, EventArgs e)
-        {
-            if (m_showPage && daveCameronButton.Checked)
-            {
-                Settings.Model = PredictionModel.DAVE_CAMERON;
-                //setView();
-                predictorView.setData();
-                trainingView.RefreshData();
-            }
-        }
 
-        private void reigel_CheckedChanged(object sender, EventArgs e)
+        private void timePrediction_Click(object sender, EventArgs e)
         {
-            if (m_showPage && reigelButton.Checked)
+            if (m_showPage && (
+                sender is RadioButton && timePredictionButton.Checked ||
+                sender is ToolStripMenuItem && !timePredictionMenuItem.Checked))
             {
-                Settings.Model = PredictionModel.PETE_RIEGEL;
-                //setView();
-                predictorView.setData();
-                trainingView.RefreshData();
-            }
-        }
-
-        private void chartButton_CheckedChanged(object sender, EventArgs e)
-        {
-            if (m_showPage && chartButton.Checked)
-            {
-                Settings.ShowChart = true;
-                predictorView.updateChartVisibility();
-                //No effect for Training
-            }
-        }
-
-        private void table_CheckedChanged(object sender, EventArgs e)
-        {
-            if (m_showPage && tableButton.Checked)
-            {
-                Settings.ShowChart = false;
-                predictorView.updateChartVisibility();
-                //No effect for Training
-            }
-        }
-
-        private void timePrediction_CheckedChanged(object sender, EventArgs e)
-        {
-            if (m_showPage && timePredictionButton.Checked && m_activities.Count == 1)
-            {
+                timePredictionButton.Checked = true;
+                timePredictionMenuItem.Checked = true;
+                trainingButton.Checked = true;
+                trainingMenuItem.Checked = true;
                 Settings.ShowPrediction = true;
                 setView();
                 //predictorView.setData();
             }
         }
 
-        private void training_CheckedChanged(object sender, EventArgs e)
+        private void training_Click(object sender, EventArgs e)
         {
-            if (m_showPage && trainingButton.Checked && m_activities.Count == 1)
+            if (m_showPage && (
+                sender is RadioButton && trainingButton.Checked ||
+                sender is ToolStripMenuItem && !trainingMenuItem.Checked))
             {
+                timePredictionButton.Checked = true;
+                timePredictionMenuItem.Checked = true;
+                trainingButton.Checked = true;
+                trainingMenuItem.Checked = true;
                 Settings.ShowPrediction = false;
                 setView();
                 //predictorView.setData();
             }
         }
 
-        private void pace_CheckedChanged(object sender, EventArgs e)
+        private void daveCameron_Click(object sender, EventArgs e)
         {
-            if (m_showPage && paceButton.Checked)
+            if (m_showPage && (
+                sender is RadioButton && daveCameronButton.Checked ||
+                sender is ToolStripMenuItem && !daveCameronMenuItem.Checked))
             {
+                Settings.Model = PredictionModel.DAVE_CAMERON;
+                daveCameronButton.Checked = true;
+                daveCameronMenuItem.Checked = true;
+                peteRiegelButton.Checked = false;
+                peteRiegelMenuItem.Checked = false;
+                //setView();
+                predictorView.setData();
+                trainingView.RefreshData();
+            }
+        }
+
+        private void peteRiegel_Click(object sender, EventArgs e)
+        {
+            if (m_showPage && (
+                sender is RadioButton && peteRiegelButton.Checked ||
+                sender is ToolStripMenuItem && !peteRiegelMenuItem.Checked))
+            {
+                Settings.Model = PredictionModel.PETE_RIEGEL;
+                daveCameronButton.Checked = false;
+                daveCameronMenuItem.Checked = false;
+                peteRiegelButton.Checked = true;
+                peteRiegelMenuItem.Checked = true;
+                //setView();
+                predictorView.setData();
+                trainingView.RefreshData();
+            }
+        }
+
+        private void table_Click(object sender, EventArgs e)
+        {
+            if (m_showPage && (
+                sender is RadioButton && tableButton.Checked ||
+                sender is ToolStripMenuItem && !tableMenuItem.Checked))
+            {
+                tableButton.Checked = true;
+                tableMenuItem.Checked = true;
+                chartButton.Checked = false;
+                chartMenuItem.Checked = false;
+                Settings.ShowChart = false;
+                predictorView.updateChartVisibility();
+                //No effect for Training
+            }
+        }
+
+        private void chart_Click(object sender, EventArgs e)
+        {
+            if (m_showPage && (
+                sender is RadioButton && chartButton.Checked ||
+                sender is ToolStripMenuItem && !chartMenuItem.Checked))
+            {
+                tableButton.Checked = false;
+                tableMenuItem.Checked = false;
+                chartButton.Checked = true;
+                chartMenuItem.Checked = true;
+                Settings.ShowChart = true;
+                predictorView.updateChartVisibility();
+                //No effect for Training
+            }
+        }
+
+        private void pace_Click(object sender, EventArgs e)
+        {
+            if (m_showPage && (
+                sender is RadioButton && paceButton.Checked ||
+                sender is ToolStripMenuItem && !paceMenuItem.Checked))
+            {
+                paceButton.Checked = true;
+                paceMenuItem.Checked = true;
+                speedButton.Checked = false;
+                speedMenuItem.Checked = false;
                 Settings.ShowPace = true;
                 predictorView.RefreshData();
                 trainingView.RefreshData();
             }
         }
 
-        private void speed_CheckedChanged(object sender, EventArgs e)
+        private void speed_Click(object sender, EventArgs e)
         {
-            if (m_showPage && speedButton.Checked)
+            if (m_showPage && (
+                sender is RadioButton && speedButton.Checked ||
+                sender is ToolStripMenuItem && !speedMenuItem.Checked))
             {
+                paceButton.Checked = false;
+                paceMenuItem.Checked = false;
+                speedButton.Checked = true;
+                speedMenuItem.Checked = true;
                 Settings.ShowPace = false;
                 predictorView.RefreshData();
                 trainingView.RefreshData();
             }
         }
 
-        private void chkHighScore_CheckedChanged(object sender, EventArgs e)
+        private void chkHighScore_Click(object sender, EventArgs e)
         {
             if (m_showPage)
             {
                 predictorView.RefreshData();
             }
+        }
+
+        void actionBanner1_MenuClicked(object sender, System.EventArgs e)
+        {
+            //actionBanner1.ContextMenuStrip.Width = 100;
+            actionBanner1.ContextMenuStrip.Show(actionBanner1.Parent.PointToScreen(new System.Drawing.Point(actionBanner1.Right - actionBanner1.ContextMenuStrip.Width - 2,
+                actionBanner1.Bottom + 1)));
         }
     }
 }
