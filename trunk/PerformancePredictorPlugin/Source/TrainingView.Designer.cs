@@ -46,6 +46,7 @@ namespace GpsRunningPlugin.Source
         /// </summary>
         private void InitializeComponent()
         {
+            this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.trainingTab = new System.Windows.Forms.TabPage();
             this.trainingLabel = new System.Windows.Forms.Label();
@@ -66,6 +67,7 @@ namespace GpsRunningPlugin.Source
             this.weightLabel2 = new System.Windows.Forms.Label();
             this.weightLabel = new System.Windows.Forms.Label();
             this.weightGrid = new System.Windows.Forms.DataGridView();
+            this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.trainingTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trainingGrid)).BeginInit();
@@ -78,6 +80,18 @@ namespace GpsRunningPlugin.Source
             this.weightTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.weightGrid)).BeginInit();
             this.SuspendLayout();
+            // 
+            // panel1
+            // 
+            this.panel1.AutoSize = true;
+            this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.Controls.Add(this.tabControl1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(400, 300);
+            this.panel1.TabIndex = 1;
             // 
             // tabControl1
             //
@@ -348,7 +362,7 @@ namespace GpsRunningPlugin.Source
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.panel1);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "TrainingView";
             this.Size = new System.Drawing.Size(242, 137);
@@ -368,12 +382,14 @@ namespace GpsRunningPlugin.Source
             this.weightTab.ResumeLayout(false);
             this.weightTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.weightGrid)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
+        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage trainingTab;
         private System.Windows.Forms.TabPage paceTempoTab;

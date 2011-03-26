@@ -102,6 +102,7 @@ namespace GpsRunningPlugin.Source
         public void ThemeChanged(ITheme visualTheme)
         {
             //m_visualTheme = visualTheme;
+            summaryList.ThemeChanged(visualTheme);
             this.chart.ThemeChanged(visualTheme);
             //Set color for non ST controls
             this.dataGrid.BackgroundColor = visualTheme.Control;
@@ -250,7 +251,7 @@ namespace GpsRunningPlugin.Source
             //Get the (cached?) list/chart
             makeData(Settings.Model);
             dataGrid.DataSource = m_predictorData[Settings.Model].set;
-            if (chart != null && !chart.IsDisposed)
+            if (chart != null)
             {
                 chart.DataSeries.Clear();
                 chart.DataSeries.Add(m_predictorData[Settings.Model].series);
@@ -259,6 +260,44 @@ namespace GpsRunningPlugin.Source
             m_showPage = showPage;
             updateChartVisibility();
         }
+
+        //private void RefreshColumns()
+        //{
+        //    summaryList.Columns.Clear();
+        //    int plusMinusSize = summaryList.ShowPlusMinus ? 15 : 0;
+
+        //    //Permanent fields
+        //    foreach (IListColumnDefinition columnDef in TrailResultColumnIds.PermanentMultiColumnDefs())
+        //    {
+        //        TreeList.Column column = new TreeList.Column(
+        //            columnDef.Id,
+        //            columnDef.Text(columnDef.Id),
+        //            columnDef.Width + plusMinusSize,
+        //            columnDef.Align
+        //        );
+        //        summaryList.Columns.Add(column);
+        //        plusMinusSize = 0;
+        //    }
+        //    foreach (string id in Data.Settings.ActivityPageColumns)
+        //    {
+        //        foreach (IListColumnDefinition columnDef in TrailResultColumnIds.ColumnDefs(m_controller.ReferenceActivity, m_controller.Activities.Count > 1))
+        //        {
+        //            if (columnDef.Id == id)
+        //            {
+        //                TreeList.Column column = new TreeList.Column(
+        //                    columnDef.Id,
+        //                    columnDef.Text(columnDef.Id),
+        //                    columnDef.Width + plusMinusSize,
+        //                    columnDef.Align
+        //                );
+        //                summaryList.Columns.Add(column);
+        //                plusMinusSize = 0;
+        //                break;
+        //            }
+        //        }
+        //    }
+        //    summaryList.NumLockedColumns = Data.Settings.ActivityPageNumFixedColumns;
+        //}
 
         private void makeData(PredictionModel model)
         {

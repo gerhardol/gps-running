@@ -79,6 +79,7 @@ namespace GpsRunningPlugin.Source
             m_layer = TrailPointsLayer.Instance((IView)view);
             this.predictorView.InitControls(m_DetailPage, m_view, m_layer, this);
             this.trainingView.InitControls(m_DetailPage, m_view, m_layer, this);
+
         }
         public PerformancePredictorControl(IActivityReportsView view)
             : this(true)
@@ -149,7 +150,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 m_popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_PerformancePredictor.GetHicon());
                 m_popupForm.FormClosed += new FormClosedEventHandler(popupForm_FormClosed);
                 m_popupForm.Show();
-                this.ShowPage("");
+                //Note: Cannot ShowPage("") here, as InitCotrols must run first
             }
         }
 
@@ -170,6 +171,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
             chkHighScoreBox.Checked = Settings.HighScore != null;
 
+            UpdateToolBar();
             //Correct possibly misaligned settings
             setView();
         }
