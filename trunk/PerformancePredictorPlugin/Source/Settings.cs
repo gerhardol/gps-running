@@ -357,9 +357,4 @@ namespace GpsRunningPlugin.Source
 
         public static event System.ComponentModel.PropertyChangedEventHandler DistanceChanged;
     }
-
-    public enum PredictionModel
-    {
-        DAVE_CAMERON, PETE_RIEGEL
-    }
 }

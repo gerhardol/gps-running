@@ -50,5 +50,22 @@ namespace GpsRunningPlugin.Source
                         return new_time;
                     };
 
+
+        public static PredictTime Predictor(PredictionModel model)
+        {
+            switch (model)
+            {
+                default:
+                case PredictionModel.DAVE_CAMERON:
+                    return Predict.Cameron;
+                case PredictionModel.PETE_RIEGEL:
+                    return Predict.Riegel;
+            }
+        }
+    }
+
+    public enum PredictionModel
+    {
+        DAVE_CAMERON, PETE_RIEGEL
     }
 }
