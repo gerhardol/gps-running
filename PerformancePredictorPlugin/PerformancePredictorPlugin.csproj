@@ -36,11 +36,11 @@
     </Compile>
     <Compile Include="Source\PerformancePredictorSettingsPage.cs" />
     <Compile Include="Source\PerformancePredictorActivityDetailPage.cs" />
-    <Compile Include="Source\PerformancePredictorView.cs">
+    <Compile Include="Source\TimePredictionView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Source\PerformancePredictorView.Designer.cs">
-      <DependentUpon>PerformancePredictorView.cs</DependentUpon>
+    <Compile Include="Source\TimePredictionView.Designer.cs">
+      <DependentUpon>TimePredictionView.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\TrainingView.cs">
       <SubType>UserControl</SubType>
@@ -58,8 +58,8 @@
     <EmbeddedResource Include="Source\TrainingView.resx">
       <DependentUpon>TrainingView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Source\PerformancePredictorView.resx">
-      <DependentUpon>PerformancePredictorView.cs</DependentUpon>
+    <EmbeddedResource Include="Source\TimePredictionView.resx">
+      <DependentUpon>TimePredictionView.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

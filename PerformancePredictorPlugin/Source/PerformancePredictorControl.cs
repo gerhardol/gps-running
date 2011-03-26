@@ -366,18 +366,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             this.HidePage();
         }
 
-        public Predict.PredictTime Predictor(PredictionModel model)
-        {
-            switch (model)
-            {
-                default:
-                case PredictionModel.DAVE_CAMERON:
-                    return Predict.Cameron;
-                case PredictionModel.PETE_RIEGEL:
-                    return Predict.Riegel;
-            }
-        }
-
         private void setView()
         {
             predictorView.HidePage();

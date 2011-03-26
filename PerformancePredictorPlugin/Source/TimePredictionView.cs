@@ -269,7 +269,7 @@ namespace GpsRunningPlugin.Source
                     (m_ppcontrol.Activities.Count == 1 && m_ppcontrol.ChkHighScore))
                 {
                     //Predict using one or many activities (check done that HS enabled prior)
-                    makeData(m_predictorData[model].set, m_predictorData[model].series, m_ppcontrol.Predictor(model));
+                    makeData(m_predictorData[model].set, m_predictorData[model].series, Predict.Predictor(model));
                 }
                 else if (m_ppcontrol.SingleActivity != null)
                 {
@@ -278,7 +278,7 @@ namespace GpsRunningPlugin.Source
 
                     if (info.DistanceMeters > 0 && info.Time.TotalSeconds > 0)
                     {
-                        makeData(m_predictorData[model].set, m_predictorData[model].series, m_ppcontrol.Predictor(model),
+                        makeData(m_predictorData[model].set, m_predictorData[model].series, Predict.Predictor(model),
                             info.DistanceMeters, info.Time.TotalSeconds);
                     }
                 }
