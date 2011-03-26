@@ -51,7 +51,7 @@ namespace GpsRunningPlugin.Source
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.trainingView = new TrainingView();
-            this.predictorView = new PerformancePredictorView();
+            this.predictorView = new TimePredictionView();
             this.actionBanner1 = new ZoneFiveSoftware.Common.Visuals.ActionBanner();
 
             this.bannerContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -514,7 +514,7 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.SplitContainer splitContainer1;
         private ZoneFiveSoftware.Common.Visuals.ActionBanner actionBanner1;
         private TrainingView trainingView;
-        private PerformancePredictorView predictorView;
+        private TimePredictionView predictorView;
 
         private System.Windows.Forms.ContextMenuStrip bannerContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem settingsMenuItem;
