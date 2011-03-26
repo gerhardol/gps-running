@@ -72,6 +72,8 @@ namespace GpsRunningPlugin.Source
             this.chartMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.chkHighScoreMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.showToolBarMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 
             this.settingsBox = new System.Windows.Forms.GroupBox();
             this.trainingButton = new System.Windows.Forms.RadioButton();
@@ -150,7 +152,9 @@ namespace GpsRunningPlugin.Source
                 this.paceMenuItem,
                 this.speedMenuItem,
                 this.toolStripSeparator4,
-                this.chkHighScoreMenuItem
+                this.chkHighScoreMenuItem,
+                this.toolStripSeparator5,
+                this.showToolBarMenuItem
             });
             this.bannerContextMenuStrip.Name = "bannerContextMenuStrip";
             this.bannerContextMenuStrip.ShowCheckMargin = true;
@@ -268,6 +272,18 @@ namespace GpsRunningPlugin.Source
             this.chkHighScoreMenuItem.Size = new System.Drawing.Size(154, 22);
             this.chkHighScoreMenuItem.Text = "<chkHighScoreMenuItem";
             this.chkHighScoreMenuItem.Click += new System.EventHandler(this.chkHighScore_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(208, 6);
+            // 
+            // showChartToolsMenuItem
+            // 
+            this.showToolBarMenuItem.Name = "showChartToolsMenuItem";
+            this.showToolBarMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.showToolBarMenuItem.Text = "< showChartTools";
+            this.showToolBarMenuItem.Click += new System.EventHandler(this.showToolBarMenuItem_Click);
             // 
             // daveCameronButton
             // 
@@ -459,6 +475,7 @@ namespace GpsRunningPlugin.Source
             this.splitContainer1.Panel2.Controls.Add(this.predictorView);
             this.splitContainer1.Panel2.Controls.Add(this.trainingView);
             this.splitContainer1.Size = new System.Drawing.Size(336, 316);
+            this.splitContainer1.Panel1MinSize = 0;
             this.splitContainer1.SplitterDistance = 145;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 12;
@@ -517,6 +534,8 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.ToolStripMenuItem paceMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem chkHighScoreMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem showToolBarMenuItem;
 
         private System.Windows.Forms.GroupBox settingsBox;
         private System.Windows.Forms.RadioButton timePredictionButton;
