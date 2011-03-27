@@ -106,11 +106,10 @@ namespace GpsRunningPlugin.Source
             this.summaryList.Size = new System.Drawing.Size(400, 60);
             this.summaryList.TabIndex = 11;
             this.summaryList.Visible = false;
-            //xxx  this.summaryList.Click += new System.EventHandler(this.summaryList_Click);
+            this.summaryList.Click += new System.EventHandler(this.summaryList_Click);
             //this.summaryList.MouseLeave += new System.EventHandler(this.summaryList_MouseLeave);
-            //xxx  this.summaryList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.selectedRow_DoubleClick);
+            this.summaryList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.selectedRow_DoubleClick);
             //this.summaryList.MouseMove += new System.Windows.Forms.MouseEventHandler(summaryList_MouseMove);
-            //this.summaryList.KeyDown += new System.Windows.Forms.KeyEventHandler(summaryList_KeyDown);
             // 
             // listMenu
             // 

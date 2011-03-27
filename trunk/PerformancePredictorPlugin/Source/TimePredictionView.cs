@@ -57,14 +57,15 @@ namespace GpsRunningPlugin.Source
         private class PredictorData
         {
             public bool isData;
+            public IList<TimePredictionResult> result;
             public ChartDataSeries series;
             public DataTable set;
         }
-        private IDictionary<PredictionModel, PredictorData> m_predictorData = new Dictionary<PredictionModel, PredictorData>()
-        {
-            { PredictionModel.DAVE_CAMERON, new PredictorData() },
-            { PredictionModel.PETE_RIEGEL, new PredictorData() }
-        };
+        private IDictionary<PredictionModel, PredictorData> m_predictorData = new Dictionary<PredictionModel, PredictorData>();
+        //xxx{
+        //    { PredictionModel.DAVE_CAMERON, new PredictorData() },
+        //    { PredictionModel.PETE_RIEGEL, new PredictorData() }
+        //};
 
         public TimePredictionView()
         {
@@ -84,12 +85,16 @@ namespace GpsRunningPlugin.Source
 #endif
             m_ppcontrol = ppControl;
 
-            foreach (PredictorData p in m_predictorData.Values)
-            {
-                p.isData = false;
-                p.series = new ChartDataSeries(chart, chart.YAxis);
-                p.set = new DataTable();
-            }
+            //foreach (PredictorData p in m_predictorData.Values)
+            //{
+            //    p.isData = false;
+            //    p.series = new ChartDataSeries(chart, chart.YAxis);
+            //    p.set = new DataTable();
+            //}
+
+            copyTableMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
+            summaryList.NumHeaderRows = TreeList.HeaderRows.Two;
+            summaryList.LabelProvider = new ResultLabelProvider();
 
             dataGrid.CellDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
             dataGrid.CellMouseClick += new DataGridViewCellMouseEventHandler(dataGrid_CellMouseClick); 
@@ -118,28 +123,6 @@ namespace GpsRunningPlugin.Source
             lblHighScoreRequired.Text = Properties.Resources.HighScoreRequired;
         }
 
-        //private IList<IActivity> activities = new List<IActivity>();
-        //public IList<IActivity> Activities
-        //{
-        //    get { return activities; }
-        //    set
-        //    {
-        //        bool showPage = m_showPage;
-        //        m_showPage = false;
-        //        deactivateListeners();
-
-        //        //Make sure activities is not null
-        //        if (null == value) { activities.Clear(); }
-        //        else { activities = value; }
-
-        //        m_showPage = showPage;
-        //        //Reset settings
-        //        activateListeners();
-
-        //        RefreshData();
-        //    }
-        //}
-
         public bool HidePage()
         {
             m_showPage = false;
@@ -152,6 +135,7 @@ namespace GpsRunningPlugin.Source
             }
             return true;
         }
+
         public void ShowPage(string bookmark)
         {
             m_showPage = true;
@@ -208,6 +192,7 @@ namespace GpsRunningPlugin.Source
                 foreach (PredictorData p in m_predictorData.Values)
                 {
                     p.isData = false;
+                    p.result.Clear();
                     p.series.Points.Clear();
                     p.set.Clear();
                     p.set.Rows.Clear();
@@ -218,23 +203,6 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        //#if ST_2_1
-        //        private void dataChanged(object sender, ZoneFiveSoftware.Common.Data.NotifyDataChangedEventArgs e)
-        //        {
-        //            if (m_showPage)
-        //            {
-        //                makeData();
-        //            }
-        //        }
-        //#else
-        //        private void Activity_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        //        {
-        //            if (m_showPage)
-        //            {
-        //                makeData();
-        //            }
-        //        }
-        //#endif
         private void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (m_showPage)
@@ -261,75 +229,9 @@ namespace GpsRunningPlugin.Source
             updateChartVisibility();
         }
 
-        //private void RefreshColumns()
-        //{
-        //    summaryList.Columns.Clear();
-        //    int plusMinusSize = summaryList.ShowPlusMinus ? 15 : 0;
-
-        //    //Permanent fields
-        //    foreach (IListColumnDefinition columnDef in TrailResultColumnIds.PermanentMultiColumnDefs())
-        //    {
-        //        TreeList.Column column = new TreeList.Column(
-        //            columnDef.Id,
-        //            columnDef.Text(columnDef.Id),
-        //            columnDef.Width + plusMinusSize,
-        //            columnDef.Align
-        //        );
-        //        summaryList.Columns.Add(column);
-        //        plusMinusSize = 0;
-        //    }
-        //    foreach (string id in Data.Settings.ActivityPageColumns)
-        //    {
-        //        foreach (IListColumnDefinition columnDef in TrailResultColumnIds.ColumnDefs(m_controller.ReferenceActivity, m_controller.Activities.Count > 1))
-        //        {
-        //            if (columnDef.Id == id)
-        //            {
-        //                TreeList.Column column = new TreeList.Column(
-        //                    columnDef.Id,
-        //                    columnDef.Text(columnDef.Id),
-        //                    columnDef.Width + plusMinusSize,
-        //                    columnDef.Align
-        //                );
-        //                summaryList.Columns.Add(column);
-        //                plusMinusSize = 0;
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    summaryList.NumLockedColumns = Data.Settings.ActivityPageNumFixedColumns;
-        //}
-
-        private void makeData(PredictionModel model)
+        private void RefreshColumns(bool isHighScore, DataTable set)
         {
-            if (!m_predictorData[model].isData)
-            {
-                m_predictorData[model].isData = true;
-                if (m_ppcontrol.Activities.Count > 1 ||
-                    (m_ppcontrol.Activities.Count == 1 && m_ppcontrol.ChkHighScore))
-                {
-                    //Predict using one or many activities (check done that HS enabled prior)
-                    makeData(m_predictorData[model].set, m_predictorData[model].series, Predict.Predictor(model));
-                }
-                else if (m_ppcontrol.SingleActivity != null)
-                {
-                    //Predict and training info
-                    ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
-
-                    if (info.DistanceMeters > 0 && info.Time.TotalSeconds > 0)
-                    {
-                        makeData(m_predictorData[model].set, m_predictorData[model].series, Predict.Predictor(model),
-                            info.DistanceMeters, info.Time.TotalSeconds);
-                    }
-                }
-                //else: no activity selected
-            }
-        }
-
-        private void makeData(DataTable set, ChartDataSeries series,
-            Predict.PredictTime predict)
-        {
-            set.Clear();
-            set.Columns.Clear();
+             set.Columns.Clear();
             set.Columns.Add(UnitUtil.Distance.LabelAxis);
             set.Columns.Add(CommonResources.Text.LabelDistance);
             set.Columns.Add(Resources.PredictedTime, typeof(TimeSpan));
@@ -341,12 +243,86 @@ namespace GpsRunningPlugin.Source
             {
                 set.Columns.Add(UnitUtil.Speed.LabelAxis, typeof(double));
             }
+            if (isHighScore)
+            {
             set.Columns.Add(Resources.UsedActivityStartDate);
             set.Columns.Add(Resources.UsedActivityStartTime);
             set.Columns.Add(Resources.UsedTimeOfActivity, typeof(TimeSpan));
             set.Columns.Add(Resources.StartOfPart + UnitUtil.Distance.LabelAbbr2);
             set.Columns.Add(Resources.UsedLengthOfActivity + UnitUtil.Distance.LabelAbbr2);
             set.Columns.Add(ActivityIdColumn);
+            }
+
+            summaryList.Columns.Clear();
+            IList<string> cols;
+            if (isHighScore)
+            {
+                cols = ResultColumnIds.HsColumns;
+            }
+            else
+            {
+                cols = ResultColumnIds.SingleColumns;
+            }
+            foreach (string id in cols)
+            {
+                foreach (IListColumnDefinition columnDef in ResultColumnIds.ColumnDefs())
+                {
+                    if (columnDef.Id == id)
+                    {
+                        TreeList.Column column = new TreeList.Column(
+                            columnDef.Id,
+                            columnDef.Text(columnDef.Id),
+                            columnDef.Width,
+                            columnDef.Align
+                        );
+                        summaryList.Columns.Add(column);
+                        break;
+                    }
+                }
+            }
+            //summaryList.NumLockedColumns = Data.Settings.ActivityPageNumFixedColumns;
+        }
+
+        private void makeData(PredictionModel model)
+        {
+            if (!m_predictorData.ContainsKey(model))
+            {
+                PredictorData p = new PredictorData();
+                p.result = new List<TimePredictionResult>();
+                p.series = new ChartDataSeries(chart, chart.YAxis);
+                p.set = new DataTable();
+                m_predictorData.Add(model, p);
+            }
+            if (!m_predictorData[model].isData)
+            {
+                m_predictorData[model].isData = true;
+                if (m_ppcontrol.Activities.Count > 1 ||
+                    (m_ppcontrol.Activities.Count == 1 && m_ppcontrol.ChkHighScore))
+                {
+                    //Predict using one or many activities (check done that HS enabled prior)
+                    makeData(m_predictorData[model].set, m_predictorData[model].series, m_predictorData[model].result, Predict.Predictor(model));
+                }
+                else if (m_ppcontrol.SingleActivity != null)
+                {
+                    //Predict and training info
+                    ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
+
+                    if (info.DistanceMeters > 0 && info.Time.TotalSeconds > 0)
+                    {
+                        makeData(m_predictorData[model].set, m_predictorData[model].series, m_predictorData[model].result, Predict.Predictor(model),
+                            info.DistanceMeters, info.Time.TotalSeconds);
+                    }
+                }
+                //else: no activity selected
+            }
+            summaryList.RowData = m_predictorData[model].result;
+        }
+
+        private void makeData(DataTable set, ChartDataSeries series, IList<TimePredictionResult> reslist,
+            Predict.PredictTime predict)
+        {
+            set.Clear();
+            RefreshColumns(true, set);
             series.Points.Clear();
 
             IList<IList<Object>> results = new List<IList<Object>>();
@@ -390,15 +366,17 @@ namespace GpsRunningPlugin.Source
                 //length is the distance HighScore tried to get a prediction  for, may differ to actual dist
                 double length = Settings.Distances.Keys[index];
                 DataRow row = set.NewRow();
-                row[0] = UnitUtil.Distance.ToString(new_dist);
+                Length.Units unitNominal;
                 if (Settings.Distances[length].Values[0])
                 {
-                    row[1] = UnitUtil.Distance.ToString(length, "u");
+                    unitNominal = UnitUtil.Distance.Unit;
                 }
                 else
                 {
-                    row[1] = UnitUtil.Distance.ToString(length, Settings.Distances[length].Keys[0], "u");
+                    unitNominal = Settings.Distances[length].Keys[0];
                 }
+                row[0] = UnitUtil.Distance.ToString(new_dist);
+                row[1] = UnitUtil.Distance.ToString(length, unitNominal, "u");
                 row[2] = UnitUtil.Time.ToString(new_time);
                 double speed = new_dist / new_time;
                 row[3] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed);
@@ -409,49 +387,38 @@ namespace GpsRunningPlugin.Source
                 row[8] = UnitUtil.Distance.ToString(old_dist);
                 row[ActivityIdColumn] = foundActivity.ReferenceId;
                 set.Rows.Add(row);
+                reslist.Add(new TimePredictionResult(foundActivity, new_dist, length, unitNominal, new_time, old_dist, old_time, meterStart, timeStart));
                 index++;
             }
             for (int i = index; i < Settings.Distances.Count; i++)
             {
                 DataRow row = set.NewRow();
-                double key = Settings.Distances.Keys[i];
-                Length.Units unit = Settings.Distances[key].Keys[0];
-                row[0] = UnitUtil.Distance.ToString(key);
-                if (Settings.Distances[key][unit])
+                double new_dist = Settings.Distances.Keys[i];
+                double length = new_dist;
+                Length.Units unitNominal;
+                if (Settings.Distances[length].Values[0])
                 {
-                    row[1] = UnitUtil.Distance.ToString(key, "u");
+                    unitNominal = UnitUtil.Distance.Unit;
                 }
                 else
                 {
-                    row[1] = UnitUtil.Distance.ToString(key, unit, "u");
+                    unitNominal = Settings.Distances[length].Keys[0];
                 }
-
+                row[0] = UnitUtil.Distance.ToString(new_dist);
+                row[1] = UnitUtil.Distance.ToString(length, unitNominal, "u");
+                
                 row[4] = Resources.NoSeedActivity;
                 row[ActivityIdColumn] = "";
                 set.Rows.Add(row);
+                reslist.Add(new TimePredictionResult(new_dist, length, unitNominal));
             }
         }
 
-        private void makeData(DataTable set, ChartDataSeries series,
+        private void makeData(DataTable set, ChartDataSeries series, IList<TimePredictionResult> reslist,
             Predict.PredictTime predict, double old_dist, double old_time)
         {
             set.Clear();
-            set.Columns.Clear();
-            if (null != set || null != set.Columns)
-            {
-                set.Columns.Add(UnitUtil.Distance.LabelAxis);
-                set.Columns.Add(CommonResources.Text.LabelDistance);
-                set.Columns.Add(Resources.PredictedTime, typeof(TimeSpan));
-                if (Settings.ShowPace)
-                {
-                    set.Columns.Add(UnitUtil.Pace.LabelAxis);
-                }
-                else
-                {
-                    set.Columns.Add(UnitUtil.Speed.LabelAxis, typeof(double));
-                }
-                //set.Columns.Add(ActivityIdColumn);
-
+            RefreshColumns(false, set);
                 series.Points.Clear();
 
                 foreach (double new_dist in Settings.Distances.Keys)
@@ -465,22 +432,24 @@ namespace GpsRunningPlugin.Source
 
                     double length = new_dist;
                     DataRow row = set.NewRow();
-                    row[0] = UnitUtil.Distance.ToString(length);
-                    if (Settings.Distances[new_dist].Values[0])
+                    Length.Units unitNominal;
+                    if (Settings.Distances[length].Values[0])
                     {
-                        row[1] = UnitUtil.Distance.ToString(length, "u");
+                        unitNominal = UnitUtil.Distance.Unit;
                     }
                     else
                     {
-                        row[1] = UnitUtil.Distance.ToString(length, Settings.Distances[new_dist].Keys[0], "u");
+                        unitNominal = Settings.Distances[length].Keys[0];
                     }
+                    row[0] = UnitUtil.Distance.ToString(new_dist);
+                    row[1] = UnitUtil.Distance.ToString(length, unitNominal, "u");
                     row[2] = UnitUtil.Time.ToString(new_time);
                     double speed = new_dist / new_time;
                     row[3] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed);
                     //row[ActivityIdColumn] = "";
                     set.Rows.Add(row);
+                    reslist.Add(new TimePredictionResult(m_ppcontrol.SingleActivity, new_dist, length, unitNominal, new_time));
                 }
-            }
         }
 
         public void updateChartVisibility()
@@ -494,16 +463,25 @@ namespace GpsRunningPlugin.Source
                     lblHighScoreRequired.Visible = true;
                     dataGrid.Visible = false;
                     chart.Visible = false;
+                    dataGrid.Visible = !Settings.ShowChart;
+                    chart.Visible = false;//xxx Settings.ShowChart;
+                    summaryList.Visible = Settings.ShowChart;//xxx
                 }
                 else
                 {
                     lblHighScoreRequired.Visible = false;
                     dataGrid.Visible = !Settings.ShowChart;
-                    chart.Visible = Settings.ShowChart;
+                    chart.Visible = false;//xxx Settings.ShowChart;
+                    summaryList.Visible = Settings.ShowChart;//xxx
                 }
             }
         }
         /**************************************************/
+
+        void copyTable()
+        {
+            summaryList.CopyTextToClipboard(true, System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+        }
 
         private void selectedRow_DoubleClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -514,8 +492,62 @@ namespace GpsRunningPlugin.Source
                 if (id != null)
                 {
                     string bookmark = "id=" + id;
-                    Plugin.GetApplication().ShowView(GpsRunningPlugin.GUIDs.OpenView, bookmark);
+                    Plugin.GetApplication().ShowView(GpsRunningPlugin.GUIDs.DailyActivityView, bookmark);
                 }
+            }
+        }
+
+        void summaryList_Click(object sender, System.EventArgs e)
+        {
+            //SelectTrack, for ST3
+            if (sender is TreeList)
+            {
+                TreeList l = sender as TreeList;
+                TreeList.RowHitState hit;
+                object row;
+                //Note: As ST scrolls before Location is recorded, incorrect row may be selected...
+                row = summaryList.RowHitTest(((MouseEventArgs)e).Location, out hit);
+                if (row != null && hit == TreeList.RowHitState.Row && row is TimePredictionResult)
+                {
+                    TimePredictionResult result = (TimePredictionResult)row;
+                    IActivity id = result.Activity;
+                    if (id != null && result.UsedTime > 0)
+                    {
+                        if (m_showPage && isSingleView != true)
+                        {
+                            IDictionary<string, MapPolyline> routes = new Dictionary<string, MapPolyline>();
+                            TrailMapPolyline m = new TrailMapPolyline(
+                                new TrailResult(new ActivityWrapper(id, Plugin.GetApplication().SystemPreferences.RouteSettings.RouteColor)));
+                            routes.Add(m.key, m);
+                            if (m_layer != null)
+                            {
+                                m_layer.TrailRoutes = routes;
+                            }
+                        }
+                        IValueRangeSeries<DateTime> t = new ValueRangeSeries<DateTime>();
+                        t.Add(new ValueRange<DateTime>(result.StartUsedTime, result.StartUsedTime.AddSeconds(result.UsedTime)));
+                        IList<TrailResultMarked> aTrm = new List<TrailResultMarked>();
+                        aTrm.Add(new TrailResultMarked(
+                            new TrailResult(new ActivityWrapper(id, Plugin.GetApplication().SystemPreferences.RouteSettings.RouteSelectedColor)),
+                            t));
+                        this.MarkTrack(aTrm);
+                    }
+                }
+            }
+        }
+
+        private void selectedRow_DoubleClick(object sender, MouseEventArgs e)
+        {
+            Guid view = GUIDs.DailyActivityView;
+
+            object row;
+            TreeList.RowHitState hit;
+            row = summaryList.RowHitTest(e.Location, out hit);
+            if (row != null  && hit == TreeList.RowHitState.Row && row is TimePredictionResult)
+                {
+                    TimePredictionResult tr = (TimePredictionResult)row;
+                string bookmark = "id=" + tr.Activity;
+                Plugin.GetApplication().ShowView(view, bookmark);
             }
         }
 
