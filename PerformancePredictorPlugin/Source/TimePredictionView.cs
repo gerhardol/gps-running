@@ -59,19 +59,13 @@ namespace GpsRunningPlugin.Source
             public bool isData;
             public IList<TimePredictionResult> result;
             public ChartDataSeries series;
-            public DataTable set;
         }
         private IDictionary<PredictionModel, PredictorData> m_predictorData = new Dictionary<PredictionModel, PredictorData>();
-        //xxx{
-        //    { PredictionModel.DAVE_CAMERON, new PredictorData() },
-        //    { PredictionModel.PETE_RIEGEL, new PredictorData() }
-        //};
 
         public TimePredictionView()
         {
             InitializeComponent();
 
-            setSize();
             chart.YAxis.Formatter = new Formatter.SecondsToTime();
             chart.XAxis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
         }
@@ -85,23 +79,9 @@ namespace GpsRunningPlugin.Source
 #endif
             m_ppcontrol = ppControl;
 
-            //foreach (PredictorData p in m_predictorData.Values)
-            //{
-            //    p.isData = false;
-            //    p.series = new ChartDataSeries(chart, chart.YAxis);
-            //    p.set = new DataTable();
-            //}
-
             copyTableMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
             summaryList.NumHeaderRows = TreeList.HeaderRows.Two;
             summaryList.LabelProvider = new ResultLabelProvider();
-
-            dataGrid.CellDoubleClick += new DataGridViewCellEventHandler(selectedRow_DoubleClick);
-            dataGrid.CellMouseClick += new DataGridViewCellMouseEventHandler(dataGrid_CellMouseClick); 
-            this.dataGrid.EnableHeadersVisualStyles = false;
-            this.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.dataGrid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.dataGrid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
         }
 
         public void ThemeChanged(ITheme visualTheme)
@@ -109,11 +89,6 @@ namespace GpsRunningPlugin.Source
             //m_visualTheme = visualTheme;
             summaryList.ThemeChanged(visualTheme);
             this.chart.ThemeChanged(visualTheme);
-            //Set color for non ST controls
-            this.dataGrid.BackgroundColor = visualTheme.Control;
-            this.dataGrid.GridColor = visualTheme.Border;
-            this.dataGrid.DefaultCellStyle.BackColor = visualTheme.Window;
-            this.dataGrid.ColumnHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
         }
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
@@ -121,6 +96,7 @@ namespace GpsRunningPlugin.Source
             chart.XAxis.Label = UnitUtil.Distance.LabelAxis;
             chart.YAxis.Label = UnitUtil.Time.LabelAxis;
             lblHighScoreRequired.Text = Properties.Resources.HighScoreRequired;
+            copyTableMenuItem.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
         }
 
         public bool HidePage()
@@ -161,29 +137,6 @@ namespace GpsRunningPlugin.Source
             Plugin.GetApplication().SystemPreferences.PropertyChanged -= new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
         }
 
-        public void setSize()
-        {
-            if (dataGrid.Columns.Count > 0 && dataGrid.Rows.Count > 0)
-            {
-                foreach (DataGridViewColumn column in dataGrid.Columns)
-                {
-                    if (column.Name.Equals(ActivityIdColumn))
-                    {
-                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                        column.Width = 0;
-                        column.Visible = false;
-                    }
-                    else
-                    {
-                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                        //column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                    }
-                }
-            }
-        }
-
-        private const string ActivityIdColumn = "ActivityId";
-
         public void RefreshData()
         {
             if (m_showPage)
@@ -194,12 +147,9 @@ namespace GpsRunningPlugin.Source
                     p.isData = false;
                     p.result.Clear();
                     p.series.Points.Clear();
-                    p.set.Clear();
-                    p.set.Rows.Clear();
                 }
 
                 setData();
-                setSize();
             }
         }
 
@@ -218,7 +168,6 @@ namespace GpsRunningPlugin.Source
 
             //Get the (cached?) list/chart
             makeData(Settings.Model);
-            dataGrid.DataSource = m_predictorData[Settings.Model].set;
             if (chart != null)
             {
                 chart.DataSeries.Clear();
@@ -229,30 +178,8 @@ namespace GpsRunningPlugin.Source
             updateChartVisibility();
         }
 
-        private void RefreshColumns(bool isHighScore, DataTable set)
+        private void RefreshColumns(bool isHighScore)
         {
-             set.Columns.Clear();
-            set.Columns.Add(UnitUtil.Distance.LabelAxis);
-            set.Columns.Add(CommonResources.Text.LabelDistance);
-            set.Columns.Add(Resources.PredictedTime, typeof(TimeSpan));
-            if (Settings.ShowPace)
-            {
-                set.Columns.Add(UnitUtil.Pace.LabelAxis);
-            }
-            else
-            {
-                set.Columns.Add(UnitUtil.Speed.LabelAxis, typeof(double));
-            }
-            if (isHighScore)
-            {
-            set.Columns.Add(Resources.UsedActivityStartDate);
-            set.Columns.Add(Resources.UsedActivityStartTime);
-            set.Columns.Add(Resources.UsedTimeOfActivity, typeof(TimeSpan));
-            set.Columns.Add(Resources.StartOfPart + UnitUtil.Distance.LabelAbbr2);
-            set.Columns.Add(Resources.UsedLengthOfActivity + UnitUtil.Distance.LabelAbbr2);
-            set.Columns.Add(ActivityIdColumn);
-            }
-
             summaryList.Columns.Clear();
             IList<string> cols;
             if (isHighScore)
@@ -290,7 +217,6 @@ namespace GpsRunningPlugin.Source
                 PredictorData p = new PredictorData();
                 p.result = new List<TimePredictionResult>();
                 p.series = new ChartDataSeries(chart, chart.YAxis);
-                p.set = new DataTable();
                 m_predictorData.Add(model, p);
             }
             if (!m_predictorData[model].isData)
@@ -300,7 +226,7 @@ namespace GpsRunningPlugin.Source
                     (m_ppcontrol.Activities.Count == 1 && m_ppcontrol.ChkHighScore))
                 {
                     //Predict using one or many activities (check done that HS enabled prior)
-                    makeData(m_predictorData[model].set, m_predictorData[model].series, m_predictorData[model].result, Predict.Predictor(model));
+                    makeData(m_predictorData[model].series, m_predictorData[model].result, Predict.Predictor(model));
                 }
                 else if (m_ppcontrol.SingleActivity != null)
                 {
@@ -309,7 +235,7 @@ namespace GpsRunningPlugin.Source
 
                     if (info.DistanceMeters > 0 && info.Time.TotalSeconds > 0)
                     {
-                        makeData(m_predictorData[model].set, m_predictorData[model].series, m_predictorData[model].result, Predict.Predictor(model),
+                        makeData(m_predictorData[model].series, m_predictorData[model].result, Predict.Predictor(model),
                             info.DistanceMeters, info.Time.TotalSeconds);
                     }
                 }
@@ -318,11 +244,10 @@ namespace GpsRunningPlugin.Source
             summaryList.RowData = m_predictorData[model].result;
         }
 
-        private void makeData(DataTable set, ChartDataSeries series, IList<TimePredictionResult> reslist,
+        private void makeData(ChartDataSeries series, IList<TimePredictionResult> reslist,
             Predict.PredictTime predict)
         {
-            set.Clear();
-            RefreshColumns(true, set);
+            RefreshColumns(true);
             series.Points.Clear();
 
             IList<IList<Object>> results = new List<IList<Object>>();
@@ -365,7 +290,6 @@ namespace GpsRunningPlugin.Source
 
                 //length is the distance HighScore tried to get a prediction  for, may differ to actual dist
                 double length = Settings.Distances.Keys[index];
-                DataRow row = set.NewRow();
                 Length.Units unitNominal;
                 if (Settings.Distances[length].Values[0])
                 {
@@ -375,24 +299,12 @@ namespace GpsRunningPlugin.Source
                 {
                     unitNominal = Settings.Distances[length].Keys[0];
                 }
-                row[0] = UnitUtil.Distance.ToString(new_dist);
-                row[1] = UnitUtil.Distance.ToString(length, unitNominal, "u");
-                row[2] = UnitUtil.Time.ToString(new_time);
                 double speed = new_dist / new_time;
-                row[3] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed);
-                row[4] = foundActivity.StartTime.ToLocalTime().ToShortDateString();
-                row[5] = foundActivity.StartTime.AddSeconds(timeStart).ToLocalTime().ToShortTimeString();
-                row[6] = UnitUtil.Time.ToString(old_time);
-                row[7] = UnitUtil.Distance.ToString(meterStart);
-                row[8] = UnitUtil.Distance.ToString(old_dist);
-                row[ActivityIdColumn] = foundActivity.ReferenceId;
-                set.Rows.Add(row);
                 reslist.Add(new TimePredictionResult(foundActivity, new_dist, length, unitNominal, new_time, old_dist, old_time, meterStart, timeStart));
                 index++;
             }
             for (int i = index; i < Settings.Distances.Count; i++)
             {
-                DataRow row = set.NewRow();
                 double new_dist = Settings.Distances.Keys[i];
                 double length = new_dist;
                 Length.Units unitNominal;
@@ -404,21 +316,14 @@ namespace GpsRunningPlugin.Source
                 {
                     unitNominal = Settings.Distances[length].Keys[0];
                 }
-                row[0] = UnitUtil.Distance.ToString(new_dist);
-                row[1] = UnitUtil.Distance.ToString(length, unitNominal, "u");
-                
-                row[4] = Resources.NoSeedActivity;
-                row[ActivityIdColumn] = "";
-                set.Rows.Add(row);
                 reslist.Add(new TimePredictionResult(new_dist, length, unitNominal));
             }
         }
 
-        private void makeData(DataTable set, ChartDataSeries series, IList<TimePredictionResult> reslist,
+        private void makeData(ChartDataSeries series, IList<TimePredictionResult> reslist,
             Predict.PredictTime predict, double old_dist, double old_time)
         {
-            set.Clear();
-            RefreshColumns(false, set);
+            RefreshColumns(false);
                 series.Points.Clear();
 
                 foreach (double new_dist in Settings.Distances.Keys)
@@ -431,7 +336,6 @@ namespace GpsRunningPlugin.Source
                     }
 
                     double length = new_dist;
-                    DataRow row = set.NewRow();
                     Length.Units unitNominal;
                     if (Settings.Distances[length].Values[0])
                     {
@@ -441,13 +345,8 @@ namespace GpsRunningPlugin.Source
                     {
                         unitNominal = Settings.Distances[length].Keys[0];
                     }
-                    row[0] = UnitUtil.Distance.ToString(new_dist);
-                    row[1] = UnitUtil.Distance.ToString(length, unitNominal, "u");
-                    row[2] = UnitUtil.Time.ToString(new_time);
                     double speed = new_dist / new_time;
-                    row[3] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed);
                     //row[ActivityIdColumn] = "";
-                    set.Rows.Add(row);
                     reslist.Add(new TimePredictionResult(m_ppcontrol.SingleActivity, new_dist, length, unitNominal, new_time));
                 }
         }
@@ -461,18 +360,14 @@ namespace GpsRunningPlugin.Source
                     (m_ppcontrol.Activities.Count > 1 || m_ppcontrol.ChkHighScore))
                 {
                     lblHighScoreRequired.Visible = true;
-                    dataGrid.Visible = false;
                     chart.Visible = false;
-                    dataGrid.Visible = !Settings.ShowChart;
-                    chart.Visible = false;//xxx Settings.ShowChart;
-                    summaryList.Visible = Settings.ShowChart;//xxx
+                    summaryList.Visible = true;
                 }
                 else
                 {
                     lblHighScoreRequired.Visible = false;
-                    dataGrid.Visible = !Settings.ShowChart;
-                    chart.Visible = false;//xxx Settings.ShowChart;
-                    summaryList.Visible = Settings.ShowChart;//xxx
+                    summaryList.Visible = !Settings.ShowChart;
+                    chart.Visible = false;
                 }
             }
         }
@@ -483,18 +378,9 @@ namespace GpsRunningPlugin.Source
             summaryList.CopyTextToClipboard(true, System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
         }
 
-        private void selectedRow_DoubleClick(object sender, DataGridViewCellEventArgs e)
+        void copyTableMenu_Click(object sender, EventArgs e)
         {
-            int rowIndex = e.RowIndex;
-            if (rowIndex >= 0 && dataGrid.Columns[ActivityIdColumn] != null)
-            {
-                object id = dataGrid.Rows[rowIndex].Cells[ActivityIdColumn].Value;
-                if (id != null)
-                {
-                    string bookmark = "id=" + id;
-                    Plugin.GetApplication().ShowView(GpsRunningPlugin.GUIDs.DailyActivityView, bookmark);
-                }
-            }
+            copyTable();
         }
 
         void summaryList_Click(object sender, System.EventArgs e)
@@ -551,52 +437,7 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        //Maphandling copy&paste from Overlay/UniqueRoutes
-        void dataGrid_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            int rowIndex = e.RowIndex;
-            if (rowIndex >= 0 && dataGrid.Columns[ActivityIdColumn] != null)
-            {
-                string actid = (string)dataGrid.Rows[rowIndex].Cells[ActivityIdColumn].Value;
-
-                if (actid != null && actid != "")
-                {
-                    IActivity id = null;
-                    foreach (IActivity act in m_ppcontrol.Activities)
-                    {
-                        if (act.ReferenceId == actid)
-                        {
-                            id = act;
-                        }
-                    }
-                    if (id != null)
-                    {
-                        if (m_showPage && isSingleView != true)
-                        {
-                            IDictionary<string, MapPolyline> routes = new Dictionary<string, MapPolyline>();
-                            TrailMapPolyline m = new TrailMapPolyline(
-                                new TrailResult(new ActivityWrapper(id, Plugin.GetApplication().SystemPreferences.RouteSettings.RouteColor)));
-                            routes.Add(m.key, m);
-                            if (m_layer != null)
-                            {
-                                m_layer.TrailRoutes = routes;
-                            }
-                        }
-                        IValueRangeSeries<double> t = new ValueRangeSeries<double>();
-                        t.Add(new ValueRange<double>(
-                            UnitUtil.Distance.Parse((string)dataGrid.Rows[rowIndex].Cells[7].Value),
-                            UnitUtil.Distance.Parse((string)dataGrid.Rows[rowIndex].Cells[7].Value) +
-                            UnitUtil.Distance.Parse((string)dataGrid.Rows[rowIndex].Cells[8].Value)));
-                        IList<TrailResultMarked> aTrm = new List<TrailResultMarked>();
-                        aTrm.Add(new TrailResultMarked(
-                            new TrailResult(new ActivityWrapper(id, Plugin.GetApplication().SystemPreferences.RouteSettings.RouteSelectedColor)),
-                            t));
-                        this.MarkTrack(aTrm);
-                    }
-                }
-            }
-        }
-
+ 
         //Some views like mapping is only working in single view - there are likely better tests
         public bool isSingleView
         {

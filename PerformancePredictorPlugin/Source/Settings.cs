@@ -139,7 +139,7 @@ namespace GpsRunningPlugin.Source
             showPace = true;
             showChart = false;//show chart by default
             percentOfDistance = 40;
-            model = PredictionModel.DAVE_CAMERON;
+            model = PredictionModel.PETE_RIEGEL;
             showToolBar = true;
             distances.Clear();
             //Some distances removed by default

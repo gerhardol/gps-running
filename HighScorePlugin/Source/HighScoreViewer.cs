@@ -843,7 +843,7 @@ namespace GpsRunningPlugin.Source
                 if (id != null)
                 {
                     string bookmark = "id=" + id;
-                    Plugin.GetApplication().ShowView(GUIDs.OpenView, bookmark);
+                    Plugin.GetApplication().ShowView(GUIDs.DailyActivityView, bookmark);
                 }
             }
         }
