@@ -50,11 +50,9 @@ namespace GpsRunningPlugin.Source
             this.summaryList = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.listMenu = new System.Windows.Forms.ContextMenuStrip();
             this.copyTableMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dataGrid = new System.Windows.Forms.DataGridView();
             this.chart = new ZoneFiveSoftware.Common.Visuals.Chart.LineChart();
             this.lblHighScoreRequired = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,7 +61,6 @@ namespace GpsRunningPlugin.Source
             this.panel1.AutoSize = true;
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panel1.Controls.Add(this.summaryList);
-            this.panel1.Controls.Add(this.dataGrid);
             this.panel1.Controls.Add(this.chart);
             this.panel1.Controls.Add(this.lblHighScoreRequired);
             this.panel1.Controls.Add(this.progressBar);
@@ -124,23 +121,7 @@ namespace GpsRunningPlugin.Source
             this.copyTableMenuItem.Name = "copyTableMenuItem";
             this.copyTableMenuItem.Size = new System.Drawing.Size(198, 22);
             this.copyTableMenuItem.Text = "<Copy table to clipboard";
-            //this.copyTableMenuItem.Click += new System.EventHandler(this.copyTableMenu_Click);
-            // 
-            // dataGrid
-            // 
-            this.dataGrid.AllowUserToAddRows = false;
-            this.dataGrid.AllowUserToDeleteRows = false;
-            this.dataGrid.AllowUserToResizeRows = false;
-            this.dataGrid.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.dataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGrid.Location = new System.Drawing.Point(0, 0);
-            this.dataGrid.Name = "dataGrid";
-            this.dataGrid.ReadOnly = true;
-            this.dataGrid.RowHeadersVisible = false;
-            this.dataGrid.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dataGrid.Size = new System.Drawing.Size(190, 316);
-            this.dataGrid.TabIndex = 7;
+            this.copyTableMenuItem.Click += new System.EventHandler(this.copyTableMenu_Click);
             // 
             // chart
             // 
@@ -181,7 +162,6 @@ namespace GpsRunningPlugin.Source
             this.Controls.Add(this.panel1);
             this.Name = "PerformancePredictorView";
             this.Size = new System.Drawing.Size(336, 316);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();
             this.panel1.ResumeLayout(false);
             this.listMenu.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -194,7 +174,6 @@ namespace GpsRunningPlugin.Source
         private ZoneFiveSoftware.Common.Visuals.TreeList summaryList;
         private System.Windows.Forms.ContextMenuStrip listMenu;
         private System.Windows.Forms.ToolStripMenuItem copyTableMenuItem;
-        private System.Windows.Forms.DataGridView dataGrid;
         private ZoneFiveSoftware.Common.Visuals.Chart.LineChart chart;
         private System.Windows.Forms.Label lblHighScoreRequired;
         private System.Windows.Forms.ProgressBar progressBar;

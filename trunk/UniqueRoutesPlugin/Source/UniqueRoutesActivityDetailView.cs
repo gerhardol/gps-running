@@ -983,7 +983,7 @@ namespace GpsRunningPlugin.Source
             if (row != null)
             {
                 string bookmark = "id=" + ((UniqueRoutesResult)row).Activity;
-                Plugin.GetApplication().ShowView(GUIDs.OpenView, bookmark);
+                Plugin.GetApplication().ShowView(GUIDs.DailyActivityView, bookmark);
             }
         }
 
