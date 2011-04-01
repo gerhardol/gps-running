@@ -1,0 +1,53 @@
+﻿/*
+Copyright (C) 2010 Staffan Nilsson
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 3 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Drawing;
+using ZoneFiveSoftware.Common.Data.Fitness;
+using ZoneFiveSoftware.Common.Data.Measurement;
+
+namespace GpsRunningPlugin.Source
+{
+    public class TrainingResult
+    {
+        private IActivity activity;
+
+        public IActivity Activity
+        {
+            get
+            {
+                return activity;
+            }
+        }
+
+        public string ZoneDistance;
+        public double PercentOfMax;
+        public double TrainRaceHR;
+        public double Speed;
+
+        public TrainingResult(IActivity activity, string ZoneDistance, double PercentOfMax, double TrainRaceHR, double Speed)
+        {
+            this.activity = activity;
+            this.ZoneDistance = ZoneDistance;
+            this.PercentOfMax = PercentOfMax;
+            this.TrainRaceHR = TrainRaceHR;
+            this.Speed = Speed;
+        }
+    }
+}

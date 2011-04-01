@@ -70,7 +70,6 @@ namespace GpsRunningPlugin.Source
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(400, 300);
             this.panel1.TabIndex = 1;
-            //this.SummaryPanel.SizeChanged += new System.EventHandler(SummaryPanel_SizeChanged);
             // 
             // summaryList
             // 
@@ -87,9 +86,9 @@ namespace GpsRunningPlugin.Source
             this.summaryList.HeaderRowHeight = 21;
             this.summaryList.Location = new System.Drawing.Point(0, 0);
             this.summaryList.Margin = new System.Windows.Forms.Padding(0);
-            this.summaryList.MultiSelect = true;
+            this.summaryList.MultiSelect = false;
             this.summaryList.Name = "summaryList";
-            this.summaryList.NumHeaderRows = ZoneFiveSoftware.Common.Visuals.TreeList.HeaderRows.One;
+            this.summaryList.NumHeaderRows = ZoneFiveSoftware.Common.Visuals.TreeList.HeaderRows.Auto;
             this.summaryList.NumLockedColumns = 0;
             this.summaryList.RowAlternatingColors = true;
             this.summaryList.RowHotlightColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
@@ -99,10 +98,9 @@ namespace GpsRunningPlugin.Source
             this.summaryList.RowSelectedColorText = System.Drawing.SystemColors.HighlightText;
             this.summaryList.RowSeparatorLines = true;
             this.summaryList.ShowLines = false;
-            this.summaryList.ShowPlusMinus = true;
+            this.summaryList.ShowPlusMinus = false;
             this.summaryList.Size = new System.Drawing.Size(400, 60);
             this.summaryList.TabIndex = 11;
-            this.summaryList.Visible = false;
             this.summaryList.Click += new System.EventHandler(this.summaryList_Click);
             //this.summaryList.MouseLeave += new System.EventHandler(this.summaryList_MouseLeave);
             this.summaryList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.selectedRow_DoubleClick);

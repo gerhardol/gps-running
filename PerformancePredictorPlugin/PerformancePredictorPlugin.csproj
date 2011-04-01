@@ -13,20 +13,30 @@
     <DefineConstants>$(DefineConstants);GPSRUNNING_PERFORMANCEPREDICTOR</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Data\PaceTempoLabelProvider.cs" />
+    <Compile Include="Data\PaceTempoResult.cs" />
+    <Compile Include="Data\TrainingLabelProvider.cs" />
+    <Compile Include="Data\TrainingResult.cs" />
+    <Compile Include="Data\IntervalLabelProvider.cs" />
+    <Compile Include="Data\IntervalResult.cs" />
+    <Compile Include="Data\TemperatureLabelProvider.cs" />
+    <Compile Include="Data\TemperatureResult.cs" />
     <Compile Include="GUIDs.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\TimePredictionResult.cs" />
-    <Compile Include="Source\ResultLabelProvider.cs" />
-    <Compile Include="Source\ActivityWrapper.cs" />
-    <Compile Include="Source\ResultColumnIds.cs" />
+    <Compile Include="Data\WeightResult.cs" />
+    <Compile Include="Data\WeightLabelProvider.cs" />
+    <Compile Include="Data\TimePredictionResult.cs" />
+    <Compile Include="Data\TimePredictionLabelProvider.cs" />
+    <Compile Include="Data\ActivityWrapper.cs" />
+    <Compile Include="Data\ResultColumnIds.cs" />
     <Compile Include="Source\PerformancePredictorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Source\PerformancePredictorControl.Designer.cs">
       <DependentUpon>PerformancePredictorControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Source\PredictTime.cs" />
+    <Compile Include="Data\PredictTime.cs" />
     <Compile Include="Source\PerformancePredictorAction.cs" />
     <Compile Include="Source\PerformancePredictorActivityDetail.cs" />
     <Compile Include="Source\PerformancePredictorActivityEdit.cs" />

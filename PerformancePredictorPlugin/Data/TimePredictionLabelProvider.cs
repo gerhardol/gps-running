@@ -48,7 +48,7 @@ namespace GpsRunningPlugin.Source
                     return UnitUtil.Distance.ToString(wrapper.DistanceNominal, wrapper.UnitNominal, "u");
                 case ResultColumnIds.PredictedTime:
                     return UnitUtil.Time.ToString(wrapper.PredictedTime);
-                case ResultColumnIds.Velocity:
+                case ResultColumnIds.Speed:
                     return UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, wrapper.Speed);
                 case ResultColumnIds.StartDate:
                     return wrapper.StartDate.ToLocalTime().ToShortDateString();
