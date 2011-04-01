@@ -184,11 +184,11 @@ namespace GpsRunningPlugin.Source
             IList<string> cols;
             if (isHighScore)
             {
-                cols = ResultColumnIds.HsColumns;
+                cols = ResultColumnIds.TimePredictHsColumns;
             }
             else
             {
-                cols = ResultColumnIds.SingleColumns;
+                cols = ResultColumnIds.TimePredictSingleColumns;
             }
             foreach (string id in cols)
             {

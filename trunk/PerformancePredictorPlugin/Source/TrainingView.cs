@@ -67,18 +67,117 @@ namespace GpsRunningPlugin.Source
 #endif
             m_ppcontrol = ppControl;
 
+            copyTableMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
+            trainingList.LabelProvider = new TrainingLabelProvider();
+            paceTempoList.LabelProvider = new PaceTempoLabelProvider();
+            intervalList.LabelProvider = new IntervalLabelProvider();
+            temperatureList.LabelProvider = new TemperatureLabelProvider();
+            weightList.LabelProvider = new WeightLabelProvider();
             foreach (TabPage tab in this.tabControl1.TabPages)
             {
-                foreach (Control grid0 in tab.Controls)
+                foreach (Control tablePanel in tab.Controls)
                 {
-                    if (grid0 is DataGridView)
+                    foreach (Control grid0 in tablePanel.Controls)
                     {
-                        DataGridView grid = (grid0 as DataGridView);
-                        //This will disable gradient header, but make them more like ST controls
-                        grid.EnableHeadersVisualStyles = false;
-                        grid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
-                        grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                        grid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+                        if (grid0 is DataGridView)
+                        {
+                            DataGridView grid = (grid0 as DataGridView);
+                            //This will disable gradient header, but make them more like ST controls
+                            grid.EnableHeadersVisualStyles = false;
+                            grid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
+                            grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                            grid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+                        }
+                    }
+                }
+            }
+            trainingList.Columns.Clear();
+            foreach (string id in ResultColumnIds.TrainingColumns)
+            {
+                foreach (IListColumnDefinition columnDef in ResultColumnIds.ColumnDefs())
+                {
+                    if (columnDef.Id == id)
+                    {
+                        TreeList.Column column = new TreeList.Column(
+                            columnDef.Id,
+                            columnDef.Text(columnDef.Id),
+                            columnDef.Width,
+                            columnDef.Align
+                        );
+                        trainingList.Columns.Add(column);
+                        break;
+                    }
+                }
+            }
+            paceTempoList.Columns.Clear();
+            foreach (string id in ResultColumnIds.PaceTempoColumns)
+            {
+                foreach (IListColumnDefinition columnDef in ResultColumnIds.ColumnDefs())
+                {
+                    if (columnDef.Id == id)
+                    {
+                        TreeList.Column column = new TreeList.Column(
+                            columnDef.Id,
+                            columnDef.Text(columnDef.Id),
+                            columnDef.Width,
+                            columnDef.Align
+                        );
+                        paceTempoList.Columns.Add(column);
+                        break;
+                    }
+                }
+            }
+            intervalList.Columns.Clear();
+            foreach (string id in ResultColumnIds.IntervallColumns)
+            {
+                foreach (IListColumnDefinition columnDef in ResultColumnIds.ColumnDefs())
+                {
+                    if (columnDef.Id == id)
+                    {
+                        TreeList.Column column = new TreeList.Column(
+                            columnDef.Id,
+                            columnDef.Text(columnDef.Id),
+                            columnDef.Width,
+                            columnDef.Align
+                        );
+                        intervalList.Columns.Add(column);
+                        break;
+                    }
+                }
+            }
+            temperatureList.Columns.Clear();
+            foreach (string id in ResultColumnIds.TemperatureColumns)
+            {
+                foreach (IListColumnDefinition columnDef in ResultColumnIds.ColumnDefs())
+                {
+                    if (columnDef.Id == id)
+                    {
+                        TreeList.Column column = new TreeList.Column(
+                            columnDef.Id,
+                            columnDef.Text(columnDef.Id),
+                            columnDef.Width,
+                            columnDef.Align
+                        );
+                        temperatureList.Columns.Add(column);
+                        break;
+                    }
+                }
+            }
+            weightList.Columns.Clear();
+            foreach (string id in ResultColumnIds.WeightColumns)
+            {
+                foreach (IListColumnDefinition columnDef in ResultColumnIds.ColumnDefs())
+                {
+                    if (columnDef.Id == id)
+                    {
+                        TreeList.Column column = new TreeList.Column(
+                            columnDef.Id,
+                            columnDef.Text(columnDef.Id),
+                            columnDef.Width,
+                            columnDef.Align
+                        );
+                        weightList.Columns.Add(column);
+                        break;
                     }
                 }
             }
@@ -143,21 +242,28 @@ namespace GpsRunningPlugin.Source
 
             //Set color for non ST controls
             this.BackColor = bColor;
-           
+
             foreach (TabPage tab in this.tabControl1.TabPages)
             {
                 tab.BackColor = bColor;
                 tab.ForeColor = fColor;
                 //Note: Tabs are not changed.
                 //Requires DrawMode set to OwnerDraw, DrawItem implemented
-                foreach (Control grid0 in tab.Controls)
+                foreach (Control tablePanel in tab.Controls)
                 {
-                    if (grid0 is DataGridView)
+                    foreach (Control grid0 in tablePanel.Controls)
                     {
-                        DataGridView grid = (grid0 as DataGridView);
-                        grid.ForeColor = fColor;
-                        grid.BackgroundColor = bColor;
-                        grid.ColumnHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
+                        if (grid0 is TreeList)
+                        {
+                            (grid0 as TreeList).ThemeChanged(visualTheme);
+                        }
+                        if (grid0 is DataGridView)
+                        {
+                            DataGridView grid = (grid0 as DataGridView);
+                            grid.ForeColor = fColor;
+                            grid.BackgroundColor = bColor;
+                            grid.ColumnHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
+                        }
                     }
                 }
             }
@@ -170,11 +276,19 @@ namespace GpsRunningPlugin.Source
             this.intervalTab.Text = Resources.IntervalSplitTimes;
             this.temperatureTab.Text = Resources.TemperatureImpact;
             this.weightTab.Text = Resources.WeighImpact;
-            label1.Text = Resources.PaceRunNotification;
-            label2.Text = String.Format(Resources.TemperatureNotification, UnitUtil.Temperature.ToString(16, "F0u"));
-            interval2Label.Text = Resources.IntervalNotification;
+
+            this.trainingLabel.Text = Resources.VO2MaxVDOT;
+            //paceTempoLabel.Text = "1"+Resources.PaceForTempoRuns_label;
+            paceTempoLabel2.Text = Resources.PaceRunNotification;
+            intervalLabel.Text = Resources.IntervalNotification;
+            //temperatureLabel2.Text = "1" + String.Format(Resources.TemperatureNotification, UnitUtil.Temperature.ToString(16, "F0u"));
+            temperatureLabel2.Text = String.Format(Resources.TemperatureNotification, UnitUtil.Temperature.ToString(16, "F0u"));
+            //weightLabel.Text = "1" + String.Format(Resources.WeightNotification, 2 + " " + StringResources.Seconds,
+            //    UnitUtil.Distance.ToString(1000, "u"));
             weightLabel2.Text = String.Format(Resources.WeightNotification, 2 + " " + StringResources.Seconds,
                 UnitUtil.Distance.ToString(1000, "u"));
+
+            copyTableMenuItem.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
         }
 
         private bool m_showPage = false;
@@ -261,7 +375,8 @@ namespace GpsRunningPlugin.Source
                 return;
             }
             weightLabel2.Visible = true;
-            weightGrid.Visible = true;
+            weightGrid.Visible = false;
+            weightList.Visible = true;
             ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
             weightLabel.Text = Resources.ProjectedWeightImpact + " " +
                 UnitUtil.Distance.ToString(info.DistanceMeters, "u");
@@ -280,11 +395,21 @@ namespace GpsRunningPlugin.Source
             }            
             double inc = 1.4;
             double vdot = getVdot(m_ppcontrol.SingleActivity);
+            IList<WeightResult> result = new List<WeightResult>();
+            WeightResult sel = null;
             for (int i = 0; i < 13; i++)
             {
+                WeightResult t = new WeightResult(m_ppcontrol.SingleActivity, 6 - i, vdot, weight, inc, time, info);
+                result.Add(t);
+                if (t.Weight > weight)
+                {
+                    sel = t;
+                }
                 set.Rows.Add(getWeightRow(6 - i, vdot, weight, inc, time, info));
             }
-            weightGrid.DataSource = set;            
+            weightGrid.DataSource = set;
+            weightList.RowData = result;
+            weightList.SelectedItems = new List<WeightResult>{sel};
         }
 
         private object[] getWeightRow(int p, double vdot, double weight, double inc,
@@ -330,19 +455,24 @@ namespace GpsRunningPlugin.Source
             float actualTemp = m_ppcontrol.SingleActivity.Weather.TemperatureCelsius;
             if (!isValidtemperature(actualTemp)){actualTemp = 15;}
             double[] aTemperature = new double[] { 16, 18, 21, 24, 27, 29, 32, 35, 38 };
+
+            IList<TemperatureResult> result = new List<TemperatureResult>();
+            TemperatureResult sel = null;
             for (int i = 0; i < aTemperature.Length; i++)
             {
+                TemperatureResult t = new TemperatureResult(m_ppcontrol.SingleActivity, aTemperature[i], actualTemp, time, speed);
+                result.Add(t);
                 set.Rows.Add(getTemperatureRow(aTemperature[i], actualTemp, time, speed));
-            }
-            for (int i = 0; i < temperatureGrid.Rows.Count && i < aTemperature.Length; i++)
-            {
-                if (i == aTemperature.Length-1 || (i == 0 || actualTemp >= aTemperature[i - 1]) && (actualTemp < aTemperature[i]))
+                if (i == aTemperature.Length - 1 || (i == 0 || actualTemp >= aTemperature[i - 1]) && (actualTemp < aTemperature[i]))
                 {
-                    temperatureGrid.Rows[i].DefaultCellStyle.ForeColor = Color.Gray;
-                    break;
+                    //xxx temperatureGrid.Rows[i].DefaultCellStyle.ForeColor = Color.Gray;
+                    sel = t;
                 }
             }
             temperatureGrid.DataSource = set;
+            temperatureList.Visible = true;
+            temperatureList.RowData = result;
+            temperatureList.SelectedItems = new List<TemperatureResult>{sel};
         }
 
         private object[] getTemperatureRow(double temperature, float actual, TimeSpan time, double speed)
@@ -372,12 +502,16 @@ namespace GpsRunningPlugin.Source
             double k5Speed = getTrainingSpeed(5000, distance, seconds);
             double k10Speed = getTrainingSpeed(10000, distance, seconds);
             double[] distances = new double[] { 100, 200, 300, 400, 800, 1000, 1609.344 };
+            IList<IntervalResult> result = new List<IntervalResult>();
             for (int i = 0; i < distances.Length; i++)
             {
+                IntervalResult t = new IntervalResult(m_ppcontrol.SingleActivity, distances[i], seconds);
+                result.Add(t);
                 set.Rows.Add(getIntervalRow(distances[i], mileSpeed, k5Speed, k10Speed));
             }
 
             intervalGrid.DataSource = set;
+            intervalList.RowData = result;
         }
 
         private object[] getIntervalRow(double p, double mileSpeed, double k5Speed, double k10Speed)
@@ -404,17 +538,21 @@ namespace GpsRunningPlugin.Source
             double vdot = getVdot(m_ppcontrol.SingleActivity);
 
             double speed = getTrainingSpeed(vdot, 0.93);
+            IList<PaceTempoResult> result = new List<PaceTempoResult>();
             for (int i = 0; i < durations.Length; i++)
             {
                 DataRow row = set.NewRow();
                 row[0] = durations[i];
                 row[1] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed/factors[i]);
                 set.Rows.Add(row);
+                PaceTempoResult t = new PaceTempoResult(m_ppcontrol.SingleActivity, durations[i], speed / factors[i]);
+                result.Add(t);
             }
             paceTempoGrid.DataSource = set;
+            paceTempoList.RowData = result;
         }
 
-        private TimeSpan scaleTime(TimeSpan pace, double p)
+        public static TimeSpan scaleTime(TimeSpan pace, double p)
         {
             return new TimeSpan(0, 0, 0, 0, (int)Math.Round(pace.TotalMilliseconds * p));
         }
@@ -428,7 +566,7 @@ namespace GpsRunningPlugin.Source
                 trainingGrid.Visible = false;
                 return;
             }
-            trainingGrid.Visible = true;
+            trainingGrid.Visible = false;//xxx true;
             DataTable set = new DataTable();
             set.Columns.Add(Resources.ZoneDistance);
             set.Columns.Add(CommonResources.Text.LabelPercentOfMax, typeof(double));
@@ -448,6 +586,7 @@ namespace GpsRunningPlugin.Source
             IList<double> percentages = getPercentages(vdot);
             IList<double> hrs = getHeartRates(percentages);
             IList<double> paces = getSpeeds(vdot, percentages);
+            IList<TrainingResult> result = new List<TrainingResult>();
             for (int i = 0; i < 15; i++)
             {
                 DataRow row = set.NewRow();
@@ -456,10 +595,13 @@ namespace GpsRunningPlugin.Source
                 row[2] = UnitUtil.HeartRate.ToString(hrs[i]);
                 row[3] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, paces[i]);
                 set.Rows.Add(row);
+                TrainingResult t = new TrainingResult(m_ppcontrol.SingleActivity, zones[i], percentages[i], hrs[i], paces[i]);
+                result.Add(t);
             }
             trainingGrid.DataSource = set;
             trainingLabel.Text = String.Format(Resources.VO2MaxVDOT,
                 100*vo2max, vdot);
+            trainingList.RowData = result;
         }
 
         private IList<string> getZones()
@@ -507,7 +649,7 @@ namespace GpsRunningPlugin.Source
             return result;
         }
 
-        private double getTrainingSpeed(double new_dist, double old_dist, double old_time)
+        public static double getTrainingSpeed(double new_dist, double old_dist, double old_time)
         {
             return new_dist / (Predict.Predictor(Settings.Model))(new_dist, old_dist, old_time);
         }
@@ -576,7 +718,7 @@ namespace GpsRunningPlugin.Source
         //35 1.0525
         //38 1.06
 
-        private bool isValidtemperature(double temperature)
+        private static bool isValidtemperature(double temperature)
         {
             if (double.IsNaN(temperature) || temperature <= 16 || temperature > 45)
             {
@@ -584,7 +726,7 @@ namespace GpsRunningPlugin.Source
             }
             return true;
         }
-        private double getTemperatureFactor(double temperature)
+        public static double getTemperatureFactor(double temperature)
         {
             if (!isValidtemperature(temperature))
             {
@@ -605,45 +747,56 @@ namespace GpsRunningPlugin.Source
         //Adapted from ApplyRoutes
         void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
-            Brush backBrush;
-            Brush foreBrush = new SolidBrush(m_visualTheme.ControlText);
-            TabControl tc = sender as TabControl;
-            if (tc == null) return;
-
-            if (e.Index == tc.SelectedIndex)
+            if (m_visualTheme!=null)
             {
-                foreBrush = new SolidBrush(m_visualTheme.ControlText);
-                backBrush = new SolidBrush(m_visualTheme.Control);
+                Brush backBrush;
+                Brush foreBrush = new SolidBrush(m_visualTheme.ControlText);
+                TabControl tc = sender as TabControl;
+                if (tc == null) return;
+
+                if (e.Index == tc.SelectedIndex)
+                {
+                    foreBrush = new SolidBrush(m_visualTheme.ControlText);
+                    backBrush = new SolidBrush(m_visualTheme.Control);
+                }
+                else
+                {
+                    foreBrush = new SolidBrush(m_visualTheme.SubHeaderText);
+                    backBrush = new SolidBrush(m_visualTheme.SubHeader);
+                }
+
+                string tabName = tc.TabPages[e.Index].Text;
+                StringFormat sf = new StringFormat();
+                sf.Alignment = StringAlignment.Center;
+                e.Graphics.FillRectangle(backBrush, e.Bounds);
+                Rectangle r = e.Bounds;
+                r = new Rectangle(r.X, r.Y + 3, r.Width, r.Height - 3);
+                e.Graphics.DrawString(tabName, e.Font, foreBrush, r, sf);
+
+                //The right upper edge
+                Brush background_brush = new SolidBrush(m_visualTheme.Control);//Backcolor of the form
+                Rectangle LastTabRect = tc.GetTabRect(tc.TabPages.Count - 1);
+                Rectangle rect = new Rectangle();
+                rect.Location = new Point(LastTabRect.Right + this.Left, this.Top);
+                rect.Size = new Size(this.Right - rect.Left, LastTabRect.Height);
+                e.Graphics.FillRectangle(background_brush, rect);
+                background_brush.Dispose();
+
+                sf.Dispose();
+                backBrush.Dispose();
+                foreBrush.Dispose();
+
+                e.DrawFocusRectangle();
             }
-            else
-            {
-                foreBrush = new SolidBrush(m_visualTheme.SubHeaderText);
-                backBrush = new SolidBrush(m_visualTheme.SubHeader);
-            }
-
-            string tabName = tc.TabPages[e.Index].Text;
-            StringFormat sf = new StringFormat();
-            sf.Alignment = StringAlignment.Center;
-            e.Graphics.FillRectangle(backBrush, e.Bounds);
-            Rectangle r = e.Bounds;
-            r = new Rectangle(r.X, r.Y + 3, r.Width, r.Height - 3);
-            e.Graphics.DrawString(tabName, e.Font, foreBrush, r, sf);
-
-            //The right upper edge
-            Brush background_brush = new SolidBrush(m_visualTheme.Control);//Backcolor of the form
-            Rectangle LastTabRect = tc.GetTabRect(tc.TabPages.Count - 1);
-            Rectangle rect = new Rectangle();
-            rect.Location = new Point(LastTabRect.Right + this.Left, this.Top);
-            rect.Size = new Size(this.Right - rect.Left, LastTabRect.Height);
-            e.Graphics.FillRectangle(background_brush, rect);
-            background_brush.Dispose();
-
-            sf.Dispose();
-            backBrush.Dispose();
-            foreBrush.Dispose();
-
-            e.DrawFocusRectangle();
         }
 
+        void copyTableMenu_Click(object sender, EventArgs e)
+        {
+            ToolStripDropDownItem d = sender as ToolStripDropDownItem;
+            ToolStripMenuItem t = (ToolStripMenuItem)sender;
+            ContextMenuStrip s = (ContextMenuStrip)t.Owner;
+            TreeList list = (TreeList)s.SourceControl;
+            list.CopyTextToClipboard(true, System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+        }
     }
 }
