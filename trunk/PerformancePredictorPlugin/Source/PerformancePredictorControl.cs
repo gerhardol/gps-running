@@ -70,6 +70,7 @@ namespace GpsRunningPlugin.Source
             }
             this.predictorView.InitControls(m_DetailPage, m_view, m_layer, this);
             this.trainingView.InitControls(m_DetailPage, m_view, m_layer, this);
+            this.extrapolateView.InitControls(m_DetailPage, m_view, m_layer, this);
         }
         //popup dialog
         public PerformancePredictorControl(IDailyActivityView view)
@@ -79,7 +80,7 @@ namespace GpsRunningPlugin.Source
             m_layer = TrailPointsLayer.Instance((IView)view);
             this.predictorView.InitControls(m_DetailPage, m_view, m_layer, this);
             this.trainingView.InitControls(m_DetailPage, m_view, m_layer, this);
-
+            this.extrapolateView.InitControls(m_DetailPage, m_view, m_layer, this);
         }
         public PerformancePredictorControl(IActivityReportsView view)
             : this(true)
@@ -87,7 +88,9 @@ namespace GpsRunningPlugin.Source
             m_layer = TrailPointsLayer.Instance((IView)view);
             this.predictorView.InitControls(m_DetailPage, m_view, m_layer, this);
             this.trainingView.InitControls(m_DetailPage, m_view, m_layer, this);
+            this.extrapolateView.InitControls(m_DetailPage, m_view, m_layer, this);
         }
+
         //UniqueRoutes sendto
         public PerformancePredictorControl(IList<IActivity> activities, IDailyActivityView view)
             : this(view)
@@ -157,28 +160,19 @@ Plugin.GetApplication().SystemPreferences.UICulture);
         void InitControls()
         {
             //menu set separately
-            timePredictionButton.Checked = Settings.ShowPrediction;
-            trainingButton.Checked = !Settings.ShowPrediction;
-
-            daveCameronButton.Checked = Settings.Model == PredictionModel.DAVE_CAMERON;
-            peteRiegelButton.Checked = Settings.Model == PredictionModel.PETE_RIEGEL;
-
-            paceButton.Checked = Settings.ShowPace;
-            speedButton.Checked = !Settings.ShowPace;
-
-            tableButton.Checked = Settings.ShowChart;
-            chartButton.Checked = Settings.ShowChart;
-
-            chkHighScoreBox.Checked = Settings.HighScore != null;
+            syncToolBarToState();
+            syncMenuToState();
 
             UpdateToolBar();
             //Correct possibly misaligned settings
             setView();
         }
 
+        private static ITheme m_visualTheme;
         public void ThemeChanged(ITheme visualTheme)
         {
-            //m_visualTheme = visualTheme;
+            m_visualTheme = visualTheme;
+ 
             //Set color for non ST controls
             this.splitContainer1.Panel1.BackColor = visualTheme.Control;
             this.splitContainer1.Panel2.BackColor = visualTheme.Control;
@@ -186,6 +180,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             this.actionBanner1.ThemeChanged(visualTheme);
             this.predictorView.ThemeChanged(visualTheme);
             this.trainingView.ThemeChanged(visualTheme);
+            this.extrapolateView.ThemeChanged(visualTheme);
         }
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
@@ -196,6 +191,8 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             timePredictionMenuItem.Text = timePredictionButton.Text;
             trainingButton.Text = StringResources.Training;
             trainingMenuItem.Text = trainingButton.Text;
+            extrapolateButton.Text = "xxx"+StringResources.Training;
+            extrapolateMenuItem.Text = extrapolateButton.Text;
 
             modelBox.Text = Resources.PredictionModel;
             this.modelMenuItem.Text = modelBox.Text;
@@ -224,6 +221,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
             predictorView.UICultureChanged(culture);
             trainingView.UICultureChanged(culture);
+            extrapolateView.UICultureChanged(culture);
         }
 
         public IList<IActivity> Activities
@@ -320,6 +318,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             deactivateListeners();
             predictorView.HidePage();
             trainingView.HidePage();
+            extrapolateView.HidePage();
             if (m_layer != null)
             {
                 m_layer.HidePage();
@@ -372,29 +371,31 @@ Plugin.GetApplication().SystemPreferences.UICulture);
         {
             predictorView.HidePage();
             trainingView.HidePage();
+            extrapolateView.HidePage();
 
-            timePredictionButton.Enabled = false;
+            //timePredictionButton.Enabled = false;
             trainingButton.Enabled = false;
+            extrapolateButton.Enabled = false;
+
             this.tableButton.Enabled = false;
-            chartButton.Enabled = false;
-            chkHighScoreBox.Enabled = false;
+            this.chartButton.Enabled = false;
+            this.chkHighScoreBox.Enabled = false;
 
             this.tableButton.Enabled = true;
             this.chartButton.Enabled = true;
 
             if (m_activities.Count == 1)
             {
-                timePredictionButton.Enabled = true;
+                //timePredictionButton.Enabled = true;
                 trainingButton.Enabled = true;
+                extrapolateButton.Enabled = true;
 
-                timePredictionButton.Checked = Settings.ShowPrediction;
+                timePredictionButton.Checked = Settings.PredictionView == PredictionView.TimePrediction;
             }
             else
             {
                 timePredictionButton.Checked = true;
             }
-
-            trainingButton.Checked = !timePredictionButton.Checked;
 
             if (timePredictionButton.Checked)
             {
@@ -416,14 +417,27 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             }
             else
             {
-                actionBanner1.Text = StringResources.Training;
                 this.tableButton.Enabled = false;
                 this.chartButton.Enabled = false;
                 this.chartButton.Checked = false;
                 this.tableButton.Checked = true;
-                if (m_showPage)
+                if (Settings.PredictionView == PredictionView.Training)
                 {
-                    trainingView.ShowPage("");
+                    actionBanner1.Text = StringResources.Training;
+                    trainingButton.Checked = true;
+                    if (m_showPage)
+                    {
+                        trainingView.ShowPage("");
+                    }
+                }
+                else if (Settings.PredictionView == PredictionView.Extrapolate)
+                {
+                    actionBanner1.Text = "xxx" +StringResources.Training;
+                    extrapolateButton.Checked = true;
+                    if (m_showPage)
+                    {
+                        extrapolateView.ShowPage("");
+                    }
                 }
             }
             syncMenuToState();
@@ -442,12 +456,32 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             }
         }
 
+        private void syncToolBarToState()
+        {
+            timePredictionButton.Checked = (Settings.PredictionView == PredictionView.TimePrediction);
+            trainingButton.Checked = (Settings.PredictionView == PredictionView.Training);
+            extrapolateButton.Checked = (Settings.PredictionView == PredictionView.Extrapolate);
+
+            daveCameronButton.Checked = Settings.Model == PredictionModel.DAVE_CAMERON;
+            peteRiegelButton.Checked = Settings.Model == PredictionModel.PETE_RIEGEL;
+
+            paceButton.Checked = Settings.ShowPace;
+            speedButton.Checked = !Settings.ShowPace;
+
+            tableButton.Checked = Settings.ShowChart;
+            chartButton.Checked = Settings.ShowChart;
+
+            chkHighScoreBox.Checked = Settings.HighScore != null;
+        }
+
         private void syncMenuToState()
         {
             timePredictionMenuItem.Checked = timePredictionButton.Checked;
             timePredictionMenuItem.Enabled = timePredictionButton.Enabled;
             trainingMenuItem.Checked = trainingButton.Checked;
             trainingMenuItem.Enabled = trainingButton.Enabled;
+            extrapolateMenuItem.Checked = extrapolateButton.Checked;
+            extrapolateMenuItem.Enabled = extrapolateButton.Enabled;
 
             daveCameronMenuItem.Checked = daveCameronButton.Checked;
             daveCameronMenuItem.Enabled = daveCameronButton.Enabled;
@@ -479,46 +513,15 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
         /**************************************************/
 
-        //void Parent_SizeChanged(object sender, EventArgs e)
-        //{
-        //    if (popupForm != null)
-        //    {
-        //        Settings.WindowSize = popupForm.Size;
-        //    }
-        //    setSize();
-        //}
-
-        //private void Settings_DistanceChanged(object sender, PropertyChangedEventArgs e)
-        //{
-        //    makeData();
-        //}
-
-        //private void form_Resize(object sender, EventArgs e)
-        //{
-        //    setSize();
-        //}
-
-        //private void PerformancePredictorView_Resize(object sender, EventArgs e)
-        //{
-        //    setSize();
-        //}
-
-        //private void Parent_Resize(object sender, EventArgs e)
-        //{
-        //    setSize();
-        //}
-
         private void timePrediction_Click(object sender, EventArgs e)
         {
             if (m_showPage && (
                 sender is RadioButton && timePredictionButton.Checked ||
                 sender is ToolStripMenuItem && !timePredictionMenuItem.Checked))
             {
-                timePredictionButton.Checked = true;
-                timePredictionMenuItem.Checked = true;
-                trainingButton.Checked = true;
-                trainingMenuItem.Checked = true;
-                Settings.ShowPrediction = true;
+                Settings.PredictionView = PredictionView.TimePrediction;
+                syncToolBarToState();
+                syncMenuToState();
                 setView();
                 //predictorView.setData();
             }
@@ -530,11 +533,23 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 sender is RadioButton && trainingButton.Checked ||
                 sender is ToolStripMenuItem && !trainingMenuItem.Checked))
             {
-                timePredictionButton.Checked = true;
-                timePredictionMenuItem.Checked = true;
-                trainingButton.Checked = true;
-                trainingMenuItem.Checked = true;
-                Settings.ShowPrediction = false;
+                Settings.PredictionView = PredictionView.Training;
+                syncToolBarToState();
+                syncMenuToState();
+                setView();
+                //predictorView.setData();
+            }
+        }
+
+        private void extrapolate_Click(object sender, EventArgs e)
+        {
+            if (m_showPage && (
+                sender is RadioButton && extrapolateButton.Checked ||
+                sender is ToolStripMenuItem && !extrapolateMenuItem.Checked))
+            {
+                Settings.PredictionView = PredictionView.Extrapolate;
+                syncToolBarToState();
+                syncMenuToState();
                 setView();
                 //predictorView.setData();
             }
@@ -547,13 +562,12 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 sender is ToolStripMenuItem && !daveCameronMenuItem.Checked))
             {
                 Settings.Model = PredictionModel.DAVE_CAMERON;
-                daveCameronButton.Checked = true;
-                daveCameronMenuItem.Checked = true;
-                peteRiegelButton.Checked = false;
-                peteRiegelMenuItem.Checked = false;
+                syncToolBarToState();
+                syncMenuToState();
                 //setView();
                 predictorView.setData();
                 trainingView.RefreshData();
+                extrapolateView.RefreshData();
             }
         }
 
@@ -564,13 +578,12 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 sender is ToolStripMenuItem && !peteRiegelMenuItem.Checked))
             {
                 Settings.Model = PredictionModel.PETE_RIEGEL;
-                daveCameronButton.Checked = false;
-                daveCameronMenuItem.Checked = false;
-                peteRiegelButton.Checked = true;
-                peteRiegelMenuItem.Checked = true;
+                syncToolBarToState();
+                syncMenuToState();
                 //setView();
                 predictorView.setData();
                 trainingView.RefreshData();
+                extrapolateView.RefreshData();
             }
         }
 
@@ -580,11 +593,9 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 sender is RadioButton && tableButton.Checked ||
                 sender is ToolStripMenuItem && !tableMenuItem.Checked))
             {
-                tableButton.Checked = true;
-                tableMenuItem.Checked = true;
-                chartButton.Checked = false;
-                chartMenuItem.Checked = false;
                 Settings.ShowChart = false;
+                syncToolBarToState();
+                syncMenuToState();
                 predictorView.updateChartVisibility();
                 //No effect for Training
             }
@@ -596,11 +607,9 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 sender is RadioButton && chartButton.Checked ||
                 sender is ToolStripMenuItem && !chartMenuItem.Checked))
             {
-                tableButton.Checked = false;
-                tableMenuItem.Checked = false;
-                chartButton.Checked = true;
-                chartMenuItem.Checked = true;
                 Settings.ShowChart = true;
+                syncToolBarToState();
+                syncMenuToState();
                 predictorView.updateChartVisibility();
                 //No effect for Training
             }
@@ -612,13 +621,11 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 sender is RadioButton && paceButton.Checked ||
                 sender is ToolStripMenuItem && !paceMenuItem.Checked))
             {
-                paceButton.Checked = true;
-                paceMenuItem.Checked = true;
-                speedButton.Checked = false;
-                speedMenuItem.Checked = false;
                 Settings.ShowPace = true;
-                predictorView.RefreshData();
-                trainingView.RefreshData();
+                syncToolBarToState();
+                syncMenuToState();
+                //xxx predictorView.RefreshData();
+                //trainingView.RefreshData();
             }
         }
 
@@ -628,13 +635,11 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 sender is RadioButton && speedButton.Checked ||
                 sender is ToolStripMenuItem && !speedMenuItem.Checked))
             {
-                paceButton.Checked = false;
-                paceMenuItem.Checked = false;
-                speedButton.Checked = true;
-                speedMenuItem.Checked = true;
                 Settings.ShowPace = false;
-                predictorView.RefreshData();
-                trainingView.RefreshData();
+                syncToolBarToState();
+                syncMenuToState();
+                //predictorView.RefreshData();
+                //trainingView.RefreshData();
             }
         }
 
@@ -665,5 +670,61 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             UpdateToolBar();
         }
 
+        public static void copyTableMenu_Click(object sender, EventArgs e)
+        {
+            ToolStripDropDownItem d = sender as ToolStripDropDownItem;
+            ToolStripMenuItem t = (ToolStripMenuItem)sender;
+            ContextMenuStrip s = (ContextMenuStrip)t.Owner;
+            TreeList list = (TreeList)s.SourceControl;
+            list.CopyTextToClipboard(true, System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+        }
+
+        //Adapted from ApplyRoutes
+        public static void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (m_visualTheme != null && sender is TabControl)
+            {
+                Brush backBrush;
+                Brush foreBrush = new SolidBrush(m_visualTheme.ControlText);
+                TabControl tc = sender as TabControl;
+                if (tc == null) return;
+
+                if (e.Index == tc.SelectedIndex)
+                {
+                    foreBrush = new SolidBrush(m_visualTheme.ControlText);
+                    backBrush = new SolidBrush(m_visualTheme.Control);
+                }
+                else
+                {
+                    foreBrush = new SolidBrush(m_visualTheme.SubHeaderText);
+                    backBrush = new SolidBrush(m_visualTheme.SubHeader);
+                }
+
+                string tabName = tc.TabPages[e.Index].Text;
+                StringFormat sf = new StringFormat();
+                sf.Alignment = StringAlignment.Center;
+                e.Graphics.FillRectangle(backBrush, e.Bounds);
+                Rectangle r = e.Bounds;
+                r = new Rectangle(r.X, r.Y + 3, r.Width, r.Height - 3);
+                e.Graphics.DrawString(tabName, e.Font, foreBrush, r, sf);
+
+                //The right upper edge
+                Brush background_brush = new SolidBrush(m_visualTheme.Control);//Backcolor of the form
+                Rectangle LastTabRect = tc.GetTabRect(tc.TabPages.Count - 1);
+                Rectangle rect = new Rectangle();
+                rect.Location = new Point(LastTabRect.Right + tc.Left, tc.Top);
+                rect.Size = new Size(tc.Right - rect.Left, LastTabRect.Height);
+                //                rect.Location = new Point(LastTabRect.Right + this.Left, this.Top);
+                //                rect.Size = new Size(this.Right - rect.Left, LastTabRect.Height);
+                e.Graphics.FillRectangle(background_brush, rect);
+                background_brush.Dispose();
+
+                sf.Dispose();
+                backBrush.Dispose();
+                foreBrush.Dispose();
+
+                e.DrawFocusRectangle();
+            }
+        }
     }
 }

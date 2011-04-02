@@ -373,16 +373,6 @@ namespace GpsRunningPlugin.Source
         }
         /**************************************************/
 
-        void copyTable()
-        {
-            summaryList.CopyTextToClipboard(true, System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
-        }
-
-        void copyTableMenu_Click(object sender, EventArgs e)
-        {
-            copyTable();
-        }
-
         void summaryList_Click(object sender, System.EventArgs e)
         {
             //SelectTrack, for ST3

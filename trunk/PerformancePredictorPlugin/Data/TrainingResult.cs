@@ -51,15 +51,12 @@ namespace GpsRunningPlugin.Source
             this.TrainRaceHR = TrainRaceHR;
             this.Speed = Speed;
         }
-        public TrainingResult(IActivity activity, int index, double vdot, double seconds, double distance, double maxHr)
+        public TrainingResult(IActivity activity, int index)
         {
             this.activity = activity;
             if (m_percentages == null)
             {
-                m_zones = getZones();
-                m_percentages = getPercentages(vdot);
-                m_hrs = getHeartRates(maxHr, m_percentages);
-                m_paces = getSpeeds(vdot, seconds, distance, m_percentages);
+                throw new Exception("No results calculated");
             }
             this.ZoneDistance = m_zones[index];
             this.PercentOfMax = m_percentages[index];
@@ -67,12 +64,19 @@ namespace GpsRunningPlugin.Source
             this.Speed = m_paces[index];
         }
 
-            IList<String> m_zones;
-            IList<double> m_percentages = null;
-            IList<double> m_hrs;
-            IList<double> m_paces;
+        public static void Calculate(double vdot, double seconds, double distance, double maxHr)
+        {
+            m_zones = getZones();
+            m_percentages = getPercentages(vdot);
+            m_hrs = getHeartRates(maxHr, m_percentages);
+            m_paces = getSpeeds(vdot, seconds, distance, m_percentages);
+        }
+        private static IList<String> m_zones;
+        private static IList<double> m_percentages = null;
+        private static IList<double> m_hrs;
+        private static IList<double> m_paces;
 
-        private IList<string> getZones()
+        private static IList<string> getZones()
         {
             string[] result = new string[15];
             result[0] = Resources.Recovery;
@@ -93,28 +97,28 @@ namespace GpsRunningPlugin.Source
             return result;
         }
 
-        private IList<double> getSpeeds(double vdot, double seconds, double distance, IList<double> percentages)
+        private static IList<double> getSpeeds(double vdot, double seconds, double distance, IList<double> percentages)
         {
             double[] result = new double[15];
-            result[0] = TrainingView.getTrainingSpeed(vdot, percentages[0]);
-            result[1] = TrainingView.getTrainingSpeed(vdot, percentages[1]);
-            result[2] = TrainingView.getTrainingSpeed(vdot, percentages[2]);
-            result[3] = TrainingView.getTrainingSpeed(vdot, percentages[3]);
-            result[6] = TrainingView.getTrainingSpeed(42195, distance, seconds);
+            result[0] = Predict.getTrainingSpeed(vdot, percentages[0]);
+            result[1] = Predict.getTrainingSpeed(vdot, percentages[1]);
+            result[2] = Predict.getTrainingSpeed(vdot, percentages[2]);
+            result[3] = Predict.getTrainingSpeed(vdot, percentages[3]);
+            result[6] = Predict.getTrainingSpeed(42195, distance, seconds);
             result[4] = result[3] / (1 + (result[3] / result[6] - 1) / 6.0);
             result[5] = result[3] / (1 + (result[3] / result[6] - 1) / 3.0);
-            result[7] = TrainingView.getTrainingSpeed(21097.5, distance, seconds);
-            result[8] = TrainingView.getTrainingSpeed(15000, distance, seconds);
-            result[9] = TrainingView.getTrainingSpeed(12000, distance, seconds);
-            result[10] = TrainingView.getTrainingSpeed(10000, distance, seconds);
-            result[11] = TrainingView.getTrainingSpeed(8000, distance, seconds);
-            result[12] = TrainingView.getTrainingSpeed(5000, distance, seconds);
-            result[13] = TrainingView.getTrainingSpeed(3000, distance, seconds);
-            result[14] = TrainingView.getTrainingSpeed(1609.344, distance, seconds); ;
+            result[7] = Predict.getTrainingSpeed(21097.5, distance, seconds);
+            result[8] = Predict.getTrainingSpeed(15000, distance, seconds);
+            result[9] = Predict.getTrainingSpeed(12000, distance, seconds);
+            result[10] = Predict.getTrainingSpeed(10000, distance, seconds);
+            result[11] = Predict.getTrainingSpeed(8000, distance, seconds);
+            result[12] = Predict.getTrainingSpeed(5000, distance, seconds);
+            result[13] = Predict.getTrainingSpeed(3000, distance, seconds);
+            result[14] = Predict.getTrainingSpeed(1609.344, distance, seconds); ;
             return result;
         }
 
-        private double[] getPercentages(double vdot)
+        private static double[] getPercentages(double vdot)
         {
             double[] result = new double[15];
             result[0] = 0.65;
@@ -135,7 +139,7 @@ namespace GpsRunningPlugin.Source
             return result;
         }
 
-        private IList<double> getHeartRates(double maxHr, IList<double> percentages)
+        private static IList<double> getHeartRates(double maxHr, IList<double> percentages)
         {
             IList<double> result = new List<double>();
             foreach (double p in percentages)

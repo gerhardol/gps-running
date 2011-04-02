@@ -45,7 +45,7 @@ namespace GpsRunningPlugin.Source
             this.activity = activity;
             double f = getTemperatureFactor(temperature) / getTemperatureFactor(actual);
             this.EstimatedSpeed = speed / f;
-            this.EstimatedTime = TrainingView.scaleTime(time, f);
+            this.EstimatedTime = Predict.scaleTime(time, f);
             this.Temperature = temperature;
         }
 

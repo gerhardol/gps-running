@@ -30,6 +30,12 @@
     <Compile Include="Data\TimePredictionLabelProvider.cs" />
     <Compile Include="Data\ActivityWrapper.cs" />
     <Compile Include="Data\ResultColumnIds.cs" />
+    <Compile Include="Source\ExtrapolateView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Source\ExtrapolateView.Designer.cs">
+      <DependentUpon>ExtrapolateView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Source\PerformancePredictorControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -62,6 +68,9 @@
       <DependentUpon>TrainingView.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\Settings.cs" />
+    <EmbeddedResource Include="Source\ExtrapolateView.resx">
+      <DependentUpon>ExtrapolateView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Source\PerformancePredictorControl.resx">
       <DependentUpon>PerformancePredictorControl.cs</DependentUpon>
     </EmbeddedResource>

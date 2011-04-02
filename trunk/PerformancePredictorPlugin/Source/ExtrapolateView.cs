@@ -41,7 +41,7 @@ using TrailsPlugin.UI.MapLayers;
 
 namespace GpsRunningPlugin.Source
 {
-    public partial class TrainingView : UserControl
+    public partial class ExtrapolateView : UserControl
     {
 #if ST_2_1
         private const object m_DetailPage = null;
@@ -52,7 +52,7 @@ namespace GpsRunningPlugin.Source
 #endif
         private PerformancePredictorControl m_ppcontrol = null;
 
-        public TrainingView()
+        public ExtrapolateView()
         {
             InitializeComponent();
         }
@@ -68,65 +68,8 @@ namespace GpsRunningPlugin.Source
 
             copyTableMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
 
-            trainingList.LabelProvider = new TrainingLabelProvider();
-            paceTempoList.LabelProvider = new PaceTempoLabelProvider();
-            intervalList.LabelProvider = new IntervalLabelProvider();
             temperatureList.LabelProvider = new TemperatureLabelProvider();
             weightList.LabelProvider = new WeightLabelProvider();
-            trainingList.Columns.Clear();
-            foreach (string id in ResultColumnIds.TrainingColumns)
-            {
-                foreach (IListColumnDefinition columnDef in ResultColumnIds.ColumnDefs())
-                {
-                    if (columnDef.Id == id)
-                    {
-                        TreeList.Column column = new TreeList.Column(
-                            columnDef.Id,
-                            columnDef.Text(columnDef.Id),
-                            columnDef.Width,
-                            columnDef.Align
-                        );
-                        trainingList.Columns.Add(column);
-                        break;
-                    }
-                }
-            }
-            paceTempoList.Columns.Clear();
-            foreach (string id in ResultColumnIds.PaceTempoColumns)
-            {
-                foreach (IListColumnDefinition columnDef in ResultColumnIds.ColumnDefs())
-                {
-                    if (columnDef.Id == id)
-                    {
-                        TreeList.Column column = new TreeList.Column(
-                            columnDef.Id,
-                            columnDef.Text(columnDef.Id),
-                            columnDef.Width,
-                            columnDef.Align
-                        );
-                        paceTempoList.Columns.Add(column);
-                        break;
-                    }
-                }
-            }
-            intervalList.Columns.Clear();
-            foreach (string id in ResultColumnIds.IntervallColumns)
-            {
-                foreach (IListColumnDefinition columnDef in ResultColumnIds.ColumnDefs())
-                {
-                    if (columnDef.Id == id)
-                    {
-                        TreeList.Column column = new TreeList.Column(
-                            columnDef.Id,
-                            columnDef.Text(columnDef.Id),
-                            columnDef.Width,
-                            columnDef.Align
-                        );
-                        intervalList.Columns.Add(column);
-                        break;
-                    }
-                }
-            }
             temperatureList.Columns.Clear();
             foreach (string id in ResultColumnIds.TemperatureColumns)
             {
@@ -237,16 +180,9 @@ namespace GpsRunningPlugin.Source
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
-            this.trainingTab.Text = StringResources.Training;
-            this.paceTempoTab.Text = Resources.PaceForTempoRuns;
-            this.intervalTab.Text = Resources.IntervalSplitTimes;
             this.temperatureTab.Text = Resources.TemperatureImpact;
             this.weightTab.Text = Resources.WeighImpact;
 
-            this.trainingLabel.Text = Resources.VO2MaxVDOT;
-            //paceTempoLabel.Text 
-            paceTempoLabel2.Text = Resources.PaceRunNotification;
-            intervalLabel.Text = Resources.IntervalNotification;
             //temperatureLabel2.Text
             temperatureLabel2.Text = String.Format(Resources.TemperatureNotification, UnitUtil.Temperature.ToString(16, "F0u"));
             //weightLabel.Text
@@ -305,9 +241,6 @@ namespace GpsRunningPlugin.Source
         {
             if (m_showPage && m_ppcontrol.SingleActivity != null && Predict.Predictor(Settings.Model) != null)
             {
-                setTraining();
-                setPaceTempo();
-                setInterval();
                 setTemperature();
                 setWeight();
             }
@@ -366,67 +299,8 @@ namespace GpsRunningPlugin.Source
                     sel = t;
                 }
             }
-            temperatureList.Visible = true;
             temperatureList.RowData = result;
             temperatureList.SelectedItems = new List<TemperatureResult>{sel};
-        }
-
-        private void setInterval()
-        {
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
-            double distance = info.DistanceMeters;
-            double seconds = info.Time.TotalSeconds;
-            double[] distances = new double[] { 100, 200, 300, 400, 800, 1000, 1609.344 };
-            IList<IntervalResult> result = new List<IntervalResult>();
-            for (int i = 0; i < distances.Length; i++)
-            {
-                IntervalResult t = new IntervalResult(m_ppcontrol.SingleActivity, distances[i], seconds);
-                result.Add(t);
-            }
-
-            intervalList.RowData = result;
-        }
-
-        private void setPaceTempo()
-        {
-            paceTempoLabel.Text = String.Format(Resources.PaceForTempoRuns_label, Predict.getVdot(m_ppcontrol.SingleActivity));
-            string[] durations = new string[] { "20", "25", "30", "35", "40", "45", "50", "55", "60" };
-            double[] factors = new double[] { 1, 1.012, 1.022, 1.027, 1.033, 1.038, 1.043, 1.04866, 1.055 };
-            double vdot = Predict.getVdot(m_ppcontrol.SingleActivity);
-
-            double speed = Predict.getTrainingSpeed(vdot, 0.93);
-            IList<PaceTempoResult> result = new List<PaceTempoResult>();
-            for (int i = 0; i < durations.Length; i++)
-            {
-                PaceTempoResult t = new PaceTempoResult(m_ppcontrol.SingleActivity, durations[i], speed / factors[i]);
-                result.Add(t);
-            }
-            paceTempoList.RowData = result;
-        }
-
-        private void setTraining()
-        {
-            double maxHr = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(m_ppcontrol.SingleActivity.StartTime).MaximumHeartRatePerMinute;
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
-            if (double.IsNaN(maxHr))
-            {
-                trainingLabel.Text = Resources.NoMaxHR;
-                trainingList.Visible = false;
-                return;
-            }
-            double vo2max = Predict.getVo2max(m_ppcontrol.SingleActivity);
-            double vdot = Predict.getVdot(m_ppcontrol.SingleActivity);
-            trainingLabel.Text = String.Format(Resources.VO2MaxVDOT, 100 * vo2max, vdot);
-            double seconds = info.Time.TotalSeconds;
-            double distance = info.DistanceMeters;
-            TrainingResult.Calculate (vdot, seconds, distance, maxHr);
-            IList<TrainingResult> result = new List<TrainingResult>();
-            for (int i = 0; i < 15; i++)
-            {
-                TrainingResult t = new TrainingResult(m_ppcontrol.SingleActivity, i);
-                result.Add(t);
-            }
-            trainingList.RowData = result;
         }
     }
 }

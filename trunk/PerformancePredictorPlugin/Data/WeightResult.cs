@@ -47,7 +47,7 @@ namespace GpsRunningPlugin.Source
             this.activity = activity;
             this.Weight = weight + p * inc;
             this.AjustedVdot = vdot * weight / this.Weight;
-            this.EstimatedTime = TrainingView.scaleTime(time, Math.Pow(vdot / this.AjustedVdot, 0.83));
+            this.EstimatedTime = Predict.scaleTime(time, Math.Pow(vdot / this.AjustedVdot, 0.83));
 
             this.EstimatedSpeed = info.DistanceMeters / EstimatedTime.TotalSeconds;
         }

@@ -165,7 +165,7 @@ namespace GpsRunningPlugin.Source
             {
                 estSpeed = Resources.EstimatedSpeed + UnitUtil.Speed.LabelAbbr2;
             }            
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.EstimatedSpeed, estSpeed, "", 1200, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.EstimatedSpeed, estSpeed, "", 120, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Weight, Resources.ProjectedWeight + UnitUtil.Weight.LabelAbbr2, "", 80, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.AdjustedVDOT, Resources.AdjustedVDOT, "", 80, StringAlignment.Near));
 

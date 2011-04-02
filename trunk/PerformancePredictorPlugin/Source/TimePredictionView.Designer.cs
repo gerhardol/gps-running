@@ -119,7 +119,7 @@ namespace GpsRunningPlugin.Source
             this.copyTableMenuItem.Name = "copyTableMenuItem";
             this.copyTableMenuItem.Size = new System.Drawing.Size(198, 22);
             this.copyTableMenuItem.Text = "<Copy table to clipboard";
-            this.copyTableMenuItem.Click += new System.EventHandler(this.copyTableMenu_Click);
+            this.copyTableMenuItem.Click += new System.EventHandler(PerformancePredictorControl.copyTableMenu_Click);
             // 
             // chart
             // 
