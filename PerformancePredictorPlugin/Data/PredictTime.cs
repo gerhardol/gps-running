@@ -25,6 +25,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using ZoneFiveSoftware.Common.Data.Measurement;
+using ZoneFiveSoftware.Common.Data.Fitness;
 using System.Reflection;
 using System.Diagnostics;
 using GpsRunningPlugin.Properties;
@@ -61,6 +62,40 @@ namespace GpsRunningPlugin.Source
                 case PredictionModel.PETE_RIEGEL:
                     return Predict.Riegel;
             }
+        }
+
+        /***********************************************************/
+
+        public static TimeSpan scaleTime(TimeSpan pace, double p)
+        {
+            return new TimeSpan(0, 0, 0, 0, (int)Math.Round(pace.TotalMilliseconds * p));
+        }
+       
+        public static double getTrainingSpeed(double new_dist, double old_dist, double old_time)
+        {
+            return new_dist / (Predict.Predictor(Settings.Model))(new_dist, old_dist, old_time);
+        }
+        
+        //Get training speed from vdot
+        public static double getTrainingSpeed(double vdot, double percentZone)
+        {
+            return (29.54 + 5.000663 * (vdot * (percentZone - 0.05))
+                - 0.007546 * Math.Pow(vdot * (percentZone - 0.05), 2)) / 60;
+        }
+
+        public static double getVo2max(IActivity activity)
+        {
+            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
+            return 0.8 + 0.1894393 * Math.Exp(-0.012778 * info.Time.TotalSeconds / 60)
+                + 0.2989558 * Math.Exp(-0.1932605 * info.Time.TotalSeconds / 60);
+        }
+
+        public static double getVdot(IActivity activity)
+        {
+            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
+            return (-4.6 + 0.182258 * (info.DistanceMeters * 60 / info.Time.TotalSeconds)
+                + 0.000104 * Math.Pow(info.DistanceMeters * 60 / info.Time.TotalSeconds, 2))
+                / getVo2max(activity);
         }
     }
 

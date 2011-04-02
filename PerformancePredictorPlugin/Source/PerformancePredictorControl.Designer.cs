@@ -52,12 +52,14 @@ namespace GpsRunningPlugin.Source
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.trainingView = new TrainingView();
             this.predictorView = new TimePredictionView();
+            this.extrapolateView = new ExtrapolateView();
             this.actionBanner1 = new ZoneFiveSoftware.Common.Visuals.ActionBanner();
 
             this.bannerContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.settingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timePredictionMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.trainingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.extrapolateMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.modelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.daveCameronMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,6 +80,7 @@ namespace GpsRunningPlugin.Source
             this.settingsBox = new System.Windows.Forms.GroupBox();
             this.trainingButton = new System.Windows.Forms.RadioButton();
             this.timePredictionButton = new System.Windows.Forms.RadioButton();
+            this.extrapolateButton = new System.Windows.Forms.RadioButton();
             this.modelBox = new System.Windows.Forms.GroupBox();
             this.daveCameronButton = new System.Windows.Forms.RadioButton();
             this.peteRiegelButton = new System.Windows.Forms.RadioButton();
@@ -139,6 +142,7 @@ namespace GpsRunningPlugin.Source
                 this.settingsMenuItem,
                 this.timePredictionMenuItem,
                 this.trainingMenuItem,
+                this.extrapolateMenuItem,
                 this.toolStripSeparator1,
                 this.modelMenuItem,
                 this.daveCameronMenuItem,
@@ -182,6 +186,13 @@ namespace GpsRunningPlugin.Source
             this.trainingMenuItem.Size = new System.Drawing.Size(154, 22);
             this.trainingMenuItem.Text = "<trainingMenuItem";
             this.trainingMenuItem.Click += new System.EventHandler(this.training_Click);
+            // 
+            // extrapolateMenuItem
+            // 
+            this.extrapolateMenuItem.Name = "extrapolateMenuItem";
+            this.extrapolateMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.extrapolateMenuItem.Text = "<extrapolateMenuItem";
+            this.extrapolateMenuItem.Click += new System.EventHandler(this.extrapolate_Click);
             // 
             // toolStripSeparator1
             // 
@@ -313,7 +324,7 @@ namespace GpsRunningPlugin.Source
             // 
             this.modelBox.Controls.Add(this.daveCameronButton);
             this.modelBox.Controls.Add(this.peteRiegelButton);
-            this.modelBox.Location = new System.Drawing.Point(4, 76);
+            this.modelBox.Location = new System.Drawing.Point(4, 99);
             this.modelBox.Name = "modelBox";
             this.modelBox.Size = new System.Drawing.Size(138, 68);
             this.modelBox.TabIndex = 5;
@@ -324,7 +335,7 @@ namespace GpsRunningPlugin.Source
             // 
             this.resultBox.Controls.Add(this.tableButton);
             this.resultBox.Controls.Add(this.chartButton);
-            this.resultBox.Location = new System.Drawing.Point(4, 225);
+            this.resultBox.Location = new System.Drawing.Point(4, 248);
             this.resultBox.Name = "resultBox";
             this.resultBox.Size = new System.Drawing.Size(138, 67);
             this.resultBox.TabIndex = 5;
@@ -359,9 +370,10 @@ namespace GpsRunningPlugin.Source
             // 
             this.settingsBox.Controls.Add(this.trainingButton);
             this.settingsBox.Controls.Add(this.timePredictionButton);
+            this.settingsBox.Controls.Add(this.extrapolateButton);
             this.settingsBox.Location = new System.Drawing.Point(4, 4);
             this.settingsBox.Name = "settingsBox";
-            this.settingsBox.Size = new System.Drawing.Size(138, 66);
+            this.settingsBox.Size = new System.Drawing.Size(138, 89);
             this.settingsBox.TabIndex = 10;
             this.settingsBox.TabStop = false;
             this.settingsBox.Text = "<Settings";
@@ -390,11 +402,23 @@ namespace GpsRunningPlugin.Source
             this.timePredictionButton.UseVisualStyleBackColor = true;
             this.timePredictionButton.Click += new System.EventHandler(this.timePrediction_Click);
             // 
+            // extrapolateButton
+            // 
+            this.extrapolateButton.AutoSize = true;
+            this.extrapolateButton.Location = new System.Drawing.Point(7, 66);
+            this.extrapolateButton.Name = "extrapolateButton";
+            this.extrapolateButton.Size = new System.Drawing.Size(97, 17);
+            this.extrapolateButton.TabIndex = 1;
+            this.extrapolateButton.TabStop = true;
+            this.extrapolateButton.Text = "<extrapolateButton";
+            this.extrapolateButton.UseVisualStyleBackColor = true;
+            this.extrapolateButton.Click += new System.EventHandler(this.extrapolate_Click);
+            // 
             // velocityBox
             // 
             this.velocityBox.Controls.Add(this.speedButton);
             this.velocityBox.Controls.Add(this.paceButton);
-            this.velocityBox.Location = new System.Drawing.Point(4, 150);
+            this.velocityBox.Location = new System.Drawing.Point(4, 173);
             this.velocityBox.Name = "velocityBox";
             this.velocityBox.Size = new System.Drawing.Size(138, 69);
             this.velocityBox.TabIndex = 11;
@@ -429,7 +453,7 @@ namespace GpsRunningPlugin.Source
             // 
             this.chkHighScoreBox.AutoSize = true;
             this.chkHighScoreBox.Enabled = false;
-            this.chkHighScoreBox.Location = new System.Drawing.Point(11, 296);
+            this.chkHighScoreBox.Location = new System.Drawing.Point(11, 319);
             this.chkHighScoreBox.Name = "chkHighScoreBox";
             this.chkHighScoreBox.Size = new System.Drawing.Size(79, 17);
             this.chkHighScoreBox.TabIndex = 12;
@@ -487,7 +511,7 @@ namespace GpsRunningPlugin.Source
             this.AutoSize = true;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "PerformancePredictorView";
-            this.Size = new System.Drawing.Size(336, 316);
+            this.Size = new System.Drawing.Size(336, 216);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.actionBanner1.ResumeLayout(false);
             this.bannerContextMenuStrip.ResumeLayout(false);
@@ -515,11 +539,13 @@ namespace GpsRunningPlugin.Source
         private ZoneFiveSoftware.Common.Visuals.ActionBanner actionBanner1;
         private TrainingView trainingView;
         private TimePredictionView predictorView;
+        private ExtrapolateView extrapolateView;
 
         private System.Windows.Forms.ContextMenuStrip bannerContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem settingsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem timePredictionMenuItem;
         private System.Windows.Forms.ToolStripMenuItem trainingMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem extrapolateMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem modelMenuItem;
         private System.Windows.Forms.ToolStripMenuItem daveCameronMenuItem;
@@ -540,6 +566,7 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.GroupBox settingsBox;
         private System.Windows.Forms.RadioButton timePredictionButton;
         private System.Windows.Forms.RadioButton trainingButton;
+        private System.Windows.Forms.RadioButton extrapolateButton;
         private System.Windows.Forms.GroupBox modelBox;
         private System.Windows.Forms.RadioButton daveCameronButton;
         private System.Windows.Forms.RadioButton peteRiegelButton;

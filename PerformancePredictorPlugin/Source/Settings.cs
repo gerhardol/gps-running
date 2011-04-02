@@ -64,13 +64,13 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        private static bool showPrediction;
-        public static bool ShowPrediction
+        private static PredictionView predictionView;
+        public static PredictionView PredictionView
         {
-            get { return showPrediction; }
+            get { return predictionView; }
             set
             {
-                showPrediction = value;
+                predictionView = value;
             }
         }
 
@@ -135,7 +135,7 @@ namespace GpsRunningPlugin.Source
 
         public static void defaults()
         {
-            showPrediction = true;
+            predictionView = PredictionView.TimePrediction;
             showPace = true;
             showChart = false;//show chart by default
             percentOfDistance = 40;
@@ -186,8 +186,27 @@ namespace GpsRunningPlugin.Source
                 load();
             }
 
-            attr = pluginNode.GetAttribute(xmlTags.showPrediction);
-            if (attr.Length > 0) { showPrediction = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.predictionView);
+            if (attr.Length > 0)
+            {
+                predictionView = (PredictionView)Enum.Parse(typeof(PredictionView), attr);
+            }
+            else
+            {
+                attr = pluginNode.GetAttribute(xmlTags.showPrediction);
+                if (attr.Length > 0)
+                {
+                    bool isPrediction = XmlConvert.ToBoolean(attr);
+                    if (isPrediction)
+                    {
+                        predictionView = PredictionView.TimePrediction;
+                    }
+                    else
+                    {
+                        predictionView = PredictionView.Training;
+                    }
+                }
+            }
             attr = pluginNode.GetAttribute(xmlTags.showPace);
             if (attr.Length > 0) { showPace = XmlConvert.ToBoolean(attr); }
             attr = pluginNode.GetAttribute(xmlTags.showChart);
@@ -214,7 +233,7 @@ namespace GpsRunningPlugin.Source
         {
             pluginNode.SetAttribute(xmlTags.settingsVersion, XmlConvert.ToString(settingsVersionCurrent));
 
-            pluginNode.SetAttribute(xmlTags.showPrediction, XmlConvert.ToString(showPrediction));
+            //pluginNode.SetAttribute(xmlTags.showPrediction, XmlConvert.ToString(showPrediction));
             pluginNode.SetAttribute(xmlTags.showPace, XmlConvert.ToString(showPace));
             pluginNode.SetAttribute(xmlTags.showChart, XmlConvert.ToString(showChart));
             pluginNode.SetAttribute(xmlTags.percentOfDistance, XmlConvert.ToString(percentOfDistance));
@@ -242,7 +261,8 @@ namespace GpsRunningPlugin.Source
         private class xmlTags
         {
             public const string settingsVersion = "settingsVersion";
-            public const string showPrediction = "showPrediction";
+            public const string predictionView = "predictionView";
+            public const string showPrediction = "showPrediction";// old
             public const string showPace = "showPace";
             public const string showChart = "showChart";
             public const string model = "model";
@@ -272,7 +292,7 @@ namespace GpsRunningPlugin.Source
                 showChart = bool.Parse(elm.Attributes["showChart"].Value);
                 parseDistances(elm.Attributes["distances"].Value.Split(';'));
                 percentOfDistance = int.Parse(elm.Attributes["percentOfDistance"].Value);
-                showPrediction = bool.Parse(elm.Attributes["showPrediction"].Value);
+                //showPrediction = bool.Parse(elm.Attributes["showPrediction"].Value);
                 showPace = bool.Parse(elm.Attributes["showPace"].Value);
             }
             catch (Exception)
@@ -356,5 +376,10 @@ namespace GpsRunningPlugin.Source
         }
 
         public static event System.ComponentModel.PropertyChangedEventHandler DistanceChanged;
+    }
+
+    public enum PredictionView
+    {
+        TimePrediction, Training, Extrapolate
     }
 }

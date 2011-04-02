@@ -75,9 +75,9 @@ namespace GpsRunningPlugin.Source
                 ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
                 double adistance = info.DistanceMeters;
                 double aseconds = info.Time.TotalSeconds;
-                mileSpeed = TrainingView.getTrainingSpeed(1609.344, adistance, aseconds);
-                k5Speed = TrainingView.getTrainingSpeed(5000, adistance, aseconds);
-                k10Speed = TrainingView.getTrainingSpeed(10000, adistance, aseconds);
+                mileSpeed = Predict.getTrainingSpeed(1609.344, adistance, aseconds);
+                k5Speed = Predict.getTrainingSpeed(5000, adistance, aseconds);
+                k10Speed = Predict.getTrainingSpeed(10000, adistance, aseconds);
                 isCalc = true;
             }
         }
