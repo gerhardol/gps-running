@@ -52,26 +52,21 @@ namespace GpsRunningPlugin.Source
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.trainingTab = new System.Windows.Forms.TabPage();
             this.trainingLabel = new System.Windows.Forms.Label();
-            this.trainingGrid = new System.Windows.Forms.DataGridView();
             this.trainingList = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.paceTempoTab = new System.Windows.Forms.TabPage();
             this.paceTempoLabel = new System.Windows.Forms.Label();
-            this.paceTempoGrid = new System.Windows.Forms.DataGridView();
             this.paceTempoList = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.paceTempoLabel2 = new System.Windows.Forms.Label();
             this.intervalTab = new System.Windows.Forms.TabPage();
             this.intervalLabel = new System.Windows.Forms.Label();
-            this.intervalGrid = new System.Windows.Forms.DataGridView();
             this.intervalList = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.temperatureTab = new System.Windows.Forms.TabPage();
             this.temperatureLabel2 = new System.Windows.Forms.Label();
             this.temperatureLabel = new System.Windows.Forms.Label();
-            this.temperatureGrid = new System.Windows.Forms.DataGridView();
             this.temperatureList = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.weightTab = new System.Windows.Forms.TabPage();
             this.weightLabel2 = new System.Windows.Forms.Label();
             this.weightLabel = new System.Windows.Forms.Label();
-            this.weightGrid = new System.Windows.Forms.DataGridView();
             this.weightList = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -86,15 +81,10 @@ namespace GpsRunningPlugin.Source
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trainingGrid)).BeginInit();
             this.paceTempoTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.paceTempoGrid)).BeginInit();
             this.intervalTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.intervalGrid)).BeginInit();
             this.temperatureTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.temperatureGrid)).BeginInit();
             this.weightTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.weightGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -158,7 +148,6 @@ namespace GpsRunningPlugin.Source
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.trainingLabel, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.trainingGrid, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.trainingList, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -177,26 +166,6 @@ namespace GpsRunningPlugin.Source
             this.trainingLabel.Size = new System.Drawing.Size(50, 13);
             this.trainingLabel.TabIndex = 1;
             this.trainingLabel.Text = "VO2 max";
-            // 
-            // trainingGrid
-            // 
-            this.trainingGrid.AllowUserToAddRows = false;
-            this.trainingGrid.AllowUserToDeleteRows = false;
-            this.trainingGrid.AllowUserToResizeRows = false;
-            this.trainingGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
-            this.trainingGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.trainingGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.trainingGrid.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.trainingGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.trainingGrid.Location = new System.Drawing.Point(0, 0);
-            this.trainingGrid.Margin = new System.Windows.Forms.Padding(0);
-            this.trainingGrid.Name = "trainingGrid";
-            this.trainingGrid.RowHeadersVisible = false;
-            this.trainingGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.trainingGrid.Size = new System.Drawing.Size(231, 81);
-            this.trainingGrid.TabIndex = 0;
-            this.trainingGrid.Visible = false;
             // 
             // trainingList
             // 
@@ -224,7 +193,6 @@ namespace GpsRunningPlugin.Source
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.paceTempoLabel2, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.paceTempoLabel, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.paceTempoGrid, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.paceTempoList, 0, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
@@ -255,25 +223,6 @@ namespace GpsRunningPlugin.Source
             this.paceTempoLabel2.Text = "20 min run is at lactate threshold pace - pace of longer runs adjusted to >>>>";
             this.paceTempoLabel2.Visible = true;
             // 
-            // paceTempoGrid
-            // 
-            this.paceTempoGrid.AllowUserToAddRows = false;
-            this.paceTempoGrid.AllowUserToDeleteRows = false;
-            this.paceTempoGrid.AllowUserToResizeRows = false;
-            this.paceTempoGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
-            this.paceTempoGrid.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.paceTempoGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.paceTempoGrid.Location = new System.Drawing.Point(0, 30);
-            this.paceTempoGrid.Margin = new System.Windows.Forms.Padding(0);
-            this.paceTempoGrid.Name = "paceTempoGrid";
-            this.paceTempoGrid.ReadOnly = true;
-            this.paceTempoGrid.RowHeadersVisible = false;
-            this.paceTempoGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.paceTempoGrid.Size = new System.Drawing.Size(231, 64);
-            this.paceTempoGrid.TabIndex = 2;
-            this.paceTempoGrid.Visible = false;
-            // 
             // paceTempoList
             // 
             this.paceTempoList.AutoScroll = true;
@@ -298,7 +247,6 @@ namespace GpsRunningPlugin.Source
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Controls.Add(this.intervalLabel, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.intervalGrid, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.intervalList, 0, 1);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
@@ -317,27 +265,6 @@ namespace GpsRunningPlugin.Source
             this.intervalLabel.Size = new System.Drawing.Size(148, 13);
             this.intervalLabel.TabIndex = 5;
             this.intervalLabel.Text = "Suggested short interval pace";
-            // 
-            // intervalGrid
-            // 
-            this.intervalGrid.AllowUserToAddRows = false;
-            this.intervalGrid.AllowUserToDeleteRows = false;
-            this.intervalGrid.AllowUserToResizeRows = false;
-            this.intervalGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
-            this.intervalGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.intervalGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.intervalGrid.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.intervalGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.intervalGrid.Location = new System.Drawing.Point(0, 30);
-            this.intervalGrid.Margin = new System.Windows.Forms.Padding(0);
-            this.intervalGrid.Name = "intervalGrid";
-            this.intervalGrid.ReadOnly = true;
-            this.intervalGrid.RowHeadersVisible = false;
-            this.intervalGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.intervalGrid.Size = new System.Drawing.Size(234, 81);
-            this.intervalGrid.TabIndex = 3;
-            this.intervalGrid.Visible = false;
             // 
             // intervalList
             // 
@@ -364,7 +291,6 @@ namespace GpsRunningPlugin.Source
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.Controls.Add(this.temperatureLabel2, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.temperatureLabel, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.temperatureList, 0, 1);
             this.tableLayoutPanel4.Controls.Add(this.temperatureList, 0, 1);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
@@ -393,27 +319,6 @@ namespace GpsRunningPlugin.Source
             this.temperatureLabel.TabIndex = 3;
             this.temperatureLabel.Text = "temperatureLabel";
             // 
-            // temperatureGrid
-            // 
-            this.temperatureGrid.AllowUserToAddRows = false;
-            this.temperatureGrid.AllowUserToDeleteRows = false;
-            this.temperatureGrid.AllowUserToResizeRows = false;
-            this.temperatureGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
-            this.temperatureGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.temperatureGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.temperatureGrid.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.temperatureGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.temperatureGrid.Location = new System.Drawing.Point(0, 30);
-            this.temperatureGrid.Margin = new System.Windows.Forms.Padding(0);
-            this.temperatureGrid.Name = "temperatureGrid";
-            this.temperatureGrid.ReadOnly = true;
-            this.temperatureGrid.RowHeadersVisible = false;
-            this.temperatureGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.temperatureGrid.Size = new System.Drawing.Size(234, 64);
-            this.temperatureGrid.TabIndex = 2;
-            this.temperatureGrid.Visible = false;
-            // 
             // temperatureList
             // 
             this.temperatureList.AutoScroll = true;
@@ -439,7 +344,6 @@ namespace GpsRunningPlugin.Source
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.Controls.Add(this.weightLabel2, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.weightLabel, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.weightGrid, 0, 1);
             this.tableLayoutPanel5.Controls.Add(this.weightList, 0, 1);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
@@ -468,27 +372,6 @@ namespace GpsRunningPlugin.Source
             this.weightLabel.TabIndex = 6;
             this.weightLabel.Text = "estimated weight>";
             // 
-            // weightGrid
-            // 
-            this.weightGrid.AllowUserToAddRows = false;
-            this.weightGrid.AllowUserToDeleteRows = false;
-            this.weightGrid.AllowUserToResizeRows = false;
-            this.weightGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
-            this.weightGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.weightGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.weightGrid.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.weightGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.weightGrid.Location = new System.Drawing.Point(0, 0);
-            this.weightGrid.Margin = new System.Windows.Forms.Padding(0);
-            this.weightGrid.Name = "weightGrid";
-            this.weightGrid.ReadOnly = true;
-            this.weightGrid.RowHeadersVisible = false;
-            this.weightGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.weightGrid.Size = new System.Drawing.Size(234, 64);
-            this.weightGrid.TabIndex = 5;
-            this.weightGrid.Visible = false;
-            // 
             // weightList
             // 
             this.weightList.AutoScroll = true;
@@ -515,19 +398,14 @@ namespace GpsRunningPlugin.Source
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.trainingGrid)).EndInit();
             this.paceTempoTab.ResumeLayout(false);
             this.paceTempoTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.paceTempoGrid)).EndInit();
             this.intervalTab.ResumeLayout(false);
             this.intervalTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.intervalGrid)).EndInit();
             this.temperatureTab.ResumeLayout(false);
             this.temperatureTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.temperatureGrid)).EndInit();
             this.weightTab.ResumeLayout(false);
             this.weightTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.weightGrid)).EndInit();
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -543,34 +421,29 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.TabPage trainingTab;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label trainingLabel;
-        private System.Windows.Forms.DataGridView trainingGrid;
         private ZoneFiveSoftware.Common.Visuals.TreeList trainingList;
 
         private System.Windows.Forms.TabPage paceTempoTab;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label paceTempoLabel;
         private System.Windows.Forms.Label paceTempoLabel2;
-        private System.Windows.Forms.DataGridView paceTempoGrid;
         private ZoneFiveSoftware.Common.Visuals.TreeList paceTempoList;
 
         private System.Windows.Forms.TabPage intervalTab;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Label intervalLabel;
-        private System.Windows.Forms.DataGridView intervalGrid;
         private ZoneFiveSoftware.Common.Visuals.TreeList intervalList;
         
         private System.Windows.Forms.TabPage temperatureTab;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.Label temperatureLabel;
         private System.Windows.Forms.Label temperatureLabel2;
-        private System.Windows.Forms.DataGridView temperatureGrid;
         private ZoneFiveSoftware.Common.Visuals.TreeList temperatureList;
         
         private System.Windows.Forms.TabPage weightTab;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Label weightLabel2;
         private System.Windows.Forms.Label weightLabel;
-        private System.Windows.Forms.DataGridView weightGrid;
         private ZoneFiveSoftware.Common.Visuals.TreeList weightList;
 
     }
