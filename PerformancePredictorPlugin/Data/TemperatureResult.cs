@@ -43,11 +43,52 @@ namespace GpsRunningPlugin.Source
         public TemperatureResult(IActivity activity, double temperature, float actual, TimeSpan time, double speed)
         {
             this.activity = activity;
-            double f = TrainingView.getTemperatureFactor(temperature) / TrainingView.getTemperatureFactor(actual);
+            double f = getTemperatureFactor(temperature) / getTemperatureFactor(actual);
             this.EstimatedSpeed = speed / f;
             this.EstimatedTime = TrainingView.scaleTime(time, f);
             this.Temperature = temperature;
         }
 
+        //The temperatures are closely related to the values, so it is defined here
+        public static double[] aTemperature = new double[] { 16, 18, 21, 24, 27, 29, 32, 35, 38 };
+
+        //Table from Kristian Bisgaard Lassen (unknown source)
+        //Celcius factor
+        //16 1
+        //18 1.0075
+        //21  1.015
+        //24 1.0225
+        //27 1.03 
+        //29 1.0375
+        //32 1.045
+        //35 1.0525
+        //38 1.06
+
+        public static double getTemperatureFactor(double temperature)
+        {
+            if (!isValidtemperature(temperature))
+            {
+                //Outside range or invalid
+                //Assume over 45 is invalid
+                return 1;
+            }
+            else if (temperature < 20) { return 1.0075; }
+            else if (temperature < 23) { return 1.015; }
+            else if (temperature < 26) { return 1.0225; }
+            else if (temperature < 28) { return 1.03; }
+            else if (temperature < 31) { return 1.0375; }
+            else if (temperature < 34) { return 1.045; }
+            else if (temperature < 37) { return 1.0525; }
+            return 1.06;
+        }
+
+        public static bool isValidtemperature(double temperature)
+        {
+            if (double.IsNaN(temperature) || temperature <= 16 || temperature > 45)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }
