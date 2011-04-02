@@ -350,11 +350,11 @@ namespace GpsRunningPlugin.Source
             ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
             TimeSpan time = info.Time;
             temperatureLabel.Text = Resources.ProjectedTemperatureImpact+" "+UnitUtil.Distance.ToString(info.DistanceMeters,"u");
-            double speed = info.DistanceMeters * 1000 / time.TotalMilliseconds;
+            double speed = info.DistanceMeters / time.TotalSeconds;
             float actualTemp = m_ppcontrol.SingleActivity.Weather.TemperatureCelsius;
-            if (!isValidtemperature(actualTemp)){actualTemp = 15;}
-            double[] aTemperature = new double[] { 16, 18, 21, 24, 27, 29, 32, 35, 38 };
-
+            if (!TemperatureResult.isValidtemperature(actualTemp)) { actualTemp = 15; }
+            double[] aTemperature = TemperatureResult.aTemperature;
+            
             IList<TemperatureResult> result = new List<TemperatureResult>();
             TemperatureResult sel = null;
             for (int i = 0; i < aTemperature.Length; i++)
@@ -412,8 +412,9 @@ namespace GpsRunningPlugin.Source
 
         private void setTraining()
         {
-            double maxHr = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(DateTime.Now).MaximumHeartRatePerMinute;
-            if (maxHr.Equals(double.NaN))
+            double maxHr = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(m_ppcontrol.SingleActivity.StartTime).MaximumHeartRatePerMinute;
+            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
+            if (double.IsNaN(maxHr))
             {
                 trainingLabel.Text = Resources.NoMaxHR;
                 trainingList.Visible = false;
@@ -421,64 +422,16 @@ namespace GpsRunningPlugin.Source
             }
             double vo2max = getVo2max(m_ppcontrol.SingleActivity);
             double vdot = getVdot(m_ppcontrol.SingleActivity);
-            IList<String> zones = getZones();
-            IList<double> percentages = getPercentages(vdot);
-            IList<double> hrs = getHeartRates(percentages);
-            IList<double> paces = getSpeeds(vdot, percentages);
+            trainingLabel.Text = String.Format(Resources.VO2MaxVDOT, 100 * vo2max, vdot);
+            double seconds = info.Time.TotalSeconds;
+            double distance = info.DistanceMeters;
             IList<TrainingResult> result = new List<TrainingResult>();
             for (int i = 0; i < 15; i++)
             {
-                TrainingResult t = new TrainingResult(m_ppcontrol.SingleActivity, zones[i], percentages[i], hrs[i], paces[i]);
+                TrainingResult t = new TrainingResult(m_ppcontrol.SingleActivity, i, vdot, seconds, distance, maxHr);
                 result.Add(t);
             }
-            trainingLabel.Text = String.Format(Resources.VO2MaxVDOT,
-                100*vo2max, vdot);
             trainingList.RowData = result;
-        }
-
-        private IList<string> getZones()
-        {
-            string[] result = new string[15];
-            result[0] = Resources.Recovery;
-            result[1] = Resources.EasyAerobicZone;
-            result[2] = Resources.EasyAerobicZone;
-            result[3] = Resources.EasyAerobicZone;
-            result[4] = Resources.ModAerobicZone;
-            result[5] = Resources.HighAerobicZone;
-            result[6] = StringResources.Marathon;
-            result[7] = "1/2 " + StringResources.Marathon;
-            result[8] = "15 " + Length.LabelAbbr(Length.Units.Kilometer);
-            result[9] = "12 " + Length.LabelAbbr(Length.Units.Kilometer);
-            result[10] = "10 " + Length.LabelAbbr(Length.Units.Kilometer);
-            result[11] = "8 " + Length.LabelAbbr(Length.Units.Kilometer);
-            result[12] = "5 "  + Length.LabelAbbr(Length.Units.Kilometer);
-            result[13] = "3 " + Length.LabelAbbr(Length.Units.Kilometer);
-            result[14] = "1 " + Length.LabelAbbr(Length.Units.Mile);
-            return result;
-        }
-
-        private IList<double> getSpeeds(double vdot, IList<double> percentages)
-        {
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
-            double seconds = info.Time.TotalSeconds;
-            double distance = info.DistanceMeters;
-            double[] result = new double[15];
-            result[0] = getTrainingSpeed(vdot, percentages[0]);
-            result[1] = getTrainingSpeed(vdot, percentages[1]);
-            result[2] = getTrainingSpeed(vdot, percentages[2]);
-            result[3] = getTrainingSpeed(vdot, percentages[3]);
-            result[6] = getTrainingSpeed(42195, distance, seconds);
-            result[4] = result[3] / (1 + (result[3] / result[6] - 1) / 6.0);
-            result[5] = result[3] / (1 + (result[3] / result[6] - 1) / 3.0);
-            result[7] = getTrainingSpeed(21097.5, distance, seconds);
-            result[8] = getTrainingSpeed(15000, distance, seconds);
-            result[9] = getTrainingSpeed(12000, distance, seconds);
-            result[10] = getTrainingSpeed(10000, distance, seconds);
-            result[11] = getTrainingSpeed(8000, distance, seconds);
-            result[12] = getTrainingSpeed(5000, distance, seconds);
-            result[13] = getTrainingSpeed(3000, distance, seconds);
-            result[14] = getTrainingSpeed(1609.344, distance, seconds); ;
-            return result;
         }
 
         public static double getTrainingSpeed(double new_dist, double old_dist, double old_time)
@@ -486,97 +439,26 @@ namespace GpsRunningPlugin.Source
             return new_dist / (Predict.Predictor(Settings.Model))(new_dist, old_dist, old_time);
         }
         //Get training speed from vdot
-        private double getTrainingSpeed(double vdot, double percentZone)
+        public static double getTrainingSpeed(double vdot, double percentZone)
         {
             return (29.54 + 5.000663 * (vdot * (percentZone - 0.05))
                 - 0.007546 * Math.Pow(vdot * (percentZone - 0.05), 2)) / 60;
         }
 
-        private double[] getPercentages(double vdot)
-        {
-            double[] result = new double[15];
-            result[0] = 0.65;
-            result[1] = 0.70;
-            result[2] = 0.72;
-            result[3] = 0.75;
-            result[6] = 0.8 + 0.09 * (vdot - 30) / 55;
-            result[4] = result[3] + (result[6] - result[3])/6.0;
-            result[5] = result[3] + (result[6] - result[3])/3.0;
-            result[7] = 0.84 + 0.08 * (vdot - 30) / 55;
-            result[8] = 0.86 + 0.08 * (vdot - 30) / 55;
-            result[9] = 0.87 + 0.08 * (vdot - 30) / 55;
-            result[10] = 0.88 + 0.08 * (vdot - 30) / 55;
-            result[11] = 0.9 + 0.08 * (vdot - 30) / 55;
-            result[12] = 0.94 + 0.05 * (vdot - 30) / 55;
-            result[13] = 0.98 + 0.02 * (vdot - 30) / 55;
-            result[14] = 1;
-            return result;
-        }
-
-        private IList<double> getHeartRates(IList<double> percentages)
-        {
-            IList<double> result = new List<double>();
-            double maxHr = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(DateTime.Now).MaximumHeartRatePerMinute;
-            foreach (double p in percentages)
-            {
-                result.Add(p * maxHr);
-            }
-            return result;
-        }
-
-        private double getVo2max(IActivity activity)
+        private static double getVo2max(IActivity activity)
         {
             ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
-            return 0.8 + 0.1894393 * Math.Exp(-0.012778 * info.Time.TotalMilliseconds / 60000)
-                + 0.2989558 * Math.Exp(-0.1932605 * info.Time.TotalMilliseconds / 60000);
+            return 0.8 + 0.1894393 * Math.Exp(-0.012778 * info.Time.TotalSeconds / 60)
+                + 0.2989558 * Math.Exp(-0.1932605 * info.Time.TotalSeconds / 60);
         }
 
-        private double getVdot(IActivity activity)
+        private static  double getVdot(IActivity activity)
         {
             ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
-            return (-4.6 + 0.182258 * (info.DistanceMeters * 60000 / info.Time.TotalMilliseconds)
-                + 0.000104 * Math.Pow(info.DistanceMeters * 60000 / info.Time.TotalMilliseconds, 2)) 
+            return (-4.6 + 0.182258 * (info.DistanceMeters * 60 / info.Time.TotalSeconds)
+                + 0.000104 * Math.Pow(info.DistanceMeters * 60 / info.Time.TotalSeconds, 2)) 
                 / getVo2max(activity);
         }
-        //Table from Kristian Bisgaard Lassen (unknown source)
-        //Celcius factor
-        //16 1
-        //18 1.0075
-        //21  1.015
-        //24 1.0225
-        //27 1.03 
-        //29 1.0375
-        //32 1.045
-        //35 1.0525
-        //38 1.06
-
-        public static double getTemperatureFactor(double temperature)
-        {
-            if (!isValidtemperature(temperature))
-            {
-                //Outside range or invalid
-                //Assume over 45 is invalid
-                return 1;
-            }
-            else if (temperature < 20) { return 1.0075; }
-            else if (temperature < 23) { return 1.015; }
-            else if (temperature < 26) { return 1.0225; }
-            else if (temperature < 28) { return 1.03; }
-            else if (temperature < 31) { return 1.0375; }
-            else if (temperature < 34) { return 1.045; }
-            else if (temperature < 37) { return 1.0525; }
-            return 1.06;
-        }
-
-        private static bool isValidtemperature(double temperature)
-        {
-            if (double.IsNaN(temperature) || temperature <= 16 || temperature > 45)
-            {
-                return false;
-            }
-            return true;
-        }
-
         //Adapted from ApplyRoutes
         void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
