@@ -55,7 +55,6 @@ namespace GpsRunningPlugin.Source
         public TrainingView()
         {
             InitializeComponent();
-            SizeChanged += new EventHandler(TrainingView_SizeChanged);            
         }
 
         public void InitControls(IDetailPage detailPage, IDailyActivityView view, TrailPointsLayer layer, PerformancePredictorControl ppControl)
@@ -68,29 +67,12 @@ namespace GpsRunningPlugin.Source
             m_ppcontrol = ppControl;
 
             copyTableMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
+
             trainingList.LabelProvider = new TrainingLabelProvider();
             paceTempoList.LabelProvider = new PaceTempoLabelProvider();
             intervalList.LabelProvider = new IntervalLabelProvider();
             temperatureList.LabelProvider = new TemperatureLabelProvider();
             weightList.LabelProvider = new WeightLabelProvider();
-            foreach (TabPage tab in this.tabControl1.TabPages)
-            {
-                foreach (Control tablePanel in tab.Controls)
-                {
-                    foreach (Control grid0 in tablePanel.Controls)
-                    {
-                        if (grid0 is DataGridView)
-                        {
-                            DataGridView grid = (grid0 as DataGridView);
-                            //This will disable gradient header, but make them more like ST controls
-                            grid.EnableHeadersVisualStyles = false;
-                            grid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
-                            grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                            grid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-                        }
-                    }
-                }
-            }
             trainingList.Columns.Clear();
             foreach (string id in ResultColumnIds.TrainingColumns)
             {
@@ -181,7 +163,6 @@ namespace GpsRunningPlugin.Source
                     }
                 }
             }
-            setSize();
         }
 
         private void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -225,14 +206,6 @@ namespace GpsRunningPlugin.Source
         }
 #endif
 
-        private void TrainingView_SizeChanged(object sender, EventArgs e)
-        {
-            if (m_showPage)
-            {
-                setSize();
-            }
-        }
-
         private ITheme m_visualTheme;
         public void ThemeChanged(ITheme visualTheme)
         {
@@ -257,13 +230,6 @@ namespace GpsRunningPlugin.Source
                         {
                             (grid0 as TreeList).ThemeChanged(visualTheme);
                         }
-                        if (grid0 is DataGridView)
-                        {
-                            DataGridView grid = (grid0 as DataGridView);
-                            grid.ForeColor = fColor;
-                            grid.BackgroundColor = bColor;
-                            grid.ColumnHeadersDefaultCellStyle.BackColor = visualTheme.SubHeader;
-                        }
                     }
                 }
             }
@@ -278,13 +244,12 @@ namespace GpsRunningPlugin.Source
             this.weightTab.Text = Resources.WeighImpact;
 
             this.trainingLabel.Text = Resources.VO2MaxVDOT;
-            //paceTempoLabel.Text = "1"+Resources.PaceForTempoRuns_label;
+            //paceTempoLabel.Text 
             paceTempoLabel2.Text = Resources.PaceRunNotification;
             intervalLabel.Text = Resources.IntervalNotification;
-            //temperatureLabel2.Text = "1" + String.Format(Resources.TemperatureNotification, UnitUtil.Temperature.ToString(16, "F0u"));
+            //temperatureLabel2.Text
             temperatureLabel2.Text = String.Format(Resources.TemperatureNotification, UnitUtil.Temperature.ToString(16, "F0u"));
-            //weightLabel.Text = "1" + String.Format(Resources.WeightNotification, 2 + " " + StringResources.Seconds,
-            //    UnitUtil.Distance.ToString(1000, "u"));
+            //weightLabel.Text
             weightLabel2.Text = String.Format(Resources.WeightNotification, 2 + " " + StringResources.Seconds,
                 UnitUtil.Distance.ToString(1000, "u"));
 
@@ -336,22 +301,6 @@ namespace GpsRunningPlugin.Source
             Plugin.GetApplication().SystemPreferences.PropertyChanged -= new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
         }
 
-        private void setSize()
-        {
-            foreach (TabPage tab in this.tabControl1.TabPages)
-            {
-                int offset = tabControl1.Location.X+9;
-                foreach (Control grid0 in tab.Controls)
-                {
-                    if (grid0 is DataGridView)
-                    {
-                        DataGridView grid = (grid0 as DataGridView);
-                        grid.Width = Size.Width - offset;
-                    }
-                }
-            }
-        }
-
         public void RefreshData()
         {
             if (m_showPage && m_ppcontrol.SingleActivity != null && Predict.Predictor(Settings.Model) != null)
@@ -361,9 +310,9 @@ namespace GpsRunningPlugin.Source
                 setInterval();
                 setTemperature();
                 setWeight();
-                setSize();
             }
         }
+
         private void setWeight()
         {
             double weight = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(m_ppcontrol.SingleActivity.StartTime).WeightKilograms;
@@ -371,29 +320,15 @@ namespace GpsRunningPlugin.Source
             {
                 weightLabel.Text = Resources.SetWeight;
                 weightLabel2.Visible = false;
-                weightGrid.Visible = false;
                 return;
             }
             weightLabel2.Visible = true;
-            weightGrid.Visible = false;
             weightList.Visible = true;
             ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
             weightLabel.Text = Resources.ProjectedWeightImpact + " " +
                 UnitUtil.Distance.ToString(info.DistanceMeters, "u");
             TimeSpan time = info.Time;
-            DataTable set = new DataTable();
-            set.Columns.Add(Resources.ProjectedWeight + UnitUtil.Weight.LabelAbbr2);
-            set.Columns.Add(Resources.AdjustedVDOT);
-            set.Columns.Add(Resources.EstimatedTime);
-            if (Settings.ShowPace)
-            {
-                set.Columns.Add(Resources.EstimatedPace + UnitUtil.Pace.LabelAbbr2);
-            }
-            else
-            {
-                set.Columns.Add(Resources.EstimatedSpeed + UnitUtil.Speed.LabelAbbr2);
-            }            
-            double inc = 1.4;
+            const double inc = 1.4;
             double vdot = getVdot(m_ppcontrol.SingleActivity);
             IList<WeightResult> result = new List<WeightResult>();
             WeightResult sel = null;
@@ -405,34 +340,9 @@ namespace GpsRunningPlugin.Source
                 {
                     sel = t;
                 }
-                set.Rows.Add(getWeightRow(6 - i, vdot, weight, inc, time, info));
             }
-            weightGrid.DataSource = set;
             weightList.RowData = result;
             weightList.SelectedItems = new List<WeightResult>{sel};
-        }
-
-        private object[] getWeightRow(int p, double vdot, double weight, double inc,
-            TimeSpan time, ActivityInfo info)
-        {
-            double projWeight = weight + p * inc;
-            double projVdot = vdot * weight / projWeight;
-            time = scaleTime(time, Math.Pow(vdot / projVdot, 0.83));
-
-            double speed = info.DistanceMeters * 1000 / time.TotalMilliseconds;
-            string str;
-            str = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed);
-
-            return new object[]{ UnitUtil.Weight.ToString(projWeight), present(projVdot, 1), UnitUtil.Time.ToString(time), str };
-        }
-        private static string present(double p, int digits)
-        {
-            string pad = "";
-            for (int i = 0; i < digits; i++)
-            {
-                pad += "0";
-            }
-            return String.Format("{0:0." + pad + "}", p);
         }
 
         private void setTemperature()
@@ -441,17 +351,6 @@ namespace GpsRunningPlugin.Source
             TimeSpan time = info.Time;
             temperatureLabel.Text = Resources.ProjectedTemperatureImpact+" "+UnitUtil.Distance.ToString(info.DistanceMeters,"u");
             double speed = info.DistanceMeters * 1000 / time.TotalMilliseconds;
-            DataTable set = new DataTable();
-            set.Columns.Add(CommonResources.Text.LabelTemperature + UnitUtil.Temperature.LabelAbbr2);
-            set.Columns.Add(Resources.AdjustedTime);
-            if (Settings.ShowPace)
-            {
-                set.Columns.Add(Resources.AdjustedPace + UnitUtil.Pace.LabelAbbr2);
-            }
-            else
-            {
-                set.Columns.Add(Resources.AdjustedSpeed + UnitUtil.Speed.LabelAbbr2);
-            }
             float actualTemp = m_ppcontrol.SingleActivity.Weather.TemperatureCelsius;
             if (!isValidtemperature(actualTemp)){actualTemp = 15;}
             double[] aTemperature = new double[] { 16, 18, 21, 24, 27, 29, 32, 35, 38 };
@@ -462,77 +361,36 @@ namespace GpsRunningPlugin.Source
             {
                 TemperatureResult t = new TemperatureResult(m_ppcontrol.SingleActivity, aTemperature[i], actualTemp, time, speed);
                 result.Add(t);
-                set.Rows.Add(getTemperatureRow(aTemperature[i], actualTemp, time, speed));
                 if (i == aTemperature.Length - 1 || (i == 0 || actualTemp >= aTemperature[i - 1]) && (actualTemp < aTemperature[i]))
                 {
-                    //xxx temperatureGrid.Rows[i].DefaultCellStyle.ForeColor = Color.Gray;
+                    //xxx
                     sel = t;
                 }
             }
-            temperatureGrid.DataSource = set;
             temperatureList.Visible = true;
             temperatureList.RowData = result;
             temperatureList.SelectedItems = new List<TemperatureResult>{sel};
         }
 
-        private object[] getTemperatureRow(double temperature, float actual, TimeSpan time, double speed)
-        {
-            double f = getTemperatureFactor(temperature) / getTemperatureFactor(actual);
-            speed = speed / f;
-            time = scaleTime(time, f);
-
-            return new object[] { 
-                UnitUtil.Temperature.ToString(temperature, "F0"), 
-                UnitUtil.Time.ToString(time), 
-                UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed)
-            };
-        }
-
         private void setInterval()
         {
-            DataTable set = new DataTable();
-            set.Columns.Add(UnitUtil.Distance.LabelAxis);
-            set.Columns.Add(Length.ToString(1, Length.Units.Mile, "F0u"));
-            set.Columns.Add(Length.ToString(5, Length.Units.Kilometer, "F0u"));
-            set.Columns.Add(Length.ToString(10, Length.Units.Kilometer, "F0u"));
             ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
             double distance = info.DistanceMeters;
             double seconds = info.Time.TotalSeconds;
-            double mileSpeed = getTrainingSpeed(1609.344, distance, seconds);
-            double k5Speed = getTrainingSpeed(5000, distance, seconds);
-            double k10Speed = getTrainingSpeed(10000, distance, seconds);
             double[] distances = new double[] { 100, 200, 300, 400, 800, 1000, 1609.344 };
             IList<IntervalResult> result = new List<IntervalResult>();
             for (int i = 0; i < distances.Length; i++)
             {
                 IntervalResult t = new IntervalResult(m_ppcontrol.SingleActivity, distances[i], seconds);
                 result.Add(t);
-                set.Rows.Add(getIntervalRow(distances[i], mileSpeed, k5Speed, k10Speed));
             }
 
-            intervalGrid.DataSource = set;
             intervalList.RowData = result;
-        }
-
-        private object[] getIntervalRow(double p, double mileSpeed, double k5Speed, double k10Speed)
-        {
-            //The Speeds are passed here, they are scaled and presented as Pace
-            //(there must be no unit!)
-            double f = 1000.0/p;
-            return new object[] {
-                    UnitUtil.Distance.ToString(p),
-                    UnitUtil.Pace.ToString(f*mileSpeed, "mm:ss"),
-                    UnitUtil.Pace.ToString(f*k5Speed, "mm:ss"),
-                    UnitUtil.Pace.ToString(f*k10Speed, "mm:ss")
-            };
         }
 
         private void setPaceTempo()
         {
             paceTempoLabel.Text = String.Format(Resources.PaceForTempoRuns_label, getVdot(m_ppcontrol.SingleActivity));
-            DataTable set = new DataTable();
-            set.Columns.Add(CommonResources.Text.LabelDuration + " (" + StringResources.MinutesShort + ")");
-            set.Columns.Add(UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace));
             string[] durations = new string[] { "20", "25",  "30",  "35",  "40",  "45",  "50",    "55", "60" };
             double[] factors = new double[]    { 1,  1.012, 1.022, 1.027, 1.033, 1.038, 1.043, 1.04866, 1.055};
             double vdot = getVdot(m_ppcontrol.SingleActivity);
@@ -541,14 +399,9 @@ namespace GpsRunningPlugin.Source
             IList<PaceTempoResult> result = new List<PaceTempoResult>();
             for (int i = 0; i < durations.Length; i++)
             {
-                DataRow row = set.NewRow();
-                row[0] = durations[i];
-                row[1] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, speed/factors[i]);
-                set.Rows.Add(row);
                 PaceTempoResult t = new PaceTempoResult(m_ppcontrol.SingleActivity, durations[i], speed / factors[i]);
                 result.Add(t);
             }
-            paceTempoGrid.DataSource = set;
             paceTempoList.RowData = result;
         }
 
@@ -563,23 +416,9 @@ namespace GpsRunningPlugin.Source
             if (maxHr.Equals(double.NaN))
             {
                 trainingLabel.Text = Resources.NoMaxHR;
-                trainingGrid.Visible = false;
+                trainingList.Visible = false;
                 return;
             }
-            trainingGrid.Visible = false;//xxx true;
-            DataTable set = new DataTable();
-            set.Columns.Add(Resources.ZoneDistance);
-            set.Columns.Add(CommonResources.Text.LabelPercentOfMax, typeof(double));
-            set.Columns.Add(Resources.TrainRaceHR, typeof(double));
-            if (Settings.ShowPace)
-            {
-                set.Columns.Add(UnitUtil.Pace.LabelAxis);
-            }
-            else
-            {
-                set.Columns.Add(UnitUtil.Speed.LabelAxis, typeof(double));
-            }
-            //addTrainingRow(set, percent);
             double vo2max = getVo2max(m_ppcontrol.SingleActivity);
             double vdot = getVdot(m_ppcontrol.SingleActivity);
             IList<String> zones = getZones();
@@ -589,16 +428,9 @@ namespace GpsRunningPlugin.Source
             IList<TrainingResult> result = new List<TrainingResult>();
             for (int i = 0; i < 15; i++)
             {
-                DataRow row = set.NewRow();
-                row[0] = zones[i];
-                row[1] = (100*percentages[i]).ToString("F1");
-                row[2] = UnitUtil.HeartRate.ToString(hrs[i]);
-                row[3] = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, paces[i]);
-                set.Rows.Add(row);
                 TrainingResult t = new TrainingResult(m_ppcontrol.SingleActivity, zones[i], percentages[i], hrs[i], paces[i]);
                 result.Add(t);
             }
-            trainingGrid.DataSource = set;
             trainingLabel.Text = String.Format(Resources.VO2MaxVDOT,
                 100*vo2max, vdot);
             trainingList.RowData = result;
@@ -660,17 +492,6 @@ namespace GpsRunningPlugin.Source
                 - 0.007546 * Math.Pow(vdot * (percentZone - 0.05), 2)) / 60;
         }
 
-        private IList<double> getHeartRates(IList<double> percentages)
-        {
-            IList<double> result = new List<double>();
-            double maxHr = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(DateTime.Now).MaximumHeartRatePerMinute;
-            foreach (double p in percentages)
-            {
-                result.Add(p * maxHr);
-            }
-            return result;
-        }
-
         private double[] getPercentages(double vdot)
         {
             double[] result = new double[15];
@@ -689,6 +510,17 @@ namespace GpsRunningPlugin.Source
             result[12] = 0.94 + 0.05 * (vdot - 30) / 55;
             result[13] = 0.98 + 0.02 * (vdot - 30) / 55;
             result[14] = 1;
+            return result;
+        }
+
+        private IList<double> getHeartRates(IList<double> percentages)
+        {
+            IList<double> result = new List<double>();
+            double maxHr = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(DateTime.Now).MaximumHeartRatePerMinute;
+            foreach (double p in percentages)
+            {
+                result.Add(p * maxHr);
+            }
             return result;
         }
 
@@ -718,14 +550,6 @@ namespace GpsRunningPlugin.Source
         //35 1.0525
         //38 1.06
 
-        private static bool isValidtemperature(double temperature)
-        {
-            if (double.IsNaN(temperature) || temperature <= 16 || temperature > 45)
-            {
-                return false;
-            }
-            return true;
-        }
         public static double getTemperatureFactor(double temperature)
         {
             if (!isValidtemperature(temperature))
@@ -742,6 +566,15 @@ namespace GpsRunningPlugin.Source
             else if (temperature < 34) { return 1.045; }
             else if (temperature < 37) { return 1.0525; }
             return 1.06;
+        }
+
+        private static bool isValidtemperature(double temperature)
+        {
+            if (double.IsNaN(temperature) || temperature <= 16 || temperature > 45)
+            {
+                return false;
+            }
+            return true;
         }
 
         //Adapted from ApplyRoutes
