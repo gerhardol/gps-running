@@ -8,6 +8,12 @@ More or less official beta releases are available in the Downloads section. See 
 =Latest updates=
 Next version will be called 2.0
 
+1.9.307 2011-04-05
+ * PerformancePredictor: Updated User interface
+   * Action banner with menu, Sidebar can be hidden
+   * Using SportTracks tables 
+   * Split Training view in Training/Extrapolate
+
 1.9.289 2011-03-22
  * Overlay, UniqueRoutes, PerformancePredictor: Updated French translation
 
