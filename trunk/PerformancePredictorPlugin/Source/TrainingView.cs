@@ -74,8 +74,6 @@ namespace GpsRunningPlugin.Source
             trainingList.LabelProvider = new TrainingLabelProvider();
             paceTempoList.LabelProvider = new PaceTempoLabelProvider();
             intervalList.LabelProvider = new IntervalLabelProvider();
-            temperatureList.LabelProvider = new TemperatureLabelProvider();
-            weightList.LabelProvider = new WeightLabelProvider();
             trainingList.Columns.Clear();
             foreach (string id in ResultColumnIds.TrainingColumns)
             {
@@ -126,42 +124,6 @@ namespace GpsRunningPlugin.Source
                             columnDef.Align
                         );
                         intervalList.Columns.Add(column);
-                        break;
-                    }
-                }
-            }
-            temperatureList.Columns.Clear();
-            foreach (string id in ResultColumnIds.TemperatureColumns)
-            {
-                foreach (IListColumnDefinition columnDef in ResultColumnIds.ColumnDefs())
-                {
-                    if (columnDef.Id == id)
-                    {
-                        TreeList.Column column = new TreeList.Column(
-                            columnDef.Id,
-                            columnDef.Text(columnDef.Id),
-                            columnDef.Width,
-                            columnDef.Align
-                        );
-                        temperatureList.Columns.Add(column);
-                        break;
-                    }
-                }
-            }
-            weightList.Columns.Clear();
-            foreach (string id in ResultColumnIds.WeightColumns)
-            {
-                foreach (IListColumnDefinition columnDef in ResultColumnIds.ColumnDefs())
-                {
-                    if (columnDef.Id == id)
-                    {
-                        TreeList.Column column = new TreeList.Column(
-                            columnDef.Id,
-                            columnDef.Text(columnDef.Id),
-                            columnDef.Width,
-                            columnDef.Align
-                        );
-                        weightList.Columns.Add(column);
                         break;
                     }
                 }
@@ -243,18 +205,11 @@ namespace GpsRunningPlugin.Source
             this.trainingTab.Text = StringResources.Training;
             this.paceTempoTab.Text = Resources.PaceForTempoRuns;
             this.intervalTab.Text = Resources.IntervalSplitTimes;
-            this.temperatureTab.Text = Resources.TemperatureImpact;
-            this.weightTab.Text = Resources.WeighImpact;
 
             this.trainingLabel.Text = Resources.VO2MaxVDOT;
             //paceTempoLabel.Text 
             paceTempoLabel2.Text = Resources.PaceRunNotification;
             intervalLabel.Text = Resources.IntervalNotification;
-            //temperatureLabel2.Text
-            temperatureLabel2.Text = String.Format(Resources.TemperatureNotification, UnitUtil.Temperature.ToString(16, "F0u"));
-            //weightLabel.Text
-            weightLabel2.Text = String.Format(Resources.WeightNotification, 2 + " " + StringResources.Seconds,
-                UnitUtil.Distance.ToString(1000, "u"));
 
             copyTableMenuItem.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
         }
@@ -311,67 +266,7 @@ namespace GpsRunningPlugin.Source
                 setTraining();
                 setPaceTempo();
                 setInterval();
-                setTemperature();
-                setWeight();
             }
-        }
-
-        private void setWeight()
-        {
-            double weight = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(m_ppcontrol.SingleActivity.StartTime).WeightKilograms;
-            if (weight.Equals(double.NaN))
-            {
-                weightLabel.Text = Resources.SetWeight;
-                weightLabel2.Visible = false;
-                return;
-            }
-            weightLabel2.Visible = true;
-            weightList.Visible = true;
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
-            weightLabel.Text = Resources.ProjectedWeightImpact + " " +
-                UnitUtil.Distance.ToString(info.DistanceMeters, "u");
-            TimeSpan time = info.Time;
-            const double inc = 1.4;
-            double vdot = Predict.getVdot(m_ppcontrol.SingleActivity);
-            IList<WeightResult> result = new List<WeightResult>();
-            WeightResult sel = null;
-            for (int i = 0; i < 13; i++)
-            {
-                WeightResult t = new WeightResult(m_ppcontrol.SingleActivity, 6 - i, vdot, weight, inc, time, info);
-                result.Add(t);
-                if (t.Weight > weight)
-                {
-                    sel = t;
-                }
-            }
-            weightList.RowData = result;
-            weightList.SelectedItems = new List<WeightResult>{sel};
-        }
-
-        private void setTemperature()
-        {
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
-            TimeSpan time = info.Time;
-            temperatureLabel.Text = Resources.ProjectedTemperatureImpact+" "+UnitUtil.Distance.ToString(info.DistanceMeters,"u");
-            double speed = info.DistanceMeters / time.TotalSeconds;
-            float actualTemp = m_ppcontrol.SingleActivity.Weather.TemperatureCelsius;
-            if (!TemperatureResult.isValidtemperature(actualTemp)) { actualTemp = 15; }
-            double[] aTemperature = TemperatureResult.aTemperature;
-            
-            IList<TemperatureResult> result = new List<TemperatureResult>();
-            TemperatureResult sel = null;
-            for (int i = 0; i < aTemperature.Length; i++)
-            {
-                TemperatureResult t = new TemperatureResult(m_ppcontrol.SingleActivity, aTemperature[i], actualTemp, time, speed);
-                result.Add(t);
-                if ((i == 0 || actualTemp >= aTemperature[i - 1]) && (actualTemp < aTemperature[i]))
-                {
-                    sel = t;
-                }
-            }
-            temperatureList.Visible = true;
-            temperatureList.RowData = result;
-            temperatureList.SelectedItems = new List<TemperatureResult>{sel};
         }
 
         private void setInterval()
