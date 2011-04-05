@@ -302,4 +302,7 @@
     <value>Overlay Map Overlay</value>
     <comment>still unused (requires ST update)</comment>
   </data>
+  <data name="Extrapolate" xml:space="preserve">
+    <value>Extrapolate</value>
+  </data>
 </root>

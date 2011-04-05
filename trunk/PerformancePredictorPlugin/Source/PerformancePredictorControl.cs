@@ -191,7 +191,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             timePredictionMenuItem.Text = timePredictionButton.Text;
             trainingButton.Text = StringResources.Training;
             trainingMenuItem.Text = trainingButton.Text;
-            extrapolateButton.Text = "xxx"+StringResources.Training;
+            extrapolateButton.Text = Properties.Resources.Extrapolate;
             extrapolateMenuItem.Text = extrapolateButton.Text;
 
             modelBox.Text = Resources.PredictionModel;
@@ -419,8 +419,8 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             {
                 this.tableButton.Enabled = false;
                 this.chartButton.Enabled = false;
-                this.chartButton.Checked = false;
                 this.tableButton.Checked = true;
+                this.chartButton.Checked = false;
                 if (Settings.PredictionView == PredictionView.Training)
                 {
                     actionBanner1.Text = StringResources.Training;
@@ -432,7 +432,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 }
                 else if (Settings.PredictionView == PredictionView.Extrapolate)
                 {
-                    actionBanner1.Text = "xxx" +StringResources.Training;
+                    actionBanner1.Text = Properties.Resources.Extrapolate;
                     extrapolateButton.Checked = true;
                     if (m_showPage)
                     {
@@ -523,7 +523,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 syncToolBarToState();
                 syncMenuToState();
                 setView();
-                //predictorView.setData();
             }
         }
 
@@ -537,7 +536,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 syncToolBarToState();
                 syncMenuToState();
                 setView();
-                //predictorView.setData();
             }
         }
 
@@ -551,7 +549,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 syncToolBarToState();
                 syncMenuToState();
                 setView();
-                //predictorView.setData();
             }
         }
 
@@ -624,8 +621,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 Settings.ShowPace = true;
                 syncToolBarToState();
                 syncMenuToState();
-                //xxx predictorView.RefreshData();
-                //trainingView.RefreshData();
             }
         }
 
@@ -638,8 +633,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 Settings.ShowPace = false;
                 syncToolBarToState();
                 syncMenuToState();
-                //predictorView.RefreshData();
-                //trainingView.RefreshData();
             }
         }
 

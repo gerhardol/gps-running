@@ -66,6 +66,9 @@ namespace GpsRunningPlugin.Source
 #endif
             m_ppcontrol = ppControl;
 
+            //Set in user code rather than generated code, to make GUI editing possible
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+
             copyTableMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
 
             trainingList.LabelProvider = new TrainingLabelProvider();
