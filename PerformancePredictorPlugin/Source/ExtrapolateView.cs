@@ -66,6 +66,9 @@ namespace GpsRunningPlugin.Source
 #endif
             m_ppcontrol = ppControl;
 
+            //Set in user code rather than generated code, to make GUI editing possible
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+
             copyTableMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
 
             temperatureList.LabelProvider = new TemperatureLabelProvider();
@@ -256,7 +259,6 @@ namespace GpsRunningPlugin.Source
                 return;
             }
             weightLabel2.Visible = true;
-            weightList.Visible = true;
             ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
             weightLabel.Text = Resources.ProjectedWeightImpact + " " +
                 UnitUtil.Distance.ToString(info.DistanceMeters, "u");

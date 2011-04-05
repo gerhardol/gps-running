@@ -46,14 +46,16 @@ namespace GpsRunningPlugin.Source
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.summaryList = new ZoneFiveSoftware.Common.Visuals.TreeList();
-            this.listMenu = new System.Windows.Forms.ContextMenuStrip();
+            this.listMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyTableMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chart = new ZoneFiveSoftware.Common.Visuals.Chart.LineChart();
             this.lblHighScoreRequired = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.panel1.SuspendLayout();
+            this.listMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -68,7 +70,7 @@ namespace GpsRunningPlugin.Source
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(400, 300);
+            this.panel1.Size = new System.Drawing.Size(710, 27);
             this.panel1.TabIndex = 1;
             // 
             // summaryList
@@ -99,27 +101,23 @@ namespace GpsRunningPlugin.Source
             this.summaryList.RowSeparatorLines = true;
             this.summaryList.ShowLines = false;
             this.summaryList.ShowPlusMinus = false;
-            this.summaryList.Size = new System.Drawing.Size(400, 60);
+            this.summaryList.Size = new System.Drawing.Size(710, 27);
             this.summaryList.TabIndex = 11;
             this.summaryList.Click += new System.EventHandler(this.summaryList_Click);
-            //this.summaryList.MouseLeave += new System.EventHandler(this.summaryList_MouseLeave);
             this.summaryList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.selectedRow_DoubleClick);
-            //this.summaryList.MouseMove += new System.Windows.Forms.MouseEventHandler(summaryList_MouseMove);
             // 
             // listMenu
             // 
             this.listMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.copyTableMenuItem});
             this.listMenu.Name = "listContextMenuStrip";
-            this.listMenu.Size = new System.Drawing.Size(199, 48);
-            //this.listMenu.Opening += new System.ComponentModel.CancelEventHandler(listMenu_Opening);
+            this.listMenu.Size = new System.Drawing.Size(207, 26);
             // 
             // copyTableMenuItem
             // 
             this.copyTableMenuItem.Name = "copyTableMenuItem";
-            this.copyTableMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.copyTableMenuItem.Size = new System.Drawing.Size(206, 22);
             this.copyTableMenuItem.Text = "<Copy table to clipboard";
-            this.copyTableMenuItem.Click += new System.EventHandler(PerformancePredictorControl.copyTableMenu_Click);
             // 
             // chart
             // 
@@ -130,7 +128,7 @@ namespace GpsRunningPlugin.Source
             this.chart.Location = new System.Drawing.Point(0, 0);
             this.chart.Name = "chart";
             this.chart.Padding = new System.Windows.Forms.Padding(5);
-            this.chart.Size = new System.Drawing.Size(190, 316);
+            this.chart.Size = new System.Drawing.Size(710, 27);
             this.chart.TabIndex = 8;
             // 
             // lblHighScoreRequired
@@ -145,24 +143,28 @@ namespace GpsRunningPlugin.Source
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(0, 0);
-            this.progressBar.Name = "progressBar";
             this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Location = new System.Drawing.Point(0, 0);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(410, 23);
             this.progressBar.TabIndex = 9;
             // 
-            // PerformancePredictorView
-            //
-            this.AutoScroll = true;
+            // TimePredictionView
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this.panel1);
-            this.Name = "PerformancePredictorView";
-            this.Size = new System.Drawing.Size(336, 316);
+            this.Name = "TimePredictionView";
+            this.Size = new System.Drawing.Size(710, 27);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.listMenu.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

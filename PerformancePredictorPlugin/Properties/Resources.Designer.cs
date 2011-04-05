@@ -169,6 +169,15 @@ namespace GpsRunningPlugin.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extrapolate.
+        /// </summary>
+        internal static string Extrapolate {
+            get {
+                return ResourceManager.GetString("Extrapolate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to High aerobic zone.
         /// </summary>
         internal static string HighAerobicZone {

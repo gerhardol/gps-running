@@ -102,8 +102,7 @@ namespace GpsRunningPlugin.Source
             this.panel1.TabIndex = 1;
             // 
             // tabControl1
-            // 
-            this.tabControl1.AutoSize = true;
+            //
             this.tabControl1.Controls.Add(this.trainingTab);
             this.tabControl1.Controls.Add(this.paceTempoTab);
             this.tabControl1.Controls.Add(this.intervalTab);
@@ -128,12 +127,13 @@ namespace GpsRunningPlugin.Source
             this.trainingTab.Location = new System.Drawing.Point(4, 22);
             this.trainingTab.Name = "trainingTab";
             this.trainingTab.Padding = new System.Windows.Forms.Padding(3);
-            this.trainingTab.Size = new System.Drawing.Size(234, 111);
+            this.trainingTab.Size = new System.Drawing.Size(434, 211);
             this.trainingTab.TabIndex = 0;
             this.trainingTab.Text = "Training";
             // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.trainingLabel, 0, 1);
@@ -145,13 +145,13 @@ namespace GpsRunningPlugin.Source
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(228, 105);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(428, 205);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // trainingLabel
             // 
             this.trainingLabel.AutoSize = true;
-            this.trainingLabel.Location = new System.Drawing.Point(3, 0);
+            this.trainingLabel.Location = new System.Drawing.Point(3, 15);
             this.trainingLabel.Name = "trainingLabel";
             this.trainingLabel.Size = new System.Drawing.Size(50, 13);
             this.trainingLabel.TabIndex = 1;
@@ -184,7 +184,7 @@ namespace GpsRunningPlugin.Source
             this.trainingList.RowSeparatorLines = true;
             this.trainingList.ShowLines = false;
             this.trainingList.ShowPlusMinus = false;
-            this.trainingList.Size = new System.Drawing.Size(222, 69);
+            this.trainingList.Size = new System.Drawing.Size(422, 169);
             this.trainingList.TabIndex = 2;
             // 
             // listMenu
@@ -199,7 +199,6 @@ namespace GpsRunningPlugin.Source
             this.copyTableMenuItem.Name = "copyTableMenuItem";
             this.copyTableMenuItem.Size = new System.Drawing.Size(206, 22);
             this.copyTableMenuItem.Text = "<Copy table to clipboard";
-            this.copyTableMenuItem.Click += new System.EventHandler(PerformancePredictorControl.copyTableMenu_Click);
             // 
             // paceTempoTab
             // 
@@ -215,6 +214,7 @@ namespace GpsRunningPlugin.Source
             // 
             // tableLayoutPanel2
             // 
+            this.tableLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.paceTempoLabel2, 0, 0);
@@ -229,11 +229,12 @@ namespace GpsRunningPlugin.Source
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.Size = new System.Drawing.Size(428, 205);
             this.tableLayoutPanel2.TabIndex = 0;
+            this.tabControl1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(PerformancePredictorControl.tabControl1_DrawItem);
             // 
             // paceTempoLabel2
             // 
             this.paceTempoLabel2.AutoSize = true;
-            this.paceTempoLabel2.Location = new System.Drawing.Point(0, 30);
+            this.paceTempoLabel2.Location = new System.Drawing.Point(0, 0);
             this.paceTempoLabel2.Margin = new System.Windows.Forms.Padding(0);
             this.paceTempoLabel2.Name = "paceTempoLabel2";
             this.paceTempoLabel2.Size = new System.Drawing.Size(368, 13);
@@ -243,7 +244,7 @@ namespace GpsRunningPlugin.Source
             // paceTempoLabel
             // 
             this.paceTempoLabel.AutoSize = true;
-            this.paceTempoLabel.Location = new System.Drawing.Point(0, 0);
+            this.paceTempoLabel.Location = new System.Drawing.Point(0, 15);
             this.paceTempoLabel.Margin = new System.Windows.Forms.Padding(0);
             this.paceTempoLabel.Name = "paceTempoLabel";
             this.paceTempoLabel.Size = new System.Drawing.Size(278, 13);
@@ -263,7 +264,7 @@ namespace GpsRunningPlugin.Source
             this.paceTempoList.DefaultRowHeight = -1;
             this.paceTempoList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.paceTempoList.HeaderRowHeight = 21;
-            this.paceTempoList.Location = new System.Drawing.Point(3, 46);
+            this.paceTempoList.Location = new System.Drawing.Point(3, 33);
             this.paceTempoList.MultiSelect = false;
             this.paceTempoList.Name = "paceTempoList";
             this.paceTempoList.NumHeaderRows = ZoneFiveSoftware.Common.Visuals.TreeList.HeaderRows.Auto;
@@ -277,7 +278,7 @@ namespace GpsRunningPlugin.Source
             this.paceTempoList.RowSeparatorLines = true;
             this.paceTempoList.ShowLines = false;
             this.paceTempoList.ShowPlusMinus = false;
-            this.paceTempoList.Size = new System.Drawing.Size(422, 156);
+            this.paceTempoList.Size = new System.Drawing.Size(422, 169);
             this.paceTempoList.TabIndex = 2;
             // 
             // intervalTab
@@ -293,6 +294,7 @@ namespace GpsRunningPlugin.Source
             // 
             // tableLayoutPanel3
             // 
+            this.tableLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Controls.Add(this.intervalLabel, 0, 1);
@@ -310,7 +312,7 @@ namespace GpsRunningPlugin.Source
             // intervalLabel
             // 
             this.intervalLabel.AutoSize = true;
-            this.intervalLabel.Location = new System.Drawing.Point(3, 0);
+            this.intervalLabel.Location = new System.Drawing.Point(3, 15);
             this.intervalLabel.Name = "intervalLabel";
             this.intervalLabel.Size = new System.Drawing.Size(148, 13);
             this.intervalLabel.TabIndex = 5;
@@ -359,6 +361,7 @@ namespace GpsRunningPlugin.Source
             // 
             // tableLayoutPanel4
             // 
+            this.tableLayoutPanel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel4.ColumnCount = 1;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.Controls.Add(this.temperatureLabel2, 0, 0);
@@ -377,7 +380,7 @@ namespace GpsRunningPlugin.Source
             // temperatureLabel2
             // 
             this.temperatureLabel2.AutoSize = true;
-            this.temperatureLabel2.Location = new System.Drawing.Point(3, 30);
+            this.temperatureLabel2.Location = new System.Drawing.Point(3, 0);
             this.temperatureLabel2.Name = "temperatureLabel2";
             this.temperatureLabel2.Size = new System.Drawing.Size(266, 13);
             this.temperatureLabel2.TabIndex = 4;
@@ -386,7 +389,7 @@ namespace GpsRunningPlugin.Source
             // temperatureLabel
             // 
             this.temperatureLabel.AutoSize = true;
-            this.temperatureLabel.Location = new System.Drawing.Point(3, 0);
+            this.temperatureLabel.Location = new System.Drawing.Point(3, 15);
             this.temperatureLabel.Name = "temperatureLabel";
             this.temperatureLabel.Size = new System.Drawing.Size(89, 13);
             this.temperatureLabel.TabIndex = 3;
@@ -405,7 +408,7 @@ namespace GpsRunningPlugin.Source
             this.temperatureList.DefaultRowHeight = -1;
             this.temperatureList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.temperatureList.HeaderRowHeight = 21;
-            this.temperatureList.Location = new System.Drawing.Point(3, 46);
+            this.temperatureList.Location = new System.Drawing.Point(3, 33);
             this.temperatureList.MultiSelect = false;
             this.temperatureList.Name = "temperatureList";
             this.temperatureList.NumHeaderRows = ZoneFiveSoftware.Common.Visuals.TreeList.HeaderRows.Auto;
@@ -419,7 +422,7 @@ namespace GpsRunningPlugin.Source
             this.temperatureList.RowSeparatorLines = true;
             this.temperatureList.ShowLines = false;
             this.temperatureList.ShowPlusMinus = false;
-            this.temperatureList.Size = new System.Drawing.Size(428, 162);
+            this.temperatureList.Size = new System.Drawing.Size(428, 175);
             this.temperatureList.TabIndex = 5;
             // 
             // weightTab
@@ -435,6 +438,7 @@ namespace GpsRunningPlugin.Source
             // 
             // tableLayoutPanel5
             // 
+            this.tableLayoutPanel5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel5.ColumnCount = 1;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.Controls.Add(this.weightLabel2, 0, 0);
@@ -453,7 +457,7 @@ namespace GpsRunningPlugin.Source
             // weightLabel2
             // 
             this.weightLabel2.AutoSize = true;
-            this.weightLabel2.Location = new System.Drawing.Point(3, 30);
+            this.weightLabel2.Location = new System.Drawing.Point(3, 0);
             this.weightLabel2.Name = "weightLabel2";
             this.weightLabel2.Size = new System.Drawing.Size(259, 13);
             this.weightLabel2.TabIndex = 7;
@@ -462,7 +466,7 @@ namespace GpsRunningPlugin.Source
             // weightLabel
             // 
             this.weightLabel.AutoSize = true;
-            this.weightLabel.Location = new System.Drawing.Point(3, 0);
+            this.weightLabel.Location = new System.Drawing.Point(3, 15);
             this.weightLabel.Name = "weightLabel";
             this.weightLabel.Size = new System.Drawing.Size(92, 13);
             this.weightLabel.TabIndex = 6;
@@ -481,7 +485,7 @@ namespace GpsRunningPlugin.Source
             this.weightList.DefaultRowHeight = -1;
             this.weightList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.weightList.HeaderRowHeight = 21;
-            this.weightList.Location = new System.Drawing.Point(3, 46);
+            this.weightList.Location = new System.Drawing.Point(3, 33);
             this.weightList.MultiSelect = false;
             this.weightList.Name = "weightList";
             this.weightList.NumHeaderRows = ZoneFiveSoftware.Common.Visuals.TreeList.HeaderRows.Auto;
@@ -495,7 +499,7 @@ namespace GpsRunningPlugin.Source
             this.weightList.RowSeparatorLines = true;
             this.weightList.ShowLines = false;
             this.weightList.ShowPlusMinus = false;
-            this.weightList.Size = new System.Drawing.Size(428, 162);
+            this.weightList.Size = new System.Drawing.Size(428, 175);
             this.weightList.TabIndex = 8;
             // 
             // TrainingView
@@ -504,11 +508,13 @@ namespace GpsRunningPlugin.Source
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this.panel1);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "TrainingView";
             this.Size = new System.Drawing.Size(442, 237);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.trainingTab.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);

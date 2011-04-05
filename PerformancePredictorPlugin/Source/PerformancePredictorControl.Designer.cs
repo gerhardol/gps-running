@@ -479,6 +479,15 @@ namespace GpsRunningPlugin.Source
             //this.progressBar.Size = new System.Drawing.Size(184, 23);
             this.trainingView.TabIndex = 9;
             // 
+            // extrapolateView
+            // 
+            this.extrapolateView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.extrapolateView.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.extrapolateView.Name = "extrapolateView";
+            this.extrapolateView.Location = new System.Drawing.Point(0, 0);
+            //this.progressBar.Size = new System.Drawing.Size(184, 23);
+            this.extrapolateView.TabIndex = 9;
+            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -498,6 +507,7 @@ namespace GpsRunningPlugin.Source
             // 
             this.splitContainer1.Panel2.Controls.Add(this.predictorView);
             this.splitContainer1.Panel2.Controls.Add(this.trainingView);
+            this.splitContainer1.Panel2.Controls.Add(this.extrapolateView);
             this.splitContainer1.Size = new System.Drawing.Size(336, 316);
             this.splitContainer1.Panel1MinSize = 0;
             this.splitContainer1.SplitterDistance = 145;
