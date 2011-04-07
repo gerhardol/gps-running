@@ -47,12 +47,9 @@ namespace GpsRunningPlugin.Source
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.dataGrid = new System.Windows.Forms.DataGridView();
             this.summaryList = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.listMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyTableMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.boundsBox = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -67,33 +64,10 @@ namespace GpsRunningPlugin.Source
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.minGradeLbl = new System.Windows.Forms.Label();
             this.minGradeBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
-            this.contextMenu.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // dataGrid
-            // 
-            this.dataGrid.AllowUserToAddRows = false;
-            this.dataGrid.AllowUserToDeleteRows = false;
-            this.dataGrid.AllowUserToResizeRows = false;
-            this.dataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dataGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dataGrid.BackgroundColor = System.Drawing.SystemColors.Control;
-            this.dataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGrid.ContextMenuStrip = this.contextMenu;
-            this.dataGrid.Cursor = System.Windows.Forms.Cursors.Default;
-            this.dataGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGrid.Location = new System.Drawing.Point(0, 0);
-            this.dataGrid.Name = "dataGrid";
-            this.dataGrid.ReadOnly = true;
-            this.dataGrid.RowHeadersVisible = false;
-            this.dataGrid.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGrid.Size = new System.Drawing.Size(490, 65);
-            this.dataGrid.TabIndex = 2;
-            this.dataGrid.Visible = false;
             // 
             // summaryList
             // 
@@ -142,19 +116,6 @@ namespace GpsRunningPlugin.Source
             this.copyTableMenuItem.Name = "copyTableMenuItem";
             this.copyTableMenuItem.Size = new System.Drawing.Size(206, 22);
             this.copyTableMenuItem.Text = "<Copy table to clipboard";
-            // 
-            // contextMenu
-            // 
-            this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuCopy});
-            this.contextMenu.Name = "contextMenu";
-            this.contextMenu.Size = new System.Drawing.Size(199, 26);
-            // 
-            // toolStripMenuCopy
-            // 
-            this.toolStripMenuCopy.Name = "toolStripMenuCopy";
-            this.toolStripMenuCopy.Size = new System.Drawing.Size(198, 22);
-            this.toolStripMenuCopy.Text = "Copy table to clipboard";
             // 
             // label1
             // 
@@ -297,7 +258,6 @@ namespace GpsRunningPlugin.Source
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.AutoScroll = true;
-            this.splitContainer1.Panel2.Controls.Add(this.dataGrid);
             this.splitContainer1.Panel2.Controls.Add(this.summaryList);
             this.splitContainer1.Panel2.Controls.Add(this.chart);
             this.splitContainer1.Size = new System.Drawing.Size(490, 116);
@@ -314,8 +274,6 @@ namespace GpsRunningPlugin.Source
             this.Controls.Add(this.splitContainer1);
             this.Name = "HighScoreViewer";
             this.Size = new System.Drawing.Size(490, 116);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();
-            this.contextMenu.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -327,7 +285,6 @@ namespace GpsRunningPlugin.Source
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGrid;
         private ZoneFiveSoftware.Common.Visuals.TreeList summaryList;
         private System.Windows.Forms.ContextMenuStrip listMenu;
         private System.Windows.Forms.ToolStripMenuItem copyTableMenuItem;
@@ -342,8 +299,6 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox viewBox;
-        private System.Windows.Forms.ContextMenuStrip contextMenu;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuCopy;
         private ZoneFiveSoftware.Common.Visuals.Chart.ChartBase chart;
         private System.Windows.Forms.Label Remarks;
         private System.Windows.Forms.SplitContainer splitContainer1;
