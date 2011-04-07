@@ -96,7 +96,7 @@ namespace GpsRunningPlugin.Source
             this.Activities = activities;
         }
 #endif
-        public HighScoreViewer()
+        private HighScoreViewer()
         {
             InitializeComponent();
             InitControls();
@@ -113,8 +113,8 @@ namespace GpsRunningPlugin.Source
             imageBox.SelectedItem = translateToLanguage(Settings.Image);
 
             boundsBox.SelectedItem = Settings.UpperBound ? StringResources.Maximal : StringResources.Minimal;
-            speedUnit = getMostUsedSpeedUnit(m_activities);
-            paceBox.SelectedItem = speedUnit;
+            //speedUnit = getMostUsedSpeedUnit(m_activities);
+            //paceBox.SelectedItem = speedUnit;
             if (Settings.ShowTable)
                 viewBox.SelectedItem = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelList;
             else
@@ -205,6 +205,8 @@ namespace GpsRunningPlugin.Source
             this.dataGrid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             this.dataGrid.RowsDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             this.dataGrid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Outset;
+            summaryList.LabelProvider = new ResultLabelProvider();
+            this.summaryListToolTipTimer.Tick += new System.EventHandler(ToolTipTimer_Tick);
         }
 
         private IList<IActivity> m_activities = new List<IActivity>();
@@ -225,9 +227,12 @@ namespace GpsRunningPlugin.Source
                         popupForm.Text = Resources.HSV + " " + StringResources.OfNoActivities;
                 }
                 this.includeLocationAndDate = (m_activities.Count > 1);
+                RefreshColumns(includeLocationAndDate);
                 resetCachedResults();
                 if (m_activities.Count > 0)
                 {
+                    speedUnit = getMostUsedSpeedUnit(m_activities);
+                    paceBox.SelectedItem = speedUnit;
                     showResults();
                 }
                 m_layer.ClearOverlays();
@@ -269,6 +274,7 @@ namespace GpsRunningPlugin.Source
         {
             //RefreshPage();
             //m_visualTheme = visualTheme;
+            this.summaryList.ThemeChanged(visualTheme);
             this.chart.ThemeChanged(visualTheme);
             this.minGradeBox.ThemeChanged(visualTheme);
 
@@ -352,6 +358,38 @@ namespace GpsRunningPlugin.Source
                     }
                 }
             }
+        }
+
+        private void RefreshColumns(bool isMultiple)
+        {
+            summaryList.Columns.Clear();
+            IList<string> cols;
+            if (isMultiple)
+            {
+                cols = ResultColumnIds.LocAndDateColumns;
+            }
+            else
+            {
+                cols = ResultColumnIds.DefaultColumns;
+            }
+            foreach (string id in cols)
+            {
+                foreach (IListColumnDefinition columnDef in ResultColumnIds.ColumnDefs())
+                {
+                    if (columnDef.Id == id)
+                    {
+                        TreeList.Column column = new TreeList.Column(
+                            columnDef.Id,
+                            columnDef.Text(columnDef.Id),
+                            columnDef.Width,
+                            columnDef.Align
+                        );
+                        summaryList.Columns.Add(column);
+                        break;
+                    }
+                }
+            }
+            //summaryList.NumLockedColumns = Data.Settings.ActivityPageNumFixedColumns;
         }
 
         /***********************************************************/
@@ -443,11 +481,12 @@ namespace GpsRunningPlugin.Source
             int speed = 0, pace = 0;
             foreach (IActivity activity in activities)
             {
-                if (activity.Category.SpeedUnits.ToString().ToLower().Equals(CommonResources.Text.LabelPace))
-                    pace++;
+                if (activity.Category.SpeedUnits == ZoneFiveSoftware.Common.Data.Measurement.Speed.Units.Pace)
+                   pace++;
                 else speed++;
             }
-            if (speed >= pace) return CommonResources.Text.LabelSpeed;
+            Settings.ShowPace = pace >= speed;
+            if (speed > pace) return CommonResources.Text.LabelSpeed;
             return CommonResources.Text.LabelPace;
         }
 
@@ -543,7 +582,8 @@ namespace GpsRunningPlugin.Source
 
         void paceBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            speedUnit = (String)paceBox.SelectedItem;            
+            speedUnit = (String)paceBox.SelectedItem;
+            Settings.ShowPace=(String)paceBox.SelectedItem!=CommonResources.Text.LabelSpeed;
             showResults();
         }
 
@@ -611,6 +651,7 @@ namespace GpsRunningPlugin.Source
         {
             Remarks.Visible = false;
             dataGrid.Visible = false;
+            summaryList.Visible = false;
             chart.Visible = false;
             if (domain.Equals(image))
             {
@@ -674,8 +715,7 @@ namespace GpsRunningPlugin.Source
 
         private void showTable()
         {
-            DataTable table = cachedTables[domain][image][upperBound];
-            if (table == null)
+            if (true)
             {
                 IList<Result> results = cachedResults[domain][image][upperBound];
                 if (results == null)
@@ -684,35 +724,70 @@ namespace GpsRunningPlugin.Source
                     progressBar.Visible = true;
                     results = HighScore.calculate(m_activities, goals, progressBar);
                     progressBar.Visible = false;
+                    cachedResults[domain][image][upperBound] = results;
                 }
-                table = HighScore.generateTable(results, speedUnit, includeLocationAndDate,
-                    Settings.Domain, Settings.Image, Settings.UpperBound);
-                cachedTables[domain][image][upperBound] = table;
-                tableFormat[table] = speedUnit;
-                cachedResults[domain][image][upperBound] = results;
-            }
-            else if (!tableFormat[table].Equals(speedUnit))
-            {
-                table = HighScore.generateTable(cachedResults[domain][image][upperBound], speedUnit, includeLocationAndDate,
-                    Settings.Domain, Settings.Image, Settings.UpperBound);
-                cachedTables[domain][image][upperBound] = table;
-                tableFormat[table] = speedUnit;
-            }
-            if (table.Rows.Count > 0)
-            {
-                dataGrid.DataSource = table;
-                dataGrid.ShowCellToolTips = true;
-                foreach (DataGridViewColumn column in dataGrid.Columns)
+                if(results.Count>0)
                 {
-                    column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                    IList<Result> result2 = new List<Result>();
+                    foreach (Result r in results)
+                    {
+                        if (r != null)
+                        {
+                            result2.Add(r);
+                        }
+                    }
+                    summaryList.RowData = result2;
+                    summaryList.Visible=true;
                 }
-                dataGrid.Visible = true;
-                setSize();
+                else
+                {
+                    Remarks.Text = Resources.NoResultsForSettings;
+                    Remarks.Visible = true;
+                }
+
             }
             else
             {
-                Remarks.Text = Resources.NoResultsForSettings;
-                Remarks.Visible = true;
+                DataTable table = cachedTables[domain][image][upperBound];
+                if (table == null)
+                {
+                    IList<Result> results = cachedResults[domain][image][upperBound];
+                    if (results == null)
+                    {
+                        IList<Goal> goals = HighScore.generateGoals();
+                        progressBar.Visible = true;
+                        results = HighScore.calculate(m_activities, goals, progressBar);
+                        progressBar.Visible = false;
+                    }
+                    table = HighScore.generateTable(results, speedUnit, includeLocationAndDate,
+                        Settings.Domain, Settings.Image, Settings.UpperBound);
+                    cachedTables[domain][image][upperBound] = table;
+                    tableFormat[table] = speedUnit;
+                    cachedResults[domain][image][upperBound] = results;
+                }
+                else if (!tableFormat[table].Equals(speedUnit))
+                {
+                    table = HighScore.generateTable(cachedResults[domain][image][upperBound], speedUnit, includeLocationAndDate,
+                        Settings.Domain, Settings.Image, Settings.UpperBound);
+                    cachedTables[domain][image][upperBound] = table;
+                    tableFormat[table] = speedUnit;
+                }
+                if (table.Rows.Count > 0)
+                {
+                    dataGrid.DataSource = table;
+                    dataGrid.ShowCellToolTips = true;
+                    foreach (DataGridViewColumn column in dataGrid.Columns)
+                    {
+                        column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                    }
+                    dataGrid.Visible = true;
+                    setSize();
+                }
+                else
+                {
+                    Remarks.Text = Resources.NoResultsForSettings;
+                    Remarks.Visible = true;
+                }
             }
         }
 
@@ -888,6 +963,61 @@ namespace GpsRunningPlugin.Source
             }
         }
 
+        void summaryList_Click(object sender, System.EventArgs e)
+        {
+            //SelectTrack, for ST3
+            if (sender is TreeList)
+            {
+                TreeList l = sender as TreeList;
+                TreeList.RowHitState hit;
+                object row;
+                //Note: As ST scrolls before Location is recorded, incorrect row may be selected...
+                row = summaryList.RowHitTest(((MouseEventArgs)e).Location, out hit);
+                if (row != null && hit == TreeList.RowHitState.Row && row is Result)
+                {
+                    Result result = (Result)row;
+                    IActivity id = result.Activity;
+                    if (id != null && result.Seconds > 0)
+                    {
+                        if (m_showPage && isSingleView != true)
+                        {
+                            IDictionary<string, MapPolyline> routes = new Dictionary<string, MapPolyline>();
+                            TrailMapPolyline m = new TrailMapPolyline(
+                                new TrailResult(new ActivityWrapper(id, Plugin.GetApplication().SystemPreferences.RouteSettings.RouteColor)));
+                            routes.Add(m.key, m);
+                            if (m_layer != null)
+                            {
+                                m_layer.TrailRoutes = routes;
+                            }
+                        }
+                        IValueRangeSeries<DateTime> t = new ValueRangeSeries<DateTime>();
+                        t.Add(new ValueRange<DateTime>(result.DateStart, result.DateEnd));
+                        IList<TrailResultMarked> aTrm = new List<TrailResultMarked>();
+                        aTrm.Add(new TrailResultMarked(
+                            new TrailResult(new ActivityWrapper(id, Plugin.GetApplication().SystemPreferences.RouteSettings.RouteSelectedColor)),
+                            t));
+                        this.MarkTrack(aTrm);
+                    }
+                }
+            }
+        }
+
+        private void selectedRow_DoubleClick(object sender, MouseEventArgs e)
+        {
+            Guid view = GUIDs.DailyActivityView;
+
+            object row;
+            TreeList.RowHitState hit;
+            row = summaryList.RowHitTest(e.Location, out hit);
+            if (row != null && hit == TreeList.RowHitState.Row && row is Result)
+            {
+                Result tr = (Result)row;
+                string bookmark = "id=" + tr.Activity;
+                Plugin.GetApplication().ShowView(view, bookmark);
+            }
+        }
+
+
         //Some views like mapping is only working in single view - there are likely better tests
         public bool isSingleView
         {
@@ -908,39 +1038,93 @@ namespace GpsRunningPlugin.Source
 #if !ST_2_1
             if (m_showPage)
             {
-                IDictionary<string, MapPolyline> result = new Dictionary<string, MapPolyline>();
                 if (m_view != null &&
                     m_view.RouteSelectionProvider != null &&
-                    isSingleView == true)
+                    m_activities.Count>0)
                 {
-                    if (atr.Count > 0)
-                    {
-                        //Only one activity, OK to merge selections on one track
-                        TrailsItemTrackSelectionInfo r = TrailResultMarked.SelInfoUnion(atr);
-                        r.Activity = atr[0].trailResult.Activity;
-                        m_view.RouteSelectionProvider.SelectedItems = new IItemTrackSelectionInfo[] { r };
-                        m_layer.DoZoom(GPS.GetBounds(atr[0].trailResult.GpsPoints(r)));
-
-                    }
-                }
-                else
-                {
+                    //For activities drawn by default, use common marking
+                    IList<TrailResultMarked> atr2 = new List<TrailResultMarked>();
                     foreach (TrailResultMarked trm in atr)
                     {
-                        foreach (TrailMapPolyline m in TrailMapPolyline.GetTrailMapPolyline(trm.trailResult, trm.selInfo))
+                        if (trm.trailResult.Activity == m_activities[0])
+                        {
+                            atr2.Add(trm);
+                        }
+                    }
+                    //Only one activity, OK to merge selections on one track
+                    TrailsItemTrackSelectionInfo result = TrailResultMarked.SelInfoUnion(atr2);
+                    m_view.RouteSelectionProvider.SelectedItems = new IItemTrackSelectionInfo[] { result };
+                    if (atr != null && atr.Count > 0)
+                    {
+                        m_layer.DoZoom(GPS.GetBounds(atr[0].trailResult.GpsPoints(result)));
+                    }
+                }
+                IDictionary<string, MapPolyline> mresult = new Dictionary<string, MapPolyline>();
+                foreach (TrailResultMarked trm in atr)
+                {
+                    foreach (TrailMapPolyline m in TrailMapPolyline.GetTrailMapPolyline(trm.trailResult, trm.selInfo))
+                    {
+                        if (trm.trailResult.Activity != null)// m_ppcontrol.SingleActivity)
                         {
                             //m.Click += new MouseEventHandler(mapPoly_Click);
-                            string id = m.key;
-                            result.Add(id, m);
+                            if (!mresult.ContainsKey(m.key))
+                            {
+                                mresult.Add(m.key, m);
+                            }
                         }
                     }
                 }
-                //Update or clear
-                m_layer.MarkedTrailRoutes = result;
+                m_layer.MarkedTrailRoutes = mresult;
             }
 #endif
         }
+        // private member variables of the Control - initialization omitted
+        ToolTip summaryListToolTip = new ToolTip();
+        Timer summaryListToolTipTimer = new Timer();
+        bool summaryListTooltipDisabled = false; // is set to true, whenever a tooltip would be annoying, e.g. while a context menu is shown
+        Result summaryListLastEntryAtMouseMove = null;
+        Point summaryListCursorLocationAtMouseMove;
 
+        private void summaryList_MouseMove(object sender, MouseEventArgs e)
+        {
+            TreeList.RowHitState rowHitState;
+            Result entry = (Result)summaryList.RowHitTest(e.Location, out rowHitState);
+            if (entry == summaryListLastEntryAtMouseMove)
+                return;
+            else
+                summaryListToolTip.Hide(summaryList);
+            summaryListLastEntryAtMouseMove = entry;
+            summaryListCursorLocationAtMouseMove = e.Location;
+
+            if (entry != null)
+                summaryListToolTipTimer.Start();
+            else
+                summaryListToolTipTimer.Stop();
+        }
+        private void summaryList_MouseLeave(object sender, EventArgs e)
+        {
+            summaryListToolTipTimer.Stop();
+            summaryListToolTip.Hide(summaryList);
+        }
+        private void ToolTipTimer_Tick(object sender, EventArgs e)
+        {
+            summaryListToolTipTimer.Stop();
+
+            if (summaryListLastEntryAtMouseMove != null &&
+                summaryListCursorLocationAtMouseMove != null &&
+                !summaryListTooltipDisabled)
+            {
+                string tt = StringResources.Goal + ": " + summaryListLastEntryAtMouseMove.Goal.ToString(speedUnit);
+
+                    //"xxx";// similarToolTip[summaryListLastEntryAtMouseMove.Activity.ReferenceId];
+                summaryListToolTip.Show(tt,
+                              summaryList,
+                              new Point(summaryListCursorLocationAtMouseMove.X +
+                                  Cursor.Current.Size.Width / 2,
+                                        summaryListCursorLocationAtMouseMove.Y),
+                              summaryListToolTip.AutoPopDelay);
+            }
+        }
         public const string ActivityIdColumn = "ActivityId";
     }
 }

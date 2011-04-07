@@ -13,12 +13,14 @@
     <DefineConstants>$(DefineConstants);GPSRUNNING_HIGHSCORE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Data\ResultColumnIds.cs" />
+    <Compile Include="Data\HighScoreLabelProvider.cs" />
     <Compile Include="Export\Integration.cs" />
     <Compile Include="GUIDs.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\ActivityWrapper.cs" />
-    <Compile Include="Source\Goal.cs" />
+    <Compile Include="Data\ActivityWrapper.cs" />
+    <Compile Include="Data\Goal.cs" />
     <Compile Include="Source\HighScore.cs" />
     <Compile Include="Source\HighScoreAction.cs" />
     <Compile Include="Source\HighScoreActivityDetail.cs" />
@@ -32,7 +34,7 @@
     <Compile Include="Source\HighScoreActivityEdit.cs" />
     <Compile Include="Source\Settings.cs" />
     <Compile Include="Source\HighScorePage.cs" />
-    <Compile Include="Source\Result.cs" />
+    <Compile Include="Data\Result.cs" />
     <Compile Include="Source\HighScoreSettingPageControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -193,5 +195,6 @@
       <Link>Util\TrailsMapLayers\ReadMe.txt</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="..\Common\Common-Files.csproj" />
 </Project>

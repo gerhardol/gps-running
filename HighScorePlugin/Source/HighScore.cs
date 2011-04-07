@@ -222,8 +222,9 @@ namespace GpsRunningPlugin.Source
                 int upperBound = goals[i].UpperBound ? 1 : -1;
                 if (result != null && (results[i] == null ||
                    (upperBound * result.DomainDiff > upperBound * results[i].DomainDiff)))
-
+                {
                     results[i] = result;
+                }
             }
         }
 
@@ -528,7 +529,7 @@ namespace GpsRunningPlugin.Source
                         row[7] = result.Activity.StartTime.ToShortDateString();
                         row[8] = result.Activity.Location;
                     }
-                    row[HighScoreViewer.ActivityIdColumn] = result.Activity.ReferenceId;
+                    //row[HighScoreViewer.ActivityIdColumn] = result.Activity.ReferenceId;
                     table.Rows.Add(row);
                 }
             }
