@@ -47,6 +47,17 @@ namespace GpsRunningPlugin.Source
         public readonly static SortedList<double, SortedList<double, bool>> pulseZones;
         public readonly static SortedList<double, SortedList<double, bool>> speedZones;
 
+        //Only set dynamically, in Settings to reuse PP code
+        private static bool showPace=true;
+        public static bool ShowPace
+        {
+            get { return showPace; }
+            set
+            {
+                showPace = value;
+            }
+        }
+
         private static bool showTable;
         public static bool ShowTable
         {

@@ -48,6 +48,9 @@ namespace GpsRunningPlugin.Source
         {
             this.components = new System.ComponentModel.Container();
             this.dataGrid = new System.Windows.Forms.DataGridView();
+            this.summaryList = new ZoneFiveSoftware.Common.Visuals.TreeList();
+            this.listMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyTableMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
@@ -91,6 +94,54 @@ namespace GpsRunningPlugin.Source
             this.dataGrid.Size = new System.Drawing.Size(490, 65);
             this.dataGrid.TabIndex = 2;
             this.dataGrid.Visible = false;
+            // 
+            // summaryList
+            // 
+            this.summaryList.AutoScroll = true;
+            this.summaryList.AutoSize = true;
+            this.summaryList.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.summaryList.BackColor = System.Drawing.Color.Transparent;
+            this.summaryList.Border = ZoneFiveSoftware.Common.Visuals.ControlBorder.Style.SmallRoundShadow;
+            this.summaryList.CheckBoxes = false;
+            this.summaryList.ContextMenuStrip = this.listMenu;
+            this.summaryList.DefaultIndent = 15;
+            this.summaryList.DefaultRowHeight = -1;
+            this.summaryList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.summaryList.HeaderRowHeight = 21;
+            this.summaryList.Location = new System.Drawing.Point(0, 0);
+            this.summaryList.Margin = new System.Windows.Forms.Padding(0);
+            this.summaryList.MultiSelect = false;
+            this.summaryList.Name = "summaryList";
+            this.summaryList.NumHeaderRows = ZoneFiveSoftware.Common.Visuals.TreeList.HeaderRows.Auto;
+            this.summaryList.NumLockedColumns = 0;
+            this.summaryList.RowAlternatingColors = true;
+            this.summaryList.RowHotlightColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
+            this.summaryList.RowHotlightColorText = System.Drawing.SystemColors.HighlightText;
+            this.summaryList.RowHotlightMouse = true;
+            this.summaryList.RowSelectedColor = System.Drawing.SystemColors.Highlight;
+            this.summaryList.RowSelectedColorText = System.Drawing.SystemColors.HighlightText;
+            this.summaryList.RowSeparatorLines = true;
+            this.summaryList.ShowLines = false;
+            this.summaryList.ShowPlusMinus = false;
+            this.summaryList.Size = new System.Drawing.Size(710, 27);
+            this.summaryList.TabIndex = 11;
+            this.summaryList.Click += new System.EventHandler(this.summaryList_Click);
+            this.summaryList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.selectedRow_DoubleClick);
+            this.summaryList.MouseLeave += new System.EventHandler(this.summaryList_MouseLeave);
+            this.summaryList.MouseMove += new System.Windows.Forms.MouseEventHandler(this.summaryList_MouseMove);
+            // 
+            // listMenu
+            // 
+            this.listMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyTableMenuItem});
+            this.listMenu.Name = "listContextMenuStrip";
+            this.listMenu.Size = new System.Drawing.Size(207, 26);
+            // 
+            // copyTableMenuItem
+            // 
+            this.copyTableMenuItem.Name = "copyTableMenuItem";
+            this.copyTableMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.copyTableMenuItem.Text = "<Copy table to clipboard";
             // 
             // contextMenu
             // 
@@ -247,6 +298,7 @@ namespace GpsRunningPlugin.Source
             // 
             this.splitContainer1.Panel2.AutoScroll = true;
             this.splitContainer1.Panel2.Controls.Add(this.dataGrid);
+            this.splitContainer1.Panel2.Controls.Add(this.summaryList);
             this.splitContainer1.Panel2.Controls.Add(this.chart);
             this.splitContainer1.Size = new System.Drawing.Size(490, 116);
             this.splitContainer1.SplitterWidth = 1;
@@ -276,6 +328,9 @@ namespace GpsRunningPlugin.Source
         #endregion
 
         private System.Windows.Forms.DataGridView dataGrid;
+        private ZoneFiveSoftware.Common.Visuals.TreeList summaryList;
+        private System.Windows.Forms.ContextMenuStrip listMenu;
+        private System.Windows.Forms.ToolStripMenuItem copyTableMenuItem;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox boundsBox;
         private System.Windows.Forms.Label label2;
