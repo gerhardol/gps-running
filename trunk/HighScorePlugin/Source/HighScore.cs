@@ -481,59 +481,5 @@ namespace GpsRunningPlugin.Source
             generateGoals(Settings.Domain, Settings.Image, Settings.UpperBound, goals);
             return goals;
         }
-
-        //TODO: Break out table generation, so CultureChanged will work
-        public static DataTable generateTable(IList<Result> results, String speedUnit, 
-            bool includeLocationAndDate, GoalParameter domain, GoalParameter image, bool upperBound)
-        {
-            DataTable table = new DataTable();
-            table.Columns.Add(UnitUtil.Distance.LabelAxis);
-            table.Columns.Add(CommonResources.Text.LabelTime);
-            table.Columns.Add(UnitUtil.PaceOrSpeed.LabelAxis(speedUnit.Equals(CommonResources.Text.LabelPace)));
-            table.Columns.Add(CommonResources.Text.LabelStartTime);
-            table.Columns.Add(CommonResources.Text.LabelStart + UnitUtil.Distance.LabelAbbr2);
-            table.Columns.Add(CommonResources.Text.LabelElevation + " (+/- " + UnitUtil.Elevation.LabelAbbr + ")");
-            table.Columns.Add(CommonResources.Text.LabelAvgHR + UnitUtil.HeartRate.LabelAbbr2);
-            if (includeLocationAndDate)
-            {
-                table.Columns.Add(CommonResources.Text.LabelDate);
-                table.Columns.Add(CommonResources.Text.LabelLocation);
-            }
-            table.Columns.Add(HighScoreViewer.ActivityIdColumn);
-            foreach (Result result in results)
-            {
-                if (result != null && result.Goal.Domain.Equals(domain) && 
-                    result.Goal.Image.Equals(image)
-                    && result.Goal.UpperBound == upperBound)
-                {
-                    DataRow row = table.NewRow();
-                    row[0] = UnitUtil.Distance.ToString(result.Meters);
-                    row[1] = UnitUtil.Time.ToString(result.Seconds);
-                    if (result.Seconds > 0 && result.Meters > 0)
-                    {
-                        double speedMS = result.Meters / result.Seconds;
-                        row[2] = UnitUtil.PaceOrSpeed.ToString(speedUnit.Equals(CommonResources.Text.LabelPace), speedMS);
-                    }
-                    else {
-                        row[2] = "-";
-                    }
-                    row[3] = UnitUtil.Time.ToString(result.TimeStart);
-                    row[4] = UnitUtil.Distance.ToString(result.MeterStart);
-                    row[5] = UnitUtil.Elevation.ToString(result.Elevations);
-                    if (result.AveragePulse.Equals(double.NaN))
-                        row[6] = "-";
-                    else
-                        row[6] = Math.Round(result.AveragePulse);
-                    if (includeLocationAndDate)
-                    {
-                        row[7] = result.Activity.StartTime.ToShortDateString();
-                        row[8] = result.Activity.Location;
-                    }
-                    //row[HighScoreViewer.ActivityIdColumn] = result.Activity.ReferenceId;
-                    table.Rows.Add(row);
-                }
-            }
-            return table;
-        }
     }
 }
