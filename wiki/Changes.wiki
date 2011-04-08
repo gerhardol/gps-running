@@ -8,6 +8,9 @@ More or less official beta releases are available in the Downloads section. See 
 =Latest updates=
 Next version will be called 2.0
 
+1.9.311 2011-04-07
+ * HighScore: Updated User interface, using SportTracks tables
+   
 1.9.307 2011-04-05
  * PerformancePredictor: Updated User interface
    * Action banner with menu, Sidebar can be hidden

@@ -24,7 +24,7 @@ Once you have understood the Dave Cameron model, it should be easy understand th
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/peteriegel.png]
 
 =Training=
-Besides predicting times the plugin also give suggestions regards to training. These suggestions are based on Jack Daniels's training philosophies. Currently, the plugin suggests training paces, pace for tempo races, interval split times, temperature impact, and weight impact. 
+Besides predicting times the plugin also give suggestions regards to training. These suggestions are based on Jack Daniels's training philosophies. Currently, the plugin suggests training paces, pace for tempo races and interval split times. The plugin also extrapolates the activity if  temperature or weight were changed. 
 
 =How do I use it?=
 The predictor works in two modes:
@@ -37,31 +37,33 @@ On the other hand, using many activities (select many activities or invoke the p
 If you click the table when several activities are used to predict, the activity and the corresponding used part of the activity is marked on the Route view.
 
 =Activity Page=
-Go to the activity detail view and select the Performance Predictor plugin from the menu as shown [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/ActivityDetailView.png here].
+Go to the activity detail view and select the Performance Predictor plugin from the Analyze menu as shown [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/ActivityDetailView.png here].
+
+The side bar can be hidden, use the title menu (the triangle).
 
 Here is a couple of images of the plugin in action:
 
-==Predictor View==
+==Time Prediction==
 
-[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TimePredictionChart.png]
-
-[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TimePredictionTable.png]
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/performancepredictor-timeprediction.png]
 
 ==Training suggestions==
 
-[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/Training.png]
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/performancepredictor-training-training.png]
 
-[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TrainingInterval.png]
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/performancepredictor-training-pace.png]
 
-[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TrainingTemperatureImpact.png]
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/performancepredictor-training-interval.png]
 
-[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TrainingTempoPace.png]
+==Extrapolate==
 
-[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/TrainingWeightImpact.png]
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/performancepredictor-extrapolate-temperature.png]
+
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/performancepredictor-extrapolate-weight.png]
 
 =Edit menu=
 
-Select one or more activities in Daily Activity or Report View, go to the Edit menu and select the "Performance Predictor with High Score" item. The information is the same as the Predictor View when invoked as an Activity Page. Training view is not available (as Training suggestions need to be based on a single activity.)
+Select one or more activities in Daily Activity or Report View, go to the Analyze menu and select the "Performance Predictor with High Score" item. The information is the same as the Predictor View when invoked as an Activity Page. 
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/EditFunctionResults.png]
 
@@ -73,4 +75,4 @@ It is possibe to add and remove the distances that the plugin use in its calcula
 
 =Feedback=
 For patches, bugreports or feature suggestions, use the Google Code issue list.
-For feedback please use the thread for this plugin at !SportTracks forum [http://www.zonefivesoftware.com/SportTracks/Forums/viewforum.php?f=30 here].
+For feedback please use the forum for this plugin at !SportTracks forum [http://www.zonefivesoftware.com/SportTracks/Forums/viewforum.php?f=30 here].

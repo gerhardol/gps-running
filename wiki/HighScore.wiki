@@ -21,7 +21,7 @@ I do admit they the two forms may look a bit cryptic at first but the they may b
 <dt>Find activity with <b>minimal</b> <i>time</i> per <i>5k</i></dt>
 <dd>This is actually a reformulation of our initial example, so we can ask the plugin to find the activity to find the fastest 5k in some activities.</dd>
 <dt>Find activity with <b>maximal</b> <i>distance</i> per <i>140 BPM - 160 BPM</i></dt>
-<dd>This finds the activity where you have traveled furtest while staying inside the heart rate zone from 140 BPM to 160 BPM.</dd>
+<dd>This finds the activity where you have traveled furthest while staying inside the heart rate zone from 140 BPM to 160 BPM.</dd>
 <dt>Find activity with <b>minimal</b> <i>elevation</i> per <i>10 minutes</i></dt>
 <dd>This somewhat weird problem, will make the plugin find the activity with the largest descend in 10 minutes. An example of a result would be an activity with a descend of 100 meters in 10 minutes.</dd>
 </dl>
@@ -32,10 +32,18 @@ As a result of solving the problem, the plugin does not only return the activity
 
 The plugin will work both by selecting a collection of activities (e.g. all your half marathons) or on a single activity, and it will work equivalently either way. If you use it one a collection of activities the plugin will find the activities that a best in relation to the <i>find activity</i> problem, and in the case of just one activity it will not find any other activities, but simply report on the best solutions to the problems.
 
-You don't need to specify each problem and then get the plugin to calculate it for you. The plugin automatically solves all the problems for you and present you with results that you can then browse through. If we look at how many different problems it actually solves it is the combination of <b>minimal</b>/<b>maximal</b>, <i>X</i>s, and <i>Y</i>s, so it is 2 `*` 3 `*` 6 = 36; in other words there are 36 different kinds of problems you can browse through after you applied the plugin.
+You don't need to specify each problem and then get the plugin to calculate it for you. The plugin automatically solves all the problems for you and present you with results that you can then browse through. If we look at how many different problems it actually solves it is the combination of <b>minimal</b>/<b>maximal</b>, <i>X</i>s, and <i>Y</i>s, so it is 2 `*` 3 `*` 6 = 36; in other words there are 36 different kinds of problems you can browse through after you applied the plugin. In addition, you can specify a grade filter, to avoid that all the high scores are displayed for downhills.
 
 =How do I use it?=
+==Short version==
+ * Select the activities you are interested in.
+ * Select activity page (or popup from Analyze menu).
+ 
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/highscore/highscore.png]
+
+==Long Version==
 A good place to start when using this plugin is by looking at the settings. These can be found in the settings view under the <i>High Score</i> entry. Here you will see the five different categories of things (distance, time, elevation, heart rate, pace/speed zone) that the plugin uses to find the best solutions. By default the plugin comes with a wide range of settings which you may remove or add parts to if they do not suit you, and the plugin will use these updated values instead. Below is the settings panel.
+
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/highscore/Settings.png]
 
 It is possible to see high scores for a single activity in the activity detail view or for collection of activities in the activity report view. The picture below show how to use the High Score plugin in the activity detail view: press the menu that lets you select splits, pace, elevation and so on and select the entry High Score.
@@ -48,11 +56,9 @@ If you click the table, the corresponding part of the GPS track is marked.
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/highscore/ActivityDetailHighScore.png]
 
-To use the High Score plugin on multiple activities go to the activity report view and select some activities. Then open the activity page or select Edit -> High Score for a popup. See following [http://gps-running.googlecode.com/svn/wiki/images/plugins/highscore/ActivityReport.png link] for selecting the menu.
+To use the High Score plugin on multiple activities go to the activity report view and select some activities. Then open the activity page or select Analyze -> High Score for a popup. See following [http://gps-running.googlecode.com/svn/wiki/images/plugins/highscore/ActivityReport.png link] for selecting the menu.
 
-The popup dialog looks similar to the one shown below.
-
-[http://gps-running.googlecode.com/svn/wiki/images/plugins/highscore/ActivityReportHighScore.png]
+The popup dialog looks similar to the activity page.
 
 =Trails Integration=
 If [http://code.google.com/p/trails/wiki/Features Trails plugin] is installed, HighScoes can be viewed with detailed information in charts too.
@@ -63,4 +69,4 @@ If [http://code.google.com/p/trails/wiki/Features Trails plugin] is installed, H
   
 =Feedback=
 For patches, bugreports or feature suggestions, use the Google Code issue list.
-For feedback please use the thread for this plugin at !SportTracks forum [http://www.zonefivesoftware.com/SportTracks/Forums/viewforum.php?f=33 here].
+For feedback please use the thread for this plugin at !SportTracks  [http://www.zonefivesoftware.com/SportTracks/Forums/viewforum.php?f=33 forum].

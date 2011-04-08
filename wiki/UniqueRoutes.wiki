@@ -5,6 +5,8 @@
 
 Note: This wiki is only partly updated to the features in this plugin.
 
+[http://gps-running.googlecode.com/svn/wiki/images/uniqueroutes.png]
+
 =What does it do?=
 When you run outside it really matters what route you take if want to make a personal record. This is why it does not always make sense to compare, e.g., two 5k run on two different routes if one route is very hilly and the other is not. And worse, it may not make sense to compare two activities that cover the same route but are in the opposite direction. For example a route such as A -> B -> C (the route from A to C via B) may be more difficult than a route that cover the same points but are in the opposite direction; C -> B -> A. For example, running a route with a long slow ascend that ends with a sharp descent are often (that is what I experience) different in difficulty than the route that start with a sharp ascend and ends with a long slow descend. Therefore, manually trying weeding out all the routes that are similar to some activity that you are considering in SportTracks is - and I think you agree - very tedious.
 
@@ -19,7 +21,7 @@ The plugin is activated by selecting the [http://gps-running.googlecode.com/svn/
 
 ==Activities searched==
 ===Single Activity===
-If a single activity is selected, the all activities matching the configured category is used.
+If a single activity is selected, all activities matching the configured category is used.
 The single activity is always used as the reference activity.
 
 ===Multiple Activities===
@@ -38,7 +40,7 @@ In this case, the complete route snippet (with a percent outside) must be includ
 Several other plugins has implemented support for directly using the Unique Routes plugin. Other plugins use the same settings as in Unique Routes (Radius, Category filter etc).
 
  * Search for similar activities:  [http://www.zonefivesoftware.com/sporttracks/plugins/?p=overlay Overlay], [http://www.zonefivesoftware.com/sporttracks/plugins/?p=matrix Matrix], [http://www.zonefivesoftware.com/sporttracks/plugins/?p=dot-racing Dot Racing]
- * Search for similar trails (parts of activities): [http://www.zonefivesoftware.com/sporttracks/plugins/?p=trails Trails] - allows viewing the results in Graphs too. See [http://code.google.com/p/trails/wiki/Features#Add_similar_to_Unique_Routes Trails] documentation for more features.
+ * Search for similar trails (route snippets/parts of activities): [http://www.zonefivesoftware.com/sporttracks/plugins/?p=trails Trails] - allows viewing the results in Graphs too. See [http://code.google.com/p/trails/wiki/Features#Add_similar_to_Unique_Routes Trails] documentation for more features.
  * Mark [UniqueRoutes#Common_Stretches Common Stretches] to mark the parts matching the reference result. [http://www.zonefivesoftware.com/sporttracks/plugins/?p=trails Trails]
  * Use [UniqueRoutes#Common_Stretches Common Stretches] to set offset. [http://www.zonefivesoftware.com/sporttracks/plugins/?p=overlay Overlay]
  
