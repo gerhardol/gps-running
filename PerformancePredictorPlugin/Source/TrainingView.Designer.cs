@@ -183,6 +183,7 @@ namespace GpsRunningPlugin.Source
             this.copyTableMenuItem.Name = "copyTableMenuItem";
             this.copyTableMenuItem.Size = new System.Drawing.Size(206, 22);
             this.copyTableMenuItem.Text = "<Copy table to clipboard";
+            this.copyTableMenuItem.Click += new System.EventHandler(PerformancePredictorControl.copyTableMenu_Click);
             // 
             // paceTempoTab
             // 
