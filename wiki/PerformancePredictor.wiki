@@ -9,7 +9,7 @@ Ever wondered after running a killer race, how well you would perform at other d
 The prediction models works better in some situations:
   * The distance used to base a prediction on must be comparable to the distance to predict for. So predicting a marathon from a 1km activity will be unreliable, but predicting a marathon from a half marathon is better.
   * You have to be trained for both the activity you base the prediction on and the distance you predict for. So you have to train for a marathon to predict it.
-  * The models do not use the physological effect often seen that activities longer than 2h will be slower. So for instance predict a marathon from a half marathon often give a little too optimistic result.
+  * The models do not use the physiological effect often seen, that activities longer than 2h will be slower. So for instance to predict a marathon from a half marathon often give a little too optimistic result.
 
 In all, the predictions are often considered a little too optimistic. Still, if you are interested in analysis of your best performances this sort of plugin should definitely  also be a part of your !SportTracks plugin setup.
 
