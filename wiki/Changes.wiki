@@ -5,9 +5,10 @@
 
 More or less official beta releases are available in the Downloads section. See each plugin for detailed description of functions.
 
-=Latest updates=
-Next version will be called 2.0
-
+2.0.314 2011-04-08
+ * Released UniqueRoutes, Overlay, HighScore and PerformancePredictor as 2.0. No updates are planned for AccumulatedSummary and Trimp.
+ * A few copy list issues in HS/PP
+ 
 1.9.311 2011-04-07
  * HighScore: Updated User interface, using SportTracks tables
    

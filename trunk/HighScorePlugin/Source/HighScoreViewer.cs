@@ -185,8 +185,7 @@ namespace GpsRunningPlugin.Source
             imageBox.Items.Add(StringResources.HRZone);
             imageBox.Items.Add(Resources.HRAndSpeedZones);
 
-            //This will disable gradient header, but make them more like ST controls
-            //(required for setting ColumnHeadersDefaultCellStyle.BackColor)
+            copyTableMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
             summaryList.LabelProvider = new ResultLabelProvider();
             this.summaryListToolTipTimer.Tick += new System.EventHandler(ToolTipTimer_Tick);
         }
@@ -273,6 +272,7 @@ namespace GpsRunningPlugin.Source
             minGradeLbl.Text = " " + ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelGrade + ">";
             correctUI(new Control[] { boundsBox, domainBox, label2, imageBox, minGradeLbl, minGradeBox });
 
+            copyTableMenuItem.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
             label1.Location = new Point(boundsBox.Location.X - 5 - label1.Width, label1.Location.Y);
             correctUI(new Control[] { paceBox, viewBox, Remarks });
             label3.Location = new Point(paceBox.Location.X - 5 - label3.Width, label3.Location.Y);
@@ -800,6 +800,14 @@ namespace GpsRunningPlugin.Source
             }
         }
 
+        public static void copyTableMenu_Click(object sender, EventArgs e)
+        {
+            ToolStripDropDownItem d = sender as ToolStripDropDownItem;
+            ToolStripMenuItem t = (ToolStripMenuItem)sender;
+            ContextMenuStrip s = (ContextMenuStrip)t.Owner;
+            TreeList list = (TreeList)s.SourceControl;
+            list.CopyTextToClipboard(true, System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+        }
 
         //Some views like mapping is only working in single view - there are likely better tests
         public bool isSingleView
