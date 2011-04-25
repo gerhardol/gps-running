@@ -367,7 +367,7 @@ namespace GpsRunningPlugin.Source
                 {
                     lblHighScoreRequired.Visible = false;
                     summaryList.Visible = !Settings.ShowChart;
-                    chart.Visible = false;
+                    chart.Visible = Settings.ShowChart;
                 }
             }
         }

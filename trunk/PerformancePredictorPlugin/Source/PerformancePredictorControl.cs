@@ -468,7 +468,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             paceButton.Checked = Settings.ShowPace;
             speedButton.Checked = !Settings.ShowPace;
 
-            tableButton.Checked = Settings.ShowChart;
+            tableButton.Checked = !Settings.ShowChart;
             chartButton.Checked = Settings.ShowChart;
 
             chkHighScoreBox.Checked = Settings.HighScore != null;
