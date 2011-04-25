@@ -502,6 +502,65 @@ namespace GpsRunningPlugin.Util
         }
 
         /*********************************************************************************/
+        public static class Grade
+        {
+            //private static Length.Units Unit { get { return null; } }
+            public static int DefaultDecimalPrecision { get { return 1; } }
+            private static string DefFmt { get { return "F" + DefaultDecimalPrecision; } }
+
+            public static string ToString(double p)
+            {
+                return ToString(p, DefFmt);
+            }
+            public static string ToString(double p, string fmt)
+            {
+                string str = "";
+                if (fmt.EndsWith("U")) { str = " " + Label; fmt = fmt.Remove(fmt.Length - 1); }
+                if (fmt.EndsWith("u")) { str = " " + LabelAbbr; fmt = fmt.Remove(fmt.Length - 1); }
+                return ConvertFrom(p).ToString((fmt));
+            }
+
+            public static double ConvertFrom(double p)
+            {
+                return p;
+            }
+
+            public static double Parse(string p)
+            {
+                return double.Parse(p, NumberFormatInfo.InvariantInfo);
+            }
+
+            public static String Label
+            {
+                get
+                {
+                    return "%";
+                }
+            }
+            public static String LabelAbbr
+            {
+                get
+                {
+                    return "%";
+                }
+            }
+            public static String LabelAbbr2
+            {
+                get
+                {
+                    return encPar(LabelAbbr);
+                }
+            }
+            public static String LabelAxis
+            {
+                get
+                {
+                    return CommonResources.Text.LabelGrade + LabelAbbr2;
+                }
+            }
+        }
+
+        /*********************************************************************************/
         public static class Time
         {
             //This class handles Time as in "Time for activities" rather than "Time of day"
@@ -763,6 +822,20 @@ namespace GpsRunningPlugin.Util
                 return PaceOrSpeed.ConvertFrom(false, value, activity);
             }
 
+
+            public static double ConvertTo(double value)
+            {
+                return ConvertTo(value, Unit);
+            }
+            public static double ConvertTo(double value, Length.Units du)
+            {
+                return Length.Convert(value, du, Length.Units.Meter)/60/60;
+            }
+            public static double ConvertTo(double value, IActivity activity)
+            {
+                return PaceOrSpeed.ConvertTo(false, value, activity);
+            }
+
             public static double Parse(string p)
             {
                 return Length.Convert(double.Parse(p, NumberFormatInfo.InvariantInfo), Unit, Length.Units.Meter) / (60 * 60);
@@ -867,7 +940,7 @@ namespace GpsRunningPlugin.Util
                 string str = "";
                 if (fmt.EndsWith("U")) { str = " " + Label; fmt = fmt.Remove(fmt.Length - 1); }
                 if (fmt.EndsWith("u")) { str = " " + LabelAbbr; fmt = fmt.Remove(fmt.Length - 1); }
-                if (Math.Abs(speedMS) == double.MinValue)//"divide by zero" check. Or some hardcoded value?
+                if (speedMS==0 || Math.Abs(speedMS) == double.MinValue || double.IsInfinity(speedMS) || double.IsNaN(speedMS))//"divide by zero" check. Or some hardcoded value?
                 {
                     str = "-" + str;
                 }
@@ -890,6 +963,19 @@ namespace GpsRunningPlugin.Util
             public static double ConvertFrom(double value, IActivity activity)
             {
                 return PaceOrSpeed.ConvertFrom(true, value, activity);
+            }
+
+            public static double ConvertTo(double value)
+            {
+                return ConvertTo(value, Unit);
+            }
+            public static double ConvertTo(double value, Length.Units du)
+            {
+                return Length.Convert(1/value, du, Length.Units.Meter);
+            }
+            public static double ConvertTo(double value, IActivity activity)
+            {
+                return PaceOrSpeed.ConvertTo(true, value, activity);
             }
 
             public static double Parse(string p)
@@ -995,7 +1081,7 @@ namespace GpsRunningPlugin.Util
         /*********************************************************************************/
         public static class PaceOrSpeed
         {
-            public static float ConvertFrom(bool isPace, double value, IActivity activity)
+            public static Length.Units GetUnit(bool isPace, ref double value, IActivity activity, bool convertFrom)
             {
                 //speed is in m/s
                 double speed = value;
@@ -1005,18 +1091,30 @@ namespace GpsRunningPlugin.Util
 #if ST_2_1
                     du = activity.Category.DistanceUnits;
 #else
-                    du = (isPace) ? 
+                    du = (isPace) ?
                         activity.Category.PaceDistance.ValueUnits : activity.Category.SpeedDistance.ValueUnits;
                     //scale, custom unit may be other than one
-                    speed = speed /
-                        (float)((isPace) ? 
+                    double scale = (float)((isPace) ?
                         activity.Category.PaceDistance.Value : activity.Category.SpeedDistance.Value);
+                    if (convertFrom)
+                    {
+                        scale = 1 / scale;
+                    }
+                    speed *= scale;
 #endif
                 }
                 else
                 {
                     du = GetApplication().SystemPreferences.DistanceUnits;
                 }
+                return du;
+            }
+
+            public static float ConvertFrom(bool isPace, double value, IActivity activity)
+            {
+                //speed is in m/s
+                double speed = value;
+                Length.Units du = GetUnit(isPace, ref speed, activity, true);
                 //convert from (x*)m/s to (x*)<unit>/s
                 speed = Distance.ConvertFrom(speed, du);
 
@@ -1032,6 +1130,29 @@ namespace GpsRunningPlugin.Util
                 }
                 return (float)speed;
             }
+            public static float ConvertTo(bool isPace, double value, IActivity activity)
+            {
+                //speed is in m/s
+                double speed = value;
+                Length.Units du = GetUnit(isPace, ref speed, activity, false);
+
+                if (isPace)
+                {
+                    //pace is <time (s)>/<unit>
+                    speed = 1 / speed;
+                }
+                else
+                {
+                    //speed is <unit>/h
+                    speed = speed / 60 / 60;
+                }
+
+                //convert from (x*)m/s to (x*)<unit>/s
+                speed = Distance.ConvertTo(speed, du);
+
+                return (float)speed;
+            }
+
             public static int DefaultDecimalPrecision(bool isPace)
             {
                 if (isPace)
