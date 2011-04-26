@@ -489,6 +489,8 @@ namespace GpsRunningPlugin.Source
         {
             speedUnit = (String)paceBox.SelectedItem;
             Settings.ShowPace=(String)paceBox.SelectedItem!=CommonResources.Text.LabelSpeed;
+            bool includeLocationAndDate = (m_activities.Count > 1);
+            RefreshColumns(includeLocationAndDate);
             showResults();
         }
 
