@@ -90,11 +90,28 @@ namespace GpsRunningPlugin.Source
         private void makeReport(StringBuilder builder)
         {
             String distMetric = UnitUtil.Distance.LabelAbbr;//m_visualTheme.
-            builder.Append("<html><body style=\"background=" + getRGB(m_visualTheme.Control)
-                + "\"><table border=\"1\" width=\"100%\">");
+
+            builder.Append("<html><head><style type=\"text/css\"> \n"
+                + "body { font-size:medium; font-family:sans-serif; background=#DEE0E2;  } \n"
+                + "table {border-style: groove; border-color: black; border-width: 1px; width : 100%;} \n"
+                + ".tre { background: " + getRGB(m_visualTheme.Window) + " ; } \n"
+                + ".tro { background: " + getRGB(m_visualTheme.Border) + " ; } \n"
+                + ".tre { border-style:none; background: " + getRGB(m_visualTheme.Window) + " ; } \n"
+                + ".tro { border-style:none; background: " + getRGB(m_visualTheme.Border) + " ; } \n"
+                + " td{ border-style: solid; border-color: black; border-width: 1px; padding-left: 10px; padding-right: 10px; } \n"
+                + ".td_right{text-align: right;} \n"
+                + ".td_sub_right{border-top-style:none; border-left-style:none;border-right-style:solid;border-bottom-style:none;text-align: right;} \n"
+                + ".td_sub_left{border-top-style:none; border-left-style:solid;border-right-style:none;border-bottom-style:none; text-align: left;} \n"
+                + ".td_sub_top_left{border-top-style:solid; border-left-style:solid;border-right-style:none;border-bottom-style:none;text-align: left;} \n"
+                + ".td_sub_top_right{border-top-style:solid; border-left-style:none;border-right-style:solid;border-bottom-style:none;text-align: right;} \n"
+                + ".td_sub_bottom_left{border-top-style:none; border-left-style:solid;border-right-style:none;border-bottom-style:solid;text-align: left;} \n"
+                + ".td_sub_bottom_right{border-top-style:none; border-left-style:none;border-right-style:solid;border-bottom-style:solid;text-align: right;} \n"
+            + "</style></head><body><table>\n");
+
+            //Single accumulation
             double totalDistance = getTotalDistance();
             addEntry(builder, UnitUtil.Distance.LabelAxis, UnitUtil.Distance.ToString(totalDistance));
-            TimeSpan totalTime = getTotalTime();
+                        TimeSpan totalTime = getTotalTime();
             showTotalTime(builder, totalTime);
             double averageSpeed = totalDistance / totalTime.TotalSeconds;
             double fastestSpeed = getFastestSpeed();
@@ -108,15 +125,22 @@ namespace GpsRunningPlugin.Source
             addEntry(builder, StringResources.ClimbSummary + UnitUtil.Elevation.LabelAbbr2, getTotalUpsAndDowns());
             addEntry(builder, UnitUtil.Energy.LabelAxis, getCalories());
             addEntry(builder, CommonResources.Text.LabelAvgHR + UnitUtil.HeartRate.LabelAbbr2, getAverageHeartRate(totalTime));
-            getSpeedZones(builder,totalTime);
-            addEntry(builder, StringResources.ClimbZones, getClimbZones(totalTime));
+            
+            //Accumulation per Zones
+            getSpeedZones(builder,totalTime);            
+            addEntry(builder, StringResources.ClimbZones, getClimbZonesAsArray(totalTime));
+            
+            
             String ratio = getWorkoutRatio();
             TimeSpan realTotalTimeForWorkout = getRealTotalTimeForWorkout(totalTime);
             string fmt = StringResources.HRZone + UnitUtil.HeartRate.LabelAbbr2 + " (" + "{0}" + ")";
             addEntry(builder, String.Format(fmt, ratio),
-                getWorkout(realTotalTimeForWorkout));
+                getWorkoutAsArray(realTotalTimeForWorkout));
+            
             builder.Append("</table></body></html>");
         }
+
+        
 
         private TimeSpan getRealTotalTimeForWorkout(TimeSpan totalTime)
         {
@@ -152,12 +176,19 @@ namespace GpsRunningPlugin.Source
                 totalTime, false, true, false);
         }
 
+
+        private string[,] getClimbZonesAsArray(TimeSpan totalTime)
+        {
+            return printCategoriesAsArrays(Plugin.GetApplication().DisplayOptions.SelectedClimbZone,
+                totalTime, false, true, false);
+        }
+
+
         private void getSpeedZones(StringBuilder builder, TimeSpan totalTime)
         {
             foreach (IZoneCategory speedZone in Plugin.GetApplication().Logbook.SpeedZones)
             {
-                addEntry(builder, StringResources.SpeedZone + ": " + speedZone.Name,
-                    printCategories(speedZone, totalTime, true, false, false));
+                addEntry(builder, StringResources.SpeedZone + ": " + speedZone.Name, printCategoriesAsArrays(speedZone, totalTime, true, false, false));
             }
         }
 
@@ -183,6 +214,78 @@ namespace GpsRunningPlugin.Source
             }
             return UnitUtil.HeartRate.ToString(result);
         }
+
+        private string[,] printCategoriesAsArrays(IZoneCategory zones, TimeSpan totalTime,
+            bool speed, bool climb, bool heart)
+        {
+            if (m_activities.Count == 0) return null;
+
+            IDictionary<String, TimeSpan> dict = new Dictionary<String, TimeSpan>();
+            foreach (IActivity activity in m_activities)
+            {
+                ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
+                ZoneCategoryInfo zinfos = null;
+                bool cont = true;
+                if (speed) zinfos = info.SpeedZoneInfo(zones);
+                else if (climb) zinfos = info.ClimbZoneInfo(zones);
+                else if (heart)
+                {
+                    if (activity.HeartRatePerMinuteTrack == null)
+                        cont = false;
+                    else
+                        zinfos = info.HeartRateZoneInfo(zones);
+                }
+                if (cont)
+                {
+                    foreach (ZoneInfo zinfo in zinfos.Zones)
+                    {
+                        TimeSpan v = zinfo.TotalTime;
+                        if (!dict.ContainsKey(zinfo.Name))
+                        {
+                            dict.Add(zinfo.Name, v);
+                        }
+                        else
+                        {
+                            dict[zinfo.Name] = dict[zinfo.Name].Add(v);
+                        }
+                    }
+                }
+            }
+
+            string[,] returnvalues = new string[2, dict.Keys.Count];
+            int i = 0;
+
+            foreach (String name in dict.Keys)
+            {
+                String timeType = StringResources.SecondsFormat;
+                String time = String.Format("{0:00}", dict[name].Seconds);
+                if (totalTime.TotalMinutes > 1)
+                {
+                    timeType = StringResources.MinutesFormat + ":" + timeType;
+                    time = String.Format("{0:00}", dict[name].Minutes) + ":" + time;
+                }
+                if (totalTime.TotalHours > 1)
+                {
+                    timeType = StringResources.HoursFormat + ":" + timeType;
+                    time = String.Format("{0:00}", dict[name].Hours) + ":" + time;
+                }
+                if (totalTime.TotalDays > 1)
+                {
+                    timeType = StringResources.DaysFormat + ":" + timeType;
+                    time = String.Format("{0:00}", dict[name].Days) + ":" + time;
+                }
+                
+                returnvalues[0, i] = name + " (" + timeType + ")";
+                returnvalues[1, i] = time + " (" + (dict[name].TotalSeconds / totalTime.TotalSeconds).ToString("P2") + ")";
+
+                i++;
+            }
+                        
+            return returnvalues;                    
+
+
+        }
+        
 
         private string printCategories(IZoneCategory zones, TimeSpan totalTime,
             bool speed, bool climb, bool heart)
@@ -253,6 +356,13 @@ namespace GpsRunningPlugin.Source
             return printCategories(Plugin.GetApplication().Logbook.HeartRateZones[0],
                 totalTime,false,false,true);            
         }
+
+        private string[,] getWorkoutAsArray(TimeSpan totalTime)
+        {
+            return printCategoriesAsArrays(Plugin.GetApplication().Logbook.HeartRateZones[0],
+                totalTime, false, false, true);
+        }
+
 
         private string getCalories()
         {
@@ -326,11 +436,37 @@ namespace GpsRunningPlugin.Source
         private bool m_even = false;
 
         private void addEntry(StringBuilder builder, string name, string value)
-        {
-            builder.Append("<tr style=\"background:" + (m_even ? getRGB(m_visualTheme.Window) : getRGB(m_visualTheme.Border)) +
-                "\"><td>" + name + "</td><td align=\"right\">"
-                + value + "</td></tr>");
+        {  
+            builder.Append("\n <tr class=\"tr" + (m_even ? "e" : "o") + "\"><td>" + name + "</td><td class=\"td_right\" colspan=\"2\">" + value + "</td></tr>");    
+
             m_even = !m_even;
+        }
+
+        private void addEntry(StringBuilder builder, string name, string[,] value)
+        {  
+            bool localeven = m_even;
+
+            int valcount = value.Length / value.Rank;
+            for (int i = 0; i < valcount; i++)
+            {
+                builder.Append("\n <tr class=\"tr" + (localeven? "e" : "o") + "\">");
+                if (i == 0)
+                {
+                    builder.Append("<td rowspan=\"" + valcount + "\">" + name + "</td>");
+                }
+                builder.Append("<td class=\"" + ((i==0)?"td_sub_top_left":(i==valcount?"td_sub_bottom_left":"td_sub_left"))+"\">" + value[0, i] + "</td>");
+                builder.Append("<td class=\"" + ((i == 0) ? "td_sub_top_right" : (i == valcount ? "td_sub_bottom_right" : "td_sub_right")) + "\">" + value[1, i] + "</td></tr>");
+
+                localeven = !localeven;
+            }
+
+
+            m_even = !m_even;
+
+
+
+
+
         }
 
         private double getTotalDistance()
