@@ -61,7 +61,7 @@ namespace GpsRunningPlugin.Source
                     }
                     return "-";
                 case ResultColumnIds.Date:
-                    return result.Activity.StartTime.ToShortDateString();
+                    return result.Activity.StartTime.ToLocalTime().ToShortDateString();
                 case ResultColumnIds.Location:
                     return result.Activity.Location;
                 default:
