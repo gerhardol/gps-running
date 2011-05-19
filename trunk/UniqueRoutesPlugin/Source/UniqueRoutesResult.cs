@@ -199,8 +199,15 @@ namespace GpsRunningPlugin.Source
             double speed;
             if (Settings.UseActive)
             {
-                speed = info.ActiveLapsTotalDetail.LapDistanceMeters /
-                info.ActiveLapsTotalDetail.LapElapsed.TotalSeconds;
+                if (info.ActiveLapsTotalDetail.LapElapsed.TotalSeconds == 0)
+                {
+                    speed = 0;
+                }
+                else
+                {
+                    speed = info.ActiveLapsTotalDetail.LapDistanceMeters /
+                    info.ActiveLapsTotalDetail.LapElapsed.TotalSeconds;
+                }
             }
             else
             {
