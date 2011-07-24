@@ -6,12 +6,15 @@
 This page describes how to make translations of the GPS-Running and related plugins.
 
 = Details =
-The translation strings are stored in a Google SpreadSheet. CurrentlySeveral plugins currently use the same spreadsheet, just separate tabs: https://spreadsheets.google.com/ccc?key=tNZna7OU_2RlRYv5Iv_csgg
-To get access to write to the Spreadsheet, contact the project owner (PM ST user gerhard with your email address).
+The translation strings are stored in a Google SpreadSheet. Currently several plugins currently use the same spreadsheet, just separate tabs: https://spreadsheets.google.com/ccc?key=tNZna7OU_2RlRYv5Iv_csgg
+To get access to write to the Spreadsheet, contact the project owner (PM ST user gerhard) with your Google account email address (not necessarily gmail).
 
 Use marker ##NOTRANSLATE## if a string should not be translated (for instance the name of the plugin).
+There is no need to translate strings below #Depreciated line, this is for plugins and parts with no release planned.
 
 The spreadsheets are stored with the code, so if the the weblink does not work, there are copies. If you do not have write access or prefer offline editing, create an issue for the updated project and store the spreadsheet there.
+
+See the Developers wiki for pulling the text from the web spreadsheet to the code.
 
 Links to resources for this and other plugins:
   * http://code.google.com/p/gps-running/source/browse/trunk/Resources.xls 
