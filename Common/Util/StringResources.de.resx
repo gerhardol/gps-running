@@ -80,28 +80,28 @@
     <value>Sekunden</value>
   </data>
   <data name="PerSpecified" xml:space="preserve">
-    <value>Tempo Zonen</value>
+    <value>Tempo-Zonen</value>
   </data>
   <data name="Question" xml:space="preserve">
-    <value>pro angegebener</value>
+    <value>Frage?</value>
   </data>
   <data name="Reset" xml:space="preserve">
-    <value>Entfernen</value>
+    <value>Zurücksetzen ...</value>
   </data>
   <data name="ResetAllSettings" xml:space="preserve">
     <value>Zurücksetzen aller Einstellungen…</value>
   </data>
   <data name="Show" xml:space="preserve">
-    <value>Kürzeste Zeit</value>
+    <value>Anzeigen</value>
   </data>
   <data name="SpeedZone" xml:space="preserve">
     <value>Geschwindigkeitszone</value>
   </data>
   <data name="TimeFormat" xml:space="preserve">
-    <value>Zeit</value>
+    <value>hh:mm:ss</value>
   </data>
   <data name="Warning" xml:space="preserve">
-    <value>Bis</value>
+    <value>Achtung</value>
   </data>
   <data name="Factor" xml:space="preserve">
     <value>Faktor</value>
@@ -121,11 +121,14 @@
   <data name="StartZone" xml:space="preserve">
     <value>Start Zone:</value>
   </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Zusammenfassung</value>
+  </data>
   <data name="Use" xml:space="preserve">
     <value>Gebrauch</value>
   </data>
   <data name="ChangeCategory" xml:space="preserve">
-    <value>Wechsel Kategorie</value>
+    <value>Kategorie wechseln</value>
   </data>
   <data name="SelectCategory" xml:space="preserve">
     <value>Bitte Kategorie auswählen</value>
@@ -146,7 +149,7 @@
     <value>Steigung +/-</value>
   </data>
   <data name="ClimbZones" xml:space="preserve">
-    <value>Steigungen</value>
+    <value>Anstiegs-Zonen</value>
   </data>
   <data name="DaysFormat" xml:space="preserve">
     <value>dd</value>
@@ -197,10 +200,10 @@
     <value>Min.</value>
   </data>
   <data name="Training" xml:space="preserve">
-    <value>Train / Rennen HF.</value>
+    <value>Training</value>
   </data>
   <data name="Unit" xml:space="preserve">
-    <value>Gebrauch</value>
+    <value>Einheit</value>
   </data>
   <data name="NoutofM" xml:space="preserve">
     <value>{0} von {1} Aktivitäten</value>
@@ -213,6 +216,9 @@
   </data>
   <data name="ActivitySpeedOrPace" xml:space="preserve">
     <value>Tempo/Geschwindigkeit der Aktivität</value>
+  </data>
+  <data name="ListSettings" xml:space="preserve">
+    <value>Listeneinstellungen</value>
   </data>
   <data name="Colour" xml:space="preserve">
     <value>Farbe</value>
@@ -231,5 +237,30 @@
   </data>
   <data name="SetRefActivity" xml:space="preserve">
     <value>Bezugsaktivität</value>
+  </data>
+  <data name="OtherPluginExceptionText" xml:space="preserve">
+    <value>Problem bei der Kommunikation mit {0}.
+Stellen Sie sicher, dass {1} auf Ihrem System installiert ist.</value>
+  </data>
+  <data name="OtherPluginVersion" xml:space="preserve">
+    <value>Version {0} von {1} erkannt.</value>
+  </data>
+  <data name="UniqueRoutesCompatible" xml:space="preserve">
+    <value>Aktivitäten können mit Hilfe des Unique Routes-Plugins gefiltert werden.</value>
+  </data>
+  <data name="UniqueRoutesPluginName" xml:space="preserve">
+    <value>Unique Routes-Plugin</value>
+  </data>
+  <data name="UniqueRoutesToInstall" xml:space="preserve">
+    <value>Installieren Sie mindestens Version {0} von {1}, um die Aktivitäten mit Hilfe des Unique Routes-Plugins zu filtern.</value>
+  </data>
+  <data name="UI_Activity_List_Advanced" xml:space="preserve">
+    <value>Fortgeschritten</value>
+  </data>
+  <data name="UI_Activity_List_LimitSelection" xml:space="preserve">
+    <value>Aktivitäten auf die in der Liste ausgewählten eingrenzen</value>
+  </data>
+  <data name="UI_Activity_List_URSelect" xml:space="preserve">
+    <value>Füge ähnliche Aktivitäten wie {0} mit dem Unique Routes-Plugin hinzu.</value>
   </data>
 </root>

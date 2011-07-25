@@ -80,25 +80,26 @@
     <value>Entfernung</value>
   </data>
   <data name="EasyAerobicZone" xml:space="preserve">
-    <value>Aerobe Trainingsphase</value>
+    <value>Aerober Trainingsbereich</value>
   </data>
   <data name="EndOfPart" xml:space="preserve">
     <value>Ende von Teil</value>
   </data>
   <data name="EstimatedTime" xml:space="preserve">
-    <value>Abgeschätzte Zeit</value>
+    <value>Geschätzte Zeit</value>
   </data>
   <data name="HighAerobicZone" xml:space="preserve">
-    <value>Anaerobe Trainingsphase</value>
+    <value>Aerober Trainingsbereich (hoch)</value>
   </data>
   <data name="HighScorePluginIntegration" xml:space="preserve">
-    <value>High-Score-Plugin Integration</value>
+    <value>Integration mit High-Score-Plugin</value>
   </data>
   <data name="IntervalSplitTimes" xml:space="preserve">
-    <value>Intervall der Split Zeiten</value>
+    <value>Rundenzeiten 
+</value>
   </data>
   <data name="ModAerobicZone" xml:space="preserve">
-    <value>Moderate aerobe Trainingsphase</value>
+    <value>Aerober Traininsbereich (moderat)</value>
   </data>
   <data name="NoMaxHR" xml:space="preserve">
     <value>Bitte wechseln Sie zur Sportler Ansicht und ergänzen dort Ihre maximale Herzfrequenz um das Ergebnis zu sehen.</value>
@@ -107,50 +108,50 @@
     <value>Tempo für Sprints</value>
   </data>
   <data name="PaceForTempoRuns_label" xml:space="preserve">
-    <value>Tempo für sprints von 20 bis 60 Minuten bei VDOT {0:0.0}</value>
+    <value>Tempo für Sprints von 20 bis 60 Minuten bei VDOT {0:0.0}</value>
   </data>
   <data name="PaceRunNotification" xml:space="preserve">
-    <value>20 min Lauf ist an der Laktat Tempo Schwelle - Das Tempo von längeren Läufen
-ist angepasst um richtige Intensität zu erhalten.</value>
+    <value>20 min Lauf hat das Tempo an der Laktatschwelle - Das Tempo von längeren Läufen
+wurde angepasst, um die richtige Intensität zu erhalten.</value>
   </data>
   <data name="PositiveNumber" xml:space="preserve">
-    <value>Die Distanz muss eine positive Zahl sein - optional danach die  &quot;Einheit&quot; </value>
+    <value>Die Distanz muss eine positive Zahl sein - optional gefolgt von einer Einheit.</value>
   </data>
   <data name="PredictedTime" xml:space="preserve">
-    <value>Berechnete Zeit</value>
+    <value>Vorhergesagte Zeit</value>
   </data>
   <data name="PredictionModel" xml:space="preserve">
-    <value>Berechnungsmodell</value>
+    <value>Vorhersagemodell</value>
   </data>
   <data name="PredictionResults" xml:space="preserve">
-    <value>Berechnungsergebnisse</value>
+    <value>Vorhersageergebnisse</value>
   </data>
   <data name="ProcDistUsed" xml:space="preserve">
-    <value>% der Distanz zur berechneten Zeit</value>
+    <value>% der Distanz, um Zeit vorherzusagen</value>
   </data>
   <data name="ProjectedTemperatureImpact" xml:space="preserve">
     <comment>ppx</comment>
-    <value>Prognostizierte negative Auswirkungen der hohen Temperaturen auf</value>
+    <value>Prognostizierte negative Auswirkungen von hohen Temperaturen auf</value>
   </data>
   <data name="Recovery" xml:space="preserve">
     <value>Erholung</value>
   </data>
   <data name="RemoveDistance" xml:space="preserve">
-    <value>Entferne Distanz</value>
+    <value>Entfernung löschen</value>
   </data>
   <data name="SetWeight" xml:space="preserve">
-    <value>Bitte wechseln Sie zur Sportler Ansicht und ergänzen dort Ihr Gewicht um das Ergebnis zu sehen.</value>
+    <value>Bitte wechseln Sie zur Sportler Ansicht und ergänzen dort Ihr Gewicht, um das Ergebnis zu sehen.</value>
   </data>
   <data name="StartOfPart" xml:space="preserve">
     <comment>ppx</comment>
     <value>Start von Teil</value>
   </data>
   <data name="TemperatureImpact" xml:space="preserve">
-    <value>Temperatur Auswirkung</value>
+    <value>Auswirkung der Temperatur</value>
   </data>
   <data name="TemperatureNotification" xml:space="preserve">
     <comment>ppx</comment>
-    <value>Die Performance ist nicht beeinträchtigt, bei {0} oder weniger.</value>
+    <value>Die Leistung wird nicht beeinträchtigt, bei {0} oder weniger.</value>
   </data>
   <data name="TimePrediction" xml:space="preserve">
     <value>Zeitberechnung</value>
@@ -171,7 +172,7 @@ ist angepasst um richtige Intensität zu erhalten.</value>
     <value>Verwendete Zeit der Aktivität</value>
   </data>
   <data name="ViewInChart" xml:space="preserve">
-    <value>Grafikdarstellung</value>
+    <value>Diagrammdarstellung</value>
   </data>
   <data name="ViewInTable" xml:space="preserve">
     <value>Tabellendarstellung</value>
@@ -180,13 +181,13 @@ ist angepasst um richtige Intensität zu erhalten.</value>
     <value>% VO2 max: {0:0.0}%, VDOT: {1:0.0}</value>
   </data>
   <data name="Webpage" xml:space="preserve">
-    <value>Performance Predictor Plugin Webseite</value>
+    <value>Performance Predictor Plugin-Webseite</value>
   </data>
   <data name="WeighImpact" xml:space="preserve">
-    <value>Gewicht Auswirkung</value>
+    <value>Auswirkung des Gewichts</value>
   </data>
   <data name="WeightNotification" xml:space="preserve">
-    <value>Geschätzte Zeiten und Tempos sind + / - {0} pro {1}.</value>
+    <value>Geschätzte Zeiten und Tempos sind +/- {0} pro {1}.</value>
   </data>
   <data name="ZoneDistance" xml:space="preserve">
     <value>Zone / Distanz</value>
@@ -196,11 +197,11 @@ ist angepasst um richtige Intensität zu erhalten.</value>
   </data>
   <data name="EstimatedPace" xml:space="preserve">
     <comment>ppx</comment>
-    <value>Abgeschätztes Tempo</value>
+    <value>Geschätztes Tempo</value>
   </data>
   <data name="EstimatedSpeed" xml:space="preserve">
     <comment>ppx</comment>
-    <value>Abgeschätzte Geschwindigkeit</value>
+    <value>Geschätzte Geschwindigkeit</value>
   </data>
   <data name="IntervalNotification" xml:space="preserve">
     <comment>pp</comment>
@@ -216,7 +217,7 @@ ist angepasst um richtige Intensität zu erhalten.</value>
   </data>
   <data name="ProjectedWeightImpact" xml:space="preserve">
     <comment>ppx</comment>
-    <value>Prognostizierte Auswirkung von Gewicht auf</value>
+    <value>Prognostizierte Auswirkung des Gewichts auf</value>
   </data>
   <data name="Velocity" xml:space="preserve">
     <value>Geschwindigkeit</value>
@@ -225,6 +226,6 @@ ist angepasst um richtige Intensität zu erhalten.</value>
     <value>Highscore-Vorhersage</value>
   </data>
   <data name="HighScoreRequired" xml:space="preserve">
-    <value>Die Vorhersage verschiedener Aktivitäten benötigt das High-Score-Plugin.</value>
+    <value>Die Vorhersage verschiedener Aktivitäten benötigt das High Score-Plugin.</value>
   </data>
 </root>

@@ -84,16 +84,16 @@
     <value>Manuell erfasste Daten</value>
   </data>
   <data name="HadNoStartTime" xml:space="preserve">
-    <value>Keine Start Zeit</value>
+    <value>keine Startzeit</value>
   </data>
   <data name="HRAndSpeedZones" xml:space="preserve">
     <value>Herzfrequenz- und Geschwindigkeitszone</value>
   </data>
   <data name="IgnoredActivities" xml:space="preserve">
-    <value>Unberücksichtigte Aktivitäten ({0})</value>
+    <value>{0} Aktivitäten nicht berücksichtigt</value>
   </data>
   <data name="IgnoreManualEnteredBox" xml:space="preserve">
-    <value>Unberücksichtigte Aktivitäten mit manueller Dateneingabe</value>
+    <value>Aktivitäten mit manueller Dateneingabe nicht berücksichtigen</value>
   </data>
   <data name="LongestDistanceTraveled" xml:space="preserve">
     <value>Längste zurückgelegte Distanz</value>
@@ -108,28 +108,28 @@
     <value>Keine Anzeige für diese Einstellungen.</value>
   </data>
   <data name="OnADistanceOf" xml:space="preserve">
-    <value>Bei einer Entfernung von</value>
+    <value>bei einer Entfernung von</value>
   </data>
   <data name="OnAnElevationOf" xml:space="preserve">
-    <value>Bei einer Höhe von</value>
+    <value>bei einer Höhe von</value>
   </data>
   <data name="ResetAllSettingsWarning" xml:space="preserve">
-    <value>Wollen Sie wirklich die aktuellen Einstellungen löschen und die Standard Werte verwenden?</value>
+    <value>Wollen Sie wirklich die aktuellen Einstellungen löschen und die Standardwerte verwenden?</value>
   </data>
   <data name="ResetDistancesWarning" xml:space="preserve">
-    <value>Wollen Sie wirklich die aktuellen Entfernungen löschen und zurück zu den Standard Entfernungen?</value>
+    <value>Wollen Sie wirklich die aktuellen Entfernungen löschen und zurück zu den Standard-Entfernungen?</value>
   </data>
   <data name="ResetElevationsWarning" xml:space="preserve">
-    <value>Wollen Sie wirklich die aktuellen Höhen löschen und zurück zu den Standard Höhen?</value>
+    <value>Wollen Sie wirklich die aktuellen Höhen löschen und zurück zu den Standard-Höhen?</value>
   </data>
   <data name="ResetHRZonesWarning" xml:space="preserve">
-    <value>Wollen Sie wirklich die aktuellen Herzfrequenzzonen löschen und zurück zu den Standard Herzfrequenzzonen?</value>
+    <value>Wollen Sie wirklich die aktuellen Herzfrequenzzonen löschen und zurück zu den Standard-Herzfrequenzzonen?</value>
   </data>
   <data name="ResetPaceZonesWarning" xml:space="preserve">
-    <value>Wollen Sie wirklich die aktuellen Tempozonen löschen und zurück zu den Standard Tempozonen verwenden?</value>
+    <value>Wollen Sie wirklich die aktuellen Tempozonen löschen und zurück zu den Standard-Tempozonen verwenden?</value>
   </data>
   <data name="ResetTimesWarning" xml:space="preserve">
-    <value>Wollen Sie wirklich die aktuellen Zeiten löschen und zurück zu den Standard Zeiten?</value>
+    <value>Wollen Sie wirklich die aktuellen Zeiten löschen und zurück zu den Standard-Zeiten?</value>
   </data>
   <data name="ShortestDistanceTraveled" xml:space="preserve">
     <value>Kürzeste zurückgelegte Distanz</value>
@@ -153,7 +153,7 @@
   </data>
   <data name="OnATimeOf" xml:space="preserve">
     <comment>hsx</comment>
-    <value>Bei einer Zeit von</value>
+    <value>bei einer Zeit von</value>
   </data>
   <data name="WithAHRBetween" xml:space="preserve">
     <comment>hsx</comment>

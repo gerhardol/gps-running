@@ -114,7 +114,7 @@
     <value>en una elevación de</value>
   </data>
   <data name="ResetAllSettingsWarning" xml:space="preserve">
-    <value>Esta seguro de querer borrar la configuración actual y usar la configuración original?</value>
+    <value>¿Esta seguro de querer borrar la configuración actual y usar la configuración original?</value>
   </data>
   <data name="ResetDistancesWarning" xml:space="preserve">
     <value>Esta seguro de querer borrar las distancias actuales y usar las distancias originales?</value>
