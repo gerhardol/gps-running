@@ -5,6 +5,11 @@
 
 More or less official beta releases are available in the Downloads section. See each plugin for detailed description of functions.
 
+2.0.321 2011-07-23
+ * All: Updated German, Italian, French and Spanish translations
+ * AS: Visual updates
+ * HS, PP: Minor fixes
+
 2.0.314 2011-04-08
  * Released UniqueRoutes, Overlay, HighScore and PerformancePredictor as 2.0. No updates are planned for AccumulatedSummary and Trimp.
  * A few copy list issues in HS/PP

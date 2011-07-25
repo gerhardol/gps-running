@@ -107,7 +107,7 @@
     <value>Factor</value>
   </data>
   <data name="Graph" xml:space="preserve">
-    <value>gráfica</value>
+    <value>Gráfica</value>
   </data>
   <data name="NoSelectedActivities" xml:space="preserve">
     <value>No hay actividades seleccionadas</value>
@@ -149,7 +149,7 @@
     <value>Ascenso/descenso</value>
   </data>
   <data name="ClimbZones" xml:space="preserve">
-    <value>Zonas de Ascenso</value>
+    <value>Zonas de ascenso</value>
   </data>
   <data name="DaysFormat" xml:space="preserve">
     <value>dd</value>

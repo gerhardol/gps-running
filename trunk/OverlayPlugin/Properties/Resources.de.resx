@@ -63,10 +63,10 @@
     <value>Durchschnitt im Zeitraum</value>
   </data>
   <data name="BCA" xml:space="preserve">
-    <value>Durschnittskurve - schwarz</value>
+    <value>Durchschnitt der Kategorie - schwarz</value>
   </data>
   <data name="BMA" xml:space="preserve">
-    <value>Glättungskurve</value>
+    <value>Gleitender Mittelwert - fett</value>
   </data>
   <data name="MAToolTip" xml:space="preserve">
     <value>Auf 0 setzen für einen Durchschnitt vom Beginn einer Aktivität</value>
@@ -78,22 +78,22 @@
     <value>Overlay Plugin - Vergleichen einer Aktivität</value>
   </data>
   <data name="O2" xml:space="preserve">
-    <value>Overlay Plugin - Vergleichen {0} Aktivitäten</value>
+    <value>Overlay Plugin - Vergleich von {0} Aktivitäten</value>
   </data>
   <data name="Webpage" xml:space="preserve">
-    <value>Overlay Plugin Webseite</value>
+    <value>Overlay Plugin-Webseite</value>
   </data>
   <data name="Menu_ShowChartBar" xml:space="preserve">
     <value>Zeige Diagrammleiste</value>
   </data>
   <data name="Menu_ShowToolBar" xml:space="preserve">
-    <value>Zeige Diagrammwerkzeug</value>
+    <value>Zeige Diagrammwerkzeuge</value>
   </data>
   <data name="MovingAverage" xml:space="preserve">
     <value>Gleitender Mittelwert</value>
   </data>
   <data name="OverlayChart" xml:space="preserve">
-    <value>Overlay chart</value>
+    <value>Overlay-Diagramm</value>
   </data>
   <data name="SetMovingAveragePeriod" xml:space="preserve">
     <value>Filterbreite einstellen</value>
