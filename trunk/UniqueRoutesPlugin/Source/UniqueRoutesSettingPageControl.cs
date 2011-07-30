@@ -51,9 +51,6 @@ namespace GpsRunningPlugin.Source
             ignoreBeginningBox.LostFocus += new EventHandler(ignoreBeginningBox_LostFocus);
             ignoreEndBox.LostFocus += new EventHandler(ignoreEndBox_LostFocus);
 
-            metricLabel.Visible = false;
-            beginningLabel.Visible = false;
-            endLabel.Visible = false;
             presentSettings();            
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(UniqueRoutesSettingPageControl_PropertyChanged);
         }
@@ -68,7 +65,7 @@ namespace GpsRunningPlugin.Source
         {
             resetSettings.Text = StringResources.ResetAllSettings;
             linkLabel1.Text = Resources.Webpage;
-            groupBox1.Text = StringResources.Settings;
+            //groupBox1.Text = StringResources.Settings;
             label1.Text = Resources.Radius + ":";
             precedeControl(label1, bandwidthBox);
             label2.Text = Resources.AllowPointsOutsideBand + ":";
@@ -79,10 +76,7 @@ namespace GpsRunningPlugin.Source
             precedeControl(label5, ignoreBeginningBox);
             label8.Text = Resources.IgnoreEndOfRoute + ":";
             precedeControl(label8, ignoreEndBox);
-            metricLabel.Text = UnitUtil.Elevation.Label;
-            label4.Text = CommonResources.Text.LabelPercent;
-            beginningLabel.Text = UnitUtil.Distance.Label;
-            endLabel.Text = UnitUtil.Distance.Label;
+            //labelPercentOutsideUnit.Text = CommonResources.Text.LabelPercent;
         }
 
         public bool HidePage()
