@@ -5,7 +5,7 @@
 
 More or less official beta releases are available in the Downloads section. See each plugin for detailed description of functions.
 
-2.0.321 2011-07-25
+2.0.322 2011-07-30
  * All: Updated German, Italian, French and Spanish translations
  * AS: Visual updates
  * HS, PP: Minor fixes
