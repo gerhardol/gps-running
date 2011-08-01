@@ -324,31 +324,31 @@ namespace GpsRunningPlugin.Source
             Predict.PredictTime predict, double old_dist, double old_time)
         {
             RefreshColumns(false);
-                series.Points.Clear();
+            series.Points.Clear();
 
-                foreach (double new_dist in Settings.Distances.Keys)
+            foreach (double new_dist in Settings.Distances.Keys)
+            {
+                double new_time = predict(new_dist, old_dist, old_time);
+                float x = (float)UnitUtil.Distance.ConvertFrom(new_dist);
+                if (!x.Equals(float.NaN) && series.Points.IndexOfKey(x) == -1)
                 {
-                    double new_time = predict(new_dist, old_dist, old_time);
-                    float x = (float)UnitUtil.Distance.ConvertFrom(new_dist);
-                    if (!x.Equals(float.NaN) && series.Points.IndexOfKey(x) == -1)
-                    {
-                        series.Points.Add(x, new PointF(x, (float)new_time));
-                    }
-
-                    double length = new_dist;
-                    Length.Units unitNominal;
-                    if (Settings.Distances[length].Values[0])
-                    {
-                        unitNominal = UnitUtil.Distance.Unit;
-                    }
-                    else
-                    {
-                        unitNominal = Settings.Distances[length].Keys[0];
-                    }
-                    double speed = new_dist / new_time;
-                    //row[ActivityIdColumn] = "";
-                    reslist.Add(new TimePredictionResult(m_ppcontrol.SingleActivity, new_dist, length, unitNominal, new_time));
+                    series.Points.Add(x, new PointF(x, (float)new_time));
                 }
+
+                double length = new_dist;
+                Length.Units unitNominal;
+                if (Settings.Distances[length].Values[0])
+                {
+                    unitNominal = UnitUtil.Distance.Unit;
+                }
+                else
+                {
+                    unitNominal = Settings.Distances[length].Keys[0];
+                }
+                double speed = new_dist / new_time;
+                //row[ActivityIdColumn] = "";
+                reslist.Add(new TimePredictionResult(m_ppcontrol.SingleActivity, new_dist, length, unitNominal, new_time));
+            }
         }
 
         public void updateChartVisibility()
@@ -387,9 +387,9 @@ namespace GpsRunningPlugin.Source
                 {
                     TimePredictionResult result = (TimePredictionResult)row;
                     IActivity id = result.Activity;
-                    if (id != null && result.UsedTime > 0)
+                    if (id != null)
                     {
-                        if (m_showPage && isSingleView != true)
+                        if (m_showPage)
                         {
                             IDictionary<string, MapPolyline> routes = new Dictionary<string, MapPolyline>();
                             TrailMapPolyline m = new TrailMapPolyline(
@@ -401,7 +401,16 @@ namespace GpsRunningPlugin.Source
                             }
                         }
                         IValueRangeSeries<DateTime> t = new ValueRangeSeries<DateTime>();
-                        t.Add(new ValueRange<DateTime>(result.StartUsedTime, result.StartUsedTime.AddSeconds(result.UsedTime)));
+                        DateTime endTime;
+                        if (result.UsedTime > 0)
+                        {
+                            endTime = result.StartUsedTime.AddSeconds(result.UsedTime);
+                        }
+                        else
+                        {
+                            endTime = ActivityInfoCache.Instance.GetInfo(id).ActualTrackEnd;
+                        }
+                        t.Add(new ValueRange<DateTime>(result.StartUsedTime, endTime));
                         IList<TrailResultMarked> aTrm = new List<TrailResultMarked>();
                         aTrm.Add(new TrailResultMarked(
                             new TrailResult(new ActivityWrapper(id, Plugin.GetApplication().SystemPreferences.RouteSettings.RouteSelectedColor)),
@@ -443,47 +452,60 @@ namespace GpsRunningPlugin.Source
             }
         }
 
+        //Try to find if ST is mapping a certain activity
+        public bool ViewSingleActivity(IActivity activity)
+        {
+            return activity == CollectionUtils.GetSingleItemOfType<IActivity>(m_view.SelectionProvider.SelectedItems);
+        }
+
+        //Adapted from Trails, ActivityDetailPageControl
         public void MarkTrack(IList<TrailResultMarked> atr)
         {
 #if !ST_2_1
             if (m_showPage)
             {
-                if (m_view != null &&
-                    m_view.RouteSelectionProvider != null)
-                {
-                    //For activities drawn by default, use common marking
-                    IList<TrailResultMarked> atr2 = new List<TrailResultMarked>();
-                    foreach (TrailResultMarked trm in atr)
-                    {
-                        if (trm.trailResult.Activity == m_ppcontrol.SingleActivity)
-                        {
-                            atr2.Add(trm);
-                        }
-                    }
-                    //Only one activity, OK to merge selections on one track
-                    TrailsItemTrackSelectionInfo result = TrailResultMarked.SelInfoUnion(atr2);
-                    m_view.RouteSelectionProvider.SelectedItems = TrailsItemTrackSelectionInfo.SetAndAdjustFromSelection(new IItemTrackSelectionInfo[] { result }, null, false);
-                    if (atr != null && atr.Count > 0)
-                    {
-                        m_layer.DoZoom(GPS.GetBounds(atr[0].trailResult.GpsPoints(result)));
-                    }
-                }
+                IList<TrailResultMarked> atrST = new List<TrailResultMarked>();
                 IDictionary<string, MapPolyline> mresult = new Dictionary<string, MapPolyline>();
                 foreach (TrailResultMarked trm in atr)
                 {
-                    foreach (TrailMapPolyline m in TrailMapPolyline.GetTrailMapPolyline(trm.trailResult, trm.selInfo))
+                    if (m_view != null &&
+                      //m_view.RouteSelectionProvider != null &&
+                      //trm.trailResult.Activity == m_ppcontrol.SingleActivity)
+                      ViewSingleActivity(trm.trailResult.Activity))
                     {
-                        if (trm.trailResult.Activity != m_ppcontrol.SingleActivity)
+                        //Use ST standard display of track where possible
+                        atrST.Add(trm);
+                    }
+                    else
+                    {
+                        //Trails internal display of tracks
+                        foreach (TrailMapPolyline m in TrailMapPolyline.GetTrailMapPolyline(trm.trailResult, trm.selInfo))
                         {
-                            //m.Click += new MouseEventHandler(mapPoly_Click);
                             if (!mresult.ContainsKey(m.key))
                             {
+                                //m.Click += new MouseEventHandler(mapPoly_Click);
                                 mresult.Add(m.key, m);
                             }
                         }
                     }
                 }
+                //Trails track display update
                 m_layer.MarkedTrailRoutes = mresult;
+
+                //ST internal marking, use common marking
+                if (atrST.Count > 0)
+                {
+                    //Only one activity, OK to merge selections on one track
+                    TrailsItemTrackSelectionInfo result = TrailResultMarked.SelInfoUnion(atrST);
+                    m_view.RouteSelectionProvider.SelectedItems = TrailsItemTrackSelectionInfo.SetAndAdjustFromSelection(new IItemTrackSelectionInfo[] { result }, null, false);
+                }
+
+                //Zoom
+                if (atr != null && atr.Count > 0)
+                {
+                    //It does not matter what layer is zoomed here
+                    m_layer.DoZoom(GPS.GetBounds(atr[0].trailResult.GpsPoints(TrailResultMarked.SelInfoUnion(atr))));
+                }
             }
 #endif
         }

@@ -826,48 +826,59 @@ namespace GpsRunningPlugin.Source
             }
         }
 
+        //Try to find if ST is mapping a certain activity
+        public bool ViewSingleActivity(IActivity activity)
+        {
+            return activity == CollectionUtils.GetSingleItemOfType<IActivity>(m_view.SelectionProvider.SelectedItems);
+        }
+
+        //Adapted from Trails, ActivityDetailPageControl
         public void MarkTrack(IList<TrailResultMarked> atr)
         {
 #if !ST_2_1
             if (m_showPage)
             {
-                if (m_view != null &&
-                    m_view.RouteSelectionProvider != null &&
-                    m_activities.Count>0)
-                {
-                    //For activities drawn by default, use common marking
-                    IList<TrailResultMarked> atr2 = new List<TrailResultMarked>();
-                    foreach (TrailResultMarked trm in atr)
-                    {
-                        if (trm.trailResult.Activity == m_activities[0])
-                        {
-                            atr2.Add(trm);
-                        }
-                    }
-                    //Only one activity, OK to merge selections on one track
-                    TrailsItemTrackSelectionInfo result = TrailResultMarked.SelInfoUnion(atr2);
-                    m_view.RouteSelectionProvider.SelectedItems = TrailsItemTrackSelectionInfo.SetAndAdjustFromSelection(new IItemTrackSelectionInfo[] { result }, null, false);
-                    if (atr != null && atr.Count > 0)
-                    {
-                        m_layer.DoZoom(GPS.GetBounds(atr[0].trailResult.GpsPoints(result)));
-                    }
-                }
+                IList<TrailResultMarked> atrST = new List<TrailResultMarked>();
                 IDictionary<string, MapPolyline> mresult = new Dictionary<string, MapPolyline>();
                 foreach (TrailResultMarked trm in atr)
                 {
-                    foreach (TrailMapPolyline m in TrailMapPolyline.GetTrailMapPolyline(trm.trailResult, trm.selInfo))
+                    if (m_view != null &&
+                      //m_view.RouteSelectionProvider != null &&
+                      ViewSingleActivity(trm.trailResult.Activity))
                     {
-                        if (trm.trailResult.Activity != null)// m_ppcontrol.SingleActivity)
+                        //Use ST standard display of track where possible
+                        atrST.Add(trm);
+                    }
+                    else
+                    {
+                        //Trails internal display of tracks
+                        foreach (TrailMapPolyline m in TrailMapPolyline.GetTrailMapPolyline(trm.trailResult, trm.selInfo))
                         {
-                            //m.Click += new MouseEventHandler(mapPoly_Click);
                             if (!mresult.ContainsKey(m.key))
                             {
+                                //m.Click += new MouseEventHandler(mapPoly_Click);
                                 mresult.Add(m.key, m);
                             }
                         }
                     }
                 }
+                //Trails track display update
                 m_layer.MarkedTrailRoutes = mresult;
+
+                //ST internal marking, use common marking
+                if (atrST.Count > 0)
+                {
+                    //Only one activity, OK to merge selections on one track
+                    TrailsItemTrackSelectionInfo result = TrailResultMarked.SelInfoUnion(atrST);
+                    m_view.RouteSelectionProvider.SelectedItems = TrailsItemTrackSelectionInfo.SetAndAdjustFromSelection(new IItemTrackSelectionInfo[] { result }, null, false);
+                }
+
+                //Zoom
+                if (atr != null && atr.Count > 0)
+                {
+                    //It does not matter what layer is zoomed here
+                    m_layer.DoZoom(GPS.GetBounds(atr[0].trailResult.GpsPoints(TrailResultMarked.SelInfoUnion(atr))));
+                }
             }
 #endif
         }
