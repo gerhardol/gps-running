@@ -846,7 +846,7 @@ namespace GpsRunningPlugin.Source
                     }
                     //Only one activity, OK to merge selections on one track
                     TrailsItemTrackSelectionInfo result = TrailResultMarked.SelInfoUnion(atr2);
-                    m_view.RouteSelectionProvider.SelectedItems = new IItemTrackSelectionInfo[] { result };
+                    m_view.RouteSelectionProvider.SelectedItems = TrailsItemTrackSelectionInfo.SetAndAdjustFromSelection(new IItemTrackSelectionInfo[] { result }, null, false);
                     if (atr != null && atr.Count > 0)
                     {
                         m_layer.DoZoom(GPS.GetBounds(atr[0].trailResult.GpsPoints(result)));

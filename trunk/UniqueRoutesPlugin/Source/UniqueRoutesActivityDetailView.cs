@@ -655,7 +655,7 @@ namespace GpsRunningPlugin.Source
         }
         
         //This works slightly different to i.e. Trails, as it marks the reference if possible
-        public void MarkRef(IItemTrackSelectionInfo res)
+        public void MarkRef(IItemTrackSelectionInfo result)
         {
 #if !ST_2_1
             if (m_showPage)
@@ -663,8 +663,7 @@ namespace GpsRunningPlugin.Source
                 if (m_view != null &&
                     m_view.RouteSelectionProvider != null)
                 {
-                        m_view.RouteSelectionProvider.SelectedItems = new IItemTrackSelectionInfo[] {
-                            res };
+                    m_view.RouteSelectionProvider.SelectedItems = TrailsItemTrackSelectionInfo.SetAndAdjustFromSelection(new IItemTrackSelectionInfo[] { result }, null, false);
                 }
             }
 #endif
