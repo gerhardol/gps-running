@@ -879,19 +879,9 @@ namespace GpsRunningPlugin.Source
                     axis,
                     delegate(ActivityInfo info)
                     {
-                        INumericTimeDataSeries TimeTrack = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries(info.ActualDistanceMetersTrack);
+                        INumericTimeDataSeries TimeTrack = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries(info.MovingDistanceMetersTrack);
                         INumericTimeDataSeries ModTimeTrack;
-                        bool includeStopped = false;
-#if ST_2_1
-                        // If UseEnteredData is set, exclude Stopped
-                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
-                        {
-                            includeStopped = true;
-                        }
-#else
-                        includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
-#endif
-                        CorrectTimeDataSeriesForPauses(info, includeStopped, TimeTrack, out ModTimeTrack);
+                        CorrectTimeDataSeriesForPauses(info, TimeTrack, out ModTimeTrack);
 
                         // Copy the modified times into the value of TimeTrack - the time values of TimeTrack will be modified later 
                         for (int i = 0; i < ModTimeTrack.Count; i++)
@@ -926,46 +916,12 @@ namespace GpsRunningPlugin.Source
                     },
                     delegate(ActivityInfo info)
                     {
-                        bool includeStopped = false;
-#if ST_2_1
-                        // If UseEnteredData is set, exclude Stopped
-                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
-                        {
-                            includeStopped = true;
-                        }
-#else
-                        includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
-#endif
-                        if (includeStopped) 
-                        { 
-                            return info.ActualDistanceMetersTrack.Count > 0; 
-                        }
-                        else 
-                        { 
-                            return info.MovingDistanceMetersTrack.Count > 0;
-                        }
+                        return info.MovingDistanceMetersTrack.Count > 0;
                     },
                     axis,
                     delegate(ActivityInfo info)
                     {
-                        bool includeStopped = false;
-#if ST_2_1
-                        // If UseEnteredData is set, exclude Stopped
-                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
-                        {
-                            includeStopped = true;
-                        }
-#else
-                        includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
-#endif
-                        if (includeStopped) 
-                        { 
-                            return info.ActualDistanceMetersTrack; 
-                        }
-                        else 
-                        { 
-                            return info.MovingDistanceMetersTrack; 
-                        }
+                        return info.MovingDistanceMetersTrack;
                     });
             }
             if (Settings.ShowDiffHeartRate)
@@ -1000,17 +956,6 @@ namespace GpsRunningPlugin.Source
                     chart.YAxis,
                     delegate(ActivityInfo info)
                     {
-
-                        bool includeStopped = false;
-#if ST_2_1
-                        // If UseEnteredData is set, exclude Stopped
-                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
-                        {
-                            includeStopped = true;
-                        }
-#else
-                        includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
-#endif
                         ActivityInfo refInfo = ActivityInfoCache.Instance.GetInfo(CommonData.refActWrapper.Activity);
 
                         INumericTimeDataSeries refTrack, actTrack, modRefTrack, modActTrack, modTrack;
@@ -1018,8 +963,8 @@ namespace GpsRunningPlugin.Source
                         refTrack = refInfo.Activity.HeartRatePerMinuteTrack;
 
                         // Remove pauses in order to be able to calculate difference
-                        CorrectTimeDataSeriesForPauses(info, includeStopped, actTrack, out modActTrack);
-                        CorrectTimeDataSeriesForPauses(refInfo, includeStopped, refTrack, out modRefTrack);
+                        CorrectTimeDataSeriesForPauses(info, actTrack, out modActTrack);
+                        CorrectTimeDataSeriesForPauses(refInfo, refTrack, out modRefTrack);
                         INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
                         foreach (ITimeValueEntry<float> p in modActTrack)
                         {
@@ -1032,7 +977,7 @@ namespace GpsRunningPlugin.Source
                                 track.Add(actualTime, p.Value - refEntry.Value);
                             }
                         }
-                        AddPausesToTimeDataSeries(info, includeStopped, track, out modTrack);
+                        AddPausesToTimeDataSeries(info, track, out modTrack);
                         return modTrack;
                     }
                     );
@@ -1072,34 +1017,16 @@ namespace GpsRunningPlugin.Source
                     axis,
                     delegate(ActivityInfo info)
                     {
-                        bool includeStopped = false;
-#if ST_2_1
-                        // If UseEnteredData is set, exclude Stopped
-                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
-                        {
-                            includeStopped = true;
-                        }
-#else
-                        includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
-#endif
                         ActivityInfo refInfo = ActivityInfoCache.Instance.GetInfo(CommonData.refActWrapper.Activity);
 
                         INumericTimeDataSeries refTrack, actTrack, modRefTrack, modActTrack, modTrack;
 
-                        if (includeStopped)
-                        {
-                            actTrack = info.ActualDistanceMetersTrack;
-                            refTrack = refInfo.ActualDistanceMetersTrack;
-                        }
-                        else
-                        {
                             actTrack = info.MovingDistanceMetersTrack;
                             refTrack = refInfo.MovingDistanceMetersTrack;
-                        }
 
                         // Remove pauses in order to be able to calculate difference
-                        CorrectTimeDataSeriesForPauses(info, includeStopped, actTrack, out modActTrack);
-                        CorrectTimeDataSeriesForPauses(refInfo, includeStopped, refTrack, out modRefTrack);
+                        CorrectTimeDataSeriesForPauses(info, actTrack, out modActTrack);
+                        CorrectTimeDataSeriesForPauses(refInfo, refTrack, out modRefTrack);
 
                         INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
                         // Create track containing time difference
@@ -1128,7 +1055,7 @@ namespace GpsRunningPlugin.Source
                                 track.Add(modActTrack.EntryDateTime(entry), (float)entry.ElapsedSeconds - (float)refEntry.ElapsedSeconds);
                             }
                         }
-                        AddPausesToTimeDataSeries(info, includeStopped, track, out modTrack);
+                        AddPausesToTimeDataSeries(info, track, out modTrack);
                         return modTrack;
                     });
             }
@@ -1155,65 +1082,28 @@ namespace GpsRunningPlugin.Source
                     },
                     delegate(ActivityInfo info)
                     {
-                        bool includeStopped = false;
-#if ST_2_1
-                        // If UseEnteredData is set, exclude Stopped
-                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
-                        {
-                            includeStopped = true;
-                        }
-#else
-                        includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
-#endif
-
                         if (CommonData.refActWrapper == null)
                             return false;
                         else
                         {
                             ActivityInfo refInfo = ActivityInfoCache.Instance.GetInfo(CommonData.refActWrapper.Activity);
 
-                            if (includeStopped)
-                            {
-                                return info.ActualDistanceMetersTrack.Count > 0 &&
-                                       refInfo.ActualDistanceMetersTrack.Count > 0;
-                            }
-                            else
-                            {
                                 return info.MovingDistanceMetersTrack.Count > 0 &&
                                        refInfo.MovingDistanceMetersTrack.Count > 0;
-                            }
                         }
                     },
                     axis,
                     delegate(ActivityInfo info)
                     {
-                        bool includeStopped = false;
-#if ST_2_1
-                        // If UseEnteredData is set, exclude Stopped
-                        if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
-                        {
-                            includeStopped = true;
-                        }
-#else
-                        includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
-#endif
                         ActivityInfo refInfo = ActivityInfoCache.Instance.GetInfo(CommonData.refActWrapper.Activity);
 
                         INumericTimeDataSeries refTrack, actTrack, modRefTrack, modActTrack, modTrack;
-                        if (includeStopped)
-                        {
-                            actTrack = info.ActualDistanceMetersTrack;
-                            refTrack = refInfo.ActualDistanceMetersTrack;
-                        }
-                        else
-                        {
                             actTrack = info.MovingDistanceMetersTrack;
                             refTrack = refInfo.MovingDistanceMetersTrack;
-                        }
                        
                         // Remove pauses in order to be able to calculate difference
-                        CorrectTimeDataSeriesForPauses(info, includeStopped, actTrack, out modActTrack);
-                        CorrectTimeDataSeriesForPauses(refInfo, includeStopped, refTrack, out modRefTrack);
+                        CorrectTimeDataSeriesForPauses(info, actTrack, out modActTrack);
+                        CorrectTimeDataSeriesForPauses(refInfo, refTrack, out modRefTrack);
                         INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
                         foreach (ITimeValueEntry<float> p in modActTrack)
                         {
@@ -1226,7 +1116,7 @@ namespace GpsRunningPlugin.Source
                                 track.Add(actualTime, p.Value - refDist.Value);
                             }
                         }
-                        AddPausesToTimeDataSeries(info, includeStopped, track, out modTrack);
+                        AddPausesToTimeDataSeries(info, track, out modTrack);
                         return modTrack;
 
                     });
@@ -1309,17 +1199,9 @@ namespace GpsRunningPlugin.Source
             return aTr;
         }
 
-        private void CorrectTimeDataSeriesForPauses(ActivityInfo info, bool includeStopped, INumericTimeDataSeries dataSeries, out INumericTimeDataSeries newDataSeries)
+        private void CorrectTimeDataSeriesForPauses(ActivityInfo info, INumericTimeDataSeries dataSeries, out INumericTimeDataSeries newDataSeries)
         {
-            IValueRangeSeries<DateTime> pauses;
-            if (includeStopped)
-            {
-                pauses = info.Activity.TimerPauses;
-            }
-            else
-            {
-                pauses = info.NonMovingTimes;
-            }
+            IValueRangeSeries<DateTime> pauses = info.NonMovingTimes;
             newDataSeries = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
             newDataSeries.AllowMultipleAtSameTime = true;
             foreach (TimeValueEntry<float> entry in dataSeries)
@@ -1330,17 +1212,9 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        private void AddPausesToTimeDataSeries(ActivityInfo info, bool includeStopped, INumericTimeDataSeries dataSeries, out INumericTimeDataSeries newDataSeries)
+        private void AddPausesToTimeDataSeries(ActivityInfo info, INumericTimeDataSeries dataSeries, out INumericTimeDataSeries newDataSeries)
         {
-            IValueRangeSeries<DateTime> pauses;
-            if (includeStopped)
-            {
-                pauses = info.Activity.TimerPauses;
-            }
-            else
-            {
-                pauses = info.NonMovingTimes;
-            }
+            IValueRangeSeries<DateTime> pauses = info.NonMovingTimes;
             newDataSeries = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
             newDataSeries.AllowMultipleAtSameTime = true;
             foreach (TimeValueEntry<float> entry in dataSeries)
@@ -1404,19 +1278,8 @@ namespace GpsRunningPlugin.Source
             }
             bool first = true;
             float priorElapsed = float.NaN;
-            //This should be retrieved per activity, if that is changed in ST
-            bool includeStopped = false;
-#if ST_2_1
-            // If UseEnteredData is set, exclude Stopped
-            if (info.Activity.UseEnteredData == false && info.Time.Equals(info.ActualTrackTime))
-            {
-                includeStopped = true;
-            }
-#else
-            includeStopped = Plugin.GetApplication().SystemPreferences.AnalysisSettings.IncludeStopped;
-#endif
             INumericTimeDataSeries data, timeModData;
-            CorrectTimeDataSeriesForPauses( info, includeStopped, getDataSeries(info), out timeModData);
+            CorrectTimeDataSeriesForPauses( info, getDataSeries(info), out timeModData);
             if (Settings.UseTimeXAxis)
                 data = timeModData; // x-axis is time, use time with pauses excluded
             else
@@ -1433,15 +1296,7 @@ namespace GpsRunningPlugin.Source
 					}
 					else
 					{
-                        ITimeValueEntry<float> entryMoving;
-                        if (includeStopped)
-                        {
-                            entryMoving = info.ActualDistanceMetersTrack.GetInterpolatedValue(info.ActualTrackStart.AddSeconds(entry.ElapsedSeconds));
-                        }
-                        else
-                        {
-                            entryMoving = info.MovingDistanceMetersTrack.GetInterpolatedValue(info.ActualTrackStart.AddSeconds(entry.ElapsedSeconds));
-                        }
+                        ITimeValueEntry<float> entryMoving = info.MovingDistanceMetersTrack.GetInterpolatedValue(info.ActualTrackStart.AddSeconds(entry.ElapsedSeconds));
                         if (entryMoving != null && (first || (!first && entryMoving.Value > 0)))
 						{
 							x = (float)UnitUtil.Distance.ConvertFrom( entryMoving.Value + offset );
@@ -1831,6 +1686,7 @@ namespace GpsRunningPlugin.Source
                         commonStretches[aw.Activity][0].MarkedDistances.Count > 0 &&
                         commonStretches[aw.Activity][0].MarkedTimes.Count > 0)
                     {
+                        //UR sets both MarkedDistances and MarkedTimes
                         //set both dist/time offset, regardless Settings.UseTimeXAxis
                         aw.TimeOffset = commonStretches[aw.Activity][1].MarkedTimes[0].Lower.Subtract(CommonData.refActWrapper.Activity.StartTime).Subtract(
                             commonStretches[aw.Activity][0].MarkedTimes[0].Lower.Subtract(aw.Activity.StartTime));

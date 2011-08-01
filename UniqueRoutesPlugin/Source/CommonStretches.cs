@@ -92,6 +92,7 @@ namespace GpsRunningPlugin.Source
                         const int minStretchLength = 3;
                         //End - Update summary
                         //Ignore single/double point matches and "reverse" reference matches
+                        //Set both MarkedTimes, MarkedDistances for convenience
                         if (prevIndex[0].index - startIndex[0].index >= minStretchLength &&
                             startIndex[1].index <= prevIndex[1].index)
                         {

@@ -497,39 +497,6 @@ namespace GpsRunningPlugin.Source
             setSize();
         }
 
-#if !ST_2_1
-        IGPSRoute getRoute(IActivity activity, IList<IItemTrackSelectionInfo> selectGPS)
-        {
-            IGPSRoute urRoute = new GPSRoute();
-            foreach (IItemTrackSelectionInfo item in selectGPS)
-            {
-                IValueRange<DateTime> ti = item.SelectedTime;
-                DateTime s0, s1;
-                if (null != ti)
-                {
-                    s0 = ti.Lower;
-                    s1 = ti.Upper;
-                }
-                else
-                {
-                    IValueRange<double> di = item.SelectedDistance;
-                    if (di == null) { continue; }
-                    IDistanceDataTrack dt = ActivityInfoCache.Instance.GetInfo(activity).ActualDistanceMetersTrack;
-                    //IDistanceDataTrack dt = activity.GPSRoute.GetDistanceMetersTrack();
-                    s0 = dt.GetTimeAtDistanceMeters(di.Lower);
-                    s1 = dt.GetTimeAtDistanceMeters(di.Upper);
-                }
-
-                for (int i = 0; i < activity.GPSRoute.Count; i++)
-                {
-                    if (activity.GPSRoute[i].ElapsedSeconds < s0.Subtract(activity.GPSRoute.StartTime).TotalSeconds) { continue; }
-                    urRoute.Add(activity.GPSRoute.StartTime.AddSeconds(activity.GPSRoute[i].ElapsedSeconds), activity.GPSRoute[i].Value);
-                    if (activity.GPSRoute[i].ElapsedSeconds > s1.Subtract(activity.GPSRoute.StartTime).TotalSeconds) { break; }
-                }
-            }
-            return urRoute;
-        }
-#endif
         private void calculate()
         {
             calculate(true);
@@ -552,10 +519,19 @@ namespace GpsRunningPlugin.Source
                     m_progressBar.Visible = true;
                     m_urRoute.Clear();
 #if !ST_2_1
-                    IList<IItemTrackSelectionInfo> selectedGPS = m_view.RouteSelectionProvider.SelectedItems;
+                    IList<IItemTrackSelectionInfo> selectedGPS = TrailsItemTrackSelectionInfo.SetAndAdjustFromSelection(m_view.RouteSelectionProvider.SelectedItems, new List<IActivity>{m_refActivity}, true);
                     if (useSelection && selectedGPS.Count > 0)
                     {
-                        m_urRoute = getRoute(m_refActivity, selectedGPS);
+                        IList<IList<IGPSPoint>> routes = TrailsItemTrackSelectionInfo.GpsPoints(m_refActivity.GPSRoute, m_refActivity.TimerPauses, selectedGPS[0].MarkedTimes);
+                        int i = 0;
+                        foreach (IList<IGPSPoint> t in routes)
+                        {
+                            foreach (IGPSPoint g in t)
+                            {
+                                //Just dummy time stamp - not used anyway
+                                m_urRoute.Add(m_refActivity.GPSRoute.StartTime.AddSeconds(i++), g);
+                            }
+                        }
                     }
 #endif
                     IList<IActivity> activities;
