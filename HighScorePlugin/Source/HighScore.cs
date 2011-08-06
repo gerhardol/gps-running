@@ -46,7 +46,7 @@ namespace GpsRunningPlugin.Source
                             GoalParameter.Time, GoalParameter.Distance));
             }
 
-            Result[] results = calculate(activities, goals, progress);
+            Result[] results = calculateInternal(activities, goals, progress);
             IList<IList<Object>> objects = new List<IList<Object>>();
             foreach (Result result in results)
             {
@@ -64,18 +64,29 @@ namespace GpsRunningPlugin.Source
             return objects;
         }
 
-        public static Result[] calculate(IList<IActivity> activities, IList<Goal> goals, System.Windows.Forms.ProgressBar progress)
+        public static Result[] calculateInternal(IList<IActivity> activities, IList<Goal> goals, System.Windows.Forms.ProgressBar progress)
+        {
+            if (progress != null)
+            {
+                progress.Minimum = 0;
+                progress.Value = 0;
+                progress.Maximum = 0;//Set below
+                progress.Visible = true;
+                progress.BringToFront();
+            }
+            Result[] r = calculate2(activities, goals, progress);
+            progress.Visible = false;
+            return r;
+        }
+        public static Result[] calculate2(IList<IActivity> activities, IList<Goal> goals, System.Windows.Forms.ProgressBar progress)
         {
             Result[] results = new Result[goals.Count];
-            if (progress == null)
-            {
-                progress = new System.Windows.Forms.ProgressBar();
-            }
-            progress.Minimum = 0;
-            progress.Maximum = activities.Count;
-            progress.Value = 0;
             if (activities != null && activities.Count > 0)
             {
+                if (progress != null && progress.Maximum < progress.Value + activities.Count)
+                {
+                    progress.Maximum += activities.Count;
+                }
                 foreach (IActivity activity in activities)
                 {
                     if (null != activity && activity.HasStartTime)
@@ -83,11 +94,19 @@ namespace GpsRunningPlugin.Source
                         if (Settings.IgnoreManualData)
                         {
                             if (!activity.UseEnteredData)
+                            {
                                 calculate(activity, goals, results);
+                            }
                         }
-                        else calculate(activity, goals, results);
+                        else
+                        {
+                            calculate(activity, goals, results);
+                        }
                     }
-                    progress.Value++;
+                    if (progress != null)
+                    {
+                        progress.Value++;
+                    }
                 }
             }
             return results;
