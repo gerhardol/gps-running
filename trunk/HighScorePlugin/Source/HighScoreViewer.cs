@@ -452,12 +452,9 @@ namespace GpsRunningPlugin.Source
                   }
                   cachedResults.Add(domain, imageResultCache);
             }
-            progressBar.Minimum = 0;
-            progressBar.Maximum = m_activities.Count;
-            progressBar.Value = 0;
-            progressBar.Visible = true;
-            IList<Result> results = HighScore.calculate(m_activities, goals, progressBar);
-            progressBar.Visible = false;
+            summaryList.Visible = false;
+            IList<Result> results = HighScore.calculateInternal(m_activities, goals, progressBar);
+            summaryList.Visible = true;
             foreach (GoalParameter domain in Enum.GetValues(typeof(GoalParameter)))
                 foreach (GoalParameter image in Enum.GetValues(typeof(GoalParameter)))
                 {
@@ -625,14 +622,15 @@ namespace GpsRunningPlugin.Source
             if (results == null)
             {
                 IList<Goal> goals = HighScore.generateGoals();
-                progressBar.Visible = true;
-                results = HighScore.calculate(m_activities, goals, progressBar);
-                progressBar.Visible = false;
+                summaryList.Visible = false;
+                results = HighScore.calculateInternal(m_activities, goals, progressBar);
+                summaryList.Visible = true;
                 cachedResults[domain][image][upperBound] = results;
             }
             if (results.Count > 0)
             {
                 IList<Result> result2 = new List<Result>();
+                progressBar.Visible = false;
                 foreach (Result r in results)
                 {
                     if (r != null)
@@ -666,9 +664,9 @@ namespace GpsRunningPlugin.Source
                 if (results == null)
                 {
                     IList<Goal> goals = HighScore.generateGoals();
-                    progressBar.Visible = true;
-                    results = HighScore.calculate(m_activities, goals, progressBar);
-                    progressBar.Visible = false;
+                    summaryList.Visible = false;
+                    results = HighScore.calculateInternal(m_activities, goals, progressBar);
+                    summaryList.Visible = true;
                 }
             }
             if (results == null)

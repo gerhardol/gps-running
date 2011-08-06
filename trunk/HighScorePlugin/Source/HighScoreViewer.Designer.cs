@@ -188,7 +188,7 @@ namespace GpsRunningPlugin.Source
             // 
             this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(6, 54);
+            this.progressBar.Location = new System.Drawing.Point(6, 4);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(478, 23);
             this.progressBar.TabIndex = 12;
@@ -248,7 +248,6 @@ namespace GpsRunningPlugin.Source
             this.splitContainer1.Panel1.Controls.Add(this.Remarks);
             this.splitContainer1.Panel1.Controls.Add(this.viewBox);
             this.splitContainer1.Panel1.Controls.Add(this.label3);
-            this.splitContainer1.Panel1.Controls.Add(this.progressBar);
             this.splitContainer1.Panel1.Controls.Add(this.paceBox);
             this.splitContainer1.Panel1.Controls.Add(this.domainBox);
             this.splitContainer1.Panel1.Controls.Add(this.imageBox);
@@ -261,6 +260,7 @@ namespace GpsRunningPlugin.Source
             this.splitContainer1.Panel2.AutoScroll = true;
             this.splitContainer1.Panel2.Controls.Add(this.summaryList);
             this.splitContainer1.Panel2.Controls.Add(this.chart);
+            this.splitContainer1.Panel2.Controls.Add(this.progressBar);
             this.splitContainer1.Size = new System.Drawing.Size(490, 116);
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 18;
