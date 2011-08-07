@@ -70,7 +70,7 @@ namespace GpsRunningPlugin.Source
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(710, 27);
+            this.panel1.Size = new System.Drawing.Size(330, 27);
             this.panel1.TabIndex = 1;
             // 
             // summaryList
@@ -101,7 +101,7 @@ namespace GpsRunningPlugin.Source
             this.summaryList.RowSeparatorLines = true;
             this.summaryList.ShowLines = false;
             this.summaryList.ShowPlusMinus = false;
-            this.summaryList.Size = new System.Drawing.Size(710, 27);
+            this.summaryList.Size = new System.Drawing.Size(330, 27);
             this.summaryList.TabIndex = 11;
             this.summaryList.Click += new System.EventHandler(this.summaryList_Click);
             this.summaryList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.selectedRow_DoubleClick);
@@ -129,7 +129,7 @@ namespace GpsRunningPlugin.Source
             this.chart.Location = new System.Drawing.Point(0, 0);
             this.chart.Name = "chart";
             this.chart.Padding = new System.Windows.Forms.Padding(5);
-            this.chart.Size = new System.Drawing.Size(710, 27);
+            this.chart.Size = new System.Drawing.Size(330, 27);
             this.chart.TabIndex = 8;
             // 
             // lblHighScoreRequired
@@ -148,8 +148,9 @@ namespace GpsRunningPlugin.Source
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(0, 0);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(410, 23);
+            this.progressBar.Size = new System.Drawing.Size(330, 23);
             this.progressBar.TabIndex = 9;
+            this.progressBar.Visible = false;
             // 
             // TimePredictionView
             // 
@@ -160,7 +161,7 @@ namespace GpsRunningPlugin.Source
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this.panel1);
             this.Name = "TimePredictionView";
-            this.Size = new System.Drawing.Size(710, 27);
+            this.Size = new System.Drawing.Size(330, 27);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.listMenu.ResumeLayout(false);
