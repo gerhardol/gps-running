@@ -259,10 +259,14 @@ namespace GpsRunningPlugin.Source
                     //Scale down the distances, so we get the high scores
                     partialDistances.Add(distance * Settings.PercentOfDistance / 100.0);
                 }
+                chart.Visible = false;
+                summaryList.Visible = false;
+                this.lblHighScoreRequired.Visible = false;
                 progressBar.Visible = true;
                 progressBar.BringToFront();
-                progressBar.Size = new Size(this.Width, progressBar.Height);
+                //progressBar.Size = new Size(this.Width, progressBar.Height);
                 progressBar.Minimum = 0;
+                progressBar.Value = 0;
                 progressBar.Maximum = m_ppcontrol.Activities.Count;
                 results = (IList<IList<Object>>)
                     Settings.HighScore.GetMethod("getFastestTimesOfDistances").Invoke(null,
