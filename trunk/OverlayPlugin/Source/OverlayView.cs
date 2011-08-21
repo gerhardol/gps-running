@@ -1346,23 +1346,24 @@ namespace GpsRunningPlugin.Source
 
 #if ST_2_1
         private void activity_DataChanged(object sender, NotifyDataChangedEventArgs e)
-        {
-            if (_showPage)
-            {
-                updateChart();
-            }
-        }
 #else
         private void Activity_PropertyChanged(object sender, PropertyChangedEventArgs e)
+#endif
         {
             //Note: ST3 normally fires the event several times. Just use e.PropertyName == "GPSRoute"?
-            if (m_showPage)
+            if (this.InvokeRequired)
             {
-                updateChart();
-                updateRoute();
+                this.Invoke((PropertyChangedEventHandler)Activity_PropertyChanged, sender, e);
+            }
+            else
+            {
+                if (m_showPage)
+                {
+                    updateChart();
+                    updateRoute();
+                }
             }
         }
-#endif
 
         private void treeView_CheckedChanged(object sender, EventArgs e)
         {

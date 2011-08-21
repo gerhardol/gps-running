@@ -354,9 +354,16 @@ namespace GpsRunningPlugin.Source
 
         void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (m_showPage && (e.PropertyName.Equals("DistanceUnits") || e.PropertyName.Equals("ElevationUnits")))
+            if (this.InvokeRequired)
             {
-                showResults();
+                this.Invoke((PropertyChangedEventHandler)SystemPreferences_PropertyChanged, sender, e);
+            }
+            else
+            {
+                if (m_showPage && (e.PropertyName.Equals("DistanceUnits") || e.PropertyName.Equals("ElevationUnits")))
+                {
+                    showResults();
+                }
             }
         }
 

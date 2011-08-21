@@ -133,9 +133,16 @@ namespace GpsRunningPlugin.Source
 
         void HighScoreSettingPageControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (m_showPage && (e.PropertyName.Equals("DistanceUnits")||e.PropertyName.Equals("ElevationUnits")))
+            if (this.InvokeRequired)
             {
-                reset();
+                this.Invoke((System.ComponentModel.PropertyChangedEventHandler)HighScoreSettingPageControl_PropertyChanged, sender, e);
+            }
+            else
+            {
+                if (m_showPage && (e.PropertyName.Equals("DistanceUnits") || e.PropertyName.Equals("ElevationUnits")))
+                {
+                    reset();
+                }
             }
         }
 

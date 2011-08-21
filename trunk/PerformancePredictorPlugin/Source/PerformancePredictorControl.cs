@@ -299,18 +299,22 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
 #if ST_2_1
         private void dataChanged(object sender, ZoneFiveSoftware.Common.Data.NotifyDataChangedEventArgs e)
-        {
-            makeData();
-        }
 #else
         private void Activity_PropertyChanged(object sender, PropertyChangedEventArgs e)
+#endif
         {
-            if (m_showPage)
+            if (this.InvokeRequired)
             {
-                this.predictorView.RefreshData();
+                this.Invoke((System.ComponentModel.PropertyChangedEventHandler)Activity_PropertyChanged, sender, e);
+            }
+            else
+            {
+                if (m_showPage)
+                {
+                    this.predictorView.RefreshData();
+                }
             }
         }
-#endif
 
         public bool HidePage()
         {

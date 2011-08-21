@@ -767,9 +767,16 @@ namespace GpsRunningPlugin.Source
 
         void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (m_showPage)
+            if (this.InvokeRequired)
             {
-                setTable();
+                this.Invoke((PropertyChangedEventHandler)SystemPreferences_PropertyChanged, sender, e);
+            }
+            else
+            {
+                if (m_showPage)
+                {
+                    setTable();
+                }
             }
         }
 
