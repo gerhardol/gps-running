@@ -155,9 +155,16 @@ namespace GpsRunningPlugin.Source
 
         private void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (m_showPage)
+            if (this.InvokeRequired)
             {
-                RefreshData();
+                this.Invoke((PropertyChangedEventHandler)SystemPreferences_PropertyChanged, sender, e);
+            }
+            else
+            {
+                if (m_showPage)
+                {
+                    RefreshData();
+                }
             }
         }
 

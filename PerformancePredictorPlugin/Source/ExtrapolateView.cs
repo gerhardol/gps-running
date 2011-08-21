@@ -113,44 +113,55 @@ namespace GpsRunningPlugin.Source
 
         private void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (m_showPage)
+            if (this.InvokeRequired)
             {
-                RefreshData();
+                this.Invoke((System.ComponentModel.PropertyChangedEventHandler)SystemPreferences_PropertyChanged, sender, e);
+            }
+            else
+            {
+                if (m_showPage)
+                {
+                    RefreshData();
+                }
             }
         }
 
 #if ST_2_1
         private void Athlete_DataChanged(object sender, ZoneFiveSoftware.Common.Data.NotifyDataChangedEventArgs e)
-        {
-            if (m_showPage)
-            {
-                setPages();
-            }
-        }
-
-        private void Logbook_DataChanged(object sender, ZoneFiveSoftware.Common.Data.NotifyDataChangedEventArgs e)
-        {
-            if (m_showPage)
-            {
-                setPages();
-            }
-        }
 #else
         private void Athlete_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (m_showPage)
-            {
-                RefreshData();
-            }
-        }
-        private void Logbook_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (m_showPage)
-            {
-                RefreshData();
-            }
-        }
 #endif
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke((System.ComponentModel.PropertyChangedEventHandler)Athlete_PropertyChanged, sender, e);
+            }
+            else
+            {
+                if (m_showPage)
+                {
+                    RefreshData();
+                }
+            }
+        }
+#if ST_2_1
+        private void Logbook_DataChanged(object sender, ZoneFiveSoftware.Common.Data.NotifyDataChangedEventArgs e)
+#else
+        private void Logbook_PropertyChanged(object sender, PropertyChangedEventArgs e)
+#endif
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke((System.ComponentModel.PropertyChangedEventHandler)Logbook_PropertyChanged, sender, e);
+            }
+            else
+            {
+                if (m_showPage)
+                {
+                    RefreshData();
+                }
+            }
+        }
 
         private ITheme m_visualTheme;
         public void ThemeChanged(ITheme visualTheme)
