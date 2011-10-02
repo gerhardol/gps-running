@@ -126,6 +126,9 @@
   <data name="LimitingToSelected" xml:space="preserve">
     <value>Utilizzando {0} attività selezionate</value>
   </data>
+  <data name="UI_Activity_List_LimitSelection" xml:space="preserve">
+    <value>Selezionare i risultati evidenziati nella lista delle attività</value>
+  </data>
   <data name="NoGpsActivitiesSelected" xml:space="preserve">
     <value>Nessuna attività con dati GPS è selezionata</value>
   </data>
