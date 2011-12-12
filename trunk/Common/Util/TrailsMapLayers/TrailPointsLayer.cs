@@ -184,17 +184,17 @@ namespace TrailsPlugin.UI.MapLayers
             }
         }
 
-        public float HighlightRadius
-        {
-            set
-            {
-                if (m_highlightRadius != value)
-                {
-                    m_scalingChanged = true;
-                }
-                m_highlightRadius = value;
-            }
-        }
+        //public float HighlightRadius
+        //{
+        //    set
+        //    {
+        //        if (m_highlightRadius != value)
+        //        {
+        //            m_scalingChanged = true;
+        //        }
+        //        m_highlightRadius = value;
+        //    }
+        //}
 
         //public void Refresh()
         //{
