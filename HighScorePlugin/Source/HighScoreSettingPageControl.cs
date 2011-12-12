@@ -364,16 +364,8 @@ namespace GpsRunningPlugin.Source
             {
                 double min, max;
                 bool isPace = UnitUtil.Pace.isLabelPace((String)paceTypeBox.SelectedItem);
-                if (isPace)
-                {
-                    min = UnitUtil.Pace.Parse(maxSpeedBox.Text);
-                    max = UnitUtil.Pace.Parse(minSpeedBox.Text);
-                }
-                else
-                {
-                    min = UnitUtil.Speed.Parse(minSpeedBox.Text);
-                    max = UnitUtil.Speed.Parse(maxSpeedBox.Text);
-                }
+                min = UnitUtil.PaceOrSpeed.Parse(isPace, minSpeedBox.Text);
+                max = UnitUtil.PaceOrSpeed.Parse(isPace, maxSpeedBox.Text);
                 if (double.IsNaN(min) || double.IsNaN(max) || min < 0 || max < 0 || min > max) throw new Exception();
                 Settings.addSpeed(min, max);
                 populateSpeedList();

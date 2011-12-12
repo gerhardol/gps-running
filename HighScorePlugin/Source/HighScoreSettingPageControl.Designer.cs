@@ -107,20 +107,43 @@ namespace GpsRunningPlugin.Source
             // 
             // removeDistance
             // 
+            this.removeDistance.BackColor = System.Drawing.Color.Transparent;
+            this.removeDistance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.removeDistance.CenterImage = null;
+            this.removeDistance.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.removeDistance.HyperlinkStyle = false;
+            this.removeDistance.ImageMargin = 2;
+            this.removeDistance.LeftImage = null;
             this.removeDistance.Location = new System.Drawing.Point(100, 65);
             this.removeDistance.Name = "removeDistance";
+            this.removeDistance.PushStyle = true;
+            this.removeDistance.RightImage = null;
             this.removeDistance.Size = new System.Drawing.Size(111, 23);
             this.removeDistance.TabIndex = 6;
             this.removeDistance.Text = "Remove --->";
+            this.removeDistance.TextAlign = System.Drawing.StringAlignment.Center;
+            this.removeDistance.TextLeftMargin = 2;
+            this.removeDistance.TextRightMargin = 2;
             this.removeDistance.Click += new System.EventHandler(this.removeDistance_Click);
             // 
             // distanceInputBox
             // 
+            this.distanceInputBox.AcceptsReturn = false;
+            this.distanceInputBox.AcceptsTab = false;
+            this.distanceInputBox.BackColor = System.Drawing.Color.White;
+            this.distanceInputBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.distanceInputBox.ButtonImage = null;
             this.distanceInputBox.Location = new System.Drawing.Point(217, 21);
+            this.distanceInputBox.MaxLength = 32767;
+            this.distanceInputBox.Multiline = false;
             this.distanceInputBox.Name = "distanceInputBox";
+            this.distanceInputBox.ReadOnly = false;
+            this.distanceInputBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.distanceInputBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
             this.distanceInputBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.distanceInputBox.Size = new System.Drawing.Size(71, 20);
             this.distanceInputBox.TabIndex = 2;
+            this.distanceInputBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             // 
             // timeBox
             // 
@@ -133,38 +156,85 @@ namespace GpsRunningPlugin.Source
             // 
             // addTime
             // 
+            this.addTime.BackColor = System.Drawing.Color.Transparent;
+            this.addTime.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.addTime.CenterImage = null;
+            this.addTime.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.addTime.HyperlinkStyle = false;
+            this.addTime.ImageMargin = 2;
+            this.addTime.LeftImage = null;
             this.addTime.Location = new System.Drawing.Point(100, 19);
             this.addTime.Name = "addTime";
+            this.addTime.PushStyle = true;
+            this.addTime.RightImage = null;
             this.addTime.Size = new System.Drawing.Size(111, 23);
             this.addTime.TabIndex = 9;
             this.addTime.Text = "<--- Add";
+            this.addTime.TextAlign = System.Drawing.StringAlignment.Center;
+            this.addTime.TextLeftMargin = 2;
+            this.addTime.TextRightMargin = 2;
             this.addTime.Click += new System.EventHandler(this.addTime_Click);
             // 
             // addDistance
             // 
+            this.addDistance.BackColor = System.Drawing.Color.Transparent;
+            this.addDistance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.addDistance.CenterImage = null;
+            this.addDistance.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.addDistance.HyperlinkStyle = false;
+            this.addDistance.ImageMargin = 2;
+            this.addDistance.LeftImage = null;
             this.addDistance.Location = new System.Drawing.Point(100, 19);
             this.addDistance.Name = "addDistance";
+            this.addDistance.PushStyle = true;
+            this.addDistance.RightImage = null;
             this.addDistance.Size = new System.Drawing.Size(111, 23);
             this.addDistance.TabIndex = 3;
             this.addDistance.Text = "<--- Add";
+            this.addDistance.TextAlign = System.Drawing.StringAlignment.Center;
+            this.addDistance.TextLeftMargin = 2;
+            this.addDistance.TextRightMargin = 2;
             this.addDistance.Click += new System.EventHandler(this.addDistance_Click);
             // 
             // removeTime
             // 
+            this.removeTime.BackColor = System.Drawing.Color.Transparent;
+            this.removeTime.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.removeTime.CenterImage = null;
+            this.removeTime.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.removeTime.HyperlinkStyle = false;
+            this.removeTime.ImageMargin = 2;
+            this.removeTime.LeftImage = null;
             this.removeTime.Location = new System.Drawing.Point(100, 65);
             this.removeTime.Name = "removeTime";
+            this.removeTime.PushStyle = true;
+            this.removeTime.RightImage = null;
             this.removeTime.Size = new System.Drawing.Size(111, 23);
             this.removeTime.TabIndex = 11;
             this.removeTime.Text = "Remove --->";
+            this.removeTime.TextAlign = System.Drawing.StringAlignment.Center;
+            this.removeTime.TextLeftMargin = 2;
+            this.removeTime.TextRightMargin = 2;
             this.removeTime.Click += new System.EventHandler(this.removeTime_Click);
             // 
             // timeInputBox
             // 
+            this.timeInputBox.AcceptsReturn = false;
+            this.timeInputBox.AcceptsTab = false;
+            this.timeInputBox.BackColor = System.Drawing.Color.White;
+            this.timeInputBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.timeInputBox.ButtonImage = null;
             this.timeInputBox.Location = new System.Drawing.Point(218, 19);
+            this.timeInputBox.MaxLength = 32767;
+            this.timeInputBox.Multiline = false;
             this.timeInputBox.Name = "timeInputBox";
+            this.timeInputBox.ReadOnly = false;
+            this.timeInputBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.timeInputBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
             this.timeInputBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.timeInputBox.Size = new System.Drawing.Size(70, 20);
             this.timeInputBox.TabIndex = 8;
+            this.timeInputBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             // 
             // label4
             // 
@@ -192,11 +262,23 @@ namespace GpsRunningPlugin.Source
             // 
             // resetDistances
             // 
+            this.resetDistances.BackColor = System.Drawing.Color.Transparent;
+            this.resetDistances.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.resetDistances.CenterImage = null;
+            this.resetDistances.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.resetDistances.HyperlinkStyle = false;
+            this.resetDistances.ImageMargin = 2;
+            this.resetDistances.LeftImage = null;
             this.resetDistances.Location = new System.Drawing.Point(289, 65);
             this.resetDistances.Name = "resetDistances";
+            this.resetDistances.PushStyle = true;
+            this.resetDistances.RightImage = null;
             this.resetDistances.Size = new System.Drawing.Size(103, 23);
             this.resetDistances.TabIndex = 7;
             this.resetDistances.Text = "Reset...";
+            this.resetDistances.TextAlign = System.Drawing.StringAlignment.Center;
+            this.resetDistances.TextLeftMargin = 2;
+            this.resetDistances.TextRightMargin = 2;
             this.resetDistances.Click += new System.EventHandler(this.resetDistances_Click);
             // 
             // distanceLabel
@@ -224,11 +306,23 @@ namespace GpsRunningPlugin.Source
             // 
             // resetTimes
             // 
+            this.resetTimes.BackColor = System.Drawing.Color.Transparent;
+            this.resetTimes.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.resetTimes.CenterImage = null;
+            this.resetTimes.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.resetTimes.HyperlinkStyle = false;
+            this.resetTimes.ImageMargin = 2;
+            this.resetTimes.LeftImage = null;
             this.resetTimes.Location = new System.Drawing.Point(289, 65);
             this.resetTimes.Name = "resetTimes";
+            this.resetTimes.PushStyle = true;
+            this.resetTimes.RightImage = null;
             this.resetTimes.Size = new System.Drawing.Size(103, 23);
             this.resetTimes.TabIndex = 12;
             this.resetTimes.Text = "Reset...";
+            this.resetTimes.TextAlign = System.Drawing.StringAlignment.Center;
+            this.resetTimes.TextLeftMargin = 2;
+            this.resetTimes.TextRightMargin = 2;
             this.resetTimes.Click += new System.EventHandler(this.resetTimes_Click);
             // 
             // groupBox3
@@ -248,11 +342,23 @@ namespace GpsRunningPlugin.Source
             // 
             // resetElevations
             // 
+            this.resetElevations.BackColor = System.Drawing.Color.Transparent;
+            this.resetElevations.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.resetElevations.CenterImage = null;
+            this.resetElevations.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.resetElevations.HyperlinkStyle = false;
+            this.resetElevations.ImageMargin = 2;
+            this.resetElevations.LeftImage = null;
             this.resetElevations.Location = new System.Drawing.Point(289, 65);
             this.resetElevations.Name = "resetElevations";
+            this.resetElevations.PushStyle = true;
+            this.resetElevations.RightImage = null;
             this.resetElevations.Size = new System.Drawing.Size(103, 23);
             this.resetElevations.TabIndex = 17;
             this.resetElevations.Text = "Reset...";
+            this.resetElevations.TextAlign = System.Drawing.StringAlignment.Center;
+            this.resetElevations.TextLeftMargin = 2;
+            this.resetElevations.TextRightMargin = 2;
             this.resetElevations.Click += new System.EventHandler(this.resetElevations_Click);
             // 
             // elevationLabel
@@ -265,28 +371,63 @@ namespace GpsRunningPlugin.Source
             // 
             // elevationInputBox
             // 
+            this.elevationInputBox.AcceptsReturn = false;
+            this.elevationInputBox.AcceptsTab = false;
+            this.elevationInputBox.BackColor = System.Drawing.Color.White;
+            this.elevationInputBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.elevationInputBox.ButtonImage = null;
             this.elevationInputBox.Location = new System.Drawing.Point(217, 21);
+            this.elevationInputBox.MaxLength = 32767;
+            this.elevationInputBox.Multiline = false;
             this.elevationInputBox.Name = "elevationInputBox";
+            this.elevationInputBox.ReadOnly = false;
+            this.elevationInputBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.elevationInputBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
             this.elevationInputBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.elevationInputBox.Size = new System.Drawing.Size(70, 20);
             this.elevationInputBox.TabIndex = 13;
+            this.elevationInputBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             // 
             // removeElevation
             // 
+            this.removeElevation.BackColor = System.Drawing.Color.Transparent;
+            this.removeElevation.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.removeElevation.CenterImage = null;
+            this.removeElevation.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.removeElevation.HyperlinkStyle = false;
+            this.removeElevation.ImageMargin = 2;
+            this.removeElevation.LeftImage = null;
             this.removeElevation.Location = new System.Drawing.Point(100, 65);
             this.removeElevation.Name = "removeElevation";
+            this.removeElevation.PushStyle = true;
+            this.removeElevation.RightImage = null;
             this.removeElevation.Size = new System.Drawing.Size(111, 23);
             this.removeElevation.TabIndex = 16;
             this.removeElevation.Text = "Remove --->";
+            this.removeElevation.TextAlign = System.Drawing.StringAlignment.Center;
+            this.removeElevation.TextLeftMargin = 2;
+            this.removeElevation.TextRightMargin = 2;
             this.removeElevation.Click += new System.EventHandler(this.removeElevation_Click);
             // 
             // addElevation
             // 
+            this.addElevation.BackColor = System.Drawing.Color.Transparent;
+            this.addElevation.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.addElevation.CenterImage = null;
+            this.addElevation.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.addElevation.HyperlinkStyle = false;
+            this.addElevation.ImageMargin = 2;
+            this.addElevation.LeftImage = null;
             this.addElevation.Location = new System.Drawing.Point(100, 19);
             this.addElevation.Name = "addElevation";
+            this.addElevation.PushStyle = true;
+            this.addElevation.RightImage = null;
             this.addElevation.Size = new System.Drawing.Size(111, 23);
             this.addElevation.TabIndex = 14;
             this.addElevation.Text = "<--- Add";
+            this.addElevation.TextAlign = System.Drawing.StringAlignment.Center;
+            this.addElevation.TextLeftMargin = 2;
+            this.addElevation.TextRightMargin = 2;
             this.addElevation.Click += new System.EventHandler(this.addElevation_Click);
             // 
             // elevationBox
@@ -300,11 +441,23 @@ namespace GpsRunningPlugin.Source
             // 
             // resetSettings
             // 
+            this.resetSettings.BackColor = System.Drawing.Color.Transparent;
+            this.resetSettings.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.resetSettings.CenterImage = null;
+            this.resetSettings.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.resetSettings.HyperlinkStyle = false;
+            this.resetSettings.ImageMargin = 2;
+            this.resetSettings.LeftImage = null;
             this.resetSettings.Location = new System.Drawing.Point(3, 3);
             this.resetSettings.Name = "resetSettings";
+            this.resetSettings.PushStyle = true;
+            this.resetSettings.RightImage = null;
             this.resetSettings.Size = new System.Drawing.Size(188, 23);
             this.resetSettings.TabIndex = 1;
             this.resetSettings.Text = "Reset all settings...";
+            this.resetSettings.TextAlign = System.Drawing.StringAlignment.Center;
+            this.resetSettings.TextLeftMargin = 2;
+            this.resetSettings.TextRightMargin = 2;
             this.resetSettings.Click += new System.EventHandler(this.resetSettings_Click);
             // 
             // groupBox4
@@ -326,11 +479,23 @@ namespace GpsRunningPlugin.Source
             // 
             // resetPulseZone
             // 
+            this.resetPulseZone.BackColor = System.Drawing.Color.Transparent;
+            this.resetPulseZone.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.resetPulseZone.CenterImage = null;
+            this.resetPulseZone.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.resetPulseZone.HyperlinkStyle = false;
+            this.resetPulseZone.ImageMargin = 2;
+            this.resetPulseZone.LeftImage = null;
             this.resetPulseZone.Location = new System.Drawing.Point(289, 65);
             this.resetPulseZone.Name = "resetPulseZone";
+            this.resetPulseZone.PushStyle = true;
+            this.resetPulseZone.RightImage = null;
             this.resetPulseZone.Size = new System.Drawing.Size(103, 23);
             this.resetPulseZone.TabIndex = 23;
             this.resetPulseZone.Text = "Reset...";
+            this.resetPulseZone.TextAlign = System.Drawing.StringAlignment.Center;
+            this.resetPulseZone.TextLeftMargin = 2;
+            this.resetPulseZone.TextRightMargin = 2;
             this.resetPulseZone.Click += new System.EventHandler(this.resetPulseZone_Click);
             // 
             // label2
@@ -353,36 +518,82 @@ namespace GpsRunningPlugin.Source
             // 
             // maxPulseBox
             // 
+            this.maxPulseBox.AcceptsReturn = false;
+            this.maxPulseBox.AcceptsTab = false;
+            this.maxPulseBox.BackColor = System.Drawing.Color.White;
+            this.maxPulseBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.maxPulseBox.ButtonImage = null;
             this.maxPulseBox.Location = new System.Drawing.Point(217, 45);
+            this.maxPulseBox.MaxLength = 32767;
+            this.maxPulseBox.Multiline = false;
             this.maxPulseBox.Name = "maxPulseBox";
+            this.maxPulseBox.ReadOnly = false;
+            this.maxPulseBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.maxPulseBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
             this.maxPulseBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.maxPulseBox.Size = new System.Drawing.Size(70, 20);
             this.maxPulseBox.TabIndex = 19;
+            this.maxPulseBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             // 
             // minPulseBox
             // 
+            this.minPulseBox.AcceptsReturn = false;
+            this.minPulseBox.AcceptsTab = false;
+            this.minPulseBox.BackColor = System.Drawing.Color.White;
+            this.minPulseBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.minPulseBox.ButtonImage = null;
             this.minPulseBox.Location = new System.Drawing.Point(217, 19);
+            this.minPulseBox.MaxLength = 32767;
+            this.minPulseBox.Multiline = false;
             this.minPulseBox.Name = "minPulseBox";
+            this.minPulseBox.ReadOnly = false;
+            this.minPulseBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.minPulseBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
             this.minPulseBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.minPulseBox.Size = new System.Drawing.Size(70, 20);
             this.minPulseBox.TabIndex = 18;
+            this.minPulseBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             // 
             // removePulse
             // 
+            this.removePulse.BackColor = System.Drawing.Color.Transparent;
+            this.removePulse.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.removePulse.CenterImage = null;
+            this.removePulse.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.removePulse.HyperlinkStyle = false;
+            this.removePulse.ImageMargin = 2;
+            this.removePulse.LeftImage = null;
             this.removePulse.Location = new System.Drawing.Point(100, 65);
             this.removePulse.Name = "removePulse";
+            this.removePulse.PushStyle = true;
+            this.removePulse.RightImage = null;
             this.removePulse.Size = new System.Drawing.Size(111, 23);
             this.removePulse.TabIndex = 22;
             this.removePulse.Text = "Remove --->";
+            this.removePulse.TextAlign = System.Drawing.StringAlignment.Center;
+            this.removePulse.TextLeftMargin = 2;
+            this.removePulse.TextRightMargin = 2;
             this.removePulse.Click += new System.EventHandler(this.removePulse_Click);
             // 
             // addPulse
             // 
+            this.addPulse.BackColor = System.Drawing.Color.Transparent;
+            this.addPulse.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.addPulse.CenterImage = null;
+            this.addPulse.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.addPulse.HyperlinkStyle = false;
+            this.addPulse.ImageMargin = 2;
+            this.addPulse.LeftImage = null;
             this.addPulse.Location = new System.Drawing.Point(100, 19);
             this.addPulse.Name = "addPulse";
+            this.addPulse.PushStyle = true;
+            this.addPulse.RightImage = null;
             this.addPulse.Size = new System.Drawing.Size(111, 23);
             this.addPulse.TabIndex = 20;
             this.addPulse.Text = "<--- Add";
+            this.addPulse.TextAlign = System.Drawing.StringAlignment.Center;
+            this.addPulse.TextLeftMargin = 2;
+            this.addPulse.TextRightMargin = 2;
             this.addPulse.Click += new System.EventHandler(this.addPulse_Click);
             // 
             // pulseBox
@@ -414,11 +625,23 @@ namespace GpsRunningPlugin.Source
             // 
             // resetPaceZone
             // 
+            this.resetPaceZone.BackColor = System.Drawing.Color.Transparent;
+            this.resetPaceZone.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.resetPaceZone.CenterImage = null;
+            this.resetPaceZone.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.resetPaceZone.HyperlinkStyle = false;
+            this.resetPaceZone.ImageMargin = 2;
+            this.resetPaceZone.LeftImage = null;
             this.resetPaceZone.Location = new System.Drawing.Point(289, 104);
             this.resetPaceZone.Name = "resetPaceZone";
+            this.resetPaceZone.PushStyle = true;
+            this.resetPaceZone.RightImage = null;
             this.resetPaceZone.Size = new System.Drawing.Size(103, 23);
             this.resetPaceZone.TabIndex = 30;
             this.resetPaceZone.Text = "Reset...";
+            this.resetPaceZone.TextAlign = System.Drawing.StringAlignment.Center;
+            this.resetPaceZone.TextLeftMargin = 2;
+            this.resetPaceZone.TextRightMargin = 2;
             this.resetPaceZone.Click += new System.EventHandler(this.resetPaceZone_Click);
             // 
             // paceTypeBox
@@ -449,36 +672,82 @@ namespace GpsRunningPlugin.Source
             // 
             // maxSpeedBox
             // 
+            this.maxSpeedBox.AcceptsReturn = false;
+            this.maxSpeedBox.AcceptsTab = false;
+            this.maxSpeedBox.BackColor = System.Drawing.Color.White;
+            this.maxSpeedBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.maxSpeedBox.ButtonImage = null;
             this.maxSpeedBox.Location = new System.Drawing.Point(218, 47);
+            this.maxSpeedBox.MaxLength = 32767;
+            this.maxSpeedBox.Multiline = false;
             this.maxSpeedBox.Name = "maxSpeedBox";
+            this.maxSpeedBox.ReadOnly = false;
+            this.maxSpeedBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.maxSpeedBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
             this.maxSpeedBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.maxSpeedBox.Size = new System.Drawing.Size(70, 20);
             this.maxSpeedBox.TabIndex = 25;
+            this.maxSpeedBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             // 
             // minSpeedBox
             // 
+            this.minSpeedBox.AcceptsReturn = false;
+            this.minSpeedBox.AcceptsTab = false;
+            this.minSpeedBox.BackColor = System.Drawing.Color.White;
+            this.minSpeedBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.minSpeedBox.ButtonImage = null;
             this.minSpeedBox.Location = new System.Drawing.Point(218, 21);
+            this.minSpeedBox.MaxLength = 32767;
+            this.minSpeedBox.Multiline = false;
             this.minSpeedBox.Name = "minSpeedBox";
+            this.minSpeedBox.ReadOnly = false;
+            this.minSpeedBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.minSpeedBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
             this.minSpeedBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.minSpeedBox.Size = new System.Drawing.Size(70, 20);
             this.minSpeedBox.TabIndex = 24;
+            this.minSpeedBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             // 
             // removePace
             // 
+            this.removePace.BackColor = System.Drawing.Color.Transparent;
+            this.removePace.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.removePace.CenterImage = null;
+            this.removePace.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.removePace.HyperlinkStyle = false;
+            this.removePace.ImageMargin = 2;
+            this.removePace.LeftImage = null;
             this.removePace.Location = new System.Drawing.Point(113, 104);
             this.removePace.Name = "removePace";
+            this.removePace.PushStyle = true;
+            this.removePace.RightImage = null;
             this.removePace.Size = new System.Drawing.Size(98, 23);
             this.removePace.TabIndex = 29;
             this.removePace.Text = "Remove --->";
+            this.removePace.TextAlign = System.Drawing.StringAlignment.Center;
+            this.removePace.TextLeftMargin = 2;
+            this.removePace.TextRightMargin = 2;
             this.removePace.Click += new System.EventHandler(this.removePace_Click);
             // 
             // addPace
             // 
+            this.addPace.BackColor = System.Drawing.Color.Transparent;
+            this.addPace.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(120)))));
+            this.addPace.CenterImage = null;
+            this.addPace.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.addPace.HyperlinkStyle = false;
+            this.addPace.ImageMargin = 2;
+            this.addPace.LeftImage = null;
             this.addPace.Location = new System.Drawing.Point(113, 19);
             this.addPace.Name = "addPace";
+            this.addPace.PushStyle = true;
+            this.addPace.RightImage = null;
             this.addPace.Size = new System.Drawing.Size(98, 23);
             this.addPace.TabIndex = 27;
             this.addPace.Text = "<--- Add";
+            this.addPace.TextAlign = System.Drawing.StringAlignment.Center;
+            this.addPace.TextLeftMargin = 2;
+            this.addPace.TextRightMargin = 2;
             this.addPace.Click += new System.EventHandler(this.addPace_Click);
             // 
             // speedBox
