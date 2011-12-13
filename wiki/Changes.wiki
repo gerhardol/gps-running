@@ -5,6 +5,13 @@
 
 More or less official beta releases are available in the Downloads section. See each plugin for detailed description of functions.
 
+2.0.332 2011-12-13
+ * PP: SpeedZone settings update
+ * UR, Overlay: Minor Italian translation update
+ * HS, PP: Show ProgressBar when calculating in popup and after activity selection update.
+ * UR: If not SelectedTime was set selection did not work (so if other plugins
+set some other, CommonStretches did not work)
+
 2.0.322 2011-07-30
  * All: Updated German, Italian, French and Spanish translations
  * AS: Visual updates
