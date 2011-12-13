@@ -298,7 +298,7 @@ namespace GpsRunningPlugin.Source
             temperatureLabel.Text = Resources.ProjectedTemperatureImpact+" "+UnitUtil.Distance.ToString(info.DistanceMeters,"u");
             double speed = info.DistanceMeters / time.TotalSeconds;
             float actualTemp = m_ppcontrol.SingleActivity.Weather.TemperatureCelsius;
-            if (!TemperatureResult.isValidtemperature(actualTemp)) { actualTemp = 15; }
+            if (!double.IsNaN(actualTemp)) { actualTemp = 15; }
             double[] aTemperature = TemperatureResult.aTemperature;
             
             IList<TemperatureResult> result = new List<TemperatureResult>();
