@@ -516,23 +516,23 @@ namespace GpsRunningPlugin.Source
             showResults();
         }
 
-        private void minGradeBoxUpdate()
-        {
-            this.minGradeBox.TextChanged -= new System.EventHandler(minGradeBox_TextChanged);
-            minGradeBox.Text = Settings.MinGrade.ToString("0.0 %");
-            this.minGradeBox.TextChanged += new System.EventHandler(minGradeBox_TextChanged);
-        }
-        void minGradeBox_TextChanged(object sender, System.EventArgs e)
+        //Requires that the box is left, for instance tab or selecting other control (not just click)
+        //MouseLeave or Key entered has other issues
+        void minGradeBox_Leave(object sender, System.EventArgs e)
         {
             try
             {
-                Settings.MinGrade = Double.Parse(minGradeBox.Text.Replace("%", "")) / 100;
+                Settings.MinGrade = Double.Parse(minGradeBox.Text.Replace("%", "")) / 100.0;
             }
             catch (Exception)
             { }
             minGradeBoxUpdate();
             resetCachedResults();
             showResults();
+        }
+        private void minGradeBoxUpdate()
+        {
+            minGradeBox.Text = Settings.MinGrade.ToString("0.0 %");
         }
 
         private String translateParameter(String str)
