@@ -175,6 +175,7 @@ namespace GpsRunningPlugin.Source
             this.minGradeBox.Name = "minGradeBox";
             this.minGradeBox.Size = new System.Drawing.Size(50, 20);
             this.minGradeBox.TabIndex = 19;
+            this.minGradeBox.Leave += new System.EventHandler(minGradeBox_Leave);
             // 
             // paceBox
             // 

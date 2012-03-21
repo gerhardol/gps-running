@@ -5,6 +5,9 @@
 
 More or less official beta releases are available in the Downloads section. See each plugin for detailed description of functions.
 
+2.0.336 2012-03-21
+ * HS: Min Grade could not be set to negative values
+
 2.0.332 2011-12-13
  * PP: SpeedZone settings update
  * UR, Overlay: Minor Italian translation update
