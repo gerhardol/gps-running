@@ -107,6 +107,7 @@ namespace GpsRunningPlugin.Source
             : this(showDialog)
         {
             this.Activities = aAct;
+            ShowPage("");
         }
 
         public OverlayView()
@@ -273,7 +274,10 @@ namespace GpsRunningPlugin.Source
                         popupForm.Text = String.Format(Resources.O2, m_activities.Count);
                 }
 
-                m_layer.DoZoom();
+                if (m_layer != null)
+                {
+                    m_layer.DoZoom();
+                }
             }
         }
         public void ThemeChanged(ITheme visualTheme)
@@ -1145,8 +1149,11 @@ namespace GpsRunningPlugin.Source
                     routes.Add(m.key, m);
                 }
             }
-            m_layer.MarkedTrailRoutes = new Dictionary<string, MapPolyline>();
-            m_layer.TrailRoutes = routes;
+            if (m_layer != null)
+            {
+                m_layer.MarkedTrailRoutes = new Dictionary<string, MapPolyline>();
+                m_layer.TrailRoutes = routes;
+            }
 #endif
         }
 
