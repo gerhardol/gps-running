@@ -216,7 +216,10 @@ namespace GpsRunningPlugin.Source
                     paceBox.SelectedItem = speedUnit;
                     showResults();
                 }
-                m_layer.ClearOverlays();
+                if (m_layer != null)
+                {
+                    m_layer.ClearOverlays();
+                }
             }
         }
 
@@ -868,8 +871,10 @@ namespace GpsRunningPlugin.Source
                     }
                 }
                 //Trails track display update
-                m_layer.MarkedTrailRoutes = mresult;
-
+                if (m_layer != null)
+                {
+                    m_layer.MarkedTrailRoutes = mresult;
+                }
                 //ST internal marking, use common marking
                 if (atrST.Count > 0)
                 {
@@ -879,7 +884,7 @@ namespace GpsRunningPlugin.Source
                 }
 
                 //Zoom
-                if (atr != null && atr.Count > 0)
+                if (atr != null && atr.Count > 0 && this.m_layer != null)
                 {
                     //It does not matter what layer is zoomed here
                     m_layer.DoZoom(GPS.GetBounds(atr[0].trailResult.GpsPoints(TrailResultMarked.SelInfoUnion(atr))));

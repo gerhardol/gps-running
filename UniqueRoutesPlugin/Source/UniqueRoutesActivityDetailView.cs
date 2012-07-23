@@ -72,7 +72,10 @@ namespace GpsRunningPlugin.Source
         {
             m_DetailPage = detailPage;
             m_view = view;
-            m_layer = TrailPointsLayer.Instance(m_view);
+            if (this.m_layer != null)
+            {
+                m_layer = TrailPointsLayer.Instance(m_view);
+            }
             if (m_DetailPage != null)
             {
                 //expandButton.Visible = true;
@@ -505,8 +508,11 @@ namespace GpsRunningPlugin.Source
         {
             if (m_showPage && m_needsRecalculation)
             {
-                m_layer.MarkedTrailRoutes = new Dictionary<string, MapPolyline>();
-                m_layer.TrailRoutes = new Dictionary<string, MapPolyline>();
+                if (this.m_layer != null)
+                {
+                    m_layer.MarkedTrailRoutes = new Dictionary<string, MapPolyline>();
+                    m_layer.TrailRoutes = new Dictionary<string, MapPolyline>();
+                }
                 if (m_refActivity != null)
                 {
                     summaryList.Visible = false;
@@ -691,8 +697,10 @@ namespace GpsRunningPlugin.Source
                     }
                 }
                 //Trails track display update
-                m_layer.MarkedTrailRoutes = mresult;
-
+                if (this.m_layer != null)
+                {
+                    m_layer.MarkedTrailRoutes = mresult;
+                }
                 //ST internal marking, use common marking
                 if (atrST.Count > 0)
                 {
@@ -1021,7 +1029,10 @@ namespace GpsRunningPlugin.Source
                 m.Click += new MouseEventHandler(mapPoly_Click);
                 routes.Add(m.key, m);
             }
-            m_layer.TrailRoutes = routes;
+            if (this.m_layer != null)
+            {
+                m_layer.TrailRoutes = routes;
+            }
         }
 #endif
 
