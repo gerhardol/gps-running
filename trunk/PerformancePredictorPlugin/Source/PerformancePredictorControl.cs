@@ -96,11 +96,13 @@ namespace GpsRunningPlugin.Source
             : this(view)
         {
             this.Activities = activities;
+            ShowPage("");
         }
         public PerformancePredictorControl(IList<IActivity> activities, IActivityReportsView view)
             : this(view)
         {
             this.Activities = activities;
+            ShowPage("");
         }
 #endif
         public PerformancePredictorControl()
@@ -284,7 +286,10 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 }
 
                 activateListeners();
-                m_layer.ClearOverlays();
+                if (m_layer != null)
+                {
+                    m_layer.ClearOverlays();
+                }
                 setView();
             }
         }

@@ -37,11 +37,11 @@ namespace GpsRunningPlugin.Source
                 case ResultColumnIds.Distance:
                     return UnitUtil.Distance.ToString(wrapper.Distance);
                 case ResultColumnIds.OneMile:
-                    return UnitUtil.Pace.ToString(wrapper.OneMile, "mm:ss");
+                    return UnitUtil.Pace.ToString(wrapper.OneMile);
                 case ResultColumnIds.FiveKm:
-                    return UnitUtil.Pace.ToString(wrapper.FiveKm, "mm:ss");
+                    return UnitUtil.Pace.ToString(wrapper.FiveKm);
                 case ResultColumnIds.TenKm:
-                    return UnitUtil.Pace.ToString(wrapper.TenKm, "mm:ss");
+                    return UnitUtil.Pace.ToString(wrapper.TenKm);
                 default:
                     ActivityInfo actInfo = ActivityInfoCache.Instance.GetInfo(wrapper.Activity);
                     string text = base.GetText(actInfo, column);
