@@ -811,18 +811,18 @@ namespace GpsRunningPlugin.Source
         private void sendActivityButton_Click(object sender, EventArgs e)
         {
             SendToPlugin sendToPlugin = null;
-            IList<IActivity> list = new List<IActivity>();
+            IList<IActivity> activities = new List<IActivity>();
             if (summaryList.Selected.Count > 0)
             //if (selectedBox.SelectedItem.Equals(StringResources.Selected))
             {
                 foreach (UniqueRoutesResult sel in summaryList.Selected)
                 {
-                    list.Add(sel.Activity);
+                    activities.Add(sel.Activity);
                 }
             }
             else
             {
-                list = m_similarActivities;
+                activities = m_similarActivities;
             }
 
             string pluginName = Settings.SelectedPlugin;
@@ -838,7 +838,7 @@ namespace GpsRunningPlugin.Source
                     //Honor selected box
                     if (!selectedBox.SelectedItem.Equals(StringResources.Selected))
                     {
-                        list = m_similarActivities;
+                        activities = m_similarActivities;
                     }
 
                     foreach (SendToPlugin p in Settings.aSendToPlugin)
@@ -862,7 +862,7 @@ namespace GpsRunningPlugin.Source
                 {
                     object[] par = sendToPlugin.par;
                     //all plugins have activities as first par
-                    par[0] = list;
+                    par[0] = activities;
 #if !ST_2_1
                     par[1] = m_view;
 #endif
