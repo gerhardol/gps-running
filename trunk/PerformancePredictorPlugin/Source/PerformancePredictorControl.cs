@@ -119,11 +119,11 @@ namespace GpsRunningPlugin.Source
         }
 
         //Compatibility with old UniqueRoutes send to
-        public PerformancePredictorControl(IList<IActivity> aAct, bool showDialog)
-            : this(showDialog)
-        {
-            this.Activities = aAct;
-        }
+        //public PerformancePredictorControl(IList<IActivity> aAct, bool showDialog)
+        //    : this(showDialog)
+        //{
+        //    this.Activities = aAct;
+        //}
         private PerformancePredictorControl(bool showDialog)
             : this()
         {
@@ -155,7 +155,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 m_popupForm.Icon = Icon.FromHandle(Properties.Resources.Image_32_PerformancePredictor.GetHicon());
                 m_popupForm.FormClosed += new FormClosedEventHandler(popupForm_FormClosed);
                 m_popupForm.Show();
-                //Note: Cannot ShowPage("") here, as InitCotrols must run first
             }
         }
 
@@ -480,7 +479,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             tableButton.Checked = !Settings.ShowChart;
             chartButton.Checked = Settings.ShowChart;
 
-            chkHighScoreBox.Checked = Settings.HighScore != null;
+            chkHighScoreBox.Checked = (Settings.HighScore != null);
         }
 
         private void syncMenuToState()

@@ -127,12 +127,12 @@ namespace GpsRunningPlugin.Source
             minGradeBoxUpdate();
         }
 
-        //Compatibility with old UniqueRoutes send to
-        public HighScoreViewer(IList<IActivity> aAct, bool showDialog, bool dummy)
-            : this(showDialog)
-        {
-            this.Activities = aAct;
-        }
+        ////Compatibility with old UniqueRoutes send to
+        //public HighScoreViewer(IList<IActivity> aAct, bool showDialog, bool dummy)
+        //    : this(showDialog)
+        //{
+        //    this.Activities = aAct;
+        //}
         public HighScoreViewer(bool showDialog)
             : this()
         {

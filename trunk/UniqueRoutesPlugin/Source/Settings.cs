@@ -76,7 +76,7 @@ namespace GpsRunningPlugin.Source
             new SendToPlugin("AccumulatedSummary", "Accumulated Summary", "GpsRunningPlugin.Source.AccumulatedSummaryView", new object[] { null, null }),
             new SendToPlugin("HighScore", "High Score", "GpsRunningPlugin.Source.HighScoreViewer", new object[] { null, null }),
             new SendToPlugin("Overlay", "Overlay", "GpsRunningPlugin.Source.OverlayView", new object[] { null, null }),
-            new SendToPlugin("PerformancePredictor", "Performance Predictor", "GpsRunningPlugin.Source.PerformancePredictorView", new object[] { null, null }),
+            new SendToPlugin("PerformancePredictor", "Performance Predictor", "GpsRunningPlugin.Source.PerformancePredictorControl", new object[] { null, null }),
             new SendToPlugin("TRIMP", "TRIMP", "GpsRunningPlugin.Source.TRIMPView", new object[] { null, null })};
 
         static Settings()
