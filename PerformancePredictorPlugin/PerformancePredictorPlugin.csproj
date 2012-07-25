@@ -21,6 +21,7 @@
     <Compile Include="Data\IntervalResult.cs" />
     <Compile Include="Data\TemperatureLabelProvider.cs" />
     <Compile Include="Data\TemperatureResult.cs" />
+    <Compile Include="Export\Integration.cs" />
     <Compile Include="GUIDs.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
