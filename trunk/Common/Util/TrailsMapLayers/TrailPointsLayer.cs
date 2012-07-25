@@ -458,6 +458,9 @@ namespace TrailsPlugin.UI.MapLayers
         private IList<TrailGPSLocation> m_SelectedTrailPoints = new List<TrailGPSLocation>();
         private IDictionary<string, MapPolyline> m_TrailRoutes = new Dictionary<string, MapPolyline>();
         private IDictionary<string, MapPolyline> m_MarkedTrailRoutes = new Dictionary<string, MapPolyline>();
+#if GPSRUNNING_UNIQUEROUTES||GPSRUNNING_OVERLAY||GPSRUNNING_HIGHSCORE||GPSRUNNING_PERFORMANCEPREDICTOR
+#pragma warning disable 649
+#endif
         private float m_highlightRadius;
         private bool m_showPage;
         private static IDictionary<Guid, TrailPointsLayer> m_layers = new Dictionary<Guid, TrailPointsLayer>();
