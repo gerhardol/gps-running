@@ -21,23 +21,23 @@ using System.Collections.Generic;
 using System.Text;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using System.Diagnostics;
-using ZoneFiveSoftware.Common.Visuals.Fitness;
-using ZoneFiveSoftware.Common.Data.GPS;
+//using ZoneFiveSoftware.Common.Visuals.Fitness;
+//using ZoneFiveSoftware.Common.Data.GPS;
 using ZoneFiveSoftware.Common.Data;
 using System.Data;
-using System.Windows.Forms;
-using GpsRunningPlugin.Properties;
+//using System.Windows.Forms;
+//using GpsRunningPlugin.Properties;
 using ZoneFiveSoftware.Common.Data.Measurement;
-using ZoneFiveSoftware.Common.Visuals;
-using GpsRunningPlugin.Util;
+//using ZoneFiveSoftware.Common.Visuals;
+//using GpsRunningPlugin.Util;
 
 namespace GpsRunningPlugin.Source
 {
-    class HighScore
+    static class HighScore
     {
-        private HighScore() { }
+        //private HighScore() { }
 
-        public static IList<IList<Object>> getFastestTimesOfDistances(IList<IActivity> activities, IList<double> distances, System.Windows.Forms.ProgressBar progress)
+        public static IList<IList<Object>> getFastestTimesOfDistances(IList<IActivity> activities, IList<double> distances, System.Windows.Forms.ProgressBar progressBar)
         {
             IList<Goal> goals = new List<Goal>();
             foreach (double distance in distances)
@@ -46,7 +46,7 @@ namespace GpsRunningPlugin.Source
                             GoalParameter.Time, GoalParameter.Distance));
             }
 
-            Result[] results = calculateInternal(activities, goals, progress);
+            Result[] results = calculateInternal(activities, goals, progressBar);
             IList<IList<Object>> objects = new List<IList<Object>>();
             foreach (Result result in results)
             {
@@ -64,90 +64,91 @@ namespace GpsRunningPlugin.Source
             return objects;
         }
 
-        public static Result[] calculateInternal(IList<IActivity> activities, IList<Goal> goals, System.Windows.Forms.ProgressBar progress)
+        public static Result[] calculateInternal(IList<IActivity> activities, IList<Goal> goals, System.Windows.Forms.ProgressBar progressBar)
         {
-            if (progress != null)
+            if (progressBar != null)
             {
-                progress.Minimum = 0;
-                progress.Value = 0;
-                progress.Maximum = 0;//Set below
-                progress.Visible = true;
-                progress.BringToFront();
+                progressBar.Minimum = 0;
+                progressBar.Value = 0;
+                progressBar.Maximum = 0;//Set below
+                progressBar.Visible = true;
+                progressBar.BringToFront();
             }
-            Result[] r = calculate2(activities, goals, progress);
-            progress.Visible = false;
+            Result[] r = calculateActivities(activities, goals, progressBar);
+            progressBar.Visible = false;
             return r;
         }
-        public static Result[] calculate2(IList<IActivity> activities, IList<Goal> goals, System.Windows.Forms.ProgressBar progress)
+
+        public static Result[] calculateActivities(IList<IActivity> activities, IList<Goal> goals, System.Windows.Forms.ProgressBar progressBar)
         {
             Result[] results = new Result[goals.Count];
             if (activities != null && activities.Count > 0)
             {
-                if (progress != null && progress.Maximum < progress.Value + activities.Count)
+                if (progressBar != null && progressBar.Maximum < progressBar.Value + activities.Count)
                 {
-                    progress.Maximum += activities.Count;
+                    progressBar.Maximum += activities.Count;
                 }
                 foreach (IActivity activity in activities)
                 {
-                    if (null != activity && activity.HasStartTime)
+                    if (null != activity && activity.HasStartTime && 
+                        (!Settings.IgnoreManualData || /*Settings.IgnoreManualData &&*/ !activity.UseEnteredData))
                     {
-                        if (Settings.IgnoreManualData)
-                        {
-                            if (!activity.UseEnteredData)
-                            {
-                                calculate(activity, goals, results);
-                            }
-                        }
-                        else
-                        {
-                            calculate(activity, goals, results);
-                        }
+                        calculateActivity(activity, goals, results);
                     }
-                    if (progress != null)
+                    if (progressBar != null)
                     {
-                        progress.Value++;
+                        progressBar.Value++;
                     }
                 }
             }
             return results;
         }
 
-        private static void calculate(IActivity activity, IList<Goal> goals, IList<Result> results)
+        private static void calculateActivity(IActivity activity, IList<Goal> goals, IList<Result> results)
         {
             ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
-            double[] distance, time, elevation, pulse, speed;
+            double[] aDistance, aTime, aElevation, aPulse, aSpeed;
             DateTime[] aDateTime;
             int increment = 5;
+            
             restart:
             {
                 IList<LapDetailInfo> laps = info.DistanceLapDetailInfo(20 + increment);
                 int length = laps.Count + 1;//info.MovingDistanceMetersTrack.Count;
-                distance = new double[length];
-                distance[0] = 0;
-                time = new double[length];
-                time[0] = 0;
-                elevation = new double[length];
-                pulse = new double[length];
-                speed = new double[length];
+                
+                aDistance = new double[length];
+                aDistance[0] = 0;
+
+                aTime = new double[length];
+                aTime[0] = 0;
+                
+                aElevation = new double[length];
+                aPulse = new double[length];
+                aSpeed = new double[length];
                 aDateTime = new DateTime[length];
+
                 DateTime dateTime = activity.StartTime;
+                aDateTime[0] = dateTime;
+
                 ITimeValueEntry<float> value = info.SmoothedElevationTrack.GetInterpolatedValue(dateTime);
                 if (value != null)
-                    elevation[0] = value.Value;
+                    aElevation[0] = value.Value;
                 else
-                    elevation[0] = 0;
+                    aElevation[0] = 0;
+
                 value = info.SmoothedHeartRateTrack.GetInterpolatedValue(dateTime);
                 if (info.SmoothedHeartRateTrack.Max > 0 &&
                      value != null)
-                    pulse[0] = value.Value;
+                    aPulse[0] = value.Value;
                 else
-                    pulse[0] = 0;
+                    aPulse[0] = 0;
+
                 value = info.SmoothedSpeedTrack.GetInterpolatedValue(dateTime);
                 if (value != null)
-                    speed[0] = value.Value;
+                    aSpeed[0] = value.Value;
                 else
-                    speed[0] = 0;
-                aDateTime[0] = dateTime;
+                    aSpeed[0] = 0;
+
                 //double d = 0;
                 //TimeSpan t;
                 //foreach (LapDetailInfo lap in laps)
@@ -158,32 +159,37 @@ namespace GpsRunningPlugin.Source
                 int index = 1;
                 foreach (LapDetailInfo lap in laps)
                 {
-                    distance[index] = lap.EndDistanceMeters;
-                    time[index] = lap.EndElapsed.TotalSeconds;
-                    if (time[index] < time[index - 1])
+                    aDistance[index] = lap.EndDistanceMeters;
+                    aTime[index] = lap.EndElapsed.TotalSeconds;
+                    if (aTime[index] < aTime[index - 1])
                     {
-                        time[index] = time[index - 1];
+                        aTime[index] = aTime[index - 1];
                         increment += 5;
                         goto restart;
                     }
+
                     dateTime = lap.EndTime;
+                    aDateTime[index] = dateTime;
+
                     value = info.SmoothedElevationTrack.GetInterpolatedValue(dateTime);
                     if (value != null)
-                        elevation[index] = value.Value;
+                        aElevation[index] = value.Value;
                     else
-                        elevation[index] = 0;
+                        aElevation[index] = 0;
+
                     value = info.SmoothedHeartRateTrack.GetInterpolatedValue(dateTime);
                     if (info.SmoothedHeartRateTrack.Max > 0 &&
                          value != null)
-                        pulse[index] = value.Value;
+                        aPulse[index] = value.Value;
                     else
-                        pulse[index] = 0;
+                        aPulse[index] = 0;
+
                     value = info.SmoothedSpeedTrack.GetInterpolatedValue(dateTime);
                     if (value != null)
-                        speed[index] = value.Value;
+                        aSpeed[index] = value.Value;
                     else
-                        speed[index] = 0;
-                    aDateTime[index] = dateTime;
+                        aSpeed[index] = 0;
+
                     index++;
                 }
             }
@@ -215,8 +221,6 @@ namespace GpsRunningPlugin.Source
             //pad(pulse);
             //pad(speed);
 
-            //int test = 0;
-
             for (int i = 0; i < goals.Count; i++)
             {
                 Result result = null;
@@ -226,18 +230,19 @@ namespace GpsRunningPlugin.Source
                     case GoalParameter.SpeedZone:
                     case GoalParameter.PulseZoneSpeedZone:
                         if (info.SmoothedHeartRateTrack.Count > 0)
-                            result = calculate(activity, (IntervalsGoal)goals[i],
-                                                getRightType(goals[i].Domain, distance, time, elevation),
-                                                getRightType(goals[i].Image, pulse, speed),
-                                                time, distance, elevation, pulse, aDateTime);
+                            result = calculateActivityZoneGoal(activity, (IntervalsGoal)goals[i],
+                                                getGoalTrack(goals[i].Domain, aDistance, aTime, aElevation),
+                                                getGoalZoneTrack(goals[i].Image, aPulse, aSpeed),
+                                                aTime, aDistance, aElevation, aPulse, aDateTime);
                         break; 
                     default:
-                        result = calculate(activity, (PointGoal)goals[i],
-                                            getRightType(goals[i].Domain, distance, time, elevation),
-                                            getRightType(goals[i].Image, distance, time, elevation),
-                                            time, distance, elevation, pulse, aDateTime);
+                        result = calculateActivityGoal(activity, (PointGoal)goals[i],
+                                            getGoalTrack(goals[i].Domain, aDistance, aTime, aElevation),
+                                            getGoalTrack(goals[i].Image, aDistance, aTime, aElevation),
+                                            aTime, aDistance, aElevation, aPulse, aDateTime);
                         break;
                 }
+
                 int upperBound = goals[i].UpperBound ? 1 : -1;
                 if (result != null && (results[i] == null ||
                    (upperBound * result.DomainDiff > upperBound * results[i].DomainDiff)))
@@ -247,48 +252,54 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        private static void pad(double[] ds)
-        {
-            int index = 0;
-            while (index < ds.Length && ds[index] == 0) index++;
-            if (index >= ds.Length) return;
-            double v = ds[index];
-            while (index >= 0) ds[index--] = v;
-            index = ds.Length - 1;
-            while (index >= 0 && ds[index] == 0) index--;
-            v = ds[index];
-            while (index < ds.Length) ds[index++] = v;
-        }
+        //private static void pad(double[] ds)
+        //{
+        //    int index = 0;
+        //    while (index < ds.Length && ds[index] == 0) index++;
+        //    if (index >= ds.Length) return;
+        //    double v = ds[index];
+        //    while (index >= 0) ds[index--] = v;
+        //    index = ds.Length - 1;
+        //    while (index >= 0 && ds[index] == 0) index--;
+        //    v = ds[index];
+        //    while (index < ds.Length) ds[index++] = v;
+        //}
 
-        private static double[] getRightType(GoalParameter goalParameter, 
+        private static double[] getGoalTrack(GoalParameter goal, 
             double[] distance, double[] time, double[] elevation)
         {
-            switch (goalParameter)
+            switch (goal)
             {
-                case GoalParameter.Distance: return distance;
-                case GoalParameter.Time: return time;
-                case GoalParameter.Elevation: return elevation;
+                case GoalParameter.Distance: 
+                    return distance;
+                case GoalParameter.Time: 
+                    return time;
+                case GoalParameter.Elevation: 
+                    return elevation;
             }
             return null;
         }
 
-        public static IList<double[]> getRightType(GoalParameter goalParamter, 
+        public static IList<double[]> getGoalZoneTrack(GoalParameter goal, 
             double[] pulse, double[] speed)
         {
             IList<double[]> result = new List<double[]>();
-            switch (goalParamter)
+            switch (goal)
             {
                 case GoalParameter.PulseZone:
-                    result.Add(pulse); break;
+                    result.Add(pulse); 
+                    break;
                 case GoalParameter.SpeedZone:
-                    result.Add(speed); break;
+                    result.Add(speed); 
+                    break;
                 case GoalParameter.PulseZoneSpeedZone:
-                    result.Add(pulse); result.Add(speed); break;
+                    result.Add(pulse); result.Add(speed); 
+                    break;
             }
             return result;
         }
 
-        private static Result calculate(IActivity activity, IntervalsGoal goal, 
+        private static Result calculateActivityZoneGoal(IActivity activity, IntervalsGoal goal, 
             double[] domain, IList<double[]> image,
             double[] time, double[] distance, double[] elevation, double[] pulse, DateTime[] aDateTime)
         {
@@ -346,7 +357,7 @@ namespace GpsRunningPlugin.Source
 
             if (foundAny)
             {
-                return new Result(goal, activity, domain[bestBack], domain[bestFront], (int)time[bestBack], (int)time[bestFront],
+                return new Result(goal, activity, domain[bestBack], domain[bestFront], time[bestBack], time[bestFront],
                     distance[bestBack], distance[bestFront], elevation[bestBack], elevation[bestFront], 
                     averagePulse(pulse, time, bestBack, bestFront),
                     aDateTime[bestBack], aDateTime[bestFront]);
@@ -376,7 +387,7 @@ namespace GpsRunningPlugin.Source
             return true;
         }
 
-        private static Result calculate(IActivity activity, PointGoal goal, 
+        private static Result calculateActivityGoal(IActivity activity, PointGoal goal, 
             double[] domain, double[] image,
             double[] time, double[] distance, double[] elevation, double[] pulse, DateTime[] aDateTime)
         {
@@ -412,7 +423,7 @@ namespace GpsRunningPlugin.Source
             }
             if (foundAny)
             {
-                return new Result(goal, activity, domain[bestBack], domain[bestFront], (int)time[bestBack], (int)time[bestFront],
+                return new Result(goal, activity, domain[bestBack], domain[bestFront], time[bestBack], time[bestFront],
                     distance[bestBack], distance[bestFront], elevation[bestBack], elevation[bestFront],
                     averagePulse(pulse, time, bestBack, bestFront),
                     aDateTime[bestBack], aDateTime[bestFront]);
@@ -420,7 +431,7 @@ namespace GpsRunningPlugin.Source
             return null;
         }
 
-        public static void generateGoals(GoalParameter domain, GoalParameter image, bool upperBound,
+        public static void generateGoal(GoalParameter domain, GoalParameter image, bool upperBound,
             IList<Goal> goals)
         {
             switch (image)
@@ -497,7 +508,7 @@ namespace GpsRunningPlugin.Source
         public static IList<Goal> generateGoals()
         {
             IList<Goal> goals = new List<Goal>();
-            generateGoals(Settings.Domain, Settings.Image, Settings.UpperBound, goals);
+            generateGoal(Settings.Domain, Settings.Image, Settings.UpperBound, goals);
             return goals;
         }
     }

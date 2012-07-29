@@ -453,8 +453,8 @@ namespace GpsRunningPlugin.Source
                          domain == GoalParameter.Time ||
                          domain == GoalParameter.Elevation))
                     {
-                        HighScore.generateGoals(domain, image, true, goals);
-                        HighScore.generateGoals(domain, image, false, goals);
+                        HighScore.generateGoal(domain, image, true, goals);
+                        HighScore.generateGoal(domain, image, false, goals);
                     }
                     upperBoundResult.Add(true, null);
                     upperBoundResult.Add(false, null);

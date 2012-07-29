@@ -35,8 +35,8 @@ namespace GpsRunningPlugin.Source
     public class Result
     {
         public Result(Goal goal, IActivity activity,
-            double domainStart, double domainEnd, 
-            int timeStart, int timeEnd, double meterStart, double meterEnd, double elevationStart,
+            double domainStart, double domainEnd,
+            double timeStart, double timeEnd, double meterStart, double meterEnd, double elevationStart,
             double elevationEnd, double averagePulse, DateTime firstDate, DateTime endDate)
         {
             this.Goal = goal;
@@ -64,9 +64,7 @@ namespace GpsRunningPlugin.Source
 
         public double DomainStart, DomainEnd, DomainDiff,  
             MeterStart, MeterEnd, Meters, ElevationStart, ElevationEnd, Elevations,
-            AveragePulse;
-
-        public int TimeStart, TimeEnd, Seconds;
+            AveragePulse,TimeStart, TimeEnd, Seconds;
         public DateTime DateStart, DateEnd;
 
         public override String ToString()

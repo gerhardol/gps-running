@@ -38,7 +38,7 @@ namespace HighScore.Export
         {
             IList<Goal> goals = GpsRunningPlugin.Source.HighScore.generateGoals();
 
-            Result[] results = GpsRunningPlugin.Source.HighScore.calculate2(activities, goals, progress);
+            Result[] results = GpsRunningPlugin.Source.HighScore.calculateActivities(activities, goals, progress);
             IList<IList<Object>> objects = new List<IList<Object>>();
             foreach (Result result in results)
             {
