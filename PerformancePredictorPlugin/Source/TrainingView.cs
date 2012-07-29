@@ -272,7 +272,7 @@ namespace GpsRunningPlugin.Source
 
         public void RefreshData()
         {
-            if (m_showPage && m_ppcontrol.SingleActivity != null && Predict.Predictor(Settings.Model) != null)
+            if (m_showPage && Predict.Predictor(Settings.Model) != null && m_ppcontrol.FirstActivity != null)
             {
                 setTraining();
                 setPaceTempo();
@@ -282,14 +282,12 @@ namespace GpsRunningPlugin.Source
 
         private void setInterval()
         {
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
-            double distance = info.DistanceMeters;
-            double seconds = info.Time.TotalSeconds;
             double[] distances = new double[] { 100, 200, 300, 400, 800, 1000, 1609.344 };
             IList<IntervalResult> result = new List<IntervalResult>();
+            IntervalResultCache resultCache = new IntervalResultCache(m_ppcontrol.Distance, m_ppcontrol.Time);
             for (int i = 0; i < distances.Length; i++)
             {
-                IntervalResult t = new IntervalResult(m_ppcontrol.SingleActivity, distances[i], seconds);
+                IntervalResult t = new IntervalResult(m_ppcontrol.FirstActivity, resultCache, distances[i]);
                 result.Add(t);
             }
 
@@ -298,16 +296,16 @@ namespace GpsRunningPlugin.Source
 
         private void setPaceTempo()
         {
-            paceTempoLabel.Text = String.Format(Resources.PaceForTempoRuns_label, Predict.getVdot(m_ppcontrol.SingleActivity));
+            paceTempoLabel.Text = String.Format(Resources.PaceForTempoRuns_label, Predict.getVdot(m_ppcontrol.Time, m_ppcontrol.Distance));
             string[] durations = new string[] { "20", "25", "30", "35", "40", "45", "50", "55", "60" };
             double[] factors = new double[] { 1, 1.012, 1.022, 1.027, 1.033, 1.038, 1.043, 1.04866, 1.055 };
-            double vdot = Predict.getVdot(m_ppcontrol.SingleActivity);
+            double vdot = Predict.getVdot(m_ppcontrol.Time, m_ppcontrol.Distance);
 
             double speed = Predict.getTrainingSpeed(vdot, 0.93);
             IList<PaceTempoResult> result = new List<PaceTempoResult>();
             for (int i = 0; i < durations.Length; i++)
             {
-                PaceTempoResult t = new PaceTempoResult(m_ppcontrol.SingleActivity, durations[i], speed / factors[i]);
+                PaceTempoResult t = new PaceTempoResult(m_ppcontrol.FirstActivity, durations[i], speed / factors[i]);
                 result.Add(t);
             }
             paceTempoList.RowData = result;
@@ -315,24 +313,21 @@ namespace GpsRunningPlugin.Source
 
         private void setTraining()
         {
-            double maxHr = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(m_ppcontrol.SingleActivity.StartTime).MaximumHeartRatePerMinute;
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
+            double maxHr = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(m_ppcontrol.FirstActivity.StartTime).MaximumHeartRatePerMinute;
             if (double.IsNaN(maxHr))
             {
                 trainingLabel.Text = Resources.NoMaxHR;
                 trainingList.Visible = false;
                 return;
             }
-            double vo2max = Predict.getVo2max(m_ppcontrol.SingleActivity);
-            double vdot = Predict.getVdot(m_ppcontrol.SingleActivity);
+            double vo2max = Predict.getVo2max(m_ppcontrol.Time);
+            double vdot = Predict.getVdot(m_ppcontrol.Time, m_ppcontrol.Distance);
             trainingLabel.Text = String.Format(Resources.VO2MaxVDOT, 100 * vo2max, vdot);
-            double seconds = info.Time.TotalSeconds;
-            double distance = info.DistanceMeters;
-            TrainingResult.Calculate (vdot, seconds, distance, maxHr);
+            TrainingResult.Calculate(vdot, m_ppcontrol.Time, m_ppcontrol.Distance, maxHr);
             IList<TrainingResult> result = new List<TrainingResult>();
             for (int i = 0; i < 15; i++)
             {
-                TrainingResult t = new TrainingResult(m_ppcontrol.SingleActivity, i);
+                TrainingResult t = new TrainingResult(m_ppcontrol.FirstActivity, i);
                 result.Add(t);
             }
             trainingList.RowData = result;

@@ -34,20 +34,20 @@ namespace GpsRunningPlugin.Source
 {
     public class Predict
     {
-        public delegate double PredictTime(double new_dist, double old_dist, double old_time);
-        public static PredictTime Cameron = delegate(double new_dist, double old_dist, double old_time)
+        public delegate double PredictTime(double new_dist, double old_dist, TimeSpan old_time);
+        public static PredictTime Cameron = delegate(double new_dist, double old_dist, TimeSpan old_time)
                     {
                         double a = 13.49681 - (0.000030363 * old_dist)
                             + (835.7114 / Math.Pow(old_dist, 0.7905));
                         double b = 13.49681 - (0.000030363 * new_dist)
                             + (835.7114 / Math.Pow(new_dist, 0.7905));
-                        double new_time = (old_time / old_dist) * (a / b) * new_dist;
+                        double new_time = (old_time.TotalSeconds / old_dist) * (a / b) * new_dist;
                         return new_time;
                     };
 
-        public static PredictTime Riegel = delegate(double new_dist, double old_dist, double old_time)
+        public static PredictTime Riegel = delegate(double new_dist, double old_dist, TimeSpan old_time)
                     {
-                        double new_time = old_time * Math.Pow(new_dist / old_dist, 1.06);
+                        double new_time = old_time.TotalSeconds * Math.Pow(new_dist / old_dist, 1.06);
                         return new_time;
                     };
 
@@ -66,12 +66,12 @@ namespace GpsRunningPlugin.Source
 
         /***********************************************************/
 
-        public static TimeSpan scaleTime(TimeSpan pace, double p)
+        public static TimeSpan scaleTime(TimeSpan time, double p)
         {
-            return new TimeSpan(0, 0, 0, 0, (int)Math.Round(pace.TotalMilliseconds * p));
+            return TimeSpan.FromSeconds(time.TotalSeconds * p);
         }
        
-        public static double getTrainingSpeed(double new_dist, double old_dist, double old_time)
+        public static double getTrainingSpeed(double new_dist, double old_dist, TimeSpan old_time)
         {
             return new_dist / (Predict.Predictor(Settings.Model))(new_dist, old_dist, old_time);
         }
@@ -83,19 +83,19 @@ namespace GpsRunningPlugin.Source
                 - 0.007546 * Math.Pow(vdot * (percentZone - 0.05), 2)) / 60;
         }
 
-        public static double getVo2max(IActivity activity)
+        public static double getVo2max(TimeSpan time)
         {
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
-            return 0.8 + 0.1894393 * Math.Exp(-0.012778 * info.Time.TotalSeconds / 60)
-                + 0.2989558 * Math.Exp(-0.1932605 * info.Time.TotalSeconds / 60);
+            double seconds = time.TotalSeconds;
+            return 0.8 + 0.1894393 * Math.Exp(-0.012778 * seconds / 60)
+                + 0.2989558 * Math.Exp(-0.1932605 * seconds / 60);
         }
 
-        public static double getVdot(IActivity activity)
+        public static double getVdot(TimeSpan time, double dist)
         {
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
-            return (-4.6 + 0.182258 * (info.DistanceMeters * 60 / info.Time.TotalSeconds)
-                + 0.000104 * Math.Pow(info.DistanceMeters * 60 / info.Time.TotalSeconds, 2))
-                / getVo2max(activity);
+            double seconds = time.TotalSeconds;
+            return (-4.6 + 0.182258 * (dist * 60 / seconds)
+                + 0.000104 * Math.Pow(dist * 60 / seconds, 2))
+                / getVo2max(time);
         }
     }
 

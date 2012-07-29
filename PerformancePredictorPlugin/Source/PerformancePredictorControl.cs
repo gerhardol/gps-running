@@ -56,9 +56,13 @@ namespace GpsRunningPlugin.Source
 
         private bool m_showPage = false;
         private IList<IActivity> m_activities = new List<IActivity>();
+        //override used part
+        private TimeSpan? m_time = null;
+        private double? m_distance = null;
 
 #if !ST_2_1
-        public PerformancePredictorControl(IDetailPage detailPage, IDailyActivityView view)
+        //Activity page
+        internal PerformancePredictorControl(IDetailPage detailPage, IDailyActivityView view)
             : this()
         {
             m_DetailPage = detailPage;
@@ -72,8 +76,9 @@ namespace GpsRunningPlugin.Source
             this.trainingView.InitControls(m_DetailPage, m_view, m_layer, this);
             this.extrapolateView.InitControls(m_DetailPage, m_view, m_layer, this);
         }
-        //popup dialog
-        public PerformancePredictorControl(IDailyActivityView view)
+
+        //Analyze popup dialog
+        internal PerformancePredictorControl(IDailyActivityView view)
             : this(true)
         {
             m_view = view;
@@ -82,7 +87,7 @@ namespace GpsRunningPlugin.Source
             this.trainingView.InitControls(m_DetailPage, m_view, m_layer, this);
             this.extrapolateView.InitControls(m_DetailPage, m_view, m_layer, this);
         }
-        public PerformancePredictorControl(IActivityReportsView view)
+        internal PerformancePredictorControl(IActivityReportsView view)
             : this(true)
         {
             m_layer = TrailPointsLayer.Instance((IView)view);
@@ -104,8 +109,17 @@ namespace GpsRunningPlugin.Source
             this.Activities = activities;
             ShowPage("");
         }
+        //Trails sendto
+        internal PerformancePredictorControl(IList<IActivity> activities, IDailyActivityView view, TimeSpan time, double distance, System.Windows.Forms.ProgressBar progressBar)
+            : this(view)
+        {
+            this.Activities = activities;
+            this.m_time = time;
+            this.m_distance = distance;
+            ShowPage("");
+        }
 #endif
-        public PerformancePredictorControl()
+        private PerformancePredictorControl()
         {
             InitializeComponent();
             InitControls();
@@ -124,6 +138,7 @@ namespace GpsRunningPlugin.Source
         //{
         //    this.Activities = aAct;
         //}
+
         private PerformancePredictorControl(bool showDialog)
             : this()
         {
@@ -166,7 +181,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
             UpdateToolBar();
             //Correct possibly misaligned settings
-            setView();
+            //setView();
         }
 
         private static ITheme m_visualTheme;
@@ -234,13 +249,13 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 deactivateListeners();
                 if (null == value) { m_activities.Clear(); }
                 else { m_activities = value; }
+                //Reset "special selection"
+                m_time = null;
+                m_distance = null;
 
                 if (1 == m_activities.Count && m_activities[0] != null)
                 {
-                    if (m_lastActivity != m_activities[0])
-                    {
-                        m_lastActivity = m_activities[0];
-                    }
+                    m_lastActivity = m_activities[0];
                 }
                 else
                 {
@@ -293,13 +308,65 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             }
         }
 
+        //For extraploate view, where a single activity is extrapolated
         public IActivity SingleActivity
         {
             get
             {
-                return m_lastActivity;
+                if (!this.chkHighScoreBox.Checked)
+                {
+                    return m_lastActivity;
+                }
+                return null;
             }
         }
+
+        //For training view, where certain data is depenedent on an activity, nothing major if it is changed
+        public IActivity FirstActivity
+        {
+            get
+            {
+                if (m_activities.Count > 0 && m_activities[0] != null && !chkHighScoreBox.Checked)
+                {
+                    return m_activities[0];
+                }
+                return null;
+            }
+        }
+
+        //The following are a little more permissive than SingleActivity, but seem to be OK
+        internal ActivityInfo SingleInfo { get { return ActivityInfoCache.Instance.GetInfo(this.m_lastActivity); } }
+        internal TimeSpan Time
+        {
+            get
+            {
+                if (this.IsPartial)
+                {
+                    return (TimeSpan)m_time;
+                }
+                else if (this.m_lastActivity != null)
+                {
+                    return this.SingleInfo.Time;
+                }
+                return TimeSpan.FromSeconds(0);
+            }
+        }
+        internal double Distance
+        {
+            get
+            {
+                if (this.IsPartial)
+                {
+                    return (double)m_distance;
+                }
+                else if (this.m_lastActivity != null)
+                {
+                    return this.SingleInfo.DistanceMeters;
+                }
+                return 0;
+            }
+        }
+        internal bool IsPartial { get { return ((this.Activities.Count > 0) && (this.m_time != null && this.m_distance != null)); } }
 
 #if ST_2_1
         private void dataChanged(object sender, ZoneFiveSoftware.Common.Data.NotifyDataChangedEventArgs e)
@@ -381,9 +448,12 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             trainingView.HidePage();
             extrapolateView.HidePage();
 
-            //timePredictionButton.Enabled = false;
-            trainingButton.Enabled = false;
-            extrapolateButton.Enabled = false;
+            //this.timePredictionButton.Enabled = false;
+            this.trainingButton.Enabled = false;
+            this.extrapolateButton.Enabled = false;
+            this.timePredictionButton.Checked = false;
+            this.trainingButton.Checked = false;
+            this.extrapolateButton.Checked = false;
 
             this.tableButton.Enabled = false;
             this.chartButton.Enabled = false;
@@ -392,11 +462,24 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             this.tableButton.Enabled = true;
             this.chartButton.Enabled = true;
 
-            if (m_activities.Count == 1)
+            if (this.IsPartial)
+            {
+                chkHighScoreBox.Enabled = false;
+                chkHighScoreBox.Checked = false;
+            }
+
+            if (this.SingleActivity != null)
             {
                 //timePredictionButton.Enabled = true;
                 trainingButton.Enabled = true;
                 extrapolateButton.Enabled = true;
+
+                timePredictionButton.Checked = Settings.PredictionView == PredictionView.TimePrediction;
+            }
+            else if (this.FirstActivity != null)
+            {
+                //timePredictionButton.Enabled = true;
+                trainingButton.Enabled = true;
 
                 timePredictionButton.Checked = Settings.PredictionView == PredictionView.TimePrediction;
             }
@@ -413,7 +496,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 if (m_activities.Count == 1)
                 {
                     //chkHighScore.Checked set in Activities (as it may clear selection)
-                    if (Settings.HighScore != null)
+                    if (Settings.HighScore != null && !this.IsPartial)
                     {
                         chkHighScoreBox.Enabled = true;
                     }
@@ -429,7 +512,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 this.chartButton.Enabled = false;
                 this.tableButton.Checked = true;
                 this.chartButton.Checked = false;
-                if (Settings.PredictionView == PredictionView.Training)
+                if (trainingButton.Enabled && Settings.PredictionView == PredictionView.Training)
                 {
                     actionBanner1.Text = StringResources.Training;
                     trainingButton.Checked = true;
@@ -511,6 +594,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
             showToolBarMenuItem.Checked = Settings.ShowToolBar;
         }
+
         public bool ChkHighScore
         {
             get
@@ -653,7 +737,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                     this.chkHighScoreBox.Checked = !this.chkHighScoreBox.Checked;
                     this.chkHighScoreMenuItem.Checked = this.chkHighScoreBox.Checked;
                 }
-
+                setView();
                 predictorView.RefreshData();
             }
         }

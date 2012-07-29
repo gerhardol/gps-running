@@ -270,17 +270,15 @@ namespace GpsRunningPlugin.Source
                 return;
             }
             weightLabel2.Visible = true;
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
             weightLabel.Text = Resources.ProjectedWeightImpact + " " +
-                UnitUtil.Distance.ToString(info.DistanceMeters, "u");
-            TimeSpan time = info.Time;
+                UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u");
             const double inc = 1.4;
-            double vdot = Predict.getVdot(m_ppcontrol.SingleActivity);
+            double vdot = Predict.getVdot(m_ppcontrol.Time, m_ppcontrol.Distance);
             IList<WeightResult> result = new List<WeightResult>();
             WeightResult sel = null;
             for (int i = 0; i < 13; i++)
             {
-                WeightResult t = new WeightResult(m_ppcontrol.SingleActivity, 6 - i, vdot, weight, inc, time, info);
+                WeightResult t = new WeightResult(m_ppcontrol.SingleActivity, 6 - i, vdot, weight, inc, m_ppcontrol.Time, m_ppcontrol.Distance);
                 result.Add(t);
                 if (t.Weight > weight)
                 {
@@ -293,10 +291,7 @@ namespace GpsRunningPlugin.Source
 
         private void setTemperature()
         {
-            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
-            TimeSpan time = info.Time;
-            temperatureLabel.Text = Resources.ProjectedTemperatureImpact+" "+UnitUtil.Distance.ToString(info.DistanceMeters,"u");
-            double speed = info.DistanceMeters / time.TotalSeconds;
+            temperatureLabel.Text = Resources.ProjectedTemperatureImpact + " " + UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u");
             float actualTemp = m_ppcontrol.SingleActivity.Weather.TemperatureCelsius;
             if (!double.IsNaN(actualTemp)) { actualTemp = 15; }
             double[] aTemperature = TemperatureResult.aTemperature;
@@ -305,7 +300,7 @@ namespace GpsRunningPlugin.Source
             TemperatureResult sel = null;
             for (int i = 0; i < aTemperature.Length; i++)
             {
-                TemperatureResult t = new TemperatureResult(m_ppcontrol.SingleActivity, aTemperature[i], actualTemp, time, speed);
+                TemperatureResult t = new TemperatureResult(m_ppcontrol.SingleActivity, aTemperature[i], actualTemp, m_ppcontrol.Time, m_ppcontrol.Distance);
                 result.Add(t);
                 if ((i == 0 || actualTemp >= aTemperature[i - 1]) && (actualTemp < aTemperature[i]))
                 {

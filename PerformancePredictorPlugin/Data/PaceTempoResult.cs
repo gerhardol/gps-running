@@ -16,11 +16,7 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
 using ZoneFiveSoftware.Common.Data.Fitness;
-using ZoneFiveSoftware.Common.Data.Measurement;
 
 namespace GpsRunningPlugin.Source
 {
@@ -45,6 +41,5 @@ namespace GpsRunningPlugin.Source
             this.Duration = duration;
             this.Speed = speed;
         }
-
     }
 }

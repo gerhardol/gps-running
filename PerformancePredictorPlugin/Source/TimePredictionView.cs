@@ -223,6 +223,7 @@ namespace GpsRunningPlugin.Source
             makeData(model);
             return m_predictorData[model].result;
         }
+
         private void makeData(PredictionModel model)
         {
             if (!m_predictorData.ContainsKey(model))
@@ -236,8 +237,9 @@ namespace GpsRunningPlugin.Source
             {
                 m_predictorData[model].series.Points.Clear();
                 m_predictorData[model].isData = true;
-                if (m_ppcontrol.Activities.Count > 1 ||
-                    (m_ppcontrol.Activities.Count == 1 && m_ppcontrol.ChkHighScore))
+
+                if (!m_ppcontrol.IsPartial && (m_ppcontrol.Activities.Count > 1 ||
+                    (m_ppcontrol.Activities.Count == 1 && m_ppcontrol.ChkHighScore)))
                 {
                     RefreshColumns(true);
                     this.lblHighScoreRequired.Visible = false;
@@ -245,17 +247,25 @@ namespace GpsRunningPlugin.Source
                     //makeData(m_predictorData[model].series, m_predictorData[model].result, Predict.Predictor(model));
                     m_predictorData[model].result = getResults(m_predictorData[model].series, Predict.Predictor(model), m_ppcontrol.Activities, progressBar);
                 }
-                else if (m_ppcontrol.SingleActivity != null)
+                else if (m_ppcontrol.IsPartial || m_ppcontrol.SingleActivity != null)
                 {
                     RefreshColumns(false);
-                    //Predict
-                    ActivityInfo info = ActivityInfoCache.Instance.GetInfo(m_ppcontrol.SingleActivity);
-
-                    if (info.DistanceMeters > 0 && info.Time.TotalSeconds > 0)
+                    IList<IActivity> activities;
+                    if (m_ppcontrol.IsPartial)
                     {
-                        m_predictorData[model].result = getResults(m_predictorData[model].series, Predict.Predictor(model), new List<IActivity> { m_ppcontrol.SingleActivity },
+                        activities = m_ppcontrol.Activities;
+                    }
+                    else
+                    {
+                        activities = new List<IActivity> { m_ppcontrol.SingleActivity };
+                    }
+
+                    if (m_ppcontrol.Distance > 0 && m_ppcontrol.Time.TotalSeconds > 0)
+                    {
+                        //Predict
+                        m_predictorData[model].result = getResults(m_predictorData[model].series, Predict.Predictor(model), activities,
                             //makeData(m_predictorData[model].series, m_predictorData[model].result, Predict.Predictor(model),
-                            info.DistanceMeters, info.Time.TotalSeconds, null);
+                            m_ppcontrol.Distance, m_ppcontrol.Time, null);
                     }
                 }
                 //else: no activity selected
@@ -300,7 +310,7 @@ namespace GpsRunningPlugin.Source
             foreach (IList<Object> result in results)
             {
                 IActivity foundActivity = (IActivity)result[0];
-                double old_time = double.Parse(result[1].ToString());
+                TimeSpan old_time = TimeSpan.FromSeconds(UnitUtil.Time.Parse(result[1].ToString()));
                 double meterStart = (double)result[2];
                 double meterEnd = (double)result[3];
                 double timeStart = 0;
@@ -325,7 +335,6 @@ namespace GpsRunningPlugin.Source
                 {
                     unitNominal = Settings.Distances[length].Keys[0];
                 }
-                double speed = new_dist / new_time;
                 reslist.Add(new TimePredictionResult(foundActivity, new_dist, length, unitNominal, new_time, old_dist, old_time, meterStart, timeStart));
                 index++;
             }
@@ -347,7 +356,7 @@ namespace GpsRunningPlugin.Source
             return reslist;
         }
 
-        public static IList<TimePredictionResult> getResults(ChartDataSeries series, Predict.PredictTime predict, IList<IActivity> activities, double old_dist, double old_time, System.Windows.Forms.ProgressBar progressBar)
+        public static IList<TimePredictionResult> getResults(ChartDataSeries series, Predict.PredictTime predict, IList<IActivity> activities, double old_dist, TimeSpan old_time, System.Windows.Forms.ProgressBar progressBar)
         {
             IList<TimePredictionResult> reslist = new List<TimePredictionResult>();
             foreach (double new_dist in Settings.Distances.Keys)
@@ -369,7 +378,6 @@ namespace GpsRunningPlugin.Source
                 {
                     unitNominal = Settings.Distances[length].Keys[0];
                 }
-                double speed = new_dist / new_time;
                 //row[ActivityIdColumn] = "";
                 if (activities != null && activities.Count > 0)
                 {
@@ -430,9 +438,9 @@ namespace GpsRunningPlugin.Source
                         }
                         IValueRangeSeries<DateTime> t = new ValueRangeSeries<DateTime>();
                         DateTime endTime;
-                        if (result.UsedTime > 0)
+                        if (result.UsedTime.TotalSeconds > 0)
                         {
-                            endTime = result.StartUsedTime.AddSeconds(result.UsedTime);
+                            endTime = result.StartUsedTime.Add(result.UsedTime);
                         }
                         else
                         {

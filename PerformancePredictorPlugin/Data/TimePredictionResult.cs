@@ -61,10 +61,13 @@ namespace GpsRunningPlugin.Source
                 return activity.StartTime.AddSeconds(StartTime);
             }
         }
+
+        //TODO: Protect these, only in multiresults
         public double UsedDistance;
-        public double UsedTime;
+        public TimeSpan UsedTime;
         public double StartDistance;
         private double StartTime;
+
         public TimePredictionResult(IActivity activity, double Distance, double DistanceNominal, Length.Units UnitNominal, double PredictedTime)
         {
             this.activity = activity;
@@ -73,7 +76,7 @@ namespace GpsRunningPlugin.Source
             this.UnitNominal = UnitNominal;
             this.PredictedTime = PredictedTime;
         }
-        public TimePredictionResult(IActivity activity, double Distance, double DistanceNominal, Length.Units UnitNominal, double PredictedTime, double UsedDistance, double UsedTime, double StartDistance, double StartTime)
+        public TimePredictionResult(IActivity activity, double Distance, double DistanceNominal, Length.Units UnitNominal, double PredictedTime, double UsedDistance, TimeSpan UsedTime, double StartDistance, double StartTime)
             : this(activity, Distance, DistanceNominal, UnitNominal, PredictedTime)
         {
             this.UsedDistance = UsedDistance;
@@ -90,6 +93,5 @@ namespace GpsRunningPlugin.Source
             this.UnitNominal = UnitNominal;
             this.PredictedTime = -1;
         }
-
     }
 }
