@@ -136,9 +136,9 @@ namespace GpsRunningPlugin.Source
                     sendMenuItem.Enabled = false;
                 }
                 aSendToMenu[sendMenuItem] = p;
-                this.sendToMenuItem.DropDownItems.Add(sendMenuItem);
+                this.analyzeMenuItem.DropDownItems.Add(sendMenuItem);
             }
-            this.sendToMenuItem.DropDownItems.Add(this.limitActivityMenuItem);
+            this.analyzeMenuItem.DropDownItems.Add(this.limitActivityMenuItem);
 
             if (Settings.SelectAll)
             {
@@ -162,7 +162,7 @@ namespace GpsRunningPlugin.Source
             this.boxCategory.ButtonImage = Properties.Resources.DropDown;
             copyTable.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
 #if !ST_2_1
-            sendToMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Analyze16;
+            analyzeMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Analyze16;
 #endif
             listSettingsMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Table16;
             btnRefresh.CenterImage = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.Refresh16;
@@ -207,9 +207,9 @@ namespace GpsRunningPlugin.Source
             this.ctxMenuItemRefActivity.Text = StringResources.SetRefActivity;
             listSettingsMenuItem.Text = StringResources.ListSettings;
 #if ST_2_1
-            sendToMenuItem.Text = CommonResources.Text.LabelActivity;
+            analyzeMenuItem.Text = CommonResources.Text.LabelActivity;
 #else
-            sendToMenuItem.Text = CommonResources.Text.ActionAnalyze;
+            analyzeMenuItem.Text = CommonResources.Text.ActionAnalyze;
 #endif
             this.activeMenuItem.Text = Resources.ctxActiveLaps;
 
