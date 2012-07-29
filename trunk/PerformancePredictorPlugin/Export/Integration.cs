@@ -31,6 +31,19 @@ namespace PerformancePredictor.Export
     public static class PerformancePredictor
     {
         /// <summary>
+        /// Popup from time/distance. Activities included for meta data.
+        /// </summary>
+        /// <param name="activities"></param>
+        /// <param name="view"></param>
+        /// <param name="time"></param>
+        /// <param name="distance"></param>
+        /// <param name="progressBar"></param>
+        public static void PerformancePredictorPopup(IList<IActivity> activities, IDailyActivityView view, TimeSpan time, double distance, System.Windows.Forms.ProgressBar progressBar)
+        {
+            new PerformancePredictorControl(activities, view, time, distance, progressBar);
+        }
+
+        /// <summary>
         /// Calculate PP externally - incomplete
         /// </summary>
         /// <param name="activities"></param>
@@ -38,51 +51,51 @@ namespace PerformancePredictor.Export
         /// <param name="progressBar"></param>
         /// <returns></returns>
         public static IList<IList<Object>> getResults(IList<IActivity> activities, IItemTrackSelectionInfo parts, System.Windows.Forms.ProgressBar progressBar)
-               {
-                   IList<TimePredictionResult> results = null;
-                   if (activities != null && activities.Count > 0)
-                   {
-                       if (activities.Count > 1 ||
-                       (activities.Count == 1 && (Settings.HighScore != null)))
-                       {
-                           //Predict using one or many activities (check done that HS enabled prior)
-                           results = TimePredictionView.getResults(null, Predict.Predictor(Settings.Model), activities, progressBar);
-                       }
-                       else if (activities[0] != null)
-                       {
-                           //TODO: Calculate time/distance. Should be example in Trails
-                           float time = 1;
-                           float dist = 1;
-                           if (dist > 0 && time > 0)
-                           {
-                               results = TimePredictionView.getResults(null, Predict.Predictor(Settings.Model), activities, dist, time, progressBar);
-                           }
-                       }
-                   }
-                   IList<IList<Object>> objects = new List<IList<Object>>();
-                   if (results == null)
-                   {
-                       foreach (TimePredictionResult result in results)
-                       {
-                           if (result != null)
-                           {
-                               TrailsItemTrackSelectionInfo res = new TrailsItemTrackSelectionInfo();
-                               DateTime endTime = DateTimeRangeSeries.AddTimeAndPauses(result.StartDate, TimeSpan.FromSeconds(result.UsedTime), result.Activity.TimerPauses); //TODO: pauses from marked time
-                               res.MarkedTimes = new ValueRangeSeries<DateTime> { new ValueRange<DateTime>(result.StartDate, endTime) };
-                               IList<Object> s = new List<Object>();
-                               s.Add(result.Activity);
-                               s.Add(res);
-                               s.Add(result.DistanceNominal);
-                               s.Add(result.Distance);
-                               objects.Add(s);
-                           }
-                           else
-                           {
-                               objects.Add(null);
-                           }
-                       }
-                   }
-                   return objects;
-               }
+        {
+            IList<TimePredictionResult> results = null;
+            if (activities != null && activities.Count > 0)
+            {
+                if (activities.Count > 1 ||
+                (activities.Count == 1 && (Settings.HighScore != null)))
+                {
+                    //Predict using one or many activities (check done that HS enabled prior)
+                    results = TimePredictionView.getResults(null, Predict.Predictor(Settings.Model), activities, progressBar);
+                }
+                else if (activities[0] != null)
+                {
+                    //TODO: Calculate time/distance. Should be example in Trails
+                    TimeSpan time = TimeSpan.FromSeconds(1);
+                    double dist = 1;
+                    if (dist > 0 && time.TotalSeconds > 0)
+                    {
+                        results = TimePredictionView.getResults(null, Predict.Predictor(Settings.Model), activities, dist, time, progressBar);
+                    }
+                }
+            }
+            IList<IList<Object>> objects = new List<IList<Object>>();
+            if (results == null)
+            {
+                foreach (TimePredictionResult result in results)
+                {
+                    if (result != null)
+                    {
+                        TrailsItemTrackSelectionInfo res = new TrailsItemTrackSelectionInfo();
+                        DateTime endTime = DateTimeRangeSeries.AddTimeAndPauses(result.StartDate, result.UsedTime, result.Activity.TimerPauses); //TODO: pauses from marked time
+                        res.MarkedTimes = new ValueRangeSeries<DateTime> { new ValueRange<DateTime>(result.StartDate, endTime) };
+                        IList<Object> s = new List<Object>();
+                        s.Add(result.Activity);
+                        s.Add(res);
+                        s.Add(result.DistanceNominal);
+                        s.Add(result.Distance);
+                        objects.Add(s);
+                    }
+                    else
+                    {
+                        objects.Add(null);
+                    }
+                }
+            }
+            return objects;
+        }
     }
 }

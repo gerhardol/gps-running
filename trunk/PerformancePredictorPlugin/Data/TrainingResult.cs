@@ -64,13 +64,14 @@ namespace GpsRunningPlugin.Source
             this.Speed = m_paces[index];
         }
 
-        public static void Calculate(double vdot, double seconds, double distance, double maxHr)
+        public static void Calculate(double vdot, TimeSpan time, double distance, double maxHr)
         {
             m_zones = getZones();
             m_percentages = getPercentages(vdot);
             m_hrs = getHeartRates(maxHr, m_percentages);
-            m_paces = getSpeeds(vdot, seconds, distance, m_percentages);
+            m_paces = getSpeeds(vdot, time, distance, m_percentages);
         }
+
         private static IList<String> m_zones;
         private static IList<double> m_percentages = null;
         private static IList<double> m_hrs;
@@ -97,24 +98,24 @@ namespace GpsRunningPlugin.Source
             return result;
         }
 
-        private static IList<double> getSpeeds(double vdot, double seconds, double distance, IList<double> percentages)
+        private static IList<double> getSpeeds(double vdot, TimeSpan time, double distance, IList<double> percentages)
         {
             double[] result = new double[15];
             result[0] = Predict.getTrainingSpeed(vdot, percentages[0]);
             result[1] = Predict.getTrainingSpeed(vdot, percentages[1]);
             result[2] = Predict.getTrainingSpeed(vdot, percentages[2]);
             result[3] = Predict.getTrainingSpeed(vdot, percentages[3]);
-            result[6] = Predict.getTrainingSpeed(42195, distance, seconds);
+            result[6] = Predict.getTrainingSpeed(42195, distance, time);
             result[4] = result[3] / (1 + (result[3] / result[6] - 1) / 6.0);
             result[5] = result[3] / (1 + (result[3] / result[6] - 1) / 3.0);
-            result[7] = Predict.getTrainingSpeed(21097.5, distance, seconds);
-            result[8] = Predict.getTrainingSpeed(15000, distance, seconds);
-            result[9] = Predict.getTrainingSpeed(12000, distance, seconds);
-            result[10] = Predict.getTrainingSpeed(10000, distance, seconds);
-            result[11] = Predict.getTrainingSpeed(8000, distance, seconds);
-            result[12] = Predict.getTrainingSpeed(5000, distance, seconds);
-            result[13] = Predict.getTrainingSpeed(3000, distance, seconds);
-            result[14] = Predict.getTrainingSpeed(1609.344, distance, seconds); ;
+            result[7] = Predict.getTrainingSpeed(21097.5, distance, time);
+            result[8] = Predict.getTrainingSpeed(15000, distance, time);
+            result[9] = Predict.getTrainingSpeed(12000, distance, time);
+            result[10] = Predict.getTrainingSpeed(10000, distance, time);
+            result[11] = Predict.getTrainingSpeed(8000, distance, time);
+            result[12] = Predict.getTrainingSpeed(5000, distance, time);
+            result[13] = Predict.getTrainingSpeed(3000, distance, time);
+            result[14] = Predict.getTrainingSpeed(1609.344, distance, time); ;
             return result;
         }
 

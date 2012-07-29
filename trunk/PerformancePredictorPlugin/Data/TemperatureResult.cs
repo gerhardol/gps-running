@@ -38,14 +38,15 @@ namespace GpsRunningPlugin.Source
 
         public double Temperature;
         public TimeSpan EstimatedTime;
-        public double EstimatedSpeed;
+        private double Distance;
+        public double EstimatedSpeed { get { return this.Distance / this.EstimatedTime.TotalSeconds; } }
 
-        public TemperatureResult(IActivity activity, double temperature, float actual, TimeSpan time, double speed)
+        public TemperatureResult(IActivity activity, double temperature, float actual, TimeSpan time, double dist)
         {
             this.activity = activity;
             double f = getTemperatureFactor(temperature) / getTemperatureFactor(actual);
-            this.EstimatedSpeed = speed / f;
             this.EstimatedTime = Predict.scaleTime(time, f);
+            this.Distance = dist;
             this.Temperature = temperature;
         }
 

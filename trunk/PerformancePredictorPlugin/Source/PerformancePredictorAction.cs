@@ -92,8 +92,8 @@ namespace GpsRunningPlugin.Source
                 t = new PerformancePredictorControl(m_dailyView);
             }
 #endif
-            t.ShowPage("");
             t.Activities = activities;
+            t.ShowPage("");
         }
 
         public string Title

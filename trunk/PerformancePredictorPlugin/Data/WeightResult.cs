@@ -42,14 +42,14 @@ namespace GpsRunningPlugin.Source
         public double EstimatedSpeed;
 
         public WeightResult(IActivity activity, int p, double vdot, double weight, double inc,
-            TimeSpan time, ActivityInfo info)
+            TimeSpan time, double dist)
         {
             this.activity = activity;
             this.Weight = weight + p * inc;
             this.AjustedVdot = vdot * weight / this.Weight;
             this.EstimatedTime = Predict.scaleTime(time, Math.Pow(vdot / this.AjustedVdot, 0.83));
 
-            this.EstimatedSpeed = info.DistanceMeters / EstimatedTime.TotalSeconds;
+            this.EstimatedSpeed = dist / EstimatedTime.TotalSeconds;
         }
 
     }

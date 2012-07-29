@@ -16,17 +16,28 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
 using ZoneFiveSoftware.Common.Data.Fitness;
-using ZoneFiveSoftware.Common.Data.Measurement;
 
 namespace GpsRunningPlugin.Source
 {
+    public class IntervalResultCache
+    {
+        public IntervalResultCache(double adistance, TimeSpan time)
+        {
+            double aseconds = time.TotalSeconds;
+            mileSpeed = Predict.getTrainingSpeed(1609.344, adistance, time);
+            k5Speed = Predict.getTrainingSpeed(5000, adistance, time);
+            k10Speed = Predict.getTrainingSpeed(10000, adistance, time);
+        }
+        public double mileSpeed;
+        public double k5Speed;
+        public double k10Speed;
+
+    }
     public class IntervalResult
     {
         private IActivity activity;
+        private IntervalResultCache resultCache;
 
         public IActivity Activity
         {
@@ -36,50 +47,36 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        private bool isCalc = false;
-        static double mileSpeed;
-        static double k5Speed;
-        static double k10Speed;
         private double factor;
-
         public double Distance;
         public double OneMile
         {
             get
             {
-                return factor*mileSpeed;
+                return factor * resultCache.mileSpeed;
             }
         }
         public double FiveKm
         {
             get
             {
-                return factor*k5Speed;
+                return factor * resultCache.k5Speed;
             }
         }
         public double TenKm
         {
             get
             {
-                return factor*k10Speed;
+                return factor * resultCache.k10Speed;
             }
         }
 
-        public IntervalResult(IActivity activity, double distance, double seconds)
+        public IntervalResult(IActivity activity, IntervalResultCache resultCache, double distance)
         {
             this.activity = activity;
+            this.resultCache = resultCache;
             this.Distance = distance;
-            factor = 1000.0 / distance;
-            if (!isCalc)
-            {
-                ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
-                double adistance = info.DistanceMeters;
-                double aseconds = info.Time.TotalSeconds;
-                mileSpeed = Predict.getTrainingSpeed(1609.344, adistance, aseconds);
-                k5Speed = Predict.getTrainingSpeed(5000, adistance, aseconds);
-                k10Speed = Predict.getTrainingSpeed(10000, adistance, aseconds);
-                isCalc = true;
-            }
+            this.factor = 1000.0 / distance;
         }
     }
 }
