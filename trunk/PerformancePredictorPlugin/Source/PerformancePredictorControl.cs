@@ -481,7 +481,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 //timePredictionButton.Enabled = true;
                 trainingButton.Enabled = true;
 
-                timePredictionButton.Checked = Settings.PredictionView == PredictionView.TimePrediction;
+                timePredictionButton.Checked = Settings.PredictionView == PredictionView.TimePrediction || Settings.PredictionView == PredictionView.Extrapolate;
             }
             else
             {

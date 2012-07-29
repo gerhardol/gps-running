@@ -53,7 +53,7 @@ namespace GpsRunningPlugin.Source
             this.copyTable = new System.Windows.Forms.ToolStripMenuItem();
             this.listSettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.activeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sendToMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.analyzeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxMenuItemRefActivity = new System.Windows.Forms.ToolStripMenuItem();
             this.limitActivityMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.m_progressBar = new System.Windows.Forms.ProgressBar();
@@ -127,7 +127,7 @@ namespace GpsRunningPlugin.Source
             this.copyTable,
             this.listSettingsMenuItem,
             this.activeMenuItem,
-            this.sendToMenuItem,
+            this.analyzeMenuItem,
             this.ctxMenuItemRefActivity});
             this.contextMenu.Name = "contextMenu";
             this.contextMenu.Size = new System.Drawing.Size(199, 92);
@@ -152,11 +152,11 @@ namespace GpsRunningPlugin.Source
             this.activeMenuItem.Text = "<Only active laps";
             this.activeMenuItem.Click += new System.EventHandler(this.activeMenuItem_Click);
             // 
-            // sendToMenuItem
+            // analyzeMenuItem
             // 
-            this.sendToMenuItem.Name = "sendToMenuItem";
-            this.sendToMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.sendToMenuItem.Text = "<Send to";
+            this.analyzeMenuItem.Name = "sendToMenuItem";
+            this.analyzeMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.analyzeMenuItem.Text = "<Analyze";
             // 
             // limitActivityMenuItem
             // 
@@ -395,7 +395,7 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.ToolStripMenuItem copyTable;
         private System.Windows.Forms.ToolStripMenuItem listSettingsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem activeMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem sendToMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem analyzeMenuItem;
         private System.Windows.Forms.Label sendResultToLabel1;
         private System.Windows.Forms.ComboBox pluginBox;
         private System.Windows.Forms.ComboBox selectedBox;
