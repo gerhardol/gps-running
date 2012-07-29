@@ -453,8 +453,8 @@ namespace GpsRunningPlugin.Source
                          domain == GoalParameter.Time ||
                          domain == GoalParameter.Elevation))
                     {
-                        HighScore.generateGoal(domain, image, true, goals);
-                        HighScore.generateGoal(domain, image, false, goals);
+                        goals.Add(Goal.generateGoal(domain, image, true));
+                        goals.Add(Goal.generateGoal(domain, image, false));
                     }
                     upperBoundResult.Add(true, null);
                     upperBoundResult.Add(false, null);
@@ -631,7 +631,7 @@ namespace GpsRunningPlugin.Source
             IList<Result> results = cachedResults[domain][image][upperBound];
             if (results == null)
             {
-                IList<Goal> goals = HighScore.generateGoals();
+                IList<Goal> goals = Goal.generateGoals();
                 summaryList.Visible = false;
                 results = HighScore.calculateInternal(m_activities, goals, progressBar);
                 summaryList.Visible = true;
@@ -673,7 +673,7 @@ namespace GpsRunningPlugin.Source
                 results = cachedResults[domain][image][upperBound];
                 if (results == null)
                 {
-                    IList<Goal> goals = HighScore.generateGoals();
+                    IList<Goal> goals = Goal.generateGoals();
                     summaryList.Visible = false;
                     results = HighScore.calculateInternal(m_activities, goals, progressBar);
                     summaryList.Visible = true;

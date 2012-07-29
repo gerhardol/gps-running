@@ -42,6 +42,88 @@ namespace GpsRunningPlugin.Source
         public abstract String ToString(String speedUnit);
         
         public abstract String ImageToString(string speedUnit);
+
+        public static Goal generateGoal(GoalParameter domain, GoalParameter image, bool upperBound)
+        {
+            Goal goal = null;
+            switch (image)
+            {
+                case GoalParameter.Distance:
+                    foreach (double distance in Settings.distances.Keys)
+                    {
+                        goal = new PointGoal(distance, upperBound,
+                                    domain, GoalParameter.Distance);
+                    }
+                    break;
+                case GoalParameter.Time:
+                    foreach (int time in Settings.times.Keys)
+                    {
+                        goal = new PointGoal(time, upperBound,
+                                    domain, GoalParameter.Time);
+                    }
+                    break;
+                case GoalParameter.Elevation:
+                    foreach (double elevation in Settings.elevations.Keys)
+                    {
+                        goal = new PointGoal(elevation, upperBound,
+                                    domain, GoalParameter.Elevation);
+                    }
+                    break;
+                case GoalParameter.PulseZone:
+                    foreach (double min in Settings.pulseZones.Keys)
+                        foreach (double max in Settings.pulseZones[min].Keys)
+                        {
+                            IList<IList<double>> intervals = new List<IList<double>>();
+                            IList<double> interval = new List<double>();
+                            interval.Add(min);
+                            interval.Add(max);
+                            intervals.Add(interval);
+                            goal = new IntervalsGoal(intervals, upperBound,
+                                        domain, GoalParameter.PulseZone);
+                        }
+                    break;
+                case GoalParameter.SpeedZone:
+                    foreach (double min in Settings.speedZones.Keys)
+                        foreach (double max in Settings.speedZones[min].Keys)
+                        {
+                            IList<IList<double>> intervals = new List<IList<double>>();
+                            IList<double> interval = new List<double>();
+                            interval.Add(min);
+                            interval.Add(max);
+                            intervals.Add(interval);
+                            goal = new IntervalsGoal(intervals, upperBound,
+                                        domain, GoalParameter.SpeedZone);
+                        }
+                    break;
+                case GoalParameter.PulseZoneSpeedZone:
+                    foreach (double minPulse in Settings.pulseZones.Keys)
+                        foreach (double maxPulse in Settings.pulseZones[minPulse].Keys)
+                            foreach (double minSpeed in Settings.speedZones.Keys)
+                                foreach (double maxSpeed in Settings.speedZones[minSpeed].Keys)
+                                {
+                                    IList<IList<double>> intervals = new List<IList<double>>();
+                                    IList<double> interval = new List<double>();
+                                    interval.Add(minPulse);
+                                    interval.Add(maxPulse);
+                                    intervals.Add(interval);
+                                    interval = new List<double>();
+                                    interval.Add(minSpeed);
+                                    interval.Add(maxSpeed);
+                                    intervals.Add(interval);
+                                    goal = new IntervalsGoal(intervals, upperBound,
+                                        domain, GoalParameter.PulseZoneSpeedZone);
+                                }
+                    break;
+            }
+            return goal;
+        }
+
+        public static IList<Goal> generateGoals()
+        {
+            IList<Goal> goals = new List<Goal>();
+            goals.Add(generateGoal(Settings.Domain, Settings.Image, Settings.UpperBound));
+            return goals;
+        }
     }
 
     public class PointGoal : Goal
