@@ -82,6 +82,7 @@ namespace GpsRunningPlugin.Source
         public static Result[] calculateActivities(IList<IActivity> activities, IList<Goal> goals, System.Windows.Forms.ProgressBar progressBar)
         {
             Result[] results = new Result[goals.Count];
+            DateTime s = DateTime.Now;
             if (activities != null && activities.Count > 0)
             {
                 if (progressBar != null && progressBar.Maximum < progressBar.Value + activities.Count)
@@ -101,34 +102,36 @@ namespace GpsRunningPlugin.Source
                     }
                 }
             }
+            //Debug
+            //results[0] = new Result(goals[0], activities[0], 0, 1, 0, (DateTime.Now-s).TotalSeconds, 1,2,3,4, 0, DateTime.Now, s);
             return results;
         }
 
         private static void calculateActivity(IActivity activity, IList<Goal> goals, IList<Result> results)
         {
-            ActInfo act = new ActInfo(activity);
+            ActInfo act = new ActInfo(activity, activity.TimerPauses);
             foreach(Goal goal in goals)
             {
                 Result result = null;
                 switch (goal.Image)
-                {
-                    case GoalParameter.PulseZone: 
-                    case GoalParameter.SpeedZone:
-                    case GoalParameter.PulseZoneSpeedZone:
-                        if (act.ZoneOk)
-                        {
-                            result = calculateActivityZoneGoal(activity, (IntervalsGoal)goal, act,
+                    {
+                        case GoalParameter.PulseZone:
+                        case GoalParameter.SpeedZone:
+                        case GoalParameter.PulseZoneSpeedZone:
+                            if (act.ZoneOk(goal))
+                            {
+                                result = calculateActivityZoneGoal(activity, (IntervalsGoal)goal, act,
+                                                    act.getGoalTrack(goal.Domain),
+                                                    act.getGoalZoneTrack(goal.Image));
+                            }
+                            break;
+                        default:
+                            result = calculateActivityPointGoal(activity, (PointGoal)goal, act,
                                                 act.getGoalTrack(goal.Domain),
-                                                act.getGoalZoneTrack(goal.Image));
-                        }
-                        break; 
-                    default:
-                        result = calculateActivityPointGoal(activity, (PointGoal)goal, act,
-                                            act.getGoalTrack(goal.Domain),
-                                            act.getGoalTrack(goal.Image));
-                        break;
-                }
-
+                                                act.getGoalTrack(goal.Image));
+                            break;
+                    }
+                
                 int upperBound = goal.UpperBound ? 1 : -1;
                 int resultIndex = goals.IndexOf(goal);
                 if (result != null && (results[resultIndex] == null ||
@@ -169,8 +172,8 @@ namespace GpsRunningPlugin.Source
                     double domainDiff = domain[front] - domain[back];
                     int upperBound = goal.UpperBound ? 1 : -1;
                     if (upperBound*best < upperBound*domainDiff &&
-                        (act.aElevation[front] - act.aElevation[back]) / (act.aDistance[front] - act.aDistance[back]) >= 
-                        Settings.MinGrade)
+                        (goal.Domain == GoalParameter.Elevation ||
+                        (act.aElevation[front] - act.aElevation[back]) / (act.aDistance[front] - act.aDistance[back]) >= Settings.MinGrade))
                     {
                         foundAny = true;
                         best = domainDiff;
@@ -274,11 +277,10 @@ namespace GpsRunningPlugin.Source
     {
         public double[] aDistance, aTime, aElevation, aPulse, aSpeed;
         public DateTime[] aDateTime;
-        ActivityInfo info;
 
-        public ActInfo(IActivity activity)
+        public ActInfo(IActivity activity, IValueRangeSeries<DateTime> pauses)
         {
-            this.info = ActivityInfoCache.Instance.GetInfo(activity);
+            ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
             int increment = 5;
 
         restart:
@@ -298,6 +300,7 @@ namespace GpsRunningPlugin.Source
                 aDateTime = new DateTime[length];
 
                 DateTime dateTime = activity.StartTime;
+            //bool validStart = false; //start time not yet validated
                 aDateTime[0] = dateTime;
 
                 ITimeValueEntry<float> value = info.SmoothedElevationTrack.GetInterpolatedValue(dateTime);
@@ -320,10 +323,13 @@ namespace GpsRunningPlugin.Source
                     aSpeed[0] = 0;
 
                 int index = 1;
+            //DateTime e;
                 foreach (LapDetailInfo lap in laps)
                 {
+                    dateTime = lap.EndTime;
                     aDistance[index] = lap.EndDistanceMeters;
-                    aTime[index] = lap.EndElapsed.TotalSeconds;//xxx pauses
+                    aTime[index] = lap.EndElapsed.TotalSeconds;
+                    //aTime[index] = ZoneFiveSoftware.Common.Data.Algorithm.DateTimeRangeSeries.TimeNotPaused(aDateTime[0], dateTime, pauses).TotalSeconds;// lap.EndElapsed.TotalSeconds;
                     if (aTime[index] < aTime[index - 1])
                     {
                         aTime[index] = aTime[index - 1];
@@ -331,7 +337,6 @@ namespace GpsRunningPlugin.Source
                         goto restart;
                     }
 
-                    dateTime = lap.EndTime;
                     aDateTime[index] = dateTime;
 
                     value = info.SmoothedElevationTrack.GetInterpolatedValue(dateTime);
@@ -390,7 +395,8 @@ namespace GpsRunningPlugin.Source
             }
             return result;
         }
-        public bool ZoneOk { get { return info.SmoothedHeartRateTrack.Count > 0; } }
+
+        public bool ZoneOk(Goal goal) { return (goal.Image == GoalParameter.SpeedZone) || (aPulse.Length > 0); }
 
     }
 }
