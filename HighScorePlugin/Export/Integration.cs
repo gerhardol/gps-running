@@ -36,7 +36,7 @@ namespace HighScore.Export
 
         public static IList<IList<Object>> getResults(IList<IActivity> activities, System.Windows.Forms.ProgressBar progress)
         {
-            IList<Goal> goals = Goal.generateGoals();
+            IList<Goal> goals = Goal.generateSettingsGoals();
 
             Result[] results = GpsRunningPlugin.Source.HighScore.calculateActivities(activities, goals, progress);
             IList<IList<Object>> objects = new List<IList<Object>>();

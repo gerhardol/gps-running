@@ -29,6 +29,7 @@ using ZoneFiveSoftware.Common.Visuals.Fitness;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using GpsRunningPlugin.Source;
 using GpsRunningPlugin.Properties;
+using GpsRunningPlugin.Util;
 
 namespace GpsRunningPlugin.Source
 {
@@ -66,6 +67,27 @@ namespace GpsRunningPlugin.Source
             MeterStart, MeterEnd, Meters, ElevationStart, ElevationEnd, Elevations,
             AveragePulse,TimeStart, TimeEnd, Seconds;
         public DateTime DateStart, DateEnd;
+
+        public double getValue(GoalParameter gp, string speedUnit)
+        {
+            switch (gp)
+            {
+                case GoalParameter.Distance:
+                    return UnitUtil.Distance.ConvertFrom(this.Meters);
+                case GoalParameter.Time:
+                    return this.Seconds;
+                case GoalParameter.Elevation:
+                    return UnitUtil.Elevation.ConvertFrom(this.Elevations);
+                case GoalParameter.PulseZone:
+                    return this.AveragePulse;
+                case GoalParameter.SpeedZone:
+                    double speed = this.Meters / this.Seconds;
+                    return UnitUtil.PaceOrSpeed.ConvertFrom(speedUnit.Equals(CommonResources.Text.LabelPace), speed);
+                case GoalParameter.PulseZoneSpeedZone:
+                    return this.AveragePulse;
+            }
+            throw new Exception();
+        }
 
         public override String ToString()
         {

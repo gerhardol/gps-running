@@ -56,7 +56,10 @@ namespace GpsRunningPlugin.Source
         private IDetailPage m_DetailPage = null;
         private IDailyActivityView m_view = null;
         private TrailPointsLayer m_layer = null;
+        private IList<IActivity> m_activities = new List<IActivity>();
+        private bool m_showPage = false;
 
+        //Activity page
         public HighScoreViewer(IDetailPage detailPage, IDailyActivityView view)
            : this()
         {
@@ -104,16 +107,20 @@ namespace GpsRunningPlugin.Source
             paceBox.DropDownStyle = ComboBoxStyle.DropDownList;
             viewBox.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            domainBox.SelectedItem = translateToLanguage(Settings.Domain);
-            imageBox.SelectedItem = translateToLanguage(Settings.Image);
+            domainBox.SelectedItem = Goal.translateToLanguage(Settings.Domain);
+            imageBox.SelectedItem = Goal.translateToLanguage(Settings.Image);
 
             boundsBox.SelectedItem = Settings.UpperBound ? StringResources.Maximal : StringResources.Minimal;
             //speedUnit = getMostUsedSpeedUnit(m_activities);
             //paceBox.SelectedItem = speedUnit;
             if (Settings.ShowTable)
+            {
                 viewBox.SelectedItem = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelList;
+            }
             else
+            {
                 viewBox.SelectedItem = StringResources.Graph;
+            }
 
             domain = Settings.Domain;
             image = Settings.Image;
@@ -133,7 +140,9 @@ namespace GpsRunningPlugin.Source
         //{
         //    this.Activities = aAct;
         //}
-        public HighScoreViewer(bool showDialog)
+
+        //Create popup
+        private HighScoreViewer(bool showDialog)
             : this()
         {
             this.showDialog = showDialog;
@@ -190,7 +199,6 @@ namespace GpsRunningPlugin.Source
             this.summaryListToolTipTimer.Tick += new System.EventHandler(ToolTipTimer_Tick);
         }
 
-        private IList<IActivity> m_activities = new List<IActivity>();
         public IList<IActivity> Activities
         {
             set
@@ -221,23 +229,6 @@ namespace GpsRunningPlugin.Source
                     m_layer.ClearOverlays();
                 }
             }
-        }
-
-        private string translateToLanguage(GoalParameter goalParameter)
-        {
-            if (goalParameter.Equals(GoalParameter.PulseZone))
-                return StringResources.HRZone;
-            if (goalParameter.Equals(GoalParameter.SpeedZone))
-                return StringResources.SpeedZone;
-            if (goalParameter.Equals(GoalParameter.PulseZoneSpeedZone))
-                return Resources.HRAndSpeedZones;
-            if (goalParameter.Equals(GoalParameter.Distance))
-                return CommonResources.Text.LabelDistance;
-            if (goalParameter.Equals(GoalParameter.Elevation))
-                return CommonResources.Text.LabelElevation;
-            if (goalParameter.Equals(GoalParameter.Time))
-                return CommonResources.Text.LabelTime;
-            return null;
         }
 
         private void correctUI(IList<Control> comp)
@@ -283,7 +274,6 @@ namespace GpsRunningPlugin.Source
             minGradeLbl.Location = new Point(minGradeLbl.Location.X, label1.Location.Y);
         }
 
-        private bool m_showPage = false;
         public bool HidePage()
         {
             m_showPage = false;
@@ -370,52 +360,10 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        private String getLabel(GoalParameter gp)
-        {
-            switch (gp)
-            {
-                case GoalParameter.Distance:
-                    return UnitUtil.Distance.LabelAxis;
-                case GoalParameter.Time:
-                    return UnitUtil.Time.LabelAxis;
-                case GoalParameter.Elevation:
-                    return UnitUtil.Elevation.LabelAxis;
-                case GoalParameter.PulseZone:
-                    return UnitUtil.HeartRate.LabelAxis;
-                case GoalParameter.SpeedZone:
-                    if (speedUnit.Equals(CommonResources.Text.LabelPace)) return UnitUtil.Pace.LabelAxis;
-                    return UnitUtil.Speed.LabelAxis;
-                case GoalParameter.PulseZoneSpeedZone:
-                    return UnitUtil.HeartRate.LabelAxis;
-            }
-            throw new Exception();
-        }
-
         void viewBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             setSettings();
             showResults();
-        }
-
-        private double getValue(Result result, GoalParameter gp)
-        {
-            switch (gp)
-            {
-                case GoalParameter.Distance:
-                    return UnitUtil.Distance.ConvertFrom(result.Meters);
-                case GoalParameter.Time:
-                    return result.Seconds;
-                case GoalParameter.Elevation:
-                    return UnitUtil.Elevation.ConvertFrom(result.Elevations);
-                case GoalParameter.PulseZone:
-                    return result.AveragePulse;
-                case GoalParameter.SpeedZone:
-                    double speed = result.Meters / result.Seconds;
-                    return UnitUtil.PaceOrSpeed.ConvertFrom(speedUnit.Equals(CommonResources.Text.LabelPace), speed);
-                case GoalParameter.PulseZoneSpeedZone:
-                    return result.AveragePulse;
-            }
-            throw new Exception();
         }
 
         public static string getMostUsedSpeedUnit(IList<IActivity> activities)
@@ -424,11 +372,19 @@ namespace GpsRunningPlugin.Source
             foreach (IActivity activity in activities)
             {
                 if (activity.Category.SpeedUnits == ZoneFiveSoftware.Common.Data.Measurement.Speed.Units.Pace)
-                   pace++;
-                else speed++;
+                {
+                    pace++;
+                }
+                else
+                {
+                    speed++;
+                }
             }
             Settings.ShowPace = pace >= speed;
-            if (speed > pace) return CommonResources.Text.LabelSpeed;
+            if (speed > pace)
+            {
+                return CommonResources.Text.LabelSpeed;
+            }
             return CommonResources.Text.LabelPace;
         }
 
@@ -453,8 +409,8 @@ namespace GpsRunningPlugin.Source
                          domain == GoalParameter.Time ||
                          domain == GoalParameter.Elevation))
                     {
-                        goals.Add(Goal.generateGoal(domain, image, true));
-                        goals.Add(Goal.generateGoal(domain, image, false));
+                        Goal.generateGoals(domain, image, true, goals);
+                        Goal.generateGoals(domain, image, false, goals);
                     }
                     upperBoundResult.Add(true, null);
                     upperBoundResult.Add(false, null);
@@ -462,10 +418,13 @@ namespace GpsRunningPlugin.Source
                   }
                   cachedResults.Add(domain, imageResultCache);
             }
+            
+            //Precalculate results, it takes more time to calc the objects than to calc results
             summaryList.Visible = false;
             IList<Result> results = HighScore.calculateInternal(m_activities, goals, progressBar);
             summaryList.Visible = true;
             foreach (GoalParameter domain in Enum.GetValues(typeof(GoalParameter)))
+            {
                 foreach (GoalParameter image in Enum.GetValues(typeof(GoalParameter)))
                 {
                     if (domain != image &&
@@ -476,7 +435,9 @@ namespace GpsRunningPlugin.Source
                         cachedResults[domain][image][true] = filter(results, goals, domain, image, true);
                         cachedResults[domain][image][false] = filter(results, goals, domain, image, false);
                     }
-                }            
+                }
+            }
+             
         }
 
         private IList<Result> filter(IList<Result> results, IList<Goal> goals, 
@@ -530,31 +491,26 @@ namespace GpsRunningPlugin.Source
             catch (Exception)
             { }
             minGradeBoxUpdate();
+            //Cache must be thrown away
+            //DateTime t1 = DateTime.Now;
             resetCachedResults();
+            //DateTime t2 = DateTime.Now;
             showResults();
+            //DateTime t3 = DateTime.Now;
+            //copyTableMenuItem.Text = "xxx " + t1 + " " + t2 + " " + t3 + " " + (t2 - t1).TotalSeconds + " " + (t3 - t2).TotalSeconds;
         }
+
         private void minGradeBoxUpdate()
         {
             minGradeBox.Text = Settings.MinGrade.ToString("0.0 %");
         }
 
-        private String translateParameter(String str)
-        {
-            if (str.Equals(CommonResources.Text.LabelDistance)) return "distance";
-            if (str.Equals(CommonResources.Text.LabelElevation)) return "elevation";
-            if (str.Equals(CommonResources.Text.LabelTime)) return "time";
-            if (str.Equals(StringResources.HRZone)) return "pulsezone";
-            if (str.Equals(StringResources.SpeedZone)) return "speedzone";
-            if (str.Equals(Resources.HRAndSpeedZones)) return "pulsezonespeedzone";
-            return null;
-        }
-
         private void setSettings()
         {
             Settings.Domain = (GoalParameter)Enum.Parse(typeof(GoalParameter), 
-                        translateParameter((String)domainBox.SelectedItem), true);
+                        Goal.translateParameter((String)domainBox.SelectedItem), true);
             Settings.UpperBound = boundsBox.SelectedItem.Equals(StringResources.Maximal);
-            Settings.Image = (GoalParameter)Enum.Parse(typeof(GoalParameter), translateParameter((String)imageBox.SelectedItem), true);
+            Settings.Image = (GoalParameter)Enum.Parse(typeof(GoalParameter), Goal.translateParameter((String)imageBox.SelectedItem), true);
             domain = Settings.Domain;
             image = Settings.Image;
             upperBound = Settings.UpperBound;
@@ -631,7 +587,7 @@ namespace GpsRunningPlugin.Source
             IList<Result> results = cachedResults[domain][image][upperBound];
             if (results == null)
             {
-                IList<Goal> goals = Goal.generateGoals();
+                IList<Goal> goals = Goal.generateSettingsGoals();
                 summaryList.Visible = false;
                 results = HighScore.calculateInternal(m_activities, goals, progressBar);
                 summaryList.Visible = true;
@@ -656,7 +612,6 @@ namespace GpsRunningPlugin.Source
                 Remarks.Text = Resources.NoResultsForSettings;
                 Remarks.Visible = true;
             }
-
         }
 
         private void showGraph()
@@ -668,12 +623,12 @@ namespace GpsRunningPlugin.Source
             {
                 // Graph can only be calculated for some X-axis
                 chart.DataSeries.Clear();
-                chart.XAxis.Label = getLabel(image);
-                chart.YAxis.Label = getLabel(domain);
+                chart.XAxis.Label = Goal.getGoalParameterLabel(image, speedUnit);
+                chart.YAxis.Label = Goal.getGoalParameterLabel(domain, speedUnit);
                 results = cachedResults[domain][image][upperBound];
                 if (results == null)
                 {
-                    IList<Goal> goals = Goal.generateGoals();
+                    IList<Goal> goals = Goal.generateSettingsGoals();
                     summaryList.Visible = false;
                     results = HighScore.calculateInternal(m_activities, goals, progressBar);
                     summaryList.Visible = true;
@@ -687,14 +642,14 @@ namespace GpsRunningPlugin.Source
             else
             {
                 ChartDataSeries series = new ChartDataSeries(chart, chart.YAxis);
-                setAxisType(chart.XAxis, image);
-                setAxisType(chart.YAxis, domain);
+                Goal.setAxisType(chart.XAxis, image);
+                Goal.setAxisType(chart.YAxis, domain);
                 foreach (Result result in results)
                 {
                     if (result != null)
                     {
-                        float x = (float)getValue(result, image);
-                        float y = (float)getValue(result, domain);
+                        float x = (float)result.getValue(image, speedUnit);
+                        float y = (float)result.getValue(domain, speedUnit);
                         if (!x.Equals(float.NaN) && !float.IsInfinity(y) &&
                         series.Points.IndexOfKey(x) == -1)
                         {
@@ -705,36 +660,6 @@ namespace GpsRunningPlugin.Source
                 chart.DataSeries.Add(series);
                 chart.AutozoomToData(true);
                 chart.Visible = true;
-            }
-        }
-
-        private void setAxisType(IAxis axis, GoalParameter goal)
-        {
-            switch (goal)
-            {
-                case GoalParameter.Time:
-                    axis.Formatter = new Formatter.SecondsToTime(); return;
-                case GoalParameter.Distance:
-                    axis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision); return;
-                case GoalParameter.Elevation:
-                    axis.Formatter = new Formatter.General(UnitUtil.Elevation.DefaultDecimalPrecision); return;
-                case GoalParameter.SpeedZone:
-                    //TBD: This is likely not used
-                    ArrayList categories = new ArrayList();
-                    ArrayList keys = new ArrayList();
-                    int index = 0;
-                    foreach (double from in Settings.speedZones.Keys)
-                    {
-                        foreach (double to in Settings.speedZones[from].Keys)
-                        {
-                            categories.Add(UnitUtil.Speed.ToString(from) + "-" + UnitUtil.Speed.ToString(to));
-                            keys.Add(index++);
-                        }
-                    }
-                    axis.Formatter = new Formatter.Category(categories, keys);
-                    return;
-                default:
-                    axis.Formatter = new Formatter.General(); return;
             }
         }
 

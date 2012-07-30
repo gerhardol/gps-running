@@ -17,10 +17,12 @@ License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using ZoneFiveSoftware.Common.Visuals;
+using ZoneFiveSoftware.Common.Visuals.Chart;
 using GpsRunningPlugin.Properties;
 using GpsRunningPlugin.Util;
 
@@ -43,34 +45,34 @@ namespace GpsRunningPlugin.Source
         
         public abstract String ImageToString(string speedUnit);
 
-        public static Goal generateGoal(GoalParameter domain, GoalParameter image, bool upperBound)
+        public static void generateGoals(GoalParameter domain, GoalParameter image, bool upperBound, IList<Goal> goals)
         {
-            Goal goal = null;
             switch (image)
             {
                 case GoalParameter.Distance:
                     foreach (double distance in Settings.distances.Keys)
                     {
-                        goal = new PointGoal(distance, upperBound,
-                                    domain, GoalParameter.Distance);
+                        goals.Add(new PointGoal(distance, upperBound,
+                                    domain, GoalParameter.Distance));
                     }
                     break;
                 case GoalParameter.Time:
                     foreach (int time in Settings.times.Keys)
                     {
-                        goal = new PointGoal(time, upperBound,
-                                    domain, GoalParameter.Time);
+                        goals.Add(new PointGoal(time, upperBound,
+                                    domain, GoalParameter.Time));
                     }
                     break;
                 case GoalParameter.Elevation:
                     foreach (double elevation in Settings.elevations.Keys)
                     {
-                        goal = new PointGoal(elevation, upperBound,
-                                    domain, GoalParameter.Elevation);
+                        goals.Add(new PointGoal(elevation, upperBound,
+                                    domain, GoalParameter.Elevation));
                     }
                     break;
                 case GoalParameter.PulseZone:
                     foreach (double min in Settings.pulseZones.Keys)
+                    {
                         foreach (double max in Settings.pulseZones[min].Keys)
                         {
                             IList<IList<double>> intervals = new List<IList<double>>();
@@ -78,12 +80,14 @@ namespace GpsRunningPlugin.Source
                             interval.Add(min);
                             interval.Add(max);
                             intervals.Add(interval);
-                            goal = new IntervalsGoal(intervals, upperBound,
-                                        domain, GoalParameter.PulseZone);
+                            goals.Add(new IntervalsGoal(intervals, upperBound,
+                                        domain, GoalParameter.PulseZone));
                         }
+                    }
                     break;
                 case GoalParameter.SpeedZone:
                     foreach (double min in Settings.speedZones.Keys)
+                    {
                         foreach (double max in Settings.speedZones[min].Keys)
                         {
                             IList<IList<double>> intervals = new List<IList<double>>();
@@ -91,14 +95,18 @@ namespace GpsRunningPlugin.Source
                             interval.Add(min);
                             interval.Add(max);
                             intervals.Add(interval);
-                            goal = new IntervalsGoal(intervals, upperBound,
-                                        domain, GoalParameter.SpeedZone);
+                            goals.Add(new IntervalsGoal(intervals, upperBound,
+                                        domain, GoalParameter.SpeedZone));
                         }
+                    }
                     break;
                 case GoalParameter.PulseZoneSpeedZone:
                     foreach (double minPulse in Settings.pulseZones.Keys)
+                    {
                         foreach (double maxPulse in Settings.pulseZones[minPulse].Keys)
+                        {
                             foreach (double minSpeed in Settings.speedZones.Keys)
+                            {
                                 foreach (double maxSpeed in Settings.speedZones[minSpeed].Keys)
                                 {
                                     IList<IList<double>> intervals = new List<IList<double>>();
@@ -110,22 +118,124 @@ namespace GpsRunningPlugin.Source
                                     interval.Add(minSpeed);
                                     interval.Add(maxSpeed);
                                     intervals.Add(interval);
-                                    goal = new IntervalsGoal(intervals, upperBound,
-                                        domain, GoalParameter.PulseZoneSpeedZone);
+                                    goals.Add(new IntervalsGoal(intervals, upperBound,
+                                        domain, GoalParameter.PulseZoneSpeedZone));
                                 }
+                            }
+                        }
+                    }
                     break;
             }
-            return goal;
         }
 
-        public static IList<Goal> generateGoals()
+        public static IList<Goal> generateSettingsGoals()
         {
             IList<Goal> goals = new List<Goal>();
-            goals.Add(generateGoal(Settings.Domain, Settings.Image, Settings.UpperBound));
+            generateGoals(Settings.Domain, Settings.Image, Settings.UpperBound, goals);
             return goals;
+        }
+
+        public static IList<Goal> generateAllGoals()
+        {
+            IList<Goal> goals = new List<Goal>();
+            foreach (GoalParameter domain in Enum.GetValues(typeof(GoalParameter)))
+            {
+                foreach (GoalParameter image in Enum.GetValues(typeof(GoalParameter)))
+                {
+                    if (image != domain &&
+                        (domain == GoalParameter.Distance ||
+                         domain == GoalParameter.Time ||
+                         domain == GoalParameter.Elevation))
+                    {
+                        Goal.generateGoals(domain, image, true, goals);
+                        Goal.generateGoals(domain, image, false, goals);
+                    }
+                }
+            }
+            return goals;
+        }
+
+        public static String translateParameter(String str)
+        {
+            if (str.Equals(CommonResources.Text.LabelDistance)) return "distance";
+            if (str.Equals(CommonResources.Text.LabelElevation)) return "elevation";
+            if (str.Equals(CommonResources.Text.LabelTime)) return "time";
+            if (str.Equals(StringResources.HRZone)) return "pulsezone";
+            if (str.Equals(StringResources.SpeedZone)) return "speedzone";
+            if (str.Equals(Resources.HRAndSpeedZones)) return "pulsezonespeedzone";
+            return null;
+        }
+
+        public static string translateToLanguage(GoalParameter goalParameter)
+        {
+            if (goalParameter.Equals(GoalParameter.PulseZone))
+                return StringResources.HRZone;
+            if (goalParameter.Equals(GoalParameter.SpeedZone))
+                return StringResources.SpeedZone;
+            if (goalParameter.Equals(GoalParameter.PulseZoneSpeedZone))
+                return Resources.HRAndSpeedZones;
+            if (goalParameter.Equals(GoalParameter.Distance))
+                return CommonResources.Text.LabelDistance;
+            if (goalParameter.Equals(GoalParameter.Elevation))
+                return CommonResources.Text.LabelElevation;
+            if (goalParameter.Equals(GoalParameter.Time))
+                return CommonResources.Text.LabelTime;
+            return null;
+        }
+
+        public static String getGoalParameterLabel(GoalParameter gp, String speedUnit)
+        {
+            switch (gp)
+            {
+                case GoalParameter.Distance:
+                    return UnitUtil.Distance.LabelAxis;
+                case GoalParameter.Time:
+                    return UnitUtil.Time.LabelAxis;
+                case GoalParameter.Elevation:
+                    return UnitUtil.Elevation.LabelAxis;
+                case GoalParameter.PulseZone:
+                    return UnitUtil.HeartRate.LabelAxis;
+                case GoalParameter.SpeedZone:
+                    if (speedUnit.Equals(CommonResources.Text.LabelPace)) return UnitUtil.Pace.LabelAxis;
+                    return UnitUtil.Speed.LabelAxis;
+                case GoalParameter.PulseZoneSpeedZone:
+                    return UnitUtil.HeartRate.LabelAxis;
+            }
+            throw new Exception();
+        }
+
+        public static void setAxisType(IAxis axis, GoalParameter goal)
+        {
+            switch (goal)
+            {
+                case GoalParameter.Time:
+                    axis.Formatter = new Formatter.SecondsToTime(); return;
+                case GoalParameter.Distance:
+                    axis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision); return;
+                case GoalParameter.Elevation:
+                    axis.Formatter = new Formatter.General(UnitUtil.Elevation.DefaultDecimalPrecision); return;
+                case GoalParameter.SpeedZone:
+                    //TBD: This is likely not used
+                    ArrayList categories = new ArrayList();
+                    ArrayList keys = new ArrayList();
+                    int index = 0;
+                    foreach (double from in Settings.speedZones.Keys)
+                    {
+                        foreach (double to in Settings.speedZones[from].Keys)
+                        {
+                            categories.Add(UnitUtil.Speed.ToString(from) + "-" + UnitUtil.Speed.ToString(to));
+                            keys.Add(index++);
+                        }
+                    }
+                    axis.Formatter = new Formatter.Category(categories, keys);
+                    return;
+                default:
+                    axis.Formatter = new Formatter.General(); return;
+            }
         }
     }
 
+    /**************************************************/
     public class PointGoal : Goal
     {
         public PointGoal(double goal, bool upperBound, GoalParameter domain, GoalParameter image)
@@ -293,6 +403,7 @@ namespace GpsRunningPlugin.Source
 
     public enum GoalParameter
     {
+        //CadenceZone is not implemented
         Distance, Time, Elevation, PulseZone, SpeedZone, CadenceZone, PulseZoneSpeedZone
     }
 }
