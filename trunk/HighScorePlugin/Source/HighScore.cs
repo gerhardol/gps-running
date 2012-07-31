@@ -55,7 +55,7 @@ namespace GpsRunningPlugin.Source
                     s.Add(result.Activity);
                     s.Add(result.Seconds);
                     s.Add(result.MeterStart);
-                    s.Add(result.MeterEnd);
+                    s.Add(result.Meters);
                     s.Add(result.TimeStart);
                 }
             }
@@ -137,8 +137,7 @@ namespace GpsRunningPlugin.Source
                 
                 int upperBound = goal.UpperBound ? 1 : -1;
                 int resultIndex = goals.IndexOf(goal);
-                if (result != null && (results[resultIndex] == null ||
-                   (upperBound * result.DomainDiff > upperBound * results[resultIndex].DomainDiff)))
+                if (result != null && result.BetterResult(results[resultIndex]))
                 {
                     results[resultIndex] = result;
                 }
