@@ -43,16 +43,14 @@ namespace GpsRunningPlugin.Source
             this.Goal = goal;
             this.DomainDiff = domainEnd - domainStart;
             this.Activity = activity;
-            this.DomainStart = domainStart;
-            this.DomainEnd = domainEnd;
             this.TimeStart = timeStart;
-            this.TimeEnd = timeEnd;
+            //this.TimeEnd = timeEnd;
             this.Seconds = timeEnd - timeStart;
             this.MeterStart = meterStart;
-            this.MeterEnd = meterEnd;
-            this.Meters = MeterEnd - MeterStart;
-            this.ElevationStart = elevationStart;
-            this.ElevationEnd = elevationEnd;
+            //this.MeterEnd = meterEnd;
+            this.Meters = meterEnd - meterStart;
+            //this.ElevationStart = elevationStart;
+            //this.ElevationEnd = elevationEnd;
             this.Elevations = elevationEnd - elevationStart;
             this.DateStart = firstDate;
             this.DateEnd = endDate;
@@ -62,11 +60,22 @@ namespace GpsRunningPlugin.Source
 
         public IActivity Activity;
 
-        private double DomainStart, DomainEnd, ElevationStart, ElevationEnd, TimeEnd;
-        public double DomainDiff, MeterStart, MeterEnd, Meters, Elevations,
-            TimeStart, Seconds;
+        //private double MeterEnd, ElevationStart, ElevationEnd, TimeEnd;
+        private double DomainDiff;
+        public double MeterStart, Meters, Elevations, TimeStart, Seconds;
         public DateTime DateStart, DateEnd;
 
+        public bool BetterResult(Result oldBest)
+        {
+            int upperBound = this.Goal.UpperBound ? 1 : -1;
+            if (oldBest == null ||
+               (upperBound * this.DomainDiff > upperBound * oldBest.DomainDiff))
+            {
+                return true;
+            }
+
+            return false;
+        }
         public double AveragePulse
         {
             get
