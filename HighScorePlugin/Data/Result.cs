@@ -140,7 +140,7 @@ namespace GpsRunningPlugin.Source
             string str = Time.LabelPlural(Time.TimeRange.Second);
             //The label from ST is empty
             if (str == null || str.Equals("")) { str = "s"; }
-            return String.Format("{0} : {1} {3}, {2} {4}", Goal.ToString(), MeterEnd - MeterStart, Seconds,Length.LabelPlural(Length.Units.Meter), str);
+            return String.Format("{0} : {1} {3}, {2} {4}", Goal.ToString(), Meters, Seconds, Length.LabelPlural(Length.Units.Meter), str);
         }
     }
 }

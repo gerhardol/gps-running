@@ -175,7 +175,7 @@ namespace GpsRunningPlugin.Source
                     int upperBound = goal.UpperBound ? 1 : -1;
                     if (upperBound*best < upperBound*domainDiff &&
                         (goal.Domain == GoalParameter.Elevation ||
-                        (act.aElevation[front] - act.aElevation[back]) / (act.aDistance[front] - act.aDistance[back]) >= Settings.MinGrade))
+                        act.validElevation && (act.aElevation[front] - act.aElevation[back]) / (act.aDistance[front] - act.aDistance[back]) >= Settings.MinGrade))
                     {
                         foundAny = true;
                         best = domainDiff;
@@ -239,7 +239,7 @@ namespace GpsRunningPlugin.Source
                     double domainDiff = domain[front] - domain[back];
                     int upperBound = goal.UpperBound ? 1 : -1;
                     if (upperBound*best < upperBound*domainDiff &&
-                        (act.aElevation[front] - act.aElevation[back]) / (act.aDistance[front] - act.aDistance[back]) >=
+                        act.validElevation && (act.aElevation[front] - act.aElevation[back]) / (act.aDistance[front] - act.aDistance[back]) >=
                         Settings.MinGrade)
                     {
                         foundAny = true;
@@ -268,6 +268,7 @@ namespace GpsRunningPlugin.Source
     {
         public double[] aDistance, aTime, aElevation, aPulse, aSpeed;
         public DateTime[] aDateTime;
+        public bool validElevation = true;
 
         public ActInfo(IActivity activity, IValueRangeSeries<DateTime> pauses, IList<Goal> goals)
         {
@@ -307,15 +308,20 @@ namespace GpsRunningPlugin.Source
                     }
                 }
 
-            DateTime dateTime = activity.StartTime;
-            //bool validStart = false; //start time not yet validated
+                DateTime dateTime = activity.StartTime;
+                //bool validStart = false; //start time not yet validated
                 aDateTime[0] = dateTime;
 
                 ITimeValueEntry<float> value = info.SmoothedElevationTrack.GetInterpolatedValue(dateTime);
                 if (value != null)
+                {
                     aElevation[0] = value.Value;
+                }
                 else
+                {
                     aElevation[0] = 0;
+                    validElevation = false;
+                }
 
                 if (aPulse != null)
                 {
@@ -337,7 +343,6 @@ namespace GpsRunningPlugin.Source
                 }
 
                 int index = 1;
-            //DateTime e;
                 foreach (LapDetailInfo lap in laps)
                 {
                     dateTime = lap.EndTime;
@@ -355,9 +360,14 @@ namespace GpsRunningPlugin.Source
 
                     value = info.SmoothedElevationTrack.GetInterpolatedValue(dateTime);
                     if (value != null)
+                    {
                         aElevation[index] = value.Value;
+                    }
                     else
+                    {
                         aElevation[index] = 0;
+                        validElevation = false;
+                    }
 
                     if (aPulse != null)
                     {
