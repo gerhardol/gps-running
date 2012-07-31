@@ -38,7 +38,7 @@ namespace GpsRunningPlugin.Source
         public Result(Goal goal, IActivity activity,
             double domainStart, double domainEnd,
             double timeStart, double timeEnd, double meterStart, double meterEnd, double elevationStart,
-            double elevationEnd, double averagePulse, DateTime firstDate, DateTime endDate)
+            double elevationEnd, DateTime firstDate, DateTime endDate)
         {
             this.Goal = goal;
             this.DomainDiff = domainEnd - domainStart;
@@ -54,7 +54,6 @@ namespace GpsRunningPlugin.Source
             this.ElevationStart = elevationStart;
             this.ElevationEnd = elevationEnd;
             this.Elevations = elevationEnd - elevationStart;
-            this.AveragePulse = averagePulse;
             this.DateStart = firstDate;
             this.DateEnd = endDate;
         }
@@ -65,8 +64,46 @@ namespace GpsRunningPlugin.Source
 
         private double DomainStart, DomainEnd, ElevationStart, ElevationEnd, TimeEnd;
         public double DomainDiff, MeterStart, MeterEnd, Meters, Elevations,
-            AveragePulse, TimeStart, Seconds;
+            TimeStart, Seconds;
         public DateTime DateStart, DateEnd;
+
+        public double AveragePulse
+        {
+            get
+            {
+                ActivityInfo info = ActivityInfoCache.Instance.GetInfo(this.Activity);
+                if (info.SmoothedHeartRateTrack == null)
+                {
+                    return double.NaN;
+                }
+
+                //From TrailResult
+                INumericTimeDataSeries track = new NumericTimeDataSeries();
+                track.AllowMultipleAtSameTime = false;
+                int oldElapsed = int.MinValue;
+                foreach (ITimeValueEntry<float> t in info.SmoothedHeartRateTrack)
+                {
+                    DateTime time = info.SmoothedHeartRateTrack.EntryDateTime(t);
+                    if (this.DateStart <= time && time <= this.DateEnd &&
+                        //TODO: (?) Incorrect pause check for "custom" pauses
+                        !ZoneFiveSoftware.Common.Data.Algorithm.DateTimeRangeSeries.IsPaused(time, this.Activity.TimerPauses))
+                    {
+                        uint elapsed = t.ElapsedSeconds;
+                        if (elapsed > oldElapsed)
+                        {
+                            track.Add(time, t.Value);
+                            oldElapsed = (int)elapsed;
+                        }
+                    }
+                    if (time > this.DateEnd)
+                    {
+                        break;
+                    }
+                }
+
+                return track.Avg;
+            }
+        }
 
         public double getValue(GoalParameter gp, string speedUnit)
         {

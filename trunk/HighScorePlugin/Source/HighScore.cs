@@ -35,8 +35,6 @@ namespace GpsRunningPlugin.Source
 {
     static class HighScore
     {
-        //private HighScore() { }
-
         public static IList<IList<Object>> getFastestTimesOfDistances(IList<IActivity> activities, IList<double> distances, System.Windows.Forms.ProgressBar progressBar)
         {
             IList<Goal> goals = new List<Goal>();
@@ -107,8 +105,8 @@ namespace GpsRunningPlugin.Source
                 }
             }
             //Debug
-            DateTime s2 = DateTime.Now;
-            //results[0] = new Result(goals[0], activities[0], 0, 1, 0, (s2 - s).TotalSeconds, 1, 2, 3, 4, 0, s, s2);
+            //DateTime s2 = DateTime.Now;
+            //results[0] = new Result(goals[0], activities[0], 0, 1, 0, (s2 - s).TotalSeconds, 1, 2, 3, 4, s, s2);
             return results;
         }
 
@@ -206,7 +204,6 @@ namespace GpsRunningPlugin.Source
             {
                 return new Result(goal, activity, domain[bestBack], domain[bestFront], act.aTime[bestBack], act.aTime[bestFront],
                     act.aDistance[bestBack], act.aDistance[bestFront], act.aElevation[bestBack], act.aElevation[bestFront],
-                    act.averagePulse(bestBack, bestFront),
                     act.aDateTime[bestBack], act.aDateTime[bestFront]);
             }
             return null;
@@ -262,7 +259,6 @@ namespace GpsRunningPlugin.Source
             {
                 return new Result(goal, activity, domain[bestBack], domain[bestFront], act.aTime[bestBack], act.aTime[bestFront],
                     act.aDistance[bestBack], act.aDistance[bestFront], act.aElevation[bestBack], act.aElevation[bestFront],
-                    act.averagePulse(bestBack, bestFront),
                     act.aDateTime[bestBack], act.aDateTime[bestFront]);
             }
             return null;
@@ -416,23 +412,6 @@ namespace GpsRunningPlugin.Source
                     result.Add(this.aPulse);
                     result.Add(this.aSpeed);
                     break;
-            }
-            return result;
-        }
-
-        //avg pulse no longer used
-        public double averagePulse(int back, int front)
-        {
-            double result = 0;
-            if (this.aPulse == null)
-            {
-                result = double.NaN;
-            }
-            else
-            {
-                for (int i = back; i < front; i++)
-                    result += (this.aPulse[i] + (this.aPulse[i + 1] - this.aPulse[i]) / 2) * (this.aTime[i + 1] - this.aTime[i]);
-                result = result / (this.aTime[front] - this.aTime[back]);
             }
             return result;
         }
