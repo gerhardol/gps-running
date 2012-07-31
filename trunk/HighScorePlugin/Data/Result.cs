@@ -63,9 +63,9 @@ namespace GpsRunningPlugin.Source
 
         public IActivity Activity;
 
-        public double DomainStart, DomainEnd, DomainDiff,  
-            MeterStart, MeterEnd, Meters, ElevationStart, ElevationEnd, Elevations,
-            AveragePulse,TimeStart, TimeEnd, Seconds;
+        private double DomainStart, DomainEnd, ElevationStart, ElevationEnd, TimeEnd;
+        public double DomainDiff, MeterStart, MeterEnd, Meters, Elevations,
+            AveragePulse, TimeStart, Seconds;
         public DateTime DateStart, DateEnd;
 
         public double getValue(GoalParameter gp, string speedUnit)
