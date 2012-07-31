@@ -41,8 +41,6 @@ namespace GpsRunningPlugin.Source
 
         readonly public GoalParameter Domain, Image;
 
-        public abstract String ToString(String speedUnit);
-        
         public abstract String ImageToString(string speedUnit);
 
         public static void generateGoals(GoalParameter domain, GoalParameter image, bool upperBound, IList<Goal> goals)
@@ -85,21 +83,21 @@ namespace GpsRunningPlugin.Source
                         }
                     }
                     break;
-                case GoalParameter.SpeedZone:
-                    foreach (double min in Settings.speedZones.Keys)
-                    {
-                        foreach (double max in Settings.speedZones[min].Keys)
-                        {
-                            IList<IList<double>> intervals = new List<IList<double>>();
-                            IList<double> interval = new List<double>();
-                            interval.Add(min);
-                            interval.Add(max);
-                            intervals.Add(interval);
-                            goals.Add(new IntervalsGoal(intervals, upperBound,
-                                        domain, GoalParameter.SpeedZone));
-                        }
-                    }
-                    break;
+                //case GoalParameter.SpeedZone:
+                //    foreach (double min in Settings.speedZones.Keys)
+                //    {
+                //        foreach (double max in Settings.speedZones[min].Keys)
+                //        {
+                //            IList<IList<double>> intervals = new List<IList<double>>();
+                //            IList<double> interval = new List<double>();
+                //            interval.Add(min);
+                //            interval.Add(max);
+                //            intervals.Add(interval);
+                //            goals.Add(new IntervalsGoal(intervals, upperBound,
+                //                        domain, GoalParameter.SpeedZone));
+                //        }
+                //    }
+                //    break;
                 case GoalParameter.PulseZoneSpeedZone:
                     foreach (double minPulse in Settings.pulseZones.Keys)
                     {
@@ -214,40 +212,26 @@ namespace GpsRunningPlugin.Source
                     axis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision); return;
                 case GoalParameter.Elevation:
                     axis.Formatter = new Formatter.General(UnitUtil.Elevation.DefaultDecimalPrecision); return;
-                case GoalParameter.SpeedZone:
-                    //TBD: This is likely not used
-                    ArrayList categories = new ArrayList();
-                    ArrayList keys = new ArrayList();
-                    int index = 0;
-                    foreach (double from in Settings.speedZones.Keys)
-                    {
-                        foreach (double to in Settings.speedZones[from].Keys)
-                        {
-                            categories.Add(UnitUtil.Speed.ToString(from) + "-" + UnitUtil.Speed.ToString(to));
-                            keys.Add(index++);
-                        }
-                    }
-                    axis.Formatter = new Formatter.Category(categories, keys);
-                    return;
+                //case GoalParameter.SpeedZone:
+                //    ArrayList categories = new ArrayList();
+                //    ArrayList keys = new ArrayList();
+                //    int index = 0;
+                //    foreach (double from in Settings.speedZones.Keys)
+                //    {
+                //        foreach (double to in Settings.speedZones[from].Keys)
+                //        {
+                //            categories.Add(UnitUtil.Speed.ToString(from) + "-" + UnitUtil.Speed.ToString(to));
+                //            keys.Add(index++);
+                //        }
+                //    }
+                //    axis.Formatter = new Formatter.Category(categories, keys);
+                //    return;
                 default:
                     axis.Formatter = new Formatter.General(); return;
             }
         }
-    }
 
-    /**************************************************/
-    public class PointGoal : Goal
-    {
-        public PointGoal(double goal, bool upperBound, GoalParameter domain, GoalParameter image)
-            :
-            base(upperBound, domain, image)
-        {
-            this.Value = goal;
-        }
-
-        readonly public double Value;        
-
-        public override String ToString(String speedUnit)
+        internal string getDomainString()
         {
             String str;
             switch (Domain)
@@ -267,21 +251,49 @@ namespace GpsRunningPlugin.Source
                 default:
                     throw new Exception();
             }
+            return str;
+        }
+
+        internal abstract string getImageString(String speedUnit);
+
+        public String ToString(String speedUnit)
+        {
+            String str = this.getDomainString();
             str += " ";
+            str += this.getImageString(speedUnit);
+            return str;
+        }
+
+    }
+
+    /**************************************************/
+    public class PointGoal : Goal
+    {
+        public PointGoal(double goal, bool upperBound, GoalParameter domain, GoalParameter image)
+            : base(upperBound, domain, image)
+        {
+            this.Value = goal;
+        }
+
+        readonly public double Value;
+
+        internal override string getImageString(String speedUnit)
+        {
+            String str;
             switch (Image)
             {
                 case GoalParameter.Distance:
-                    str += Resources.OnADistanceOf + " " + UnitUtil.Distance.ToString(Value,"u");
+                    str = Resources.OnADistanceOf + " " + UnitUtil.Distance.ToString(Value, "u");
                     break;
                 case GoalParameter.Time:
-                    str += Resources.OnATimeOf + " " + UnitUtil.Time.ToString(Value, "u");
+                    str = Resources.OnATimeOf + " " + UnitUtil.Time.ToString(Value, "u");
                     break;
                 case GoalParameter.Elevation:
-                    str += Resources.OnAnElevationOf + " " + UnitUtil.Elevation.ToString(Value, "u");
+                    str = Resources.OnAnElevationOf + " " + UnitUtil.Elevation.ToString(Value, "u");
                     break;
                 default:
                     throw new Exception();
-            }            
+            }
             return str;
         }
 
@@ -304,8 +316,7 @@ namespace GpsRunningPlugin.Source
     {
         public IntervalsGoal(IList<IList<double>> intervals, bool upperBound, 
             GoalParameter domain, GoalParameter image)
-            :
-            base(upperBound, domain, image)
+            : base(upperBound, domain, image)
         {
             this.Intervals = intervals;
         }
@@ -341,42 +352,26 @@ namespace GpsRunningPlugin.Source
             return str;
         }
 
-        public override string ToString(String speedUnit)
+        internal override string getImageString(String speedUnit)
         {
             String str;
-            switch (Domain)
-            {
-                case GoalParameter.Distance:
-                    if (UpperBound) str = Resources.LongestDistanceTraveled;
-                    else str = Resources.ShortestDistanceTraveled;
-                    break;
-                case GoalParameter.Time:
-                    if (UpperBound) str = Resources.LongestTimeSpent;
-                    else str = Resources.ShortestTimeSpent;
-                    break;
-                case GoalParameter.Elevation:
-                    if (UpperBound) str = Resources.BiggestElevationDifference;
-                    else str = Resources.SmallestElevationDifference;
-                    break;
-                default:
-                    throw new Exception();
-            }
-            str += " ";
             switch (Image)
             {
                 case GoalParameter.PulseZone:
-                    str += Resources.WithAHRBetween;
+                    str = Resources.WithAHRBetween;
                     str += " " + Intervals[0][0] + " - " + Intervals[0][1];
                     break;
                 case GoalParameter.SpeedZone:
-                    str += getInfo(speedUnit, Intervals[0][0], Intervals[0][1], 0);
+                    str = getInfo(speedUnit, Intervals[0][0], Intervals[0][1], 0);
                     break;
                 case GoalParameter.PulseZoneSpeedZone:
-                    str += Resources.WithAHRBetween;
-                    str += " "+Intervals[0][0]+" - "+Intervals[0][1];
-                    str += " "+StringResources.And.ToLower()+" ";
+                    str = Resources.WithAHRBetween;
+                    str += " " + Intervals[0][0] + " - " + Intervals[0][1];
+                    str += " " + StringResources.And.ToLower() + " ";
                     str += getInfo(speedUnit, Intervals[1][0], Intervals[1][1], 0);
                     break;
+                default:
+                    throw new Exception();
             }
             return str;
         }
@@ -404,6 +399,7 @@ namespace GpsRunningPlugin.Source
     public enum GoalParameter
     {
         //CadenceZone is not implemented
+        //SpeedZone is implemented, but generation disabled (and untested)
         Distance, Time, Elevation, PulseZone, SpeedZone, CadenceZone, PulseZoneSpeedZone
     }
 }

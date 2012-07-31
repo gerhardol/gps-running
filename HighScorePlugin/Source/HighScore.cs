@@ -46,7 +46,7 @@ namespace GpsRunningPlugin.Source
                             GoalParameter.Time, GoalParameter.Distance));
             }
 
-            Result[] results = calculateInternal(activities, goals, progressBar);
+            Result[] results = calculateActivities(activities, goals, progressBar);
             IList<IList<Object>> objects = new List<IList<Object>>();
             foreach (Result result in results)
             {
@@ -64,7 +64,7 @@ namespace GpsRunningPlugin.Source
             return objects;
         }
 
-        public static Result[] calculateInternal(IList<IActivity> activities, IList<Goal> goals, System.Windows.Forms.ProgressBar progressBar)
+        public static Result[] calculateActivities(IList<IActivity> activities, IList<Goal> goals, System.Windows.Forms.ProgressBar progressBar)
         {
             if (progressBar != null)
             {
@@ -74,12 +74,16 @@ namespace GpsRunningPlugin.Source
                 progressBar.Visible = true;
                 progressBar.BringToFront();
             }
-            Result[] r = calculateActivities(activities, goals, progressBar);
-            progressBar.Visible = false;
+            Result[] r = calculateActivities2(activities, goals, progressBar);
+            if (progressBar != null)
+            {
+                progressBar.Visible = false;
+            }
             return r;
         }
 
-        public static Result[] calculateActivities(IList<IActivity> activities, IList<Goal> goals, System.Windows.Forms.ProgressBar progressBar)
+        //No init of progressbar
+        private static Result[] calculateActivities2(IList<IActivity> activities, IList<Goal> goals, System.Windows.Forms.ProgressBar progressBar)
         {
             Result[] results = new Result[goals.Count];
             DateTime s = DateTime.Now;
@@ -103,13 +107,14 @@ namespace GpsRunningPlugin.Source
                 }
             }
             //Debug
-            //results[0] = new Result(goals[0], activities[0], 0, 1, 0, (DateTime.Now-s).TotalSeconds, 1,2,3,4, 0, DateTime.Now, s);
+            DateTime s2 = DateTime.Now;
+            //results[0] = new Result(goals[0], activities[0], 0, 1, 0, (s2 - s).TotalSeconds, 1, 2, 3, 4, 0, s, s2);
             return results;
         }
 
         private static void calculateActivity(IActivity activity, IList<Goal> goals, IList<Result> results)
         {
-            ActInfo act = new ActInfo(activity, activity.TimerPauses);
+            ActInfo act = new ActInfo(activity, activity.TimerPauses, goals);
             foreach(Goal goal in goals)
             {
                 Result result = null;
@@ -201,19 +206,10 @@ namespace GpsRunningPlugin.Source
             {
                 return new Result(goal, activity, domain[bestBack], domain[bestFront], act.aTime[bestBack], act.aTime[bestFront],
                     act.aDistance[bestBack], act.aDistance[bestFront], act.aElevation[bestBack], act.aElevation[bestFront],
-                    averagePulse(act.aPulse, act.aTime, bestBack, bestFront),
+                    act.averagePulse(bestBack, bestFront),
                     act.aDateTime[bestBack], act.aDateTime[bestFront]);
             }
             return null;
-        }
-
-        private static double averagePulse(double[] pulse, double[] time, int back, int front)
-        {
-            double result = 0;
-            for (int i = back; i < front; i++)
-                result += (pulse[i] + (pulse[i + 1] - pulse[i]) / 2) * (time[i + 1] - time[i]);
-            result = result / (time[front] - time[back]);
-            return result;
         }
 
         private static bool isInZone(IList<double[]> image, IntervalsGoal goal, int index)
@@ -266,7 +262,7 @@ namespace GpsRunningPlugin.Source
             {
                 return new Result(goal, activity, domain[bestBack], domain[bestFront], act.aTime[bestBack], act.aTime[bestFront],
                     act.aDistance[bestBack], act.aDistance[bestFront], act.aElevation[bestBack], act.aElevation[bestFront],
-                    averagePulse(act.aPulse, act.aTime, bestBack, bestFront),
+                    act.averagePulse(bestBack, bestFront),
                     act.aDateTime[bestBack], act.aDateTime[bestFront]);
             }
             return null;
@@ -278,7 +274,7 @@ namespace GpsRunningPlugin.Source
         public double[] aDistance, aTime, aElevation, aPulse, aSpeed;
         public DateTime[] aDateTime;
 
-        public ActInfo(IActivity activity, IValueRangeSeries<DateTime> pauses)
+        public ActInfo(IActivity activity, IValueRangeSeries<DateTime> pauses, IList<Goal> goals)
         {
             ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
             int increment = 5;
@@ -295,11 +291,28 @@ namespace GpsRunningPlugin.Source
                 aTime[0] = 0;
 
                 aElevation = new double[length];
-                aPulse = new double[length];
-                aSpeed = new double[length];
                 aDateTime = new DateTime[length];
 
-                DateTime dateTime = activity.StartTime;
+                foreach (Goal goal in goals)
+                {
+                    if (goal.Image == GoalParameter.PulseZone ||
+                        goal.Image == GoalParameter.PulseZoneSpeedZone)
+                    {
+                        aPulse = new double[length];
+                        break;
+                    }
+                }
+                foreach (Goal goal in goals)
+                {
+                    if (goal.Image == GoalParameter.SpeedZone ||
+                        goal.Image == GoalParameter.PulseZoneSpeedZone)
+                    {
+                        aSpeed = new double[length];
+                        break;
+                    }
+                }
+
+            DateTime dateTime = activity.StartTime;
             //bool validStart = false; //start time not yet validated
                 aDateTime[0] = dateTime;
 
@@ -309,18 +322,24 @@ namespace GpsRunningPlugin.Source
                 else
                     aElevation[0] = 0;
 
-                value = info.SmoothedHeartRateTrack.GetInterpolatedValue(dateTime);
-                if (info.SmoothedHeartRateTrack.Max > 0 &&
-                     value != null)
-                    aPulse[0] = value.Value;
-                else
-                    aPulse[0] = 0;
+                if (aPulse != null)
+                {
+                    value = info.SmoothedHeartRateTrack.GetInterpolatedValue(dateTime);
+                    if (info.SmoothedHeartRateTrack.Max > 0 &&
+                         value != null)
+                        aPulse[0] = value.Value;
+                    else
+                        aPulse[0] = 0;
+                }
 
-                value = info.SmoothedSpeedTrack.GetInterpolatedValue(dateTime);
-                if (value != null)
-                    aSpeed[0] = value.Value;
-                else
-                    aSpeed[0] = 0;
+                if (aSpeed != null)
+                {
+                    value = info.SmoothedSpeedTrack.GetInterpolatedValue(dateTime);
+                    if (value != null)
+                        aSpeed[0] = value.Value;
+                    else
+                        aSpeed[0] = 0;
+                }
 
                 int index = 1;
             //DateTime e;
@@ -345,18 +364,23 @@ namespace GpsRunningPlugin.Source
                     else
                         aElevation[index] = 0;
 
-                    value = info.SmoothedHeartRateTrack.GetInterpolatedValue(dateTime);
-                    if (info.SmoothedHeartRateTrack.Max > 0 &&
-                         value != null)
-                        aPulse[index] = value.Value;
-                    else
-                        aPulse[index] = 0;
-
-                    value = info.SmoothedSpeedTrack.GetInterpolatedValue(dateTime);
-                    if (value != null)
-                        aSpeed[index] = value.Value;
-                    else
-                        aSpeed[index] = 0;
+                    if (aPulse != null)
+                    {
+                        value = info.SmoothedHeartRateTrack.GetInterpolatedValue(dateTime);
+                        if (info.SmoothedHeartRateTrack.Max > 0 &&
+                             value != null)
+                            aPulse[index] = value.Value;
+                        else
+                            aPulse[index] = 0;
+                    }
+                    if (aSpeed != null)
+                    {
+                        value = info.SmoothedSpeedTrack.GetInterpolatedValue(dateTime);
+                        if (value != null)
+                            aSpeed[index] = value.Value;
+                        else
+                            aSpeed[index] = 0;
+                    }
 
                     index++;
                 }
@@ -392,6 +416,23 @@ namespace GpsRunningPlugin.Source
                     result.Add(this.aPulse);
                     result.Add(this.aSpeed);
                     break;
+            }
+            return result;
+        }
+
+        //avg pulse no longer used
+        public double averagePulse(int back, int front)
+        {
+            double result = 0;
+            if (this.aPulse == null)
+            {
+                result = double.NaN;
+            }
+            else
+            {
+                for (int i = back; i < front; i++)
+                    result += (this.aPulse[i] + (this.aPulse[i + 1] - this.aPulse[i]) / 2) * (this.aTime[i + 1] - this.aTime[i]);
+                result = result / (this.aTime[front] - this.aTime[back]);
             }
             return result;
         }

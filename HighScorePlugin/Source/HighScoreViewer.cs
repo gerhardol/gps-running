@@ -77,11 +77,13 @@ namespace GpsRunningPlugin.Source
         {
             m_view = view;
             m_layer = TrailPointsLayer.Instance((IView)view);
+            this.ShowPage("");
         }
         public HighScoreViewer(IActivityReportsView view)
             : this(true)
         {
             m_layer = TrailPointsLayer.Instance((IView)view);
+            this.ShowPage("");
         }
 
         //UniqueRoutes sendto
@@ -218,6 +220,8 @@ namespace GpsRunningPlugin.Source
                 bool includeLocationAndDate = (m_activities.Count > 1);
                 RefreshColumns(includeLocationAndDate);
                 resetCachedResults();
+                resetCachedResults();
+
                 if (m_activities.Count > 0)
                 {
                     speedUnit = getMostUsedSpeedUnit(m_activities);
@@ -285,6 +289,7 @@ namespace GpsRunningPlugin.Source
             }
             return true;
         }
+
         public void ShowPage(string bookmark)
         {
             m_showPage = true;
@@ -293,6 +298,15 @@ namespace GpsRunningPlugin.Source
             if (m_layer != null)
             {
                 m_layer.ShowPage(bookmark);
+            }
+        }
+
+        public void RefreshPage()
+        {
+            if (m_showPage)
+            {
+                setSettings();
+                showResults();
             }
         }
 
@@ -421,7 +435,7 @@ namespace GpsRunningPlugin.Source
             
             //Precalculate results, it takes more time to calc the objects than to calc results
             summaryList.Visible = false;
-            IList<Result> results = HighScore.calculateInternal(m_activities, goals, progressBar);
+            IList<Result> results = HighScore.calculateActivities(m_activities, goals, progressBar);
             summaryList.Visible = true;
             foreach (GoalParameter domain in Enum.GetValues(typeof(GoalParameter)))
             {
@@ -437,7 +451,6 @@ namespace GpsRunningPlugin.Source
                     }
                 }
             }
-             
         }
 
         private IList<Result> filter(IList<Result> results, IList<Goal> goals, 
@@ -492,12 +505,8 @@ namespace GpsRunningPlugin.Source
             { }
             minGradeBoxUpdate();
             //Cache must be thrown away
-            //DateTime t1 = DateTime.Now;
             resetCachedResults();
-            //DateTime t2 = DateTime.Now;
             showResults();
-            //DateTime t3 = DateTime.Now;
-            //copyTableMenuItem.Text = "xxx " + t1 + " " + t2 + " " + t3 + " " + (t2 - t1).TotalSeconds + " " + (t3 - t2).TotalSeconds;
         }
 
         private void minGradeBoxUpdate()
@@ -589,7 +598,7 @@ namespace GpsRunningPlugin.Source
             {
                 IList<Goal> goals = Goal.generateSettingsGoals();
                 summaryList.Visible = false;
-                results = HighScore.calculateInternal(m_activities, goals, progressBar);
+                results = HighScore.calculateActivities(m_activities, goals, progressBar);
                 summaryList.Visible = true;
                 cachedResults[domain][image][upperBound] = results;
             }
@@ -630,7 +639,7 @@ namespace GpsRunningPlugin.Source
                 {
                     IList<Goal> goals = Goal.generateSettingsGoals();
                     summaryList.Visible = false;
-                    results = HighScore.calculateInternal(m_activities, goals, progressBar);
+                    results = HighScore.calculateActivities(m_activities, goals, progressBar);
                     summaryList.Visible = true;
                 }
             }
@@ -663,23 +672,23 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        private Goal getGoalFromTable(int rowIndex)
-        {
-            int index = 0;
-            IList<Result> results = cachedResults[domain][image][upperBound];
-            foreach (Result result in results)
-            {
-                if (index == rowIndex && result != null)
-                {
-                    return result.Goal;
-                }
-                else if (result != null)
-                {
-                    index++;
-                }
-            }
-            return null;
-        }
+        //private Goal getGoalFromTable(int rowIndex)
+        //{
+        //    int index = 0;
+        //    IList<Result> results = cachedResults[domain][image][upperBound];
+        //    foreach (Result result in results)
+        //    {
+        //        if (index == rowIndex && result != null)
+        //        {
+        //            return result.Goal;
+        //        }
+        //        else if (result != null)
+        //        {
+        //            index++;
+        //        }
+        //    }
+        //    return null;
+        //}
 
         void summaryList_Click(object sender, System.EventArgs e)
         {
