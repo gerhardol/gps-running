@@ -219,8 +219,8 @@ namespace GpsRunningPlugin.Source
                 }
                 bool includeLocationAndDate = (m_activities.Count > 1);
                 RefreshColumns(includeLocationAndDate);
-                resetCachedResults();
-                resetCachedResults();
+                IList<Goal> goals = resetCachedResults();
+                calcCachedResults(goals);
 
                 if (m_activities.Count > 0)
                 {
@@ -402,7 +402,7 @@ namespace GpsRunningPlugin.Source
             return CommonResources.Text.LabelPace;
         }
 
-        private void resetCachedResults()
+        private IList<Goal> resetCachedResults()
         {
             cachedResults = new Dictionary<GoalParameter, IDictionary<GoalParameter, IDictionary<bool, IList<Result>>>>();
             IList<Goal> goals = new List<Goal>();
@@ -432,44 +432,38 @@ namespace GpsRunningPlugin.Source
                   }
                   cachedResults.Add(domain, imageResultCache);
             }
-            
-            //Precalculate results, it takes more time to calc the objects than to calc results
-            summaryList.Visible = false;
-            IList<Result> results = HighScore.calculateActivities(m_activities, goals, progressBar);
-            summaryList.Visible = true;
-            foreach (GoalParameter domain in Enum.GetValues(typeof(GoalParameter)))
-            {
-                foreach (GoalParameter image in Enum.GetValues(typeof(GoalParameter)))
-                {
-                    if (domain != image &&
-                        (domain == GoalParameter.Distance ||
-                         domain == GoalParameter.Time ||
-                         domain == GoalParameter.Elevation))
-                    {
-                        cachedResults[domain][image][true] = filter(results, goals, domain, image, true);
-                        cachedResults[domain][image][false] = filter(results, goals, domain, image, false);
-                    }
-                }
-            }
+            return goals;
         }
 
-        private IList<Result> filter(IList<Result> results, IList<Goal> goals, 
-            GoalParameter domain, GoalParameter image, bool p)
+        private void calcCachedResults(IList<Goal> allGoals)
         {
-            IList<Result> list = new List<Result>();
-            for (int i = 0; i < results.Count; i++)
+            //Precalculate results, it may take more time to calc the objects than to calc results
+            //For now n precalc
+            IList<Goal> goalsToCalc = new List<Goal>();
+            //foreach (Goal goal in allGoals)
+            //{
+            //    if (Settings.Image == GoalParameter.PulseZone ||
+            //        Settings.Image == GoalParameter.SpeedZone ||
+            //        Settings.Image == GoalParameter.PulseZoneSpeedZone ||
+            //        goal.Image == GoalParameter.Distance ||
+            //        goal.Image == GoalParameter.Distance ||
+            //        goal.Image == GoalParameter.Distance)
+            //    {
+            //        goalsToCalc.Add(goal);
+            //    }
+            //}
+            if (goalsToCalc.Count > 0)
             {
-                if (goals[i].Domain.Equals(domain) && goals[i].Image.Equals(image) &&
-                    goals[i].UpperBound == p)
-                    list.Add(results[i]);
+                summaryList.Visible = false;
+                IList<Result> results = HighScore.calculateActivities(m_activities, goalsToCalc, progressBar);
+                summaryList.Visible = true;
             }
-            return list;
         }
 
         void paceBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             speedUnit = (String)paceBox.SelectedItem;
-            Settings.ShowPace=(String)paceBox.SelectedItem!=CommonResources.Text.LabelSpeed;
+            Settings.ShowPace = (String)paceBox.SelectedItem!=CommonResources.Text.LabelSpeed;
             bool includeLocationAndDate = (m_activities.Count > 1);
             RefreshColumns(includeLocationAndDate);
             showResults();
@@ -505,7 +499,8 @@ namespace GpsRunningPlugin.Source
             { }
             minGradeBoxUpdate();
             //Cache must be thrown away
-            resetCachedResults();
+            IList<Goal> goals = resetCachedResults();
+            calcCachedResults(goals);
             showResults();
         }
 
