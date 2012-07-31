@@ -400,7 +400,7 @@ namespace GpsRunningPlugin.Source
     {
         //CadenceZone is not implemented
         //SpeedZone is implemented, but generation disabled (and untested)
-        Distance, Time, Elevation, PulseZone, SpeedZone, CadenceZone, PulseZoneSpeedZone
+        Time, Distance, Elevation, PulseZone, PulseZoneSpeedZone, SpeedZone, CadenceZone
     }
 }
 
