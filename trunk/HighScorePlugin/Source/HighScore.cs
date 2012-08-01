@@ -44,7 +44,7 @@ namespace GpsRunningPlugin.Source
                             GoalParameter.Time, GoalParameter.Distance));
             }
 
-            IList<Result> results = calculateActivities(activities, goals, progressBar);
+            IList<Result> results = calculateActivities(activities, null, goals, progressBar);
             IList<IList<Object>> objects = new List<IList<Object>>();
             foreach (Result result in results)
             {
@@ -59,7 +59,7 @@ namespace GpsRunningPlugin.Source
             return objects;
         }
 
-        public static IList<Result> calculateActivities(IList<IActivity> activities, IList<Goal> goals, System.Windows.Forms.ProgressBar progressBar)
+        public static IList<Result> calculateActivities(IList<IActivity> activities, IList<IValueRangeSeries<DateTime>> pauses, IList<Goal> goals, System.Windows.Forms.ProgressBar progressBar)
         {
             if (progressBar != null)
             {
@@ -69,7 +69,7 @@ namespace GpsRunningPlugin.Source
                 progressBar.Visible = true;
                 progressBar.BringToFront();
             }
-            Result[] resultsArray = calculateActivities2(activities, goals, progressBar);
+            Result[] resultsArray = calculateActivities2(activities, pauses, goals, progressBar);
             IList<Result> results = new List<Result>();
             //Null results must be removed from array
             foreach (Result r in resultsArray)
@@ -88,7 +88,7 @@ namespace GpsRunningPlugin.Source
         }
 
         //No init of progressbar
-        private static Result[] calculateActivities2(IList<IActivity> activities, IList<Goal> goals, System.Windows.Forms.ProgressBar progressBar)
+        private static Result[] calculateActivities2(IList<IActivity> activities, IList<IValueRangeSeries<DateTime>> pauses, IList<Goal> goals, System.Windows.Forms.ProgressBar progressBar)
         {
             Result[] results = new Result[goals.Count];
             DateTime s = DateTime.Now;
@@ -98,17 +98,28 @@ namespace GpsRunningPlugin.Source
                 {
                     progressBar.Maximum += activities.Count;
                 }
+                if (pauses == null)
+                {
+                    pauses = new List<IValueRangeSeries<DateTime>>();
+                    //Pauses not set, use activity pauses
+                    foreach (IActivity activity in activities)
+                    {
+                        pauses.Add(activity.TimerPauses);
+                    }
+                }
+                int i = 0;
                 foreach (IActivity activity in activities)
                 {
                     if (null != activity && activity.HasStartTime && 
                         (!Settings.IgnoreManualData || /*Settings.IgnoreManualData &&*/ !activity.UseEnteredData))
                     {
-                        calculateActivity(activity, goals, results);
+                        calculateActivity(activity, pauses[i], goals, results);
                     }
                     if (progressBar != null)
                     {
                         progressBar.Value++;
                     }
+                    i++;
                 }
             }
             //Debug
@@ -117,9 +128,9 @@ namespace GpsRunningPlugin.Source
             return results;
         }
 
-        private static void calculateActivity(IActivity activity, IList<Goal> goals, IList<Result> results)
+        private static void calculateActivity(IActivity activity, IValueRangeSeries<DateTime> pause, IList<Goal> goals, IList<Result> results)
         {
-            ActInfo act = new ActInfo(activity, activity.TimerPauses, goals);
+            ActInfo act = new ActInfo(activity, pause, goals);
             foreach (Goal goal in goals)
             {
                 Result result = null;
@@ -206,7 +217,7 @@ namespace GpsRunningPlugin.Source
 
             if (foundAny)
             {
-                return new Result(goal, activity, domain[bestBack], domain[bestFront], act.aTime[bestBack], act.aTime[bestFront],
+                return new Result(goal, activity, act.Pauses, domain[bestBack], domain[bestFront], act.aTime[bestBack], act.aTime[bestFront],
                     act.aDistance[bestBack], act.aDistance[bestFront], act.aElevation[bestBack], act.aElevation[bestFront],
                     act.aDateTime[bestBack], act.aDateTime[bestFront]);
             }
@@ -261,7 +272,7 @@ namespace GpsRunningPlugin.Source
             }
             if (foundAny)
             {
-                return new Result(goal, activity, domain[bestBack], domain[bestFront], act.aTime[bestBack], act.aTime[bestFront],
+                return new Result(goal, activity, act.Pauses, domain[bestBack], domain[bestFront], act.aTime[bestBack], act.aTime[bestFront],
                     act.aDistance[bestBack], act.aDistance[bestFront], act.aElevation[bestBack], act.aElevation[bestFront],
                     act.aDateTime[bestBack], act.aDateTime[bestFront]);
             }
@@ -280,9 +291,11 @@ namespace GpsRunningPlugin.Source
         public DateTime[] aDateTime;
         public bool validElevation = true;
         public int Length;
+        public IValueRangeSeries<DateTime> Pauses;
 
         public ActInfo(IActivity activity, IValueRangeSeries<DateTime> pauses, IList<Goal> goals)
         {
+            this.Pauses = pauses;
             ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
             int increment = 5;
 
@@ -322,23 +335,30 @@ namespace GpsRunningPlugin.Source
                 aDateTime[0] = dateTime;
 
                 int index = 0;
+                double timeOffset = 0;
+                float distOffset = 0;
                 foreach (LapDetailInfo lap in laps)
                 {
                     dateTime = lap.EndTime;
-                    if (ZoneFiveSoftware.Common.Data.Algorithm.DateTimeRangeSeries.IsPaused(lap.StartTime, pauses))
+                    if (ZoneFiveSoftware.Common.Data.Algorithm.DateTimeRangeSeries.IsPaused(lap.StartTime, pauses) ||
+                        ZoneFiveSoftware.Common.Data.Algorithm.DateTimeRangeSeries.IsPaused(lap.EndTime, pauses))
                     {
+                        //Adjust the extracted track info to pauses
+                        timeOffset += lap.LapElapsed.TotalSeconds;
+                        distOffset += lap.LapDistanceMeters;
                         //Skip this lap (only start checked)
                         continue;
                     }
                     if (index == 0)
                     {
                         //First point not yet valid, set 0 index
-                        updateTracks(info, index, lap.StartTime, 0, 0);
+                        updateTracks(info, index, lap.StartTime, lap.StartElapsed.TotalSeconds - timeOffset, lap.StartDistanceMeters - distOffset);
                     }
                     index++;
                     
-                    double elapsed = ZoneFiveSoftware.Common.Data.Algorithm.DateTimeRangeSeries.TimeNotPaused(aDateTime[0], dateTime, pauses).TotalSeconds;
-                    updateTracks(info, index, dateTime, elapsed, lap.EndDistanceMeters);
+                    //Time and distance must be calculated in the same way, why the following will not work
+                    //double elapsed = ZoneFiveSoftware.Common.Data.Algorithm.DateTimeRangeSeries.TimeNotPaused(aDateTime[0], dateTime, pauses).TotalSeconds;
+                    updateTracks(info, index, dateTime, lap.EndElapsed.TotalSeconds - timeOffset, lap.EndDistanceMeters - distOffset);
 
                     //This section is no longer needed (was when elapsed was lap.EndElapsed.TotalSeconds?)
                     //if (aTime[index] < aTime[index - 1])

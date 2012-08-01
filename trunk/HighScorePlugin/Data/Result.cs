@@ -35,7 +35,7 @@ namespace GpsRunningPlugin.Source
 {
     public class Result
     {
-        public Result(Goal goal, IActivity activity,
+        public Result(Goal goal, IActivity activity, IValueRangeSeries<DateTime> pause,
             double domainStart, double domainEnd,
             double timeStart, double timeEnd, double meterStart, double meterEnd, double elevationStart,
             double elevationEnd, DateTime firstDate, DateTime endDate)
@@ -43,10 +43,11 @@ namespace GpsRunningPlugin.Source
             this.Goal = goal;
             this.DomainDiff = domainEnd - domainStart;
             this.Activity = activity;
-            this.TimeStart = timeStart;
+            this.pause = pause;
+            //this.TimeStart = timeStart;
             //this.TimeEnd = timeEnd;
             this.Seconds = timeEnd - timeStart;
-            this.MeterStart = meterStart;
+            //this.MeterStart = meterStart;
             //this.MeterEnd = meterEnd;
             this.Meters = meterEnd - meterStart;
             //this.ElevationStart = elevationStart;
@@ -59,11 +60,13 @@ namespace GpsRunningPlugin.Source
         public Goal Goal;
 
         public IActivity Activity;
+        IValueRangeSeries<DateTime> pause;
 
         //private double MeterEnd, ElevationStart, ElevationEnd, TimeEnd;
         private double DomainDiff;
-        public double MeterStart, Meters, Elevations, TimeStart, Seconds;
+        public double Meters, Elevations, Seconds;
         public DateTime DateStart, DateEnd;
+        private double? meterStart, timeStart, avgPulse;
 
         public bool BetterResult(Result oldBest)
         {
@@ -76,41 +79,80 @@ namespace GpsRunningPlugin.Source
 
             return false;
         }
+
+        public double TimeStart
+        {
+            get
+            {
+                if (timeStart == null)
+                {
+                    ActivityInfo info = ActivityInfoCache.Instance.GetInfo(this.Activity);
+                    //TODO: Not always correct start time for Trails
+                    timeStart = ZoneFiveSoftware.Common.Data.Algorithm.DateTimeRangeSeries.TimeNotPaused(info.ActualTrackStart, this.DateStart, this.pause).TotalSeconds;
+                }
+                return (double)timeStart;
+            }
+        }
+
+        public double MeterStart
+        {
+            get
+            {
+                if (meterStart == null)
+                {
+                    ActivityInfo info = ActivityInfoCache.Instance.GetInfo(this.Activity);
+                    meterStart = double.NaN;
+
+                    //TODO: Not always correct for Trail results...
+                    ITimeValueEntry<float> value = info.MovingDistanceMetersTrack.GetInterpolatedValue(DateStart);
+                    if (value != null)
+                    {
+                        meterStart = value.Value;
+                    }
+                }
+                return (double)meterStart;
+            }
+        }
+
         public double AveragePulse
         {
             get
             {
-                ActivityInfo info = ActivityInfoCache.Instance.GetInfo(this.Activity);
-                if (info.SmoothedHeartRateTrack == null || info.SmoothedHeartRateTrack.Max <= 0)
+                if (avgPulse == null)
                 {
-                    return double.NaN;
-                }
-
-                //From TrailResult
-                INumericTimeDataSeries track = new NumericTimeDataSeries();
-                track.AllowMultipleAtSameTime = false;
-                int oldElapsed = int.MinValue;
-                foreach (ITimeValueEntry<float> t in info.SmoothedHeartRateTrack)
-                {
-                    DateTime time = info.SmoothedHeartRateTrack.EntryDateTime(t);
-                    if (this.DateStart <= time && time <= this.DateEnd &&
-                        //TODO: (?) Incorrect pause check for "custom" pauses
-                        !ZoneFiveSoftware.Common.Data.Algorithm.DateTimeRangeSeries.IsPaused(time, this.Activity.TimerPauses))
+                    ActivityInfo info = ActivityInfoCache.Instance.GetInfo(this.Activity);
+                    if (info.SmoothedHeartRateTrack == null || info.SmoothedHeartRateTrack.Max <= 0)
                     {
-                        uint elapsed = t.ElapsedSeconds;
-                        if (elapsed > oldElapsed)
+                        return double.NaN;
+                    }
+
+                    //From TrailResult
+                    INumericTimeDataSeries track = new NumericTimeDataSeries();
+                    track.AllowMultipleAtSameTime = false;
+                    int oldElapsed = int.MinValue;
+                    foreach (ITimeValueEntry<float> t in info.SmoothedHeartRateTrack)
+                    {
+                        DateTime time = info.SmoothedHeartRateTrack.EntryDateTime(t);
+                        if (this.DateStart <= time && time <= this.DateEnd &&
+                            //TODO: (?) Incorrect pause check for "custom" pauses
+                            !ZoneFiveSoftware.Common.Data.Algorithm.DateTimeRangeSeries.IsPaused(time, this.Activity.TimerPauses))
                         {
-                            track.Add(time, t.Value);
-                            oldElapsed = (int)elapsed;
+                            uint elapsed = t.ElapsedSeconds;
+                            if (elapsed > oldElapsed)
+                            {
+                                track.Add(time, t.Value);
+                                oldElapsed = (int)elapsed;
+                            }
+                        }
+                        if (time > this.DateEnd)
+                        {
+                            break;
                         }
                     }
-                    if (time > this.DateEnd)
-                    {
-                        break;
-                    }
-                }
 
-                return track.Avg;
+                    return track.Avg;
+                }
+                return (double)avgPulse;
             }
         }
 

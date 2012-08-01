@@ -232,7 +232,7 @@ namespace GpsRunningPlugin.Source
             showTable = true;
             ignoreManualData = true;
             minGrade = -0.02;
-            windowSize = new Size(800, 600);
+            windowSize = new Size(600, 500);
         }
 
         public static void ReadOptions(XmlDocument xmlDoc, XmlNamespaceManager nsmgr, XmlElement pluginNode)
