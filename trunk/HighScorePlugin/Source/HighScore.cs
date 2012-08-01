@@ -44,25 +44,22 @@ namespace GpsRunningPlugin.Source
                             GoalParameter.Time, GoalParameter.Distance));
             }
 
-            Result[] results = calculateActivities(activities, goals, progressBar);
+            IList<Result> results = calculateActivities(activities, goals, progressBar);
             IList<IList<Object>> objects = new List<IList<Object>>();
             foreach (Result result in results)
             {
-                if (result != null)
-                {
-                    IList<Object> s = new List<Object>();
-                    objects.Add(s);
-                    s.Add(result.Activity);
-                    s.Add(result.Seconds);
-                    s.Add(result.MeterStart);
-                    s.Add(result.Meters);
-                    s.Add(result.TimeStart);
-                }
+                IList<Object> s = new List<Object>();
+                objects.Add(s);
+                s.Add(result.Activity);
+                s.Add(result.Seconds);
+                s.Add(result.MeterStart);
+                s.Add(result.Meters);
+                s.Add(result.TimeStart);
             }
             return objects;
         }
 
-        public static Result[] calculateActivities(IList<IActivity> activities, IList<Goal> goals, System.Windows.Forms.ProgressBar progressBar)
+        public static IList<Result> calculateActivities(IList<IActivity> activities, IList<Goal> goals, System.Windows.Forms.ProgressBar progressBar)
         {
             if (progressBar != null)
             {
@@ -72,12 +69,22 @@ namespace GpsRunningPlugin.Source
                 progressBar.Visible = true;
                 progressBar.BringToFront();
             }
-            Result[] r = calculateActivities2(activities, goals, progressBar);
+            Result[] resultsArray = calculateActivities2(activities, goals, progressBar);
+            IList<Result> results = new List<Result>();
+            //Null results must be removed from array
+            foreach (Result r in resultsArray)
+            {
+                if (r != null)
+                {
+                    results.Add(r);
+                }
+            }
+
             if (progressBar != null)
             {
                 progressBar.Visible = false;
             }
-            return r;
+            return results;
         }
 
         //No init of progressbar
@@ -113,29 +120,27 @@ namespace GpsRunningPlugin.Source
         private static void calculateActivity(IActivity activity, IList<Goal> goals, IList<Result> results)
         {
             ActInfo act = new ActInfo(activity, activity.TimerPauses, goals);
-            foreach(Goal goal in goals)
+            foreach (Goal goal in goals)
             {
                 Result result = null;
-                switch (goal.Image)
+                if (Goal.IsZoneGoal(goal.Image))
+                {
+                    if (act.ZoneOk(goal))
                     {
-                        case GoalParameter.PulseZone:
-                        case GoalParameter.SpeedZone:
-                        case GoalParameter.PulseZoneSpeedZone:
-                            if (act.ZoneOk(goal))
-                            {
-                                result = calculateActivityZoneGoal(activity, (IntervalsGoal)goal, act,
-                                                    act.getGoalTrack(goal.Domain),
-                                                    act.getGoalZoneTrack(goal.Image));
-                            }
-                            break;
-                        default:
-                            result = calculateActivityPointGoal(activity, (PointGoal)goal, act,
-                                                act.getGoalTrack(goal.Domain),
-                                                act.getGoalTrack(goal.Image));
-                            break;
+                        result = calculateActivityZoneGoal(activity, (IntervalsGoal)goal, act,
+                                            act.getGoalTrack(goal.Domain),
+                                            act.getGoalZoneTrack(goal.Image));
                     }
-                
+                }
+                else
+                {
+                    result = calculateActivityPointGoal(activity, (PointGoal)goal, act,
+                                        act.getGoalTrack(goal.Domain),
+                                        act.getGoalTrack(goal.Image));
+                }
+
                 int upperBound = goal.UpperBound ? 1 : -1;
+                //results array are referenced by goal index. (Could be dictionary)
                 int resultIndex = goals.IndexOf(goal);
                 if (result != null && result.BetterResult(results[resultIndex]))
                 {
@@ -264,6 +269,11 @@ namespace GpsRunningPlugin.Source
         }
     }
 
+    ///
+    /// Encapsulate the activities somehow. 
+    /// Many calls of track.GetInterpolatedValue is too slow, use laps to chop up and put in arrays
+    /// The caller uses the arrays directly, so encapsulation is weak.
+    /// 
     class ActInfo
     {
         public double[] aDistance, aTime, aElevation, aPulse, aSpeed;
@@ -276,7 +286,7 @@ namespace GpsRunningPlugin.Source
             ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
             int increment = 5;
 
-        restart:
+        //restart:
             {
                 IList<LapDetailInfo> laps = info.DistanceLapDetailInfo(20 + increment);
                 int length = laps.Count + 1;
@@ -327,15 +337,16 @@ namespace GpsRunningPlugin.Source
                     }
                     index++;
                     
-                    //aTime[index] = lap.EndElapsed.TotalSeconds;
                     double elapsed = ZoneFiveSoftware.Common.Data.Algorithm.DateTimeRangeSeries.TimeNotPaused(aDateTime[0], dateTime, pauses).TotalSeconds;
                     updateTracks(info, index, dateTime, elapsed, lap.EndDistanceMeters);
-                    if (aTime[index] < aTime[index - 1])
-                    {
-                        aTime[index] = aTime[index - 1];
-                        increment += 5;
-                        goto restart;
-                    }
+
+                    //This section is no longer needed (was when elapsed was lap.EndElapsed.TotalSeconds?)
+                    //if (aTime[index] < aTime[index - 1])
+                    //{
+                    //    aTime[index] = aTime[index - 1];
+                    //    increment += 5;
+                    //    goto restart;
+                    //}
                 }
                 this.Length = index+1;
             }
