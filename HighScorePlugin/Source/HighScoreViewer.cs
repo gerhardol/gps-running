@@ -45,9 +45,6 @@ namespace GpsRunningPlugin.Source
     public partial class HighScoreViewer : UserControl
     {
         private readonly Form popupForm;
-        //private readonly bool showDialog = false;
-        //private GoalParameter domain, image;
-        //private bool upperBound;
         private IDictionary<GoalParameter, IDictionary<GoalParameter, IDictionary<bool, IList<Result>>>> cachedResults;
         private String speedUnit;
 #if ST_2_1
@@ -57,6 +54,7 @@ namespace GpsRunningPlugin.Source
         private IDailyActivityView m_view = null;
         private TrailPointsLayer m_layer = null;
         private IList<IActivity> m_activities = new List<IActivity>();
+        IList<IValueRangeSeries<DateTime>> m_pauses = null;
         private bool m_showPage = false;
 
         //Activity page
@@ -97,6 +95,15 @@ namespace GpsRunningPlugin.Source
         {
             this.Activities = activities;
         }
+
+        //Trails analyze
+        public HighScoreViewer(IList<IActivity> activities, IList<IValueRangeSeries<DateTime>> pauses, IDailyActivityView view, System.Windows.Forms.ProgressBar progressBar)
+            : this(view)
+        {
+            this.progressBar = progressBar;
+            this.m_pauses = pauses;
+            this.Activities = activities;
+        }
 #endif
         private HighScoreViewer()
         {
@@ -124,10 +131,6 @@ namespace GpsRunningPlugin.Source
                 viewBox.SelectedItem = StringResources.Graph;
             }
 
-            //domain = Settings.Domain;
-            //image = Settings.Image;
-            //upperBound = Settings.UpperBound;
-
             domainBox.SelectedIndexChanged += new EventHandler(domainBox_SelectedIndexChanged);
             imageBox.SelectedIndexChanged += new EventHandler(imageBox_SelectedIndexChanged);
             boundsBox.SelectedIndexChanged += new EventHandler(boundsBox_SelectedIndexChanged);
@@ -147,8 +150,6 @@ namespace GpsRunningPlugin.Source
         private HighScoreViewer(bool showDialog)
             : this()
         {
-            //this.showDialog = showDialog;
-
             if (showDialog)
             {
                 //Theme and Culture must be set manually
@@ -175,6 +176,7 @@ namespace GpsRunningPlugin.Source
                         | System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Bottom)));
                 popupForm.StartPosition = FormStartPosition.CenterScreen;
                 popupForm.FormClosed += new FormClosedEventHandler(popupForm_FormClosed);
+                popupForm.Resize += new EventHandler(popupForm_Resize);
                 popupForm.Show();
             }
         }
@@ -225,7 +227,9 @@ namespace GpsRunningPlugin.Source
                 if (m_activities.Count > 0)
                 {
                     speedUnit = getMostUsedSpeedUnit(m_activities);
+                    paceBox.SelectedIndexChanged -= new EventHandler(paceBox_SelectedIndexChanged);
                     paceBox.SelectedItem = speedUnit;
+                    paceBox.SelectedIndexChanged += new EventHandler(paceBox_SelectedIndexChanged);
                     showResults();
                 }
                 if (m_layer != null)
@@ -436,12 +440,10 @@ namespace GpsRunningPlugin.Source
             //For now no precalc
             //foreach (Goal goal in allGoals)
             //{
-            //    if (Settings.Image == GoalParameter.PulseZone ||
-            //        Settings.Image == GoalParameter.SpeedZone ||
-            //        Settings.Image == GoalParameter.PulseZoneSpeedZone)
+            //    if (Goal.IsZoneGoal(Settings.Image) )
+            //        //goal.Image == GoalParameter.Time ||
             //        //goal.Image == GoalParameter.Distance ||
-            //        //goal.Image == GoalParameter.Distance ||
-            //        //goal.Image == GoalParameter.Distance)
+            //        //goal.Image == GoalParameter.Elevation)
             //    {
             //        goalsToCalc.Add(goal);
             //    }
@@ -449,7 +451,7 @@ namespace GpsRunningPlugin.Source
             if (goalsToCalc.Count > 0)
             {
                 summaryList.Visible = false;
-                IList<Result> results = HighScore.calculateActivities(m_activities, goalsToCalc, progressBar);
+                IList<Result> results = HighScore.calculateActivities(m_activities, m_pauses, goalsToCalc, progressBar);
                 foreach (Result r in results)
                 {
                     if (cachedResults[r.Goal.Domain][r.Goal.Image][r.Goal.UpperBound] == null)
@@ -605,12 +607,15 @@ namespace GpsRunningPlugin.Source
                 IList<Goal> goals = Goal.generateSettingsGoals();
                 //Hide if visible
                 summaryList.Visible = false;
-                results = HighScore.calculateActivities(m_activities, goals, progressBar);
+                results = HighScore.calculateActivities(m_activities, m_pauses, goals, progressBar);
                 cachedResults[Settings.Domain][Settings.Image][Settings.UpperBound] = results;
             }
-            if (results.Count > 0)
+            if (results != null && results.Count > 0)
             {
-                progressBar.Visible = false;
+                if (progressBar != null)
+                {
+                    progressBar.Visible = false;
+                }
                 summaryList.RowData = results;
                 summaryList.Visible = true;
             }
@@ -633,7 +638,7 @@ namespace GpsRunningPlugin.Source
                 if (results == null)
                 {
                     IList<Goal> goals = Goal.generateSettingsGoals();
-                    results = HighScore.calculateActivities(m_activities, goals, progressBar);
+                    results = HighScore.calculateActivities(m_activities, m_pauses, goals, progressBar);
                     cachedResults[Settings.Domain][Settings.Image][Settings.UpperBound] = results;
                 }
             }
@@ -729,6 +734,11 @@ namespace GpsRunningPlugin.Source
             ContextMenuStrip s = (ContextMenuStrip)t.Owner;
             TreeList list = (TreeList)s.SourceControl;
             list.CopyTextToClipboard(true, System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+        }
+
+        void popupForm_Resize(object sender, EventArgs e)
+        {
+            Settings.WindowSize = popupForm.Size;
         }
 
         //Some views like mapping is only working in single view - there are likely better tests

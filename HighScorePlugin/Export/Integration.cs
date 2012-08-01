@@ -28,7 +28,7 @@ namespace HighScore.Export
 {
     public static class HighScore
     {
-        //Compability
+        //Compability (GpsRunningPlugin.Source.HighScore used directly)
         public static IList<IList<Object>> getFastestTimesOfDistances(IList<IActivity> activities, IList<double> distances, System.Windows.Forms.ProgressBar progress)
         {
             return GpsRunningPlugin.Source.HighScore.getFastestTimesOfDistances(activities, distances, progress);
@@ -38,7 +38,7 @@ namespace HighScore.Export
         {
             IList<Goal> goals = Goal.generateSettingsGoals();
 
-            IList<Result> results = GpsRunningPlugin.Source.HighScore.calculateActivities(activities, goals, progress);
+            IList<Result> results = GpsRunningPlugin.Source.HighScore.calculateActivities(activities, null, goals, progress);
             IList<IList<Object>> objects = new List<IList<Object>>();
             foreach (Result result in results)
             {
@@ -53,5 +53,11 @@ namespace HighScore.Export
             }
             return objects;
         }
+
+        public static void HighScorePopup(IList<IActivity> activities, IList<IValueRangeSeries<DateTime>> pauses, IDailyActivityView view, System.Windows.Forms.ProgressBar progressBar)
+        {
+            new HighScoreViewer(activities, pauses, view, progressBar);
+        }
+
     }
 }
