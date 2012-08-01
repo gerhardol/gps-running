@@ -38,25 +38,18 @@ namespace HighScore.Export
         {
             IList<Goal> goals = Goal.generateSettingsGoals();
 
-            Result[] results = GpsRunningPlugin.Source.HighScore.calculateActivities(activities, goals, progress);
+            IList<Result> results = GpsRunningPlugin.Source.HighScore.calculateActivities(activities, goals, progress);
             IList<IList<Object>> objects = new List<IList<Object>>();
             foreach (Result result in results)
             {
-                if (result != null)
-                {
-                    TrailsItemTrackSelectionInfo res = new TrailsItemTrackSelectionInfo();
-                    res.MarkedTimes = new ValueRangeSeries<DateTime> { new ValueRange<DateTime>(result.DateStart, result.DateEnd) };
-                    string tt = GpsRunningPlugin.Util.StringResources.Goal + ": " + result.Goal.ToString(GpsRunningPlugin.Source.HighScoreViewer.getMostUsedSpeedUnit(activities));
-                    IList<Object> s = new List<Object>();
-                    s.Add(result.Activity);
-                    s.Add(res);
-                    s.Add(tt);
-                    objects.Add(s);
-                }
-                else
-                {
-                    objects.Add(null);
-                }
+                TrailsItemTrackSelectionInfo res = new TrailsItemTrackSelectionInfo();
+                res.MarkedTimes = new ValueRangeSeries<DateTime> { new ValueRange<DateTime>(result.DateStart, result.DateEnd) };
+                string tt = GpsRunningPlugin.Util.StringResources.Goal + ": " + result.Goal.ToString(GpsRunningPlugin.Source.HighScoreViewer.getMostUsedSpeedUnit(activities));
+                IList<Object> s = new List<Object>();
+                s.Add(result.Activity);
+                s.Add(res);
+                s.Add(tt);
+                objects.Add(s);
             }
             return objects;
         }

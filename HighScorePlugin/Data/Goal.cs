@@ -43,6 +43,11 @@ namespace GpsRunningPlugin.Source
 
         public abstract String ImageToString(string speedUnit);
 
+        public static bool IsZoneGoal(GoalParameter gp)
+        {
+            return (gp != GoalParameter.Time && gp != GoalParameter.Distance && gp != GoalParameter.Elevation);
+        }
+
         public static void generateGoals(GoalParameter domain, GoalParameter image, bool upperBound, IList<Goal> goals)
         {
             switch (image)
@@ -141,9 +146,7 @@ namespace GpsRunningPlugin.Source
                 foreach (GoalParameter image in Enum.GetValues(typeof(GoalParameter)))
                 {
                     if (image != domain &&
-                        (domain == GoalParameter.Distance ||
-                         domain == GoalParameter.Time ||
-                         domain == GoalParameter.Elevation))
+                        !Goal.IsZoneGoal(domain))
                     {
                         Goal.generateGoals(domain, image, false, goals);
                         Goal.generateGoals(domain, image, true, goals);
@@ -207,11 +210,14 @@ namespace GpsRunningPlugin.Source
             switch (goal)
             {
                 case GoalParameter.Time:
-                    axis.Formatter = new Formatter.SecondsToTime(); return;
+                    axis.Formatter = new Formatter.SecondsToTime(); 
+                    return;
                 case GoalParameter.Distance:
-                    axis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision); return;
+                    axis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision); 
+                    return;
                 case GoalParameter.Elevation:
-                    axis.Formatter = new Formatter.General(UnitUtil.Elevation.DefaultDecimalPrecision); return;
+                    axis.Formatter = new Formatter.General(UnitUtil.Elevation.DefaultDecimalPrecision); 
+                    return;
                 //case GoalParameter.SpeedZone:
                 //    ArrayList categories = new ArrayList();
                 //    ArrayList keys = new ArrayList();
@@ -227,7 +233,8 @@ namespace GpsRunningPlugin.Source
                 //    axis.Formatter = new Formatter.Category(categories, keys);
                 //    return;
                 default:
-                    axis.Formatter = new Formatter.General(); return;
+                    axis.Formatter = new Formatter.General(); 
+                    return;
             }
         }
 

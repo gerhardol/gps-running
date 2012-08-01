@@ -45,9 +45,9 @@ namespace GpsRunningPlugin.Source
     public partial class HighScoreViewer : UserControl
     {
         private readonly Form popupForm;
-        private readonly bool showDialog = false;
-        private GoalParameter domain, image;
-        private bool upperBound;
+        //private readonly bool showDialog = false;
+        //private GoalParameter domain, image;
+        //private bool upperBound;
         private IDictionary<GoalParameter, IDictionary<GoalParameter, IDictionary<bool, IList<Result>>>> cachedResults;
         private String speedUnit;
 #if ST_2_1
@@ -124,9 +124,9 @@ namespace GpsRunningPlugin.Source
                 viewBox.SelectedItem = StringResources.Graph;
             }
 
-            domain = Settings.Domain;
-            image = Settings.Image;
-            upperBound = Settings.UpperBound;
+            //domain = Settings.Domain;
+            //image = Settings.Image;
+            //upperBound = Settings.UpperBound;
 
             domainBox.SelectedIndexChanged += new EventHandler(domainBox_SelectedIndexChanged);
             imageBox.SelectedIndexChanged += new EventHandler(imageBox_SelectedIndexChanged);
@@ -147,7 +147,7 @@ namespace GpsRunningPlugin.Source
         private HighScoreViewer(bool showDialog)
             : this()
         {
-            this.showDialog = showDialog;
+            //this.showDialog = showDialog;
 
             if (showDialog)
             {
@@ -305,7 +305,6 @@ namespace GpsRunningPlugin.Source
         {
             if (m_showPage)
             {
-                setSettings();
                 showResults();
             }
         }
@@ -376,7 +375,7 @@ namespace GpsRunningPlugin.Source
 
         void viewBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            setSettings();
+            Settings.ShowTable = viewBox.SelectedItem.Equals(ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelList);
             showResults();
         }
 
@@ -405,34 +404,7 @@ namespace GpsRunningPlugin.Source
         private IList<Goal> resetCachedResults()
         {
             cachedResults = new Dictionary<GoalParameter, IDictionary<GoalParameter, IDictionary<bool, IList<Result>>>>();
-            IList<Goal> goals = new List<Goal>();
-            //foreach (GoalParameter domain in Enum.GetValues(typeof(GoalParameter)))
-            //{
-            //    //IDictionary<GoalParameter, IDictionary<bool, DataTable>> imageTableCache = new Dictionary<GoalParameter, IDictionary<bool, DataTable>>();
-            //    IDictionary<GoalParameter, IDictionary<bool, IList<Result>>> imageResultCache = new Dictionary<GoalParameter, IDictionary<bool, IList<Result>>>();
-                
-            //    foreach (GoalParameter image in Enum.GetValues(typeof(GoalParameter)))
-            //    {
-            //        //IDictionary<bool, DataTable> upperBoundTable = new Dictionary<bool, DataTable>();
-            //        //upperBoundTable.Add(true, null);
-            //        //upperBoundTable.Add(false, null);
-            //        //imageTableCache.Add(image, upperBoundTable);
-            //        IDictionary<bool, IList<Result>> upperBoundResult = new Dictionary<bool, IList<Result>>();
-            //        if (image != domain &&
-            //            (domain == GoalParameter.Distance ||
-            //             domain == GoalParameter.Time ||
-            //             domain == GoalParameter.Elevation))
-            //        {
-            //            Goal.generateGoals(domain, image, false, goals);
-            //            Goal.generateGoals(domain, image, true, goals);
-            //        }
-            //        upperBoundResult.Add(false, null);
-            //        upperBoundResult.Add(true, null);
-            //        imageResultCache.Add(image, upperBoundResult);
-            //      }
-            //      cachedResults.Add(domain, imageResultCache);
-            //}
-            goals = Goal.generateAllGoals();
+            IList<Goal> goals = Goal.generateAllGoals();
             foreach (Goal goal in goals)
             {
                 if (!cachedResults.ContainsKey(goal.Domain))
@@ -459,9 +431,9 @@ namespace GpsRunningPlugin.Source
 
         private void calcCachedResults(IList<Goal> allGoals)
         {
+            IList<Goal> goalsToCalc = new List<Goal>();
             //Precalculate results, it may take more time to calc the objects than to calc results
             //For now no precalc
-            IList<Goal> goalsToCalc = new List<Goal>();
             //foreach (Goal goal in allGoals)
             //{
             //    if (Settings.Image == GoalParameter.PulseZone ||
@@ -480,16 +452,12 @@ namespace GpsRunningPlugin.Source
                 IList<Result> results = HighScore.calculateActivities(m_activities, goalsToCalc, progressBar);
                 foreach (Result r in results)
                 {
-                    if (r != null)
+                    if (cachedResults[r.Goal.Domain][r.Goal.Image][r.Goal.UpperBound] == null)
                     {
-                        if (cachedResults[r.Goal.Domain][r.Goal.Image][r.Goal.UpperBound] == null)
-                        {
-                            cachedResults[r.Goal.Domain][r.Goal.Image][r.Goal.UpperBound] = new List<Result>();
-                        }
-                        cachedResults[r.Goal.Domain][r.Goal.Image][r.Goal.UpperBound].Add(r);
+                        cachedResults[r.Goal.Domain][r.Goal.Image][r.Goal.UpperBound] = new List<Result>();
                     }
+                    cachedResults[r.Goal.Domain][r.Goal.Image][r.Goal.UpperBound].Add(r);
                 }
-                summaryList.Visible = true;
             }
         }
 
@@ -504,19 +472,21 @@ namespace GpsRunningPlugin.Source
 
         void imageBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            setSettings();
+            Settings.Image = (GoalParameter)Enum.Parse(typeof(GoalParameter), Goal.translateParameter((String)imageBox.SelectedItem), true);
             showResults();
         }
 
         void domainBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            setSettings();
+            Settings.Domain = (GoalParameter)Enum.Parse(typeof(GoalParameter),
+                        Goal.translateParameter((String)domainBox.SelectedItem), true);
+            //domain = Settings.Domain;
             showResults();
         }
 
         private void boundsBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            setSettings();
+            Settings.UpperBound = boundsBox.SelectedItem.Equals(StringResources.Maximal);
             showResults();
         }
 
@@ -542,29 +512,37 @@ namespace GpsRunningPlugin.Source
             minGradeBox.Text = Settings.MinGrade.ToString("0.0 %");
         }
 
-        private void setSettings()
-        {
-            Settings.Domain = (GoalParameter)Enum.Parse(typeof(GoalParameter), 
-                        Goal.translateParameter((String)domainBox.SelectedItem), true);
-            Settings.UpperBound = boundsBox.SelectedItem.Equals(StringResources.Maximal);
-            Settings.Image = (GoalParameter)Enum.Parse(typeof(GoalParameter), Goal.translateParameter((String)imageBox.SelectedItem), true);
-            domain = Settings.Domain;
-            image = Settings.Image;
-            upperBound = Settings.UpperBound;
-            Settings.ShowTable = viewBox.SelectedItem.Equals(ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelList);
-        }
-
         private void showResults()
         {
             Remarks.Visible = false;
             summaryList.Visible = false;
             chart.Visible = false;
-            if (domain.Equals(image))
+            if (Settings.Domain.Equals(Settings.Image))
             {
                 Remarks.Text = Resources.NothingToDisplay;
                 Remarks.Visible = true;
                 return;
             }
+            viewBox.SelectedIndexChanged -= new EventHandler(viewBox_SelectedIndexChanged);
+            if (Goal.IsZoneGoal(Settings.Image))
+            {
+                viewBox.Enabled = false;
+                viewBox.SelectedItem = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelList;
+            }
+            else
+            {
+                viewBox.Enabled = true;
+                if (Settings.ShowTable)
+                {
+                    viewBox.SelectedItem = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelList;
+                }
+                else
+                {
+                    viewBox.SelectedItem = StringResources.Graph;
+                }
+            }
+            viewBox.SelectedIndexChanged += new EventHandler(viewBox_SelectedIndexChanged);
+
             if (viewBox.SelectedItem.Equals(StringResources.Graph))
             {
                 showGraph();                
@@ -621,27 +599,19 @@ namespace GpsRunningPlugin.Source
 
         private void showTable()
         {
-            IList<Result> results = cachedResults[domain][image][upperBound];
+            IList<Result> results = cachedResults[Settings.Domain][Settings.Image][Settings.UpperBound];
             if (results == null)
             {
                 IList<Goal> goals = Goal.generateSettingsGoals();
+                //Hide if visible
                 summaryList.Visible = false;
                 results = HighScore.calculateActivities(m_activities, goals, progressBar);
-                summaryList.Visible = true;
-                cachedResults[domain][image][upperBound] = results;
+                cachedResults[Settings.Domain][Settings.Image][Settings.UpperBound] = results;
             }
             if (results.Count > 0)
             {
-                IList<Result> result2 = new List<Result>();
                 progressBar.Visible = false;
-                foreach (Result r in results)
-                {
-                    if (r != null)
-                    {
-                        result2.Add(r);
-                    }
-                }
-                summaryList.RowData = result2;
+                summaryList.RowData = results;
                 summaryList.Visible = true;
             }
             else
@@ -653,25 +623,26 @@ namespace GpsRunningPlugin.Source
 
         private void showGraph()
         {
-            IList<Result> results = null;
-            if ((image == GoalParameter.Distance ||
-               image == GoalParameter.Time ||
-               image == GoalParameter.Elevation))
+            IList<Result> results = cachedResults[Settings.Domain][Settings.Image][Settings.UpperBound];
+            if (!Goal.IsZoneGoal(Settings.Image))
             {
                 // Graph can only be calculated for some X-axis
                 chart.DataSeries.Clear();
-                chart.XAxis.Label = Goal.getGoalParameterLabel(image, speedUnit);
-                chart.YAxis.Label = Goal.getGoalParameterLabel(domain, speedUnit);
-                results = cachedResults[domain][image][upperBound];
+                chart.XAxis.Label = Goal.getGoalParameterLabel(Settings.Image, speedUnit);
+                chart.YAxis.Label = Goal.getGoalParameterLabel(Settings.Domain, speedUnit);
                 if (results == null)
                 {
                     IList<Goal> goals = Goal.generateSettingsGoals();
-                    summaryList.Visible = false;
                     results = HighScore.calculateActivities(m_activities, goals, progressBar);
-                    summaryList.Visible = true;
+                    cachedResults[Settings.Domain][Settings.Image][Settings.UpperBound] = results;
                 }
             }
-            if (results == null)
+            else
+            {
+                //No graph for zones
+                results = null;
+            }
+            if (results == null || results.Count == 0)
             {
                 Remarks.Text = Resources.NoResultsForSettings;
                 Remarks.Visible = true;
@@ -679,19 +650,16 @@ namespace GpsRunningPlugin.Source
             else
             {
                 ChartDataSeries series = new ChartDataSeries(chart, chart.YAxis);
-                Goal.setAxisType(chart.XAxis, image);
-                Goal.setAxisType(chart.YAxis, domain);
+                Goal.setAxisType(chart.XAxis, Settings.Image);
+                Goal.setAxisType(chart.YAxis, Settings.Domain);
                 foreach (Result result in results)
                 {
-                    if (result != null)
+                    float x = (float)result.getValue(Settings.Image, speedUnit);
+                    float y = (float)result.getValue(Settings.Domain, speedUnit);
+                    if (!x.Equals(float.NaN) && !float.IsInfinity(y) &&
+                    series.Points.IndexOfKey(x) == -1)
                     {
-                        float x = (float)result.getValue(image, speedUnit);
-                        float y = (float)result.getValue(domain, speedUnit);
-                        if (!x.Equals(float.NaN) && !float.IsInfinity(y) &&
-                        series.Points.IndexOfKey(x) == -1)
-                        {
-                            series.Points.Add(x, new PointF(x, y));
-                        }
+                        series.Points.Add(x, new PointF(x, y));
                     }
                 }
                 chart.DataSeries.Add(series);
@@ -699,24 +667,6 @@ namespace GpsRunningPlugin.Source
                 chart.Visible = true;
             }
         }
-
-        //private Goal getGoalFromTable(int rowIndex)
-        //{
-        //    int index = 0;
-        //    IList<Result> results = cachedResults[domain][image][upperBound];
-        //    foreach (Result result in results)
-        //    {
-        //        if (index == rowIndex && result != null)
-        //        {
-        //            return result.Goal;
-        //        }
-        //        else if (result != null)
-        //        {
-        //            index++;
-        //        }
-        //    }
-        //    return null;
-        //}
 
         void summaryList_Click(object sender, System.EventArgs e)
         {
