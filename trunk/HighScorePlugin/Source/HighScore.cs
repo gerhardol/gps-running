@@ -106,7 +106,7 @@ namespace GpsRunningPlugin.Source
             }
             //Debug
             //DateTime s2 = DateTime.Now;
-            //results[0] = new Result(goals[0], activities[0], 0, 1, 0, (s2 - s).TotalSeconds, 1, 2, 3, 4, s, s2);
+            //results[0] = new Result(goals[0], activities[0], 0, 1, 0, (s2 - s).TotalSeconds, 0, 1000, 1, 100, s, s2);
             return results;
         }
 
@@ -155,7 +155,7 @@ namespace GpsRunningPlugin.Source
             if (goal.UpperBound) best = double.MinValue;
             else best = double.MaxValue;
 
-            int length = image[0].Length;
+            int length = act.Length;
 
             while (front < length)
             {
@@ -232,7 +232,7 @@ namespace GpsRunningPlugin.Source
             if (goal.UpperBound) best = double.MinValue;
             else best = double.MaxValue;
 
-            while (front < image.Length && back < image.Length)
+            while (front < act.Length && back < act.Length)
             {
                 if (image[front] - image[back] >= goal.Value)
                 {
@@ -269,6 +269,7 @@ namespace GpsRunningPlugin.Source
         public double[] aDistance, aTime, aElevation, aPulse, aSpeed;
         public DateTime[] aDateTime;
         public bool validElevation = true;
+        public int Length;
 
         public ActInfo(IActivity activity, IValueRangeSeries<DateTime> pauses, IList<Goal> goals)
         {
@@ -280,21 +281,20 @@ namespace GpsRunningPlugin.Source
                 IList<LapDetailInfo> laps = info.DistanceLapDetailInfo(20 + increment);
                 int length = laps.Count + 1;
 
-                aDistance = new double[length];
-                aDistance[0] = 0;
-
-                aTime = new double[length];
-                aTime[0] = 0;
-
-                aElevation = new double[length];
                 aDateTime = new DateTime[length];
+                aTime = new double[length];
+                aDistance = new double[length];
+                aElevation = new double[length];
 
                 foreach (Goal goal in goals)
                 {
                     if (goal.Image == GoalParameter.PulseZone ||
                         goal.Image == GoalParameter.PulseZoneSpeedZone)
                     {
-                        aPulse = new double[length];
+                        if (info.SmoothedHeartRateTrack.Max > 0)
+                        {
+                            aPulse = new double[length];
+                        }
                         break;
                     }
                 }
@@ -309,86 +309,70 @@ namespace GpsRunningPlugin.Source
                 }
 
                 DateTime dateTime = activity.StartTime;
-                //bool validStart = false; //start time not yet validated
                 aDateTime[0] = dateTime;
 
-                ITimeValueEntry<float> value = info.SmoothedElevationTrack.GetInterpolatedValue(dateTime);
-                if (value != null)
-                {
-                    aElevation[0] = value.Value;
-                }
-                else
-                {
-                    aElevation[0] = 0;
-                    validElevation = false;
-                }
-
-                if (aPulse != null)
-                {
-                    value = info.SmoothedHeartRateTrack.GetInterpolatedValue(dateTime);
-                    if (info.SmoothedHeartRateTrack.Max > 0 &&
-                         value != null)
-                        aPulse[0] = value.Value;
-                    else
-                        aPulse[0] = 0;
-                }
-
-                if (aSpeed != null)
-                {
-                    value = info.SmoothedSpeedTrack.GetInterpolatedValue(dateTime);
-                    if (value != null)
-                        aSpeed[0] = value.Value;
-                    else
-                        aSpeed[0] = 0;
-                }
-
-                int index = 1;
+                int index = 0;
                 foreach (LapDetailInfo lap in laps)
                 {
                     dateTime = lap.EndTime;
-                    aDistance[index] = lap.EndDistanceMeters;
-                    aTime[index] = lap.EndElapsed.TotalSeconds;
-                    //aTime[index] = ZoneFiveSoftware.Common.Data.Algorithm.DateTimeRangeSeries.TimeNotPaused(aDateTime[0], dateTime, pauses).TotalSeconds;// lap.EndElapsed.TotalSeconds;
+                    if (ZoneFiveSoftware.Common.Data.Algorithm.DateTimeRangeSeries.IsPaused(lap.StartTime, pauses))
+                    {
+                        //Skip this lap (only start checked)
+                        continue;
+                    }
+                    if (index == 0)
+                    {
+                        //First point not yet valid, set 0 index
+                        updateTracks(info, index, lap.StartTime, 0, 0);
+                    }
+                    index++;
+                    
+                    //aTime[index] = lap.EndElapsed.TotalSeconds;
+                    double elapsed = ZoneFiveSoftware.Common.Data.Algorithm.DateTimeRangeSeries.TimeNotPaused(aDateTime[0], dateTime, pauses).TotalSeconds;
+                    updateTracks(info, index, dateTime, elapsed, lap.EndDistanceMeters);
                     if (aTime[index] < aTime[index - 1])
                     {
                         aTime[index] = aTime[index - 1];
                         increment += 5;
                         goto restart;
                     }
-
-                    aDateTime[index] = dateTime;
-
-                    value = info.SmoothedElevationTrack.GetInterpolatedValue(dateTime);
-                    if (value != null)
-                    {
-                        aElevation[index] = value.Value;
-                    }
-                    else
-                    {
-                        aElevation[index] = 0;
-                        validElevation = false;
-                    }
-
-                    if (aPulse != null)
-                    {
-                        value = info.SmoothedHeartRateTrack.GetInterpolatedValue(dateTime);
-                        if (info.SmoothedHeartRateTrack.Max > 0 &&
-                             value != null)
-                            aPulse[index] = value.Value;
-                        else
-                            aPulse[index] = 0;
-                    }
-                    if (aSpeed != null)
-                    {
-                        value = info.SmoothedSpeedTrack.GetInterpolatedValue(dateTime);
-                        if (value != null)
-                            aSpeed[index] = value.Value;
-                        else
-                            aSpeed[index] = 0;
-                    }
-
-                    index++;
                 }
+                this.Length = index+1;
+            }
+        }
+
+        public void updateTracks(ActivityInfo info, int index, DateTime dateTime, double time, float distance)
+        {
+            aDateTime[index] = dateTime;
+
+            aTime[index] = time;
+            aDistance[index] = distance;
+            ITimeValueEntry<float> value = info.SmoothedElevationTrack.GetInterpolatedValue(dateTime);
+            if (value != null)
+            {
+                aElevation[index] = value.Value;
+            }
+            else
+            {
+                aElevation[index] = 0;
+                validElevation = false;
+            }
+
+            if (aPulse != null)
+            {
+                value = info.SmoothedHeartRateTrack.GetInterpolatedValue(dateTime);
+                if (value != null)
+                    aPulse[index] = value.Value;
+                else
+                    aPulse[index] = 0;
+            }
+            if (aSpeed != null)
+            {
+                value = info.SmoothedSpeedTrack.GetInterpolatedValue(dateTime);
+                if (value != null)
+                    aSpeed[index] = value.Value;
+                else
+                    aSpeed[index] = 0;
             }
         }
 
@@ -425,7 +409,7 @@ namespace GpsRunningPlugin.Source
             return result;
         }
 
-        public bool ZoneOk(Goal goal) { return (goal.Image == GoalParameter.SpeedZone) || (aPulse.Length > 0); }
+        public bool ZoneOk(Goal goal) { return (goal.Image == GoalParameter.SpeedZone) || (aPulse != null && aPulse.Length > 0); }
 
     }
 }

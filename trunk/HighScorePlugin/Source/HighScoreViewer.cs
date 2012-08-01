@@ -406,31 +406,53 @@ namespace GpsRunningPlugin.Source
         {
             cachedResults = new Dictionary<GoalParameter, IDictionary<GoalParameter, IDictionary<bool, IList<Result>>>>();
             IList<Goal> goals = new List<Goal>();
-            foreach (GoalParameter domain in Enum.GetValues(typeof(GoalParameter)))
-            {
-                IDictionary<GoalParameter, IDictionary<bool, DataTable>> imageTableCache = new Dictionary<GoalParameter, IDictionary<bool, DataTable>>();
-                IDictionary<GoalParameter, IDictionary<bool, IList<Result>>> imageResultCache = new Dictionary<GoalParameter, IDictionary<bool, IList<Result>>>();
+            //foreach (GoalParameter domain in Enum.GetValues(typeof(GoalParameter)))
+            //{
+            //    //IDictionary<GoalParameter, IDictionary<bool, DataTable>> imageTableCache = new Dictionary<GoalParameter, IDictionary<bool, DataTable>>();
+            //    IDictionary<GoalParameter, IDictionary<bool, IList<Result>>> imageResultCache = new Dictionary<GoalParameter, IDictionary<bool, IList<Result>>>();
                 
-                foreach (GoalParameter image in Enum.GetValues(typeof(GoalParameter)))
+            //    foreach (GoalParameter image in Enum.GetValues(typeof(GoalParameter)))
+            //    {
+            //        //IDictionary<bool, DataTable> upperBoundTable = new Dictionary<bool, DataTable>();
+            //        //upperBoundTable.Add(true, null);
+            //        //upperBoundTable.Add(false, null);
+            //        //imageTableCache.Add(image, upperBoundTable);
+            //        IDictionary<bool, IList<Result>> upperBoundResult = new Dictionary<bool, IList<Result>>();
+            //        if (image != domain &&
+            //            (domain == GoalParameter.Distance ||
+            //             domain == GoalParameter.Time ||
+            //             domain == GoalParameter.Elevation))
+            //        {
+            //            Goal.generateGoals(domain, image, false, goals);
+            //            Goal.generateGoals(domain, image, true, goals);
+            //        }
+            //        upperBoundResult.Add(false, null);
+            //        upperBoundResult.Add(true, null);
+            //        imageResultCache.Add(image, upperBoundResult);
+            //      }
+            //      cachedResults.Add(domain, imageResultCache);
+            //}
+            goals = Goal.generateAllGoals();
+            foreach (Goal goal in goals)
+            {
+                if (!cachedResults.ContainsKey(goal.Domain))
                 {
-                    IDictionary<bool, DataTable> upperBoundTable = new Dictionary<bool, DataTable>();
-                    upperBoundTable.Add(true, null);
-                    upperBoundTable.Add(false, null);
-                    imageTableCache.Add(image, upperBoundTable);
+                    IDictionary<GoalParameter, IDictionary<bool, IList<Result>>> imageResultCache = new Dictionary<GoalParameter, IDictionary<bool, IList<Result>>>();
                     IDictionary<bool, IList<Result>> upperBoundResult = new Dictionary<bool, IList<Result>>();
-                    if (image != domain &&
-                        (domain == GoalParameter.Distance ||
-                         domain == GoalParameter.Time ||
-                         domain == GoalParameter.Elevation))
-                    {
-                        Goal.generateGoals(domain, image, true, goals);
-                        Goal.generateGoals(domain, image, false, goals);
-                    }
-                    upperBoundResult.Add(true, null);
-                    upperBoundResult.Add(false, null);
-                    imageResultCache.Add(image, upperBoundResult);
-                  }
-                  cachedResults.Add(domain, imageResultCache);
+                    upperBoundResult.Add(goal.UpperBound, null);
+                    imageResultCache.Add(goal.Image, upperBoundResult);
+                    cachedResults.Add(goal.Domain, imageResultCache);
+                }
+                if (!cachedResults[goal.Domain].ContainsKey(goal.Image))
+                {
+                    IDictionary<bool, IList<Result>> upperBoundResult = new Dictionary<bool, IList<Result>>();
+                    upperBoundResult.Add(goal.UpperBound, null);
+                    cachedResults[goal.Domain].Add(goal.Image, upperBoundResult);
+                }
+                if (!cachedResults[goal.Domain][goal.Image].ContainsKey(goal.UpperBound))
+                {
+                    cachedResults[goal.Domain][goal.Image].Add(goal.UpperBound, null);
+                }
             }
             return goals;
         }
@@ -438,16 +460,16 @@ namespace GpsRunningPlugin.Source
         private void calcCachedResults(IList<Goal> allGoals)
         {
             //Precalculate results, it may take more time to calc the objects than to calc results
-            //For now n precalc
+            //For now no precalc
             IList<Goal> goalsToCalc = new List<Goal>();
             //foreach (Goal goal in allGoals)
             //{
             //    if (Settings.Image == GoalParameter.PulseZone ||
             //        Settings.Image == GoalParameter.SpeedZone ||
-            //        Settings.Image == GoalParameter.PulseZoneSpeedZone ||
-            //        goal.Image == GoalParameter.Distance ||
-            //        goal.Image == GoalParameter.Distance ||
-            //        goal.Image == GoalParameter.Distance)
+            //        Settings.Image == GoalParameter.PulseZoneSpeedZone)
+            //        //goal.Image == GoalParameter.Distance ||
+            //        //goal.Image == GoalParameter.Distance ||
+            //        //goal.Image == GoalParameter.Distance)
             //    {
             //        goalsToCalc.Add(goal);
             //    }
@@ -456,6 +478,17 @@ namespace GpsRunningPlugin.Source
             {
                 summaryList.Visible = false;
                 IList<Result> results = HighScore.calculateActivities(m_activities, goalsToCalc, progressBar);
+                foreach (Result r in results)
+                {
+                    if (r != null)
+                    {
+                        if (cachedResults[r.Goal.Domain][r.Goal.Image][r.Goal.UpperBound] == null)
+                        {
+                            cachedResults[r.Goal.Domain][r.Goal.Image][r.Goal.UpperBound] = new List<Result>();
+                        }
+                        cachedResults[r.Goal.Domain][r.Goal.Image][r.Goal.UpperBound].Add(r);
+                    }
+                }
                 summaryList.Visible = true;
             }
         }

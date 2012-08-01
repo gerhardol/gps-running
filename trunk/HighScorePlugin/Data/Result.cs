@@ -81,7 +81,7 @@ namespace GpsRunningPlugin.Source
             get
             {
                 ActivityInfo info = ActivityInfoCache.Instance.GetInfo(this.Activity);
-                if (info.SmoothedHeartRateTrack == null)
+                if (info.SmoothedHeartRateTrack == null || info.SmoothedHeartRateTrack.Max <= 0)
                 {
                     return double.NaN;
                 }

@@ -145,8 +145,8 @@ namespace GpsRunningPlugin.Source
                          domain == GoalParameter.Time ||
                          domain == GoalParameter.Elevation))
                     {
-                        Goal.generateGoals(domain, image, true, goals);
                         Goal.generateGoals(domain, image, false, goals);
+                        Goal.generateGoals(domain, image, true, goals);
                     }
                 }
             }
