@@ -7,8 +7,9 @@ More or less official beta releases are available in the Downloads section. See 
 
 unreleased
  * PP, HS, UR, Overlay: Popup from UR did not always work, some risk for null exceptions.
- * UR: PP popup normally disabled
- * PP: Prepared for integration with Trails
+ * UR: PP popup was normally disabled
+ * PP, HS: Prepared for integration with Trails - Popup based on selected results
+ * Save HS popup size
 
 2.0.336 2012-03-21
  * HS: Min Grade could not be set to negative values

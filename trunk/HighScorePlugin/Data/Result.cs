@@ -150,7 +150,7 @@ namespace GpsRunningPlugin.Source
                         }
                     }
 
-                    return track.Avg;
+                    avgPulse = track.Avg;
                 }
                 return (double)avgPulse;
             }
