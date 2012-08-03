@@ -28,10 +28,29 @@ namespace HighScore.Export
 {
     public static class HighScore
     {
-        //Compability (GpsRunningPlugin.Source.HighScore used directly)
-        public static IList<IList<Object>> getFastestTimesOfDistances(IList<IActivity> activities, IList<double> distances, System.Windows.Forms.ProgressBar progress)
+        //PerformancePredictor (still uses GpsRunningPlugin.Source.HighScore)
+        public static IList<IList<Object>> getFastestTimesOfDistances(IList<IActivity> activities, IList<double> distances, System.Windows.Forms.ProgressBar progressBar)
         {
-            return GpsRunningPlugin.Source.HighScore.getFastestTimesOfDistances(activities, distances, progress);
+            IList<Goal> goals = new List<Goal>();
+            foreach (double distance in distances)
+            {
+                goals.Add(new PointGoal(distance, false,
+                            GoalParameter.Time, GoalParameter.Distance));
+            }
+
+            IList<Result> results = GpsRunningPlugin.Source.HighScore.calculateActivities(activities, null, goals, progressBar);
+            IList<IList<Object>> objects = new List<IList<Object>>();
+            foreach (Result result in results)
+            {
+                IList<Object> s = new List<Object>();
+                objects.Add(s);
+                s.Add(result.Activity);
+                s.Add(result.Seconds);
+                s.Add(result.MeterStart);
+                s.Add(result.Meters);
+                s.Add(result.TimeStart);
+            }
+            return objects;
         }
 
         public static IList<IList<Object>> getResults(IList<IActivity> activities, System.Windows.Forms.ProgressBar progress)
