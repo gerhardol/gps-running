@@ -35,28 +35,10 @@ namespace GpsRunningPlugin.Source
 {
     static class HighScore
     {
+        //Compatibility with PerformancePredictor
         public static IList<IList<Object>> getFastestTimesOfDistances(IList<IActivity> activities, IList<double> distances, System.Windows.Forms.ProgressBar progressBar)
         {
-            IList<Goal> goals = new List<Goal>();
-            foreach (double distance in distances)
-            { 
-                goals.Add(new PointGoal(distance, false,
-                            GoalParameter.Time, GoalParameter.Distance));
-            }
-
-            IList<Result> results = calculateActivities(activities, null, goals, progressBar);
-            IList<IList<Object>> objects = new List<IList<Object>>();
-            foreach (Result result in results)
-            {
-                IList<Object> s = new List<Object>();
-                objects.Add(s);
-                s.Add(result.Activity);
-                s.Add(result.Seconds);
-                s.Add(result.MeterStart);
-                s.Add(result.Meters);
-                s.Add(result.TimeStart);
-            }
-            return objects;
+            return global::HighScore.Export.HighScore.getFastestTimesOfDistances(activities, distances, progressBar);
         }
 
         public static IList<Result> calculateActivities(IList<IActivity> activities, IList<IValueRangeSeries<DateTime>> pauses, IList<Goal> goals, System.Windows.Forms.ProgressBar progressBar)
