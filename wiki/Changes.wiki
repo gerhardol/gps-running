@@ -5,8 +5,10 @@
 
 More or less official beta releases are available in the Downloads section. See each plugin for detailed description of functions.
 
-2.0.358 2012-08-04
+2.0.359 2012-08-04
  * Overlay: Integration with Compare Planned plugin
+
+2.0.358 2012-08-04
  * PP, HS: Prepared for integration with Trails plugin - Popup based on selected trail results. This has required many internal changes to the plugins.
  * Some speedup in HS. Previously, all results were always calculated. This has been changed to only calculate the selected result. This decreases the time to see a result for many activities significantly. In addition, there are some internal speedups.
  * Save HS popup size

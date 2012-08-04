@@ -293,6 +293,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                         }
                         else
                         {
+                            //TODO: Trails can have many "activities" but only one used activity
                             title = Resources.PPHS + " " + String.Format(StringResources.ForManyActivities, m_activities.Count);
                         }
                     }
