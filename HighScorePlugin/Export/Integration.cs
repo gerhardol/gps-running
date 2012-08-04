@@ -26,6 +26,16 @@ using GpsRunningPlugin.Source;
 
 namespace HighScore.Export
 {
+    /// <summary>
+    /// Draft for HighScore interface
+    /// </summary>
+    public interface IHighScoreExport
+    {
+        void HighScorePopup(IList<IActivity> activities, IList<IValueRangeSeries<DateTime>> pauses, IDailyActivityView view, System.Windows.Forms.ProgressBar progressBar);
+        IList<IList<Object>> getResults(IList<IActivity> activities, System.Windows.Forms.ProgressBar progress);
+        IList<IList<Object>> getFastestTimesOfDistances(IList<IActivity> activities, IList<double> distances, System.Windows.Forms.ProgressBar progressBar);
+    }
+
     public static class HighScore
     {
         //PerformancePredictor (still uses GpsRunningPlugin.Source.HighScore)
