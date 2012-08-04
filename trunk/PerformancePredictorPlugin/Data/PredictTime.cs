@@ -86,6 +86,10 @@ namespace GpsRunningPlugin.Source
         public static double getVo2max(TimeSpan time)
         {
             double seconds = time.TotalSeconds;
+            return getVo2max(seconds);
+        }
+        public static double getVo2max(double seconds)
+        {
             return 0.8 + 0.1894393 * Math.Exp(-0.012778 * seconds / 60)
                 + 0.2989558 * Math.Exp(-0.1932605 * seconds / 60);
         }
@@ -93,9 +97,13 @@ namespace GpsRunningPlugin.Source
         public static double getVdot(TimeSpan time, double dist)
         {
             double seconds = time.TotalSeconds;
+            return getVdot(seconds, dist);
+        }
+        public static double getVdot(double seconds, double dist)
+        {
             return (-4.6 + 0.182258 * (dist * 60 / seconds)
                 + 0.000104 * Math.Pow(dist * 60 / seconds, 2))
-                / getVo2max(time);
+                / getVo2max(seconds);
         }
     }
 

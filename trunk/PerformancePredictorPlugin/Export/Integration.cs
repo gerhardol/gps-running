@@ -28,6 +28,57 @@ using GpsRunningPlugin.Source;
 
 namespace PerformancePredictor.Export
 {
+    ///Draft for a public interface for export for other plugins
+    public interface IPerformancePredictorExport
+    {
+        void PerformancePredictorPopup(IList<IActivity> activities, IDailyActivityView view, TimeSpan time, double distance, System.Windows.Forms.ProgressBar progressBar);
+
+        //public class PerformancePredictorFieldArgs
+        //{
+        //    public PerformancePredictorFieldArgs(IActivity activity, double time, double distance)
+        //    {
+        //        this.activity = activity;
+        //        this.time = time;
+        //        this.distance = distance;
+        //    }
+        //    public IActivity activity;
+        //    public double time, distance;
+        //}
+
+        //public class PerformancePredictorResult
+        //{
+        //    public class Predicted
+        //    {
+        //        public double new_dist, new_time;
+        //        public Predicted(double new_dist, double new_time)
+        //        {
+        //            this.new_dist = new_dist;
+        //            this.new_time = new_time;
+        //        }
+        //    }
+        //    public PerformancePredictorResult(IList<Object> o)
+        //    {
+        //        this.vo2max = (double)o[0];
+        //        this.vdot = (double)o[1];
+        //        this.predicted = new List<Predicted>();
+        //        for (int i = 2; i < o.Count - 1; i += 2)
+        //        {
+        //            predicted.Add(new Predicted((double)o[i], (double)o[i + 1]));
+        //        }
+        //    }
+        //    public double vo2max, vdot;
+        //    public IList<Predicted> predicted;
+        //}
+
+        ///// <summary>
+        ///// Calculate PP externally
+        ///// </summary>
+        ///// <param name="activities"></param>
+        ///// <param name="progressBar"></param>
+        ///// <returns></returns>
+        //public static IList<PerformancePredictorResult> getResults(IList<PerformancePredictorFieldArgs> activities, IList<double> predictDistances, System.Windows.Forms.ProgressBar progressBar);
+    }
+
     public static class PerformancePredictor
     {
         /// <summary>
@@ -44,55 +95,38 @@ namespace PerformancePredictor.Export
         }
 
         /// <summary>
-        /// Calculate PP externally - incomplete
+        /// Calculate PP externally
         /// </summary>
         /// <param name="activities"></param>
         /// <param name="parts"></param>
         /// <param name="progressBar"></param>
         /// <returns></returns>
-        public static IList<IList<Object>> getResults(IList<IActivity> activities, IItemTrackSelectionInfo parts, System.Windows.Forms.ProgressBar progressBar)
+        public static IList<IList<Object>> getResults(IList<IActivity> activities, IList<double> times, IList<double> distances, IList<double> predictDistances, System.Windows.Forms.ProgressBar progressBar)
         {
-            IList<TimePredictionResult> results = null;
-            if (activities != null && activities.Count > 0)
-            {
-                if (activities.Count > 1 ||
-                (activities.Count == 1 && (Settings.HighScore != null)))
-                {
-                    //Predict using one or many activities (check done that HS enabled prior)
-                    results = TimePredictionView.getResults(null, Predict.Predictor(Settings.Model), activities, progressBar);
-                }
-                else if (activities[0] != null)
-                {
-                    //TODO: Calculate time/distance. Should be example in Trails
-                    TimeSpan time = TimeSpan.FromSeconds(1);
-                    double dist = 1;
-                    if (dist > 0 && time.TotalSeconds > 0)
-                    {
-                        results = TimePredictionView.getResults(null, Predict.Predictor(Settings.Model), activities, dist, time, progressBar);
-                    }
-                }
-            }
             IList<IList<Object>> objects = new List<IList<Object>>();
-            if (results == null)
+            if (activities != null && activities.Count > 0 &&
+                activities.Count == times.Count &&
+                activities.Count == distances.Count)
             {
-                foreach (TimePredictionResult result in results)
+                for (int i = 0; i < activities.Count; i++)
                 {
-                    if (result != null)
+                    IActivity activity = activities[i];
+                    double old_time = times[i];
+                    double old_dist = distances[i];
+
+                    IList<Object> s = new List<Object>();
+                    double vo2max = Predict.getVo2max(old_time);
+                    s.Add(vo2max);
+                    double vdot = Predict.getVdot(old_time, old_dist);
+                    s.Add(vdot);
+
+                    foreach (double predDist in predictDistances)
                     {
-                        TrailsItemTrackSelectionInfo res = new TrailsItemTrackSelectionInfo();
-                        DateTime endTime = DateTimeRangeSeries.AddTimeAndPauses(result.StartDate, result.UsedTime, result.Activity.TimerPauses); //TODO: pauses from marked time
-                        res.MarkedTimes = new ValueRangeSeries<DateTime> { new ValueRange<DateTime>(result.StartDate, endTime) };
-                        IList<Object> s = new List<Object>();
-                        s.Add(result.Activity);
-                        s.Add(res);
-                        s.Add(result.DistanceNominal);
-                        s.Add(result.Distance);
-                        objects.Add(s);
+                        double new_time =  (Predict.Predictor(Settings.Model))(predDist, old_dist, TimeSpan.FromSeconds(old_time));
+                        s.Add(predDist);
+                        s.Add(new_time);
                     }
-                    else
-                    {
-                        objects.Add(null);
-                    }
+                    objects.Add(s);
                 }
             }
             return objects;
