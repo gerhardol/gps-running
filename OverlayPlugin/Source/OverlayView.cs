@@ -102,13 +102,14 @@ namespace GpsRunningPlugin.Source
                 this.ShowDialog();
             }
         }
-        ////Compatibility with old UniqueRoutes send to
-        //public OverlayView(IList<IActivity> aAct, bool showDialog)
-        //    : this(showDialog)
-        //{
-        //    this.Activities = aAct;
-        //    ShowPage("");
-        //}
+
+        //ComparePlannedPopup
+        public OverlayView(IList<IActivity> aAct, bool showDialog)
+            : this(showDialog)
+        {
+            this.Activities = aAct;
+            ShowPage("");
+        }
 
         public OverlayView()
         {
