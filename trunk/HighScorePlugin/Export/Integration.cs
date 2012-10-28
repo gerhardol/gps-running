@@ -63,20 +63,33 @@ namespace HighScore.Export
             return objects;
         }
 
-        public static IList<IList<Object>> getResults(IList<IActivity> activities, System.Windows.Forms.ProgressBar progress)
+        public static IList<IList<Object>> getResults(IList<IActivity> activities, int noRes, System.Windows.Forms.ProgressBar progress)
         {
-            IList<Goal> goals = Goal.generateSettingsGoals();
+            IList<Goal> goals = Goal.generateSettingsGoals(noRes);
 
             IList<Result> results = GpsRunningPlugin.Source.HighScore.calculateActivities(activities, null, goals, progress);
             IList<IList<Object>> objects = new List<IList<Object>>();
+            Goal goal = null;
+            int i = 1;
             foreach (Result result in results)
             {
                 TrailsItemTrackSelectionInfo res = new TrailsItemTrackSelectionInfo();
                 res.MarkedTimes = new ValueRangeSeries<DateTime> { new ValueRange<DateTime>(result.DateStart, result.DateEnd) };
                 string tt = GpsRunningPlugin.Util.StringResources.Goal + ": " + result.Goal.ToString(GpsRunningPlugin.Source.HighScoreViewer.getMostUsedSpeedUnit(activities));
+                if (result.Goal != goal)
+                {
+                    i = 1;
+                    goal = result.Goal;
+                }
+                else
+                {
+                    i++;
+                }
+
                 IList<Object> s = new List<Object>();
                 s.Add(result.Activity);
                 s.Add(res);
+                s.Add(i);
                 s.Add(tt);
                 objects.Add(s);
             }

@@ -73,6 +73,14 @@ It is possibe to add and remove the distances that the plugin use in its calcula
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/Settings.png]
 
+=Todo=
+* Extrapolation based on more scenarios:
+  * Age
+  * Hills - some done in Trails plugin
+  * Elevation http://runningtimes.com/Article.aspx?ArticleID=10507&PageNum=3
+  * "Best combined"
+* Set time/distance manually to get training pace etc
+  
 =Feedback=
 For patches, bugreports or feature suggestions, use the Google Code issue list.
 For feedback please use the forum for this plugin at !SportTracks forum [http://www.zonefivesoftware.com/SportTracks/Forums/viewforum.php?f=30 here].

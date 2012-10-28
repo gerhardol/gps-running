@@ -30,16 +30,22 @@ namespace GpsRunningPlugin.Source
 {
     public abstract class Goal
     {
-        public Goal(bool upperBound, GoalParameter domain, GoalParameter image)
+        public Goal(bool upperBound, GoalParameter domain, GoalParameter image) : this(upperBound, domain, image, 1)
+        {
+        }
+        public Goal(bool upperBound, GoalParameter domain, GoalParameter image, int order)
         {
             this.UpperBound = upperBound;
             this.Domain = domain;
             this.Image = image;
+            this.Order = order;
         }
 
         readonly public bool UpperBound;
 
         readonly public GoalParameter Domain, Image;
+
+        public int Order; //Normally set by field
 
         public abstract String ImageToString(string speedUnit);
 
@@ -133,8 +139,17 @@ namespace GpsRunningPlugin.Source
 
         public static IList<Goal> generateSettingsGoals()
         {
+            return generateSettingsGoals(1);
+        }
+
+        public static IList<Goal> generateSettingsGoals(int order)
+        {
             IList<Goal> goals = new List<Goal>();
             generateGoals(Settings.Domain, Settings.Image, Settings.UpperBound, goals);
+            foreach (Goal goal in goals)
+            {
+                goal.Order = order;
+            }
             return goals;
         }
 
