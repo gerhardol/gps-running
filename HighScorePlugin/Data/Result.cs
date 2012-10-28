@@ -33,7 +33,7 @@ using GpsRunningPlugin.Util;
 
 namespace GpsRunningPlugin.Source
 {
-    public class Result
+    public class Result : IComparable
     {
         public Result(Goal goal, IActivity activity, IValueRangeSeries<DateTime> pause,
             double domainStart, double domainEnd,
@@ -67,18 +67,7 @@ namespace GpsRunningPlugin.Source
         public double Meters, Elevations, Seconds;
         public DateTime DateStart, DateEnd;
         private double? meterStart, timeStart, avgPulse;
-
-        public bool BetterResult(Result oldBest)
-        {
-            int upperBound = this.Goal.UpperBound ? 1 : -1;
-            if (oldBest == null ||
-               (upperBound * this.DomainDiff > upperBound * oldBest.DomainDiff))
-            {
-                return true;
-            }
-
-            return false;
-        }
+        //public int Order = 1;
 
         public double TimeStart
         {
@@ -184,5 +173,37 @@ namespace GpsRunningPlugin.Source
             if (str == null || str.Equals("")) { str = "s"; }
             return String.Format("{0} : {1} {3}, {2} {4}", Goal.ToString(), Meters, Seconds, Length.LabelPlural(Length.Units.Meter), str);
         }
+
+        //Relates to CompareTo
+        public static Result LastResult(SortedList<Result, Result> results)
+        {
+            Result res = null;
+            if (results.Count > 0)
+            {
+                //res = results.Values[results.Count - 1];
+                res = results.Values[0];
+            }
+            return res;
+        }
+
+        //Note: CompareTo returns opposite of usual, to get best result first
+        public int CompareTo(object obj)
+        {
+            int result = 1; //Default larger than
+            if (obj != null && (obj is Result))
+            {
+                if (this.BetterResult(obj as Result))
+                {
+                    result = -1;
+                }
+            }
+            return result;
+        }
+
+        public bool BetterResult(Result other)
+        {
+            bool result = this.DomainDiff > other.DomainDiff ? this.Goal.UpperBound : !this.Goal.UpperBound;
+            return result;
+        }        
     }
 }

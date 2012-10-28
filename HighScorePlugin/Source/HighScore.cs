@@ -51,14 +51,20 @@ namespace GpsRunningPlugin.Source
                 progressBar.Visible = true;
                 progressBar.BringToFront();
             }
-            Result[] resultsArray = calculateActivities2(activities, pauses, goals, progressBar);
+            SortedList<Result, Result>[] resultsArray = calculateActivities2(activities, pauses, goals, progressBar);
             IList<Result> results = new List<Result>();
             //Null results must be removed from array
-            foreach (Result r in resultsArray)
+            foreach (SortedList<Result, Result> r in resultsArray)
             {
                 if (r != null)
                 {
-                    results.Add(r);
+                    //int i = 1;
+                    foreach (Result ra in r.Values)
+                    {
+                        //ra.Order = i;
+                        results.Add(ra);
+                        //i++;
+                    }
                 }
             }
 
@@ -70,9 +76,9 @@ namespace GpsRunningPlugin.Source
         }
 
         //No init of progressbar
-        private static Result[] calculateActivities2(IList<IActivity> activities, IList<IValueRangeSeries<DateTime>> pauses, IList<Goal> goals, System.Windows.Forms.ProgressBar progressBar)
+        private static SortedList<Result, Result>[] calculateActivities2(IList<IActivity> activities, IList<IValueRangeSeries<DateTime>> pauses, IList<Goal> goals, System.Windows.Forms.ProgressBar progressBar)
         {
-            Result[] results = new Result[goals.Count];
+            SortedList<Result, Result>[] results = new SortedList<Result, Result>[goals.Count];
             DateTime s = DateTime.Now;
             if (activities != null && activities.Count > 0)
             {
@@ -110,7 +116,7 @@ namespace GpsRunningPlugin.Source
             return results;
         }
 
-        private static void calculateActivity(IActivity activity, IValueRangeSeries<DateTime> pause, IList<Goal> goals, IList<Result> results)
+        private static void calculateActivity(IActivity activity, IValueRangeSeries<DateTime> pause, IList<Goal> goals, SortedList<Result, Result>[] results)
         {
             ActInfo act = new ActInfo(activity, pause, goals);
             foreach (Goal goal in goals)
@@ -132,12 +138,27 @@ namespace GpsRunningPlugin.Source
                                         act.getGoalTrack(goal.Image));
                 }
 
-                int upperBound = goal.UpperBound ? 1 : -1;
-                //results array are referenced by goal index. (Could be dictionary)
-                int resultIndex = goals.IndexOf(goal);
-                if (result != null && result.BetterResult(results[resultIndex]))
+                if (result != null)
                 {
-                    results[resultIndex] = result;
+                    //results array are referenced by goal index. (Could be dictionary)
+                    int resultIndex = goals.IndexOf(goal);
+                    if (results[resultIndex] == null)
+                    {
+                        results[resultIndex] = new SortedList<Result, Result>();
+                    }
+                    if (results[resultIndex].Count > 0 &&
+                        results[resultIndex].Count >= goal.Order)
+                    {
+                        Result last = Result.LastResult(results[resultIndex]);
+                        if (result.BetterResult(last))
+                        {
+                            results[resultIndex].Remove(last);
+                        }
+                    }
+                    if (results[resultIndex].Count < goal.Order)
+                    {
+                        results[resultIndex].Add(result, result);
+                    }
                 }
             }
         }
