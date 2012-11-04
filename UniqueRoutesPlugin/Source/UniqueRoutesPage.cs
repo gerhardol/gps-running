@@ -24,7 +24,7 @@ using GpsRunningPlugin.Properties;
 
 namespace GpsRunningPlugin.Source
 {
-    class UniqueRoutesPage : ISettingsPage
+    class UniqueRoutesPage : ISettingsPage, IDisposable
     {
         private UniqueRoutesSettingPageControl m_control = null;
 
@@ -113,5 +113,10 @@ namespace GpsRunningPlugin.Source
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
         #endregion
+
+        public void Dispose()
+        {
+            this.m_control.Dispose();
+        }
     }
 }

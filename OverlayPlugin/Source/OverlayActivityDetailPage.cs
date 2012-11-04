@@ -34,7 +34,7 @@ using GpsRunningPlugin.Properties;
 
 namespace GpsRunningPlugin.Source
 {
-    class OverlayActivityDetailPage : 
+    class OverlayActivityDetailPage : IDisposable,
 #if ST_2_1
      IActivityDetailPage
 #else
@@ -223,6 +223,11 @@ namespace GpsRunningPlugin.Source
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        public void Dispose()
+        {
+            this.m_control.Dispose();
         }
     }
 }
