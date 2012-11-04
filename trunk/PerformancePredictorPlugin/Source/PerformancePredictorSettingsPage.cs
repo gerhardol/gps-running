@@ -23,7 +23,7 @@ using ZoneFiveSoftware.Common.Visuals;
 
 namespace GpsRunningPlugin.Source
 {
-    class PerformancePredictorSettingsPage: ISettingsPage
+    class PerformancePredictorSettingsPage: ISettingsPage, IDisposable
     {
         PerformancePredictorSettings m_control = null;
 
@@ -103,5 +103,10 @@ namespace GpsRunningPlugin.Source
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
         #endregion
+
+        public void Dispose()
+        {
+            this.m_control.Dispose();
+        }
     }
 }

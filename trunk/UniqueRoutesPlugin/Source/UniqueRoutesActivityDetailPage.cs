@@ -33,7 +33,7 @@ using ZoneFiveSoftware.Common.Visuals.Util;
 
 namespace GpsRunningPlugin.Source
 {
-   class UniqueRoutesActivityDetailPage : 
+   class UniqueRoutesActivityDetailPage : IDisposable,
 #if ST_2_1
      IActivityDetailPage
 #else
@@ -217,5 +217,10 @@ namespace GpsRunningPlugin.Source
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-   }
+
+        public void Dispose()
+        {
+            this.m_control.Dispose();
+        }
+    }
 }

@@ -23,7 +23,7 @@ using ZoneFiveSoftware.Common.Visuals;
 
 namespace GpsRunningPlugin.Source
 {
-    class OverlaySettingsPage: ISettingsPage
+    class OverlaySettingsPage: ISettingsPage, IDisposable
     {
         OverlaySettings m_control = null;
 
@@ -104,5 +104,10 @@ namespace GpsRunningPlugin.Source
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
         #endregion
+
+        public void Dispose()
+        {
+            this.m_control.Dispose();
+        }
     }
 }

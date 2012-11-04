@@ -33,7 +33,7 @@ using System.Globalization;
 
 namespace GpsRunningPlugin.Source
 {
-    class PerformancePredictorActivityDetailPage :
+    class PerformancePredictorActivityDetailPage : IDisposable,
 #if ST_2_1
      IActivityDetailPage
 #else
@@ -222,6 +222,11 @@ namespace GpsRunningPlugin.Source
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        public void Dispose()
+        {
+            this.m_control.Dispose();
         }
     }
 }

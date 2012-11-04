@@ -24,7 +24,7 @@ using GpsRunningPlugin.Properties;
 
 namespace GpsRunningPlugin.Source
 {
-    class HighScorePage : ISettingsPage
+    class HighScorePage : ISettingsPage, IDisposable
     {
         private HighScoreSettingPageControl m_control = null;
 
@@ -113,5 +113,10 @@ namespace GpsRunningPlugin.Source
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
         #endregion
+
+        public void Dispose()
+        {
+            this.m_control.Dispose();
+        }
     }
 }
