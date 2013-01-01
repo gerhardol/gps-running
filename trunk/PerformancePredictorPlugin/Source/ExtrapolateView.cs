@@ -308,7 +308,10 @@ namespace GpsRunningPlugin.Source
                 }
             }
             temperatureList.RowData = result;
-            temperatureList.SelectedItems = new List<TemperatureResult>{sel};
+            if (sel != null)
+            {
+                temperatureList.SelectedItems = new List<TemperatureResult> { sel };
+            }
         }
     }
 }
