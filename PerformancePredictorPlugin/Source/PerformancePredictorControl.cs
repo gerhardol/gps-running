@@ -265,7 +265,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 //No settings for HS, separate check in makeData(), enabled in setView
                 //For Activity page use Predict/Training by default for single activities
                 //Enabling/disabling is done based on settings
-                if (Settings.HighScore != null && (m_activities.Count > 1 || m_popupForm != null))
+                if (Settings.HighScore != null && (m_activities.Count > 1/* || m_popupForm != null*/))
                 {
                     chkHighScoreBox.Checked = true;
                 }
@@ -273,7 +273,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 {
                     chkHighScoreBox.Checked = false;
                 }
-
 
                 //if (m_activities.Count != 1 || (m_activities.Count == 1 && null != m_activities[0]))
                 //{
@@ -309,12 +308,12 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             }
         }
 
-        //For extraploate view, where a single activity is extrapolated
+        //For extrapolate view, where a single activity is extrapolated
         public IActivity SingleActivity
         {
             get
             {
-                if (!this.chkHighScoreBox.Checked)
+                if (!this.ChkHighScore)
                 {
                     return m_lastActivity;
                 }
@@ -327,7 +326,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
         {
             get
             {
-                if (m_activities.Count > 0 && m_activities[0] != null && !chkHighScoreBox.Checked)
+                if (m_activities.Count > 0 && m_activities[0] != null && !this.ChkHighScore)
                 {
                     return m_activities[0];
                 }
@@ -445,11 +444,12 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
         private void setView()
         {
-            predictorView.HidePage();
-            trainingView.HidePage();
-            extrapolateView.HidePage();
+            this.predictorView.HidePage();
+            this.trainingView.HidePage();
+            this.extrapolateView.HidePage();
 
-            //this.timePredictionButton.Enabled = false;
+            //Disable all but timePredictionButton (always active)
+            //timePredictionButton.Enabled = true;
             this.trainingButton.Enabled = false;
             this.extrapolateButton.Enabled = false;
             this.timePredictionButton.Checked = false;
@@ -457,81 +457,71 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             this.extrapolateButton.Checked = false;
 
             this.tableButton.Enabled = false;
-            this.chartButton.Enabled = false;
             this.chkHighScoreBox.Enabled = false;
 
-            this.tableButton.Enabled = true;
-            this.chartButton.Enabled = true;
-
-            if (this.IsPartial)
+            if (this.SingleActivity != null && !this.ChkHighScore)
             {
-                chkHighScoreBox.Enabled = false;
-                chkHighScoreBox.Checked = false;
-            }
+                this.trainingButton.Enabled = true;
+                this.extrapolateButton.Enabled = true;
 
-            if (this.SingleActivity != null)
+                this.timePredictionButton.Checked = Settings.PredictionView == PredictionView.TimePrediction;
+            }
+            else if (this.FirstActivity != null && !this.ChkHighScore)
             {
                 //timePredictionButton.Enabled = true;
-                trainingButton.Enabled = true;
-                extrapolateButton.Enabled = true;
+                this.trainingButton.Enabled = true;
 
-                timePredictionButton.Checked = Settings.PredictionView == PredictionView.TimePrediction;
-            }
-            else if (this.FirstActivity != null)
-            {
-                //timePredictionButton.Enabled = true;
-                trainingButton.Enabled = true;
-
-                timePredictionButton.Checked = Settings.PredictionView == PredictionView.TimePrediction || Settings.PredictionView == PredictionView.Extrapolate;
+                this.timePredictionButton.Checked = Settings.PredictionView == PredictionView.TimePrediction ||
+                    Settings.PredictionView == PredictionView.Extrapolate;
             }
             else
             {
-                timePredictionButton.Checked = true;
+                this.timePredictionButton.Checked = true;
             }
 
             if (timePredictionButton.Checked)
             {
-                actionBanner1.Text = Properties.Resources.TimePrediction;
-                chartButton.Checked = Settings.ShowChart;
-                tableButton.Checked = !Settings.ShowChart;
-                if (m_activities.Count == 1)
+                this.actionBanner1.Text = Properties.Resources.TimePrediction;
+                this.chkHighScoreBox.Enabled |= Settings.HighScore != null;
+                this.tableButton.Enabled = false;
+                this.tableButton.Checked = !Settings.ShowChart;
+                if (this.m_showPage)
                 {
-                    //chkHighScore.Checked set in Activities (as it may clear selection)
-                    if (Settings.HighScore != null && !this.IsPartial)
-                    {
-                        chkHighScoreBox.Enabled = true;
-                    }
-                }
-                if (m_showPage)
-                {
-                    predictorView.ShowPage("");
+                    this.predictorView.ShowPage("");
                 }
             }
             else
             {
                 this.tableButton.Enabled = false;
-                this.chartButton.Enabled = false;
                 this.tableButton.Checked = true;
-                this.chartButton.Checked = false;
-                if (trainingButton.Enabled && Settings.PredictionView == PredictionView.Training)
+                if (this.trainingButton.Enabled && Settings.PredictionView == PredictionView.Training)
                 {
-                    actionBanner1.Text = StringResources.Training;
-                    trainingButton.Checked = true;
-                    if (m_showPage)
+                    this.actionBanner1.Text = StringResources.Training;
+                    this.trainingButton.Checked = true;
+                    if (this.m_showPage)
                     {
-                        trainingView.ShowPage("");
+                        this.trainingView.ShowPage("");
                     }
                 }
                 else if (Settings.PredictionView == PredictionView.Extrapolate)
                 {
-                    actionBanner1.Text = Properties.Resources.Extrapolate;
-                    extrapolateButton.Checked = true;
-                    if (m_showPage)
+                    this.actionBanner1.Text = Properties.Resources.Extrapolate;
+                    this.extrapolateButton.Checked = true;
+                    if (this.m_showPage)
                     {
-                        extrapolateView.ShowPage("");
+                        this.extrapolateView.ShowPage("");
                     }
                 }
+                else
+                {
+                    this.actionBanner1.Text = "Unknown";
+                }
             }
+
+            //Dependent
+            chartButton.Checked = !tableButton.Checked;
+            chartButton.Enabled = tableButton.Enabled;
+
             syncMenuToState();
         }
 
@@ -561,9 +551,8 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             speedButton.Checked = !Settings.ShowPace;
 
             tableButton.Checked = !Settings.ShowChart;
-            chartButton.Checked = Settings.ShowChart;
-
-            chkHighScoreBox.Checked = (Settings.HighScore != null);
+            chartButton.Checked = !tableButton.Checked;
+            chartButton.Enabled = tableButton.Enabled;
         }
 
         private void syncMenuToState()
@@ -735,8 +724,9 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             {
                 if (sender is ToolStripMenuItem)
                 {
+                    //Not needed if sender is CheckBox
+                    //menuitem synced to the checkbox
                     this.chkHighScoreBox.Checked = !this.chkHighScoreBox.Checked;
-                    this.chkHighScoreMenuItem.Checked = this.chkHighScoreBox.Checked;
                 }
                 setView();
                 predictorView.RefreshData();

@@ -217,12 +217,12 @@ namespace GpsRunningPlugin.Source
             //summaryList.NumLockedColumns = Data.Settings.ActivityPageNumFixedColumns;
         }
 
-        public IList<TimePredictionResult> getResults()
-        {
-            PredictionModel model = Settings.Model;
-            makeData(model);
-            return m_predictorData[model].result;
-        }
+        //public IList<TimePredictionResult> getResults()
+        //{
+        //    PredictionModel model = Settings.Model;
+        //    makeData(model);
+        //    return m_predictorData[model].result;
+        //}
 
         private void makeData(PredictionModel model)
         {
@@ -242,7 +242,6 @@ namespace GpsRunningPlugin.Source
                     (m_ppcontrol.Activities.Count == 1 && m_ppcontrol.ChkHighScore)))
                 {
                     RefreshColumns(true);
-                    this.lblHighScoreRequired.Visible = false;
                     //Predict using one or many activities (check done that HS enabled prior)
                     //makeData(m_predictorData[model].series, m_predictorData[model].result, Predict.Predictor(model));
                     m_predictorData[model].result = getResults(m_predictorData[model].series, Predict.Predictor(model), m_ppcontrol.Activities, progressBar);
@@ -393,11 +392,11 @@ namespace GpsRunningPlugin.Source
             {
                 //Note: Should possibly be checking for data in table/chart
                 if (Settings.HighScore == null &&
-                    (m_ppcontrol.Activities.Count > 1 || m_ppcontrol.ChkHighScore))
+                    (m_ppcontrol.Activities.Count > 1 /*|| m_ppcontrol.ChkHighScore*/))
                 {
                     lblHighScoreRequired.Visible = true;
                     chart.Visible = false;
-                    summaryList.Visible = true;
+                    summaryList.Visible = false;
                 }
                 else
                 {
