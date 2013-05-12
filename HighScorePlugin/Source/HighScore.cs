@@ -304,6 +304,7 @@ namespace GpsRunningPlugin.Source
 
         //restart:
             {
+                //TBD: The following is what consumes almost all CPU, what is slowing down
                 IList<LapDetailInfo> laps = info.DistanceLapDetailInfo(20 + increment);
                 int length = laps.Count + 1;
 
