@@ -5,6 +5,8 @@
 
 More or less official beta releases are available in the Downloads section. See each plugin for detailed description of functions.
 
+ * Overlay: Exception occurred if "Select with UniqueRoutes" menuitem was selected but UR was not installed.
+ 
 2.0.366 2013-01-01 (Plugin Catalog)
 PerformancePredictor updates - Google Code issue 28
  * Disable Analyze menu item for multiple activities if HS is not installed
