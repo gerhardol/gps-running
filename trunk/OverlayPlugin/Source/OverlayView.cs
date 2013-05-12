@@ -149,6 +149,9 @@ namespace GpsRunningPlugin.Source
             chart.SelectingData += new ChartBase.SelectDataHandler(chart_SelectingData);
             chart.Click += new EventHandler(chart_Click);
 
+            this.selectWithURMenuItem.Enabled = TrailsPlugin.Integration.UniqueRoutes.UniqueRouteIntegrationEnabled;
+            this.setOffsetWithURMenuItem.Enabled = TrailsPlugin.Integration.UniqueRoutes.UniqueRouteIntegrationEnabled;
+
             UpdateChartBar();
         }
 
