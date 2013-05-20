@@ -271,7 +271,8 @@ namespace GpsRunningPlugin.Source
             }
             weightLabel2.Visible = true;
             weightLabel.Text = Resources.ProjectedWeightImpact + " " +
-                UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u");
+                UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + UnitUtil.Weight.ToString(weight, "u") + ")";
+
             const double inc = 1.4;
             double vdot = Predict.getVdot(m_ppcontrol.Time, m_ppcontrol.Distance);
             IList<WeightResult> result = new List<WeightResult>();
@@ -291,11 +292,11 @@ namespace GpsRunningPlugin.Source
 
         private void setTemperature()
         {
-            temperatureLabel.Text = Resources.ProjectedTemperatureImpact + " " + UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u");
             float actualTemp = m_ppcontrol.SingleActivity.Weather.TemperatureCelsius;
-            if (!double.IsNaN(actualTemp)) { actualTemp = 15; }
+            if (double.IsNaN(actualTemp)) { actualTemp = 16; }
+            temperatureLabel.Text = Resources.ProjectedTemperatureImpact + " " + UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + UnitUtil.Temperature.ToString(actualTemp, "u") + ")";
+
             double[] aTemperature = TemperatureResult.aTemperature;
-            
             IList<TemperatureResult> result = new List<TemperatureResult>();
             TemperatureResult sel = null;
             for (int i = 0; i < aTemperature.Length; i++)

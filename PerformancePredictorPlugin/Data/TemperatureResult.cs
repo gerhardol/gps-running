@@ -63,9 +63,9 @@ namespace GpsRunningPlugin.Source
             {
                 return 1;
             }
-            if (temperature < 15)
+            if (temperature < 16)
             {
-                temperature = 15;
+                temperature = 16;
             }
             if (temperature > 45)
             {
