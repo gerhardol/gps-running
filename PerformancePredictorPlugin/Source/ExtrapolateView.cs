@@ -51,6 +51,8 @@ namespace GpsRunningPlugin.Source
         private TrailPointsLayer m_layer = null;
 #endif
         private PerformancePredictorControl m_ppcontrol = null;
+        private float? m_actualTemp = null;
+        private float? m_actualWeight = null;
 
         public ExtrapolateView()
         {
@@ -71,6 +73,7 @@ namespace GpsRunningPlugin.Source
 
             copyTableMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
 
+            this.temperatureTab.Text = "xxx";
             temperatureList.LabelProvider = new TemperatureLabelProvider();
             weightList.LabelProvider = new WeightLabelProvider();
             temperatureList.Columns.Clear();
@@ -113,6 +116,8 @@ namespace GpsRunningPlugin.Source
 
         private void SystemPreferences_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            this.m_actualTemp = null;
+            this.m_actualWeight = null;
             if (this.InvokeRequired)
             {
                 this.Invoke((System.ComponentModel.PropertyChangedEventHandler)SystemPreferences_PropertyChanged, sender, e);
@@ -132,6 +137,7 @@ namespace GpsRunningPlugin.Source
         private void Athlete_PropertyChanged(object sender, PropertyChangedEventArgs e)
 #endif
         {
+            this.m_actualWeight = null;
             if (this.InvokeRequired)
             {
                 this.Invoke((System.ComponentModel.PropertyChangedEventHandler)Athlete_PropertyChanged, sender, e);
@@ -150,6 +156,7 @@ namespace GpsRunningPlugin.Source
         private void Logbook_PropertyChanged(object sender, PropertyChangedEventArgs e)
 #endif
         {
+            this.m_actualTemp = null;
             if (this.InvokeRequired)
             {
                 this.Invoke((System.ComponentModel.PropertyChangedEventHandler)Logbook_PropertyChanged, sender, e);
@@ -166,9 +173,12 @@ namespace GpsRunningPlugin.Source
         private ITheme m_visualTheme;
         public void ThemeChanged(ITheme visualTheme)
         {
-            m_visualTheme = visualTheme;
+            this.m_visualTheme = visualTheme;
             Color bColor = visualTheme.Control;
             Color fColor = visualTheme.ControlText;
+
+            this.weightBox.ThemeChanged(visualTheme);
+            this.temperatureBox.ThemeChanged(visualTheme);
 
             //Set color for non ST controls
             this.BackColor = bColor;
@@ -262,16 +272,20 @@ namespace GpsRunningPlugin.Source
 
         private void setWeight()
         {
-            double weight = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(m_ppcontrol.SingleActivity.StartTime).WeightKilograms;
-            if (weight.Equals(double.NaN))
+            if (this.m_actualWeight == null || float.IsNaN((float)this.m_actualWeight))
+            {
+                this.m_actualWeight = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(m_ppcontrol.SingleActivity.StartTime).WeightKilograms;
+            }
+            if (float.IsNaN((float)this.m_actualWeight))
             {
                 weightLabel.Text = Resources.SetWeight;
-                weightLabel2.Visible = false;
-                return;
+                this.m_actualWeight = 80;
             }
+
             weightLabel2.Visible = true;
             weightLabel.Text = Resources.ProjectedWeightImpact + " " +
-                UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + UnitUtil.Weight.ToString(weight, "u") + ")";
+                UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + UnitUtil.Weight.ToString((float)this.m_actualWeight, "u") + ")";
+            this.weightBox.Text = UnitUtil.Weight.ToString((float)this.m_actualWeight, "u");
 
             const double inc = 1.4;
             double vdot = Predict.getVdot(m_ppcontrol.Time, m_ppcontrol.Distance);
@@ -279,9 +293,9 @@ namespace GpsRunningPlugin.Source
             WeightResult sel = null;
             for (int i = 0; i < 13; i++)
             {
-                WeightResult t = new WeightResult(m_ppcontrol.SingleActivity, 6 - i, vdot, weight, inc, m_ppcontrol.Time, m_ppcontrol.Distance);
+                WeightResult t = new WeightResult(m_ppcontrol.SingleActivity, 6 - i, vdot, (float)this.m_actualWeight, inc, m_ppcontrol.Time, m_ppcontrol.Distance);
                 result.Add(t);
-                if (t.Weight > weight)
+                if (t.Weight >= (float)this.m_actualWeight)
                 {
                     sel = t;
                 }
@@ -292,18 +306,23 @@ namespace GpsRunningPlugin.Source
 
         private void setTemperature()
         {
-            float actualTemp = m_ppcontrol.SingleActivity.Weather.TemperatureCelsius;
-            if (double.IsNaN(actualTemp)) { actualTemp = 16; }
-            temperatureLabel.Text = Resources.ProjectedTemperatureImpact + " " + UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + UnitUtil.Temperature.ToString(actualTemp, "u") + ")";
+            if (this.m_actualTemp == null || float.IsNaN((float)this.m_actualTemp))
+            {
+                this.m_actualTemp = m_ppcontrol.SingleActivity.Weather.TemperatureCelsius;
+            }
+            if (float.IsNaN((float)this.m_actualTemp)) { this.m_actualTemp = 16; }
+
+            temperatureLabel.Text = Resources.ProjectedTemperatureImpact + " " + UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + UnitUtil.Temperature.ToString((float)this.m_actualTemp, "u") + ")";
+            this.temperatureBox.Text = UnitUtil.Temperature.ToString((float)this.m_actualTemp, "u");
 
             double[] aTemperature = TemperatureResult.aTemperature;
             IList<TemperatureResult> result = new List<TemperatureResult>();
             TemperatureResult sel = null;
             for (int i = 0; i < aTemperature.Length; i++)
             {
-                TemperatureResult t = new TemperatureResult(m_ppcontrol.SingleActivity, aTemperature[i], actualTemp, m_ppcontrol.Time, m_ppcontrol.Distance);
+                TemperatureResult t = new TemperatureResult(m_ppcontrol.SingleActivity, aTemperature[i], (float)this.m_actualTemp, m_ppcontrol.Time, m_ppcontrol.Distance);
                 result.Add(t);
-                if ((i == 0 || actualTemp >= aTemperature[i - 1]) && (actualTemp < aTemperature[i]))
+                if ((i == 0 || aTemperature[i] <= (float)this.m_actualTemp))
                 {
                     sel = t;
                 }
@@ -314,5 +333,18 @@ namespace GpsRunningPlugin.Source
                 temperatureList.SelectedItems = new List<TemperatureResult> { sel };
             }
         }
+
+        void weightBox_LostFocus(object sender, System.EventArgs e)
+        {
+            this.m_actualWeight = (float)UnitUtil.Weight.Parse(this.weightBox.Text);
+            this.setWeight();
+        }
+
+        void temperatureBox_LostFocus(object sender, System.EventArgs e)
+        {
+            this.m_actualTemp = (float)UnitUtil.Weight.Parse(this.temperatureBox.Text);
+            this.setTemperature();
+        }
+
     }
 }

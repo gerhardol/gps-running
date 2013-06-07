@@ -50,24 +50,26 @@ namespace GpsRunningPlugin.Source
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.temperatureTab = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.temperatureTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.temperatureBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.temperatureLabel2 = new System.Windows.Forms.Label();
             this.temperatureLabel = new System.Windows.Forms.Label();
             this.temperatureList = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.listMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyTableMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.weightTab = new System.Windows.Forms.TabPage();
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.weightTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.weightBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.weightLabel2 = new System.Windows.Forms.Label();
             this.weightLabel = new System.Windows.Forms.Label();
             this.weightList = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.temperatureTab.SuspendLayout();
-            this.tableLayoutPanel4.SuspendLayout();
+            this.temperatureTableLayoutPanel.SuspendLayout();
             this.listMenu.SuspendLayout();
             this.weightTab.SuspendLayout();
-            this.tableLayoutPanel5.SuspendLayout();
+            this.weightTableLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -79,7 +81,7 @@ namespace GpsRunningPlugin.Source
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(150, 100);
+            this.panel1.Size = new System.Drawing.Size(442, 237);
             this.panel1.TabIndex = 1;
             // 
             // tabControl1
@@ -94,56 +96,80 @@ namespace GpsRunningPlugin.Source
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.Padding = new System.Drawing.Point(0, 0);
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(150, 100);
+            this.tabControl1.Size = new System.Drawing.Size(442, 237);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(PerformancePredictorControl.tabControl1_DrawItem);
             // 
             // temperatureTab
             // 
             this.temperatureTab.AutoScroll = true;
-            this.temperatureTab.Controls.Add(this.tableLayoutPanel4);
+            this.temperatureTab.Controls.Add(this.temperatureTableLayoutPanel);
             this.temperatureTab.Location = new System.Drawing.Point(4, 22);
             this.temperatureTab.Name = "temperatureTab";
-            this.temperatureTab.Size = new System.Drawing.Size(142, 74);
+            this.temperatureTab.Size = new System.Drawing.Size(434, 211);
             this.temperatureTab.TabIndex = 3;
-            this.temperatureTab.Text = "Temperature impact";
+            this.temperatureTab.Text = "<Temperature impact";
             this.temperatureTab.UseVisualStyleBackColor = true;
             // 
-            // tableLayoutPanel4
+            // temperatureTableLayoutPanel
             // 
-            this.tableLayoutPanel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel4.ColumnCount = 1;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Controls.Add(this.temperatureLabel2, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.temperatureLabel, 0, 1);
-            this.tableLayoutPanel4.Controls.Add(this.temperatureList, 0, 2);
-            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 2;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(142, 74);
-            this.tableLayoutPanel4.TabIndex = 0;
+            this.temperatureTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.temperatureTableLayoutPanel.ColumnCount = 2;
+            this.temperatureTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.temperatureTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.temperatureTableLayoutPanel.Controls.Add(this.temperatureBox, 1, 0);
+            this.temperatureTableLayoutPanel.Controls.Add(this.temperatureLabel2, 0, 0);
+            this.temperatureTableLayoutPanel.Controls.Add(this.temperatureLabel, 0, 1);
+            this.temperatureTableLayoutPanel.Controls.Add(this.temperatureList, 0, 2);
+            this.temperatureTableLayoutPanel.SetColumnSpan(this.temperatureList, 2);
+            this.temperatureTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.temperatureTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.temperatureTableLayoutPanel.Name = "temperatureTableLayoutPanel";
+            this.temperatureTableLayoutPanel.RowCount = 3;
+            this.temperatureTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.temperatureTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.temperatureTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.temperatureTableLayoutPanel.Size = new System.Drawing.Size(434, 211);
+            this.temperatureTableLayoutPanel.TabIndex = 0;
+            // 
+            // temperatureBox
+            // 
+            this.temperatureBox.AcceptsReturn = false;
+            this.temperatureBox.AcceptsTab = false;
+            this.temperatureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.temperatureBox.BackColor = System.Drawing.Color.White;
+            this.temperatureBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.temperatureBox.ButtonImage = null;
+            this.temperatureBox.Location = new System.Drawing.Point(331, 18);
+            this.temperatureBox.MaxLength = 32767;
+            this.temperatureBox.Multiline = false;
+            this.temperatureBox.Name = "temperatureBox";
+            this.temperatureBox.ReadOnly = false;
+            this.temperatureBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.temperatureBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.temperatureBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.temperatureBox.Size = new System.Drawing.Size(50, 19);
+            this.temperatureBox.TabIndex = 1;
+            this.temperatureBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.temperatureBox.LostFocus += temperatureBox_LostFocus;
             // 
             // temperatureLabel2
             // 
             this.temperatureLabel2.AutoSize = true;
             this.temperatureLabel2.Location = new System.Drawing.Point(3, 0);
             this.temperatureLabel2.Name = "temperatureLabel2";
-            this.temperatureLabel2.Size = new System.Drawing.Size(135, 15);
+            this.temperatureLabel2.Size = new System.Drawing.Size(272, 13);
             this.temperatureLabel2.TabIndex = 4;
-            this.temperatureLabel2.Text = "Performance is not adversely affected at 16° C or lower";
+            this.temperatureLabel2.Text = "<Performance is not adversely affected at 16° C or lower";
             // 
             // temperatureLabel
             // 
             this.temperatureLabel.AutoSize = true;
-            this.temperatureLabel.Location = new System.Drawing.Point(3, 15);
+            this.temperatureLabel.Location = new System.Drawing.Point(3, 30);
             this.temperatureLabel.Name = "temperatureLabel";
-            this.temperatureLabel.Size = new System.Drawing.Size(89, 13);
+            this.temperatureLabel.Size = new System.Drawing.Size(95, 13);
             this.temperatureLabel.TabIndex = 3;
-            this.temperatureLabel.Text = "temperatureLabel";
+            this.temperatureLabel.Text = "<temperatureLabel";
             // 
             // temperatureList
             // 
@@ -158,7 +184,7 @@ namespace GpsRunningPlugin.Source
             this.temperatureList.DefaultRowHeight = -1;
             this.temperatureList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.temperatureList.HeaderRowHeight = 21;
-            this.temperatureList.Location = new System.Drawing.Point(3, 33);
+            this.temperatureList.Location = new System.Drawing.Point(3, 46);
             this.temperatureList.MultiSelect = false;
             this.temperatureList.Name = "temperatureList";
             this.temperatureList.NumHeaderRows = ZoneFiveSoftware.Common.Visuals.TreeList.HeaderRows.Auto;
@@ -172,7 +198,7 @@ namespace GpsRunningPlugin.Source
             this.temperatureList.RowSeparatorLines = true;
             this.temperatureList.ShowLines = false;
             this.temperatureList.ShowPlusMinus = false;
-            this.temperatureList.Size = new System.Drawing.Size(136, 38);
+            this.temperatureList.Size = new System.Drawing.Size(428, 162);
             this.temperatureList.TabIndex = 5;
             // 
             // listMenu
@@ -187,54 +213,77 @@ namespace GpsRunningPlugin.Source
             this.copyTableMenuItem.Name = "copyTableMenuItem";
             this.copyTableMenuItem.Size = new System.Drawing.Size(206, 22);
             this.copyTableMenuItem.Text = "<Copy table to clipboard";
-            this.copyTableMenuItem.Click += new System.EventHandler(PerformancePredictorControl.copyTableMenu_Click);
             // 
             // weightTab
             // 
             this.weightTab.AutoScroll = true;
-            this.weightTab.Controls.Add(this.tableLayoutPanel5);
+            this.weightTab.Controls.Add(this.weightTableLayoutPanel);
             this.weightTab.Location = new System.Drawing.Point(4, 22);
             this.weightTab.Name = "weightTab";
-            this.weightTab.Size = new System.Drawing.Size(42, 24);
+            this.weightTab.Size = new System.Drawing.Size(434, 211);
             this.weightTab.TabIndex = 4;
-            this.weightTab.Text = "Weight impact";
+            this.weightTab.Text = "<Weight impact";
             this.weightTab.UseVisualStyleBackColor = true;
             // 
-            // tableLayoutPanel5
+            // weightTableLayoutPanel
             // 
-            this.tableLayoutPanel5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel5.ColumnCount = 1;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Controls.Add(this.weightLabel2, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.weightLabel, 0, 1);
-            this.tableLayoutPanel5.Controls.Add(this.weightList, 0, 2);
-            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 2;
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(42, 24);
-            this.tableLayoutPanel5.TabIndex = 0;
+            this.weightTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.weightTableLayoutPanel.ColumnCount = 2;
+            this.weightTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.weightTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.weightTableLayoutPanel.Controls.Add(this.weightBox, 1, 0);
+            this.weightTableLayoutPanel.Controls.Add(this.weightLabel2, 0, 0);
+            this.weightTableLayoutPanel.Controls.Add(this.weightLabel, 0, 1);
+            this.weightTableLayoutPanel.Controls.Add(this.weightList, 0, 2);
+            this.weightTableLayoutPanel.SetColumnSpan(this.weightList, 2);
+            this.weightTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.weightTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.weightTableLayoutPanel.Name = "weightTableLayoutPanel";
+            this.weightTableLayoutPanel.RowCount = 3;
+            this.weightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.weightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.weightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.weightTableLayoutPanel.Size = new System.Drawing.Size(434, 211);
+            this.weightTableLayoutPanel.TabIndex = 0;
+            // 
+            // weightBox
+            // 
+            this.weightBox.AcceptsReturn = false;
+            this.weightBox.AcceptsTab = false;
+            this.weightBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.weightBox.BackColor = System.Drawing.Color.White;
+            this.weightBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.weightBox.ButtonImage = null;
+            this.weightBox.Location = new System.Drawing.Point(331, 18);
+            this.weightBox.MaxLength = 32767;
+            this.weightBox.Multiline = false;
+            this.weightBox.Name = "weightBox";
+            this.weightBox.ReadOnly = false;
+            this.weightBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.weightBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.weightBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.weightBox.Size = new System.Drawing.Size(50, 19);
+            this.weightBox.TabIndex = 1;
+            this.weightBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.weightBox.LostFocus += weightBox_LostFocus;
             // 
             // weightLabel2
             // 
             this.weightLabel2.AutoSize = true;
             this.weightLabel2.Location = new System.Drawing.Point(3, 0);
             this.weightLabel2.Name = "weightLabel2";
-            this.weightLabel2.Size = new System.Drawing.Size(36, 15);
+            this.weightLabel2.Size = new System.Drawing.Size(265, 13);
             this.weightLabel2.TabIndex = 7;
-            this.weightLabel2.Text = "Estimated times and paces are +/- 2 seconds per mile";
+            this.weightLabel2.Text = "<Estimated times and paces are +/- 2 seconds per mile";
             // 
             // weightLabel
             // 
             this.weightLabel.AutoSize = true;
-            this.weightLabel.Location = new System.Drawing.Point(3, 15);
+            this.weightLabel.Location = new System.Drawing.Point(3, 30);
             this.weightLabel.Name = "weightLabel";
-            this.weightLabel.Size = new System.Drawing.Size(35, 15);
+            this.weightLabel.Size = new System.Drawing.Size(98, 13);
             this.weightLabel.TabIndex = 6;
-            this.weightLabel.Text = "estimated weight>";
+            this.weightLabel.Text = "<estimated weight>";
             // 
             // weightList
             // 
@@ -249,7 +298,7 @@ namespace GpsRunningPlugin.Source
             this.weightList.DefaultRowHeight = -1;
             this.weightList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.weightList.HeaderRowHeight = 21;
-            this.weightList.Location = new System.Drawing.Point(3, 33);
+            this.weightList.Location = new System.Drawing.Point(3, 46);
             this.weightList.MultiSelect = false;
             this.weightList.Name = "weightList";
             this.weightList.NumHeaderRows = ZoneFiveSoftware.Common.Visuals.TreeList.HeaderRows.Auto;
@@ -263,7 +312,7 @@ namespace GpsRunningPlugin.Source
             this.weightList.RowSeparatorLines = true;
             this.weightList.ShowLines = false;
             this.weightList.ShowPlusMinus = false;
-            this.weightList.Size = new System.Drawing.Size(36, 175);
+            this.weightList.Size = new System.Drawing.Size(428, 162);
             this.weightList.TabIndex = 8;
             // 
             // ExtrapolateView
@@ -279,12 +328,12 @@ namespace GpsRunningPlugin.Source
             this.panel1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.temperatureTab.ResumeLayout(false);
-            this.tableLayoutPanel4.ResumeLayout(false);
-            this.tableLayoutPanel4.PerformLayout();
+            this.temperatureTableLayoutPanel.ResumeLayout(false);
+            this.temperatureTableLayoutPanel.PerformLayout();
             this.listMenu.ResumeLayout(false);
             this.weightTab.ResumeLayout(false);
-            this.tableLayoutPanel5.ResumeLayout(false);
-            this.tableLayoutPanel5.PerformLayout();
+            this.weightTableLayoutPanel.ResumeLayout(false);
+            this.weightTableLayoutPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -299,16 +348,18 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.TabControl tabControl1;
 
         private System.Windows.Forms.TabPage temperatureTab;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.TableLayoutPanel temperatureTableLayoutPanel;
         private System.Windows.Forms.Label temperatureLabel;
         private System.Windows.Forms.Label temperatureLabel2;
         private ZoneFiveSoftware.Common.Visuals.TreeList temperatureList;
+        private ZoneFiveSoftware.Common.Visuals.TextBox temperatureBox;
         
         private System.Windows.Forms.TabPage weightTab;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
+        private System.Windows.Forms.TableLayoutPanel weightTableLayoutPanel;
         private System.Windows.Forms.Label weightLabel2;
         private System.Windows.Forms.Label weightLabel;
         private ZoneFiveSoftware.Common.Visuals.TreeList weightList;
+        private ZoneFiveSoftware.Common.Visuals.TextBox weightBox;
 
     }
 }
