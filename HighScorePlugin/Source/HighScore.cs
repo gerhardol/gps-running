@@ -258,8 +258,8 @@ namespace GpsRunningPlugin.Source
                     double domainDiff = domain[front] - domain[back];
                     int upperBound = goal.UpperBound ? 1 : -1;
                     if (upperBound*best < upperBound*domainDiff &&
-                        act.validElevation && (act.aElevation[front] - act.aElevation[back]) / (act.aDistance[front] - act.aDistance[back]) >=
-                        Settings.MinGrade)
+                        (!act.validElevation || act.validElevation && (act.aElevation[front] - act.aElevation[back]) / (act.aDistance[front] - act.aDistance[back]) >=
+                        Settings.MinGrade))
                     {
                         foundAny = true;
                         best = domainDiff;
