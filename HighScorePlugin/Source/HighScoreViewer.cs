@@ -601,7 +601,13 @@ namespace GpsRunningPlugin.Source
 
         private void showTable()
         {
-            IList<Result> results = cachedResults[Settings.Domain][Settings.Image][Settings.UpperBound];
+            IList<Result> results = null;
+            if (cachedResults.ContainsKey(Settings.Domain) &&
+                cachedResults[Settings.Domain].ContainsKey(Settings.Image) &&
+                cachedResults[Settings.Domain][Settings.Image].ContainsKey(Settings.UpperBound))
+            {
+                results = cachedResults[Settings.Domain][Settings.Image][Settings.UpperBound];
+            }
             if (results == null)
             {
                 IList<Goal> goals = Goal.generateSettingsGoals();
