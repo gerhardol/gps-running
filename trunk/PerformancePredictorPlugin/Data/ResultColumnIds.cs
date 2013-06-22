@@ -118,12 +118,15 @@ namespace GpsRunningPlugin.Source
 
         public const string Duration = "Duration";
         
+        //Extrapollation
         public const string Temperature = "Temperature";
         public const string EstimatedTime = "EstimatedTime";
         public const string EstimatedSpeed = "EstimatedSpeed";
 
         public const string Weight = "Weight";
+        public const string ShoeWeight = "ShoeWeight";
         public const string AdjustedVDOT = "AdjustedVDOT";
+        public const string Age = "Age";
 
         public static IList<string> TimePredictHsColumns = new List<string> { Distance, DistanceNominal, PredictedTime, Speed, StartDate, StartTime, UsedTime, StartDistance, UsedDistance};
         public static IList<string> TimePredictSingleColumns = new List<string>{ Distance, DistanceNominal, PredictedTime, Speed};
@@ -133,6 +136,8 @@ namespace GpsRunningPlugin.Source
         public static IList<string> PaceTempoColumns = new List<string> { Duration, Speed };
         public static IList<string> TemperatureColumns = new List<string> { Temperature, EstimatedTime, EstimatedSpeed };
         public static IList<string> WeightColumns = new List<string> { Weight, AdjustedVDOT, EstimatedTime, EstimatedSpeed };
+        public static IList<string> ShoeColumns = new List<string> { ShoeWeight, AdjustedVDOT, EstimatedTime, EstimatedSpeed };
+        public static IList<string> AgeColumns = new List<string> { Age, EstimatedTime, EstimatedSpeed };
 
         public static ICollection<IListColumnDefinition> ColumnDefs()
         {
@@ -167,9 +172,15 @@ namespace GpsRunningPlugin.Source
             }            
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.EstimatedSpeed, estSpeed, "", 120, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Weight, Resources.ProjectedWeight + UnitUtil.Weight.LabelAbbr2, "", 80, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.ShoeWeight, TextShoeWeightColumn(UnitUtil.Weight.Unit), "", 80, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.AdjustedVDOT, Resources.AdjustedVDOT, "", 80, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Age, CommonResources.Text.LabelEquipmentAge, "", 80, StringAlignment.Near));
 
             return columnDefs;
+        }
+        public static string TextShoeWeightColumn(ZoneFiveSoftware.Common.Data.Measurement.Weight.Units unit)
+        {
+            return ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelWeight + " (" + ZoneFiveSoftware.Common.Data.Measurement.Weight.LabelAbbr(unit)+')';
         }
     }
 }
