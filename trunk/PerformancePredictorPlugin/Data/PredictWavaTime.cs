@@ -82,6 +82,11 @@ namespace GpsRunningPlugin.Source
 
             public static float IdealAge(AthleteSex ASex, float dist)
             {
+                if (Wava.list == null)
+                {
+                    Wava.list = WavaTable();
+                }
+
                 int sex = 1;
                 if (ASex == AthleteSex.Female) { sex = 0; }
 
@@ -92,7 +97,7 @@ namespace GpsRunningPlugin.Source
                 }
 
                 int alow = 0;
-                for (int i = 1; i <= maxAge -minAge; i++)
+                for (int i = 1; i <= maxAge - minAge; i++)
                 {
                     if (Wava.list[sex, i, dlow] < Wava.list[sex, alow, dlow])
                     {
@@ -370,7 +375,6 @@ END{print "\n}};\n\n//float minAge=$minAge;\n//float maxAge=$maxAge;\n"}'
 {40.50f, 79.93f, 124.12f, 178.65f, 238.56f, 298.51f, 418.33f, 539.93f, 1101.71f, 1191.65f, 1516.06f, 2355.46f, 2540.69f, 3201.28f, 3907.92f, 4143f, 5032f, 5412f, 6809f, 6852f, 8624f, 10444f, 13168f, 14180f, 17805f, 18829f, 22511f, 27287f, 29436f, 37202f, 39406f, 47739f, 84543f, 112303f, 190852f, 209516f, 277603f, },
 }};
                 return wava;
-
             }
         }
     }

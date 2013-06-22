@@ -51,25 +51,21 @@ namespace GpsRunningPlugin.Source
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.temperatureTab = new System.Windows.Forms.TabPage();
             this.temperatureTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.temperatureBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.temperatureLabel2 = new System.Windows.Forms.Label();
             this.temperatureLabel = new System.Windows.Forms.Label();
             this.temperatureList = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.weightTab = new System.Windows.Forms.TabPage();
             this.weightTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.weightBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.weightLabel2 = new System.Windows.Forms.Label();
             this.weightLabel = new System.Windows.Forms.Label();
             this.weightList = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.shoeTab = new System.Windows.Forms.TabPage();
             this.shoeTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.shoeBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.shoeLabel2 = new System.Windows.Forms.Label();
             this.shoeLabel = new System.Windows.Forms.Label();
             this.shoeList = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.ageTab = new System.Windows.Forms.TabPage();
             this.ageTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.ageBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.ageLabel2 = new System.Windows.Forms.Label();
             this.ageLabel = new System.Windows.Forms.Label();
             this.ageList = new ZoneFiveSoftware.Common.Visuals.TreeList();
@@ -77,6 +73,24 @@ namespace GpsRunningPlugin.Source
             this.utopiaTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.utopiaLabel2 = new System.Windows.Forms.Label();
             this.utopiaLabel = new System.Windows.Forms.Label();
+            this.utopiaActualLabel = new System.Windows.Forms.Label();
+            this.utopiaIdealLabel = new System.Windows.Forms.Label();
+            this.utopiaTimeLabel = new System.Windows.Forms.Label();
+            this.utopiaDistLabel = new System.Windows.Forms.Label();
+            this.utopiaTempLabel = new System.Windows.Forms.Label();
+            this.utopiaWeightLabel = new System.Windows.Forms.Label();
+            this.utopiaShoeLabel = new System.Windows.Forms.Label();
+            this.utopiaAgeLabel = new System.Windows.Forms.Label();
+            this.timeBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.distBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.temperatureBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.weightBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.shoeBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.ageBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.temperatureBox2 = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.weightBox2 = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.shoeBox2 = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.ageBox2 = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.listMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyTableMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
@@ -447,23 +461,46 @@ namespace GpsRunningPlugin.Source
             // utopiaTableLayoutPanel
             // 
             this.utopiaTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.utopiaTableLayoutPanel.ColumnCount = 2;
+            this.utopiaTableLayoutPanel.ColumnCount = 4;
             this.utopiaTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.utopiaTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.utopiaTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.utopiaTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.utopiaTableLayoutPanel.Controls.Add(this.utopiaLabel2, 0, 0);
             this.utopiaTableLayoutPanel.Controls.Add(this.utopiaLabel, 0, 1);
-            this.utopiaTableLayoutPanel.SetColumnSpan(this.utopiaLabel, 2);
-            this.utopiaTableLayoutPanel.SetColumnSpan(this.utopiaLabel2, 2);
-            this.utopiaTableLayoutPanel.Controls.Add(this.temperatureBox, 1, 4);
-            this.utopiaTableLayoutPanel.Controls.Add(this.weightBox, 1, 5);
-            this.utopiaTableLayoutPanel.Controls.Add(this.shoeBox, 1, 6);
-            this.utopiaTableLayoutPanel.Controls.Add(this.ageBox, 1, 7);
+            this.utopiaTableLayoutPanel.SetColumnSpan(this.utopiaLabel, 4);
+            this.utopiaTableLayoutPanel.SetColumnSpan(this.utopiaLabel2, 4);
+            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaActualLabel, 1, 2);
+            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaIdealLabel, 2, 2);
+            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaTimeLabel, 0, 3);
+            this.utopiaTableLayoutPanel.Controls.Add(this.timeBox, 1, 3);
+            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaDistLabel, 0, 4);
+            this.utopiaTableLayoutPanel.Controls.Add(this.distBox, 1, 4);
+            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaTempLabel, 0, 5);
+            this.utopiaTableLayoutPanel.Controls.Add(this.temperatureBox, 1, 5);
+            this.utopiaTableLayoutPanel.Controls.Add(this.temperatureBox2, 2, 5);
+            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaWeightLabel, 0, 6);
+            this.utopiaTableLayoutPanel.Controls.Add(this.weightBox, 1, 6);
+            this.utopiaTableLayoutPanel.Controls.Add(this.weightBox2, 2, 6);
+            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaShoeLabel, 0, 7);
+            this.utopiaTableLayoutPanel.Controls.Add(this.shoeBox, 1, 7);
+            this.utopiaTableLayoutPanel.Controls.Add(this.shoeBox2, 2, 7);
+            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaAgeLabel, 0, 8);
+            this.utopiaTableLayoutPanel.Controls.Add(this.ageBox, 1, 8);
+            this.utopiaTableLayoutPanel.Controls.Add(this.ageBox2, 2, 8);
             this.utopiaTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.utopiaTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.utopiaTableLayoutPanel.Name = "utopiaTableLayoutPanel";
-            this.utopiaTableLayoutPanel.RowCount = 3;
+            this.utopiaTableLayoutPanel.RowCount = 10;
             this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
             this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
             this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.utopiaTableLayoutPanel.Size = new System.Drawing.Size(434, 211);
             this.utopiaTableLayoutPanel.TabIndex = 0;
@@ -485,6 +522,120 @@ namespace GpsRunningPlugin.Source
             this.utopiaLabel.Size = new System.Drawing.Size(98, 13);
             this.utopiaLabel.TabIndex = 6;
             this.utopiaLabel.Text = "<estimated utopia>";
+            // 
+            // utopiaActualLabel
+            // 
+            this.utopiaActualLabel.AutoSize = true;
+            this.utopiaActualLabel.Location = new System.Drawing.Point(3, 30);
+            this.utopiaActualLabel.Name = "utopiaActualLabel";
+            this.utopiaActualLabel.Size = new System.Drawing.Size(98, 13);
+            this.utopiaActualLabel.TabIndex = 6;
+            this.utopiaActualLabel.Text = "<Actual";
+            // 
+            // utopiaIdealLabel
+            // 
+            this.utopiaIdealLabel.AutoSize = true;
+            this.utopiaIdealLabel.Location = new System.Drawing.Point(3, 30);
+            this.utopiaIdealLabel.Name = "utopiaIdealLabel";
+            this.utopiaIdealLabel.Size = new System.Drawing.Size(98, 13);
+            this.utopiaIdealLabel.TabIndex = 6;
+            this.utopiaIdealLabel.Text = "<Ideal";
+            // 
+            // utopiaTimeLabel
+            // 
+            this.utopiaTimeLabel.AutoSize = true;
+            this.utopiaTimeLabel.Location = new System.Drawing.Point(3, 30);
+            this.utopiaTimeLabel.Name = "utopiaTimeLabel";
+            this.utopiaTimeLabel.Size = new System.Drawing.Size(98, 13);
+            this.utopiaTimeLabel.TabIndex = 6;
+            this.utopiaTimeLabel.Text = "<Time";
+            // 
+            // utopiaDistLabel
+            // 
+            this.utopiaDistLabel.AutoSize = true;
+            this.utopiaDistLabel.Location = new System.Drawing.Point(3, 30);
+            this.utopiaDistLabel.Name = "utopiaDistLabel";
+            this.utopiaDistLabel.Size = new System.Drawing.Size(98, 13);
+            this.utopiaDistLabel.TabIndex = 6;
+            this.utopiaDistLabel.Text = "<Distance";
+            // 
+            // utopiaTempLabel
+            // 
+            this.utopiaTempLabel.AutoSize = true;
+            this.utopiaTempLabel.Location = new System.Drawing.Point(3, 30);
+            this.utopiaTempLabel.Name = "utopiaTempLabel";
+            this.utopiaTempLabel.Size = new System.Drawing.Size(98, 13);
+            this.utopiaTempLabel.TabIndex = 6;
+            this.utopiaTempLabel.Text = "<Temperature";
+            // 
+            // utopiaWeightLabel
+            // 
+            this.utopiaWeightLabel.AutoSize = true;
+            this.utopiaWeightLabel.Location = new System.Drawing.Point(3, 30);
+            this.utopiaWeightLabel.Name = "utopiaWeightLabel";
+            this.utopiaWeightLabel.Size = new System.Drawing.Size(98, 13);
+            this.utopiaWeightLabel.TabIndex = 6;
+            this.utopiaWeightLabel.Text = "<Weight";
+            // 
+            // utopiaShoeLabel
+            // 
+            this.utopiaShoeLabel.AutoSize = true;
+            this.utopiaShoeLabel.Location = new System.Drawing.Point(3, 30);
+            this.utopiaShoeLabel.Name = "utopiaShoeLabel";
+            this.utopiaShoeLabel.Size = new System.Drawing.Size(98, 13);
+            this.utopiaShoeLabel.TabIndex = 6;
+            this.utopiaShoeLabel.Text = "<Shoe";
+            // 
+            // utopiaAgeLabel
+            // 
+            this.utopiaAgeLabel.AutoSize = true;
+            this.utopiaAgeLabel.Location = new System.Drawing.Point(3, 30);
+            this.utopiaAgeLabel.Name = "utopiaAgeLabel";
+            this.utopiaAgeLabel.Size = new System.Drawing.Size(98, 13);
+            this.utopiaAgeLabel.TabIndex = 6;
+            this.utopiaAgeLabel.Text = "<Age";
+            // 
+            // timeBox
+            // 
+            this.timeBox.AcceptsReturn = false;
+            this.timeBox.AcceptsTab = false;
+            this.timeBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.timeBox.BackColor = System.Drawing.Color.White;
+            this.timeBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.timeBox.ButtonImage = null;
+            this.timeBox.Location = new System.Drawing.Point(331, 18);
+            this.timeBox.MaxLength = 32767;
+            this.timeBox.Multiline = false;
+            this.timeBox.Name = "timeBox";
+            this.timeBox.ReadOnly = false;
+            this.timeBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.timeBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.timeBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.timeBox.Size = new System.Drawing.Size(50, 19);
+            this.timeBox.TabIndex = 1;
+            this.timeBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.timeBox.LostFocus += timeBox_LostFocus;
+            // 
+            // distBox
+            // 
+            this.distBox.AcceptsReturn = false;
+            this.distBox.AcceptsTab = false;
+            this.distBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.distBox.BackColor = System.Drawing.Color.White;
+            this.distBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.distBox.ButtonImage = null;
+            this.distBox.Location = new System.Drawing.Point(331, 18);
+            this.distBox.MaxLength = 32767;
+            this.distBox.Multiline = false;
+            this.distBox.Name = "distBox";
+            this.distBox.ReadOnly = false;
+            this.distBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.distBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.distBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.distBox.Size = new System.Drawing.Size(50, 19);
+            this.distBox.TabIndex = 1;
+            this.distBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.distBox.LostFocus += distBox_LostFocus;
             // 
             // temperatureBox
             // 
@@ -570,6 +721,90 @@ namespace GpsRunningPlugin.Source
             this.ageBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.ageBox.LostFocus += ageBox_LostFocus;
             // 
+            // temperatureBox2
+            // 
+            this.temperatureBox2.AcceptsReturn = false;
+            this.temperatureBox2.AcceptsTab = false;
+            this.temperatureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.temperatureBox2.BackColor = System.Drawing.Color.White;
+            this.temperatureBox2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.temperatureBox2.ButtonImage = null;
+            this.temperatureBox2.Location = new System.Drawing.Point(331, 18);
+            this.temperatureBox2.MaxLength = 32767;
+            this.temperatureBox2.Multiline = false;
+            this.temperatureBox2.Name = "temperatureBox2";
+            this.temperatureBox2.ReadOnly = false;
+            this.temperatureBox2.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.temperatureBox2.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.temperatureBox2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.temperatureBox2.Size = new System.Drawing.Size(50, 19);
+            this.temperatureBox2.TabIndex = 1;
+            this.temperatureBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.temperatureBox2.LostFocus += temperatureBox2_LostFocus;
+            // 
+            // weightBox2
+            // 
+            this.weightBox2.AcceptsReturn = false;
+            this.weightBox2.AcceptsTab = false;
+            this.weightBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.weightBox2.BackColor = System.Drawing.Color.White;
+            this.weightBox2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.weightBox2.ButtonImage = null;
+            this.weightBox2.Location = new System.Drawing.Point(331, 18);
+            this.weightBox2.MaxLength = 32767;
+            this.weightBox2.Multiline = false;
+            this.weightBox2.Name = "weightBox2";
+            this.weightBox2.ReadOnly = false;
+            this.weightBox2.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.weightBox2.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.weightBox2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.weightBox2.Size = new System.Drawing.Size(50, 19);
+            this.weightBox2.TabIndex = 1;
+            this.weightBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.weightBox2.LostFocus += weightBox2_LostFocus;
+            // 
+            // shoeBox2
+            // 
+            this.shoeBox2.AcceptsReturn = false;
+            this.shoeBox2.AcceptsTab = false;
+            this.shoeBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.shoeBox2.BackColor = System.Drawing.Color.White;
+            this.shoeBox2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.shoeBox2.ButtonImage = null;
+            this.shoeBox2.Location = new System.Drawing.Point(331, 18);
+            this.shoeBox2.MaxLength = 32767;
+            this.shoeBox2.Multiline = false;
+            this.shoeBox2.Name = "shoeBox2";
+            this.shoeBox2.ReadOnly = false;
+            this.shoeBox2.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.shoeBox2.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.shoeBox2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.shoeBox2.Size = new System.Drawing.Size(50, 19);
+            this.shoeBox2.TabIndex = 1;
+            this.shoeBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.shoeBox2.LostFocus += shoeBox2_LostFocus;
+            // 
+            // ageBox2
+            // 
+            this.ageBox2.AcceptsReturn = false;
+            this.ageBox2.AcceptsTab = false;
+            this.ageBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ageBox2.BackColor = System.Drawing.Color.White;
+            this.ageBox2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.ageBox2.ButtonImage = null;
+            this.ageBox2.Location = new System.Drawing.Point(331, 18);
+            this.ageBox2.MaxLength = 32767;
+            this.ageBox2.Multiline = false;
+            this.ageBox2.Name = "ageBox2";
+            this.ageBox2.ReadOnly = false;
+            this.ageBox2.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.ageBox2.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.ageBox2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.ageBox2.Size = new System.Drawing.Size(50, 19);
+            this.ageBox2.TabIndex = 1;
+            this.ageBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.ageBox2.LostFocus += ageBox2_LostFocus;
+            // 
             // listMenu
             // 
             this.listMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -652,9 +887,23 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.TableLayoutPanel utopiaTableLayoutPanel;
         private System.Windows.Forms.Label utopiaLabel2;
         private System.Windows.Forms.Label utopiaLabel;
+        private System.Windows.Forms.Label utopiaActualLabel;
+        private System.Windows.Forms.Label utopiaIdealLabel;
+        private System.Windows.Forms.Label utopiaTimeLabel;
+        private System.Windows.Forms.Label utopiaDistLabel;
+        private System.Windows.Forms.Label utopiaTempLabel;
+        private System.Windows.Forms.Label utopiaWeightLabel;
+        private System.Windows.Forms.Label utopiaShoeLabel;
+        private System.Windows.Forms.Label utopiaAgeLabel;
+        private ZoneFiveSoftware.Common.Visuals.TextBox timeBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox distBox;
         private ZoneFiveSoftware.Common.Visuals.TextBox temperatureBox;
         private ZoneFiveSoftware.Common.Visuals.TextBox weightBox;
         private ZoneFiveSoftware.Common.Visuals.TextBox shoeBox;
         private ZoneFiveSoftware.Common.Visuals.TextBox ageBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox temperatureBox2;
+        private ZoneFiveSoftware.Common.Visuals.TextBox weightBox2;
+        private ZoneFiveSoftware.Common.Visuals.TextBox shoeBox2;
+        private ZoneFiveSoftware.Common.Visuals.TextBox ageBox2;
     }
 }
