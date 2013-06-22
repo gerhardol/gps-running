@@ -41,16 +41,25 @@ namespace GpsRunningPlugin.Source
         public TimeSpan EstimatedTime;
         public double EstimatedSpeed;
 
-        public WeightResult(IActivity activity, int p, double vdot, double weight, double inc,
+        public WeightResult(IActivity activity, double vdot, double predWeight, double currWeight,
             TimeSpan time, double dist)
         {
             this.activity = activity;
-            this.Weight = weight + p * inc;
-            this.AjustedVdot = vdot * weight / this.Weight;
-            this.EstimatedTime = Predict.scaleTime(time, Math.Pow(vdot / this.AjustedVdot, 0.83));
+            this.Weight = predWeight;
+            double f = vdotFactor(predWeight, currWeight);
+            this.AjustedVdot = vdot * f;
+            this.EstimatedTime = Predict.scaleTime(time, Predict.getTimeFactorFromAdjVdot(f));
 
             this.EstimatedSpeed = dist / EstimatedTime.TotalSeconds;
         }
 
+        public static double vdotFactor(double predWeight, double currWeight)
+        {
+            return currWeight / predWeight;
+        }
+
+        public static float DefaultWeight = 80f;
+        //Using (random) BMI of 18.5, from here http://www.livestrong.com/article/548473-the-best-bmi-for-running-5k/
+        public static float IdealWeight(float weight, float lengthCm) { float bmiWeight = 18.5f * lengthCm * lengthCm/10000f; return ((weight> bmiWeight) && !float.IsNaN(lengthCm)) ? bmiWeight : weight; }
     }
 }

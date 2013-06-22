@@ -41,7 +41,7 @@ namespace GpsRunningPlugin.Source
         private double Distance;
         public double EstimatedSpeed { get { return this.Distance / this.EstimatedTime.TotalSeconds; } }
 
-        public TemperatureResult(IActivity activity, double temperature, float actual, TimeSpan time, double dist)
+        public TemperatureResult(IActivity activity, float temperature, float actual, TimeSpan time, double dist)
         {
             this.activity = activity;
             double f = getTemperatureFactor(temperature) / getTemperatureFactor(actual);
@@ -50,45 +50,31 @@ namespace GpsRunningPlugin.Source
             this.Temperature = temperature;
         }
 
+        public static float DefaultTemperature = 16;
+        public static float IdealTemperature = DefaultTemperature;
+
         //The temperatures are closely related to the values, so it is defined here
-        public static double[] aTemperature = new double[] { 16, 18, 21, 24, 27, 29, 32, 35, 38 };
+        public static float[] aTemperature = new float[] { 16, 18, 21, 24, 27, 29, 32, 35, 38 };
 
         //Likely from Burton and Edholm 1969
-        //Hardcoded values were used
-        public static double getTemperatureFactor(double temperature)
+        //Hardcoded values were previously used
+        public static double getTemperatureFactor(float temperature)
         {
             //Outside range or invalid
             //Not use isValidtemperature() here
-            if (double.IsNaN(temperature))
+            if (float.IsNaN(temperature))
             {
                 return 1;
             }
-            if (temperature < 16)
+            if (temperature < aTemperature[0])
             {
-                temperature = 16;
+                temperature = aTemperature[0];
             }
-            if (temperature > 45)
+            if (temperature > aTemperature[aTemperature.Length-1])
             {
-                temperature = 45;
+                temperature = aTemperature[aTemperature.Length - 1];
             }
-                return temperature * 0.002727273 + 0.956363636; 
-            //else if (temperature < 20) { return 1.0075; }
-            //else if (temperature < 23) { return 1.015; }
-            //else if (temperature < 26) { return 1.0225; }
-            //else if (temperature < 28) { return 1.03; }
-            //else if (temperature < 31) { return 1.0375; }
-            //else if (temperature < 34) { return 1.045; }
-            //else if (temperature < 37) { return 1.0525; }
-            //return 1.06;
+            return temperature * 0.002727273 + 0.956363636; 
         }
-
-        //public static bool isValidtemperature(double temperature)
-        //{
-        //    if (double.IsNaN(temperature) || temperature <= 16 || temperature > 45)
-        //    {
-        //        return false;
-        //    }
-        //    return true;
-        //}
     }
 }

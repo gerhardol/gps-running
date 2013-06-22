@@ -55,21 +55,43 @@ namespace GpsRunningPlugin.Source
             this.temperatureLabel2 = new System.Windows.Forms.Label();
             this.temperatureLabel = new System.Windows.Forms.Label();
             this.temperatureList = new ZoneFiveSoftware.Common.Visuals.TreeList();
-            this.listMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.copyTableMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.weightTab = new System.Windows.Forms.TabPage();
             this.weightTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.weightBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.weightLabel2 = new System.Windows.Forms.Label();
             this.weightLabel = new System.Windows.Forms.Label();
             this.weightList = new ZoneFiveSoftware.Common.Visuals.TreeList();
+            this.shoeTab = new System.Windows.Forms.TabPage();
+            this.shoeTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.shoeBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.shoeLabel2 = new System.Windows.Forms.Label();
+            this.shoeLabel = new System.Windows.Forms.Label();
+            this.shoeList = new ZoneFiveSoftware.Common.Visuals.TreeList();
+            this.ageTab = new System.Windows.Forms.TabPage();
+            this.ageTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.ageBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.ageLabel2 = new System.Windows.Forms.Label();
+            this.ageLabel = new System.Windows.Forms.Label();
+            this.ageList = new ZoneFiveSoftware.Common.Visuals.TreeList();
+            this.utopiaTab = new System.Windows.Forms.TabPage();
+            this.utopiaTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.utopiaLabel2 = new System.Windows.Forms.Label();
+            this.utopiaLabel = new System.Windows.Forms.Label();
+            this.listMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyTableMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.temperatureTab.SuspendLayout();
             this.temperatureTableLayoutPanel.SuspendLayout();
-            this.listMenu.SuspendLayout();
             this.weightTab.SuspendLayout();
             this.weightTableLayoutPanel.SuspendLayout();
+            this.shoeTab.SuspendLayout();
+            this.shoeTableLayoutPanel.SuspendLayout();
+            this.ageTab.SuspendLayout();
+            this.ageTableLayoutPanel.SuspendLayout();
+            this.utopiaTab.SuspendLayout();
+            this.utopiaTableLayoutPanel.SuspendLayout();
+            this.listMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -88,6 +110,9 @@ namespace GpsRunningPlugin.Source
             // 
             this.tabControl1.Controls.Add(this.temperatureTab);
             this.tabControl1.Controls.Add(this.weightTab);
+            this.tabControl1.Controls.Add(this.shoeTab);
+            this.tabControl1.Controls.Add(this.ageTab);
+            this.tabControl1.Controls.Add(this.utopiaTab);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.tabControl1.HotTrack = true;
@@ -201,19 +226,6 @@ namespace GpsRunningPlugin.Source
             this.temperatureList.Size = new System.Drawing.Size(428, 162);
             this.temperatureList.TabIndex = 5;
             // 
-            // listMenu
-            // 
-            this.listMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.copyTableMenuItem});
-            this.listMenu.Name = "listContextMenuStrip";
-            this.listMenu.Size = new System.Drawing.Size(207, 26);
-            // 
-            // copyTableMenuItem
-            // 
-            this.copyTableMenuItem.Name = "copyTableMenuItem";
-            this.copyTableMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.copyTableMenuItem.Text = "<Copy table to clipboard";
-            // 
             // weightTab
             // 
             this.weightTab.AutoScroll = true;
@@ -315,6 +327,268 @@ namespace GpsRunningPlugin.Source
             this.weightList.Size = new System.Drawing.Size(428, 162);
             this.weightList.TabIndex = 8;
             // 
+            // shoeTab
+            // 
+            this.shoeTab.AutoScroll = true;
+            this.shoeTab.Controls.Add(this.shoeTableLayoutPanel);
+            this.shoeTab.Location = new System.Drawing.Point(4, 22);
+            this.shoeTab.Name = "shoeTab";
+            this.shoeTab.Size = new System.Drawing.Size(434, 211);
+            this.shoeTab.TabIndex = 4;
+            this.shoeTab.Text = "<shoe impact";
+            this.shoeTab.UseVisualStyleBackColor = true;
+            // 
+            // shoeTableLayoutPanel
+            // 
+            this.shoeTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.shoeTableLayoutPanel.ColumnCount = 2;
+            this.shoeTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.shoeTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.shoeTableLayoutPanel.Controls.Add(this.shoeBox, 1, 0);
+            this.shoeTableLayoutPanel.Controls.Add(this.shoeLabel2, 0, 0);
+            this.shoeTableLayoutPanel.Controls.Add(this.shoeLabel, 0, 1);
+            this.shoeTableLayoutPanel.Controls.Add(this.shoeList, 0, 2);
+            this.shoeTableLayoutPanel.SetColumnSpan(this.shoeList, 2);
+            this.shoeTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.shoeTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.shoeTableLayoutPanel.Name = "shoeTableLayoutPanel";
+            this.shoeTableLayoutPanel.RowCount = 3;
+            this.shoeTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.shoeTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.shoeTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.shoeTableLayoutPanel.Size = new System.Drawing.Size(434, 211);
+            this.shoeTableLayoutPanel.TabIndex = 0;
+            // 
+            // shoeBox
+            // 
+            this.shoeBox.AcceptsReturn = false;
+            this.shoeBox.AcceptsTab = false;
+            this.shoeBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.shoeBox.BackColor = System.Drawing.Color.White;
+            this.shoeBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.shoeBox.ButtonImage = null;
+            this.shoeBox.Location = new System.Drawing.Point(331, 18);
+            this.shoeBox.MaxLength = 32767;
+            this.shoeBox.Multiline = false;
+            this.shoeBox.Name = "shoeBox";
+            this.shoeBox.ReadOnly = false;
+            this.shoeBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.shoeBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.shoeBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.shoeBox.Size = new System.Drawing.Size(50, 19);
+            this.shoeBox.TabIndex = 1;
+            this.shoeBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.shoeBox.LostFocus += shoeBox_LostFocus;
+            // 
+            // shoeLabel2
+            // 
+            this.shoeLabel2.AutoSize = true;
+            this.shoeLabel2.Location = new System.Drawing.Point(3, 0);
+            this.shoeLabel2.Name = "shoeLabel2";
+            this.shoeLabel2.Size = new System.Drawing.Size(265, 13);
+            this.shoeLabel2.TabIndex = 7;
+            this.shoeLabel2.Text = "<Weight per shoe";
+            // 
+            // shoeLabel
+            // 
+            this.shoeLabel.AutoSize = true;
+            this.shoeLabel.Location = new System.Drawing.Point(3, 30);
+            this.shoeLabel.Name = "shoeLabel";
+            this.shoeLabel.Size = new System.Drawing.Size(98, 13);
+            this.shoeLabel.TabIndex = 6;
+            this.shoeLabel.Text = "<estimated shoe>";
+            // 
+            // shoeList
+            // 
+            this.shoeList.AutoScroll = true;
+            this.shoeList.AutoSize = true;
+            this.shoeList.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.shoeList.BackColor = System.Drawing.Color.Transparent;
+            this.shoeList.Border = ZoneFiveSoftware.Common.Visuals.ControlBorder.Style.SmallRoundShadow;
+            this.shoeList.CheckBoxes = false;
+            this.shoeList.ContextMenuStrip = this.listMenu;
+            this.shoeList.DefaultIndent = 15;
+            this.shoeList.DefaultRowHeight = -1;
+            this.shoeList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.shoeList.HeaderRowHeight = 21;
+            this.shoeList.Location = new System.Drawing.Point(3, 46);
+            this.shoeList.MultiSelect = false;
+            this.shoeList.Name = "shoeList";
+            this.shoeList.NumHeaderRows = ZoneFiveSoftware.Common.Visuals.TreeList.HeaderRows.Auto;
+            this.shoeList.NumLockedColumns = 0;
+            this.shoeList.RowAlternatingColors = true;
+            this.shoeList.RowHotlightColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
+            this.shoeList.RowHotlightColorText = System.Drawing.SystemColors.HighlightText;
+            this.shoeList.RowHotlightMouse = true;
+            this.shoeList.RowSelectedColor = System.Drawing.SystemColors.Highlight;
+            this.shoeList.RowSelectedColorText = System.Drawing.SystemColors.HighlightText;
+            this.shoeList.RowSeparatorLines = true;
+            this.shoeList.ShowLines = false;
+            this.shoeList.ShowPlusMinus = false;
+            this.shoeList.Size = new System.Drawing.Size(428, 162);
+            this.shoeList.TabIndex = 8;
+            // 
+            // ageTab
+            // 
+            this.ageTab.AutoScroll = true;
+            this.ageTab.Controls.Add(this.ageTableLayoutPanel);
+            this.ageTab.Location = new System.Drawing.Point(4, 22);
+            this.ageTab.Name = "ageTab";
+            this.ageTab.Size = new System.Drawing.Size(434, 211);
+            this.ageTab.TabIndex = 4;
+            this.ageTab.Text = "<age impact";
+            this.ageTab.UseVisualStyleBackColor = true;
+            // 
+            // ageTableLayoutPanel
+            // 
+            this.ageTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ageTableLayoutPanel.ColumnCount = 2;
+            this.ageTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.ageTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.ageTableLayoutPanel.Controls.Add(this.ageBox, 1, 0);
+            this.ageTableLayoutPanel.Controls.Add(this.ageLabel2, 0, 0);
+            this.ageTableLayoutPanel.Controls.Add(this.ageLabel, 0, 1);
+            this.ageTableLayoutPanel.Controls.Add(this.ageList, 0, 2);
+            this.ageTableLayoutPanel.SetColumnSpan(this.ageList, 2);
+            this.ageTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ageTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.ageTableLayoutPanel.Name = "ageTableLayoutPanel";
+            this.ageTableLayoutPanel.RowCount = 3;
+            this.ageTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.ageTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.ageTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.ageTableLayoutPanel.Size = new System.Drawing.Size(434, 211);
+            this.ageTableLayoutPanel.TabIndex = 0;
+            // 
+            // ageBox
+            // 
+            this.ageBox.AcceptsReturn = false;
+            this.ageBox.AcceptsTab = false;
+            this.ageBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ageBox.BackColor = System.Drawing.Color.White;
+            this.ageBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.ageBox.ButtonImage = null;
+            this.ageBox.Location = new System.Drawing.Point(331, 18);
+            this.ageBox.MaxLength = 32767;
+            this.ageBox.Multiline = false;
+            this.ageBox.Name = "ageBox";
+            this.ageBox.ReadOnly = false;
+            this.ageBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.ageBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.ageBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.ageBox.Size = new System.Drawing.Size(50, 19);
+            this.ageBox.TabIndex = 1;
+            this.ageBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.ageBox.LostFocus += ageBox_LostFocus;
+            // 
+            // ageLabel2
+            // 
+            this.ageLabel2.AutoSize = true;
+            this.ageLabel2.Location = new System.Drawing.Point(3, 0);
+            this.ageLabel2.Name = "ageLabel2";
+            this.ageLabel2.Size = new System.Drawing.Size(265, 13);
+            this.ageLabel2.TabIndex = 7;
+            this.ageLabel2.Text = "<Ideal result is...";
+            // 
+            // ageLabel
+            // 
+            this.ageLabel.AutoSize = true;
+            this.ageLabel.Location = new System.Drawing.Point(3, 30);
+            this.ageLabel.Name = "ageLabel";
+            this.ageLabel.Size = new System.Drawing.Size(98, 13);
+            this.ageLabel.TabIndex = 6;
+            this.ageLabel.Text = "<estimated age>";
+            // 
+            // ageList
+            // 
+            this.ageList.AutoScroll = true;
+            this.ageList.AutoSize = true;
+            this.ageList.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ageList.BackColor = System.Drawing.Color.Transparent;
+            this.ageList.Border = ZoneFiveSoftware.Common.Visuals.ControlBorder.Style.SmallRoundShadow;
+            this.ageList.CheckBoxes = false;
+            this.ageList.ContextMenuStrip = this.listMenu;
+            this.ageList.DefaultIndent = 15;
+            this.ageList.DefaultRowHeight = -1;
+            this.ageList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ageList.HeaderRowHeight = 21;
+            this.ageList.Location = new System.Drawing.Point(3, 46);
+            this.ageList.MultiSelect = false;
+            this.ageList.Name = "ageList";
+            this.ageList.NumHeaderRows = ZoneFiveSoftware.Common.Visuals.TreeList.HeaderRows.Auto;
+            this.ageList.NumLockedColumns = 0;
+            this.ageList.RowAlternatingColors = true;
+            this.ageList.RowHotlightColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(255)))));
+            this.ageList.RowHotlightColorText = System.Drawing.SystemColors.HighlightText;
+            this.ageList.RowHotlightMouse = true;
+            this.ageList.RowSelectedColor = System.Drawing.SystemColors.Highlight;
+            this.ageList.RowSelectedColorText = System.Drawing.SystemColors.HighlightText;
+            this.ageList.RowSeparatorLines = true;
+            this.ageList.ShowLines = false;
+            this.ageList.ShowPlusMinus = false;
+            this.ageList.Size = new System.Drawing.Size(428, 162);
+            this.ageList.TabIndex = 8;
+            // 
+            // utopiaTab
+            // 
+            this.utopiaTab.AutoScroll = true;
+            this.utopiaTab.Controls.Add(this.utopiaTableLayoutPanel);
+            this.utopiaTab.Location = new System.Drawing.Point(4, 22);
+            this.utopiaTab.Name = "utopiaTab";
+            this.utopiaTab.Size = new System.Drawing.Size(434, 211);
+            this.utopiaTab.TabIndex = 4;
+            this.utopiaTab.Text = "<utopia impact";
+            this.utopiaTab.UseVisualStyleBackColor = true;
+            // 
+            // utopiaTableLayoutPanel
+            // 
+            this.utopiaTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.utopiaTableLayoutPanel.ColumnCount = 2;
+            this.utopiaTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.utopiaTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaLabel2, 0, 0);
+            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaLabel, 0, 1);
+            this.utopiaTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.utopiaTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.utopiaTableLayoutPanel.Name = "utopiaTableLayoutPanel";
+            this.utopiaTableLayoutPanel.RowCount = 3;
+            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.utopiaTableLayoutPanel.Size = new System.Drawing.Size(434, 211);
+            this.utopiaTableLayoutPanel.TabIndex = 0;
+            // 
+            // utopiaLabel2
+            // 
+            this.utopiaLabel2.AutoSize = true;
+            this.utopiaLabel2.Location = new System.Drawing.Point(3, 0);
+            this.utopiaLabel2.Name = "utopiaLabel2";
+            this.utopiaLabel2.Size = new System.Drawing.Size(265, 13);
+            this.utopiaLabel2.TabIndex = 7;
+            this.utopiaLabel2.Text = "<When everything is ideal...";
+            // 
+            // utopiaLabel
+            // 
+            this.utopiaLabel.AutoSize = true;
+            this.utopiaLabel.Location = new System.Drawing.Point(3, 30);
+            this.utopiaLabel.Name = "utopiaLabel";
+            this.utopiaLabel.Size = new System.Drawing.Size(98, 13);
+            this.utopiaLabel.TabIndex = 6;
+            this.utopiaLabel.Text = "<estimated utopia>";
+            // 
+            // listMenu
+            // 
+            this.listMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyTableMenuItem});
+            this.listMenu.Name = "listContextMenuStrip";
+            this.listMenu.Size = new System.Drawing.Size(207, 26);
+            // 
+            // copyTableMenuItem
+            // 
+            this.copyTableMenuItem.Name = "copyTableMenuItem";
+            this.copyTableMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.copyTableMenuItem.Text = "<Copy table to clipboard";
+            // 
             // ExtrapolateView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -330,10 +604,19 @@ namespace GpsRunningPlugin.Source
             this.temperatureTab.ResumeLayout(false);
             this.temperatureTableLayoutPanel.ResumeLayout(false);
             this.temperatureTableLayoutPanel.PerformLayout();
-            this.listMenu.ResumeLayout(false);
             this.weightTab.ResumeLayout(false);
             this.weightTableLayoutPanel.ResumeLayout(false);
             this.weightTableLayoutPanel.PerformLayout();
+            this.shoeTab.ResumeLayout(false);
+            this.shoeTableLayoutPanel.ResumeLayout(false);
+            this.shoeTableLayoutPanel.PerformLayout();
+            this.ageTab.ResumeLayout(false);
+            this.ageTableLayoutPanel.ResumeLayout(false);
+            this.ageTableLayoutPanel.PerformLayout();
+            this.utopiaTab.ResumeLayout(false);
+            this.utopiaTableLayoutPanel.ResumeLayout(false);
+            this.utopiaTableLayoutPanel.PerformLayout();
+            this.listMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -353,7 +636,7 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.Label temperatureLabel2;
         private ZoneFiveSoftware.Common.Visuals.TreeList temperatureList;
         private ZoneFiveSoftware.Common.Visuals.TextBox temperatureBox;
-        
+
         private System.Windows.Forms.TabPage weightTab;
         private System.Windows.Forms.TableLayoutPanel weightTableLayoutPanel;
         private System.Windows.Forms.Label weightLabel2;
@@ -361,5 +644,23 @@ namespace GpsRunningPlugin.Source
         private ZoneFiveSoftware.Common.Visuals.TreeList weightList;
         private ZoneFiveSoftware.Common.Visuals.TextBox weightBox;
 
+        private System.Windows.Forms.TabPage shoeTab;
+        private System.Windows.Forms.TableLayoutPanel shoeTableLayoutPanel;
+        private System.Windows.Forms.Label shoeLabel2;
+        private System.Windows.Forms.Label shoeLabel;
+        private ZoneFiveSoftware.Common.Visuals.TreeList shoeList;
+        private ZoneFiveSoftware.Common.Visuals.TextBox shoeBox;
+
+        private System.Windows.Forms.TabPage ageTab;
+        private System.Windows.Forms.TableLayoutPanel ageTableLayoutPanel;
+        private System.Windows.Forms.Label ageLabel2;
+        private System.Windows.Forms.Label ageLabel;
+        private ZoneFiveSoftware.Common.Visuals.TreeList ageList;
+        private ZoneFiveSoftware.Common.Visuals.TextBox ageBox;
+
+        private System.Windows.Forms.TabPage utopiaTab;
+        private System.Windows.Forms.TableLayoutPanel utopiaTableLayoutPanel;
+        private System.Windows.Forms.Label utopiaLabel2;
+        private System.Windows.Forms.Label utopiaLabel;
     }
 }

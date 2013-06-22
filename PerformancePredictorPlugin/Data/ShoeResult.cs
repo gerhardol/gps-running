@@ -46,8 +46,9 @@ namespace GpsRunningPlugin.Source
         {
             this.activity = activity;
             this.Weight = predWeight;
-            this.AjustedVdot = vdot * ShoeFactor(predWeight, currWeight);
-            this.EstimatedTime = Predict.scaleTime(time, Math.Pow(vdot / this.AjustedVdot, 0.83));
+            double f = vdotFactor(predWeight, currWeight);
+            this.AjustedVdot = vdot * f;
+            this.EstimatedTime = Predict.scaleTime(time, Predict.getTimeFactorFromAdjVdot(f));
 
             this.EstimatedSpeed = dist / EstimatedTime.TotalSeconds;
         }
@@ -56,7 +57,7 @@ namespace GpsRunningPlugin.Source
         public static float DefaultWeight = 0.35f;
         public static float IdealWeight = 0;
 
-        public static float ShoeFactor(float predWeight, float currWeight)
+        public static float vdotFactor(float predWeight, float currWeight)
         {
             //Jack Daniels, http://runsmartproject.com/coaching/2012/02/06/how-much-does-shoe-weight-affect-performance/
             //100g (per shoe?) affect 1%
