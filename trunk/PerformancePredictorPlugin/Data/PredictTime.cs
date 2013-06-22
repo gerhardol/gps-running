@@ -35,6 +35,7 @@ namespace GpsRunningPlugin.Source
     public class Predict
     {
         public delegate double PredictTime(double new_dist, double old_dist, TimeSpan old_time);
+
         public static PredictTime Cameron = delegate(double new_dist, double old_dist, TimeSpan old_time)
                     {
                         double a = 13.49681 - (0.000030363 * old_dist)
@@ -46,11 +47,16 @@ namespace GpsRunningPlugin.Source
                     };
 
         public static PredictTime Riegel = delegate(double new_dist, double old_dist, TimeSpan old_time)
-                    {
-                        double new_time = old_time.TotalSeconds * Math.Pow(new_dist / old_dist, 1.06);
-                        return new_time;
-                    };
+        {
+            double new_time = old_time.TotalSeconds * Math.Pow(new_dist / old_dist, 1.06);
+            return new_time;
+        };
 
+        public static PredictTime Wava = delegate(double new_dist, double old_dist, TimeSpan old_time)
+        {
+            double new_time = PredictWavaTime.WavaPredict(new_dist, old_dist, old_time);
+            return new_time;
+        };
 
         public static PredictTime Predictor(PredictionModel model)
         {
@@ -61,6 +67,8 @@ namespace GpsRunningPlugin.Source
                     return Predict.Cameron;
                 case PredictionModel.PETE_RIEGEL:
                     return Predict.Riegel;
+                case PredictionModel.WAVA:
+                    return Predict.Wava;
             }
         }
 
@@ -109,6 +117,6 @@ namespace GpsRunningPlugin.Source
 
     public enum PredictionModel
     {
-        DAVE_CAMERON, PETE_RIEGEL
+        DAVE_CAMERON, PETE_RIEGEL, WAVA
     }
 }

@@ -216,6 +216,8 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             this.daveCameronMenuItem.Text = this.daveCameronButton.Text;
             this.peteRiegelButton.Text = "Pete Riegel";
             this.peteRiegelMenuItem.Text = this.peteRiegelButton.Text;
+            this.wavaButton.Text = "WAVA";
+            this.wavaMenuItem.Text = this.wavaButton.Text;
 
             velocityBox.Text = Resources.Velocity;
             velocityMenuItem.Text = velocityBox.Text;
@@ -546,6 +548,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
             daveCameronButton.Checked = Settings.Model == PredictionModel.DAVE_CAMERON;
             peteRiegelButton.Checked = Settings.Model == PredictionModel.PETE_RIEGEL;
+            wavaButton.Checked = Settings.Model == PredictionModel.WAVA;
 
             paceButton.Checked = Settings.ShowPace;
             speedButton.Checked = !Settings.ShowPace;
@@ -567,7 +570,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             daveCameronMenuItem.Checked = daveCameronButton.Checked;
             daveCameronMenuItem.Enabled = daveCameronButton.Enabled;
             peteRiegelMenuItem.Checked = peteRiegelButton.Checked;
-            peteRiegelMenuItem.Enabled = peteRiegelButton.Enabled;
+            wavaMenuItem.Enabled = wavaButton.Enabled;
 
             paceMenuItem.Checked = paceButton.Checked;
             paceMenuItem.Enabled = paceButton.Enabled;
@@ -657,6 +660,22 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 sender is ToolStripMenuItem && !peteRiegelMenuItem.Checked))
             {
                 Settings.Model = PredictionModel.PETE_RIEGEL;
+                syncToolBarToState();
+                syncMenuToState();
+                //setView();
+                predictorView.setData();
+                trainingView.RefreshData();
+                extrapolateView.RefreshData();
+            }
+        }
+
+        private void wava_Click(object sender, EventArgs e)
+        {
+            if (m_showPage && (
+                sender is RadioButton && wavaButton.Checked ||
+                sender is ToolStripMenuItem && !wavaMenuItem.Checked))
+            {
+                Settings.Model = PredictionModel.WAVA;
                 syncToolBarToState();
                 syncMenuToState();
                 //setView();

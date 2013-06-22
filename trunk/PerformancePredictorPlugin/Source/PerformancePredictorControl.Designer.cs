@@ -64,6 +64,7 @@ namespace GpsRunningPlugin.Source
             this.modelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.daveCameronMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.peteRiegelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wavaMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.velocityMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.paceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,6 +85,7 @@ namespace GpsRunningPlugin.Source
             this.modelBox = new System.Windows.Forms.GroupBox();
             this.daveCameronButton = new System.Windows.Forms.RadioButton();
             this.peteRiegelButton = new System.Windows.Forms.RadioButton();
+            this.wavaButton = new System.Windows.Forms.RadioButton();
             this.resultBox = new System.Windows.Forms.GroupBox();
             this.tableButton = new System.Windows.Forms.RadioButton();
             this.chartButton = new System.Windows.Forms.RadioButton();
@@ -147,6 +149,7 @@ namespace GpsRunningPlugin.Source
                 this.modelMenuItem,
                 this.daveCameronMenuItem,
                 this.peteRiegelMenuItem,
+                this.wavaMenuItem,
                 this.toolStripSeparator2,
                 this.resultMenuItem,
                 this.tableMenuItem,
@@ -219,6 +222,13 @@ namespace GpsRunningPlugin.Source
             this.peteRiegelMenuItem.Size = new System.Drawing.Size(154, 22);
             this.peteRiegelMenuItem.Text = "<peteRiegelMenuItem";
             this.peteRiegelMenuItem.Click += new System.EventHandler(this.peteRiegel_Click);
+            // 
+            // wavaMenuItem
+            // 
+            this.wavaMenuItem.Name = "wavaMenuItem";
+            this.wavaMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.wavaMenuItem.Text = "<wavaMenuItem";
+            this.wavaMenuItem.Click += new System.EventHandler(this.wava_Click);
             // 
             // toolStripSeparator2
             // 
@@ -320,13 +330,26 @@ namespace GpsRunningPlugin.Source
             this.peteRiegelButton.UseVisualStyleBackColor = true;
             this.peteRiegelButton.Click += new System.EventHandler(this.peteRiegel_Click);
             // 
+            // wavaButton
+            // 
+            this.wavaButton.AutoSize = true;
+            this.wavaButton.Location = new System.Drawing.Point(6, 67);
+            this.wavaButton.Name = "wavaButton";
+            this.wavaButton.Size = new System.Drawing.Size(80, 17);
+            this.wavaButton.TabIndex = 4;
+            this.wavaButton.TabStop = true;
+            this.wavaButton.Text = "<WAVA";
+            this.wavaButton.UseVisualStyleBackColor = true;
+            this.wavaButton.Click += new System.EventHandler(this.wava_Click);
+            // 
             // modelBox
             // 
             this.modelBox.Controls.Add(this.daveCameronButton);
             this.modelBox.Controls.Add(this.peteRiegelButton);
+            this.modelBox.Controls.Add(this.wavaButton);
             this.modelBox.Location = new System.Drawing.Point(4, 99);
             this.modelBox.Name = "modelBox";
-            this.modelBox.Size = new System.Drawing.Size(138, 68);
+            this.modelBox.Size = new System.Drawing.Size(138, 93);
             this.modelBox.TabIndex = 5;
             this.modelBox.TabStop = false;
             this.modelBox.Text = "<Prediction model";
@@ -335,7 +358,7 @@ namespace GpsRunningPlugin.Source
             // 
             this.resultBox.Controls.Add(this.tableButton);
             this.resultBox.Controls.Add(this.chartButton);
-            this.resultBox.Location = new System.Drawing.Point(4, 248);
+            this.resultBox.Location = new System.Drawing.Point(4, 273);
             this.resultBox.Name = "resultBox";
             this.resultBox.Size = new System.Drawing.Size(138, 67);
             this.resultBox.TabIndex = 5;
@@ -418,7 +441,7 @@ namespace GpsRunningPlugin.Source
             // 
             this.velocityBox.Controls.Add(this.speedButton);
             this.velocityBox.Controls.Add(this.paceButton);
-            this.velocityBox.Location = new System.Drawing.Point(4, 173);
+            this.velocityBox.Location = new System.Drawing.Point(4, 198);
             this.velocityBox.Name = "velocityBox";
             this.velocityBox.Size = new System.Drawing.Size(138, 69);
             this.velocityBox.TabIndex = 11;
@@ -560,6 +583,7 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.ToolStripMenuItem modelMenuItem;
         private System.Windows.Forms.ToolStripMenuItem daveCameronMenuItem;
         private System.Windows.Forms.ToolStripMenuItem peteRiegelMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem wavaMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem resultMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tableMenuItem;
@@ -580,6 +604,7 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.GroupBox modelBox;
         private System.Windows.Forms.RadioButton daveCameronButton;
         private System.Windows.Forms.RadioButton peteRiegelButton;
+        private System.Windows.Forms.RadioButton wavaButton;
         private System.Windows.Forms.GroupBox resultBox;
         private System.Windows.Forms.RadioButton tableButton;
         private System.Windows.Forms.RadioButton chartButton;
