@@ -342,9 +342,9 @@ Plugin.GetApplication().SystemPreferences.UICulture);
         {
             get
             {
-                if (this.IsPartial)
+                if (this.m_time != null)
                 {
-                    return (TimeSpan)m_time;
+                    return (TimeSpan)this.m_time;
                 }
                 else if (this.m_lastActivity != null)
                 {
@@ -352,14 +352,19 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 }
                 return TimeSpan.FromSeconds(0);
             }
+            set
+            {
+                this.m_time = value;
+                this.setView();
+            }
         }
         internal double Distance
         {
             get
             {
-                if (this.IsPartial)
+                if (this.m_distance != null)
                 {
-                    return (double)m_distance;
+                    return (double)this.m_distance;
                 }
                 else if (this.m_lastActivity != null)
                 {
@@ -367,8 +372,13 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 }
                 return 0;
             }
+            set
+            {
+                this.m_distance = value;
+                this.setView();
+            }
         }
-        internal bool IsPartial { get { return ((this.Activities.Count > 0) && (this.m_time != null && this.m_distance != null)); } }
+        internal bool IsPartial { get { return (this.m_time != null && this.m_distance != null); } }
 
 #if ST_2_1
         private void dataChanged(object sender, ZoneFiveSoftware.Common.Data.NotifyDataChangedEventArgs e)
