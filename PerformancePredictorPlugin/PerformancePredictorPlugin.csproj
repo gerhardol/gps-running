@@ -13,6 +13,11 @@
     <DefineConstants>$(DefineConstants);GPSRUNNING_PERFORMANCEPREDICTOR</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Data\AgeLabelProvider.cs" />
+    <Compile Include="Data\AgeResult.cs" />
+    <Compile Include="Data\PredictTime.cs" />
+    <Compile Include="Data\ShoeResult.cs" />
+    <Compile Include="Data\ShoeLabelProvider.cs" />
     <Compile Include="Data\PaceTempoLabelProvider.cs" />
     <Compile Include="Data\PaceTempoResult.cs" />
     <Compile Include="Data\TrainingLabelProvider.cs" />
@@ -43,7 +48,7 @@
     <Compile Include="Source\PerformancePredictorControl.Designer.cs">
       <DependentUpon>PerformancePredictorControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Data\PredictTime.cs" />
+    <Compile Include="Data\PredictWavaTime.cs" />
     <Compile Include="Source\PerformancePredictorAction.cs" />
     <Compile Include="Source\PerformancePredictorActivityDetail.cs" />
     <Compile Include="Source\PerformancePredictorActivityEdit.cs" />
