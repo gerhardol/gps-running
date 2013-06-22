@@ -464,6 +464,10 @@ namespace GpsRunningPlugin.Util
                 }
                 return du;
             }
+            public static bool isDefaultUnit(IActivity activity)
+            {
+                return (GetUnit(activity) == Length.Units.Meter);
+            }
 
             public static string ToString(double p)
             {
@@ -507,6 +511,10 @@ namespace GpsRunningPlugin.Util
 
             public static double Parse(string p)
             {
+                if (string.IsNullOrEmpty(p))
+                {
+                    return double.NaN;
+                }
                 Length.Units unit = Unit;
                 return Length.ParseDistanceMeters(p, ref unit);
             }
@@ -622,6 +630,7 @@ namespace GpsRunningPlugin.Util
         }
 
         /*********************************************************************************/
+        //Handle Duration, not DateTime
         public static class Time
         {
             //This class handles Time as in "Time for activities" rather than "Time of day"
@@ -634,7 +643,7 @@ namespace GpsRunningPlugin.Util
             }
             public static String ToString(double sec, string fmt)
             {
-                if(double.IsNaN(sec))
+                if(double.IsNaN(sec)|| double.IsInfinity(sec))
                 {
                     return "-";
                 }
@@ -651,7 +660,6 @@ namespace GpsRunningPlugin.Util
                 if (fmt.EndsWith("u")) { fmt = fmt.Remove(fmt.Length - 1); }
                 int fractionals = 0;
                 if (fmt.EndsWith(".f")) { fmt = fmt.Remove(fmt.Length - 2); fractionals = 1; }
-                if (string.IsNullOrEmpty(fmt)) { fmt = DefFmt; }
                 //.NET 2 has no built-in formatting for time
                 //Currently remove millisec ("mm:ss" format)
                 if (fmt.Equals("ss") && sec.TotalSeconds < 60 || fmt.Equals("s"))
@@ -665,6 +673,7 @@ namespace GpsRunningPlugin.Util
                     str = s.ToString();
                     //if (fmt.Equals("g") && str.StartsWith("0:")) { str = str.Substring(2); } //Day part is optional
                     if (fmt.Equals("g") && str.StartsWith("00:")) { str = str.Substring(3); } //Hour, not minutes
+                    if ((fmt.Equals("") || fmt.Equals("mm:ss")) && s.Hours == 0 && s.Days == 0) { str = str.Substring(3); }
                     if (fractionals > 0)
                     {
                         if (s.Milliseconds > 0)
@@ -739,6 +748,10 @@ namespace GpsRunningPlugin.Util
                     du = Unit;
                 }
                 return du;
+            }
+            public static bool isDefaultUnit(IActivity activity)
+            {
+                return (GetUnit(activity) == Length.Units.Meter);
             }
 
             public static string ToString(double p)
@@ -1009,7 +1022,7 @@ namespace GpsRunningPlugin.Util
 
             private static Length.Units Unit { get { return getDistUnit(true); } }
             public static int DefaultDecimalPrecision { get { return 1; } } //Not really applicable
-            private static string DefFmt { get { return ""; } } //Same tweaks as for time
+            private static string DefFmt { get { return "g"; } } //Same tweaks as for duration/time
             public static Length GetLength(IActivity activity)
             {
                 Length du;
@@ -1037,6 +1050,7 @@ namespace GpsRunningPlugin.Util
                 //The only formatting handled is "u"/"U" - other done by Time
                 double pace = ConvertFrom(speedMS, activity);
                 string str = "";
+                if (string.IsNullOrEmpty(fmt)){fmt=DefFmt;}
                 if (fmt.EndsWith("U")) { str = " " + Label; fmt = fmt.Remove(fmt.Length - 1); }
                 if (fmt.EndsWith("u")) { str = " " + LabelAbbr; fmt = fmt.Remove(fmt.Length - 1); }
                 if (speedMS==0 || Math.Abs(speedMS) == double.MinValue || double.IsInfinity(speedMS) || double.IsNaN(speedMS))//"divide by zero" check. Or some hardcoded value?
@@ -1117,8 +1131,7 @@ namespace GpsRunningPlugin.Util
                 }
 #else
                 unit = ZoneFiveSoftware.Common.Data.Measurement.Speed.Label(
-                    ZoneFiveSoftware.Common.Data.Measurement.Speed.Units.Pace,
-                    new Length(1, GetApplication().SystemPreferences.DistanceUnits));
+                    ZoneFiveSoftware.Common.Data.Measurement.Speed.Units.Pace, GetLength(activity));
 #endif
                 return unit;
             }
@@ -1150,6 +1163,7 @@ namespace GpsRunningPlugin.Util
                     return CommonResources.Text.LabelPace + LabelAbbr2;
                 }
             }
+#if ST_2_1
             //Some forms uses the label to find if pace/speed is used, get a way to find how
             public static bool isLabelPace(string label)
             {
@@ -1166,6 +1180,7 @@ namespace GpsRunningPlugin.Util
                     || label.Contains("min/")
                     );
             }
+#endif
             public static string LabelAbbrAct(IActivity activity)
             {
                 return getLabel(activity);
