@@ -1181,7 +1181,7 @@ namespace GpsRunningPlugin.Util
                     return CommonResources.Text.LabelPace + LabelAbbr2;
                 }
             }
-#if ST_2_1
+#if ST_2_1 || GPSRUNNING_HIGHSCORE
             //Some forms uses the label to find if pace/speed is used, get a way to find how
             public static bool isLabelPace(string label)
             {
