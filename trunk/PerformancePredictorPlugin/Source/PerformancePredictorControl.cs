@@ -570,6 +570,8 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             daveCameronMenuItem.Checked = daveCameronButton.Checked;
             daveCameronMenuItem.Enabled = daveCameronButton.Enabled;
             peteRiegelMenuItem.Checked = peteRiegelButton.Checked;
+            peteRiegelMenuItem.Enabled = peteRiegelButton.Enabled;
+            wavaMenuItem.Checked = wavaButton.Checked;
             wavaMenuItem.Enabled = wavaButton.Enabled;
 
             paceMenuItem.Checked = paceButton.Checked;
