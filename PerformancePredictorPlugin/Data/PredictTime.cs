@@ -96,6 +96,7 @@ namespace GpsRunningPlugin.Source
             double seconds = time.TotalSeconds;
             return getVo2max(seconds);
         }
+
         public static double getVo2max(double seconds)
         {
             return 0.8 + 0.1894393 * Math.Exp(-0.012778 * seconds / 60)
@@ -112,6 +113,11 @@ namespace GpsRunningPlugin.Source
             return (-4.6 + 0.182258 * (dist * 60 / seconds)
                 + 0.000104 * Math.Pow(dist * 60 / seconds, 2))
                 / getVo2max(seconds);
+        }
+
+        public static double getTimeFactorFromAdjVdot(double ajustedVdotFactor)
+        {
+            return Math.Pow(1 / ajustedVdotFactor, 0.83);
         }
     }
 
