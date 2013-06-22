@@ -53,6 +53,9 @@ namespace GpsRunningPlugin.Source
         private PerformancePredictorControl m_ppcontrol = null;
         private float? m_actualTemp = null;
         private float? m_actualWeight = null;
+        private float? m_actualShoe = null;
+        private float? m_actualAge = null;
+        private IActivity m_activity = null; //Just to chack if variables should be cleared
 
         public ExtrapolateView()
         {
@@ -73,9 +76,7 @@ namespace GpsRunningPlugin.Source
 
             copyTableMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
 
-            this.temperatureTab.Text = "xxx";
             temperatureList.LabelProvider = new TemperatureLabelProvider();
-            weightList.LabelProvider = new WeightLabelProvider();
             temperatureList.Columns.Clear();
             foreach (string id in ResultColumnIds.TemperatureColumns)
             {
@@ -94,6 +95,8 @@ namespace GpsRunningPlugin.Source
                     }
                 }
             }
+
+            weightList.LabelProvider = new WeightLabelProvider();
             weightList.Columns.Clear();
             foreach (string id in ResultColumnIds.WeightColumns)
             {
@@ -108,6 +111,47 @@ namespace GpsRunningPlugin.Source
                             columnDef.Align
                         );
                         weightList.Columns.Add(column);
+                        break;
+                    }
+                }
+            }
+
+            shoeList.LabelProvider = new ShoeLabelProvider();
+            ShoeLabelProvider.shoeUnit = Plugin.GetApplication().SystemPreferences.WeightUnits;
+            shoeList.Columns.Clear();
+            foreach (string id in ResultColumnIds.ShoeColumns)
+            {
+                foreach (IListColumnDefinition columnDef in ResultColumnIds.ColumnDefs())
+                {
+                    if (columnDef.Id == id)
+                    {
+                        TreeList.Column column = new TreeList.Column(
+                            columnDef.Id,
+                            columnDef.Text(columnDef.Id),
+                            columnDef.Width,
+                            columnDef.Align
+                        );
+                        shoeList.Columns.Add(column);
+                        break;
+                    }
+                }
+            }
+
+            ageList.LabelProvider = new AgeLabelProvider();
+            ageList.Columns.Clear();
+            foreach (string id in ResultColumnIds.AgeColumns)
+            {
+                foreach (IListColumnDefinition columnDef in ResultColumnIds.ColumnDefs())
+                {
+                    if (columnDef.Id == id)
+                    {
+                        TreeList.Column column = new TreeList.Column(
+                            columnDef.Id,
+                            columnDef.Text(columnDef.Id),
+                            columnDef.Width,
+                            columnDef.Align
+                        );
+                        ageList.Columns.Add(column);
                         break;
                     }
                 }
@@ -138,6 +182,8 @@ namespace GpsRunningPlugin.Source
 #endif
         {
             this.m_actualWeight = null;
+            this.m_actualShoe = null;
+            this.m_actualAge = null;
             if (this.InvokeRequired)
             {
                 this.Invoke((System.ComponentModel.PropertyChangedEventHandler)Athlete_PropertyChanged, sender, e);
@@ -157,6 +203,8 @@ namespace GpsRunningPlugin.Source
 #endif
         {
             this.m_actualTemp = null;
+            this.m_actualShoe = null;
+            this.m_actualAge = null;
             if (this.InvokeRequired)
             {
                 this.Invoke((System.ComponentModel.PropertyChangedEventHandler)Logbook_PropertyChanged, sender, e);
@@ -177,8 +225,10 @@ namespace GpsRunningPlugin.Source
             Color bColor = visualTheme.Control;
             Color fColor = visualTheme.ControlText;
 
-            this.weightBox.ThemeChanged(visualTheme);
             this.temperatureBox.ThemeChanged(visualTheme);
+            this.weightBox.ThemeChanged(visualTheme);
+            this.shoeBox.ThemeChanged(visualTheme);
+            this.ageBox.ThemeChanged(visualTheme);
 
             //Set color for non ST controls
             this.BackColor = bColor;
@@ -204,14 +254,21 @@ namespace GpsRunningPlugin.Source
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
-            this.temperatureTab.Text = Resources.TemperatureImpact;
-            this.weightTab.Text = Resources.WeighImpact;
+            this.temperatureTab.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelTemperature;
+            this.weightTab.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelWeight;
+            this.shoeTab.Text = Resources.ShoeImpact;
+            this.ageTab.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelEquipmentAge;
+            this.utopiaTab.Text = Resources.UtopiaImpact;
 
             //temperatureLabel2.Text
-            temperatureLabel2.Text = String.Format(Resources.TemperatureNotification, UnitUtil.Temperature.ToString(16, "F0u"));
+            temperatureLabel2.Text = String.Format(Resources.TemperatureNotification, 
+                UnitUtil.Temperature.ToString(TemperatureResult.IdealTemperature, "F0u"));
             //weightLabel.Text
             weightLabel2.Text = String.Format(Resources.WeightNotification, 2 + " " + StringResources.Seconds,
                 UnitUtil.Distance.ToString(1000, "u"));
+            shoeLabel2.Text = String.Format(Resources.ShoeNotification);
+            ageLabel2.Text = String.Format(Resources.AgeNotification);
+            utopiaLabel2.Text = String.Format(Resources.UtopiaNotification);
 
             copyTableMenuItem.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
         }
@@ -265,43 +322,19 @@ namespace GpsRunningPlugin.Source
         {
             if (m_showPage && m_ppcontrol.SingleActivity != null && Predict.Predictor(Settings.Model) != null)
             {
+                if (this.m_activity != this.m_ppcontrol.SingleActivity)
+                {
+                    m_actualTemp = null;
+                    m_actualWeight = null;
+                    m_actualShoe = null;
+                    m_actualAge = null;
+                }
                 setTemperature();
                 setWeight();
+                setShoe();
+                setAge();
+                setUtopia();
             }
-        }
-
-        private void setWeight()
-        {
-            if (this.m_actualWeight == null || float.IsNaN((float)this.m_actualWeight))
-            {
-                this.m_actualWeight = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(m_ppcontrol.SingleActivity.StartTime).WeightKilograms;
-            }
-            if (float.IsNaN((float)this.m_actualWeight))
-            {
-                weightLabel.Text = Resources.SetWeight;
-                this.m_actualWeight = 80;
-            }
-
-            weightLabel2.Visible = true;
-            weightLabel.Text = Resources.ProjectedWeightImpact + " " +
-                UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + UnitUtil.Weight.ToString((float)this.m_actualWeight, "u") + ")";
-            this.weightBox.Text = UnitUtil.Weight.ToString((float)this.m_actualWeight, "u");
-
-            const double inc = 1.4;
-            double vdot = Predict.getVdot(m_ppcontrol.Time, m_ppcontrol.Distance);
-            IList<WeightResult> result = new List<WeightResult>();
-            WeightResult sel = null;
-            for (int i = 0; i < 13; i++)
-            {
-                WeightResult t = new WeightResult(m_ppcontrol.SingleActivity, 6 - i, vdot, (float)this.m_actualWeight, inc, m_ppcontrol.Time, m_ppcontrol.Distance);
-                result.Add(t);
-                if (t.Weight >= (float)this.m_actualWeight)
-                {
-                    sel = t;
-                }
-            }
-            weightList.RowData = result;
-            weightList.SelectedItems = new List<WeightResult>{sel};
         }
 
         private void setTemperature()
@@ -310,19 +343,20 @@ namespace GpsRunningPlugin.Source
             {
                 this.m_actualTemp = m_ppcontrol.SingleActivity.Weather.TemperatureCelsius;
             }
-            if (float.IsNaN((float)this.m_actualTemp)) { this.m_actualTemp = 16; }
+            if (float.IsNaN((float)this.m_actualTemp)) { this.m_actualTemp = TemperatureResult.DefaultTemperature; }
 
-            temperatureLabel.Text = Resources.ProjectedTemperatureImpact + " " + UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + UnitUtil.Temperature.ToString((float)this.m_actualTemp, "u") + ")";
+            temperatureLabel.Text = Resources.TemperatureProjectedImpact + " " + UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + UnitUtil.Temperature.ToString((float)this.m_actualTemp, "u") + ")";
             this.temperatureBox.Text = UnitUtil.Temperature.ToString((float)this.m_actualTemp, "u");
 
-            double[] aTemperature = TemperatureResult.aTemperature;
+            float[] aTemperature = TemperatureResult.aTemperature;
             IList<TemperatureResult> result = new List<TemperatureResult>();
             TemperatureResult sel = null;
             for (int i = 0; i < aTemperature.Length; i++)
             {
                 TemperatureResult t = new TemperatureResult(m_ppcontrol.SingleActivity, aTemperature[i], (float)this.m_actualTemp, m_ppcontrol.Time, m_ppcontrol.Distance);
                 result.Add(t);
-                if ((i == 0 || aTemperature[i] <= (float)this.m_actualTemp))
+                if ((i == 0) || 
+                    (Math.Abs(aTemperature[i] - (float)this.m_actualTemp) < Math.Abs(aTemperature[i-1] - (float)this.m_actualTemp)))
                 {
                     sel = t;
                 }
@@ -334,17 +368,172 @@ namespace GpsRunningPlugin.Source
             }
         }
 
+        private void setWeight()
+        {
+            if (this.m_actualWeight == null || float.IsNaN((float)this.m_actualWeight))
+            {
+                this.m_actualWeight = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(m_ppcontrol.SingleActivity.StartTime).WeightKilograms;
+            }
+            if (float.IsNaN((float)this.m_actualWeight))
+            {
+                weightLabel.Text = Resources.WeightUndefined;
+                this.m_actualWeight = WeightResult.DefaultWeight;
+            }
+
+            weightLabel2.Visible = true;
+            weightLabel.Text = Resources.WeightProjectedImpact + " " +
+                UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + UnitUtil.Weight.ToString((float)this.m_actualWeight, "u") + ")";
+            this.weightBox.Text = UnitUtil.Weight.ToString((float)this.m_actualWeight, "u");
+
+            const double inc = 1.4;
+            double vdot = Predict.getVdot(m_ppcontrol.Time, m_ppcontrol.Distance);
+            double idealWeight = WeightResult.IdealWeight((float)this.m_actualWeight, Plugin.GetApplication().Logbook.Athlete.HeightCentimeters);
+            IList<WeightResult> result = new List<WeightResult>();
+            WeightResult sel = null;
+            for (int i = 0; i < 13; i++)
+            {
+                double predWeight = (float)this.m_actualWeight + (6-i) * inc;
+                if (predWeight > idealWeight)
+                {
+                    WeightResult t = new WeightResult(m_ppcontrol.SingleActivity, vdot, predWeight, (float)this.m_actualWeight, m_ppcontrol.Time, m_ppcontrol.Distance);
+                    result.Add(t);
+                    if (t.Weight >= (float)this.m_actualWeight)
+                    {
+                        sel = t;
+                    }
+                }
+            }
+            weightList.RowData = result;
+            weightList.SelectedItems = new List<WeightResult> { sel };
+        }
+
+        private void setShoe()
+        {
+            if (this.m_actualShoe == null || float.IsNaN((float)this.m_actualShoe))
+            {
+                //Guess from equipment
+                foreach (IEquipmentItem eq in m_ppcontrol.SingleActivity.EquipmentUsed)
+                {
+                    if (eq.WeightKilograms < 1 && eq.WeightKilograms > 0)
+                    {
+                        //get weight per shoe, present unit
+                        this.m_actualShoe = eq.WeightKilograms/2;
+                        ShoeLabelProvider.shoeUnit = eq.WeightUnits;
+                    }
+                }
+            }
+            if (this.m_actualShoe == null || float.IsNaN((float)this.m_actualShoe))
+            {
+                shoeLabel.Text = Resources.ShoeUndefined;
+                this.m_actualShoe = ShoeResult.DefaultWeight;
+                ShoeLabelProvider.shoeUnit = Plugin.GetApplication().SystemPreferences.WeightUnits;
+            }
+
+            shoeLabel2.Visible = true;
+            shoeLabel.Text = Resources.ShoeProjectedImpact + " " +
+                UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + UnitUtil.Weight.ToString((float)this.m_actualShoe, ShoeLabelProvider.shoeUnit, "u") + ")";
+            this.shoeBox.Text = UnitUtil.Weight.ToString((float)this.m_actualShoe, ShoeLabelProvider.shoeUnit, "u");
+
+            foreach (TreeList.Column c in shoeList.Columns)
+            {
+                if (c.Id == ResultColumnIds.ShoeWeight)
+                {
+                    c.Text = ResultColumnIds.TextShoeWeightColumn(ShoeLabelProvider.shoeUnit);
+                    break;
+                }
+            }
+
+            float[] aShoeWeight = ShoeResult.aShoeWeight;
+            double vdot = Predict.getVdot(m_ppcontrol.Time, m_ppcontrol.Distance);
+            IList<ShoeResult> result = new List<ShoeResult>();
+            ShoeResult sel = null;
+            for (int i = 0; i < aShoeWeight.Length; i++)
+            {
+                ShoeResult t = new ShoeResult(m_ppcontrol.SingleActivity, vdot, aShoeWeight[i], (float)this.m_actualShoe, m_ppcontrol.Time, m_ppcontrol.Distance);
+                result.Add(t);
+                if ((i == 0)
+                    || Math.Abs(aShoeWeight[i] - (float)this.m_actualShoe) < Math.Abs(aShoeWeight[i - 1] - (float)this.m_actualShoe))
+                {
+                    sel = t;
+                }
+            }
+            shoeList.RowData = result;
+            shoeList.SelectedItems = new List<ShoeResult> { sel };
+        }
+
+        private void setAge()
+        {
+            if (this.m_actualAge == null || float.IsNaN((float)this.m_actualAge))
+            {
+                this.m_actualAge = (float)(m_ppcontrol.SingleActivity.StartTime - Plugin.GetApplication().Logbook.Athlete.DateOfBirth).TotalDays/365.24f;
+                PredictWavaTime.Sex = Plugin.GetApplication().Logbook.Athlete.Sex;
+            }
+            if (float.IsNaN((float)this.m_actualAge))
+            {
+                ageLabel.Text = Resources.AgeUndefined;
+                this.m_actualAge = PredictWavaTime.DefaultAge;
+            }
+
+            float agePerf = PredictWavaTime.IdealTime((float)m_ppcontrol.Distance, (float)this.m_actualAge)/(float)m_ppcontrol.Time.TotalSeconds;
+            float idealAge = PredictWavaTime.IdealAge((float)m_ppcontrol.Distance);
+            ageLabel2.Visible = true;
+            ageLabel.Text = Resources.AgeProjectedImpact + " " +
+                UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + agePerf.ToString("P1")+" at current age)";
+            this.ageBox.Text = ((float)this.m_actualAge).ToString("F0");
+
+            IList<AgeResult> result = new List<AgeResult>();
+            AgeResult sel = null;
+            float[] aAge = AgeResult.aAge;
+            for (int i = 0; i < aAge.Length; i++)
+            {
+                AgeResult t = new AgeResult(m_ppcontrol.SingleActivity, aAge[i], (float)this.m_actualAge, m_ppcontrol.Time, m_ppcontrol.Distance);
+                result.Add(t);
+                if ((i == 0)
+                    || Math.Abs(aAge[i] - (float)this.m_actualAge) < Math.Abs(aAge[i - 1] - (float)this.m_actualAge))
+                {
+                    sel = t;
+                }
+            }
+            ageList.RowData = result;
+            ageList.SelectedItems = new List<AgeResult> { sel };
+        }
+
+        private void setUtopia()
+        {
+            utopiaLabel2.Visible = true;
+            float idealAge = PredictWavaTime.IdealAge((float)m_ppcontrol.Distance);
+            double idealAgeTime = PredictWavaTime.IdealTime((float)m_ppcontrol.Distance, idealAge);
+            double ideal = PredictWavaTime.WavaPredict((float)m_ppcontrol.Distance,(float)m_ppcontrol.Distance, m_ppcontrol.Time, idealAge, (float)this.m_actualAge);
+            double f = ShoeResult.vdotFactor(ShoeResult.IdealWeight, (float)this.m_actualShoe);
+            f*= WeightResult.vdotFactor(WeightResult.IdealWeight((float)this.m_actualWeight, Plugin.GetApplication().Logbook.Athlete.HeightCentimeters), (float)this.m_actualWeight);
+            ideal *= Predict.getTimeFactorFromAdjVdot(f);
+            ideal *= TemperatureResult.getTemperatureFactor(TemperatureResult.IdealTemperature)/TemperatureResult.getTemperatureFactor((float)this.m_actualTemp);
+            double idealP = idealAgeTime / ideal;
+            utopiaLabel.Text = "Estimate: "+TimeSpan.FromSeconds( ideal) + " at ideal age "+idealAge+" "+idealP.ToString("P1");
+        }
+
+        void temperatureBox_LostFocus(object sender, System.EventArgs e)
+        {
+            this.m_actualTemp = (float)UnitUtil.Temperature.Parse(this.temperatureBox.Text);
+            this.setTemperature();
+        }
+
         void weightBox_LostFocus(object sender, System.EventArgs e)
         {
             this.m_actualWeight = (float)UnitUtil.Weight.Parse(this.weightBox.Text);
             this.setWeight();
         }
 
-        void temperatureBox_LostFocus(object sender, System.EventArgs e)
+        void shoeBox_LostFocus(object sender, System.EventArgs e)
         {
-            this.m_actualTemp = (float)UnitUtil.Weight.Parse(this.temperatureBox.Text);
-            this.setTemperature();
+            this.m_actualShoe = (float)UnitUtil.Weight.Parse(this.shoeBox.Text);
+            this.setShoe();
         }
 
+        void ageBox_LostFocus(object sender, System.EventArgs e)
+        {
+            this.m_actualAge = (float)UnitUtil.Weight.Parse(this.ageBox.Text);
+            this.setAge();
+        }
     }
 }
