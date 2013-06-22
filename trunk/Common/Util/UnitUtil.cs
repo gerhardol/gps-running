@@ -352,7 +352,7 @@ namespace GpsRunningPlugin.Util
 
             public static double Parse(string p)
             {
-                return double.Parse(p, NumberFormatInfo.InvariantInfo);
+                return ZoneFiveSoftware.Common.Data.Measurement.Temperature.ParseTemperatureCelsiusText(p, Unit);
             }
 
             public static String Label
@@ -399,7 +399,7 @@ namespace GpsRunningPlugin.Util
             }
             public static string ToString(double p, string fmt)
             {
-                return ToString(p, Unit, DefFmt);
+                return ToString(p, Unit, fmt);
             }
             public static string ToString(double p, ZoneFiveSoftware.Common.Data.Measurement.Weight.Units unit, string fmt)
             {
