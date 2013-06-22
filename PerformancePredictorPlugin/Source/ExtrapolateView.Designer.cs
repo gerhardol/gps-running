@@ -141,12 +141,9 @@ namespace GpsRunningPlugin.Source
             this.temperatureTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.temperatureTableLayoutPanel.ColumnCount = 2;
             this.temperatureTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.temperatureTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
-            this.temperatureTableLayoutPanel.Controls.Add(this.temperatureBox, 1, 0);
             this.temperatureTableLayoutPanel.Controls.Add(this.temperatureLabel2, 0, 0);
             this.temperatureTableLayoutPanel.Controls.Add(this.temperatureLabel, 0, 1);
             this.temperatureTableLayoutPanel.Controls.Add(this.temperatureList, 0, 2);
-            this.temperatureTableLayoutPanel.SetColumnSpan(this.temperatureList, 2);
             this.temperatureTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.temperatureTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.temperatureTableLayoutPanel.Name = "temperatureTableLayoutPanel";
@@ -156,27 +153,6 @@ namespace GpsRunningPlugin.Source
             this.temperatureTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.temperatureTableLayoutPanel.Size = new System.Drawing.Size(434, 211);
             this.temperatureTableLayoutPanel.TabIndex = 0;
-            // 
-            // temperatureBox
-            // 
-            this.temperatureBox.AcceptsReturn = false;
-            this.temperatureBox.AcceptsTab = false;
-            this.temperatureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.temperatureBox.BackColor = System.Drawing.Color.White;
-            this.temperatureBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
-            this.temperatureBox.ButtonImage = null;
-            this.temperatureBox.Location = new System.Drawing.Point(331, 18);
-            this.temperatureBox.MaxLength = 32767;
-            this.temperatureBox.Multiline = false;
-            this.temperatureBox.Name = "temperatureBox";
-            this.temperatureBox.ReadOnly = false;
-            this.temperatureBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
-            this.temperatureBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
-            this.temperatureBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.temperatureBox.Size = new System.Drawing.Size(50, 19);
-            this.temperatureBox.TabIndex = 1;
-            this.temperatureBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.temperatureBox.LostFocus += temperatureBox_LostFocus;
             // 
             // temperatureLabel2
             // 
@@ -242,12 +218,9 @@ namespace GpsRunningPlugin.Source
             this.weightTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.weightTableLayoutPanel.ColumnCount = 2;
             this.weightTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.weightTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
-            this.weightTableLayoutPanel.Controls.Add(this.weightBox, 1, 0);
             this.weightTableLayoutPanel.Controls.Add(this.weightLabel2, 0, 0);
             this.weightTableLayoutPanel.Controls.Add(this.weightLabel, 0, 1);
             this.weightTableLayoutPanel.Controls.Add(this.weightList, 0, 2);
-            this.weightTableLayoutPanel.SetColumnSpan(this.weightList, 2);
             this.weightTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.weightTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.weightTableLayoutPanel.Name = "weightTableLayoutPanel";
@@ -257,27 +230,6 @@ namespace GpsRunningPlugin.Source
             this.weightTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.weightTableLayoutPanel.Size = new System.Drawing.Size(434, 211);
             this.weightTableLayoutPanel.TabIndex = 0;
-            // 
-            // weightBox
-            // 
-            this.weightBox.AcceptsReturn = false;
-            this.weightBox.AcceptsTab = false;
-            this.weightBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.weightBox.BackColor = System.Drawing.Color.White;
-            this.weightBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
-            this.weightBox.ButtonImage = null;
-            this.weightBox.Location = new System.Drawing.Point(331, 18);
-            this.weightBox.MaxLength = 32767;
-            this.weightBox.Multiline = false;
-            this.weightBox.Name = "weightBox";
-            this.weightBox.ReadOnly = false;
-            this.weightBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
-            this.weightBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
-            this.weightBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.weightBox.Size = new System.Drawing.Size(50, 19);
-            this.weightBox.TabIndex = 1;
-            this.weightBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.weightBox.LostFocus += weightBox_LostFocus;
             // 
             // weightLabel2
             // 
@@ -343,12 +295,9 @@ namespace GpsRunningPlugin.Source
             this.shoeTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.shoeTableLayoutPanel.ColumnCount = 2;
             this.shoeTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.shoeTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
-            this.shoeTableLayoutPanel.Controls.Add(this.shoeBox, 1, 0);
             this.shoeTableLayoutPanel.Controls.Add(this.shoeLabel2, 0, 0);
             this.shoeTableLayoutPanel.Controls.Add(this.shoeLabel, 0, 1);
             this.shoeTableLayoutPanel.Controls.Add(this.shoeList, 0, 2);
-            this.shoeTableLayoutPanel.SetColumnSpan(this.shoeList, 2);
             this.shoeTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.shoeTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.shoeTableLayoutPanel.Name = "shoeTableLayoutPanel";
@@ -358,27 +307,6 @@ namespace GpsRunningPlugin.Source
             this.shoeTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.shoeTableLayoutPanel.Size = new System.Drawing.Size(434, 211);
             this.shoeTableLayoutPanel.TabIndex = 0;
-            // 
-            // shoeBox
-            // 
-            this.shoeBox.AcceptsReturn = false;
-            this.shoeBox.AcceptsTab = false;
-            this.shoeBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.shoeBox.BackColor = System.Drawing.Color.White;
-            this.shoeBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
-            this.shoeBox.ButtonImage = null;
-            this.shoeBox.Location = new System.Drawing.Point(331, 18);
-            this.shoeBox.MaxLength = 32767;
-            this.shoeBox.Multiline = false;
-            this.shoeBox.Name = "shoeBox";
-            this.shoeBox.ReadOnly = false;
-            this.shoeBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
-            this.shoeBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
-            this.shoeBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.shoeBox.Size = new System.Drawing.Size(50, 19);
-            this.shoeBox.TabIndex = 1;
-            this.shoeBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.shoeBox.LostFocus += shoeBox_LostFocus;
             // 
             // shoeLabel2
             // 
@@ -444,12 +372,9 @@ namespace GpsRunningPlugin.Source
             this.ageTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ageTableLayoutPanel.ColumnCount = 2;
             this.ageTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.ageTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
-            this.ageTableLayoutPanel.Controls.Add(this.ageBox, 1, 0);
             this.ageTableLayoutPanel.Controls.Add(this.ageLabel2, 0, 0);
             this.ageTableLayoutPanel.Controls.Add(this.ageLabel, 0, 1);
             this.ageTableLayoutPanel.Controls.Add(this.ageList, 0, 2);
-            this.ageTableLayoutPanel.SetColumnSpan(this.ageList, 2);
             this.ageTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ageTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.ageTableLayoutPanel.Name = "ageTableLayoutPanel";
@@ -459,27 +384,6 @@ namespace GpsRunningPlugin.Source
             this.ageTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.ageTableLayoutPanel.Size = new System.Drawing.Size(434, 211);
             this.ageTableLayoutPanel.TabIndex = 0;
-            // 
-            // ageBox
-            // 
-            this.ageBox.AcceptsReturn = false;
-            this.ageBox.AcceptsTab = false;
-            this.ageBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ageBox.BackColor = System.Drawing.Color.White;
-            this.ageBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
-            this.ageBox.ButtonImage = null;
-            this.ageBox.Location = new System.Drawing.Point(331, 18);
-            this.ageBox.MaxLength = 32767;
-            this.ageBox.Multiline = false;
-            this.ageBox.Name = "ageBox";
-            this.ageBox.ReadOnly = false;
-            this.ageBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
-            this.ageBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
-            this.ageBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.ageBox.Size = new System.Drawing.Size(50, 19);
-            this.ageBox.TabIndex = 1;
-            this.ageBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.ageBox.LostFocus += ageBox_LostFocus;
             // 
             // ageLabel2
             // 
@@ -544,10 +448,16 @@ namespace GpsRunningPlugin.Source
             // 
             this.utopiaTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.utopiaTableLayoutPanel.ColumnCount = 2;
-            this.utopiaTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.utopiaTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 55F));
+            this.utopiaTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.utopiaTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.utopiaTableLayoutPanel.Controls.Add(this.utopiaLabel2, 0, 0);
             this.utopiaTableLayoutPanel.Controls.Add(this.utopiaLabel, 0, 1);
+            this.utopiaTableLayoutPanel.SetColumnSpan(this.utopiaLabel, 2);
+            this.utopiaTableLayoutPanel.SetColumnSpan(this.utopiaLabel2, 2);
+            this.utopiaTableLayoutPanel.Controls.Add(this.temperatureBox, 1, 4);
+            this.utopiaTableLayoutPanel.Controls.Add(this.weightBox, 1, 5);
+            this.utopiaTableLayoutPanel.Controls.Add(this.shoeBox, 1, 6);
+            this.utopiaTableLayoutPanel.Controls.Add(this.ageBox, 1, 7);
             this.utopiaTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.utopiaTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.utopiaTableLayoutPanel.Name = "utopiaTableLayoutPanel";
@@ -575,6 +485,90 @@ namespace GpsRunningPlugin.Source
             this.utopiaLabel.Size = new System.Drawing.Size(98, 13);
             this.utopiaLabel.TabIndex = 6;
             this.utopiaLabel.Text = "<estimated utopia>";
+            // 
+            // temperatureBox
+            // 
+            this.temperatureBox.AcceptsReturn = false;
+            this.temperatureBox.AcceptsTab = false;
+            this.temperatureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.temperatureBox.BackColor = System.Drawing.Color.White;
+            this.temperatureBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.temperatureBox.ButtonImage = null;
+            this.temperatureBox.Location = new System.Drawing.Point(331, 18);
+            this.temperatureBox.MaxLength = 32767;
+            this.temperatureBox.Multiline = false;
+            this.temperatureBox.Name = "temperatureBox";
+            this.temperatureBox.ReadOnly = false;
+            this.temperatureBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.temperatureBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.temperatureBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.temperatureBox.Size = new System.Drawing.Size(50, 19);
+            this.temperatureBox.TabIndex = 1;
+            this.temperatureBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.temperatureBox.LostFocus += temperatureBox_LostFocus;
+            // 
+            // weightBox
+            // 
+            this.weightBox.AcceptsReturn = false;
+            this.weightBox.AcceptsTab = false;
+            this.weightBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.weightBox.BackColor = System.Drawing.Color.White;
+            this.weightBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.weightBox.ButtonImage = null;
+            this.weightBox.Location = new System.Drawing.Point(331, 18);
+            this.weightBox.MaxLength = 32767;
+            this.weightBox.Multiline = false;
+            this.weightBox.Name = "weightBox";
+            this.weightBox.ReadOnly = false;
+            this.weightBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.weightBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.weightBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.weightBox.Size = new System.Drawing.Size(50, 19);
+            this.weightBox.TabIndex = 1;
+            this.weightBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.weightBox.LostFocus += weightBox_LostFocus;
+            // 
+            // shoeBox
+            // 
+            this.shoeBox.AcceptsReturn = false;
+            this.shoeBox.AcceptsTab = false;
+            this.shoeBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.shoeBox.BackColor = System.Drawing.Color.White;
+            this.shoeBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.shoeBox.ButtonImage = null;
+            this.shoeBox.Location = new System.Drawing.Point(331, 18);
+            this.shoeBox.MaxLength = 32767;
+            this.shoeBox.Multiline = false;
+            this.shoeBox.Name = "shoeBox";
+            this.shoeBox.ReadOnly = false;
+            this.shoeBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.shoeBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.shoeBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.shoeBox.Size = new System.Drawing.Size(50, 19);
+            this.shoeBox.TabIndex = 1;
+            this.shoeBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.shoeBox.LostFocus += shoeBox_LostFocus;
+            // 
+            // ageBox
+            // 
+            this.ageBox.AcceptsReturn = false;
+            this.ageBox.AcceptsTab = false;
+            this.ageBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ageBox.BackColor = System.Drawing.Color.White;
+            this.ageBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.ageBox.ButtonImage = null;
+            this.ageBox.Location = new System.Drawing.Point(331, 18);
+            this.ageBox.MaxLength = 32767;
+            this.ageBox.Multiline = false;
+            this.ageBox.Name = "ageBox";
+            this.ageBox.ReadOnly = false;
+            this.ageBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.ageBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.ageBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.ageBox.Size = new System.Drawing.Size(50, 19);
+            this.ageBox.TabIndex = 1;
+            this.ageBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.ageBox.LostFocus += ageBox_LostFocus;
             // 
             // listMenu
             // 
@@ -635,32 +629,32 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.Label temperatureLabel;
         private System.Windows.Forms.Label temperatureLabel2;
         private ZoneFiveSoftware.Common.Visuals.TreeList temperatureList;
-        private ZoneFiveSoftware.Common.Visuals.TextBox temperatureBox;
 
         private System.Windows.Forms.TabPage weightTab;
         private System.Windows.Forms.TableLayoutPanel weightTableLayoutPanel;
         private System.Windows.Forms.Label weightLabel2;
         private System.Windows.Forms.Label weightLabel;
         private ZoneFiveSoftware.Common.Visuals.TreeList weightList;
-        private ZoneFiveSoftware.Common.Visuals.TextBox weightBox;
 
         private System.Windows.Forms.TabPage shoeTab;
         private System.Windows.Forms.TableLayoutPanel shoeTableLayoutPanel;
         private System.Windows.Forms.Label shoeLabel2;
         private System.Windows.Forms.Label shoeLabel;
         private ZoneFiveSoftware.Common.Visuals.TreeList shoeList;
-        private ZoneFiveSoftware.Common.Visuals.TextBox shoeBox;
 
         private System.Windows.Forms.TabPage ageTab;
         private System.Windows.Forms.TableLayoutPanel ageTableLayoutPanel;
         private System.Windows.Forms.Label ageLabel2;
         private System.Windows.Forms.Label ageLabel;
         private ZoneFiveSoftware.Common.Visuals.TreeList ageList;
-        private ZoneFiveSoftware.Common.Visuals.TextBox ageBox;
 
         private System.Windows.Forms.TabPage utopiaTab;
         private System.Windows.Forms.TableLayoutPanel utopiaTableLayoutPanel;
         private System.Windows.Forms.Label utopiaLabel2;
         private System.Windows.Forms.Label utopiaLabel;
+        private ZoneFiveSoftware.Common.Visuals.TextBox temperatureBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox weightBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox shoeBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox ageBox;
     }
 }

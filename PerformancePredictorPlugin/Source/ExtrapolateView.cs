@@ -346,7 +346,6 @@ namespace GpsRunningPlugin.Source
             if (float.IsNaN((float)this.m_actualTemp)) { this.m_actualTemp = TemperatureResult.DefaultTemperature; }
 
             temperatureLabel.Text = Resources.TemperatureProjectedImpact + " " + UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + UnitUtil.Temperature.ToString((float)this.m_actualTemp, "u") + ")";
-            this.temperatureBox.Text = UnitUtil.Temperature.ToString((float)this.m_actualTemp, "u");
 
             float[] aTemperature = TemperatureResult.aTemperature;
             IList<TemperatureResult> result = new List<TemperatureResult>();
@@ -383,7 +382,6 @@ namespace GpsRunningPlugin.Source
             weightLabel2.Visible = true;
             weightLabel.Text = Resources.WeightProjectedImpact + " " +
                 UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + UnitUtil.Weight.ToString((float)this.m_actualWeight, "u") + ")";
-            this.weightBox.Text = UnitUtil.Weight.ToString((float)this.m_actualWeight, "u");
 
             const double inc = 1.4;
             double vdot = Predict.getVdot(m_ppcontrol.Time, m_ppcontrol.Distance);
@@ -432,7 +430,6 @@ namespace GpsRunningPlugin.Source
             shoeLabel2.Visible = true;
             shoeLabel.Text = Resources.ShoeProjectedImpact + " " +
                 UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + UnitUtil.Weight.ToString((float)this.m_actualShoe, ShoeLabelProvider.shoeUnit, "u") + ")";
-            this.shoeBox.Text = UnitUtil.Weight.ToString((float)this.m_actualShoe, ShoeLabelProvider.shoeUnit, "u");
 
             foreach (TreeList.Column c in shoeList.Columns)
             {
@@ -479,7 +476,6 @@ namespace GpsRunningPlugin.Source
             ageLabel2.Visible = true;
             ageLabel.Text = Resources.AgeProjectedImpact + " " +
                 UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + agePerf.ToString("P1")+" at current age)";
-            this.ageBox.Text = ((float)this.m_actualAge).ToString("F0");
 
             IList<AgeResult> result = new List<AgeResult>();
             AgeResult sel = null;
@@ -510,6 +506,12 @@ namespace GpsRunningPlugin.Source
             ideal *= TemperatureResult.getTemperatureFactor(TemperatureResult.IdealTemperature)/TemperatureResult.getTemperatureFactor((float)this.m_actualTemp);
             double idealP = idealAgeTime / ideal;
             utopiaLabel.Text = "Estimate: "+TimeSpan.FromSeconds( ideal) + " at ideal age "+idealAge+" "+idealP.ToString("P1");
+
+            this.temperatureBox.Text = UnitUtil.Temperature.ToString((float)this.m_actualTemp, "u");
+            this.weightBox.Text = UnitUtil.Weight.ToString((float)this.m_actualWeight, "u");
+            this.shoeBox.Text = UnitUtil.Weight.ToString((float)this.m_actualShoe, ShoeLabelProvider.shoeUnit, "u");
+            this.ageBox.Text = ((float)this.m_actualAge).ToString("F0");
+
         }
 
         void temperatureBox_LostFocus(object sender, System.EventArgs e)
