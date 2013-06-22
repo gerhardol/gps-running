@@ -417,7 +417,7 @@ namespace GpsRunningPlugin.Util
                 {
                     dfmt = "F1";
                 }
-                if (fmt.ToLower().Equals("u")) { fmt = dfmt + fmt; }
+                if (fmt.ToLower().Equals("u") || string.IsNullOrEmpty(fmt)) { fmt = dfmt + fmt; }
                 return ZoneFiveSoftware.Common.Data.Measurement.Weight.ToString(ConvertFrom(p), unit, fmt);
             }
 
