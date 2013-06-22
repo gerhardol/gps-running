@@ -14,17 +14,48 @@ The prediction models works better in some situations:
 In all, the predictions are often considered a little too optimistic. Still, if you are interested in analysis of your best performances this sort of plugin should definitely  also be a part of your !SportTracks plugin setup.
 
 =Models=
+==Dave Cameron==
 The Dave Cameron model works as follows:
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/davecameron.png]
 
 Here d<sub>old</sub> and t<sub>old</sub> both refer to the race you use as input to the model; i.e., the distance and time of the race. By selecting d<sub>new</sub> at various distances we can calculate the predicted time at these distances t<sub>new</sub>. 
 
+==Pete Riegel==
 Once you have understood the Dave Cameron model, it should be easy understand the Pete Riegel model as well:
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/peteriegel.png]
 
+==WAVA==
+World Master Athletics ([http://www.world-masters-athletics.org/ WMA]), formerly known as the World Association of Veteran Athletes (WAVA) compiles statistics for results for a number of distances. The statistics are done in such way that 100% should be the same (or higher) than the world record for the sex, age and distance. 
+
+The values can also be used to predict performances. If you perform at 60% of the world record at a certain age and distance, (with the usual reservations) many perform at 60% at other distances. The benefit of this model is that it takes into account that most runners loose speed before endurance. So for an older runner this model is often predicting better than the teorethical formulas. However all athletes are not aging the same way. See for instance [http://en.wikipedia.org/wiki/Masters_athletics#Age-graded_tables WikiPedia] for a discussion about limits.
+
 =Training=
-Besides predicting times the plugin also give suggestions regards to training. These suggestions are based on Jack Daniels's training philosophies. Currently, the plugin suggests training paces, pace for tempo races and interval split times. The plugin also extrapolates the activity if  temperature or weight were changed. 
+Besides predicting times the plugin also give suggestions regards to training. These suggestions are based on Jack Daniels's training philosophies. Currently, the plugin suggests training paces, pace for tempo races and interval split times.
+
+=Extrapolation=
+In addition to predicting other distances from a certain activity, the plugin can extrapolate data for the activity based on other types of data.
+
+===Temperature===
+Compensate for higher lower temperatures. Slightly described in [http://coachsci.sdsu.edu/csa/vol36/rushall1.htm Burton and Edholm 1969].
+
+===Weight===
+The Weight affects performance. Some discussions at  [http://www.runnersworld.com/weight-loss/whats-your-ideal-weight Runners World]. However a too low weight will not improve the performance. The plugin will not present results lower than BMI 18.5 (if you have set your height correctly).
+
+===Shoe===
+Light shoes improves performance, some research by [http://runsmartproject.com/coaching/2012/02/06/how-much-does-shoe-weight-affect-performance/ Jack Daniels]. The ideal weight for a shoe is seldom zero, that value is speculative...
+
+The default sho weight is derived from the activity Equipment, the first device under 1 kg. Note that the plugin presents wehgt by shoe, so the equipment weight is divided by two.
+
+===Age===
+Extrapolate the result to other ages, to see how you could have performed as younger or may perform as older. The calculation uses the WAVA tables that also can be used for prediction.
+
+===Utopia===
+If the ideal conditions had occurred in your prime age... Your true personal best, when there is no other explanation.
+
+Something that is not included is Hills. There are some estimations in Trails Plugin though. Another is Wind. Some estimations can be done using Weather and Power plugins.
+
+Note: It is possible to change both the actual ("activity") and ideal ("optimized") values. These values are then used for prediction, traing and extrapolation.
 
 =How do I use it?=
 The predictor works in two modes:

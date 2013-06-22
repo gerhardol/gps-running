@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Kristian Helkjaer Lassen")]
 [assembly: AssemblyProduct("SportTracks High Score Plugin")]
-[assembly: AssemblyCopyright("Copyright © 2007 - 2008, 2010")]
+[assembly: AssemblyCopyright("Copyright © 2007 - 2008, 2010-2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("2.0.360.*")]
+[assembly: AssemblyVersion("2.0.395.*")]
 [assembly: AssemblyFileVersion("2.0")]

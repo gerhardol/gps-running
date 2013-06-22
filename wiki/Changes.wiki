@@ -5,8 +5,21 @@
 
 More or less official beta releases are available in the Downloads section. See each plugin for detailed description of functions.
 
+2.0.395 2013-06-22 (Plugin Catalog)
+
+PerformancePredictor:
+ * New Add Wava as PredictionModel. See the updated documentation: [PerformancePredictor#WAVA WAVA].
+ * ExtraPolation new tabs. The effects of Shoes, Age and Utopia (everything combined) can be seen. [PerformancePredictor#Extrapolation Extrapolation].
+ 
+Other changes:
+ * Do not show Weight results below lowest possible "Ideal" weight at 18.5. (The actual limit is likely higher).
+ * The "closest" row was not always marked for temperature
+ * Extrapolate temperature was always set to 15 degrees instead of using the actual temperature
+ * When selecting several activities, the start distance and pace was incorrectly displayed.
+ 
  * Overlay: Exception occurred if "Select with UniqueRoutes" menu item was selected but UR was not installed.
- * PP: Extrapolate temperature was always set to 15 degrees instead of using the actual temperature
+ 
+ * HighScore: Activities without results did not display any data.
  
 2.0.366 2013-01-01 (Plugin Catalog)
 PerformancePredictor updates - Google Code issue 28
