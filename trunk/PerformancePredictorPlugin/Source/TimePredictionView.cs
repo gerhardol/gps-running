@@ -319,10 +319,10 @@ namespace GpsRunningPlugin.Source
                 IActivity foundActivity = (IActivity)result[0];
                 TimeSpan old_time = TimeSpan.FromSeconds(UnitUtil.Time.Parse(result[1].ToString()));
                 double meterStart = (double)result[2];
-                double meterEnd = (double)result[3];
+                double old_dist = (double)result[3];
                 double timeStart = 0;
                 if (result.Count > 4) { timeStart = double.Parse(result[4].ToString()); }
-                double old_dist = meterEnd - meterStart;
+                double meterEnd = meterStart + old_dist;
                 double new_dist = old_dist * 100 / Settings.PercentOfDistance;
                 double new_time = predict(new_dist, old_dist, old_time);
                 float x = (float)UnitUtil.Distance.ConvertFrom(new_dist);
