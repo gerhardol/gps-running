@@ -142,39 +142,39 @@ namespace GpsRunningPlugin.Source
         public static ICollection<IListColumnDefinition> ColumnDefs()
         {
             IList<IListColumnDefinition> columnDefs = new List<IListColumnDefinition>();
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Distance, UnitUtil.Distance.LabelAxis, "", 90, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.DistanceNominal, CommonResources.Text.LabelDistance, "", 70, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.PredictedTime, Resources.PredictedTime, "", 70, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Speed, UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace), "", 60, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Distance, UnitUtil.Distance.LabelAxis, "", 90, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.DistanceNominal, CommonResources.Text.LabelDistance, "", 70, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.PredictedTime, Resources.PredictedTime, "", 70, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Speed, UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace), "", 60, StringAlignment.Far));
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.StartDate, Resources.UsedActivityStartDate, "", 70, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.StartTime, Resources.UsedActivityStartTime, "", 50, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.UsedTime, Resources.UsedTimeOfActivity, "", 80, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.StartDistance, Resources.StartOfPart + UnitUtil.Distance.LabelAbbr2, "", 80, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.UsedDistance, Resources.UsedLengthOfActivity + UnitUtil.Distance.LabelAbbr2, "", 80, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.StartTime, Resources.UsedActivityStartTime, "", 50, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.UsedTime, Resources.UsedTimeOfActivity, "", 80, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.StartDistance, Resources.StartOfPart + UnitUtil.Distance.LabelAbbr2, "", 80, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.UsedDistance, Resources.UsedLengthOfActivity + UnitUtil.Distance.LabelAbbr2, "", 80, StringAlignment.Far));
 
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.ZoneDistance, Resources.ZoneDistance, "", 120, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.PercentOfMax, CommonResources.Text.LabelPercentOfMax, "", 80, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.TrainRaceHR, Resources.TrainRaceHR, "", 80, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.OneMile, Length.ToString(1, Length.Units.Mile, "F0u"), "", 80, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.FiveKm, Length.ToString(5, Length.Units.Kilometer, "F0u"), "", 80, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.TenKm, Length.ToString(10, Length.Units.Kilometer, "F0u"), "", 80, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Duration, CommonResources.Text.LabelDuration + " (" + StringResources.MinutesShort + ")", "", 80, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Temperature, CommonResources.Text.LabelTemperature + UnitUtil.Temperature.LabelAbbr2, "", 80, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.EstimatedTime, Resources.EstimatedTime, "",100, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.PercentOfMax, CommonResources.Text.LabelPercentOfMax, "", 80, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.TrainRaceHR, Resources.TrainRaceHR, "", 80, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.OneMile, Length.ToString(1, Length.Units.Mile, "F0u"), "", 80, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.FiveKm, Length.ToString(5, Length.Units.Kilometer, "F0u"), "", 80, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.TenKm, Length.ToString(10, Length.Units.Kilometer, "F0u"), "", 80, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Duration, CommonResources.Text.LabelDuration + " (" + StringResources.MinutesShort + ")", "", 80, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Temperature, CommonResources.Text.LabelTemperature + UnitUtil.Temperature.LabelAbbr2, "", 80, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.EstimatedTime, Resources.EstimatedTime, "", 100, StringAlignment.Far));
             string estSpeed;
-                if (Settings.ShowPace)
+            if (Settings.ShowPace)
             {
                 estSpeed = Resources.EstimatedPace + UnitUtil.Pace.LabelAbbr2;
             }
             else
             {
                 estSpeed = Resources.EstimatedSpeed + UnitUtil.Speed.LabelAbbr2;
-            }            
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.EstimatedSpeed, estSpeed, "", 120, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Weight, Resources.ProjectedWeight + UnitUtil.Weight.LabelAbbr2, "", 80, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.ShoeWeight, TextShoeWeightColumn(UnitUtil.Weight.Unit), "", 80, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.AdjustedVDOT, Resources.AdjustedVDOT, "", 80, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Age, CommonResources.Text.LabelEquipmentAge, "", 80, StringAlignment.Near));
+            }
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.EstimatedSpeed, estSpeed, "", 120, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Weight, Resources.ProjectedWeight + UnitUtil.Weight.LabelAbbr2, "", 80, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.ShoeWeight, TextShoeWeightColumn(UnitUtil.Weight.Unit), "", 80, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.AdjustedVDOT, Resources.AdjustedVDOT, "", 80, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Age, CommonResources.Text.LabelEquipmentAge, "", 80, StringAlignment.Far));
 
             return columnDefs;
         }
