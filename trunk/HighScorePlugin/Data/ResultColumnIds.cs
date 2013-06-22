@@ -115,15 +115,15 @@ namespace GpsRunningPlugin.Source
         public static ICollection<IListColumnDefinition> ColumnDefs()
         {
             IList<IListColumnDefinition> columnDefs = new List<IListColumnDefinition>();
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Distance, UnitUtil.Distance.LabelAxis, "", 90, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Time, CommonResources.Text.LabelTime, "", 70, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Speed, UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace), "", 60, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Distance, UnitUtil.Distance.LabelAxis, "", 90, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Time, CommonResources.Text.LabelTime, "", 70, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Speed, UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace), "", 60, StringAlignment.Far));
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.StartTime, CommonResources.Text.LabelStartTime, "", 70, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.StartDistance, CommonResources.Text.LabelStart + UnitUtil.Distance.LabelAbbr2, "", 80, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Elevation, UnitUtil.Elevation.LabelAxis, "", 80, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.AvgHR, UnitUtil.HeartRate.LabelAxis, "", 80, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.StartDistance, CommonResources.Text.LabelStart + UnitUtil.Distance.LabelAbbr2, "", 80, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Elevation, UnitUtil.Elevation.LabelAxis, "", 80, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.AvgHR, UnitUtil.HeartRate.LabelAxis, "", 80, StringAlignment.Far));
 
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Date, CommonResources.Text.LabelDate, "", 70, StringAlignment.Near));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Date, CommonResources.Text.LabelDate, "", 70, StringAlignment.Far));
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Location, CommonResources.Text.LabelLocation, "", 100, StringAlignment.Near));
 
             return columnDefs;
