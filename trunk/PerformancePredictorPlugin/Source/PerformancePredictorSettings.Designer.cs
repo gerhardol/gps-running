@@ -58,9 +58,15 @@ namespace GpsRunningPlugin.Source
             this.label2 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
+            this.utopiaGroupBox = new System.Windows.Forms.GroupBox();
+            this.bmiBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.bmiLabel = new System.Windows.Forms.Label();
+            this.shoeBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.shoeLabel = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.utopiaGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // linkLabel1
@@ -89,7 +95,7 @@ namespace GpsRunningPlugin.Source
             this.resetSettings.RightImage = null;
             this.resetSettings.Size = new System.Drawing.Size(187, 23);
             this.resetSettings.TabIndex = 1;
-            this.resetSettings.Text = "Reset all settings...";
+            this.resetSettings.Text = "<Reset all settings...";
             this.resetSettings.TextAlign = System.Drawing.StringAlignment.Center;
             this.resetSettings.TextLeftMargin = 2;
             this.resetSettings.TextRightMargin = 2;
@@ -107,7 +113,7 @@ namespace GpsRunningPlugin.Source
             this.groupBox1.Size = new System.Drawing.Size(326, 162);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Distances used in models";
+            this.groupBox1.Text = "<Distances used in models";
             // 
             // removeDistance
             // 
@@ -124,7 +130,7 @@ namespace GpsRunningPlugin.Source
             this.removeDistance.RightImage = null;
             this.removeDistance.Size = new System.Drawing.Size(186, 23);
             this.removeDistance.TabIndex = 4;
-            this.removeDistance.Text = "Remove distance -->";
+            this.removeDistance.Text = "<Remove distance -->";
             this.removeDistance.TextAlign = System.Drawing.StringAlignment.Center;
             this.removeDistance.TextLeftMargin = 2;
             this.removeDistance.TextRightMargin = 2;
@@ -173,7 +179,7 @@ namespace GpsRunningPlugin.Source
             this.addDistance.RightImage = null;
             this.addDistance.Size = new System.Drawing.Size(186, 23);
             this.addDistance.TabIndex = 1;
-            this.addDistance.Text = "<-- Add distance";
+            this.addDistance.Text = "<<-- Add distance";
             this.addDistance.TextAlign = System.Drawing.StringAlignment.Center;
             this.addDistance.TextLeftMargin = 2;
             this.addDistance.TextRightMargin = 2;
@@ -197,7 +203,7 @@ namespace GpsRunningPlugin.Source
             this.groupBox2.Size = new System.Drawing.Size(326, 48);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "High Score plugin integration";
+            this.groupBox2.Text = "<High Score plugin integration";
             // 
             // label2
             // 
@@ -206,7 +212,7 @@ namespace GpsRunningPlugin.Source
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(139, 13);
             this.label2.TabIndex = 2;
-            this.label2.Text = "% of distance to predict time";
+            this.label2.Text = "<% of distance to predict time";
             // 
             // numericUpDown1
             // 
@@ -239,22 +245,96 @@ namespace GpsRunningPlugin.Source
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(26, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Use";
+            this.label1.Text = "<Use";
+            // 
+            // utopiaGroupBox
+            // 
+            this.utopiaGroupBox.Controls.Add(this.bmiBox);
+            this.utopiaGroupBox.Controls.Add(this.bmiLabel);
+            this.utopiaGroupBox.Controls.Add(this.shoeBox);
+            this.utopiaGroupBox.Controls.Add(this.shoeLabel);
+            this.utopiaGroupBox.Location = new System.Drawing.Point(6, 267);
+            this.utopiaGroupBox.Name = "utopiaGroupBox";
+            this.utopiaGroupBox.Size = new System.Drawing.Size(326, 71);
+            this.utopiaGroupBox.TabIndex = 4;
+            this.utopiaGroupBox.TabStop = false;
+            this.utopiaGroupBox.Text = "<utopia";
+            // 
+            // bmiBox
+            // 
+            this.bmiBox.AcceptsReturn = false;
+            this.bmiBox.AcceptsTab = false;
+            this.bmiBox.BackColor = System.Drawing.Color.White;
+            this.bmiBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.bmiBox.ButtonImage = null;
+            this.bmiBox.Location = new System.Drawing.Point(54, 41);
+            this.bmiBox.MaxLength = 32767;
+            this.bmiBox.Multiline = false;
+            this.bmiBox.Name = "bmiBox";
+            this.bmiBox.ReadOnly = false;
+            this.bmiBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.bmiBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.bmiBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.bmiBox.Size = new System.Drawing.Size(82, 20);
+            this.bmiBox.TabIndex = 5;
+            this.bmiBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.bmiBox.LostFocus += bmiBox_LostFocus;
+            // 
+            // bmiLabel
+            // 
+            this.bmiLabel.AutoSize = true;
+            this.bmiLabel.Location = new System.Drawing.Point(6, 48);
+            this.bmiLabel.Name = "bmiLabel";
+            this.bmiLabel.Size = new System.Drawing.Size(38, 13);
+            this.bmiLabel.TabIndex = 4;
+            this.bmiLabel.Text = "<Shoe";
+            // 
+            // shoeBox
+            // 
+            this.shoeBox.AcceptsReturn = false;
+            this.shoeBox.AcceptsTab = false;
+            this.shoeBox.BackColor = System.Drawing.Color.White;
+            this.shoeBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.shoeBox.ButtonImage = null;
+            this.shoeBox.Location = new System.Drawing.Point(54, 19);
+            this.shoeBox.MaxLength = 32767;
+            this.shoeBox.Multiline = false;
+            this.shoeBox.Name = "shoeBox";
+            this.shoeBox.ReadOnly = false;
+            this.shoeBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.shoeBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.shoeBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.shoeBox.Size = new System.Drawing.Size(82, 20);
+            this.shoeBox.TabIndex = 3;
+            this.shoeBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.shoeBox.LostFocus += shoeBox_LostFocus;
+            // 
+            // shoeLabel
+            // 
+            this.shoeLabel.AutoSize = true;
+            this.shoeLabel.Location = new System.Drawing.Point(6, 21);
+            this.shoeLabel.Name = "shoeLabel";
+            this.shoeLabel.Size = new System.Drawing.Size(32, 13);
+            this.shoeLabel.TabIndex = 0;
+            this.shoeLabel.Text = "<BMI";
             // 
             // PerformancePredictorSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.utopiaGroupBox);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.resetSettings);
             this.Controls.Add(this.linkLabel1);
             this.Name = "PerformancePredictorSettings";
-            this.Size = new System.Drawing.Size(342, 268);
+            this.Size = new System.Drawing.Size(342, 350);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            this.utopiaGroupBox.ResumeLayout(false);
+            this.utopiaGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -274,5 +354,10 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.GroupBox utopiaGroupBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox bmiBox;
+        private System.Windows.Forms.Label bmiLabel;
+        private ZoneFiveSoftware.Common.Visuals.TextBox shoeBox;
+        private System.Windows.Forms.Label shoeLabel;
     }
 }

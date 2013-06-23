@@ -29,7 +29,8 @@ namespace GpsRunningPlugin.Source
     {
         #region ILabelProvider Members
 
-        public static ZoneFiveSoftware.Common.Data.Measurement.Weight.Units shoeUnit; 
+        public static ZoneFiveSoftware.Common.Data.Measurement.Weight.Units shoeUnit = 
+            UnitUtil.Weight.SmallUnit(Plugin.GetApplication().SystemPreferences.WeightUnits);
         public override string GetText(object element, ZoneFiveSoftware.Common.Visuals.TreeList.Column column)
         {
             ShoeResult wrapper = (ShoeResult)element;
