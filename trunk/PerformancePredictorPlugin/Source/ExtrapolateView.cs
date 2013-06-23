@@ -84,6 +84,13 @@ namespace GpsRunningPlugin.Source
             copyTableMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
 
             temperatureList.LabelProvider = new TemperatureLabelProvider();
+            weightList.LabelProvider = new WeightLabelProvider();
+            shoeList.LabelProvider = new ShoeLabelProvider();
+            ageList.LabelProvider = new AgeLabelProvider();
+        }
+
+        private void updateColumns()
+        {
             temperatureList.Columns.Clear();
             foreach (string id in ResultColumnIds.TemperatureColumns)
             {
@@ -103,7 +110,6 @@ namespace GpsRunningPlugin.Source
                 }
             }
 
-            weightList.LabelProvider = new WeightLabelProvider();
             weightList.Columns.Clear();
             foreach (string id in ResultColumnIds.WeightColumns)
             {
@@ -123,7 +129,6 @@ namespace GpsRunningPlugin.Source
                 }
             }
 
-            shoeList.LabelProvider = new ShoeLabelProvider();
             shoeList.Columns.Clear();
             foreach (string id in ResultColumnIds.ShoeColumns)
             {
@@ -143,7 +148,6 @@ namespace GpsRunningPlugin.Source
                 }
             }
 
-            ageList.LabelProvider = new AgeLabelProvider();
             ageList.Columns.Clear();
             foreach (string id in ResultColumnIds.AgeColumns)
             {
@@ -269,6 +273,8 @@ namespace GpsRunningPlugin.Source
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
+            updateColumns();
+
             this.temperatureTab.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelTemperature;
             this.weightTab.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelWeight;
             this.shoeTab.Text = Resources.ShoeImpact;
