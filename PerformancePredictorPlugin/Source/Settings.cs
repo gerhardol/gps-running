@@ -54,6 +54,26 @@ namespace GpsRunningPlugin.Source
             }
         }
 
+        private static float idealBmi;
+        public static float IdealBmi
+        {
+            get { return idealBmi; }
+            set
+            {
+                idealBmi = value;
+            }
+        }
+
+        private static float idealShoe;
+        public static float IdealShoe
+        {
+            get { return idealShoe; }
+            set
+            {
+                idealShoe = value;
+            }
+        }
+
         private static bool showPace;
         public static bool ShowPace
         {
@@ -136,6 +156,8 @@ namespace GpsRunningPlugin.Source
         public static void defaults()
         {
             predictionView = PredictionView.TimePrediction;
+            idealBmi = 18.5f;
+            idealShoe = 0.100f;
             showPace = true;
             showChart = false;//show chart by default
             percentOfDistance = 40;
@@ -207,6 +229,10 @@ namespace GpsRunningPlugin.Source
                     }
                 }
             }
+            attr = pluginNode.GetAttribute(xmlTags.idealBmi);
+            if (attr.Length > 0) { idealBmi = Settings.parseFloat(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.idealShoe);
+            if (attr.Length > 0) { idealShoe = Settings.parseFloat(attr); }
             attr = pluginNode.GetAttribute(xmlTags.showPace);
             if (attr.Length > 0) { showPace = XmlConvert.ToBoolean(attr); }
             attr = pluginNode.GetAttribute(xmlTags.showChart);
@@ -234,6 +260,8 @@ namespace GpsRunningPlugin.Source
             pluginNode.SetAttribute(xmlTags.settingsVersion, XmlConvert.ToString(settingsVersionCurrent));
 
             //pluginNode.SetAttribute(xmlTags.showPrediction, XmlConvert.ToString(showPrediction));
+            pluginNode.SetAttribute(xmlTags.idealBmi, XmlConvert.ToString(idealBmi));
+            pluginNode.SetAttribute(xmlTags.idealShoe, XmlConvert.ToString(idealShoe));
             pluginNode.SetAttribute(xmlTags.showPace, XmlConvert.ToString(showPace));
             pluginNode.SetAttribute(xmlTags.showChart, XmlConvert.ToString(showChart));
             pluginNode.SetAttribute(xmlTags.percentOfDistance, XmlConvert.ToString(percentOfDistance));
@@ -263,6 +291,8 @@ namespace GpsRunningPlugin.Source
             public const string settingsVersion = "settingsVersion";
             public const string predictionView = "predictionView";
             public const string showPrediction = "showPrediction";// old
+            public const string idealBmi = "idealBmi";
+            public const string idealShoe = "idealShoe";
             public const string showPace = "showPace";
             public const string showChart = "showChart";
             public const string model = "model";
@@ -272,6 +302,18 @@ namespace GpsRunningPlugin.Source
 
             public const string viewWidth = "viewWidth";
             public const string viewHeight = "viewHeight";
+        }
+
+        //Parse dont care how the information was stored
+        public static float parseFloat(string val)
+        {
+            if (System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator !=
+                System.Globalization.CultureInfo.InvariantCulture.NumberFormat.CurrencyDecimalSeparator)
+            {
+                val = val.Replace(System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator,
+                    System.Globalization.CultureInfo.InvariantCulture.NumberFormat.CurrencyDecimalSeparator);
+            }
+            return float.Parse(val, System.Globalization.NumberFormatInfo.InvariantInfo);
         }
 
         private static bool load()
