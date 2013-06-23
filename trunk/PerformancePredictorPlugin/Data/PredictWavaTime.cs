@@ -54,9 +54,13 @@ namespace GpsRunningPlugin.Source
         }
         public static double WavaPredict(double new_dist, double old_dist, TimeSpan old_time, float newAge, float oldAge)
         {
+            return WavaPredict(new_dist, old_dist, old_time.TotalSeconds, newAge, oldAge);
+        }
+        public static double WavaPredict(double new_dist, double old_dist, double old_time, float newAge, float oldAge)
+        {
             float oldIdealTime = Wava.IdealTime(PredictWavaTime.Sex, (float)old_dist, oldAge);
             float newIdealTime = Wava.IdealTime(PredictWavaTime.Sex, (float)new_dist, newAge);
-            double new_time = old_time.TotalSeconds / oldIdealTime * newIdealTime;
+            double new_time = old_time / oldIdealTime * newIdealTime;
             if (double.IsNaN(new_time))
             { }
             return new_time;
