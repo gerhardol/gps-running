@@ -26,7 +26,9 @@ using System.Windows.Forms;
 using ZoneFiveSoftware.Common.Visuals;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Data.Measurement;
+using System.Globalization;
 using System.Reflection;
+
 using GpsRunningPlugin.Properties;
 using GpsRunningPlugin.Util;
 #if !ST_2_1
@@ -122,7 +124,6 @@ namespace GpsRunningPlugin.Source
             }
 
             shoeList.LabelProvider = new ShoeLabelProvider();
-            ShoeLabelProvider.shoeUnit = Plugin.GetApplication().SystemPreferences.WeightUnits;
             shoeList.Columns.Clear();
             foreach (string id in ResultColumnIds.ShoeColumns)
             {
@@ -285,6 +286,16 @@ namespace GpsRunningPlugin.Source
             utopiaLabel2.Text = String.Format(Resources.UtopiaNotification);
 
             copyTableMenuItem.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
+
+            utopiaActualLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelActivity;
+            utopiaIdealLabel.Text = "Ideal"; //TBD
+            utopiaTimeLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelTime;
+            utopiaDistLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelDistance;
+            utopiaPaceLabel.Text = UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace);
+            utopiaTempLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelTemperature;
+            utopiaWeightLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelWeight;
+            utopiaShoeLabel.Text = Resources.ShoeImpact;
+            utopiaAgeLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelEquipmentAge;
         }
 
         private bool m_showPage = false;
@@ -501,7 +512,7 @@ namespace GpsRunningPlugin.Source
             float agePerf = PredictWavaTime.IdealTime((float)m_ppcontrol.Distance, (float)this.m_actualAge)/(float)m_ppcontrol.Time.TotalSeconds;
             ageLabel2.Visible = true;
             ageLabel.Text = Resources.AgeProjectedImpact + " " +
-                UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + agePerf.ToString("P1")+" from world class)";
+                UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + agePerf.ToString("P1")+" of world class)";
 
             IList<AgeResult> result = new List<AgeResult>();
             AgeResult sel = null;
@@ -535,17 +546,7 @@ namespace GpsRunningPlugin.Source
             ideal *= TemperatureResult.getTemperatureFactor(this.m_idealTemp) / TemperatureResult.getTemperatureFactor((float)this.m_actualTemp);
             ideal = PredictWavaTime.WavaPredict((float)m_ppcontrol.Distance, this.m_oldDistance, ideal, this.m_idealAge, (float)this.m_actualAge);
             double idealP = idealAgeTime / ideal;
-            utopiaLabel.Text = idealP.ToString("P1")+" from world class";  //TBD
-
-            utopiaActualLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelActivity;
-            utopiaIdealLabel.Text = "Ideal"; //TBD
-            utopiaTimeLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelTime;
-            utopiaDistLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelDistance;
-            utopiaPaceLabel.Text = UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace);
-            utopiaTempLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelTemperature;
-            utopiaWeightLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelWeight;
-            utopiaShoeLabel.Text = Resources.ShoeImpact;
-            utopiaAgeLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelEquipmentAge;
+            utopiaLabel.Text = idealP.ToString("P1")+" of world class";  //TBD
 
             this.timeBox.LostFocus -= timeBox_LostFocus;
             this.timeBox2.LostFocus -= timeBox2_LostFocus;
@@ -649,7 +650,7 @@ namespace GpsRunningPlugin.Source
 
         void ageBox_LostFocus(object sender, System.EventArgs e)
         {
-            this.m_actualAge = (float)UnitUtil.Weight.Parse(this.ageBox.Text);
+            this.m_actualAge = float.Parse(this.ageBox.Text, NumberFormatInfo.InvariantInfo);
             this.setAge();
             this.setUtopia();
         }
@@ -677,7 +678,7 @@ namespace GpsRunningPlugin.Source
 
         void ageBox2_LostFocus(object sender, System.EventArgs e)
         {
-            this.m_idealAge = (float)UnitUtil.Weight.Parse(this.ageBox2.Text);
+            this.m_idealAge = float.Parse(this.ageBox2.Text, NumberFormatInfo.InvariantInfo);
             this.setAge();
             this.setUtopia();
         }

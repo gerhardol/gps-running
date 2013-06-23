@@ -37,7 +37,7 @@ namespace GpsRunningPlugin.Source
         {
             InitializeComponent();
             InitControls();
-            updateList();
+            RefreshData();
         }
 
         void InitControls()
@@ -47,15 +47,19 @@ namespace GpsRunningPlugin.Source
                 unitBox.Items.Add(Length.Label(s));
             }
 
-            unitBox.SelectedItem = UnitUtil.Distance.Label;
             numericUpDown1.Value = Settings.PercentOfDistance;
         }
+
         public void ThemeChanged(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme)
         {
             this.distanceBox.ThemeChanged(visualTheme);
+            this.bmiBox.ThemeChanged(visualTheme);
+            this.shoeBox.ThemeChanged(visualTheme);
         }
+
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
+            unitBox.SelectedItem = UnitUtil.Distance.Label;
             linkLabel1.Text = Resources.Webpage;
             resetSettings.Text = StringResources.ResetAllSettings;
             groupBox1.Text = Resources.DistancesUsed;
@@ -64,7 +68,18 @@ namespace GpsRunningPlugin.Source
             groupBox2.Text = Resources.HighScorePluginIntegration;
             label1.Text = StringResources.Use;
             label2.Text = Resources.ProcDistUsed;
+            this.utopiaGroupBox.Text = Resources.UtopiaImpact;
+            this.bmiLabel.Text = "BMI";
+            this.shoeLabel.Text = Resources.ShoeImpact;
         }
+
+        private void RefreshData()
+        {
+            this.bmiBox.Text = ((float)Settings.IdealBmi).ToString("F1");
+            this.shoeBox.Text = UnitUtil.Weight.ToString((float)Settings.IdealShoe, ShoeLabelProvider.shoeUnit, "u");
+            updateList();
+        }
+
         private void updateList()
         {
             distanceList.Items.Clear();
@@ -143,6 +158,16 @@ namespace GpsRunningPlugin.Source
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             Settings.PercentOfDistance = (int)numericUpDown1.Value;
+        }
+
+        void bmiBox_LostFocus(object sender, System.EventArgs e)
+        {
+            Settings.IdealBmi = float.Parse(bmiBox.Text, NumberFormatInfo.InvariantInfo);
+        }
+
+        void shoeBox_LostFocus(object sender, System.EventArgs e)
+        {
+            Settings.IdealShoe = (float)UnitUtil.Weight.Parse(shoeBox.Text, ShoeLabelProvider.shoeUnit);
         }
     }
 }
