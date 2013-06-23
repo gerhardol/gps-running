@@ -605,7 +605,7 @@ namespace GpsRunningPlugin.Source
 
         void shoeBox_LostFocus(object sender, System.EventArgs e)
         {
-            this.m_actualShoe = (float)UnitUtil.Weight.Parse(this.shoeBox.Text);
+            this.m_actualShoe = (float)UnitUtil.Weight.Parse(this.shoeBox.Text, ShoeLabelProvider.shoeUnit);
             this.setShoe();
             this.setUtopia();
         }
@@ -633,7 +633,7 @@ namespace GpsRunningPlugin.Source
 
         void shoeBox2_LostFocus(object sender, System.EventArgs e)
         {
-            this.m_idealShoe = (float)UnitUtil.Weight.Parse(this.shoeBox2.Text);
+            this.m_idealShoe = (float)UnitUtil.Weight.Parse(this.shoeBox2.Text, ShoeLabelProvider.shoeUnit);
             this.setShoe();
             this.setUtopia();
         }
