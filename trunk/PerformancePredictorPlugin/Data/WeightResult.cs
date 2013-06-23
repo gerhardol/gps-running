@@ -60,6 +60,6 @@ namespace GpsRunningPlugin.Source
 
         public static float DefaultWeight = 80f;
         //Using (random) BMI of 18.5, from here http://www.livestrong.com/article/548473-the-best-bmi-for-running-5k/
-        public static float IdealWeight(float weight, float lengthCm) { float bmiWeight = 18.5f * lengthCm * lengthCm/10000f; return ((weight> bmiWeight) && !float.IsNaN(lengthCm)) ? bmiWeight : weight; }
+        public static float IdealWeight(float weight, float lengthCm) { float bmiWeight = Settings.IdealBmi * lengthCm * lengthCm/10000f; return ((weight> bmiWeight) && !float.IsNaN(lengthCm)) ? bmiWeight : weight; }
     }
 }

@@ -55,7 +55,7 @@ namespace GpsRunningPlugin.Source
 
         public static float[] aShoeWeight = new float[] { 0, 0.1f, 0.2f, 0.25f, 0.3f, 0.35f, 0.5f, 1f };
         public static float DefaultWeight = 0.35f;
-        public static float IdealWeight = 0.1f; //The lightest race shoes are about this light, assume faster than barefoot
+        public static float IdealWeight = Settings.IdealShoe; //The lightest race shoes are about this light, assume faster than barefoot
 
         public static float vdotFactor(float predWeight, float currWeight)
         {
