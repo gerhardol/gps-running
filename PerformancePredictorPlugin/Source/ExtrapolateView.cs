@@ -231,7 +231,10 @@ namespace GpsRunningPlugin.Source
             Color fColor = visualTheme.ControlText;
 
             this.timeBox.ThemeChanged(visualTheme);
+            this.timeBox2.ThemeChanged(visualTheme);
             this.distBox.ThemeChanged(visualTheme);
+            this.paceBox.ThemeChanged(visualTheme);
+            this.paceBox2.ThemeChanged(visualTheme);
             this.temperatureBox.ThemeChanged(visualTheme);
             this.temperatureBox2.ThemeChanged(visualTheme);
             this.weightBox.ThemeChanged(visualTheme);
@@ -445,7 +448,7 @@ namespace GpsRunningPlugin.Source
             {
                 shoeLabel.Text = Resources.ShoeUndefined;
                 this.m_actualShoe = ShoeResult.DefaultWeight;
-                ShoeLabelProvider.shoeUnit = Plugin.GetApplication().SystemPreferences.WeightUnits;
+                ShoeLabelProvider.shoeUnit = UnitUtil.Weight.SmallUnit(Plugin.GetApplication().SystemPreferences.WeightUnits);
                 this.m_idealShoe = ShoeResult.IdealWeight;
             }
 
@@ -498,7 +501,7 @@ namespace GpsRunningPlugin.Source
             float agePerf = PredictWavaTime.IdealTime((float)m_ppcontrol.Distance, (float)this.m_actualAge)/(float)m_ppcontrol.Time.TotalSeconds;
             ageLabel2.Visible = true;
             ageLabel.Text = Resources.AgeProjectedImpact + " " +
-                UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + agePerf.ToString("P1")+" at current age)";
+                UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + agePerf.ToString("P1")+" from world class)";
 
             IList<AgeResult> result = new List<AgeResult>();
             AgeResult sel = null;
@@ -526,25 +529,29 @@ namespace GpsRunningPlugin.Source
                 this.m_oldDistance = (float)this.m_ppcontrol.Distance;
             }
 
-            double ideal = PredictWavaTime.WavaPredict((float)m_ppcontrol.Distance, this.m_oldDistance, m_ppcontrol.Time, this.m_idealAge, (float)this.m_actualAge);
             double f = ShoeResult.vdotFactor(this.m_idealShoe, (float)this.m_actualShoe);
             f *= WeightResult.vdotFactor(this.m_idealWeight, (float)this.m_actualWeight);
-            ideal *= Predict.getTimeFactorFromAdjVdot(f);
+            double ideal = m_ppcontrol.Time.TotalSeconds * Predict.getTimeFactorFromAdjVdot(f);
             ideal *= TemperatureResult.getTemperatureFactor(this.m_idealTemp) / TemperatureResult.getTemperatureFactor((float)this.m_actualTemp);
+            ideal = PredictWavaTime.WavaPredict((float)m_ppcontrol.Distance, this.m_oldDistance, ideal, this.m_idealAge, (float)this.m_actualAge);
             double idealP = idealAgeTime / ideal;
-            utopiaLabel.Text = "Estimate: " + UnitUtil.Time.ToString(ideal, "u") + " (" + idealP.ToString("P1")+")";  //TBD
+            utopiaLabel.Text = idealP.ToString("P1")+" from world class";  //TBD
 
-            utopiaActualLabel.Text = "Actual"; //TBD
+            utopiaActualLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelActivity;
             utopiaIdealLabel.Text = "Ideal"; //TBD
             utopiaTimeLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelTime;
             utopiaDistLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelDistance;
+            utopiaPaceLabel.Text = UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace);
             utopiaTempLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelTemperature;
             utopiaWeightLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelWeight;
             utopiaShoeLabel.Text = Resources.ShoeImpact;
             utopiaAgeLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelEquipmentAge;
 
             this.timeBox.LostFocus -= timeBox_LostFocus;
+            this.timeBox2.LostFocus -= timeBox2_LostFocus;
             this.distBox.LostFocus -= distBox_LostFocus;
+            this.paceBox.LostFocus -= paceBox_LostFocus;
+            this.paceBox2.LostFocus -= paceBox2_LostFocus;
             this.temperatureBox.LostFocus -= temperatureBox_LostFocus;
             this.temperatureBox2.LostFocus -= temperatureBox2_LostFocus;
             this.weightBox.LostFocus -= weightBox_LostFocus;
@@ -555,7 +562,10 @@ namespace GpsRunningPlugin.Source
             this.ageBox2.LostFocus -= ageBox2_LostFocus;
 
             this.timeBox.Text = UnitUtil.Time.ToString(m_ppcontrol.Time, "u");
+            this.timeBox2.Text = UnitUtil.Time.ToString(ideal, "u");
             this.distBox.Text = UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u");
+            this.paceBox.Text = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, m_ppcontrol.Distance/m_ppcontrol.Time.TotalSeconds);
+            this.paceBox2.Text = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, m_ppcontrol.Distance / ideal);
             this.temperatureBox.Text = UnitUtil.Temperature.ToString((float)this.m_actualTemp, "u");
             this.temperatureBox2.Text = UnitUtil.Temperature.ToString(this.m_idealTemp, "u");
             this.weightBox.Text = UnitUtil.Weight.ToString((float)this.m_actualWeight, "u");
@@ -566,7 +576,10 @@ namespace GpsRunningPlugin.Source
             this.ageBox2.Text = this.m_idealAge.ToString("F0");
 
             this.timeBox.LostFocus += timeBox_LostFocus;
+            this.timeBox2.LostFocus += timeBox2_LostFocus;
             this.distBox.LostFocus += distBox_LostFocus;
+            this.paceBox.LostFocus += paceBox_LostFocus;
+            this.paceBox2.LostFocus += paceBox2_LostFocus;
             this.temperatureBox.LostFocus += temperatureBox_LostFocus;
             this.temperatureBox2.LostFocus += temperatureBox2_LostFocus;
             this.weightBox.LostFocus += weightBox_LostFocus;
@@ -584,9 +597,33 @@ namespace GpsRunningPlugin.Source
             m_ppcontrol.Time = TimeSpan.FromSeconds(UnitUtil.Time.Parse(this.timeBox.Text));
         }
 
+        void timeBox2_LostFocus(object sender, System.EventArgs e)
+        {
+            //TBD
+            double time = UnitUtil.Time.Parse(this.timeBox2.Text);
+            this.paceBox2.LostFocus -= timeBox2_LostFocus;
+            this.paceBox2.Text = UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, m_ppcontrol.Distance / time);
+            this.paceBox2.LostFocus += timeBox2_LostFocus;
+        }
+
         void distBox_LostFocus(object sender, System.EventArgs e)
         {
             m_ppcontrol.Distance = UnitUtil.Distance.Parse(this.distBox.Text);
+        }
+
+        void paceBox_LostFocus(object sender, System.EventArgs e)
+        {
+            double speed = UnitUtil.PaceOrSpeed.Parse(Settings.ShowPace, this.paceBox.Text);
+            m_ppcontrol.Time = TimeSpan.FromSeconds(m_ppcontrol.Distance / speed);
+        }
+
+        void paceBox2_LostFocus(object sender, System.EventArgs e)
+        {
+            //TBD, update Actual?
+            double speed = UnitUtil.PaceOrSpeed.Parse(Settings.ShowPace, this.paceBox2.Text);
+            this.timeBox2.LostFocus -= timeBox2_LostFocus;
+            this.timeBox2.Text = UnitUtil.Time.ToString(m_ppcontrol.Distance / speed, "u");
+            this.timeBox2.LostFocus += timeBox2_LostFocus;
         }
 
         void temperatureBox_LostFocus(object sender, System.EventArgs e)

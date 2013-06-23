@@ -77,12 +77,16 @@ namespace GpsRunningPlugin.Source
             this.utopiaIdealLabel = new System.Windows.Forms.Label();
             this.utopiaTimeLabel = new System.Windows.Forms.Label();
             this.utopiaDistLabel = new System.Windows.Forms.Label();
+            this.utopiaPaceLabel = new System.Windows.Forms.Label();
             this.utopiaTempLabel = new System.Windows.Forms.Label();
             this.utopiaWeightLabel = new System.Windows.Forms.Label();
             this.utopiaShoeLabel = new System.Windows.Forms.Label();
             this.utopiaAgeLabel = new System.Windows.Forms.Label();
             this.timeBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.timeBox2 = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.distBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.paceBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.paceBox2 = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.temperatureBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.weightBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.shoeBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
@@ -474,26 +478,31 @@ namespace GpsRunningPlugin.Source
             this.utopiaTableLayoutPanel.Controls.Add(this.utopiaIdealLabel, 2, 2);
             this.utopiaTableLayoutPanel.Controls.Add(this.utopiaTimeLabel, 0, 3);
             this.utopiaTableLayoutPanel.Controls.Add(this.timeBox, 1, 3);
+            this.utopiaTableLayoutPanel.Controls.Add(this.timeBox2, 2, 3);
             this.utopiaTableLayoutPanel.Controls.Add(this.utopiaDistLabel, 0, 4);
             this.utopiaTableLayoutPanel.Controls.Add(this.distBox, 1, 4);
-            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaTempLabel, 0, 5);
-            this.utopiaTableLayoutPanel.Controls.Add(this.temperatureBox, 1, 5);
-            this.utopiaTableLayoutPanel.Controls.Add(this.temperatureBox2, 2, 5);
-            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaWeightLabel, 0, 6);
-            this.utopiaTableLayoutPanel.Controls.Add(this.weightBox, 1, 6);
-            this.utopiaTableLayoutPanel.Controls.Add(this.weightBox2, 2, 6);
-            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaShoeLabel, 0, 7);
-            this.utopiaTableLayoutPanel.Controls.Add(this.shoeBox, 1, 7);
-            this.utopiaTableLayoutPanel.Controls.Add(this.shoeBox2, 2, 7);
-            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaAgeLabel, 0, 8);
-            this.utopiaTableLayoutPanel.Controls.Add(this.ageBox, 1, 8);
-            this.utopiaTableLayoutPanel.Controls.Add(this.ageBox2, 2, 8);
+            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaPaceLabel, 0, 5);
+            this.utopiaTableLayoutPanel.Controls.Add(this.paceBox, 1, 5);
+            this.utopiaTableLayoutPanel.Controls.Add(this.paceBox2, 2, 5);
+            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaTempLabel, 0, 6);
+            this.utopiaTableLayoutPanel.Controls.Add(this.temperatureBox, 1, 6);
+            this.utopiaTableLayoutPanel.Controls.Add(this.temperatureBox2, 2, 6);
+            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaWeightLabel, 0, 7);
+            this.utopiaTableLayoutPanel.Controls.Add(this.weightBox, 1, 7);
+            this.utopiaTableLayoutPanel.Controls.Add(this.weightBox2, 2, 7);
+            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaShoeLabel, 0, 8);
+            this.utopiaTableLayoutPanel.Controls.Add(this.shoeBox, 1, 8);
+            this.utopiaTableLayoutPanel.Controls.Add(this.shoeBox2, 2, 8);
+            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaAgeLabel, 0, 9);
+            this.utopiaTableLayoutPanel.Controls.Add(this.ageBox, 1, 9);
+            this.utopiaTableLayoutPanel.Controls.Add(this.ageBox2, 2, 9);
             this.utopiaTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.utopiaTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.utopiaTableLayoutPanel.Name = "utopiaTableLayoutPanel";
-            this.utopiaTableLayoutPanel.RowCount = 10;
+            this.utopiaTableLayoutPanel.RowCount = 11;
             this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
             this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
             this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
             this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
             this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
@@ -559,6 +568,15 @@ namespace GpsRunningPlugin.Source
             this.utopiaDistLabel.TabIndex = 6;
             this.utopiaDistLabel.Text = "<Distance";
             // 
+            // utopiaPaceLabel
+            // 
+            this.utopiaPaceLabel.AutoSize = true;
+            this.utopiaPaceLabel.Location = new System.Drawing.Point(3, 30);
+            this.utopiaPaceLabel.Name = "utopiaPaceLabel";
+            this.utopiaPaceLabel.Size = new System.Drawing.Size(98, 13);
+            this.utopiaPaceLabel.TabIndex = 6;
+            this.utopiaPaceLabel.Text = "<Pace";
+            // 
             // utopiaTempLabel
             // 
             this.utopiaTempLabel.AutoSize = true;
@@ -616,6 +634,27 @@ namespace GpsRunningPlugin.Source
             this.timeBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.timeBox.LostFocus += timeBox_LostFocus;
             // 
+            // timeBox2
+            // 
+            this.timeBox2.AcceptsReturn = false;
+            this.timeBox2.AcceptsTab = false;
+            this.timeBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.timeBox2.BackColor = System.Drawing.Color.White;
+            this.timeBox2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.timeBox2.ButtonImage = null;
+            this.timeBox2.Location = new System.Drawing.Point(331, 18);
+            this.timeBox2.MaxLength = 32767;
+            this.timeBox2.Multiline = false;
+            this.timeBox2.Name = "timeBox2";
+            this.timeBox2.ReadOnly = false;
+            this.timeBox2.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.timeBox2.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.timeBox2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.timeBox2.Size = new System.Drawing.Size(50, 19);
+            this.timeBox2.TabIndex = 1;
+            this.timeBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.timeBox2.LostFocus += timeBox2_LostFocus;
+            // 
             // distBox
             // 
             this.distBox.AcceptsReturn = false;
@@ -636,6 +675,48 @@ namespace GpsRunningPlugin.Source
             this.distBox.TabIndex = 1;
             this.distBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.distBox.LostFocus += distBox_LostFocus;
+            // 
+            // paceBox
+            // 
+            this.paceBox.AcceptsReturn = false;
+            this.paceBox.AcceptsTab = false;
+            this.paceBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.paceBox.BackColor = System.Drawing.Color.White;
+            this.paceBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.paceBox.ButtonImage = null;
+            this.paceBox.Location = new System.Drawing.Point(331, 18);
+            this.paceBox.MaxLength = 32767;
+            this.paceBox.Multiline = false;
+            this.paceBox.Name = "paceBox";
+            this.paceBox.ReadOnly = false;
+            this.paceBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.paceBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.paceBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.paceBox.Size = new System.Drawing.Size(50, 19);
+            this.paceBox.TabIndex = 1;
+            this.paceBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.paceBox.LostFocus += paceBox_LostFocus;
+            // 
+            // paceBox2
+            // 
+            this.paceBox2.AcceptsReturn = false;
+            this.paceBox2.AcceptsTab = false;
+            this.paceBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.paceBox2.BackColor = System.Drawing.Color.White;
+            this.paceBox2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.paceBox2.ButtonImage = null;
+            this.paceBox2.Location = new System.Drawing.Point(331, 18);
+            this.paceBox2.MaxLength = 32767;
+            this.paceBox2.Multiline = false;
+            this.paceBox2.Name = "paceBox2";
+            this.paceBox2.ReadOnly = false;
+            this.paceBox2.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.paceBox2.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.paceBox2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.paceBox2.Size = new System.Drawing.Size(50, 19);
+            this.paceBox2.TabIndex = 1;
+            this.paceBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.paceBox2.LostFocus += paceBox2_LostFocus;
             // 
             // temperatureBox
             // 
@@ -891,12 +972,16 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.Label utopiaIdealLabel;
         private System.Windows.Forms.Label utopiaTimeLabel;
         private System.Windows.Forms.Label utopiaDistLabel;
+        private System.Windows.Forms.Label utopiaPaceLabel;
         private System.Windows.Forms.Label utopiaTempLabel;
         private System.Windows.Forms.Label utopiaWeightLabel;
         private System.Windows.Forms.Label utopiaShoeLabel;
         private System.Windows.Forms.Label utopiaAgeLabel;
         private ZoneFiveSoftware.Common.Visuals.TextBox timeBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox timeBox2;
         private ZoneFiveSoftware.Common.Visuals.TextBox distBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox paceBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox paceBox2;
         private ZoneFiveSoftware.Common.Visuals.TextBox temperatureBox;
         private ZoneFiveSoftware.Common.Visuals.TextBox weightBox;
         private ZoneFiveSoftware.Common.Visuals.TextBox shoeBox;
