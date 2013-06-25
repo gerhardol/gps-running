@@ -85,6 +85,7 @@ namespace GpsRunningPlugin.Source
             this.timeBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.timeBox2 = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.distBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.distBox2 = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.paceBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.paceBox2 = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.temperatureBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
@@ -481,6 +482,7 @@ namespace GpsRunningPlugin.Source
             this.utopiaTableLayoutPanel.Controls.Add(this.timeBox2, 2, 3);
             this.utopiaTableLayoutPanel.Controls.Add(this.utopiaDistLabel, 0, 4);
             this.utopiaTableLayoutPanel.Controls.Add(this.distBox, 1, 4);
+            this.utopiaTableLayoutPanel.Controls.Add(this.distBox2, 2, 4);
             this.utopiaTableLayoutPanel.Controls.Add(this.utopiaPaceLabel, 0, 5);
             this.utopiaTableLayoutPanel.Controls.Add(this.paceBox, 1, 5);
             this.utopiaTableLayoutPanel.Controls.Add(this.paceBox2, 2, 5);
@@ -646,7 +648,7 @@ namespace GpsRunningPlugin.Source
             this.timeBox2.MaxLength = 32767;
             this.timeBox2.Multiline = false;
             this.timeBox2.Name = "timeBox2";
-            this.timeBox2.ReadOnly = false;
+            this.timeBox2.ReadOnly = true;
             this.timeBox2.ReadOnlyColor = System.Drawing.SystemColors.Control;
             this.timeBox2.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
             this.timeBox2.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -675,6 +677,27 @@ namespace GpsRunningPlugin.Source
             this.distBox.TabIndex = 1;
             this.distBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.distBox.LostFocus += distBox_LostFocus;
+            // 
+            // distBox2
+            // 
+            this.distBox2.AcceptsReturn = false;
+            this.distBox2.AcceptsTab = false;
+            this.distBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.distBox2.BackColor = System.Drawing.Color.White;
+            this.distBox2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.distBox2.ButtonImage = null;
+            this.distBox2.Location = new System.Drawing.Point(331, 18);
+            this.distBox2.MaxLength = 32767;
+            this.distBox2.Multiline = false;
+            this.distBox2.Name = "distBox2";
+            this.distBox2.ReadOnly = false;
+            this.distBox2.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.distBox2.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.distBox2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.distBox2.Size = new System.Drawing.Size(50, 19);
+            this.distBox2.TabIndex = 1;
+            this.distBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.distBox2.LostFocus += distBox2_LostFocus;
             // 
             // paceBox
             // 
@@ -709,7 +732,7 @@ namespace GpsRunningPlugin.Source
             this.paceBox2.MaxLength = 32767;
             this.paceBox2.Multiline = false;
             this.paceBox2.Name = "paceBox2";
-            this.paceBox2.ReadOnly = false;
+            this.paceBox2.ReadOnly = true;
             this.paceBox2.ReadOnlyColor = System.Drawing.SystemColors.Control;
             this.paceBox2.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
             this.paceBox2.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -980,6 +1003,7 @@ namespace GpsRunningPlugin.Source
         private ZoneFiveSoftware.Common.Visuals.TextBox timeBox;
         private ZoneFiveSoftware.Common.Visuals.TextBox timeBox2;
         private ZoneFiveSoftware.Common.Visuals.TextBox distBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox distBox2;
         private ZoneFiveSoftware.Common.Visuals.TextBox paceBox;
         private ZoneFiveSoftware.Common.Visuals.TextBox paceBox2;
         private ZoneFiveSoftware.Common.Visuals.TextBox temperatureBox;
