@@ -122,9 +122,11 @@ namespace PerformancePredictor.Export
 
                     foreach (double predDist in predictDistances)
                     {
-                        double new_time =  (Predict.Predictor(Settings.Model))(predDist, old_dist, TimeSpan.FromSeconds(old_time));
+                        double new_time = (Predict.Predictor(Settings.Model))(predDist, old_dist, TimeSpan.FromSeconds(old_time));
+                        double utopia_time = ExtrapolateView.GetIdeal(activity, predDist, old_dist, old_time);
                         s.Add(predDist);
                         s.Add(new_time);
+                        s.Add(utopia_time);
                     }
                     objects.Add(s);
                 }
