@@ -28,7 +28,7 @@ using GpsRunningPlugin;
 
 namespace GpsRunningPlugin.Util
 {
-    class UnitUtil
+    public class UnitUtil
     {
         public static IApplication GetApplication()
         {
@@ -40,7 +40,15 @@ namespace GpsRunningPlugin.Util
             return TrailsPlugin.Plugin.GetApplication();
 #endif
         }
-        
+
+        //Convert to/from internal format to display format
+        public delegate double Convert(double value, IActivity activity);
+        //Empty definition, when no conversion needed
+        public static double ConvertNone(double p, IActivity activity)
+        {
+            return p;
+        }
+
         //Helpfunction for common format
         private static string encPar(string p)
         {
@@ -486,119 +494,6 @@ namespace GpsRunningPlugin.Util
         }
 
         /*********************************************************************************/
-        public static class Elevation
-        {
-            private static Length.Units Unit { get { return GetApplication().SystemPreferences.ElevationUnits; } }
-            public static int DefaultDecimalPrecision { get { return Length.DefaultDecimalPrecision(Unit); } }
-            private static string DefFmt { get { return defFmt(Unit); } }
-            private static string defFmt(Length.Units unit) { return "F" + Length.DefaultDecimalPrecision(unit); }
-            public static Length.Units GetUnit(IActivity activity)
-            {
-                Length.Units du;
-                if (activity != null)
-                {
-                    du = activity.Category.ElevationUnits;
-                }
-                else
-                {
-                    du = Unit;
-                }
-                return du;
-            }
-            public static bool isDefaultUnit(IActivity activity)
-            {
-                return (GetUnit(activity) == Length.Units.Meter);
-            }
-
-            public static string ToString(double p)
-            {
-                return ToString(p, DefFmt);
-            }
-            public static string ToString(double p, string fmt)
-            {
-                if (fmt.ToLower().Equals("u")) { fmt = DefFmt + fmt; }
-                return Length.ToString(ConvertFrom(p), Unit, fmt);
-            }
-            public static string ToString(double p, IActivity activity, string fmt)
-            {
-                string str = "";
-                if (fmt.EndsWith("U")) { str = " " + Label; fmt = fmt.Remove(fmt.Length - 1); }
-                if (fmt.EndsWith("u")) { str = " " + LabelAbbr; fmt = fmt.Remove(fmt.Length - 1); }
-                if (string.IsNullOrEmpty(fmt)) { fmt = DefFmt; }
-                return ConvertFrom(p, activity).ToString((fmt)) + str;
-            }
-
-            public static double ConvertFrom(double p)
-            {
-                return ConvertFrom(p, Unit);
-            }
-            public static double ConvertFrom(double p, Length.Units unit)
-            {
-                return Length.Convert(p, Length.Units.Meter, unit);
-            }
-            public static double ConvertFrom(double value, IActivity activity)
-            {
-                return ConvertFrom(value, GetUnit(activity));
-            }
-
-            public static double ConvertTo(double value, Length.Units du)
-            {
-                return Length.Convert(value, du, Length.Units.Meter);
-            }
-            public static double ConvertTo(double value, IActivity activity)
-            {
-                return ConvertTo(value, GetUnit(activity));
-            }
-
-            public static double Parse(string p)
-            {
-                if (string.IsNullOrEmpty(p))
-                {
-                    return double.NaN;
-                }
-                Length.Units unit = Unit;
-                return Length.ParseDistanceMeters(p, ref unit);
-            }
-
-            public static String Label
-            {
-                get
-                {
-                    return Length.Label(Unit);
-                }
-            }
-            public static String LabelAbbr
-            {
-                get
-                {
-                    return Length.LabelAbbr(Unit);
-                }
-            }
-            public static String LabelAbbr2
-            {
-                get
-                {
-                    return encPar(LabelAbbr);
-                }
-            }
-            public static String LabelAxis
-            {
-                get
-                {
-                    return CommonResources.Text.LabelElevation + LabelAbbr2;
-                }
-            }
-            public static string LabelAbbrAct(IActivity activity)
-            {
-                return Length.LabelAbbr(GetUnit(activity));
-            }
-            public static string LabelAbbrAct2(IActivity activity)
-            {
-                return encPar(LabelAbbrAct(activity));
-            }
-        }
-
-        /*********************************************************************************/
         public static class Grade
         {
             //private static Length.Units Unit { get { return null; } }
@@ -770,6 +665,142 @@ namespace GpsRunningPlugin.Util
         }
 
         /*********************************************************************************/
+        public static class Elevation
+        {
+            private static Length.Units Unit { get { return GetApplication().SystemPreferences.ElevationUnits; } }
+            public static int DefaultDecimalPrecision { get { return Length.DefaultDecimalPrecision(Unit); } }
+            private static string DefFmt { get { return defFmt(Unit); } }
+            private static string defFmt(Length.Units unit) { return "F" + Length.DefaultDecimalPrecision(unit); }
+
+            public static Length.Units GetUnit(IActivity activity)
+            {
+                Length.Units du;
+                if (activity != null)
+                {
+                    du = activity.Category.ElevationUnits;
+                }
+                else
+                {
+                    du = Unit;
+                }
+                return du;
+            }
+            public static bool isDefaultUnit(IActivity activity)
+            {
+                return (GetUnit(activity) == Length.Units.Meter);
+            }
+
+            public static string ToString(double p)
+            {
+                return ToString(p, DefFmt);
+            }
+            public static string ToString(double p, string fmt, bool convert)
+            {
+                return ToString(p, Unit, fmt, convert);
+            }
+            public static string ToString(double p, string fmt)
+            {
+                return ToString(p, Unit, fmt);
+            }
+            public static string ToString(double p, Length.Units unit, string fmt)
+            {
+                return ToString(p, unit, fmt, true);
+            }
+            public static string ToString(double p, Length.Units unit, string fmt, bool convert)
+            {
+                return Distance.ToString(p, unit, fmt, convert);
+            }
+            public static string ToString(double p, IActivity activity, string fmt)
+            {
+                string str = "";
+                if (fmt.EndsWith("U")) { str = " " + Label; fmt = fmt.Remove(fmt.Length - 1); }
+                if (fmt.EndsWith("u")) { str = " " + LabelAbbr; fmt = fmt.Remove(fmt.Length - 1); }
+                if (string.IsNullOrEmpty(fmt)) { fmt = DefFmt; }
+                return ConvertFrom(p, activity).ToString((fmt)) + str;
+            }
+
+            public static Convert ConvertFromDelegate(IActivity activity)
+            {
+                Length.Units unit = GetUnit(activity);
+                return Distance.ConvertFromDelegate(activity, unit);
+            }
+
+            //From SI unit (ST internal) to display
+            public static double ConvertFrom(double p)
+            {
+                return ConvertFrom(p, Unit);
+            }
+            public static double ConvertFrom(double p, Length.Units unit)
+            {
+                return Length.Convert(p, Length.Units.Meter, unit);
+            }
+            public static double ConvertFrom(double value, IActivity activity)
+            {
+                return ConvertFrom(value, GetUnit(activity));
+            }
+
+            public static double ConvertTo(double value, Length.Units du)
+            {
+                return Length.Convert(value, du, Length.Units.Meter);
+            }
+            public static double ConvertTo(double value, IActivity activity)
+            {
+                return ConvertTo(value, GetUnit(activity));
+            }
+
+            public static double Parse(string p)
+            {
+                if (string.IsNullOrEmpty(p))
+                {
+                    return double.NaN;
+                }
+                Length.Units unit = Unit;
+                return Parse(p, ref unit);
+            }
+            public static double Parse(string p, ref Length.Units unit)
+            {
+                return Length.ParseDistanceMeters(p, ref unit);
+            }
+
+            public static String Label
+            {
+                get
+                {
+                    return Length.Label(Unit);
+                }
+            }
+            public static String LabelAbbr
+            {
+                get
+                {
+                    return Length.LabelAbbr(Unit);
+                }
+            }
+            public static String LabelAbbr2
+            {
+                get
+                {
+                    return encPar(LabelAbbr);
+                }
+            }
+            public static String LabelAxis
+            {
+                get
+                {
+                    return CommonResources.Text.LabelElevation + LabelAbbr2;
+                }
+            }
+            public static string LabelAbbrAct(IActivity activity)
+            {
+                return Length.LabelAbbr(GetUnit(activity));
+            }
+            public static string LabelAbbrAct2(IActivity activity)
+            {
+                return encPar(LabelAbbrAct(activity));
+            }
+        }
+
+        /*********************************************************************************/
         public static class Distance
         {
             //Some lists uses unit when storing user entered data, why this is public
@@ -777,6 +808,7 @@ namespace GpsRunningPlugin.Util
             public static int DefaultDecimalPrecision { get { return Length.DefaultDecimalPrecision(Unit); } }
             private static string DefFmt { get { return defFmt(Unit); } }
             private static string defFmt(Length.Units unit) { return "F" + Length.DefaultDecimalPrecision(unit); }
+
             public static Length.Units GetUnit(IActivity activity)
             {
                 Length.Units du;
@@ -831,6 +863,35 @@ namespace GpsRunningPlugin.Util
                 return ConvertFrom(p, activity).ToString((fmt)) + str;
             }
 
+            public static Convert ConvertFromDelegate(IActivity activity)
+            {
+                Length.Units unit = GetUnit(activity);
+                return ConvertFromDelegate(activity, unit);
+            }
+            public static Convert ConvertFromDelegate(IActivity activity, Length.Units unit)
+            {
+                if (unit == Length.Units.Meter/* Unit*/)
+                {
+                    return new Convert(ConvertNone);
+                }
+                else if (unit == Length.Units.Kilometer)
+                {
+                    return new Convert(Convert_MToKm);
+                }
+                else if (unit == Length.Units.Mile)
+                {
+                    return new Convert(Convert_MToMi);
+                }
+                else if (unit == Length.Units.Foot)
+                {
+                    return new Convert(Convert_MToFt);
+                }
+                else
+                {
+                    return new Convert(ConvertFrom);
+                }
+            }
+
             //From SI unit (ST internal) to display
             public static double ConvertFrom(double p)
             {
@@ -843,6 +904,18 @@ namespace GpsRunningPlugin.Util
             public static double ConvertFrom(double value, IActivity activity)
             {
                 return ConvertFrom(value, GetUnit(activity));
+            }
+            private static double Convert_MToKm(double value, IActivity activity)
+            {
+                return value / 1000;
+            }
+            private static double Convert_MToMi(double value, IActivity activity)
+            {
+                return value / 1609.344;
+            }
+            private static double Convert_MToFt(double value, IActivity activity)
+            {
+                return value / 0.3048;
             }
 
             public static double ConvertTo(double value, Length.Units du)
