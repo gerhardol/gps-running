@@ -101,7 +101,7 @@ namespace PerformancePredictor.Export
         /// <param name="parts"></param>
         /// <param name="progressBar"></param>
         /// <returns></returns>
-        public static IList<IList<Object>> getResults(IList<IActivity> activities, IList<double> times, IList<double> distances, IList<double> predictDistances, System.Windows.Forms.ProgressBar progressBar)
+        public static IList<IList<Object>> getResults(IList<IActivity> activities, IList<double> times, IList<double> distances, IList<double> predictDistances, IList<double> old_times2, System.Windows.Forms.ProgressBar progressBar)
         {
             IList<IList<Object>> objects = new List<IList<Object>>();
             if (activities != null && activities.Count > 0 &&
@@ -113,6 +113,7 @@ namespace PerformancePredictor.Export
                     IActivity activity = activities[i];
                     double old_time = times[i];
                     double old_dist = distances[i];
+                    double old_time2 = old_times2[i];
 
                     IList<Object> s = new List<Object>();
                     double vo2max = Predict.getVo2max(old_time);
@@ -122,8 +123,16 @@ namespace PerformancePredictor.Export
 
                     foreach (double predDist in predictDistances)
                     {
-                        double new_time = (Predict.Predictor(Settings.Model))(predDist, old_dist, TimeSpan.FromSeconds(old_time));
-                        double utopia_time = ExtrapolateView.GetIdeal(activity, predDist, old_dist, old_time);
+                        double new_time = double.NaN;
+                        if (!double.IsNaN(old_time))
+                        {
+                            new_time = (Predict.Predictor(Settings.Model))(predDist, old_dist, TimeSpan.FromSeconds(old_time));
+                        }
+                        double utopia_time = double.NaN;
+                        if (!double.IsNaN(old_time2))
+                        {
+                            utopia_time = ExtrapolateView.GetIdeal(activity, predDist, old_dist, old_time2);
+                        }
                         s.Add(predDist);
                         s.Add(new_time);
                         s.Add(utopia_time);
