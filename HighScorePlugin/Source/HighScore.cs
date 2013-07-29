@@ -79,7 +79,7 @@ namespace GpsRunningPlugin.Source
         private static SortedList<Result, Result>[] calculateActivities2(IList<IActivity> activities, IList<IValueRangeSeries<DateTime>> pauses, IList<Goal> goals, System.Windows.Forms.ProgressBar progressBar)
         {
             SortedList<Result, Result>[] results = new SortedList<Result, Result>[goals.Count];
-            DateTime s = DateTime.Now;
+            //DateTime s = DateTime.Now;
             if (activities != null && activities.Count > 0)
             {
                 if (progressBar != null && progressBar.Maximum < progressBar.Value + activities.Count)
