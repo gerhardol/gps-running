@@ -157,7 +157,7 @@ namespace TrailsPlugin.Data
             {
                 if (Activity == null)
                 {
-                    return DateTime.Now;
+                    return DateTime.UtcNow;
                 }
                 return Activity.StartTime;
             }
