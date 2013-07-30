@@ -1,15 +1,16 @@
 #summary Developers Info
-#labels
+
+<wiki:toc max_depth="3" />
 
 This is not a general !SportTracks plugin description. See for instance [http://www.zonefivesoftware.com/SportTracks/Forums/viewtopic.php?t=4828 here] for more information about developing ST plugins.
 
-Some specific notes for gps-running plugins:
+Some specific notes for gps-running plugins, as well as many other plugins gerhard is involved in. The plugins shares code in addition to the project setup.
 
 ===Getting Started===
 The ST plugin API is described on the !SportTracks site. Please sign up to the Developer Network before working with ST plugins (legal requirement). 
 http://www.zonefivesoftware.com/sporttracks/developers/
 
-MS Visual Studio Express 2010 is used, but at the time of conversion, VSE 2008 would happily work with the projects. The solution file can be considered as a template only (use your own copy) and is in VSE 2008 format.
+MS Visual Studio Express 2012 is used, but at the time of conversion, VSE 2010, 2008 would happily work with the projects. The solution file can be considered as a template only (use your own copy) and is in VSE 2012 format.
  
 This project is adapted to be used without user changes. To achieve this in a simple way, the common paths etc are separated to a common file:
   # Program paths etc uses environment variables
@@ -28,15 +29,16 @@ Note the following issues with the setup:
   
 This solution was contributed by old_man_biking on the !SportTracks forum.
 
-===SportTracks 2===
-Until December 2010, the plugin supported both ST2 and ST3. Where there was a difference, the code was compiled with "#ifdef ST_2_1". Many new functions only works with ST2, but the code base is the same.
-The ST2 specific code may be removed. To continue the ST2 builds, use the last ST2 commit or renable the ST2 build:
+===!SportTracks 2===
+Until December 2010, the plugin supported both ST2 and ST3. Where there was a difference, the code was compiled with "#ifdef ST_2_1". Many new functions only works with ST3, but the code base is the same.
+The ST2 specific code may be removed. To continue the ST2 builds, use the last ST2 commit or reenable the ST2 build:
  * ST references in Common/Common-References.csproj
  * Re-add ST2 configurations in the .sln file
 
 ===Install packages===
 The build event copies the built files to "%ALLUSERSPROFILE%\!ZoneFiveSoftware\!SportTracks\2.0\Plugins\Update" (similar for ST3) automatically, so you can have ST running while building, just restart when you want to use the new binaries.
-The build event also creates .st2plugin packages. This should be automatic if you have 7-zip installed in the standard location, otherwise edit the paths.
+
+The build event also creates .stplugin packages. This should be automatic if you have 7-zip installed in the standard location, otherwise edit the paths. If you have Cygwin with perl installed, the version number is set on the install package too.
 
 ===Translations===
 The master copy for translations is done in a Spreadsheet, the .resx files are generated from the source. The master Resources.resx and !StringResources.resx files must be updated correctly for each plugin, the i18.pl script described below updates the translations with the info from the spread sheet.
@@ -70,6 +72,7 @@ Another way to express this: The English strings in the second column is not pus
    * Show where there are .resx files but no translation
    * List number of matching and missing strings when writing the .resx
    * See the strings missing, tab separated so the output can be pasted to a spreadsheet. Run with verbose: {{{$ env VERBOSE=10 util/i18n.pl . . .}}}
+
 ===Util===
 Some code (and part of the translation) is shared between the plugins. The source files (no libraries)  is put under Common/. 
 All plugins share the same namespace to get over limitations with a previous setup. To share the .resx files with separate name spaces, something like the following is needed to adjust namespace in the resx. (Another omb tip.)
@@ -78,4 +81,15 @@ All plugins share the same namespace to get over limitations with a previous set
 Previous setup: Shared code was not in a separate library but in duplicated code (only the namespace differed originally). A simple script is used to copy and replace namespace. (There is a problem making this to a library, as there is a reference to the application.) A simple shell script (run in Cygwin) that copies .cs and !StringResources.resx from a "master" plugin to the others and updates namespace is available: 
 {{{$ util/cputil.sh PerformancePredictor}}}
 
+===Profiling===
+The project has some "built-in" support for profiling. This can be achieved with other means.
+For the hobbyists that do not want to minimize costs, the profiler at http://www.eqatec.com/ is free with a limitation of 3 traced files. (I have seen other that offers trials.)
+
+The project configuration "Profile" is similar to "Release" except that the build script copies the plugin files as well as the SportTracks executables to the plugin "Installed" catalog.
+Changes done:
+http://code.google.com/p/trails/source/detail?r=635
+
+After that, point the profiler to the files in that folder (including SportTracks.exe). Select the ST.exe and primary plugin .dll files, build and run in the profiler, then analyze the bottlenecks.
+
 ===Problems===
+???
