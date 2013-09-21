@@ -259,4 +259,7 @@
   <data name="UI_Activity_List_URSelect" xml:space="preserve">
     <value>Lägg till liknande aktiviteter med Unique Routes från referens aktivitet{0}</value>
   </data>
+  <data name="Menu_ShowToolBar" xml:space="preserve">
+    <value>Visa verktygsfält</value>
+  </data>
 </root>

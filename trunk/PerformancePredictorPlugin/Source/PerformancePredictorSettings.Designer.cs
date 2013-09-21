@@ -58,7 +58,7 @@ namespace GpsRunningPlugin.Source
             this.label2 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
-            this.utopiaGroupBox = new System.Windows.Forms.GroupBox();
+            this.idealGroupBox = new System.Windows.Forms.GroupBox();
             this.bmiBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.bmiLabel = new System.Windows.Forms.Label();
             this.shoeBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
@@ -66,7 +66,7 @@ namespace GpsRunningPlugin.Source
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            this.utopiaGroupBox.SuspendLayout();
+            this.idealGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // linkLabel1
@@ -247,18 +247,18 @@ namespace GpsRunningPlugin.Source
             this.label1.TabIndex = 0;
             this.label1.Text = "<Use";
             // 
-            // utopiaGroupBox
+            // idealGroupBox
             // 
-            this.utopiaGroupBox.Controls.Add(this.bmiBox);
-            this.utopiaGroupBox.Controls.Add(this.bmiLabel);
-            this.utopiaGroupBox.Controls.Add(this.shoeBox);
-            this.utopiaGroupBox.Controls.Add(this.shoeLabel);
-            this.utopiaGroupBox.Location = new System.Drawing.Point(6, 267);
-            this.utopiaGroupBox.Name = "utopiaGroupBox";
-            this.utopiaGroupBox.Size = new System.Drawing.Size(326, 71);
-            this.utopiaGroupBox.TabIndex = 4;
-            this.utopiaGroupBox.TabStop = false;
-            this.utopiaGroupBox.Text = "<utopia";
+            this.idealGroupBox.Controls.Add(this.bmiBox);
+            this.idealGroupBox.Controls.Add(this.bmiLabel);
+            this.idealGroupBox.Controls.Add(this.shoeBox);
+            this.idealGroupBox.Controls.Add(this.shoeLabel);
+            this.idealGroupBox.Location = new System.Drawing.Point(6, 267);
+            this.idealGroupBox.Name = "idealGroupBox";
+            this.idealGroupBox.Size = new System.Drawing.Size(326, 71);
+            this.idealGroupBox.TabIndex = 4;
+            this.idealGroupBox.TabStop = false;
+            this.idealGroupBox.Text = "<ideal";
             // 
             // bmiBox
             // 
@@ -322,7 +322,7 @@ namespace GpsRunningPlugin.Source
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.utopiaGroupBox);
+            this.Controls.Add(this.idealGroupBox);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.resetSettings);
@@ -333,8 +333,8 @@ namespace GpsRunningPlugin.Source
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            this.utopiaGroupBox.ResumeLayout(false);
-            this.utopiaGroupBox.PerformLayout();
+            this.idealGroupBox.ResumeLayout(false);
+            this.idealGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -354,7 +354,7 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.GroupBox utopiaGroupBox;
+        private System.Windows.Forms.GroupBox idealGroupBox;
         private ZoneFiveSoftware.Common.Visuals.TextBox bmiBox;
         private System.Windows.Forms.Label bmiLabel;
         private ZoneFiveSoftware.Common.Visuals.TextBox shoeBox;

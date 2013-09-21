@@ -128,14 +128,14 @@ namespace PerformancePredictor.Export
                         {
                             new_time = (Predict.Predictor(Settings.Model))(predDist, old_dist, TimeSpan.FromSeconds(old_time));
                         }
-                        double utopia_time = double.NaN;
+                        double ideal_time = double.NaN;
                         if (!double.IsNaN(old_time2))
                         {
-                            utopia_time = ExtrapolateView.GetIdeal(activity, predDist, old_dist, old_time2);
+                            ideal_time = ExtrapolateView.GetIdeal(activity, predDist, old_dist, old_time2);
                         }
                         s.Add(predDist);
                         s.Add(new_time);
-                        s.Add(utopia_time);
+                        s.Add(ideal_time);
                     }
                     objects.Add(s);
                 }

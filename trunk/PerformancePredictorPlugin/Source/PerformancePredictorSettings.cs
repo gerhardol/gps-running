@@ -68,9 +68,9 @@ namespace GpsRunningPlugin.Source
             groupBox2.Text = Resources.HighScorePluginIntegration;
             label1.Text = StringResources.Use;
             label2.Text = Resources.ProcDistUsed;
-            this.utopiaGroupBox.Text = Resources.UtopiaImpact;
+            this.idealGroupBox.Text = Resources.IdealTab;
             this.bmiLabel.Text = "BMI";
-            this.shoeLabel.Text = Resources.ShoeImpact;
+            this.shoeLabel.Text = Resources.ShoeTab;
         }
 
         private void RefreshData()

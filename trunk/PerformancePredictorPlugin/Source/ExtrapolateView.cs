@@ -278,9 +278,9 @@ namespace GpsRunningPlugin.Source
 
             this.temperatureTab.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelTemperature;
             this.weightTab.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelWeight;
-            this.shoeTab.Text = Resources.ShoeImpact;
+            this.shoeTab.Text = Resources.ShoeTab;
             this.ageTab.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelEquipmentAge;
-            this.utopiaTab.Text = Resources.UtopiaImpact;
+            this.idealTab.Text = Resources.IdealTab;
 
             //temperatureLabel2.Text
             temperatureLabel2.Text = String.Format(Resources.TemperatureNotification, 
@@ -290,19 +290,19 @@ namespace GpsRunningPlugin.Source
                 UnitUtil.Distance.ToString(1000, "u"));
             shoeLabel2.Text = String.Format(Resources.ShoeNotification);
             ageLabel2.Text = String.Format(Resources.AgeNotification);
-            utopiaLabel2.Text = String.Format(Resources.UtopiaNotification);
+            idealLabel2.Text = String.Format(Resources.IdealNotification);
 
             copyTableMenuItem.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
 
-            utopiaActualLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelActivity;
-            utopiaIdealLabel.Text = "Ideal"; //TBD
-            utopiaTimeLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelTime;
-            utopiaDistLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelDistance;
-            utopiaPaceLabel.Text = UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace);
-            utopiaTempLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelTemperature;
-            utopiaWeightLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelWeight;
-            utopiaShoeLabel.Text = Resources.ShoeImpact;
-            utopiaAgeLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelEquipmentAge;
+            idealActualLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelActivity;
+            idealIdealLabel.Text = "Ideal"; //TBD
+            idealTimeLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelTime;
+            idealDistLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelDistance;
+            idealPaceLabel.Text = UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace);
+            idealTempLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelTemperature;
+            idealWeightLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelWeight;
+            idealShoeLabel.Text = Resources.ShoeTab;
+            idealAgeLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelEquipmentAge;
         }
 
         private bool m_showPage = false;
@@ -371,7 +371,7 @@ namespace GpsRunningPlugin.Source
                 setWeight();
                 setShoe();
                 setAge();
-                setUtopia();
+                setIdeal();
             }
         }
 
@@ -552,9 +552,9 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        private void setUtopia()
+        private void setIdeal()
         {
-            utopiaLabel2.Visible = true;
+            idealLabel2.Visible = true;
             double idealAgeTime = PredictWavaTime.IdealTime((float)m_ppcontrol.Distance, this.m_idealAge);
             if (this.m_oldDistance < 0)
             {
@@ -567,7 +567,7 @@ namespace GpsRunningPlugin.Source
             ideal *= TemperatureResult.getTemperatureFactor(this.m_idealTemp) / TemperatureResult.getTemperatureFactor((float)this.m_actualTemp);
             ideal = PredictWavaTime.WavaPredict((float)m_ppcontrol.Distance, this.m_oldDistance, ideal, this.m_idealAge, (float)this.m_actualAge);
             double idealP = idealAgeTime / ideal;
-            utopiaLabel.Text = idealP.ToString("P1")+" of world class";  //TBD
+            idealLabel.Text = idealP.ToString("P1")+" of world class";  //TBD
             double idealDistance = m_ppcontrol.Distance;
             if (this.distBox2.Text != "")
             {
@@ -648,7 +648,7 @@ namespace GpsRunningPlugin.Source
 
         void distBox2_LostFocus(object sender, System.EventArgs e)
         {
-            this.setUtopia();
+            this.setIdeal();
         }
 
         void paceBox_LostFocus(object sender, System.EventArgs e)
@@ -671,56 +671,56 @@ namespace GpsRunningPlugin.Source
         {
             this.m_actualTemp = (float)UnitUtil.Temperature.Parse(this.temperatureBox.Text);
             this.setTemperature();
-            this.setUtopia();
+            this.setIdeal();
         }
 
         void weightBox_LostFocus(object sender, System.EventArgs e)
         {
             this.m_actualWeight = (float)UnitUtil.Weight.Parse(this.weightBox.Text);
             this.setWeight();
-            this.setUtopia();
+            this.setIdeal();
         }
 
         void shoeBox_LostFocus(object sender, System.EventArgs e)
         {
             this.m_actualShoe = (float)UnitUtil.Weight.Parse(this.shoeBox.Text, ShoeLabelProvider.shoeUnit);
             this.setShoe();
-            this.setUtopia();
+            this.setIdeal();
         }
 
         void ageBox_LostFocus(object sender, System.EventArgs e)
         {
             this.m_actualAge = float.Parse(this.ageBox.Text, NumberFormatInfo.InvariantInfo);
             this.setAge();
-            this.setUtopia();
+            this.setIdeal();
         }
 
         void temperatureBox2_LostFocus(object sender, System.EventArgs e)
         {
             this.m_idealTemp = (float)UnitUtil.Temperature.Parse(this.temperatureBox2.Text);
             this.setTemperature();
-            this.setUtopia();
+            this.setIdeal();
         }
 
         void weightBox2_LostFocus(object sender, System.EventArgs e)
         {
             this.m_idealWeight = (float)UnitUtil.Weight.Parse(this.weightBox2.Text);
             this.setWeight();
-            this.setUtopia();
+            this.setIdeal();
         }
 
         void shoeBox2_LostFocus(object sender, System.EventArgs e)
         {
             this.m_idealShoe = (float)UnitUtil.Weight.Parse(this.shoeBox2.Text, ShoeLabelProvider.shoeUnit);
             this.setShoe();
-            this.setUtopia();
+            this.setIdeal();
         }
 
         void ageBox2_LostFocus(object sender, System.EventArgs e)
         {
             this.m_idealAge = float.Parse(this.ageBox2.Text, NumberFormatInfo.InvariantInfo);
             this.setAge();
-            this.setUtopia();
+            this.setIdeal();
         }
 
         //Static method for "ideal" calculation

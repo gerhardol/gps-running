@@ -292,16 +292,11 @@
   <data name="HighScoreRequired" xml:space="preserve">
     <value>Predicting using several activities requires High Score plugin</value>
   </data>
-  <data name="TrailPointsControlLayer" xml:space="preserve">
-    <value>Overlay Map Overlay</value>
-    <comment>still unused (requires ST update)</comment>
-  </data>
   <data name="Extrapolate" xml:space="preserve">
     <value>Extrapolate</value>
   </data>
   <data name="AgeNotification" xml:space="preserve">
     <value>Affect from age tables</value>
-    <comment>TBD</comment>
   </data>
   <data name="AgeProjectedImpact" xml:space="preserve">
     <value>Projected impact of age on</value>
@@ -309,7 +304,7 @@
   <data name="AgeUndefined" xml:space="preserve">
     <value>Please go to the athlete view and set your date of birth to see the results.</value>
   </data>
-  <data name="ShoeImpact" xml:space="preserve">
+  <data name="ShoeTab" xml:space="preserve">
     <value>Shoe</value>
   </data>
   <data name="ShoeNotification" xml:space="preserve">
@@ -321,10 +316,10 @@
   <data name="ShoeUndefined" xml:space="preserve">
     <value>Shoe weight is not guessed from equipment</value>
   </data>
-  <data name="UtopiaImpact" xml:space="preserve">
-    <value>Utopia</value>
+  <data name="IdealTab" xml:space="preserve">
+    <value>Ideal</value>
   </data>
-  <data name="UtopiaNotification" xml:space="preserve">
+  <data name="IdealNotification" xml:space="preserve">
     <value>What could have been...</value>
   </data>
 </root>
