@@ -5,6 +5,14 @@
 
 More or less official beta releases are available in the Downloads section. See each plugin for detailed description of functions.
 
+2.0.410 2013-09-22 (Plugin Catalog)
+
+PerformancePredictor:
+ * Utopia tab renamed to Ideal
+ * Integration with Trails: Ideral prediction for trails
+ * Swedish translation update.
+ * Save Selected tab (Prediction, Training or Extrapolation)
+
 2.0.395 2013-06-22 (Plugin Catalog)
 
 PerformancePredictor:

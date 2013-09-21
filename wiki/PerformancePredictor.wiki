@@ -50,10 +50,11 @@ The default sho weight is derived from the activity Equipment, the first device 
 ===Age===
 Extrapolate the result to other ages, to see how you could have performed as younger or may perform as older. The calculation uses the WAVA tables that also can be used for prediction.
 
-===Utopia===
+===Ideal===
 If the ideal conditions had occurred in your prime age... Your true personal best, when there is no other explanation.
 
-Something that is not included is Hills. There are some estimations in Trails Plugin though. Another is Wind. Some estimations can be done using Weather and Power plugins.
+Something that is not included is Hills. This is included in Trails plugin, using Performance prediction integration.
+Another factor is Wind. Some estimations can be done using Weather and Power plugins.
 
 Note: It is possible to change both the actual ("activity") and ideal ("optimized") values. These values are then used for prediction, traing and extrapolation.
 
