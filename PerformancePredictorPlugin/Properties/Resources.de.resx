@@ -58,7 +58,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="AddDistance" xml:space="preserve">
     <value>Entfernung hinzufügen</value>
   </data>
@@ -129,7 +129,7 @@ wurde angepasst, um die richtige Intensität zu erhalten.</value>
   <data name="ProcDistUsed" xml:space="preserve">
     <value>% der Distanz, um Zeit vorherzusagen</value>
   </data>
-  <data name="ProjectedTemperatureImpact" xml:space="preserve">
+  <data name="TemperatureProjectedImpact" xml:space="preserve">
     <comment>ppx</comment>
     <value>Prognostizierte negative Auswirkungen von hohen Temperaturen auf</value>
   </data>
@@ -139,15 +139,12 @@ wurde angepasst, um die richtige Intensität zu erhalten.</value>
   <data name="RemoveDistance" xml:space="preserve">
     <value>Entfernung löschen</value>
   </data>
-  <data name="SetWeight" xml:space="preserve">
+  <data name="WeightUndefined" xml:space="preserve">
     <value>Bitte wechseln Sie zur Sportler Ansicht und ergänzen dort Ihr Gewicht, um das Ergebnis zu sehen.</value>
   </data>
   <data name="StartOfPart" xml:space="preserve">
     <comment>ppx</comment>
     <value>Start von Teil</value>
-  </data>
-  <data name="TemperatureImpact" xml:space="preserve">
-    <value>Auswirkung der Temperatur</value>
   </data>
   <data name="TemperatureNotification" xml:space="preserve">
     <comment>ppx</comment>
@@ -183,9 +180,6 @@ wurde angepasst, um die richtige Intensität zu erhalten.</value>
   <data name="Webpage" xml:space="preserve">
     <value>Performance Predictor Plugin-Webseite</value>
   </data>
-  <data name="WeighImpact" xml:space="preserve">
-    <value>Auswirkung des Gewichts</value>
-  </data>
   <data name="WeightNotification" xml:space="preserve">
     <value>Geschätzte Zeiten und Tempos sind +/- {0} pro {1}.</value>
   </data>
@@ -215,7 +209,7 @@ wurde angepasst, um die richtige Intensität zu erhalten.</value>
     <comment>ppx</comment>
     <value>Prognostiziertes Gewicht</value>
   </data>
-  <data name="ProjectedWeightImpact" xml:space="preserve">
+  <data name="WeightProjectedImpact" xml:space="preserve">
     <comment>ppx</comment>
     <value>Prognostizierte Auswirkung des Gewichts auf</value>
   </data>

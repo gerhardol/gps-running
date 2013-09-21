@@ -69,19 +69,19 @@ namespace GpsRunningPlugin.Source
             this.ageLabel2 = new System.Windows.Forms.Label();
             this.ageLabel = new System.Windows.Forms.Label();
             this.ageList = new ZoneFiveSoftware.Common.Visuals.TreeList();
-            this.utopiaTab = new System.Windows.Forms.TabPage();
-            this.utopiaTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.utopiaLabel2 = new System.Windows.Forms.Label();
-            this.utopiaLabel = new System.Windows.Forms.Label();
-            this.utopiaActualLabel = new System.Windows.Forms.Label();
-            this.utopiaIdealLabel = new System.Windows.Forms.Label();
-            this.utopiaTimeLabel = new System.Windows.Forms.Label();
-            this.utopiaDistLabel = new System.Windows.Forms.Label();
-            this.utopiaPaceLabel = new System.Windows.Forms.Label();
-            this.utopiaTempLabel = new System.Windows.Forms.Label();
-            this.utopiaWeightLabel = new System.Windows.Forms.Label();
-            this.utopiaShoeLabel = new System.Windows.Forms.Label();
-            this.utopiaAgeLabel = new System.Windows.Forms.Label();
+            this.idealTab = new System.Windows.Forms.TabPage();
+            this.idealTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.idealLabel2 = new System.Windows.Forms.Label();
+            this.idealLabel = new System.Windows.Forms.Label();
+            this.idealActualLabel = new System.Windows.Forms.Label();
+            this.idealIdealLabel = new System.Windows.Forms.Label();
+            this.idealTimeLabel = new System.Windows.Forms.Label();
+            this.idealDistLabel = new System.Windows.Forms.Label();
+            this.idealPaceLabel = new System.Windows.Forms.Label();
+            this.idealTempLabel = new System.Windows.Forms.Label();
+            this.idealWeightLabel = new System.Windows.Forms.Label();
+            this.idealShoeLabel = new System.Windows.Forms.Label();
+            this.idealAgeLabel = new System.Windows.Forms.Label();
             this.timeBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.timeBox2 = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.distBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
@@ -108,8 +108,8 @@ namespace GpsRunningPlugin.Source
             this.shoeTableLayoutPanel.SuspendLayout();
             this.ageTab.SuspendLayout();
             this.ageTableLayoutPanel.SuspendLayout();
-            this.utopiaTab.SuspendLayout();
-            this.utopiaTableLayoutPanel.SuspendLayout();
+            this.idealTab.SuspendLayout();
+            this.idealTableLayoutPanel.SuspendLayout();
             this.listMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -131,7 +131,7 @@ namespace GpsRunningPlugin.Source
             this.tabControl1.Controls.Add(this.weightTab);
             this.tabControl1.Controls.Add(this.shoeTab);
             this.tabControl1.Controls.Add(this.ageTab);
-            this.tabControl1.Controls.Add(this.utopiaTab);
+            this.tabControl1.Controls.Add(this.idealTab);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.tabControl1.HotTrack = true;
@@ -452,168 +452,168 @@ namespace GpsRunningPlugin.Source
             this.ageList.Size = new System.Drawing.Size(428, 162);
             this.ageList.TabIndex = 8;
             // 
-            // utopiaTab
+            // idealTab
             // 
-            this.utopiaTab.AutoScroll = true;
-            this.utopiaTab.Controls.Add(this.utopiaTableLayoutPanel);
-            this.utopiaTab.Location = new System.Drawing.Point(4, 22);
-            this.utopiaTab.Name = "utopiaTab";
-            this.utopiaTab.Size = new System.Drawing.Size(434, 211);
-            this.utopiaTab.TabIndex = 4;
-            this.utopiaTab.Text = "<utopia impact";
-            this.utopiaTab.UseVisualStyleBackColor = true;
+            this.idealTab.AutoScroll = true;
+            this.idealTab.Controls.Add(this.idealTableLayoutPanel);
+            this.idealTab.Location = new System.Drawing.Point(4, 22);
+            this.idealTab.Name = "idealTab";
+            this.idealTab.Size = new System.Drawing.Size(434, 211);
+            this.idealTab.TabIndex = 4;
+            this.idealTab.Text = "<ideal impact";
+            this.idealTab.UseVisualStyleBackColor = true;
             // 
-            // utopiaTableLayoutPanel
+            // idealTableLayoutPanel
             // 
-            this.utopiaTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.utopiaTableLayoutPanel.ColumnCount = 4;
-            this.utopiaTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.utopiaTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.utopiaTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.utopiaTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaLabel2, 0, 0);
-            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaLabel, 0, 1);
-            this.utopiaTableLayoutPanel.SetColumnSpan(this.utopiaLabel, 4);
-            this.utopiaTableLayoutPanel.SetColumnSpan(this.utopiaLabel2, 4);
-            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaActualLabel, 1, 2);
-            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaIdealLabel, 2, 2);
-            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaTimeLabel, 0, 3);
-            this.utopiaTableLayoutPanel.Controls.Add(this.timeBox, 1, 3);
-            this.utopiaTableLayoutPanel.Controls.Add(this.timeBox2, 2, 3);
-            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaDistLabel, 0, 4);
-            this.utopiaTableLayoutPanel.Controls.Add(this.distBox, 1, 4);
-            this.utopiaTableLayoutPanel.Controls.Add(this.distBox2, 2, 4);
-            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaPaceLabel, 0, 5);
-            this.utopiaTableLayoutPanel.Controls.Add(this.paceBox, 1, 5);
-            this.utopiaTableLayoutPanel.Controls.Add(this.paceBox2, 2, 5);
-            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaTempLabel, 0, 6);
-            this.utopiaTableLayoutPanel.Controls.Add(this.temperatureBox, 1, 6);
-            this.utopiaTableLayoutPanel.Controls.Add(this.temperatureBox2, 2, 6);
-            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaWeightLabel, 0, 7);
-            this.utopiaTableLayoutPanel.Controls.Add(this.weightBox, 1, 7);
-            this.utopiaTableLayoutPanel.Controls.Add(this.weightBox2, 2, 7);
-            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaShoeLabel, 0, 8);
-            this.utopiaTableLayoutPanel.Controls.Add(this.shoeBox, 1, 8);
-            this.utopiaTableLayoutPanel.Controls.Add(this.shoeBox2, 2, 8);
-            this.utopiaTableLayoutPanel.Controls.Add(this.utopiaAgeLabel, 0, 9);
-            this.utopiaTableLayoutPanel.Controls.Add(this.ageBox, 1, 9);
-            this.utopiaTableLayoutPanel.Controls.Add(this.ageBox2, 2, 9);
-            this.utopiaTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.utopiaTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
-            this.utopiaTableLayoutPanel.Name = "utopiaTableLayoutPanel";
-            this.utopiaTableLayoutPanel.RowCount = 11;
-            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
-            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
-            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
-            this.utopiaTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.utopiaTableLayoutPanel.Size = new System.Drawing.Size(434, 211);
-            this.utopiaTableLayoutPanel.TabIndex = 0;
+            this.idealTableLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.idealTableLayoutPanel.ColumnCount = 4;
+            this.idealTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.idealTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.idealTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.idealTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.idealTableLayoutPanel.Controls.Add(this.idealLabel2, 0, 0);
+            this.idealTableLayoutPanel.Controls.Add(this.idealLabel, 0, 1);
+            this.idealTableLayoutPanel.SetColumnSpan(this.idealLabel, 4);
+            this.idealTableLayoutPanel.SetColumnSpan(this.idealLabel2, 4);
+            this.idealTableLayoutPanel.Controls.Add(this.idealActualLabel, 1, 2);
+            this.idealTableLayoutPanel.Controls.Add(this.idealIdealLabel, 2, 2);
+            this.idealTableLayoutPanel.Controls.Add(this.idealTimeLabel, 0, 3);
+            this.idealTableLayoutPanel.Controls.Add(this.timeBox, 1, 3);
+            this.idealTableLayoutPanel.Controls.Add(this.timeBox2, 2, 3);
+            this.idealTableLayoutPanel.Controls.Add(this.idealDistLabel, 0, 4);
+            this.idealTableLayoutPanel.Controls.Add(this.distBox, 1, 4);
+            this.idealTableLayoutPanel.Controls.Add(this.distBox2, 2, 4);
+            this.idealTableLayoutPanel.Controls.Add(this.idealPaceLabel, 0, 5);
+            this.idealTableLayoutPanel.Controls.Add(this.paceBox, 1, 5);
+            this.idealTableLayoutPanel.Controls.Add(this.paceBox2, 2, 5);
+            this.idealTableLayoutPanel.Controls.Add(this.idealTempLabel, 0, 6);
+            this.idealTableLayoutPanel.Controls.Add(this.temperatureBox, 1, 6);
+            this.idealTableLayoutPanel.Controls.Add(this.temperatureBox2, 2, 6);
+            this.idealTableLayoutPanel.Controls.Add(this.idealWeightLabel, 0, 7);
+            this.idealTableLayoutPanel.Controls.Add(this.weightBox, 1, 7);
+            this.idealTableLayoutPanel.Controls.Add(this.weightBox2, 2, 7);
+            this.idealTableLayoutPanel.Controls.Add(this.idealShoeLabel, 0, 8);
+            this.idealTableLayoutPanel.Controls.Add(this.shoeBox, 1, 8);
+            this.idealTableLayoutPanel.Controls.Add(this.shoeBox2, 2, 8);
+            this.idealTableLayoutPanel.Controls.Add(this.idealAgeLabel, 0, 9);
+            this.idealTableLayoutPanel.Controls.Add(this.ageBox, 1, 9);
+            this.idealTableLayoutPanel.Controls.Add(this.ageBox2, 2, 9);
+            this.idealTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.idealTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.idealTableLayoutPanel.Name = "idealTableLayoutPanel";
+            this.idealTableLayoutPanel.RowCount = 11;
+            this.idealTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.idealTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.idealTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.idealTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.idealTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.idealTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.idealTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.idealTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.idealTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.idealTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 21F));
+            this.idealTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.idealTableLayoutPanel.Size = new System.Drawing.Size(434, 211);
+            this.idealTableLayoutPanel.TabIndex = 0;
             // 
-            // utopiaLabel2
+            // idealLabel2
             // 
-            this.utopiaLabel2.AutoSize = true;
-            this.utopiaLabel2.Location = new System.Drawing.Point(3, 0);
-            this.utopiaLabel2.Name = "utopiaLabel2";
-            this.utopiaLabel2.Size = new System.Drawing.Size(265, 13);
-            this.utopiaLabel2.TabIndex = 7;
-            this.utopiaLabel2.Text = "<When everything is ideal...";
+            this.idealLabel2.AutoSize = true;
+            this.idealLabel2.Location = new System.Drawing.Point(3, 0);
+            this.idealLabel2.Name = "idealLabel2";
+            this.idealLabel2.Size = new System.Drawing.Size(265, 13);
+            this.idealLabel2.TabIndex = 7;
+            this.idealLabel2.Text = "<When everything is ideal...";
             // 
-            // utopiaLabel
+            // idealLabel
             // 
-            this.utopiaLabel.AutoSize = true;
-            this.utopiaLabel.Location = new System.Drawing.Point(3, 30);
-            this.utopiaLabel.Name = "utopiaLabel";
-            this.utopiaLabel.Size = new System.Drawing.Size(98, 13);
-            this.utopiaLabel.TabIndex = 6;
-            this.utopiaLabel.Text = "<estimated utopia>";
+            this.idealLabel.AutoSize = true;
+            this.idealLabel.Location = new System.Drawing.Point(3, 30);
+            this.idealLabel.Name = "idealLabel";
+            this.idealLabel.Size = new System.Drawing.Size(98, 13);
+            this.idealLabel.TabIndex = 6;
+            this.idealLabel.Text = "<estimated ideal>";
             // 
-            // utopiaActualLabel
+            // idealActualLabel
             // 
-            this.utopiaActualLabel.AutoSize = true;
-            this.utopiaActualLabel.Location = new System.Drawing.Point(3, 30);
-            this.utopiaActualLabel.Name = "utopiaActualLabel";
-            this.utopiaActualLabel.Size = new System.Drawing.Size(98, 13);
-            this.utopiaActualLabel.TabIndex = 6;
-            this.utopiaActualLabel.Text = "<Actual";
+            this.idealActualLabel.AutoSize = true;
+            this.idealActualLabel.Location = new System.Drawing.Point(3, 30);
+            this.idealActualLabel.Name = "idealActualLabel";
+            this.idealActualLabel.Size = new System.Drawing.Size(98, 13);
+            this.idealActualLabel.TabIndex = 6;
+            this.idealActualLabel.Text = "<Actual";
             // 
-            // utopiaIdealLabel
+            // idealIdealLabel
             // 
-            this.utopiaIdealLabel.AutoSize = true;
-            this.utopiaIdealLabel.Location = new System.Drawing.Point(3, 30);
-            this.utopiaIdealLabel.Name = "utopiaIdealLabel";
-            this.utopiaIdealLabel.Size = new System.Drawing.Size(98, 13);
-            this.utopiaIdealLabel.TabIndex = 6;
-            this.utopiaIdealLabel.Text = "<Ideal";
+            this.idealIdealLabel.AutoSize = true;
+            this.idealIdealLabel.Location = new System.Drawing.Point(3, 30);
+            this.idealIdealLabel.Name = "idealIdealLabel";
+            this.idealIdealLabel.Size = new System.Drawing.Size(98, 13);
+            this.idealIdealLabel.TabIndex = 6;
+            this.idealIdealLabel.Text = "<Ideal";
             // 
-            // utopiaTimeLabel
+            // idealTimeLabel
             // 
-            this.utopiaTimeLabel.AutoSize = true;
-            this.utopiaTimeLabel.Location = new System.Drawing.Point(3, 30);
-            this.utopiaTimeLabel.Name = "utopiaTimeLabel";
-            this.utopiaTimeLabel.Size = new System.Drawing.Size(98, 13);
-            this.utopiaTimeLabel.TabIndex = 6;
-            this.utopiaTimeLabel.Text = "<Time";
+            this.idealTimeLabel.AutoSize = true;
+            this.idealTimeLabel.Location = new System.Drawing.Point(3, 30);
+            this.idealTimeLabel.Name = "idealTimeLabel";
+            this.idealTimeLabel.Size = new System.Drawing.Size(98, 13);
+            this.idealTimeLabel.TabIndex = 6;
+            this.idealTimeLabel.Text = "<Time";
             // 
-            // utopiaDistLabel
+            // idealDistLabel
             // 
-            this.utopiaDistLabel.AutoSize = true;
-            this.utopiaDistLabel.Location = new System.Drawing.Point(3, 30);
-            this.utopiaDistLabel.Name = "utopiaDistLabel";
-            this.utopiaDistLabel.Size = new System.Drawing.Size(98, 13);
-            this.utopiaDistLabel.TabIndex = 6;
-            this.utopiaDistLabel.Text = "<Distance";
+            this.idealDistLabel.AutoSize = true;
+            this.idealDistLabel.Location = new System.Drawing.Point(3, 30);
+            this.idealDistLabel.Name = "idealDistLabel";
+            this.idealDistLabel.Size = new System.Drawing.Size(98, 13);
+            this.idealDistLabel.TabIndex = 6;
+            this.idealDistLabel.Text = "<Distance";
             // 
-            // utopiaPaceLabel
+            // idealPaceLabel
             // 
-            this.utopiaPaceLabel.AutoSize = true;
-            this.utopiaPaceLabel.Location = new System.Drawing.Point(3, 30);
-            this.utopiaPaceLabel.Name = "utopiaPaceLabel";
-            this.utopiaPaceLabel.Size = new System.Drawing.Size(98, 13);
-            this.utopiaPaceLabel.TabIndex = 6;
-            this.utopiaPaceLabel.Text = "<Pace";
+            this.idealPaceLabel.AutoSize = true;
+            this.idealPaceLabel.Location = new System.Drawing.Point(3, 30);
+            this.idealPaceLabel.Name = "idealPaceLabel";
+            this.idealPaceLabel.Size = new System.Drawing.Size(98, 13);
+            this.idealPaceLabel.TabIndex = 6;
+            this.idealPaceLabel.Text = "<Pace";
             // 
-            // utopiaTempLabel
+            // idealTempLabel
             // 
-            this.utopiaTempLabel.AutoSize = true;
-            this.utopiaTempLabel.Location = new System.Drawing.Point(3, 30);
-            this.utopiaTempLabel.Name = "utopiaTempLabel";
-            this.utopiaTempLabel.Size = new System.Drawing.Size(98, 13);
-            this.utopiaTempLabel.TabIndex = 6;
-            this.utopiaTempLabel.Text = "<Temperature";
+            this.idealTempLabel.AutoSize = true;
+            this.idealTempLabel.Location = new System.Drawing.Point(3, 30);
+            this.idealTempLabel.Name = "idealTempLabel";
+            this.idealTempLabel.Size = new System.Drawing.Size(98, 13);
+            this.idealTempLabel.TabIndex = 6;
+            this.idealTempLabel.Text = "<Temperature";
             // 
-            // utopiaWeightLabel
+            // idealWeightLabel
             // 
-            this.utopiaWeightLabel.AutoSize = true;
-            this.utopiaWeightLabel.Location = new System.Drawing.Point(3, 30);
-            this.utopiaWeightLabel.Name = "utopiaWeightLabel";
-            this.utopiaWeightLabel.Size = new System.Drawing.Size(98, 13);
-            this.utopiaWeightLabel.TabIndex = 6;
-            this.utopiaWeightLabel.Text = "<Weight";
+            this.idealWeightLabel.AutoSize = true;
+            this.idealWeightLabel.Location = new System.Drawing.Point(3, 30);
+            this.idealWeightLabel.Name = "idealWeightLabel";
+            this.idealWeightLabel.Size = new System.Drawing.Size(98, 13);
+            this.idealWeightLabel.TabIndex = 6;
+            this.idealWeightLabel.Text = "<Weight";
             // 
-            // utopiaShoeLabel
+            // idealShoeLabel
             // 
-            this.utopiaShoeLabel.AutoSize = true;
-            this.utopiaShoeLabel.Location = new System.Drawing.Point(3, 30);
-            this.utopiaShoeLabel.Name = "utopiaShoeLabel";
-            this.utopiaShoeLabel.Size = new System.Drawing.Size(98, 13);
-            this.utopiaShoeLabel.TabIndex = 6;
-            this.utopiaShoeLabel.Text = "<Shoe";
+            this.idealShoeLabel.AutoSize = true;
+            this.idealShoeLabel.Location = new System.Drawing.Point(3, 30);
+            this.idealShoeLabel.Name = "idealShoeLabel";
+            this.idealShoeLabel.Size = new System.Drawing.Size(98, 13);
+            this.idealShoeLabel.TabIndex = 6;
+            this.idealShoeLabel.Text = "<Shoe";
             // 
-            // utopiaAgeLabel
+            // idealAgeLabel
             // 
-            this.utopiaAgeLabel.AutoSize = true;
-            this.utopiaAgeLabel.Location = new System.Drawing.Point(3, 30);
-            this.utopiaAgeLabel.Name = "utopiaAgeLabel";
-            this.utopiaAgeLabel.Size = new System.Drawing.Size(98, 13);
-            this.utopiaAgeLabel.TabIndex = 6;
-            this.utopiaAgeLabel.Text = "<Age";
+            this.idealAgeLabel.AutoSize = true;
+            this.idealAgeLabel.Location = new System.Drawing.Point(3, 30);
+            this.idealAgeLabel.Name = "idealAgeLabel";
+            this.idealAgeLabel.Size = new System.Drawing.Size(98, 13);
+            this.idealAgeLabel.TabIndex = 6;
+            this.idealAgeLabel.Text = "<Age";
             // 
             // timeBox
             // 
@@ -946,9 +946,9 @@ namespace GpsRunningPlugin.Source
             this.ageTab.ResumeLayout(false);
             this.ageTableLayoutPanel.ResumeLayout(false);
             this.ageTableLayoutPanel.PerformLayout();
-            this.utopiaTab.ResumeLayout(false);
-            this.utopiaTableLayoutPanel.ResumeLayout(false);
-            this.utopiaTableLayoutPanel.PerformLayout();
+            this.idealTab.ResumeLayout(false);
+            this.idealTableLayoutPanel.ResumeLayout(false);
+            this.idealTableLayoutPanel.PerformLayout();
             this.listMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -987,19 +987,19 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.Label ageLabel;
         private ZoneFiveSoftware.Common.Visuals.TreeList ageList;
 
-        private System.Windows.Forms.TabPage utopiaTab;
-        private System.Windows.Forms.TableLayoutPanel utopiaTableLayoutPanel;
-        private System.Windows.Forms.Label utopiaLabel2;
-        private System.Windows.Forms.Label utopiaLabel;
-        private System.Windows.Forms.Label utopiaActualLabel;
-        private System.Windows.Forms.Label utopiaIdealLabel;
-        private System.Windows.Forms.Label utopiaTimeLabel;
-        private System.Windows.Forms.Label utopiaDistLabel;
-        private System.Windows.Forms.Label utopiaPaceLabel;
-        private System.Windows.Forms.Label utopiaTempLabel;
-        private System.Windows.Forms.Label utopiaWeightLabel;
-        private System.Windows.Forms.Label utopiaShoeLabel;
-        private System.Windows.Forms.Label utopiaAgeLabel;
+        private System.Windows.Forms.TabPage idealTab;
+        private System.Windows.Forms.TableLayoutPanel idealTableLayoutPanel;
+        private System.Windows.Forms.Label idealLabel2;
+        private System.Windows.Forms.Label idealLabel;
+        private System.Windows.Forms.Label idealActualLabel;
+        private System.Windows.Forms.Label idealIdealLabel;
+        private System.Windows.Forms.Label idealTimeLabel;
+        private System.Windows.Forms.Label idealDistLabel;
+        private System.Windows.Forms.Label idealPaceLabel;
+        private System.Windows.Forms.Label idealTempLabel;
+        private System.Windows.Forms.Label idealWeightLabel;
+        private System.Windows.Forms.Label idealShoeLabel;
+        private System.Windows.Forms.Label idealAgeLabel;
         private ZoneFiveSoftware.Common.Visuals.TextBox timeBox;
         private ZoneFiveSoftware.Common.Visuals.TextBox timeBox2;
         private ZoneFiveSoftware.Common.Visuals.TextBox distBox;

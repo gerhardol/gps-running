@@ -58,7 +58,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="AddDistance" xml:space="preserve">
     <value>Lägg till distans</value>
   </data>
@@ -127,7 +127,7 @@
   <data name="ProcDistUsed" xml:space="preserve">
     <value>av distans för att förutsäga tid</value>
   </data>
-  <data name="ProjectedTemperatureImpact" xml:space="preserve">
+  <data name="TemperatureProjectedImpact" xml:space="preserve">
     <comment>ppx</comment>
     <value>Estimerad negativ påverkan av höga temperaturer på</value>
   </data>
@@ -137,15 +137,12 @@
   <data name="RemoveDistance" xml:space="preserve">
     <value>Ta bort distans</value>
   </data>
-  <data name="SetWeight" xml:space="preserve">
+  <data name="WeightUndefined" xml:space="preserve">
     <value>Gå till Idrottare vyn och ställ in din vikt för att se resultatet.</value>
   </data>
   <data name="StartOfPart" xml:space="preserve">
     <comment>ppx</comment>
     <value>Start av del</value>
-  </data>
-  <data name="TemperatureImpact" xml:space="preserve">
-    <value>Temperaturpåverkan</value>
   </data>
   <data name="TemperatureNotification" xml:space="preserve">
     <comment>ppx</comment>
@@ -181,9 +178,6 @@
   <data name="Webpage" xml:space="preserve">
     <value>Performance Predictor plugin websida</value>
   </data>
-  <data name="WeighImpact" xml:space="preserve">
-    <value>Viktpåverkan</value>
-  </data>
   <data name="WeightNotification" xml:space="preserve">
     <value>Uppskattade tider och tempo är +/- {0} sekunder per {1}.</value>
   </data>
@@ -213,7 +207,7 @@
     <comment>ppx</comment>
     <value>Antagen vikt</value>
   </data>
-  <data name="ProjectedWeightImpact" xml:space="preserve">
+  <data name="WeightProjectedImpact" xml:space="preserve">
     <comment>ppx</comment>
     <value>Estimerad viktpåverkan på</value>
   </data>
@@ -225,5 +219,35 @@
   </data>
   <data name="HighScoreRequired" xml:space="preserve">
     <value>Prognos med flera aktiviteter kräver High Score plugin</value>
+  </data>
+  <data name="Extrapolate" xml:space="preserve">
+    <value>Extrapolera</value>
+  </data>
+  <data name="AgeNotification" xml:space="preserve">
+    <value>Påverkan från ålderstabeller</value>
+  </data>
+  <data name="AgeProjectedImpact" xml:space="preserve">
+    <value>Estimerad påverkan av ålder från </value>
+  </data>
+  <data name="AgeUndefined" xml:space="preserve">
+    <value>Gå till Idrottare vyn och sätt födelsedatum för att se resultatet.</value>
+  </data>
+  <data name="ShoeTab" xml:space="preserve">
+    <value>Sko</value>
+  </data>
+  <data name="ShoeNotification" xml:space="preserve">
+    <value>Vikt per sko</value>
+  </data>
+  <data name="ShoeProjectedImpact" xml:space="preserve">
+    <value>Estimerad påverkan av skovikt på</value>
+  </data>
+  <data name="ShoeUndefined" xml:space="preserve">
+    <value>Vikt på skon kan ej gissas från utrustningen</value>
+  </data>
+  <data name="IdealTab" xml:space="preserve">
+    <value>Ideal</value>
+  </data>
+  <data name="IdealNotification" xml:space="preserve">
+    <value>Hur det kunde ha gått...</value>
   </data>
 </root>

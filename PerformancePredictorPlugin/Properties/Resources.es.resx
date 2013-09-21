@@ -58,7 +58,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="AddDistance" xml:space="preserve">
     <value>Agregar distancia</value>
   </data>
@@ -127,7 +127,7 @@
   <data name="ProcDistUsed" xml:space="preserve">
     <value>% de distancia para predecir tiempo</value>
   </data>
-  <data name="ProjectedTemperatureImpact" xml:space="preserve">
+  <data name="TemperatureProjectedImpact" xml:space="preserve">
     <comment>ppx</comment>
     <value>Proyección de impacto negativo de altas temperaturas en</value>
   </data>
@@ -137,15 +137,12 @@
   <data name="RemoveDistance" xml:space="preserve">
     <value>Quitar distancia...</value>
   </data>
-  <data name="SetWeight" xml:space="preserve">
+  <data name="WeightUndefined" xml:space="preserve">
     <value>Por favor establezca su peso en configuraciones para ver resultados</value>
   </data>
   <data name="StartOfPart" xml:space="preserve">
     <comment>ppx</comment>
     <value>Inicio de parte</value>
-  </data>
-  <data name="TemperatureImpact" xml:space="preserve">
-    <value>Impacto de temperatura</value>
   </data>
   <data name="TemperatureNotification" xml:space="preserve">
     <comment>ppx</comment>
@@ -181,9 +178,6 @@
   <data name="Webpage" xml:space="preserve">
     <value>Link a Web del Plugin &quot;Perfomance Predictor&quot;</value>
   </data>
-  <data name="WeighImpact" xml:space="preserve">
-    <value>Impacto del peso</value>
-  </data>
   <data name="WeightNotification" xml:space="preserve">
     <value>Tiempos y pasos estimados son +/- {0} por {1}.</value>
   </data>
@@ -213,7 +207,7 @@
     <comment>ppx</comment>
     <value>Peso proyectado</value>
   </data>
-  <data name="ProjectedWeightImpact" xml:space="preserve">
+  <data name="WeightProjectedImpact" xml:space="preserve">
     <comment>ppx</comment>
     <value>Proyección de impacto de peso en</value>
   </data>
