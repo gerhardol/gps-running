@@ -211,24 +211,28 @@ namespace GpsRunningPlugin.Source
             attr = pluginNode.GetAttribute(xmlTags.predictionView);
             if (attr.Length > 0)
             {
-                predictionView = (PredictionView)Enum.Parse(typeof(PredictionView), attr);
-            }
-            else
-            {
-                attr = pluginNode.GetAttribute(xmlTags.showPrediction);
-                if (attr.Length > 0)
+                try
                 {
-                    bool isPrediction = XmlConvert.ToBoolean(attr);
-                    if (isPrediction)
-                    {
-                        predictionView = PredictionView.TimePrediction;
-                    }
-                    else
-                    {
-                        predictionView = PredictionView.Training;
-                    }
+                    predictionView = (PredictionView)Enum.Parse(typeof(PredictionView), attr);
                 }
+                catch { }
             }
+            //else
+            //{
+            //    attr = pluginNode.GetAttribute(xmlTags.showPrediction);
+            //    if (attr.Length > 0)
+            //    {
+            //        bool isPrediction = XmlConvert.ToBoolean(attr);
+            //        if (isPrediction)
+            //        {
+            //            predictionView = PredictionView.TimePrediction;
+            //        }
+            //        else
+            //        {
+            //            predictionView = PredictionView.Training;
+            //        }
+            //    }
+            //}
             attr = pluginNode.GetAttribute(xmlTags.idealBmi);
             if (attr.Length > 0) { idealBmi = Settings.parseFloat(attr); }
             attr = pluginNode.GetAttribute(xmlTags.idealShoe);
@@ -259,7 +263,7 @@ namespace GpsRunningPlugin.Source
         {
             pluginNode.SetAttribute(xmlTags.settingsVersion, XmlConvert.ToString(settingsVersionCurrent));
 
-            //pluginNode.SetAttribute(xmlTags.showPrediction, XmlConvert.ToString(showPrediction));
+            pluginNode.SetAttribute(xmlTags.predictionView, predictionView.ToString());
             pluginNode.SetAttribute(xmlTags.idealBmi, XmlConvert.ToString(idealBmi));
             pluginNode.SetAttribute(xmlTags.idealShoe, XmlConvert.ToString(idealShoe));
             pluginNode.SetAttribute(xmlTags.showPace, XmlConvert.ToString(showPace));
@@ -290,7 +294,7 @@ namespace GpsRunningPlugin.Source
         {
             public const string settingsVersion = "settingsVersion";
             public const string predictionView = "predictionView";
-            public const string showPrediction = "showPrediction";// old
+            //public const string showPrediction = "showPrediction";// old
             public const string idealBmi = "idealBmi";
             public const string idealShoe = "idealShoe";
             public const string showPace = "showPace";
