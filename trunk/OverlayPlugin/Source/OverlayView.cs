@@ -1218,7 +1218,7 @@ namespace GpsRunningPlugin.Source
             foreach (TimeValueEntry<float> entry in dataSeries)
             {
                 DateTime entryTime = dataSeries.EntryDateTime(entry);
-                TimeSpan elapsed = DateTimeRangeSeries.TimeNotPaused(info.ActualTrackStart, entryTime, pauses);
+                TimeSpan elapsed = DateTimeRangeSeries.TimeNotPaused(dataSeries.StartTime, entryTime, pauses);
                 newDataSeries.Add(dataSeries.StartTime.Add(elapsed), entry.Value);
             }
         }
@@ -1230,7 +1230,7 @@ namespace GpsRunningPlugin.Source
             newDataSeries.AllowMultipleAtSameTime = true;
             foreach (TimeValueEntry<float> entry in dataSeries)
             {
-                DateTime newEntryTime = DateTimeRangeSeries.AddTimeAndPauses(info.ActualTrackStart, new TimeSpan(0, 0, (int)entry.ElapsedSeconds), pauses);
+                DateTime newEntryTime = DateTimeRangeSeries.AddTimeAndPauses(dataSeries.StartTime, new TimeSpan(0, 0, (int)entry.ElapsedSeconds), pauses);
                 newDataSeries.Add(newEntryTime, entry.Value);
             }
         }
@@ -1291,10 +1291,16 @@ namespace GpsRunningPlugin.Source
             float priorElapsed = float.NaN;
             INumericTimeDataSeries data, timeModData;
             CorrectTimeDataSeriesForPauses( info, getDataSeries(info), out timeModData);
+            //Make sure track starts at correct time
+            int trackOffset = (int)(timeModData.StartTime - info.ActualTrackStart).TotalSeconds;
             if (Settings.UseTimeXAxis)
+            {
                 data = timeModData; // x-axis is time, use time with pauses excluded
+            }
             else
+            {
                 data = getDataSeries(info); // x-axis is distance. Distance need to be looked up using original time.
+            }
             foreach (ITimeValueEntry<float> entry in data)
             {
                 float elapsed = entry.ElapsedSeconds;
@@ -1303,11 +1309,11 @@ namespace GpsRunningPlugin.Source
 					float x = float.NaN;
                     if (Settings.UseTimeXAxis)
 					{
-						x = (float)( elapsed + offset );
+                        x = (float)(elapsed + offset + trackOffset);
 					}
 					else
 					{
-                        ITimeValueEntry<float> entryMoving = info.MovingDistanceMetersTrack.GetInterpolatedValue(info.ActualTrackStart.AddSeconds(entry.ElapsedSeconds));
+                        ITimeValueEntry<float> entryMoving = info.MovingDistanceMetersTrack.GetInterpolatedValue(info.MovingDistanceMetersTrack.StartTime.AddSeconds(entry.ElapsedSeconds + trackOffset));
                         if (entryMoving != null && (first || (!first && entryMoving.Value > 0)))
 						{
 							x = (float)UnitUtil.Distance.ConvertFrom( entryMoving.Value + offset );

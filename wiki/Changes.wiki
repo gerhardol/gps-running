@@ -9,7 +9,7 @@ More or less official beta releases are available in the Downloads section. See 
 
 PerformancePredictor:
  * Utopia tab renamed to Ideal
- * Integration with Trails: Ideral prediction for trails
+ * Integration with Trails: Ideal prediction for trails
  * Swedish translation update.
  * Save Selected tab (Prediction, Training or Extrapolation)
 
