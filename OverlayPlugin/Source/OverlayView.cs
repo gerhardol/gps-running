@@ -968,19 +968,7 @@ namespace GpsRunningPlugin.Source
                         // Remove pauses in order to be able to calculate difference
                         INumericTimeDataSeries actTrack = CorrectTimeDataSeriesForPauses(info, info.Activity.HeartRatePerMinuteTrack);
                         INumericTimeDataSeries refTrack = CorrectTimeDataSeriesForPauses(refInfo, refInfo.Activity.HeartRatePerMinuteTrack);
-                        INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
-                        foreach (ITimeValueEntry<float> p in actTrack)
-                        {
-                            DateTime refActualTime = refTrack.StartTime.AddSeconds(p.ElapsedSeconds);
-                            DateTime actualTime = actTrack.StartTime.AddSeconds(p.ElapsedSeconds);
-
-                            ITimeValueEntry<float> refEntry = refTrack.GetInterpolatedValue(refActualTime);
-                            if (refEntry != null)
-                            {
-                                track.Add(actualTime, p.Value - refEntry.Value);
-                            }
-                        }
-                        return AddPausesToTimeDataSeries(info, track);
+                        return AddPausesToTimeDataSeries(info, TrackDifferences(info, refInfo, actTrack, refTrack));
                     }
                     );
             }
@@ -1025,17 +1013,18 @@ namespace GpsRunningPlugin.Source
                         INumericTimeDataSeries actTrack = CorrectTimeDataSeriesForPauses(info, info.MovingDistanceMetersTrack);
                         INumericTimeDataSeries refTrack = CorrectTimeDataSeriesForPauses(refInfo, refInfo.MovingDistanceMetersTrack);
 
-                        int actOffset = 0;//TBD (int)(actTrack.StartTime - info.ActualTrackStart).TotalSeconds;
-                        int refOffset = 0;// (int)(refTrack.StartTime - info.ActualTrackStart).TotalSeconds - actOffset;
+                        //TBD Could probably use
+                        //return AddPausesToTimeDataSeries(info, TrackDifferences(info, refInfo, actTrack, refTrack));
+                        //but not sure, as well as diff is inverted (probably how it should be, but still a change)
 
+                        int refOffset = 0;
                         INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
                         // Create track containing time difference
-                        int lastFoundElapsedTime = 0;
+                        int lastFoundElapsedTime = Math.Max(0, - refOffset);
                         foreach (TimeValueEntry<float> entry in actTrack)
                         {
-                            bool found = false;
                             ITimeValueEntry<float> refEntry = null;
-                            for (int i = lastFoundElapsedTime - refOffset; i < refTrack.TotalElapsedSeconds - refOffset && !found; i++)
+                            for (int i = lastFoundElapsedTime - refOffset; i < refTrack.TotalElapsedSeconds - refOffset; i++)
                             {
                                 refEntry = refTrack.GetInterpolatedValue(refTrack.StartTime.Add(new TimeSpan(0, 0, i)));
                                 if (refEntry == null)
@@ -1043,19 +1032,17 @@ namespace GpsRunningPlugin.Source
                                     lastFoundElapsedTime = i;
                                     break;
                                 }
-                                else if ( refEntry.Value >= entry.Value)
+                                else if (refEntry.Value >= entry.Value)
                                 {
-                                    found = true;
+                                    track.Add(actTrack.EntryDateTime(entry), (float)entry.ElapsedSeconds - (float)refEntry.ElapsedSeconds);
                                     lastFoundElapsedTime = i;
                                     break;
                                 }
                             }
-                            if (found)
-                            {
-                                track.Add(actTrack.EntryDateTime(entry), (float)entry.ElapsedSeconds - (float)refEntry.ElapsedSeconds);
-                            }
+
                         }
                         return AddPausesToTimeDataSeries(info, track);
+  
                     });
             }
             if (Settings.ShowDiffDistance)
@@ -1099,21 +1086,7 @@ namespace GpsRunningPlugin.Source
                         // Remove pauses in order to be able to calculate difference
                         INumericTimeDataSeries actTrack = CorrectTimeDataSeriesForPauses(info, info.MovingDistanceMetersTrack);
                         INumericTimeDataSeries refTrack = CorrectTimeDataSeriesForPauses(refInfo, refInfo.MovingDistanceMetersTrack);
-
-                        INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
-                        foreach (ITimeValueEntry<float> p in actTrack)
-                        {
-                            DateTime refActualTime = refTrack.StartTime.AddSeconds(p.ElapsedSeconds);
-                            DateTime actualTime = actTrack.StartTime.AddSeconds(p.ElapsedSeconds);
-
-                            ITimeValueEntry<float> refDist = refTrack.GetInterpolatedValue(refActualTime);
-                            if (refDist != null)
-                            {
-                                track.Add(actualTime, p.Value - refDist.Value);
-                            }
-                        }
-                        return AddPausesToTimeDataSeries(info, track);
- 
+                        return AddPausesToTimeDataSeries(info, TrackDifferences(info, refInfo, actTrack, refTrack));
                     });
             }
 
@@ -1197,11 +1170,37 @@ namespace GpsRunningPlugin.Source
             return aTr;
         }
 
+        //TBD Not handling differences over distance correctly
+        private INumericTimeDataSeries TrackDifferences(ActivityInfo info, ActivityInfo refInfo,
+            INumericTimeDataSeries actTrack, INumericTimeDataSeries refTrack)
+        {
+            //Adjust part compared from track start
+            int actOffset = (int)(actTrack.StartTime - info.ActualTrackStart).TotalSeconds;
+            int refOffset = (int)(refTrack.StartTime - info.ActualTrackStart).TotalSeconds - actOffset;
+            int offset = (int)((actTrack.StartTime - info.ActualTrackStart).TotalSeconds -
+                (refTrack.StartTime - refInfo.ActualTrackStart).TotalSeconds);
+
+            INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
+            foreach (ITimeValueEntry<float> p in actTrack)
+            {
+                DateTime refActualTime = refTrack.StartTime.AddSeconds(p.ElapsedSeconds + offset);
+
+                ITimeValueEntry<float> refDist = refTrack.GetInterpolatedValue(refActualTime);
+                if (refDist != null)
+                {
+                    DateTime actualTime = actTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+                    track.Add(actualTime, p.Value - refDist.Value);
+                }
+            }
+            return track;
+        }
+
         private INumericTimeDataSeries CorrectTimeDataSeriesForPauses(ActivityInfo info, INumericTimeDataSeries dataSeries)
         {
             IValueRangeSeries<DateTime> pauses = info.NonMovingTimes;
             INumericTimeDataSeries newDataSeries = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
             newDataSeries.AllowMultipleAtSameTime = true;
+
             foreach (TimeValueEntry<float> entry in dataSeries)
             {
                 DateTime entryTime = dataSeries.EntryDateTime(entry);
@@ -1278,7 +1277,7 @@ namespace GpsRunningPlugin.Source
             }
             bool first = true;
             float priorElapsed = float.NaN;
-            INumericTimeDataSeries timeModData = CorrectTimeDataSeriesForPauses( info, getDataSeries(info));
+            INumericTimeDataSeries timeModData = CorrectTimeDataSeriesForPauses(info, getDataSeries(info));
             //Make sure track starts at correct time
             int trackOffset = (int)(timeModData.StartTime - info.ActualTrackStart).TotalSeconds;
 
