@@ -888,14 +888,13 @@ namespace GpsRunningPlugin.Source
                     delegate(ActivityInfo info)
                     {
                         INumericTimeDataSeries TimeTrack = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries(info.MovingDistanceMetersTrack);
-                        INumericTimeDataSeries ModTimeTrack;
-                        CorrectTimeDataSeriesForPauses(info, TimeTrack, out ModTimeTrack);
+                        TimeTrack = CorrectTimeDataSeriesForPauses(info, TimeTrack);
 
                         // Copy the modified times into the value of TimeTrack - the time values of TimeTrack will be modified later 
-                        for (int i = 0; i < ModTimeTrack.Count; i++)
+                        for (int i = 0; i < TimeTrack.Count; i++)
                         {
                             TimeValueEntry<float> entry = (TimeValueEntry<float>)TimeTrack[i];
-                            entry.Value = ModTimeTrack[i].ElapsedSeconds;
+                            entry.Value = TimeTrack[i].ElapsedSeconds;
                         }
                         
                         return TimeTrack;
@@ -966,27 +965,22 @@ namespace GpsRunningPlugin.Source
                     {
                         ActivityInfo refInfo = ActivityInfoCache.Instance.GetInfo(CommonData.refActWrapper.Activity);
 
-                        INumericTimeDataSeries refTrack, actTrack, modRefTrack, modActTrack, modTrack;
-                        actTrack = info.Activity.HeartRatePerMinuteTrack;
-                        refTrack = refInfo.Activity.HeartRatePerMinuteTrack;
-
                         // Remove pauses in order to be able to calculate difference
-                        CorrectTimeDataSeriesForPauses(info, actTrack, out modActTrack);
-                        CorrectTimeDataSeriesForPauses(refInfo, refTrack, out modRefTrack);
+                        INumericTimeDataSeries actTrack = CorrectTimeDataSeriesForPauses(info, info.Activity.HeartRatePerMinuteTrack);
+                        INumericTimeDataSeries refTrack = CorrectTimeDataSeriesForPauses(refInfo, refInfo.Activity.HeartRatePerMinuteTrack);
                         INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
-                        foreach (ITimeValueEntry<float> p in modActTrack)
+                        foreach (ITimeValueEntry<float> p in actTrack)
                         {
-                            DateTime refActualTime = modRefTrack.StartTime.AddSeconds(p.ElapsedSeconds);
-                            DateTime actualTime = modActTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+                            DateTime refActualTime = refTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+                            DateTime actualTime = actTrack.StartTime.AddSeconds(p.ElapsedSeconds);
 
-                            ITimeValueEntry<float> refEntry = modRefTrack.GetInterpolatedValue(refActualTime);
+                            ITimeValueEntry<float> refEntry = refTrack.GetInterpolatedValue(refActualTime);
                             if (refEntry != null)
                             {
                                 track.Add(actualTime, p.Value - refEntry.Value);
                             }
                         }
-                        AddPausesToTimeDataSeries(info, track, out modTrack);
-                        return modTrack;
+                        return AddPausesToTimeDataSeries(info, track);
                     }
                     );
             }
@@ -1027,25 +1021,23 @@ namespace GpsRunningPlugin.Source
                     {
                         ActivityInfo refInfo = ActivityInfoCache.Instance.GetInfo(CommonData.refActWrapper.Activity);
 
-                        INumericTimeDataSeries refTrack, actTrack, modRefTrack, modActTrack, modTrack;
-
-                            actTrack = info.MovingDistanceMetersTrack;
-                            refTrack = refInfo.MovingDistanceMetersTrack;
-
                         // Remove pauses in order to be able to calculate difference
-                        CorrectTimeDataSeriesForPauses(info, actTrack, out modActTrack);
-                        CorrectTimeDataSeriesForPauses(refInfo, refTrack, out modRefTrack);
+                        INumericTimeDataSeries actTrack = CorrectTimeDataSeriesForPauses(info, info.MovingDistanceMetersTrack);
+                        INumericTimeDataSeries refTrack = CorrectTimeDataSeriesForPauses(refInfo, refInfo.MovingDistanceMetersTrack);
+
+                        int actOffset = 0;//TBD (int)(actTrack.StartTime - info.ActualTrackStart).TotalSeconds;
+                        int refOffset = 0;// (int)(refTrack.StartTime - info.ActualTrackStart).TotalSeconds - actOffset;
 
                         INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
                         // Create track containing time difference
                         int lastFoundElapsedTime = 0;
-                        foreach (TimeValueEntry<float> entry in modActTrack)
+                        foreach (TimeValueEntry<float> entry in actTrack)
                         {
                             bool found = false;
                             ITimeValueEntry<float> refEntry = null;
-                            for (int i = lastFoundElapsedTime; i < modRefTrack.TotalElapsedSeconds && !found; i++)
+                            for (int i = lastFoundElapsedTime - refOffset; i < refTrack.TotalElapsedSeconds - refOffset && !found; i++)
                             {
-                                refEntry = modRefTrack.GetInterpolatedValue(modRefTrack.StartTime.Add(new TimeSpan(0, 0, i)));
+                                refEntry = refTrack.GetInterpolatedValue(refTrack.StartTime.Add(new TimeSpan(0, 0, i)));
                                 if (refEntry == null)
                                 {
                                     lastFoundElapsedTime = i;
@@ -1060,11 +1052,10 @@ namespace GpsRunningPlugin.Source
                             }
                             if (found)
                             {
-                                track.Add(modActTrack.EntryDateTime(entry), (float)entry.ElapsedSeconds - (float)refEntry.ElapsedSeconds);
+                                track.Add(actTrack.EntryDateTime(entry), (float)entry.ElapsedSeconds - (float)refEntry.ElapsedSeconds);
                             }
                         }
-                        AddPausesToTimeDataSeries(info, track, out modTrack);
-                        return modTrack;
+                        return AddPausesToTimeDataSeries(info, track);
                     });
             }
             if (Settings.ShowDiffDistance)
@@ -1104,29 +1095,25 @@ namespace GpsRunningPlugin.Source
                     delegate(ActivityInfo info)
                     {
                         ActivityInfo refInfo = ActivityInfoCache.Instance.GetInfo(CommonData.refActWrapper.Activity);
-
-                        INumericTimeDataSeries refTrack, actTrack, modRefTrack, modActTrack, modTrack;
-                            actTrack = info.MovingDistanceMetersTrack;
-                            refTrack = refInfo.MovingDistanceMetersTrack;
-                       
+                      
                         // Remove pauses in order to be able to calculate difference
-                        CorrectTimeDataSeriesForPauses(info, actTrack, out modActTrack);
-                        CorrectTimeDataSeriesForPauses(refInfo, refTrack, out modRefTrack);
-                        INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
-                        foreach (ITimeValueEntry<float> p in modActTrack)
-                        {
-                            DateTime refActualTime = modRefTrack.StartTime.AddSeconds(p.ElapsedSeconds);
-                            DateTime actualTime = modActTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+                        INumericTimeDataSeries actTrack = CorrectTimeDataSeriesForPauses(info, info.MovingDistanceMetersTrack);
+                        INumericTimeDataSeries refTrack = CorrectTimeDataSeriesForPauses(refInfo, refInfo.MovingDistanceMetersTrack);
 
-                            ITimeValueEntry<float> refDist = modRefTrack.GetInterpolatedValue(refActualTime);
+                        INumericTimeDataSeries track = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
+                        foreach (ITimeValueEntry<float> p in actTrack)
+                        {
+                            DateTime refActualTime = refTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+                            DateTime actualTime = actTrack.StartTime.AddSeconds(p.ElapsedSeconds);
+
+                            ITimeValueEntry<float> refDist = refTrack.GetInterpolatedValue(refActualTime);
                             if (refDist != null)
                             {
                                 track.Add(actualTime, p.Value - refDist.Value);
                             }
                         }
-                        AddPausesToTimeDataSeries(info, track, out modTrack);
-                        return modTrack;
-
+                        return AddPausesToTimeDataSeries(info, track);
+ 
                     });
             }
 
@@ -1210,10 +1197,10 @@ namespace GpsRunningPlugin.Source
             return aTr;
         }
 
-        private void CorrectTimeDataSeriesForPauses(ActivityInfo info, INumericTimeDataSeries dataSeries, out INumericTimeDataSeries newDataSeries)
+        private INumericTimeDataSeries CorrectTimeDataSeriesForPauses(ActivityInfo info, INumericTimeDataSeries dataSeries)
         {
             IValueRangeSeries<DateTime> pauses = info.NonMovingTimes;
-            newDataSeries = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
+            INumericTimeDataSeries newDataSeries = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
             newDataSeries.AllowMultipleAtSameTime = true;
             foreach (TimeValueEntry<float> entry in dataSeries)
             {
@@ -1221,18 +1208,20 @@ namespace GpsRunningPlugin.Source
                 TimeSpan elapsed = DateTimeRangeSeries.TimeNotPaused(dataSeries.StartTime, entryTime, pauses);
                 newDataSeries.Add(dataSeries.StartTime.Add(elapsed), entry.Value);
             }
+            return newDataSeries;
         }
 
-        private void AddPausesToTimeDataSeries(ActivityInfo info, INumericTimeDataSeries dataSeries, out INumericTimeDataSeries newDataSeries)
+        private INumericTimeDataSeries AddPausesToTimeDataSeries(ActivityInfo info, INumericTimeDataSeries dataSeries)
         {
             IValueRangeSeries<DateTime> pauses = info.NonMovingTimes;
-            newDataSeries = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
+            INumericTimeDataSeries newDataSeries = new ZoneFiveSoftware.Common.Data.NumericTimeDataSeries();
             newDataSeries.AllowMultipleAtSameTime = true;
             foreach (TimeValueEntry<float> entry in dataSeries)
             {
                 DateTime newEntryTime = DateTimeRangeSeries.AddTimeAndPauses(dataSeries.StartTime, new TimeSpan(0, 0, (int)entry.ElapsedSeconds), pauses);
                 newDataSeries.Add(newEntryTime, entry.Value);
             }
+            return newDataSeries;
         }
         
         
@@ -1289,10 +1278,11 @@ namespace GpsRunningPlugin.Source
             }
             bool first = true;
             float priorElapsed = float.NaN;
-            INumericTimeDataSeries data, timeModData;
-            CorrectTimeDataSeriesForPauses( info, getDataSeries(info), out timeModData);
+            INumericTimeDataSeries timeModData = CorrectTimeDataSeriesForPauses( info, getDataSeries(info));
             //Make sure track starts at correct time
             int trackOffset = (int)(timeModData.StartTime - info.ActualTrackStart).TotalSeconds;
+
+            INumericTimeDataSeries data;
             if (Settings.UseTimeXAxis)
             {
                 data = timeModData; // x-axis is time, use time with pauses excluded
