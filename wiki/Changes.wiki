@@ -5,6 +5,12 @@
 
 More or less official beta releases are available in the Downloads section. See each plugin for detailed description of functions.
 
+2.0.411 2014-09-14
+
+Overlay:
+ * Tracks that did not start at activity starts did not display offset in charts.
+   Still an issue in diffs.
+   
 2.0.410 2013-09-22 (Plugin Catalog)
 
 PerformancePredictor:
