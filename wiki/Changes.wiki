@@ -5,6 +5,13 @@
 
 More or less official beta releases are available in the Downloads section. See each plugin for detailed description of functions.
 
+(unreleased)
+ * Compare heartrate and distance differences correctly, when a track is not starting at the same time as the activity.
+ 
+Note:
+ * Differences over time still has the offset problem.
+ * Offsets are always over time, also when Xaxis is Distance.
+
 2.0.411 2014-09-14
 
 Overlay:
