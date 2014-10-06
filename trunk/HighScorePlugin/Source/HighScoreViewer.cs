@@ -221,8 +221,6 @@ namespace GpsRunningPlugin.Source
                 }
                 bool includeLocationAndDate = (m_activities.Count > 1);
                 RefreshColumns(includeLocationAndDate);
-                IList<Goal> goals = resetCachedResults();
-                calcCachedResults(goals);
 
                 if (m_activities.Count > 0)
                 {
@@ -230,8 +228,8 @@ namespace GpsRunningPlugin.Source
                     paceBox.SelectedIndexChanged -= new EventHandler(paceBox_SelectedIndexChanged);
                     paceBox.SelectedItem = speedUnit;
                     paceBox.SelectedIndexChanged += new EventHandler(paceBox_SelectedIndexChanged);
-                    showResults();
                 }
+                showResults(true);
                 if (m_layer != null)
                 {
                     m_layer.ClearOverlays();
@@ -433,21 +431,20 @@ namespace GpsRunningPlugin.Source
             return goals;
         }
 
-        private void calcCachedResults(IList<Goal> allGoals)
+        private void preCalcCachedResults(IList<Goal> allGoals)
         {
             IList<Goal> goalsToCalc = new List<Goal>();
             //Precalculate results, it may take more time to calc the objects than to calc results
-            //For now no precalc
-            //foreach (Goal goal in allGoals)
-            //{
-            //    if (Goal.IsZoneGoal(Settings.Image) )
-            //        //goal.Image == GoalParameter.Time ||
-            //        //goal.Image == GoalParameter.Distance ||
-            //        //goal.Image == GoalParameter.Elevation)
-            //    {
-            //        goalsToCalc.Add(goal);
-            //    }
-            //}
+            foreach (Goal goal in allGoals)
+            {
+                if (Goal.IsZoneGoal(Settings.Image) ||
+                    goal.Image == GoalParameter.Time ||
+                    goal.Image == GoalParameter.Distance ||
+                    goal.Image == GoalParameter.Elevation)
+                {
+                    goalsToCalc.Add(goal);
+                }
+            }
             if (goalsToCalc.Count > 0)
             {
                 summaryList.Visible = false;
@@ -504,14 +501,23 @@ namespace GpsRunningPlugin.Source
             { }
             minGradeBoxUpdate();
             //Cache must be thrown away
-            IList<Goal> goals = resetCachedResults();
-            calcCachedResults(goals);
-            showResults();
+            showResults(true);
         }
 
         private void minGradeBoxUpdate()
         {
             minGradeBox.Text = Settings.MinGrade.ToString("0.0 %");
+        }
+
+        private void showResults(bool resetCache)
+        {
+            if (resetCache)
+            {
+                IList<Goal> goals = resetCachedResults();
+                //no precalc after reset
+                //preCalcCachedResults(goals);
+            }
+            showResults();
         }
 
         private void showResults()
