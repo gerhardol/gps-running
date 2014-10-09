@@ -253,7 +253,14 @@ namespace GpsRunningPlugin.Source
                 useTimeXAxis = value;
             }
         }
-        
+
+        private static bool showTrailsHint;
+        public static bool ShowTrailsHint
+        {
+            get { return showTrailsHint; }
+            set { showTrailsHint = value; }
+        }
+
         private static Size windowSize; //viewWidth, viewHeight in xml
         public static Size WindowSize
         {
@@ -321,6 +328,7 @@ namespace GpsRunningPlugin.Source
             movingAverageTime = 0;
             autoZoom = true;
             showTime = true;
+            showTrailsHint = true;
             windowSize = new Size(800, 480);
 #if ST_2_1
             savedImageSize = new Size( 800, 480 );
@@ -385,6 +393,8 @@ namespace GpsRunningPlugin.Source
             if (attr.Length > 0) { showChartBar = XmlConvert.ToBoolean(attr); }
             attr = pluginNode.GetAttribute(xmlTags.showChartTools);
             if (attr.Length > 0) { showChartTools = XmlConvert.ToBoolean(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.showTrailsHint);
+            if (attr.Length > 0) { showTrailsHint = XmlConvert.ToBoolean(attr); }
 
             attr = pluginNode.GetAttribute(xmlTags.viewWidth);
             attr2 = pluginNode.GetAttribute(xmlTags.viewHeight);
@@ -476,6 +486,7 @@ namespace GpsRunningPlugin.Source
             pluginNode.SetAttribute(xmlTags.showDistance, XmlConvert.ToString(showDistance));
             pluginNode.SetAttribute(xmlTags.showChartBar, XmlConvert.ToString(ShowChartBar));
             pluginNode.SetAttribute(xmlTags.showChartTools, XmlConvert.ToString(ShowChartTools));
+            pluginNode.SetAttribute(xmlTags.showTrailsHint, XmlConvert.ToString(showTrailsHint));
 
             pluginNode.SetAttribute(xmlTags.viewWidth, XmlConvert.ToString(windowSize.Width));
             pluginNode.SetAttribute(xmlTags.viewHeight, XmlConvert.ToString(windowSize.Height));
@@ -519,6 +530,7 @@ namespace GpsRunningPlugin.Source
             public const string showDistance = "showDistance";
             public const string showChartBar = "showChartBar";
             public const string showChartTools = "showChartTools";
+            public const string showTrailsHint = "showTrailsHint";
             public const string viewWidth = "viewWidth";
             public const string viewHeight = "viewHeight";
 

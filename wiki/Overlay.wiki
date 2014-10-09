@@ -106,7 +106,22 @@ The plugin has some features put in the list menu item advanced, to use in speci
 For patches, bug reports or feature suggestions, use the Google Code issue list.
 For feedback please use the thread for this plugin at !SportTracks forum [http://www.zonefivesoftware.com/SportTracks/Forums/viewforum.php?f=31 here].
 
-==Related SportTracks plugins==
+==Trails Plugin==
+The Trails plugin has more or less all features in Overlay and a lot more. You may consider using Trails instead.
+
+[http://www.zonefivesoftware.com/sporttracks/plugins/?p=trails Trails] compares activities, normally based on positions. While it can be used to compare GPS activities without positions, Overlay is simpler in this aspect. The plugins share many features and code, as the same developer is involved in both, but most development has been put into Trails. Trails plugin also allows you to compare sections and splits of activities.
+
+The [http://code.google.com/p/trails/wiki/Features#Split_Analysis Split] trail is similar to the Overlay functionality. 
+
+Quick guide:
+ * Select the activities you are interested in (Daily Activity or Reports).
+ * Select Trails activity page
+ * Select the Splits trail in the dropdown list.
+ * Ctrl/shift click the activities you want to see in the graphs and on the map.
+
+See also the [http://code.google.com/p/trails/wiki/Tutorials Tutorial] for more information. 
+
+==Other related SportTracks plugins==
  * [http://www.zonefivesoftware.com/sporttracks/plugins/?p=unique-routes Unique Routes] View similar routes. Much of the functionality is integrated in Overlay plugin.
- * [http://www.zonefivesoftware.com/sporttracks/plugins/?p=trails Trails] Compares activities, normally based on positions. While it can be used to compare GPS activities without positions, Overlay is simpler in this aspect. Otherwise, the plugins share many features and code, as the same developers are involved in both. Trails plugin also allows you to compare sections and splits of activities.
+ * [http://www.zonefivesoftware.com/sporttracks/plugins/?p=trails Trails] see [Overlay#Trails_Plugin Trails Plugin].
  * [http://www.zonefivesoftware.com/sporttracks/plugins/?p=dot-racing Dot Racing] Non-free plugin with additional features, like integration with other old man biking plugins and as the name suggests, dot-racing.
