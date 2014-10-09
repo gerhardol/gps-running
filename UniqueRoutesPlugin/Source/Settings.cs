@@ -178,6 +178,13 @@ namespace GpsRunningPlugin.Source
             set { summaryViewSortDirection = value; }
         }
 
+        private static bool showTrailsHint;
+        public static bool ShowTrailsHint
+        {
+            get { return showTrailsHint; }
+            set { showTrailsHint = value; }
+        }
+
         private static Size windowSize; //viewWidth, viewHeight in xml
         public static Size WindowSize
         {
@@ -227,6 +234,7 @@ namespace GpsRunningPlugin.Source
             selectAll = true;
             summaryViewSortColumn = SummaryColumnIds.StartDate;
             summaryViewSortDirection = ListSortDirection.Ascending;
+            showTrailsHint = true;
             windowSize = new Size(800, 600);
 
             m_activityPageColumns = new List<string>();
@@ -288,6 +296,8 @@ namespace GpsRunningPlugin.Source
             if (attr.Length > 0) { summaryViewSortColumn = attr; }
             attr = pluginNode.GetAttribute(xmlTags.summaryViewSortDirection);
             if (attr.Length > 0) { summaryViewSortDirection = (ListSortDirection)Enum.Parse(typeof(ListSortDirection), attr); }
+            attr = pluginNode.GetAttribute(xmlTags.showTrailsHint);
+            if (attr.Length > 0) { showTrailsHint = XmlConvert.ToBoolean(attr); }
             attr = pluginNode.GetAttribute(xmlTags.viewWidth);
             attr2 = pluginNode.GetAttribute(xmlTags.viewHeight);
             if (attr.Length > 0 && attr2.Length > 0)
@@ -322,6 +332,7 @@ namespace GpsRunningPlugin.Source
             pluginNode.SetAttribute(xmlTags.showPace, XmlConvert.ToString(showPace));
             pluginNode.SetAttribute(xmlTags.summaryViewSortColumn, summaryViewSortColumn);
             pluginNode.SetAttribute(xmlTags.summaryViewSortDirection, summaryViewSortDirection.ToString());
+            pluginNode.SetAttribute(xmlTags.showTrailsHint, XmlConvert.ToString(showTrailsHint));
             pluginNode.SetAttribute(xmlTags.viewWidth, XmlConvert.ToString(windowSize.Width));
             pluginNode.SetAttribute(xmlTags.viewHeight, XmlConvert.ToString(windowSize.Height));
             String colText = null;
@@ -354,6 +365,7 @@ namespace GpsRunningPlugin.Source
             public const string showPace = "showPace";
             public const string summaryViewSortColumn = "summaryViewSortColumn";
             public const string summaryViewSortDirection = "summaryViewSortDirection";
+            public const string showTrailsHint = "showTrailsHint";
 
             public const string viewWidth = "viewWidth";
             public const string viewHeight = "viewHeight";

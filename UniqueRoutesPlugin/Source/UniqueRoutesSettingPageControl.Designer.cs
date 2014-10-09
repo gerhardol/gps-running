@@ -60,8 +60,12 @@ namespace GpsRunningPlugin.Source
             this.ignoreBeginningBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.categoryLabel = new System.Windows.Forms.Label();
+            this.boxCategory = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.percentageOff)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // resetSettings
@@ -243,19 +247,63 @@ namespace GpsRunningPlugin.Source
             this.linkLabel1.Text = "Unique Routes plugin webpage";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // categoryLabel
+            // 
+            this.categoryLabel.AutoSize = true;
+            this.categoryLabel.Location = new System.Drawing.Point(6, 13);
+            this.categoryLabel.Name = "categoryLabel";
+            this.categoryLabel.Size = new System.Drawing.Size(58, 13);
+            this.categoryLabel.TabIndex = 21;
+            this.categoryLabel.Text = "<Category:";
+            // 
+            // boxCategory
+            // 
+            this.boxCategory.AcceptsReturn = false;
+            this.boxCategory.AcceptsTab = false;
+            this.boxCategory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.boxCategory.BackColor = System.Drawing.Color.White;
+            this.boxCategory.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.boxCategory.ButtonImage = null;
+            this.boxCategory.Location = new System.Drawing.Point(65, 12);
+            this.boxCategory.MaxLength = 32767;
+            this.boxCategory.Multiline = false;
+            this.boxCategory.Name = "boxCategory";
+            this.boxCategory.ReadOnly = true;
+            this.boxCategory.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.boxCategory.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.boxCategory.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.boxCategory.Size = new System.Drawing.Size(244, 21);
+            this.boxCategory.TabIndex = 22;
+            this.boxCategory.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.boxCategory.ButtonClick += new System.EventHandler(this.boxCategory_ButtonClicked);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.boxCategory);
+            this.groupBox2.Controls.Add(this.categoryLabel);
+            this.groupBox2.Location = new System.Drawing.Point(3, 173);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(309, 39);
+            this.groupBox2.TabIndex = 23;
+            this.groupBox2.TabStop = false;
+            // 
             // UniqueRoutesSettingPageControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.resetSettings);
             this.Name = "UniqueRoutesSettingPageControl";
-            this.Size = new System.Drawing.Size(332, 170);
+            this.Size = new System.Drawing.Size(399, 251);
             ((System.ComponentModel.ISupportInitialize)(this.percentageOff)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -277,5 +325,8 @@ namespace GpsRunningPlugin.Source
         private ZoneFiveSoftware.Common.Visuals.TextBox ignoreBeginningBox;
         private ZoneFiveSoftware.Common.Visuals.TextBox ignoreEndBox;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label categoryLabel;
+        private ZoneFiveSoftware.Common.Visuals.TextBox boxCategory;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }
