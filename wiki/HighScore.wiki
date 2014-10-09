@@ -35,13 +35,22 @@ The plugin will work both by selecting a collection of activities (e.g. all your
 You don't need to specify each problem and then get the plugin to calculate it for you. The plugin automatically solves all the problems for you and present you with results that you can then browse through. If we look at how many different problems it actually solves it is the combination of <b>minimal</b>/<b>maximal</b>, <i>X</i>s, and <i>Y</i>s, so it is 2 `*` 3 `*` 6 = 36; in other words there are 36 different kinds of problems you can browse through after you applied the plugin. In addition, you can specify a grade filter, to avoid that all the high scores are displayed for downhills.
 
 =How do I use it?=
-==Short version==
- * Select the activities you are interested in.
+==Introduction==
+ * Select the activities you are interested in (Daily Activity or Reports).
  * Select activity page (or popup from Analyze menu).
  
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/highscore/highscore.png]
 
-==Long Version==
+==Suggested Use==
+The suggested usage is from [http://code.google.com/p/trails/wiki/Features#HighScore_Trail HighScore Trail]. The quick guide:
+ * Select the activities you are interested in (Daily Activity or Reports).
+ * Select Trails activity page
+ * Select the HighScore Trail in the dropdown list.
+The Trails plugin has many more features than the simple viewer in HighScore and offers for instance graphs, display on the map and a top list per result.
+
+The settings described in next section applies to the HighScore trail too.
+
+==Details==
 A good place to start when using this plugin is by looking at the settings. These can be found in the settings view under the <i>High Score</i> entry. Here you will see the five different categories of things (distance, time, elevation, heart rate, pace/speed zone) that the plugin uses to find the best solutions. By default the plugin comes with a wide range of settings which you may remove or add parts to if they do not suit you, and the plugin will use these updated values instead. Below is the settings panel.
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/highscore/Settings.png]

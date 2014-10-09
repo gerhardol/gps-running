@@ -25,6 +25,12 @@
     <Compile Include="Source\HighScoreAction.cs" />
     <Compile Include="Source\HighScoreActivityDetail.cs" />
     <Compile Include="Source\HighScoreActivityDetailPage.cs" />
+    <Compile Include="Source\HighScoreControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Source\HighScoreControl.Designer.cs">
+      <DependentUpon>HighScoreControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Source\HighScoreViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -42,6 +48,10 @@
       <DependentUpon>HighScoreSettingPageControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\HighscoreSettingsPages.cs" />
+    <EmbeddedResource Include="Source\HighScoreControl.resx">
+      <DependentUpon>HighScoreControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Source\HighScoreViewer.resx">
       <SubType>Designer</SubType>
       <DependentUpon>HighScoreViewer.cs</DependentUpon>

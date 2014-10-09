@@ -107,6 +107,13 @@ namespace GpsRunningPlugin.Source
             get { return minGrade; }
         }
 
+        private static bool showTrailsHint;
+        public static bool ShowTrailsHint
+        {
+            get { return showTrailsHint; }
+            set { showTrailsHint = value; }
+        }
+
         public static void resetDistances()
         {
             distances.Clear();
@@ -232,6 +239,7 @@ namespace GpsRunningPlugin.Source
             showTable = true;
             ignoreManualData = true;
             minGrade = -0.02;
+            showTrailsHint = true;
             windowSize = new Size(600, 500);
         }
 
@@ -344,6 +352,8 @@ namespace GpsRunningPlugin.Source
             if (attr.Length > 0) { ignoreManualData = XmlConvert.ToBoolean(attr); }
             attr = pluginNode.GetAttribute(xmlTags.minGrade);
             if (attr.Length > 0) { minGrade = XmlConvert.ToDouble(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.showTrailsHint);
+            if (attr.Length > 0) { showTrailsHint = XmlConvert.ToBoolean(attr); }
 
             attr = pluginNode.GetAttribute(xmlTags.viewWidth);
             attr2 = pluginNode.GetAttribute(xmlTags.viewHeight);
@@ -411,6 +421,7 @@ namespace GpsRunningPlugin.Source
             pluginNode.SetAttribute(xmlTags.showTable, XmlConvert.ToString(showTable));
             pluginNode.SetAttribute(xmlTags.ignoreManualData, XmlConvert.ToString(ignoreManualData));
             pluginNode.SetAttribute(xmlTags.minGrade, XmlConvert.ToString(minGrade));
+            pluginNode.SetAttribute(xmlTags.showTrailsHint, XmlConvert.ToString(showTrailsHint));
 
             pluginNode.SetAttribute(xmlTags.viewWidth, XmlConvert.ToString(windowSize.Width));
             pluginNode.SetAttribute(xmlTags.viewHeight, XmlConvert.ToString(windowSize.Height));
@@ -435,6 +446,7 @@ namespace GpsRunningPlugin.Source
             public const string showTable = "showTable";
             public const string ignoreManualData = "ignoreManualData";
             public const string minGrade = "minGrade";
+            public const string showTrailsHint = "showTrailsHint";
 
             public const string viewWidth = "viewWidth";
             public const string viewHeight = "viewHeight";

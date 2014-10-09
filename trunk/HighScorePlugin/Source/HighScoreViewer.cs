@@ -68,6 +68,15 @@ namespace GpsRunningPlugin.Source
             {
                 //expandButton.Visible = true;
             }
+            if (Settings.ShowTrailsHint)
+            {
+                String oneTimeMessage = "The Trails plugin can be used as viewer for High Scores. Trails provides many more features, for instance graphs and top lists. Just select the HighScore trail. See the HighScore or Trails documentation for more information. This message will not be shown again.";
+                DialogResult r = MessageDialog.Show(oneTimeMessage, "Trails Plugin", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (r == DialogResult.OK)
+                {
+                    Settings.ShowTrailsHint = false;
+                }
+            }
         }
         //popup dialog
         public HighScoreViewer(IDailyActivityView view)
@@ -109,17 +118,11 @@ namespace GpsRunningPlugin.Source
         {
             InitializeComponent();
             InitControls();
+            this.hsControl.setViewer(this);
 
-            domainBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            imageBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            boundsBox.DropDownStyle = ComboBoxStyle.DropDownList;
             paceBox.DropDownStyle = ComboBoxStyle.DropDownList;
             viewBox.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            domainBox.SelectedItem = Goal.translateToLanguage(Settings.Domain);
-            imageBox.SelectedItem = Goal.translateToLanguage(Settings.Image);
-
-            boundsBox.SelectedItem = Settings.UpperBound ? StringResources.Maximal : StringResources.Minimal;
             //speedUnit = getMostUsedSpeedUnit(m_activities);
             //paceBox.SelectedItem = speedUnit;
             if (Settings.ShowTable)
@@ -131,12 +134,8 @@ namespace GpsRunningPlugin.Source
                 viewBox.SelectedItem = StringResources.Graph;
             }
 
-            domainBox.SelectedIndexChanged += new EventHandler(domainBox_SelectedIndexChanged);
-            imageBox.SelectedIndexChanged += new EventHandler(imageBox_SelectedIndexChanged);
-            boundsBox.SelectedIndexChanged += new EventHandler(boundsBox_SelectedIndexChanged);
             paceBox.SelectedIndexChanged += new EventHandler(paceBox_SelectedIndexChanged);
             viewBox.SelectedIndexChanged += new EventHandler(viewBox_SelectedIndexChanged);
-            minGradeBoxUpdate();
         }
 
         ////Compatibility with old UniqueRoutes send to
@@ -187,16 +186,6 @@ namespace GpsRunningPlugin.Source
             paceBox.Items.Add(CommonResources.Text.LabelSpeed);
             viewBox.Items.Add(StringResources.Graph);
             viewBox.Items.Add(ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelList);
-            boundsBox.Items.Add(StringResources.Minimal);
-            boundsBox.Items.Add(StringResources.Maximal);
-            domainBox.Items.Add(CommonResources.Text.LabelDistance);
-            domainBox.Items.Add(CommonResources.Text.LabelElevation);
-            domainBox.Items.Add(CommonResources.Text.LabelTime);
-            imageBox.Items.Add(CommonResources.Text.LabelDistance);
-            imageBox.Items.Add(CommonResources.Text.LabelElevation);
-            imageBox.Items.Add(CommonResources.Text.LabelTime);
-            imageBox.Items.Add(StringResources.HRZone);
-            imageBox.Items.Add(Resources.HRAndSpeedZones);
 
             copyTableMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
             summaryList.LabelProvider = new ResultLabelProvider();
@@ -253,11 +242,11 @@ namespace GpsRunningPlugin.Source
 
         public void ThemeChanged(ITheme visualTheme)
         {
+            this.hsControl.ThemeChanged(visualTheme);
             //RefreshPage();
             //m_visualTheme = visualTheme;
             this.summaryList.ThemeChanged(visualTheme);
             this.chart.ThemeChanged(visualTheme);
-            this.minGradeBox.ThemeChanged(visualTheme);
 
             this.splitContainer1.Panel1.BackColor = visualTheme.Control;
             this.splitContainer1.Panel2.BackColor = visualTheme.Control;
@@ -265,19 +254,15 @@ namespace GpsRunningPlugin.Source
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
+            this.hsControl.UICultureChanged(culture);
             Remarks.Text = "";
-            label1.Text = StringResources.Find;
-            label2.Text = StringResources.PerSpecified;
             label3.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelShow;
-            minGradeLbl.Text = " " + ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelGrade + ">";
-            correctUI(new Control[] { boundsBox, domainBox, label2, imageBox, minGradeLbl, minGradeBox });
+            //correctUI(new Control[] { boundsBox, domainBox, label2, imageBox, minGradeLbl, minGradeBox });
+            this.hsControl.Width = this.Width;
 
             copyTableMenuItem.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
-            label1.Location = new Point(boundsBox.Location.X - 5 - label1.Width, label1.Location.Y);
             correctUI(new Control[] { paceBox, viewBox, Remarks });
             label3.Location = new Point(paceBox.Location.X - 5 - label3.Width, label3.Location.Y);
-            label2.Location = new Point(label2.Location.X, label1.Location.Y);
-            minGradeLbl.Location = new Point(minGradeLbl.Location.X, label1.Location.Y);
         }
 
         public bool HidePage()
@@ -469,47 +454,7 @@ namespace GpsRunningPlugin.Source
             showResults();
         }
 
-        void imageBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Settings.Image = (GoalParameter)Enum.Parse(typeof(GoalParameter), Goal.translateParameter((String)imageBox.SelectedItem), true);
-            showResults();
-        }
-
-        void domainBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Settings.Domain = (GoalParameter)Enum.Parse(typeof(GoalParameter),
-                        Goal.translateParameter((String)domainBox.SelectedItem), true);
-            //domain = Settings.Domain;
-            showResults();
-        }
-
-        private void boundsBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Settings.UpperBound = boundsBox.SelectedItem.Equals(StringResources.Maximal);
-            showResults();
-        }
-
-        //Requires that the box is left, for instance tab or selecting other control (not just click)
-        //MouseLeave or Key entered has other issues
-        void minGradeBox_Leave(object sender, System.EventArgs e)
-        {
-            try
-            {
-                Settings.MinGrade = Double.Parse(minGradeBox.Text.Replace("%", "")) / 100.0;
-            }
-            catch (Exception)
-            { }
-            minGradeBoxUpdate();
-            //Cache must be thrown away
-            showResults(true);
-        }
-
-        private void minGradeBoxUpdate()
-        {
-            minGradeBox.Text = Settings.MinGrade.ToString("0.0 %");
-        }
-
-        private void showResults(bool resetCache)
+        internal void showResults(bool resetCache)
         {
             if (resetCache)
             {

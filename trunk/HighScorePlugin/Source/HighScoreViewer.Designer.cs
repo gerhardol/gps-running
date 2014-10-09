@@ -50,11 +50,6 @@ namespace GpsRunningPlugin.Source
             this.summaryList = new ZoneFiveSoftware.Common.Visuals.TreeList();
             this.listMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyTableMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label1 = new System.Windows.Forms.Label();
-            this.boundsBox = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.imageBox = new System.Windows.Forms.ComboBox();
-            this.domainBox = new System.Windows.Forms.ComboBox();
             this.paceBox = new System.Windows.Forms.ComboBox();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.label3 = new System.Windows.Forms.Label();
@@ -62,12 +57,22 @@ namespace GpsRunningPlugin.Source
             this.chart = new ZoneFiveSoftware.Common.Visuals.Chart.ChartBase();
             this.Remarks = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.minGradeLbl = new System.Windows.Forms.Label();
-            this.minGradeBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.hsControl = new HighScoreControl();
+            this.listMenu.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // hsControl
+            // 
+            this.hsControl.AutoScroll = true;
+            this.hsControl.AutoSize = true;
+            this.hsControl.BackColor = System.Drawing.Color.Transparent;
+            this.hsControl.Location = new System.Drawing.Point(0, 0);
+            this.hsControl.Name = "hsControl";
+            this.hsControl.Size = new System.Drawing.Size(495, 28);
+            this.hsControl.TabIndex = 0;
             // 
             // summaryList
             // 
@@ -116,66 +121,6 @@ namespace GpsRunningPlugin.Source
             this.copyTableMenuItem.Name = "copyTableMenuItem";
             this.copyTableMenuItem.Size = new System.Drawing.Size(206, 22);
             this.copyTableMenuItem.Text = "<Copy table to clipboard";
-            this.copyTableMenuItem.Click += new System.EventHandler(HighScoreViewer.copyTableMenu_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 7);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(27, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Find";
-            // 
-            // boundsBox
-            // 
-            this.boundsBox.FormattingEnabled = true;
-            this.boundsBox.Location = new System.Drawing.Point(55, 4);
-            this.boundsBox.Name = "boundsBox";
-            this.boundsBox.Size = new System.Drawing.Size(66, 21);
-            this.boundsBox.TabIndex = 4;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(196, 7);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(67, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "per specified";
-            // 
-            // imageBox
-            // 
-            this.imageBox.FormattingEnabled = true;
-            this.imageBox.Location = new System.Drawing.Point(269, 4);
-            this.imageBox.Name = "imageBox";
-            this.imageBox.Size = new System.Drawing.Size(139, 21);
-            this.imageBox.TabIndex = 7;
-            // 
-            // domainBox
-            // 
-            this.domainBox.FormattingEnabled = true;
-            this.domainBox.Location = new System.Drawing.Point(127, 4);
-            this.domainBox.Name = "domainBox";
-            this.domainBox.Size = new System.Drawing.Size(63, 21);
-            this.domainBox.TabIndex = 8;
-            // 
-            // minGradeLbl
-            // 
-            this.minGradeLbl.AutoSize = true;
-            this.minGradeLbl.Location = new System.Drawing.Point(414, 7);
-            this.minGradeLbl.Name = "minGradeLbl";
-            this.minGradeLbl.Size = new System.Drawing.Size(50, 13);
-            this.minGradeLbl.TabIndex = 18;
-            this.minGradeLbl.Text = "<Grade>";
-            // 
-            // minGradeBox
-            // 
-            this.minGradeBox.Location = new System.Drawing.Point(456, 4);
-            this.minGradeBox.Name = "minGradeBox";
-            this.minGradeBox.Size = new System.Drawing.Size(50, 20);
-            this.minGradeBox.TabIndex = 19;
-            this.minGradeBox.Leave += new System.EventHandler(minGradeBox_Leave);
             // 
             // paceBox
             // 
@@ -187,8 +132,8 @@ namespace GpsRunningPlugin.Source
             // 
             // progressBar
             // 
-            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.progressBar.Location = new System.Drawing.Point(6, 4);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(478, 23);
@@ -244,17 +189,11 @@ namespace GpsRunningPlugin.Source
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.minGradeBox);
-            this.splitContainer1.Panel1.Controls.Add(this.minGradeLbl);
-            this.splitContainer1.Panel1.Controls.Add(this.Remarks);
-            this.splitContainer1.Panel1.Controls.Add(this.viewBox);
             this.splitContainer1.Panel1.Controls.Add(this.label3);
+            this.splitContainer1.Panel1.Controls.Add(this.Remarks);
             this.splitContainer1.Panel1.Controls.Add(this.paceBox);
-            this.splitContainer1.Panel1.Controls.Add(this.domainBox);
-            this.splitContainer1.Panel1.Controls.Add(this.imageBox);
-            this.splitContainer1.Panel1.Controls.Add(this.label2);
-            this.splitContainer1.Panel1.Controls.Add(this.boundsBox);
-            this.splitContainer1.Panel1.Controls.Add(this.label1);
+            this.splitContainer1.Panel1.Controls.Add(this.viewBox);
+            this.splitContainer1.Panel1.Controls.Add(this.hsControl);
             // 
             // splitContainer1.Panel2
             // 
@@ -276,6 +215,7 @@ namespace GpsRunningPlugin.Source
             this.Controls.Add(this.splitContainer1);
             this.Name = "HighScoreViewer";
             this.Size = new System.Drawing.Size(490, 116);
+            this.listMenu.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -287,16 +227,10 @@ namespace GpsRunningPlugin.Source
 
         #endregion
 
+        private HighScoreControl hsControl;
         private ZoneFiveSoftware.Common.Visuals.TreeList summaryList;
         private System.Windows.Forms.ContextMenuStrip listMenu;
         private System.Windows.Forms.ToolStripMenuItem copyTableMenuItem;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox boundsBox;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox imageBox;
-        private System.Windows.Forms.ComboBox domainBox;
-        private ZoneFiveSoftware.Common.Visuals.TextBox minGradeBox;
-        private System.Windows.Forms.Label minGradeLbl;
         private System.Windows.Forms.ComboBox paceBox;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Label label3;

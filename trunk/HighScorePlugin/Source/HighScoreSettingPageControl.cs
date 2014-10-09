@@ -72,6 +72,7 @@ namespace GpsRunningPlugin.Source
             elevationInputBox.ThemeChanged(visualTheme);
             maxPulseBox.ThemeChanged(visualTheme);
             minPulseBox.ThemeChanged(visualTheme);
+            this.highScoreControl1.ThemeChanged(visualTheme);
         }
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
@@ -96,6 +97,7 @@ namespace GpsRunningPlugin.Source
             label1.Text = UnitUtil.HeartRate.LabelAbbr + " " + ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelFrom.ToLower();
             label2.Text = UnitUtil.HeartRate.LabelAbbr + " " + ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelTo.ToLower();
             label4.Text = "(" + StringResources.TimeFormat + ")";
+            this.highScoreControl1.UICultureChanged(culture);
 
             reset();
         }
@@ -117,6 +119,7 @@ namespace GpsRunningPlugin.Source
             groupBox3.Text = UnitUtil.Elevation.LabelAxis;
             groupBox4.Text = StringResources.HRZone + UnitUtil.HeartRate.LabelAbbr2;
             groupBox5.Text = StringResources.SpeedZone;
+            groupBox6.Text = StringResources.Settings;
 
             String paceType = UnitUtil.Pace.Label;
             paceTypeBox.Items.Add(paceType);

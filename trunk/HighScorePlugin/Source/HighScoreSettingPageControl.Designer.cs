@@ -89,11 +89,14 @@ namespace GpsRunningPlugin.Source
             this.speedBox = new System.Windows.Forms.ListBox();
             this.ignoreManualBox = new System.Windows.Forms.CheckBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.highScoreControl1 = new HighScoreControl();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // distanceBox
@@ -783,6 +786,26 @@ namespace GpsRunningPlugin.Source
             this.linkLabel1.Text = "High Score plugin webpage";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.highScoreControl1);
+            this.groupBox6.Location = new System.Drawing.Point(3, 620);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(504, 45);
+            this.groupBox6.TabIndex = 26;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Settings";
+            // 
+            // highScoreControl1
+            // 
+            this.highScoreControl1.AutoScroll = true;
+            this.highScoreControl1.AutoSize = true;
+            this.highScoreControl1.BackColor = System.Drawing.Color.Transparent;
+            this.highScoreControl1.Location = new System.Drawing.Point(0,15);
+            this.highScoreControl1.Name = "highScoreControl1";
+            this.highScoreControl1.Size = new System.Drawing.Size(495, 25);
+            this.highScoreControl1.TabIndex = 25;
+            // 
             // HighScoreSettingPageControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -796,8 +819,9 @@ namespace GpsRunningPlugin.Source
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBox6);
             this.Name = "HighScoreSettingPageControl";
-            this.Size = new System.Drawing.Size(408, 618);
+            this.Size = new System.Drawing.Size(524, 666);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -808,6 +832,8 @@ namespace GpsRunningPlugin.Source
             this.groupBox4.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -858,5 +884,7 @@ namespace GpsRunningPlugin.Source
         private ZoneFiveSoftware.Common.Visuals.Button resetPaceZone;
         private System.Windows.Forms.CheckBox ignoreManualBox;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private HighScoreControl highScoreControl1;
+        private System.Windows.Forms.GroupBox groupBox6;
     }
 }
