@@ -17,7 +17,13 @@ The way it goes about evaluating if two activities are similar it tests if the t
 =Search for Similar Routes=
 The plugin can be used in several ways, also from other plugins.
 
-The plugin is activated by selecting the [http://gps-running.googlecode.com/svn/wiki/images/plugins/uniqueroutes/ActivityDetailView.png activity detail page], both in Daily Activity View and Activity Reports view.
+The suggested usage is from [http://code.google.com/p/trails/wiki/Features#UniqueRoutes_Trail UniqueRoutes Trail]. The quick guide:
+ * Select the activity.
+ * Select Trails activity page
+ * Select the UniqueRoutes Trail in the dropdown list.
+The Trails plugin has many more features than the simple viewer in UniqueRoutes and offers for instance graphs and display on the map.
+
+The plugin specific activity page is activated by selecting the [http://gps-running.googlecode.com/svn/wiki/images/plugins/uniqueroutes/ActivityDetailView.png activity detail page], both in Daily Activity View and Activity Reports view.
 
 ==Activities searched==
 ===Single Activity===
@@ -40,7 +46,7 @@ In this case, the complete route snippet (with a percent outside) must be includ
 Several other plugins has implemented support for directly using the Unique Routes plugin. Other plugins use the same settings as in Unique Routes (Radius, Category filter etc).
 
  * Search for similar activities:  [http://www.zonefivesoftware.com/sporttracks/plugins/?p=overlay Overlay], [http://www.zonefivesoftware.com/sporttracks/plugins/?p=matrix Matrix], [http://www.zonefivesoftware.com/sporttracks/plugins/?p=dot-racing Dot Racing]
- * Search for similar trails (route snippets/parts of activities): [http://www.zonefivesoftware.com/sporttracks/plugins/?p=trails Trails] - allows viewing the results in Graphs too. See [http://code.google.com/p/trails/wiki/Features#Add_similar_to_Unique_Routes Trails] documentation for more features.
+ * Search for similar trails (route snippets/parts of activities): [http://www.zonefivesoftware.com/sporttracks/plugins/?p=trails Trails] - allows viewing the results in Graphs too. See [http://code.google.com/p/trails/wiki/Features#UniqueRoutes_Trail UniqueRoutes Trail] and [http://code.google.com/p/trails/wiki/Features#Add_similar_with_UniqueRoutes Add similar with UniqueRoutes] for more features.
  * Mark [UniqueRoutes#Common_Stretches Common Stretches] to mark the parts matching the reference result. [http://www.zonefivesoftware.com/sporttracks/plugins/?p=trails Trails]
  * Use [UniqueRoutes#Common_Stretches Common Stretches] to set offset. [http://www.zonefivesoftware.com/sporttracks/plugins/?p=overlay Overlay]
  

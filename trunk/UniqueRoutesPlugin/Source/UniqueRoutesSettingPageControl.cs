@@ -41,10 +41,12 @@ namespace GpsRunningPlugin.Source
     public partial class UniqueRoutesSettingPageControl : UserControl
     {
         private bool m_showPage = false;
+        private ITheme m_visualTheme;
 
         public UniqueRoutesSettingPageControl()
         {
             InitializeComponent();
+            InitControls();
             bandwidthBox.LostFocus += new EventHandler(bandwidthBox_LostFocus);
             percentageOff.LostFocus += new EventHandler(percentageOff_LostFocus);
             hasDirectionBox.LostFocus += new EventHandler(hasDirectionBox_LostFocus);
@@ -55,12 +57,20 @@ namespace GpsRunningPlugin.Source
             Plugin.GetApplication().SystemPreferences.PropertyChanged += new PropertyChangedEventHandler(UniqueRoutesSettingPageControl_PropertyChanged);
         }
 
+        void InitControls()
+        {
+            this.boxCategory.ButtonImage = Properties.Resources.DropDown;
+        }
+
         public void ThemeChanged(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme)
         {
+            m_visualTheme = visualTheme;
             this.bandwidthBox.ThemeChanged(visualTheme);
             this.ignoreBeginningBox.ThemeChanged(visualTheme);
             this.ignoreEndBox.ThemeChanged(visualTheme);
+            this.boxCategory.ThemeChanged(visualTheme);
         }
+
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
             resetSettings.Text = StringResources.ResetAllSettings;
@@ -77,6 +87,11 @@ namespace GpsRunningPlugin.Source
             label8.Text = Resources.IgnoreEndOfRoute + ":";
             precedeControl(label8, ignoreEndBox);
             //labelPercentOutsideUnit.Text = CommonResources.Text.LabelPercent;
+            UniqueRoutesActivityDetailView.setCategoryLabel(this.categoryLabel, this.boxCategory, 0);
+            this.boxCategory.Location = new Point(categoryLabel.Location.X + categoryLabel.Width + 3,
+                this.boxCategory.Location.Y);
+            this.boxCategory.Size = new Size(this.groupBox2.Size.Width - boxCategory.Location.X - 3,
+                boxCategory.Size.Height);
         }
 
         public bool HidePage()
@@ -174,6 +189,12 @@ namespace GpsRunningPlugin.Source
             }
         }
 
+        private void boxCategory_ButtonClicked(object sender, EventArgs e)
+        {
+            bool select = UniqueRoutesActivityDetailView.boxCategory_ButtonClickedCommon(categoryLabel, boxCategory,
+                0, m_visualTheme);
+        }
+
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
@@ -183,7 +204,7 @@ namespace GpsRunningPlugin.Source
             }
             catch(Exception ex)
             {
-                MessageBox.Show("Exception encountered launching browser", "Launching other application"+ex,
+                MessageDialog.Show("Exception encountered launching browser", "Launching other application" + ex,
                                 MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             }
        }

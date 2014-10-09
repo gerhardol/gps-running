@@ -80,6 +80,16 @@ namespace GpsRunningPlugin.Source
             {
                 //expandButton.Visible = true;
             }
+
+            if (Settings.ShowTrailsHint)
+            {
+                String oneTimeMessage = "The Trails plugin can be used as viewer for Unique Routes to get more features, for instance graphs. Just select the UniqueRoutes trail in Trails. See the UniqueRoutes or Trails documentation for more information. This message will not be shown again.";
+                DialogResult r = MessageDialog.Show(oneTimeMessage, "Trails Plugin", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (r == DialogResult.OK)
+                {
+                    Settings.ShowTrailsHint = false;
+                }
+            }
         }
 #endif
         public UniqueRoutesActivityDetailView()
@@ -198,8 +208,7 @@ namespace GpsRunningPlugin.Source
             //summaryLabel, CommonStretches column, setTable()
             m_culture = culture;
 
-            setCategoryLabel();
-            this.categoryLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelCategory + ":";
+            setCategoryLabel(this.categoryLabel, this.boxCategory, this.m_selectedActivities.Count);
             //btnChangeCategory.Text = StringResources.ChangeCategory;
             copyTable.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
             RefreshColumns();
@@ -369,33 +378,35 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        private void setCategoryLabel()
+        internal static void setCategoryLabel(System.Windows.Forms.Label categoryLabel,
+            ZoneFiveSoftware.Common.Visuals.TextBox boxCategory, int noOfSelectedActivities)
         {
-            if (m_selectedActivities.Count > 1)
+            categoryLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelCategory + ":";
+            if (noOfSelectedActivities > 1)
             {
-                this.boxCategory.Text = string.Format(Resources.LimitingToSelected, m_selectedActivities.Count);
+                boxCategory.Text = string.Format(Resources.LimitingToSelected, noOfSelectedActivities);
                 //categoryLabel.Text = string.Format(Resources.LimitingToSelected, selectedActivities.Count);
             }
             else
             {
                 if (Settings.SelectedCategory == null)
                 {
-                    this.boxCategory.Text = Util.StringResources.UseAllCategories;
+                    boxCategory.Text = Util.StringResources.UseAllCategories;
                     //categoryLabel.Text = Resources.IncludeAllActivitiesInSearch;
                 }
                 else
                 {
-                    this.boxCategory.Text = Settings.printFullCategoryPath(Settings.SelectedCategory);
+                    boxCategory.Text = Settings.printFullCategoryPath(Settings.SelectedCategory);
                     //categoryLabel.Text = String.Format("{0}",//Resources.IncludeOnlyCategory,
                     //    Settings.printFullCategoryPath(Settings.SelectedCategory));
                 }
             }
 #if !ST_2_1
-            if (null != m_view && m_view.RouteSelectionProvider.SelectedItems.Count > 0)
-            {
-                //TODO: Special info for selection?
-                //categoryLabel.Text += " Using selected points";
-            }
+            //if (null != m_view && m_view.RouteSelectionProvider.SelectedItems.Count > 0)
+            //{
+            //    //TODO: Special info for selection?
+            //    //categoryLabel.Text += " Using selected points";
+            //}
 #endif
             //btnChangeCategory.Location = new Point(
             //        summaryLabel.Location.X + summaryLabel.Width + 5,
@@ -416,7 +427,7 @@ namespace GpsRunningPlugin.Source
 
         private void setSize()
         {
-            setCategoryLabel();
+            setCategoryLabel(this.categoryLabel, this.boxCategory, this.m_selectedActivities.Count);
             Refresh();
         }
 
@@ -896,7 +907,7 @@ namespace GpsRunningPlugin.Source
         //    _needsRecalculation = true;
         //    calculate();
         //}
-        private void addNode(IActivityCategory category, System.Collections.IList parentCategories)
+        private static void addNode(IActivityCategory category, System.Collections.IList parentCategories)
         {
             if (parentCategories != null)
             {
@@ -908,10 +919,12 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        private void boxCategory_ButtonClicked(object sender, EventArgs e)
+        internal static bool boxCategory_ButtonClickedCommon(System.Windows.Forms.Label categoryLabel,
+            ZoneFiveSoftware.Common.Visuals.TextBox boxCategory, 
+            int noOfSelectedActivities, ITheme visualTheme)
         {
             TreeListPopup treeListPopup = new TreeListPopup();
-            treeListPopup.ThemeChanged(m_visualTheme);
+            treeListPopup.ThemeChanged(visualTheme);
             treeListPopup.Tree.Columns.Add(new TreeList.Column());
 
             IList<object> list = new List<object>();
@@ -938,6 +951,7 @@ namespace GpsRunningPlugin.Source
             }
             treeListPopup.Tree.Expanded = parentCategories;
 
+            bool result = false;
             treeListPopup.ItemSelected += delegate(object sender2, TreeListPopup.ItemSelectedEventArgs e2)
             {
                 if (e2.Item is IActivityCategory)
@@ -948,11 +962,22 @@ namespace GpsRunningPlugin.Source
                 {
                     Settings.SelectedCategory = null;
                 }
-                setCategoryLabel();
+                setCategoryLabel(categoryLabel, boxCategory, noOfSelectedActivities);
+                result = true;
+            };
+            treeListPopup.Popup(boxCategory.Parent.RectangleToScreen(boxCategory.Bounds));
+            return result;
+        }
+
+        private void boxCategory_ButtonClicked(object sender, EventArgs e)
+        {
+            bool select = UniqueRoutesActivityDetailView.boxCategory_ButtonClickedCommon(categoryLabel, boxCategory, 
+                this.m_selectedActivities.Count, m_visualTheme);
+            if (select)
+            {
                 m_needsRecalculation = true;
                 calculate();
-            };
-            treeListPopup.Popup(this.boxCategory.Parent.RectangleToScreen(this.boxCategory.Bounds));
+            }
         }
 
         private void pluginBox_SelectedIndexChanged(object sender, EventArgs e)
