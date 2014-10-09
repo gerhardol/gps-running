@@ -63,7 +63,18 @@ namespace GpsRunningPlugin.Source
                 expandButton.Visible = true;
             }
             m_layer = TrailPointsLayer.Instance((IView)view);
+
+            if (Settings.ShowTrailsHint)
+            {
+                String oneTimeMessage = "The Trails plugin feature set is more or less superseding Overlay, you should try Trails instead. Just select the Splits trail. See the Overlay or Trails documentation for more information. This message will not be shown again.";
+                DialogResult r = MessageDialog.Show(oneTimeMessage, "Trails Plugin", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (r == DialogResult.OK)
+                {
+                    Settings.ShowTrailsHint = false;
+                }
+            }
         }
+
         //popup dialog
         public OverlayView(IDailyActivityView view)
             : this(true)
