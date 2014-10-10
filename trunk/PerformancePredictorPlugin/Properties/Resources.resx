@@ -296,7 +296,7 @@
     <value>Extrapolate</value>
   </data>
   <data name="AgeNotification" xml:space="preserve">
-    <value>Affect from age tables</value>
+    <value>Effect from age tables</value>
   </data>
   <data name="AgeProjectedImpact" xml:space="preserve">
     <value>Projected impact of age on</value>

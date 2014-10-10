@@ -5,12 +5,23 @@
 
 More or less official beta releases are available in the Downloads section. See each plugin for detailed description of functions.
 
-(unreleased)
- * Compare heartrate and distance differences correctly, when a track is not starting at the same time as the activity.
+2.0.419 2014-10-10 (Plugin Catalog)
+
+HighScore:
+ * Selection settings are available in Settings, in addition to the Activity page. This is to simplify use from other plugins, like using Trails as a viewer for results.
+ * A one time popup when selecting the activity page, that informs about Trails integration.
+ * Something like "Minimum Time over Time" does not make sense, no results can be displayed. The plugin now changes the "the other changed value" to Distance or Time instead to simplify handling.
  
-Note:
- * Differences over time still has the offset problem.
- * Offsets are always over time, also when Xaxis is Distance.
+UniqueRoutes:
+ * Make category selector available in the Settings (in addition to the Activity page). This is to simplify use from other plugins, like using Trails as a viewer for results.
+ * A one time popup when selecting the activity page, that informs about Trails integration.
+ 
+Overlay:
+ * Compare heart rate and distance differences correctly, when a track is not starting at the same time as the activity.
+ Note:
+  - Differences over time still has the offset problem.
+  - Offsets are always over time, also when Xaxis is Distance.
+ * A one time popup when selecting the activity page, that informs about Trails plugin.
 
 2.0.411 2014-09-14
 
