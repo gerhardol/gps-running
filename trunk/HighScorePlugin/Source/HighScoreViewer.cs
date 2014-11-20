@@ -79,14 +79,14 @@ namespace GpsRunningPlugin.Source
             }
         }
         //popup dialog
-        public HighScoreViewer(IDailyActivityView view)
+        internal HighScoreViewer(IDailyActivityView view)
             : this(true)
         {
             m_view = view;
             m_layer = TrailPointsLayer.Instance((IView)view);
             this.ShowPage("");
         }
-        public HighScoreViewer(IActivityReportsView view)
+        internal HighScoreViewer(IActivityReportsView view)
             : this(true)
         {
             m_layer = TrailPointsLayer.Instance((IView)view);
