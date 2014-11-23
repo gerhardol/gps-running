@@ -6,7 +6,7 @@
 This page describes how to make translations of the GPS-Running and related plugins.
 
 = Details =
-The translation strings are stored in a Google SpreadSheet. Currently several plugins currently use the same spreadsheet, just separate tabs: https://spreadsheets.google.com/ccc?key=tNZna7OU_2RlRYv5Iv_csgg
+The translation strings are stored in a Google Docs. Currently several plugins currently use the same spreadsheet, just separate tabs: https://docs.google.com/spreadsheets/d/1gy-zMCf1eyEjX49F5ZcV4eZTDDsGC7qKJIfOMy7082c/edit
 To get access to write to the Spreadsheet, contact the project owner (PM ST user gerhard) with your Google account email address (not necessarily gmail).
 
 Use marker ##NOTRANSLATE## if a string should not be translated (for instance the name of the plugin).
@@ -19,7 +19,7 @@ See the Developers wiki for pulling the text from the web spreadsheet to the cod
 Links to resources for this and other plugins:
   * http://code.google.com/p/gps-running/source/browse/trunk/Resources.xls 
   * http://code.google.com/p/sporttracks-miscplugin/source/browse/trunk/Resources.xls 
-  * http://code.google.com/p/trails/source/browse/trunk/Resources.xls
+  * http://code.google.com/p/trails/source/browse/trunk/Resources.xlsx
   * http://code.google.com/p/sporttracks-activitypicture/source/browse/trunk/Resources.xls  
   * http://matrix.codeplex.com/SourceControl/list/changesets (It seems like the complete blob has to be downloaded for Matrix) 
 
