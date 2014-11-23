@@ -10,7 +10,7 @@ Some specific notes for gps-running plugins, as well as many other plugins gerha
 The ST plugin API is described on the !SportTracks site. Please sign up to the Developer Network before working with ST plugins (legal requirement). 
 http://www.zonefivesoftware.com/sporttracks/developers/
 
-MS Visual Studio Express 2012 is used, but at the time of conversion, VSE 2010, 2008 would happily work with the projects. The solution file can be considered as a template only (use your own copy) and is in VSE 2012 format.
+MS Visual Studio Express 2013 is used, but at the time of conversion versions after 2008 should happily work with the projects. The solution file can be considered as a template only (use your own copy) and is in VSE 2012 format.
  
 This project is adapted to be used without user changes. To achieve this in a simple way, the common paths etc are separated to a common file:
   # Program paths etc uses environment variables
@@ -43,8 +43,9 @@ The build event also creates .stplugin packages. This should be automatic if you
 ===Translations===
 The master copy for translations is done in a Spreadsheet, the .resx files are generated from the source. The master Resources.resx and !StringResources.resx files must be updated correctly for each plugin, the i18.pl script described below updates the translations with the info from the spread sheet.
 
-The generally used "master copy" of the spreadsheet is a Google Spreadsheet document. 
-https://spreadsheets.google.com/ccc?key=tNZna7OU_2RlRYv5Iv_csgg
+The generally used "master copy" of the spreadsheet is a Google Spreadsheet document.
+https://docs.google.com/spreadsheets/d/1gy-zMCf1eyEjX49F5ZcV4eZTDDsGC7qKJIfOMy7082c/edit#gid=0 
+
 The spreadsheet contains several plugins, each with a separate sheet.
 
 Note: The i18.pl script is setup to pull the spreadsheet contents automatically. The functionality is not working in a simple way after Google changed the API, there are workarounds. The perl script uses the wget utility, that must be setup for SSL, for instance Cygwin GNUtls package.
@@ -54,13 +55,10 @@ Instructions:
   # Add all master strings and the master language to the spreadsheet. All fields in the plugin must be included here, the script below will not change the "master" .resx, each translation will have the same fields as the master.
 Another way to express this: The English strings in the second column is not pushed to the .resx files at generation. The script will list the differences, if you have KDiff3 installed the differences will be shown char by char.
   # If the information cannot be pulled with the script:
-    # Save a .xls (possibly changed to .ods) in the repository.
-  (several plugins use same spreadsheet) https://spreadsheets.google.com/ccc?key=tNZna7OU_2RlRYv5Iv_csgg&output=xls
+    # Save a .xlsx (possibly changed to .ods) in the repository.
+  (several plugins use same spreadsheet) https://docs.google.com/spreadsheets/export?id=1gy-zMCf1eyEjX49F5ZcV4eZTDDsGC7qKJIfOMy7082c&exportFormat=xlsx
     # Save the file in .csv format, Field separation ",", specify the character format to be in UTF-8 (important!). These settings are default in Google SpreadSheet, but may have to be adjusted in OpenOffice/Excel.
-    For GPS-Running (gid param differs): https://spreadsheets.google.com/ccc?key=tNZna7OU_2RlRYv5Iv_csgg&output=csv&gid=0
-    or
-    https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key=tNZna7OU_2RlRYv5Iv_csgg&outputFormat=csv&gid=0
-
+    For GPS-Running (gid param differs): https://docs.google.com/spreadsheets/export?id=1gy-zMCf1eyEjX49F5ZcV4eZTDDsGC7qKJIfOMy7082c&exportFormat=csv&gid=0
   # The script that updates translations is written by ST user markw65 (post about this in the [http://www.zonefivesoftware.com/SportTracks/Forums/viewtopic.php?p=34501#34501 invitational ST developers forum] and used in the !ApplyRoutes plugin, with additions. The script is written in perl. I use the script in Cygwin, but other perl versions should work too (strawberry Perl is known to be working). The script requires some perl modules like XML::Simple. You will get messages when running it...
   # The script requires no parameters when pulling the spreadsheet from the net. If the copy is local, check the script util/i18n.pl, to see how to adapt inparameters as paths. Example how I run it from the trunk directory with a local file:
  {{{$ util/i18n.pl . . .}}}
