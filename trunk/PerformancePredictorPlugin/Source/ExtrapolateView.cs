@@ -517,13 +517,13 @@ namespace GpsRunningPlugin.Source
             if (this.m_actualAge == null || float.IsNaN((float)this.m_actualAge))
             {
                 this.m_actualAge = (float)(m_ppcontrol.SingleActivity.StartTime - Plugin.GetApplication().Logbook.Athlete.DateOfBirth).TotalDays/365.24f;
-                PredictWavaTime.Sex = Plugin.GetApplication().Logbook.Athlete.Sex;
+                Predict.Sex = Plugin.GetApplication().Logbook.Athlete.Sex;
                 this.m_idealAge = PredictWavaTime.IdealAge((float)m_ppcontrol.Distance);
             }
             if (float.IsNaN((float)this.m_actualAge))
             {
                 ageLabel.Text = Resources.AgeUndefined;
-                this.m_actualAge = PredictWavaTime.DefaultAge;
+                this.m_actualAge = Predict.DefaultAge;
                 this.m_idealAge = PredictWavaTime.IdealAge((float)m_ppcontrol.Distance);
             }
 
@@ -769,7 +769,7 @@ namespace GpsRunningPlugin.Source
                 float idealAge = PredictWavaTime.IdealAge((float)dist);
                 double idealAgeTime = PredictWavaTime.IdealTime((float)dist, idealAge);
                 float actualAge = (float)(act.StartTime - Plugin.GetApplication().Logbook.Athlete.DateOfBirth).TotalDays / 365.24f;
-                PredictWavaTime.Sex = Plugin.GetApplication().Logbook.Athlete.Sex;
+                Predict.Sex = Plugin.GetApplication().Logbook.Athlete.Sex;
                 ideal = PredictWavaTime.WavaPredict(dist, dist, ideal, idealAge, actualAge);
             }
             ideal = (Predict.Predictor(Settings.Model))(new_dist, dist, TimeSpan.FromSeconds(ideal));

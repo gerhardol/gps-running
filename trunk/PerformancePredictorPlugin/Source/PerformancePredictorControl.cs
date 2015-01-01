@@ -649,19 +649,24 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             }
         }
 
+        private void predict_Click(PredictionModel pred)
+        {
+            Settings.Model = pred;
+            syncToolBarToState();
+            syncMenuToState();
+            //setView();
+            predictorView.setData();
+            trainingView.RefreshData();
+            extrapolateView.RefreshData();
+        }
+
         private void daveCameron_Click(object sender, EventArgs e)
         {
             if (m_showPage && (
                 sender is RadioButton && daveCameronButton.Checked ||
                 sender is ToolStripMenuItem && !daveCameronMenuItem.Checked))
             {
-                Settings.Model = PredictionModel.DAVE_CAMERON;
-                syncToolBarToState();
-                syncMenuToState();
-                //setView();
-                predictorView.setData();
-                trainingView.RefreshData();
-                extrapolateView.RefreshData();
+                predict_Click(PredictionModel.DAVE_CAMERON);
             }
         }
 
@@ -671,13 +676,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 sender is RadioButton && peteRiegelButton.Checked ||
                 sender is ToolStripMenuItem && !peteRiegelMenuItem.Checked))
             {
-                Settings.Model = PredictionModel.PETE_RIEGEL;
-                syncToolBarToState();
-                syncMenuToState();
-                //setView();
-                predictorView.setData();
-                trainingView.RefreshData();
-                extrapolateView.RefreshData();
+                predict_Click(PredictionModel.PETE_RIEGEL);
             }
         }
 
@@ -687,13 +686,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 sender is RadioButton && wavaButton.Checked ||
                 sender is ToolStripMenuItem && !wavaMenuItem.Checked))
             {
-                Settings.Model = PredictionModel.WAVA;
-                syncToolBarToState();
-                syncMenuToState();
-                //setView();
-                predictorView.setData();
-                trainingView.RefreshData();
-                extrapolateView.RefreshData();
+                predict_Click(PredictionModel.WAVA);
             }
         }
 

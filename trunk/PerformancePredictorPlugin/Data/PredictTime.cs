@@ -32,31 +32,15 @@ using GpsRunningPlugin.Properties;
 
 namespace GpsRunningPlugin.Source
 {
+    public enum PredictionModel
+    {
+        //TODO: Implement Vdot, Elinder, Purdy, adjust Riegel?
+        DAVE_CAMERON, PETE_RIEGEL, WAVA, VDOT, ELINDER
+    }
+
     public class Predict
     {
         public delegate double PredictTime(double new_dist, double old_dist, TimeSpan old_time);
-
-        public static PredictTime Cameron = delegate(double new_dist, double old_dist, TimeSpan old_time)
-                    {
-                        double a = 13.49681 - (0.000030363 * old_dist)
-                            + (835.7114 / Math.Pow(old_dist, 0.7905));
-                        double b = 13.49681 - (0.000030363 * new_dist)
-                            + (835.7114 / Math.Pow(new_dist, 0.7905));
-                        double new_time = (old_time.TotalSeconds / old_dist) * (a / b) * new_dist;
-                        return new_time;
-                    };
-
-        public static PredictTime Riegel = delegate(double new_dist, double old_dist, TimeSpan old_time)
-        {
-            double new_time = old_time.TotalSeconds * Math.Pow(new_dist / old_dist, 1.06);
-            return new_time;
-        };
-
-        public static PredictTime Wava = delegate(double new_dist, double old_dist, TimeSpan old_time)
-        {
-            double new_time = PredictWavaTime.WavaPredict(new_dist, old_dist, old_time);
-            return new_time;
-        };
 
         public static PredictTime Predictor(PredictionModel model)
         {
@@ -69,8 +53,72 @@ namespace GpsRunningPlugin.Source
                     return Predict.Riegel;
                 case PredictionModel.WAVA:
                     return Predict.Wava;
+                case PredictionModel.VDOT:
+                    return Predict.Vdot;
+                case PredictionModel.ELINDER:
+                    return Predict.Elinder;
             }
         }
+
+        public static AthleteSex Sex = AthleteSex.NotSpecified;
+        public static float CurrentAge = DefaultAge;
+        public static float DefaultAge = 25f;
+        public static void SetAgeSexFromActivity(IActivity act)
+        {
+            float age = (float)(act.StartTime - Plugin.GetApplication().Logbook.Athlete.DateOfBirth).TotalDays / 365.24f;
+            Predict.Sex = Plugin.GetApplication().Logbook.Athlete.Sex;
+            if (!float.IsNaN(age))
+            {
+                Predict.CurrentAge = age;
+            }
+        }
+
+        /*************************************/
+        public static PredictTime Cameron = delegate(double new_dist, double old_dist, TimeSpan old_time)
+        {
+            double a = 13.49681 - (0.000030363 * old_dist)
+                + (835.7114 / Math.Pow(old_dist, 0.7905));
+            double b = 13.49681 - (0.000030363 * new_dist)
+                + (835.7114 / Math.Pow(new_dist, 0.7905));
+            double new_time = (old_time.TotalSeconds / old_dist) * (a / b) * new_dist;
+            return new_time;
+        };
+
+        //Possible: Riegel, other sports:
+        //http://www.runscore.com/coursemeasurement/Articles/ARHE.pdf
+        public static PredictTime Riegel = delegate(double new_dist, double old_dist, TimeSpan old_time)
+        {
+            double new_time = old_time.TotalSeconds * Math.Pow(new_dist / old_dist, 1.06);
+            return new_time;
+        };
+
+        public static PredictTime Elinder = delegate(double new_dist, double old_dist, TimeSpan old_time)
+        {
+            return PredictElinderTime.Predict(new_dist, old_dist, old_time);
+        };
+
+        public static PredictTime Wava = delegate(double new_dist, double old_dist, TimeSpan old_time)
+        {
+            double new_time = PredictWavaTime.WavaPredict(new_dist, old_dist, old_time);
+            return new_time;
+        };
+
+        //Possible: Purdy points http://run-down.com/statistics/calcs_explained.php
+
+        //http://run-down.com/statistics/calcs_explained.php
+/*        VO2 Max: This is the most complicated model to calculate, as the times for each distance must be found by narrowing down a time prediction until they are "close enough" through various combinations of Newton's Method and derivatives of quadratic equations. For the Run-Down calculator, times within a tenth of a second or 0.001% of the time prediction, which ever is less, were deemed reasonable. This is especially true since at most a tenth of a second in a distance race is negligible and the VO2 Max predictions are not very accurate in the first place for events that are short enough for 0.001% to be meaningful. The standard predictions for calculating VO2 Max are:
+
+percent_max = 0.8 + 0.1894393 * e^(-0.012778 * time) + 0.2989558 * e^(-0.1932605 * time)
+vo2 = -4.60 + 0.182258 * velocity + 0.000104 * velocity^2
+vo2max = vo2 / percent_max
+
+where time is in minutes and velocity is in meters per minute. These equations are also used for working backward to determine a time corresponding to a known VO2 Max and distance, although it requires approximating percent_max, combining equations, and treating vo2 as a quadratic equation to solve for velocity, which is in turn used to calculate time (time = distance / velocity) and check how close the initial time estimate was.
+*/
+        public static PredictTime Vdot = delegate(double new_dist, double old_dist, TimeSpan old_time)
+        {
+            double new_time = old_time.TotalSeconds;//xxx * getTimeFactorFromAdjVdot(getVdot(new_dist / old_dist, 1.06);
+            return new_time;
+        };
 
         /***********************************************************/
 
@@ -119,10 +167,5 @@ namespace GpsRunningPlugin.Source
         {
             return Math.Pow(1 / ajustedVdotFactor, 0.83);
         }
-    }
-
-    public enum PredictionModel
-    {
-        DAVE_CAMERON, PETE_RIEGEL, WAVA
     }
 }
