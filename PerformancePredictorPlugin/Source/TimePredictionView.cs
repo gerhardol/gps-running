@@ -238,16 +238,17 @@ namespace GpsRunningPlugin.Source
                 m_predictorData[model].series.Points.Clear();
                 m_predictorData[model].isData = true;
 
+                if (m_ppcontrol.Activities.Count > 0)
+                {
+                    Predict.SetAgeSexFromActivity(m_ppcontrol.Activities[0]);
+                }
+
                 if (!m_ppcontrol.IsPartial && (m_ppcontrol.Activities.Count > 1 ||
                     (m_ppcontrol.Activities.Count == 1 && m_ppcontrol.ChkHighScore)))
                 {
                     RefreshColumns(true);
                     //Predict using one or many activities (check done that HS enabled prior)
                     //makeData(m_predictorData[model].series, m_predictorData[model].result, Predict.Predictor(model));
-                    if (model == PredictionModel.WAVA)
-                    {
-                        PredictWavaTime.SetAgeSexFromActivity(m_ppcontrol.Activities[0]);
-                    }
                     m_predictorData[model].result = getResults(m_predictorData[model].series, Predict.Predictor(model), m_ppcontrol.Activities, progressBar);
                 }
                 else if (m_ppcontrol.IsPartial || m_ppcontrol.SingleActivity != null)
@@ -263,10 +264,6 @@ namespace GpsRunningPlugin.Source
                         activities = new List<IActivity> { m_ppcontrol.SingleActivity };
                     }
 
-                    if (model == PredictionModel.WAVA)
-                    {
-                        PredictWavaTime.SetAgeSexFromActivity(activities[0]);
-                    }
                     if (m_ppcontrol.Distance > 0 && m_ppcontrol.Time.TotalSeconds > 0)
                     {
                         //Predict

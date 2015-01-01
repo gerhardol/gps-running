@@ -16,6 +16,7 @@
     <Compile Include="Data\AgeLabelProvider.cs" />
     <Compile Include="Data\AgeResult.cs" />
     <Compile Include="Data\PredictTime.cs" />
+    <Compile Include="Data\PredictElinderTime.cs" />
     <Compile Include="Data\ShoeResult.cs" />
     <Compile Include="Data\ShoeLabelProvider.cs" />
     <Compile Include="Data\PaceTempoLabelProvider.cs" />

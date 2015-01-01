@@ -34,23 +34,19 @@ namespace GpsRunningPlugin.Source
 {
     public class PredictWavaTime
     {
-        public static AthleteSex Sex = AthleteSex.NotSpecified;
-        public static float CurrentAge = DefaultAge;
-        public static float DefaultAge = 25f;
-
         public static float IdealAge(float dist)
         {
-            return Wava.IdealAge(PredictWavaTime.Sex, dist);
+            return Wava.IdealAge(Predict.Sex, dist);
         }
 
         public static float IdealTime(float dist, float age)
         {
-            return Wava.IdealTime(PredictWavaTime.Sex, dist, age);
+            return Wava.IdealTime(Predict.Sex, dist, age);
         }
 
         public static double WavaPredict(double new_dist, double old_dist, TimeSpan old_time)
         {
-            return WavaPredict(new_dist, old_dist, old_time, CurrentAge, CurrentAge);
+            return WavaPredict(new_dist, old_dist, old_time, Predict.CurrentAge, Predict.CurrentAge);
         }
         public static double WavaPredict(double new_dist, double old_dist, TimeSpan old_time, float newAge, float oldAge)
         {
@@ -58,22 +54,12 @@ namespace GpsRunningPlugin.Source
         }
         public static double WavaPredict(double new_dist, double old_dist, double old_time, float newAge, float oldAge)
         {
-            float oldIdealTime = Wava.IdealTime(PredictWavaTime.Sex, (float)old_dist, oldAge);
-            float newIdealTime = Wava.IdealTime(PredictWavaTime.Sex, (float)new_dist, newAge);
+            float oldIdealTime = Wava.IdealTime(Predict.Sex, (float)old_dist, oldAge);
+            float newIdealTime = Wava.IdealTime(Predict.Sex, (float)new_dist, newAge);
             double new_time = old_time / oldIdealTime * newIdealTime;
             if (double.IsNaN(new_time))
             { }
             return new_time;
-        }
-
-        public static void SetAgeSexFromActivity(IActivity act)
-        {
-            float age = (float)(act.StartTime - Plugin.GetApplication().Logbook.Athlete.DateOfBirth).TotalDays / 365.24f;
-            PredictWavaTime.Sex = Plugin.GetApplication().Logbook.Athlete.Sex;
-            if(!float.IsNaN(age))
-            {
-                CurrentAge = age;
-            }
         }
 
         private class Wava
