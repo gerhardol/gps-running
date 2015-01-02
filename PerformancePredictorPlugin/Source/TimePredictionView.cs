@@ -169,7 +169,11 @@ namespace GpsRunningPlugin.Source
             m_showPage = false;
 
             //Get the (cached?) list/chart
-            makeData(Settings.Model);
+            foreach (PredictionModel t in PredictionModelUtil.List)
+            {
+                makeData(t);
+            }
+            summaryList.RowData = m_predictorData[Settings.Model].result;
             if (chart != null)
             {
                 chart.YAxis.Formatter = new Formatter.SecondsToTime();
@@ -188,13 +192,36 @@ namespace GpsRunningPlugin.Source
                 }
 
                 chart.DataSeries.Clear();
-                ChartDataSeries tseries = new ChartDataSeries(chart, chart.YAxis);
-                TimePredictionResultUtil.getTimeSeries(m_predictorData[Settings.Model].result, tseries);
-                chart.DataSeries.Add(tseries);
+                foreach (PredictionModel t in PredictionModelUtil.List)
+                {
+                    if (!m_predictorData[Settings.Model].isData)
+                    {
+                        continue;
+                    }
+                    PredictionModelUtil.ChartColors c;
+                    if (t == Settings.Model)
+                    {
+                        c = new PredictionModelUtil.ChartColors(Color.Black);
+                    }
+                    else
+                    {
+                        c = PredictionModelUtil.Colors(t);
+                    }
 
-                ChartDataSeries pseries = new ChartDataSeries(chart, chart.YAxisRight[0]);
-                TimePredictionResultUtil.getSpeedSeries(m_predictorData[Settings.Model].result, pseries, Settings.ShowPace);
-                chart.DataSeries.Add(pseries);
+                    ChartDataSeries tseries = new ChartDataSeries(chart, chart.YAxis);
+                    tseries.LineColor = c.LineNormal;
+                    tseries.FillColor = c.FillNormal;
+                    tseries.SelectedColor = c.FillSelected;
+                    TimePredictionResultUtil.getTimeSeries(m_predictorData[t].result, tseries);
+                    chart.DataSeries.Add(tseries);
+
+                    ChartDataSeries pseries = new ChartDataSeries(chart, chart.YAxisRight[0]);
+                    pseries.LineColor = c.LineNormal;
+                    pseries.FillColor = c.FillNormal;
+                    pseries.SelectedColor = c.FillSelected;
+                    TimePredictionResultUtil.getSpeedSeries(m_predictorData[t].result, pseries, Settings.ShowPace);
+                    chart.DataSeries.Add(pseries);
+                }
 
                 chart.AutozoomToData(true);
             }
@@ -286,7 +313,6 @@ namespace GpsRunningPlugin.Source
                 }
                 //else: no activity selected
             }
-            summaryList.RowData = m_predictorData[model].result;
         }
 
         public static IList<TimePredictionResult> getResults(Predict.PredictTime predict, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)

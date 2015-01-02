@@ -213,7 +213,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             extrapolateMenuItem.Text = extrapolateButton.Text;
 
             modelBox.Text = Resources.PredictionModel;
-            this.modelComboBox.Text = PredictionModelUtil.Name(Settings.Model);
             this.modelMenuItem.Text = modelBox.Text;
             this.daveCameronMenuItem.Text = PredictionModelUtil.Name(PredictionModel.DAVE_CAMERON);
             this.peteRiegelMenuItem.Text = PredictionModelUtil.Name(PredictionModel.PETE_RIEGEL);
@@ -555,6 +554,8 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             trainingButton.Checked = (Settings.PredictionView == PredictionView.Training);
             extrapolateButton.Checked = (Settings.PredictionView == PredictionView.Extrapolate);
 
+            this.modelComboBox.Text = PredictionModelUtil.Name(Settings.Model);
+
             paceButton.Checked = Settings.ShowPace;
             speedButton.Checked = !Settings.ShowPace;
 
@@ -776,9 +777,9 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             {
                 PredictionModel t = (PredictionModel)element;
                 PredictionModelUtil.ChartColors c = PredictionModelUtil.Colors(t);
-                Bitmap i = new System.Drawing.Bitmap(5,5);
+                Bitmap i = new System.Drawing.Bitmap(6,6);
                 Graphics g = Graphics.FromImage(i);
-                g.DrawRectangle(new Pen(c.FillNormal), 0, 0, 5, 5);
+                g.DrawRectangle(new Pen(c.LineNormal, 3), new Rectangle(1, 1, 3, 3));
                 return i;
             }
             public string GetText(object element, TreeList.Column column)
