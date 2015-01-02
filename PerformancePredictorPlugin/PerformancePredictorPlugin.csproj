@@ -15,6 +15,8 @@
   <ItemGroup>
     <Compile Include="Data\AgeLabelProvider.cs" />
     <Compile Include="Data\AgeResult.cs" />
+    <Compile Include="Data\PredictVdotTime.cs" />
+    <Compile Include="Data\PredictPurdyTime.cs" />
     <Compile Include="Data\PredictTime.cs" />
     <Compile Include="Data\PredictElinderTime.cs" />
     <Compile Include="Data\ShoeResult.cs" />
