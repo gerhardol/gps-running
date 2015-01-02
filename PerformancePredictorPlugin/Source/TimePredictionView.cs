@@ -58,7 +58,6 @@ namespace GpsRunningPlugin.Source
         {
             public bool isData;
             public IList<TimePredictionResult> result;
-            public ChartDataSeries series;
         }
         private IDictionary<PredictionModel, PredictorData> m_predictorData = new Dictionary<PredictionModel, PredictorData>();
 
@@ -91,7 +90,6 @@ namespace GpsRunningPlugin.Source
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
             chart.YAxis.Formatter = new Formatter.SecondsToTime();
-            //problem in Designer setting this in constructor...
             chart.XAxis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
             chart.XAxis.Label = UnitUtil.Distance.LabelAxis;
             chart.YAxis.Label = UnitUtil.Time.LabelAxis;
@@ -146,7 +144,6 @@ namespace GpsRunningPlugin.Source
                 {
                     p.isData = false;
                     p.result.Clear();
-                    p.series.Points.Clear();
                 }
 
                 setData();
@@ -178,7 +175,9 @@ namespace GpsRunningPlugin.Source
             if (chart != null)
             {
                 chart.DataSeries.Clear();
-                chart.DataSeries.Add(m_predictorData[Settings.Model].series);
+                ChartDataSeries series = new ChartDataSeries(chart, chart.YAxis);
+                TimePredictionResultUtil.getTimeSeries(m_predictorData[Settings.Model].result, series.Points);
+                chart.DataSeries.Add(series);
                 chart.AutozoomToData(true);
             }
             m_showPage = showPage;
@@ -230,12 +229,10 @@ namespace GpsRunningPlugin.Source
             {
                 PredictorData p = new PredictorData();
                 p.result = new List<TimePredictionResult>();
-                p.series = new ChartDataSeries(chart, chart.YAxis);
                 m_predictorData.Add(model, p);
             }
             if (!m_predictorData[model].isData)
             {
-                m_predictorData[model].series.Points.Clear();
                 m_predictorData[model].isData = true;
 
                 if (!m_ppcontrol.IsPartial && (m_ppcontrol.Activities.Count > 1 ||
@@ -245,7 +242,7 @@ namespace GpsRunningPlugin.Source
                     Predict.SetAgeSexFromActivity(m_ppcontrol.Activities[0]);
                     //Predict using one or many activities (check done that HS enabled prior)
                     //makeData(m_predictorData[model].series, m_predictorData[model].result, Predict.Predictor(model));
-                    m_predictorData[model].result = getResults(m_predictorData[model].series, Predict.Predictor(model), m_ppcontrol.Activities, progressBar);
+                    m_predictorData[model].result = getResults(Predict.Predictor(model), m_ppcontrol.Activities, progressBar);
                 }
                 else if (m_ppcontrol.IsPartial || m_ppcontrol.SingleActivity != null)
                 {
@@ -264,7 +261,7 @@ namespace GpsRunningPlugin.Source
                     {
                         //Predict
                         Predict.SetAgeSexFromActivity(activities[0]);
-                        m_predictorData[model].result = getResults(m_predictorData[model].series, Predict.Predictor(model), activities,
+                        m_predictorData[model].result = getResults(Predict.Predictor(model), activities,
                             //makeData(m_predictorData[model].series, m_predictorData[model].result, Predict.Predictor(model),
                             m_ppcontrol.Distance, m_ppcontrol.Time, null);
                     }
@@ -274,7 +271,7 @@ namespace GpsRunningPlugin.Source
             summaryList.RowData = m_predictorData[model].result;
         }
 
-        public static IList<TimePredictionResult> getResults(ChartDataSeries series, Predict.PredictTime predict, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
+        public static IList<TimePredictionResult> getResults(Predict.PredictTime predict, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
         {
             IList<TimePredictionResult> reslist = new List<TimePredictionResult>();
             IList<IList<Object>> results = new List<IList<Object>>();
@@ -319,11 +316,6 @@ namespace GpsRunningPlugin.Source
                 double meterEnd = meterStart + old_dist;
                 double new_dist = old_dist * 100 / Settings.PercentOfDistance;
                 double new_time = predict(new_dist, old_dist, old_time);
-                float x = (float)UnitUtil.Distance.ConvertFrom(new_dist);
-                if (!x.Equals(float.NaN) && series != null && series.Points.IndexOfKey(x) == -1)
-                {
-                    series.Points.Add(x, new PointF(x, (float)new_time));
-                }
 
                 //length is the distance HighScore tried to get a prediction  for, may differ to actual dist
                 double length = Settings.Distances.Keys[index];
@@ -357,17 +349,12 @@ namespace GpsRunningPlugin.Source
             return reslist;
         }
 
-        public static IList<TimePredictionResult> getResults(ChartDataSeries series, Predict.PredictTime predict, IList<IActivity> activities, double old_dist, TimeSpan old_time, System.Windows.Forms.ProgressBar progressBar)
+        public static IList<TimePredictionResult> getResults(Predict.PredictTime predict, IList<IActivity> activities, double old_dist, TimeSpan old_time, System.Windows.Forms.ProgressBar progressBar)
         {
             IList<TimePredictionResult> reslist = new List<TimePredictionResult>();
             foreach (double new_dist in Settings.Distances.Keys)
             {
                 double new_time = predict(new_dist, old_dist, old_time);
-                float x = (float)UnitUtil.Distance.ConvertFrom(new_dist);
-                if (!x.Equals(float.NaN) && series != null && series.Points.IndexOfKey(x) == -1)
-                {
-                    series.Points.Add(x, new PointF(x, (float)new_time));
-                }
 
                 double length = new_dist;
                 Length.Units unitNominal;
