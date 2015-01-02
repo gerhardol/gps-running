@@ -212,12 +212,12 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
             modelBox.Text = Resources.PredictionModel;
             this.modelMenuItem.Text = modelBox.Text;
-            this.daveCameronButton.Text = "Dave Cameron";
-            this.daveCameronMenuItem.Text = this.daveCameronButton.Text;
-            this.peteRiegelButton.Text = "Pete Riegel";
-            this.peteRiegelMenuItem.Text = this.peteRiegelButton.Text;
-            this.wavaButton.Text = "WAVA";
-            this.wavaMenuItem.Text = this.wavaButton.Text;
+            this.daveCameronMenuItem.Text = PredictionModelName.Name(PredictionModel.DAVE_CAMERON);
+            this.daveCameronButton.Text = this.daveCameronMenuItem.Text;
+            this.peteRiegelMenuItem.Text = PredictionModelName.Name(PredictionModel.PETE_RIEGEL);
+            this.peteRiegelButton.Text = this.peteRiegelMenuItem.Text;
+            this.wavaMenuItem.Text = PredictionModelName.Name(PredictionModel.WAVA);
+            this.wavaButton.Text = this.wavaMenuItem.Text;
 
             velocityBox.Text = Resources.Velocity;
             velocityMenuItem.Text = velocityBox.Text;
