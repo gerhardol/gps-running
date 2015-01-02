@@ -236,6 +236,7 @@
     <Content Include="..\Common\Util\TrailsMapLayers\ReadMe.txt">
       <Link>Util\TrailsMapLayers\ReadMe.txt</Link>
     </Content>
+    <None Include="Resources\DropDown.png" />
   </ItemGroup>
   <Import Project="..\Common\Common-Files.csproj" />
 </Project>

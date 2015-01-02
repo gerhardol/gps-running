@@ -175,6 +175,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
         void InitControls()
         {
+            this.modelComboBox.ButtonImage = Properties.Resources.DropDown;
             //menu set separately
             syncToolBarToState();
             syncMenuToState();
@@ -192,6 +193,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             //Set color for non ST controls
             this.splitContainer1.Panel1.BackColor = visualTheme.Control;
             this.splitContainer1.Panel2.BackColor = visualTheme.Control;
+            this.modelComboBox.ThemeChanged(visualTheme);
 
             this.actionBanner1.ThemeChanged(visualTheme);
             this.predictorView.ThemeChanged(visualTheme);
@@ -211,14 +213,12 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             extrapolateMenuItem.Text = extrapolateButton.Text;
 
             modelBox.Text = Resources.PredictionModel;
+            this.modelComboBox.Text = PredictionModelUtil.Name(Settings.Model);
             this.modelMenuItem.Text = modelBox.Text;
             this.daveCameronMenuItem.Text = PredictionModelUtil.Name(PredictionModel.DAVE_CAMERON);
-            this.daveCameronButton.Text = this.daveCameronMenuItem.Text;
             this.peteRiegelMenuItem.Text = PredictionModelUtil.Name(PredictionModel.PETE_RIEGEL);
-            this.peteRiegelButton.Text = this.peteRiegelMenuItem.Text;
             this.wavaMenuItem.Text = PredictionModelUtil.Name(PredictionModel.WAVA);
-            this.wavaButton.Text = this.wavaMenuItem.Text;
-
+            
             velocityBox.Text = Resources.Velocity;
             velocityMenuItem.Text = velocityBox.Text;
             paceButton.Text = CommonResources.Text.LabelPace;
@@ -555,10 +555,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             trainingButton.Checked = (Settings.PredictionView == PredictionView.Training);
             extrapolateButton.Checked = (Settings.PredictionView == PredictionView.Extrapolate);
 
-            daveCameronButton.Checked = Settings.Model == PredictionModel.DAVE_CAMERON;
-            peteRiegelButton.Checked = Settings.Model == PredictionModel.PETE_RIEGEL;
-            wavaButton.Checked = Settings.Model == PredictionModel.WAVA;
-
             paceButton.Checked = Settings.ShowPace;
             speedButton.Checked = !Settings.ShowPace;
 
@@ -576,12 +572,9 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             extrapolateMenuItem.Checked = extrapolateButton.Checked;
             extrapolateMenuItem.Enabled = extrapolateButton.Enabled;
 
-            daveCameronMenuItem.Checked = daveCameronButton.Checked;
-            daveCameronMenuItem.Enabled = daveCameronButton.Enabled;
-            peteRiegelMenuItem.Checked = peteRiegelButton.Checked;
-            peteRiegelMenuItem.Enabled = peteRiegelButton.Enabled;
-            wavaMenuItem.Checked = wavaButton.Checked;
-            wavaMenuItem.Enabled = wavaButton.Enabled;
+            daveCameronMenuItem.Checked = Settings.Model == PredictionModel.DAVE_CAMERON;
+            peteRiegelMenuItem.Checked = Settings.Model == PredictionModel.PETE_RIEGEL;
+            wavaMenuItem.Checked = Settings.Model == PredictionModel.WAVA;
 
             paceMenuItem.Checked = paceButton.Checked;
             paceMenuItem.Enabled = paceButton.Enabled;
@@ -662,7 +655,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
         private void daveCameron_Click(object sender, EventArgs e)
         {
             if (m_showPage && (
-                sender is RadioButton && daveCameronButton.Checked ||
                 sender is ToolStripMenuItem && !daveCameronMenuItem.Checked))
             {
                 predict_Click(PredictionModel.DAVE_CAMERON);
@@ -672,7 +664,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
         private void peteRiegel_Click(object sender, EventArgs e)
         {
             if (m_showPage && (
-                sender is RadioButton && peteRiegelButton.Checked ||
                 sender is ToolStripMenuItem && !peteRiegelMenuItem.Checked))
             {
                 predict_Click(PredictionModel.PETE_RIEGEL);
@@ -682,7 +673,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
         private void wava_Click(object sender, EventArgs e)
         {
             if (m_showPage && (
-                sender is RadioButton && wavaButton.Checked ||
                 sender is ToolStripMenuItem && !wavaMenuItem.Checked))
             {
                 predict_Click(PredictionModel.WAVA);
@@ -778,6 +768,53 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             ContextMenuStrip s = (ContextMenuStrip)t.Owner;
             TreeList list = (TreeList)s.SourceControl;
             list.CopyTextToClipboard(true, System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator);
+        }
+
+        class PredictionModelLabelProvider : TreeList.ILabelProvider
+        {
+            public Image GetImage(object element, TreeList.Column column)
+            {
+                PredictionModel t = (PredictionModel)element;
+                PredictionModelUtil.ChartColors c = PredictionModelUtil.Colors(t);
+                Bitmap i = new System.Drawing.Bitmap(5,5);
+                Graphics g = Graphics.FromImage(i);
+                g.DrawRectangle(new Pen(c.FillNormal), 0, 0, 5, 5);
+                return i;
+            }
+            public string GetText(object element, TreeList.Column column)
+            {
+                PredictionModel t = (PredictionModel)element;
+                return PredictionModelUtil.Name(t);
+            }
+        }
+
+        private void modelComboBox_ButtonClicked(object sender, EventArgs e)
+        {
+            TreeListPopup treeListPopup = new TreeListPopup();
+            treeListPopup.ThemeChanged(m_visualTheme);
+            treeListPopup.Tree.Columns.Add(new TreeList.Column());
+
+            treeListPopup.Tree.RowData = PredictionModelUtil.List;
+            treeListPopup.Tree.LabelProvider = new PredictionModelLabelProvider();
+
+            if (PredictionModelUtil.List.Contains(Settings.Model))
+            {
+                treeListPopup.Tree.Selected = new object[] { Settings.Model };
+            }
+            treeListPopup.ItemSelected += delegate(object sender2, TreeListPopup.ItemSelectedEventArgs e2)
+            {
+                try
+                {
+                    Settings.Model = ((PredictionModel)(e2).Item);
+                    modelComboBox.Text = PredictionModelUtil.Name(Settings.Model);
+                    predict_Click(Settings.Model);
+                }
+                catch (KeyNotFoundException)
+                {
+                    //MessageDialog.Show("Settings (position group) for Matrix was changed, please redo your actions");
+                }
+            };
+            treeListPopup.Popup(this.modelComboBox.Parent.RectangleToScreen(this.modelComboBox.Bounds));
         }
 
         //Adapted from ApplyRoutes
