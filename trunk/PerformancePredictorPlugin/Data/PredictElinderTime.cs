@@ -36,32 +36,61 @@ namespace GpsRunningPlugin.Source
     {
         //http://www.ultradistans.se/wp-content/uploads/2014/05/FORMLER-F%C3%96R-BER%C3%84KNING-AV-L%C3%96PRESULTAT.pdf
 
-        private static float? BreakEven = null;
+        //Current distance to switch distance algorithm
+        private static double BreakEvenDist;
+        private static double BreakEvenTime; //should be close to BreakEvenTimeTarget
+        private static const double BreakEvenTimeTarget = 2*3600;
+        //Current values for BreakEvenDist
+        private static double currBreakDist = 0;
+        private static double currBreakTime = 0;
 
-        private static float ElianderPredict_short(double old_dist)
+        private static double getBreakEven(double dist, double time)
         {
-        //v=b0/7.2*(7.313 – lg(s0)) / (7.313 – lg(b0)) , t=s0×1000 /v (s0 in km)-> t=7.2*s/b*(7.313-log(b/1000))/(7.313-(log(s)-log(1000)))=7.2*s/b*(10,313-log(b))/(10.313-log(s))
-            return (float)(7.2 * old_dist / (float)BreakEven * (10.313 - Math.Log10((float)BreakEven)) / (10.313 - Math.Log10(old_dist)));
+            if(dist != currBreakDist || time != currBreakTime)
+            {
+                double pTime = BreakEvenTimeTarget;
+                EstimateBreakEven(pTime, dist, time);
+                //TBD get closer to 2h
+                //int i = 10;
+                //while(i-->0 && Math.Abs(BreakEvenTime -BreakEvenTimeTarget) > 60)
+                //{
+                //}
+            }
+            return BreakEvenDist;
         }
 
-        private static float ElianderPredict_long(double old_dist)
+        private static void EstimateBreakEven(double time2h, double dist, double time)
+        {
+            BreakEvenDist = dist * Math.Pow(BreakEvenTimeTarget / time, 1 / GpsRunningPlugin.Source.Predict.RiegelFatigueFactor);
+            BreakEvenTime = PredictBefore(BreakEvenDist, dist, time);
+        }
+
+        private static float PredictBefore(double new_dist, double old_dist, double old_time)
+        {
+            //v=b0/7.2*(7.313 – lg(s0)) / (7.313 – lg(b0)) , t=s0 * 1000 /v (s0 in km)´-> 
+            //t=7.2*s/b*(7.313-log(b/1000))/(7.313-(log(s)-log(1000)))=7.2*s/b*(10,313-log(b))/(10.313-log(s))
+            return (float)(old_time * new_dist / old_dist * (10.313 - Math.Log10(old_dist)) / (10.313 - Math.Log10(new_dist)));
+        }
+
+        private static float PredictAfter(double new_dist, double old_dist, double old_time)
         {
             //v=b/7.2*(7.313 – 2.697*lg(s) + 1.697*lg(b)) / (7.313 – lg(b)) 
-            return (float)(7.2 * old_dist / (float)BreakEven * (7.313 - Math.Log10((float)BreakEven)) / (7.313 - 2.697 * (Math.Log10(old_dist) - 3) + 1.687 * (Math.Log10(old_dist) - 3)));
+            //return (float)(old_time * new_dist / old_dist * (10.313 - Math.Log10(old_dist)) / (7.313 - 2.697 * (Math.Log10(new_dist) - 3) + 1.687 * (Math.Log10(new_dist) - 3)));
+            return (float)(old_time * new_dist / old_dist * (10.313 - Math.Log10(old_dist)) / (7.313 - 2.697 * (Math.Log10(new_dist) - 3) + 1.697 * (Math.Log10(old_dist) - 3)));
         }
 
         public static double Predict(double new_dist, double old_dist, TimeSpan old_time)
         {
             double new_time;
-            float age = PredictWavaTime.IdealAge((float)old_dist);
-            float time = PredictWavaTime.IdealTime((float)old_dist, age);
-            if (old_time.TotalSeconds <= 2 * 3600)
+            getBreakEven(old_dist, old_time.TotalSeconds);
+
+            if (new_dist <= BreakEvenDist)
             {
-                new_time = ElianderPredict_short(old_dist);
+                new_time = PredictBefore(new_dist, BreakEvenDist, BreakEvenTime);
             }
             else
             {
-                new_time = ElianderPredict_short(old_dist);
+                new_time = PredictAfter(new_dist, BreakEvenDist, BreakEvenTime);
             }
             return new_time;
         }
