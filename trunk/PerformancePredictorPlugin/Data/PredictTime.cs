@@ -38,7 +38,7 @@ namespace GpsRunningPlugin.Source
         DAVE_CAMERON, PETE_RIEGEL, WAVA, VDOT, ELINDER, PURDY
     }
 
-    public class PredictionModelName
+    public class PredictionModelUtil
     {
         public static String Name(PredictionModel model)
         {
@@ -59,6 +59,9 @@ namespace GpsRunningPlugin.Source
                     return "Purdy Points";
             }
         }
+
+        //The implemented models
+        public static IList<PredictionModel> List = new List<PredictionModel>{ PredictionModel.ELINDER, PredictionModel.DAVE_CAMERON, PredictionModel.PETE_RIEGEL, PredictionModel.WAVA}
     }
 
     public class Predict

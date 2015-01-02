@@ -178,7 +178,14 @@ namespace GpsRunningPlugin.Source
                 chart.YAxis.Label = UnitUtil.Time.LabelAxis;
 
                 chart.YAxisRight[0].Label = UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace);
-                chart.YAxisRight[0].Formatter = new Formatter.General(UnitUtil.PaceOrSpeed.DefaultDecimalPrecision(Settings.ShowPace));
+                if (Settings.ShowPace)
+                {
+                    chart.YAxisRight[0].Formatter = new Formatter.SecondsToTime();
+                }
+                else
+                {
+                    chart.YAxisRight[0].Formatter = new Formatter.General(UnitUtil.Speed.DefaultDecimalPrecision);
+                }
 
                 chart.DataSeries.Clear();
                 ChartDataSeries tseries = new ChartDataSeries(chart, chart.YAxis);
