@@ -37,6 +37,7 @@ namespace GpsRunningPlugin.Source
         //TODO: Implement Vdot, Elinder, Purdy, adjust Riegel?
         DAVE_CAMERON, PETE_RIEGEL, WAVA, VDOT, ELINDER, PURDY
     }
+
     public class PredictionModelName
     {
         public static String Name(PredictionModel model)
