@@ -86,9 +86,10 @@ namespace GpsRunningPlugin.Source
 
         //Possible: Riegel, other sports:
         //http://www.runscore.com/coursemeasurement/Articles/ARHE.pdf
+        public static float RiegelFatigueFactor = 1.06f;
         public static PredictTime Riegel = delegate(double new_dist, double old_dist, TimeSpan old_time)
         {
-            double new_time = old_time.TotalSeconds * Math.Pow(new_dist / old_dist, 1.06);
+            double new_time = old_time.TotalSeconds * Math.Pow(new_dist / old_dist, RiegelFatigueFactor);
             return new_time;
         };
 
