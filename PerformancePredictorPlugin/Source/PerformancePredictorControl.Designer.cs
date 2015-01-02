@@ -72,7 +72,6 @@ namespace GpsRunningPlugin.Source
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.showToolBarMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.chkHighScoreBox = new System.Windows.Forms.CheckBox();
             this.velocityBox = new System.Windows.Forms.GroupBox();
             this.speedButton = new System.Windows.Forms.RadioButton();
             this.paceButton = new System.Windows.Forms.RadioButton();
@@ -81,12 +80,11 @@ namespace GpsRunningPlugin.Source
             this.timePredictionButton = new System.Windows.Forms.RadioButton();
             this.extrapolateButton = new System.Windows.Forms.RadioButton();
             this.resultBox = new System.Windows.Forms.GroupBox();
+            this.chkHighScoreBox = new System.Windows.Forms.CheckBox();
             this.tableButton = new System.Windows.Forms.RadioButton();
             this.chartButton = new System.Windows.Forms.RadioButton();
             this.modelBox = new System.Windows.Forms.GroupBox();
-            this.daveCameronButton = new System.Windows.Forms.RadioButton();
-            this.peteRiegelButton = new System.Windows.Forms.RadioButton();
-            this.wavaButton = new System.Windows.Forms.RadioButton();
+            this.modelComboBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.predictorView = new GpsRunningPlugin.Source.TimePredictionView();
             this.trainingView = new GpsRunningPlugin.Source.TrainingView();
             this.extrapolateView = new GpsRunningPlugin.Source.ExtrapolateView();
@@ -113,7 +111,7 @@ namespace GpsRunningPlugin.Source
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(336, 397);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(336, 341);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // actionBanner1
@@ -324,23 +322,11 @@ namespace GpsRunningPlugin.Source
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 12;
             // 
-            // chkHighScoreBox
-            // 
-            this.chkHighScoreBox.AutoSize = true;
-            this.chkHighScoreBox.Enabled = false;
-            this.chkHighScoreBox.Location = new System.Drawing.Point(6, 65);
-            this.chkHighScoreBox.Name = "chkHighScoreBox";
-            this.chkHighScoreBox.Size = new System.Drawing.Size(85, 17);
-            this.chkHighScoreBox.TabIndex = 12;
-            this.chkHighScoreBox.Text = "<High Score";
-            this.chkHighScoreBox.UseVisualStyleBackColor = true;
-            this.chkHighScoreBox.Click += new System.EventHandler(this.chkHighScore_Click);
-            // 
             // velocityBox
             // 
             this.velocityBox.Controls.Add(this.speedButton);
             this.velocityBox.Controls.Add(this.paceButton);
-            this.velocityBox.Location = new System.Drawing.Point(4, 198);
+            this.velocityBox.Location = new System.Drawing.Point(4, 145);
             this.velocityBox.Name = "velocityBox";
             this.velocityBox.Size = new System.Drawing.Size(138, 69);
             this.velocityBox.TabIndex = 11;
@@ -424,12 +410,24 @@ namespace GpsRunningPlugin.Source
             this.resultBox.Controls.Add(this.chkHighScoreBox);
             this.resultBox.Controls.Add(this.tableButton);
             this.resultBox.Controls.Add(this.chartButton);
-            this.resultBox.Location = new System.Drawing.Point(4, 273);
+            this.resultBox.Location = new System.Drawing.Point(4, 220);
             this.resultBox.Name = "resultBox";
             this.resultBox.Size = new System.Drawing.Size(138, 91);
             this.resultBox.TabIndex = 5;
             this.resultBox.TabStop = false;
             this.resultBox.Text = "<Prediction results";
+            // 
+            // chkHighScoreBox
+            // 
+            this.chkHighScoreBox.AutoSize = true;
+            this.chkHighScoreBox.Enabled = false;
+            this.chkHighScoreBox.Location = new System.Drawing.Point(6, 65);
+            this.chkHighScoreBox.Name = "chkHighScoreBox";
+            this.chkHighScoreBox.Size = new System.Drawing.Size(85, 17);
+            this.chkHighScoreBox.TabIndex = 12;
+            this.chkHighScoreBox.Text = "<High Score";
+            this.chkHighScoreBox.UseVisualStyleBackColor = true;
+            this.chkHighScoreBox.Click += new System.EventHandler(this.chkHighScore_Click);
             // 
             // tableButton
             // 
@@ -457,51 +455,33 @@ namespace GpsRunningPlugin.Source
             // 
             // modelBox
             // 
-            this.modelBox.Controls.Add(this.daveCameronButton);
-            this.modelBox.Controls.Add(this.peteRiegelButton);
-            this.modelBox.Controls.Add(this.wavaButton);
+            this.modelBox.Controls.Add(this.modelComboBox);
             this.modelBox.Location = new System.Drawing.Point(4, 99);
             this.modelBox.Name = "modelBox";
-            this.modelBox.Size = new System.Drawing.Size(138, 93);
+            this.modelBox.Size = new System.Drawing.Size(138, 47);
             this.modelBox.TabIndex = 5;
             this.modelBox.TabStop = false;
             this.modelBox.Text = "<Prediction model";
             // 
-            // daveCameronButton
+            // modelComboBox
             // 
-            this.daveCameronButton.AutoSize = true;
-            this.daveCameronButton.Location = new System.Drawing.Point(6, 19);
-            this.daveCameronButton.Name = "daveCameronButton";
-            this.daveCameronButton.Size = new System.Drawing.Size(102, 17);
-            this.daveCameronButton.TabIndex = 3;
-            this.daveCameronButton.TabStop = true;
-            this.daveCameronButton.Text = "<Dave Cameron";
-            this.daveCameronButton.UseVisualStyleBackColor = true;
-            this.daveCameronButton.Click += new System.EventHandler(this.daveCameron_Click);
-            // 
-            // peteRiegelButton
-            // 
-            this.peteRiegelButton.AutoSize = true;
-            this.peteRiegelButton.Location = new System.Drawing.Point(6, 42);
-            this.peteRiegelButton.Name = "peteRiegelButton";
-            this.peteRiegelButton.Size = new System.Drawing.Size(86, 17);
-            this.peteRiegelButton.TabIndex = 4;
-            this.peteRiegelButton.TabStop = true;
-            this.peteRiegelButton.Text = "<Pete Riegel";
-            this.peteRiegelButton.UseVisualStyleBackColor = true;
-            this.peteRiegelButton.Click += new System.EventHandler(this.peteRiegel_Click);
-            // 
-            // wavaButton
-            // 
-            this.wavaButton.AutoSize = true;
-            this.wavaButton.Location = new System.Drawing.Point(6, 67);
-            this.wavaButton.Name = "wavaButton";
-            this.wavaButton.Size = new System.Drawing.Size(63, 17);
-            this.wavaButton.TabIndex = 4;
-            this.wavaButton.TabStop = true;
-            this.wavaButton.Text = "<WAVA";
-            this.wavaButton.UseVisualStyleBackColor = true;
-            this.wavaButton.Click += new System.EventHandler(this.wava_Click);
+            this.modelComboBox.AcceptsReturn = false;
+            this.modelComboBox.AcceptsTab = false;
+            this.modelComboBox.BackColor = System.Drawing.Color.White;
+            this.modelComboBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.modelComboBox.ButtonImage = null;
+            this.modelComboBox.Location = new System.Drawing.Point(4, 19);
+            this.modelComboBox.MaxLength = 32767;
+            this.modelComboBox.Multiline = false;
+            this.modelComboBox.Name = "modelComboBox";
+            this.modelComboBox.ReadOnly = true;
+            this.modelComboBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.modelComboBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.modelComboBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.modelComboBox.Size = new System.Drawing.Size(128, 21);
+            this.modelComboBox.TabIndex = 5;
+            this.modelComboBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.modelComboBox.ButtonClick += new System.EventHandler(this.modelComboBox_ButtonClicked);
             // 
             // predictorView
             // 
@@ -545,7 +525,7 @@ namespace GpsRunningPlugin.Source
             this.AutoSize = true;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "PerformancePredictorControl";
-            this.Size = new System.Drawing.Size(336, 397);
+            this.Size = new System.Drawing.Size(336, 341);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.bannerContextMenuStrip.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -559,7 +539,6 @@ namespace GpsRunningPlugin.Source
             this.resultBox.ResumeLayout(false);
             this.resultBox.PerformLayout();
             this.modelBox.ResumeLayout(false);
-            this.modelBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -601,9 +580,6 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.RadioButton trainingButton;
         private System.Windows.Forms.RadioButton extrapolateButton;
         private System.Windows.Forms.GroupBox modelBox;
-        private System.Windows.Forms.RadioButton daveCameronButton;
-        private System.Windows.Forms.RadioButton peteRiegelButton;
-        private System.Windows.Forms.RadioButton wavaButton;
         private System.Windows.Forms.GroupBox resultBox;
         private System.Windows.Forms.RadioButton tableButton;
         private System.Windows.Forms.RadioButton chartButton;
@@ -611,6 +587,7 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.RadioButton speedButton;
         private System.Windows.Forms.RadioButton paceButton;
         private System.Windows.Forms.CheckBox chkHighScoreBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox modelComboBox;
 
 
 
