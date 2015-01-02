@@ -39,7 +39,7 @@ namespace GpsRunningPlugin.Source
         //Current distance to switch distance algorithm
         private static double BreakEvenDist;
         private static double BreakEvenTime; //should be close to BreakEvenTimeTarget
-        private static const double BreakEvenTimeTarget = 2*3600;
+        private const double BreakEvenTimeTarget = 2*3600;
         //Current values for BreakEvenDist
         private static double currBreakDist = 0;
         private static double currBreakTime = 0;

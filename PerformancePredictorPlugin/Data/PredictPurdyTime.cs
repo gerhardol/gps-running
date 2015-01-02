@@ -83,7 +83,7 @@ namespace GpsRunningPlugin.Source
         /*
         calc fake purdy points from world record running curve.
         */
-        float purdy1(double d, float tsec)
+        static float purdy1(double d, float tsec)
         {
             double b1 = 11.15895;
             double b2 = 4.304605;
@@ -96,7 +96,7 @@ namespace GpsRunningPlugin.Source
             double r4 = 7.068099e-6;
             double r5 = 5.220990e-9;
             double v, twsec;
-            double a, b, k, ps;
+            double a, b, k;//, ps;
             double p;
             /* calculate world record velocity running curve*/
             v = -b1 * Math.Exp(-r1 * d) + b2 * Math.Exp(-r2 * d) + b3 * Math.Exp(-r3 * d) +
@@ -114,7 +114,7 @@ namespace GpsRunningPlugin.Source
         /*******************************************************/
         /* calc the fraction of time from track curves
            that slows down the time from the tables */
-        float frac(double d)
+        static float frac(double d)
         {
             int laps, partlap;
             double tmeters, meters;
@@ -140,7 +140,7 @@ namespace GpsRunningPlugin.Source
         }
         /****************************************************************/
         /* calculate the famous purdy points */
-        float purdy(double dist, float tsec)
+        static float purdy(double dist, float tsec)
         {
             /*
              portugese running table, distance, speed
@@ -169,7 +169,7 @@ namespace GpsRunningPlugin.Source
             double c2 = 0.08;
             double c3 = 0.0065;
             double v, d3, t3, d1, t1, t950, t;
-            double a, b, k, ps, d = 0.1;
+            double a, b, k, d = 0.1; //ps, 
             double p;
             int i;
             /* get time from port. table */
