@@ -28,29 +28,29 @@ namespace GpsRunningPlugin.Source
 {
     public class TimePredictionResultUtil
     {
-        public static void getTimeSeries(IList<TimePredictionResult> list, SortedList<float, PointF> points)
+        public static void getTimeSeries(IList<TimePredictionResult> list, ChartDataSeries series)
         {
-            points = new SortedList<float, PointF>();
+            series.Points.Clear();
             foreach (TimePredictionResult t in list)
             {
                 float x = (float)UnitUtil.Distance.ConvertFrom(t.Distance);
-                if (!x.Equals(float.NaN) && points.IndexOfKey(x) == -1)
+                if (!x.Equals(float.NaN) && series.Points.IndexOfKey(x) == -1)
                 {
-                    points.Add(x, new PointF(x, (float)t.PredictedTime));
+                    series.Points.Add(x, new PointF(x, (float)t.PredictedTime));
                 }
             }
         }
 
-        public static void getSpeedSeries(IList<TimePredictionResult> list, SortedList<float, PointF> points, bool isPace)
+        public static void getSpeedSeries(IList<TimePredictionResult> list, ChartDataSeries series, bool isPace)
         {
-            points = new SortedList<float, PointF>();
+            series.Points.Clear();
             foreach (TimePredictionResult t in list)
             {
                 float x = (float)UnitUtil.Distance.ConvertFrom(t.Distance);
                 float y = (float)UnitUtil.PaceOrSpeed.ConvertFrom(isPace, t.Speed);
-                if (!x.Equals(float.NaN) && points.IndexOfKey(x) == -1)
+                if (!x.Equals(float.NaN) && series.Points.IndexOfKey(x) == -1)
                 {
-                    points.Add(x, new PointF(x, y));
+                    series.Points.Add(x, new PointF(x, y));
                 }
             }
         }
