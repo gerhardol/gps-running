@@ -78,6 +78,8 @@ namespace GpsRunningPlugin.Source
             copyTableMenuItem.Image = ZoneFiveSoftware.Common.Visuals.CommonResources.Images.DocumentCopy16;
             summaryList.NumHeaderRows = TreeList.HeaderRows.Two;
             summaryList.LabelProvider = new ResultLabelProvider();
+            IAxis axis = new RightVerticalAxis(chart);
+            chart.YAxisRight.Add(axis);
         }
 
         public void ThemeChanged(ITheme visualTheme)
@@ -89,10 +91,6 @@ namespace GpsRunningPlugin.Source
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
-            chart.YAxis.Formatter = new Formatter.SecondsToTime();
-            chart.XAxis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
-            chart.XAxis.Label = UnitUtil.Distance.LabelAxis;
-            chart.YAxis.Label = UnitUtil.Time.LabelAxis;
             lblHighScoreRequired.Text = Properties.Resources.HighScoreRequired;
             copyTableMenuItem.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
         }
@@ -174,10 +172,23 @@ namespace GpsRunningPlugin.Source
             makeData(Settings.Model);
             if (chart != null)
             {
+                chart.YAxis.Formatter = new Formatter.SecondsToTime();
+                chart.XAxis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
+                chart.XAxis.Label = UnitUtil.Distance.LabelAxis;
+                chart.YAxis.Label = UnitUtil.Time.LabelAxis;
+
+                chart.YAxisRight[0].Label = UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace);
+                chart.YAxisRight[0].Formatter = new Formatter.General(UnitUtil.PaceOrSpeed.DefaultDecimalPrecision(Settings.ShowPace));
+
                 chart.DataSeries.Clear();
-                ChartDataSeries series = new ChartDataSeries(chart, chart.YAxis);
-                TimePredictionResultUtil.getTimeSeries(m_predictorData[Settings.Model].result, series.Points);
-                chart.DataSeries.Add(series);
+                ChartDataSeries tseries = new ChartDataSeries(chart, chart.YAxis);
+                TimePredictionResultUtil.getTimeSeries(m_predictorData[Settings.Model].result, tseries);
+                chart.DataSeries.Add(tseries);
+
+                ChartDataSeries pseries = new ChartDataSeries(chart, chart.YAxisRight[0]);
+                TimePredictionResultUtil.getSpeedSeries(m_predictorData[Settings.Model].result, pseries, Settings.ShowPace);
+                chart.DataSeries.Add(pseries);
+
                 chart.AutozoomToData(true);
             }
             m_showPage = showPage;
