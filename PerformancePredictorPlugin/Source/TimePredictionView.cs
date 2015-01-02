@@ -65,9 +65,6 @@ namespace GpsRunningPlugin.Source
         public TimePredictionView()
         {
             InitializeComponent();
-
-            chart.YAxis.Formatter = new Formatter.SecondsToTime();
-            chart.XAxis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
         }
 
         public void InitControls(IDetailPage detailPage, IDailyActivityView view, TrailPointsLayer layer, PerformancePredictorControl ppControl)
@@ -93,6 +90,9 @@ namespace GpsRunningPlugin.Source
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
+            chart.YAxis.Formatter = new Formatter.SecondsToTime();
+            //problem in Designer setting this in constructor...
+            chart.XAxis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
             chart.XAxis.Label = UnitUtil.Distance.LabelAxis;
             chart.YAxis.Label = UnitUtil.Time.LabelAxis;
             lblHighScoreRequired.Text = Properties.Resources.HighScoreRequired;

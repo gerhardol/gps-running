@@ -469,6 +469,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             this.extrapolateButton.Checked = false;
 
             this.tableButton.Enabled = false;
+            this.tableButton.Checked = true;
             this.chkHighScoreBox.Enabled = false;
 
             if (this.SingleActivity != null && !this.ChkHighScore)
@@ -495,7 +496,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             {
                 this.actionBanner1.Text = Properties.Resources.TimePrediction;
                 this.chkHighScoreBox.Enabled |= Settings.HighScore != null;
-                this.tableButton.Enabled = false;
+                this.tableButton.Enabled = true;
                 this.tableButton.Checked = !Settings.ShowChart;
                 if (this.m_showPage)
                 {
@@ -504,8 +505,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             }
             else
             {
-                this.tableButton.Enabled = false;
-                this.tableButton.Checked = true;
                 if (this.trainingButton.Enabled && Settings.PredictionView == PredictionView.Training)
                 {
                     this.actionBanner1.Text = StringResources.Training;
@@ -727,6 +726,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 Settings.ShowPace = true;
                 syncToolBarToState();
                 syncMenuToState();
+                predictorView.RefreshData();
             }
         }
 
@@ -739,6 +739,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 Settings.ShowPace = false;
                 syncToolBarToState();
                 syncMenuToState();
+                predictorView.RefreshData();
             }
         }
 
