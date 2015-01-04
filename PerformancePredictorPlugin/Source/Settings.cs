@@ -161,7 +161,7 @@ namespace GpsRunningPlugin.Source
             showPace = true;
             showChart = false;//show chart by default
             percentOfDistance = 40;
-            model = PredictionModel.PETE_RIEGEL;
+            model = PredictionModelUtil.Default;
             showToolBar = true;
             distances.Clear();
             //Some distances removed by default
