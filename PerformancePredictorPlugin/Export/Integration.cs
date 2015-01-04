@@ -121,6 +121,7 @@ namespace PerformancePredictor.Export
                     double vdot = Predict.getVdot(old_time, old_dist);
                     s.Add(vdot);
 
+                    Predict.SetAgeSexFromActivity(activity);
                     foreach (double predDist in predictDistances)
                     {
                         double new_time = double.NaN;

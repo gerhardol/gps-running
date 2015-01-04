@@ -64,8 +64,9 @@ namespace GpsRunningPlugin.Source
             this.Speed = m_paces[index];
         }
 
-        public static void Calculate(double vdot, TimeSpan time, double distance, double maxHr)
+        public static void Calculate(IActivity activity, double vdot, TimeSpan time, double distance, double maxHr)
         {
+            Predict.SetAgeSexFromActivity(activity);
             m_zones = getZones();
             m_percentages = getPercentages(vdot);
             m_hrs = getHeartRates(maxHr, m_percentages);

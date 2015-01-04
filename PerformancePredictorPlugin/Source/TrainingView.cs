@@ -284,6 +284,7 @@ namespace GpsRunningPlugin.Source
         {
             double[] distances = new double[] { 100, 200, 300, 400, 800, 1000, 1609.344 };
             IList<IntervalResult> result = new List<IntervalResult>();
+            Predict.SetAgeSexFromActivity(m_ppcontrol.FirstActivity);
             IntervalResultCache resultCache = new IntervalResultCache(m_ppcontrol.Distance, m_ppcontrol.Time);
             for (int i = 0; i < distances.Length; i++)
             {
@@ -323,7 +324,7 @@ namespace GpsRunningPlugin.Source
             double vo2max = Predict.getVo2max(m_ppcontrol.Time);
             double vdot = Predict.getVdot(m_ppcontrol.Time, m_ppcontrol.Distance);
             trainingLabel.Text = String.Format(Resources.VO2MaxVDOT, 100 * vo2max, vdot);
-            TrainingResult.Calculate(vdot, m_ppcontrol.Time, m_ppcontrol.Distance, maxHr);
+            TrainingResult.Calculate(m_ppcontrol.FirstActivity, vdot, m_ppcontrol.Time, m_ppcontrol.Distance, maxHr);
             IList<TrainingResult> result = new List<TrainingResult>();
             for (int i = 0; i < 15; i++)
             {
