@@ -55,7 +55,7 @@ namespace GpsRunningPlugin.Source
             this.addDistance = new ZoneFiveSoftware.Common.Visuals.Button();
             this.distanceList = new System.Windows.Forms.ListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.percentHSLabel = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.idealGroupBox = new System.Windows.Forms.GroupBox();
@@ -63,10 +63,16 @@ namespace GpsRunningPlugin.Source
             this.bmiLabel = new System.Windows.Forms.Label();
             this.shoeBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.shoeLabel = new System.Windows.Forms.Label();
+            this.modelGroupBox = new System.Windows.Forms.GroupBox();
+            this.riegelFatigueFactorBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.riegelFatigueFactorLabel = new System.Windows.Forms.Label();
+            this.elinderBreakEvenBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.elinderBreakEvenLabel = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.idealGroupBox.SuspendLayout();
+            this.modelGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // linkLabel1
@@ -195,7 +201,7 @@ namespace GpsRunningPlugin.Source
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.percentHSLabel);
             this.groupBox2.Controls.Add(this.numericUpDown1);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Location = new System.Drawing.Point(6, 213);
@@ -205,14 +211,14 @@ namespace GpsRunningPlugin.Source
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "<High Score plugin integration";
             // 
-            // label2
+            // percentHSLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(76, 21);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(139, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "<% of distance to predict time";
+            this.percentHSLabel.AutoSize = true;
+            this.percentHSLabel.Location = new System.Drawing.Point(76, 21);
+            this.percentHSLabel.Name = "percentHSLabel";
+            this.percentHSLabel.Size = new System.Drawing.Size(145, 13);
+            this.percentHSLabel.TabIndex = 2;
+            this.percentHSLabel.Text = "<% of distance to predict time";
             // 
             // numericUpDown1
             // 
@@ -243,9 +249,80 @@ namespace GpsRunningPlugin.Source
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 21);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(26, 13);
+            this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "<Use";
+            // 
+            // modelGroupBox
+            // 
+            this.modelGroupBox.Controls.Add(this.riegelFatigueFactorBox);
+            this.modelGroupBox.Controls.Add(this.riegelFatigueFactorLabel);
+            this.modelGroupBox.Controls.Add(this.elinderBreakEvenBox);
+            this.modelGroupBox.Controls.Add(this.elinderBreakEvenLabel);
+            this.modelGroupBox.Location = new System.Drawing.Point(6, 267);
+            this.modelGroupBox.Name = "modelGroupBox";
+            this.modelGroupBox.Size = new System.Drawing.Size(326, 71);
+            this.modelGroupBox.TabIndex = 6;
+            this.modelGroupBox.TabStop = false;
+            this.modelGroupBox.Text = "<prediction model";
+            // 
+            // riegelFatigueFactorBox
+            // 
+            this.riegelFatigueFactorBox.AcceptsReturn = false;
+            this.riegelFatigueFactorBox.AcceptsTab = false;
+            this.riegelFatigueFactorBox.BackColor = System.Drawing.Color.White;
+            this.riegelFatigueFactorBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.riegelFatigueFactorBox.ButtonImage = null;
+            this.riegelFatigueFactorBox.Location = new System.Drawing.Point(132, 45);
+            this.riegelFatigueFactorBox.MaxLength = 32767;
+            this.riegelFatigueFactorBox.Multiline = false;
+            this.riegelFatigueFactorBox.Name = "riegelFatigueFactorBox";
+            this.riegelFatigueFactorBox.ReadOnly = false;
+            this.riegelFatigueFactorBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.riegelFatigueFactorBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.riegelFatigueFactorBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.riegelFatigueFactorBox.Size = new System.Drawing.Size(82, 20);
+            this.riegelFatigueFactorBox.TabIndex = 5;
+            this.riegelFatigueFactorBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.riegelFatigueFactorBox.LostFocus += riegelFatigueFactorBox_LostFocus;
+            // 
+            // riegelFatigueFactorLabel
+            // 
+            this.riegelFatigueFactorLabel.AutoSize = true;
+            this.riegelFatigueFactorLabel.Location = new System.Drawing.Point(6, 48);
+            this.riegelFatigueFactorLabel.Name = "riegelFatigueFactorLabel";
+            this.riegelFatigueFactorLabel.Size = new System.Drawing.Size(111, 13);
+            this.riegelFatigueFactorLabel.TabIndex = 4;
+            this.riegelFatigueFactorLabel.Text = "<Riegel FatigueFactor";
+            // 
+            // elinderBreakEvenBox
+            // 
+            this.elinderBreakEvenBox.AcceptsReturn = false;
+            this.elinderBreakEvenBox.AcceptsTab = false;
+            this.elinderBreakEvenBox.BackColor = System.Drawing.Color.White;
+            this.elinderBreakEvenBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.elinderBreakEvenBox.ButtonImage = null;
+            this.elinderBreakEvenBox.Location = new System.Drawing.Point(132, 19);
+            this.elinderBreakEvenBox.MaxLength = 32767;
+            this.elinderBreakEvenBox.Multiline = false;
+            this.elinderBreakEvenBox.Name = "elinderBreakEvenBox";
+            this.elinderBreakEvenBox.ReadOnly = false;
+            this.elinderBreakEvenBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.elinderBreakEvenBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.elinderBreakEvenBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.elinderBreakEvenBox.Size = new System.Drawing.Size(82, 20);
+            this.elinderBreakEvenBox.TabIndex = 3;
+            this.elinderBreakEvenBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.elinderBreakEvenBox.LostFocus += elinderBreakEvenBox_LostFocus;
+            // 
+            // elinderBreakEvenLabel
+            // 
+            this.elinderBreakEvenLabel.AutoSize = true;
+            this.elinderBreakEvenLabel.Location = new System.Drawing.Point(6, 21);
+            this.elinderBreakEvenLabel.Name = "elinderBreakEvenLabel";
+            this.elinderBreakEvenLabel.Size = new System.Drawing.Size(101, 13);
+            this.elinderBreakEvenLabel.TabIndex = 0;
+            this.elinderBreakEvenLabel.Text = "<Elinder BreakEven";
             // 
             // idealGroupBox
             // 
@@ -253,7 +330,7 @@ namespace GpsRunningPlugin.Source
             this.idealGroupBox.Controls.Add(this.bmiLabel);
             this.idealGroupBox.Controls.Add(this.shoeBox);
             this.idealGroupBox.Controls.Add(this.shoeLabel);
-            this.idealGroupBox.Location = new System.Drawing.Point(6, 267);
+            this.idealGroupBox.Location = new System.Drawing.Point(6, 344);
             this.idealGroupBox.Name = "idealGroupBox";
             this.idealGroupBox.Size = new System.Drawing.Size(326, 71);
             this.idealGroupBox.TabIndex = 4;
@@ -267,7 +344,7 @@ namespace GpsRunningPlugin.Source
             this.bmiBox.BackColor = System.Drawing.Color.White;
             this.bmiBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
             this.bmiBox.ButtonImage = null;
-            this.bmiBox.Location = new System.Drawing.Point(54, 41);
+            this.bmiBox.Location = new System.Drawing.Point(54, 45);
             this.bmiBox.MaxLength = 32767;
             this.bmiBox.Multiline = false;
             this.bmiBox.Name = "bmiBox";
@@ -287,7 +364,7 @@ namespace GpsRunningPlugin.Source
             this.bmiLabel.Name = "bmiLabel";
             this.bmiLabel.Size = new System.Drawing.Size(38, 13);
             this.bmiLabel.TabIndex = 4;
-            this.bmiLabel.Text = "<Shoe";
+            this.bmiLabel.Text = "<BMI";
             // 
             // shoeBox
             // 
@@ -316,25 +393,28 @@ namespace GpsRunningPlugin.Source
             this.shoeLabel.Name = "shoeLabel";
             this.shoeLabel.Size = new System.Drawing.Size(32, 13);
             this.shoeLabel.TabIndex = 0;
-            this.shoeLabel.Text = "<BMI";
+            this.shoeLabel.Text = "<Shoe";
             // 
             // PerformancePredictorSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.modelGroupBox);
             this.Controls.Add(this.idealGroupBox);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.resetSettings);
             this.Controls.Add(this.linkLabel1);
             this.Name = "PerformancePredictorSettings";
-            this.Size = new System.Drawing.Size(342, 350);
+            this.Size = new System.Drawing.Size(342, 470);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.idealGroupBox.ResumeLayout(false);
             this.idealGroupBox.PerformLayout();
+            this.modelGroupBox.ResumeLayout(false);
+            this.modelGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -353,11 +433,16 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label percentHSLabel;
         private System.Windows.Forms.GroupBox idealGroupBox;
         private ZoneFiveSoftware.Common.Visuals.TextBox bmiBox;
         private System.Windows.Forms.Label bmiLabel;
         private ZoneFiveSoftware.Common.Visuals.TextBox shoeBox;
         private System.Windows.Forms.Label shoeLabel;
+        private System.Windows.Forms.GroupBox modelGroupBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox riegelFatigueFactorBox;
+        private System.Windows.Forms.Label riegelFatigueFactorLabel;
+        private ZoneFiveSoftware.Common.Visuals.TextBox elinderBreakEvenBox;
+        private System.Windows.Forms.Label elinderBreakEvenLabel;
     }
 }

@@ -574,7 +574,7 @@ namespace GpsRunningPlugin.Source
                 idealDistance = UnitUtil.Distance.Parse(this.distBox2.Text);
                 if (idealDistance != m_ppcontrol.Distance)
                 {
-                    Predict.SetAgeSexFromActivity(activity);
+                    Predict.SetAgeSexFromActivity(this.m_ppcontrol.FirstActivity);
                     ideal = (Predict.Predictor(Settings.Model))(idealDistance, m_ppcontrol.Distance, TimeSpan.FromSeconds(ideal));
                 }
             }
@@ -691,7 +691,7 @@ namespace GpsRunningPlugin.Source
 
         void ageBox_LostFocus(object sender, System.EventArgs e)
         {
-            this.m_actualAge = float.Parse(this.ageBox.Text, NumberFormatInfo.InvariantInfo);
+            this.m_actualAge = Settings.parseFloat(this.ageBox.Text);
             this.setAge();
             this.setIdeal();
         }
@@ -719,7 +719,7 @@ namespace GpsRunningPlugin.Source
 
         void ageBox2_LostFocus(object sender, System.EventArgs e)
         {
-            this.m_idealAge = float.Parse(this.ageBox2.Text, NumberFormatInfo.InvariantInfo);
+            this.m_idealAge = Settings.parseFloat(this.ageBox2.Text);
             this.setAge();
             this.setIdeal();
         }

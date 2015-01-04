@@ -44,7 +44,7 @@ namespace GpsRunningPlugin.Source
         public static PredictionModel Default = PredictionModel.ELINDER;
 
         //The implemented models
-        public static IList<PredictionModel> List = new List<PredictionModel> { PredictionModel.ELINDER, PredictionModel.DAVE_CAMERON, PredictionModel.PETE_RIEGEL, PredictionModel.WAVA };
+        public static IList<PredictionModel> List = new List<PredictionModel> { PredictionModel.ELINDER, PredictionModel.WAVA, PredictionModel.DAVE_CAMERON, PredictionModel.PETE_RIEGEL };
 
         public static String Name(PredictionModel model)
         {
@@ -194,10 +194,9 @@ namespace GpsRunningPlugin.Source
 
         //Possible: Riegel, other sports:
         //http://www.runscore.com/coursemeasurement/Articles/ARHE.pdf
-        public static float RiegelFatigueFactor = 1.06f;
         public static PredictTime Riegel = delegate(double new_dist, double old_dist, TimeSpan old_time)
         {
-            double new_time = old_time.TotalSeconds * Math.Pow(new_dist / old_dist, RiegelFatigueFactor);
+            double new_time = old_time.TotalSeconds * Math.Pow(new_dist / old_dist, Settings.RiegelFatigueFactor);
             return new_time;
         };
 
