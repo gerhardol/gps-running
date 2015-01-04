@@ -26,104 +26,24 @@ using GpsRunningPlugin.Util;
 
 namespace GpsRunningPlugin.Source
 {
-    public class TimePredictionResultUtil
-    {
-        public static void getTimeSeries(IList<TimePredictionResult> list, ChartDataSeries series)
-        {
-            series.Points.Clear();
-            foreach (TimePredictionResult t in list)
-            {
-                float x = (float)UnitUtil.Distance.ConvertFrom(t.Distance);
-                if (!x.Equals(float.NaN) && series.Points.IndexOfKey(x) == -1)
-                {
-                    series.Points.Add(x, new PointF(x, (float)t.PredictedTime));
-                }
-            }
-        }
-
-        public static void getSpeedSeries(IList<TimePredictionResult> list, ChartDataSeries series, bool isPace)
-        {
-            series.Points.Clear();
-            foreach (TimePredictionResult t in list)
-            {
-                float x = (float)UnitUtil.Distance.ConvertFrom(t.Distance);
-                float y = (float)UnitUtil.PaceOrSpeed.ConvertFrom(isPace, t.Speed);
-                if (!x.Equals(float.NaN) && series.Points.IndexOfKey(x) == -1)
-                {
-                    series.Points.Add(x, new PointF(x, y));
-                }
-            }
-        }
-    }
-
     public class TimePredictionResult
     {
-        private IActivity activity;
+        //Just keep the time result, could be removed (previously more data)
 
-        public IActivity Activity
-        {
-            get
-            {
-                return activity;
-            }
-        }
-
-        public double Distance;
-        public double DistanceNominal;
-        public Length.Units UnitNominal;
+        //public double Distance;
         public double PredictedTime;
-        public double Speed
-        {
-            get
-            {
-                return Distance / PredictedTime;
-            }
-        }
-        public DateTime StartDate
-        {
-            get
-            {
-                return activity.StartTime;
-            }
-        }
-        public DateTime StartUsedTime
-        {
-            get
-            {
-                return activity.StartTime.AddSeconds(StartTime);
-            }
-        }
+        //public double Speed
+        //{
+        //    get
+        //    {
+        //        return Distance / PredictedTime;
+        //    }
+        //}
 
-        //TODO: Protect these, only in multiresults
-        public double UsedDistance;
-        public TimeSpan UsedTime;
-        public double StartDistance;
-        private double StartTime;
-
-        public TimePredictionResult(IActivity activity, double Distance, double DistanceNominal, Length.Units UnitNominal, double PredictedTime)
+        public TimePredictionResult(double Distance, double PredictedTime)
         {
-            this.activity = activity;
-            this.Distance = Distance;
-            this.DistanceNominal = DistanceNominal;
-            this.UnitNominal = UnitNominal;
+            //this.Distance = Distance;
             this.PredictedTime = PredictedTime;
-        }
-        public TimePredictionResult(IActivity activity, double Distance, double DistanceNominal, Length.Units UnitNominal, double PredictedTime, double UsedDistance, TimeSpan UsedTime, double StartDistance, double StartTime)
-            : this(activity, Distance, DistanceNominal, UnitNominal, PredictedTime)
-        {
-            this.UsedDistance = UsedDistance;
-            this.UsedTime = UsedTime;
-            this.StartDistance = StartDistance;
-            this.StartTime = StartTime;
-        }
-//NoSeed results
-        public TimePredictionResult(double Distance, double DistanceNominal, Length.Units UnitNominal)
-        {
-            this.activity = null;
-            this.Distance = Distance;
-            this.DistanceNominal = DistanceNominal;
-            this.UnitNominal = UnitNominal;
-            this.PredictedTime = -1;
         }
     }
 }

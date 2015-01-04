@@ -54,12 +54,7 @@ namespace GpsRunningPlugin.Source
         private PerformancePredictorControl m_ppcontrol = null;
         private bool m_showPage = false;
 
-        private class PredictorData
-        {
-            public bool isData;
-            public IList<TimePredictionResult> result;
-        }
-        private IDictionary<PredictionModel, PredictorData> m_predictorData = new Dictionary<PredictionModel, PredictorData>();
+        private IDictionary<double, PredictorData> m_predictorData = new Dictionary<double, PredictorData>();
 
         public TimePredictionView()
         {
@@ -137,12 +132,8 @@ namespace GpsRunningPlugin.Source
         {
             if (m_showPage)
             {
-                //Reset settings
-                foreach (PredictorData p in m_predictorData.Values)
-                {
-                    p.isData = false;
-                    p.result.Clear();
-                }
+                //Reset calculations - all calculated
+                m_predictorData.Clear();
 
                 setData();
             }
@@ -169,11 +160,9 @@ namespace GpsRunningPlugin.Source
             m_showPage = false;
 
             //Get the (cached?) list/chart
-            foreach (PredictionModel t in PredictionModelUtil.List)
-            {
-                makeData(t);
-            }
-            summaryList.RowData = m_predictorData[Settings.Model].result;
+            makeData();
+            summaryList.RowData = m_predictorData.Values;
+
             if (chart != null)
             {
                 chart.YAxis.Formatter = new Formatter.SecondsToTime();
@@ -194,10 +183,6 @@ namespace GpsRunningPlugin.Source
                 chart.DataSeries.Clear();
                 foreach (PredictionModel t in PredictionModelUtil.List)
                 {
-                    if (!m_predictorData[Settings.Model].isData)
-                    {
-                        continue;
-                    }
                     PredictionModelUtil.ChartColors c;
                     if (t == Settings.Model)
                     {
@@ -212,14 +197,14 @@ namespace GpsRunningPlugin.Source
                     tseries.LineColor = c.LineNormal;
                     tseries.FillColor = c.FillNormal;
                     tseries.SelectedColor = c.FillSelected;
-                    TimePredictionResultUtil.getTimeSeries(m_predictorData[t].result, tseries);
-                    chart.DataSeries.Add(tseries);
 
                     ChartDataSeries pseries = new ChartDataSeries(chart, chart.YAxisRight[0]);
                     pseries.LineColor = c.LineNormal;
                     pseries.FillColor = c.FillNormal;
                     pseries.SelectedColor = c.FillSelected;
-                    TimePredictionResultUtil.getSpeedSeries(m_predictorData[t].result, pseries, Settings.ShowPace);
+
+                    PredictorData.getChartSeries(m_predictorData, t, tseries, pseries, Settings.ShowPace);
+                    chart.DataSeries.Add(tseries);
                     chart.DataSeries.Add(pseries);
                 }
 
@@ -258,66 +243,88 @@ namespace GpsRunningPlugin.Source
                     }
                 }
             }
+            foreach (PredictionModel model in PredictionModelUtil.List)
+            {
+                IListColumnDefinition columnDef = ResultColumnIds.PredictedTimeModelColumn();
+                //The id suffix is used to get the model for the results (
+                //It may be possible to use comn.Tag, but no description to do that
+                string nameSuffix = " (" + PredictionModelUtil.Name(model) + ")";
+                string idSuffix = "_" + model.ToString();
+                TreeList.Column column = new TreeList.Column(
+                    columnDef.Id + idSuffix,
+                    columnDef.Text(columnDef.Id) + nameSuffix,
+                    columnDef.Width,
+                    columnDef.Align
+                );
+                summaryList.Columns.Add(column);
+
+                columnDef = ResultColumnIds.SpeedModelColumn();
+                column = new TreeList.Column(
+                    columnDef.Id + idSuffix,
+                    columnDef.Text(columnDef.Id) + nameSuffix,
+                    columnDef.Width,
+                    columnDef.Align
+                );
+                summaryList.Columns.Add(column);
+            }
             //summaryList.NumLockedColumns = Data.Settings.ActivityPageNumFixedColumns;
         }
 
-        //public IList<TimePredictionResult> getResults()
-        //{
-        //    PredictionModel model = Settings.Model;
-        //    makeData(model);
-        //    return m_predictorData[model].result;
-        //}
-
-        private void makeData(PredictionModel model)
+        private void makeData()
         {
-            if (!m_predictorData.ContainsKey(model))
+            if (m_predictorData.Count > 0)
             {
-                PredictorData p = new PredictorData();
-                p.result = new List<TimePredictionResult>();
-                m_predictorData.Add(model, p);
+                return;
             }
-            if (!m_predictorData[model].isData)
+            foreach (double distance in Settings.Distances.Keys)
             {
-                m_predictorData[model].isData = true;
-
-                if (!m_ppcontrol.IsPartial && (m_ppcontrol.Activities.Count > 1 ||
-                    (m_ppcontrol.Activities.Count == 1 && m_ppcontrol.ChkHighScore)))
+                if (!m_predictorData.ContainsKey(distance))
                 {
-                    RefreshColumns(true);
-                    Predict.SetAgeSexFromActivity(m_ppcontrol.Activities[0]);
-                    //Predict using one or many activities (check done that HS enabled prior)
-                    //makeData(m_predictorData[model].series, m_predictorData[model].result, Predict.Predictor(model));
-                    m_predictorData[model].result = getResults(Predict.Predictor(model), m_ppcontrol.Activities, progressBar);
-                }
-                else if (m_ppcontrol.IsPartial || m_ppcontrol.SingleActivity != null)
-                {
-                    RefreshColumns(false);
-                    IList<IActivity> activities;
-                    if (m_ppcontrol.IsPartial)
+                    Length.Units unitNominal;
+                    if (Settings.Distances[distance].Values[0])
                     {
-                        activities = m_ppcontrol.Activities;
+                        unitNominal = UnitUtil.Distance.Unit;
                     }
                     else
                     {
-                        activities = new List<IActivity> { m_ppcontrol.SingleActivity };
+                        unitNominal = Settings.Distances[distance].Keys[0];
                     }
-
-                    if (m_ppcontrol.Distance > 0 && m_ppcontrol.Time.TotalSeconds > 0)
-                    {
-                        //Predict
-                        Predict.SetAgeSexFromActivity(activities[0]);
-                        m_predictorData[model].result = getResults(Predict.Predictor(model), activities,
-                            //makeData(m_predictorData[model].series, m_predictorData[model].result, Predict.Predictor(model),
-                            m_ppcontrol.Distance, m_ppcontrol.Time, null);
-                    }
+                    m_predictorData.Add(distance, new PredictorData(distance, unitNominal));
                 }
-                //else: no activity selected
             }
+            if (!m_ppcontrol.IsPartial && (m_ppcontrol.Activities.Count > 1 ||
+                (m_ppcontrol.Activities.Count == 1 && m_ppcontrol.ChkHighScore)))
+            {
+                RefreshColumns(true);
+                Predict.SetAgeSexFromActivity(m_ppcontrol.Activities[0]);
+                //Predict using one or many activities (check done that HS enabled prior)
+                getHSResults(m_predictorData, m_ppcontrol.Activities, progressBar);
+                getResults(m_predictorData, progressBar);
+            }
+            else if (m_ppcontrol.IsPartial && m_ppcontrol.Activities.Count > 0 || m_ppcontrol.SingleActivity != null)
+            {
+                RefreshColumns(false);
+                IActivity activity;
+                if (m_ppcontrol.IsPartial)
+                {
+                    activity = m_ppcontrol.Activities[0];
+                }
+                else
+                {
+                    activity = m_ppcontrol.SingleActivity;
+                }
+
+                if (m_ppcontrol.Distance > 0 && m_ppcontrol.Time.TotalSeconds > 0)
+                {
+                    Predict.SetAgeSexFromActivity(activity);
+                    getResults(m_predictorData, activity, m_ppcontrol.Distance, m_ppcontrol.Time, progressBar);
+                }
+            }
+            //else: no activity selected
         }
 
-        public static IList<TimePredictionResult> getResults(Predict.PredictTime predict, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
+        public static void getHSResults(IDictionary<double, PredictorData> predictorData, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
         {
-            IList<TimePredictionResult> reslist = new List<TimePredictionResult>();
             IList<IList<Object>> results = new List<IList<Object>>();
             if (Settings.HighScore != null)
             {
@@ -357,66 +364,53 @@ namespace GpsRunningPlugin.Source
                 double old_dist = (double)result[3];
                 double timeStart = 0;
                 if (result.Count > 4) { timeStart = double.Parse(result[4].ToString()); }
-                double meterEnd = meterStart + old_dist;
-                double new_dist = old_dist * 100 / Settings.PercentOfDistance;
-                double new_time = predict(new_dist, old_dist, old_time);
 
-                //length is the distance HighScore tried to get a prediction  for, may differ to actual dist
+                //length is the distance HighScore tried to get a prediction for, may differ to actual dist
                 double length = Settings.Distances.Keys[index];
-                Length.Units unitNominal;
-                if (Settings.Distances[length].Values[0])
+
+                if (old_time.TotalSeconds > 0)
                 {
-                    unitNominal = UnitUtil.Distance.Unit;
+                    predictorData[length].Activity = foundActivity;
+                    predictorData[length].hsResult = new TimePredictionHSResult(foundActivity, old_dist, old_time, meterStart, timeStart);
                 }
-                else
-                {
-                    unitNominal = Settings.Distances[length].Keys[0];
-                }
-                reslist.Add(new TimePredictionResult(foundActivity, new_dist, length, unitNominal, new_time, old_dist, old_time, meterStart, timeStart));
                 index++;
             }
-            for (int i = index; i < Settings.Distances.Count; i++)
-            {
-                double new_dist = Settings.Distances.Keys[i];
-                double length = new_dist;
-                Length.Units unitNominal;
-                if (Settings.Distances[length].Values[0])
-                {
-                    unitNominal = UnitUtil.Distance.Unit;
-                }
-                else
-                {
-                    unitNominal = Settings.Distances[length].Keys[0];
-                }
-                reslist.Add(new TimePredictionResult(new_dist, length, unitNominal));
-            }
-            return reslist;
         }
 
-        public static IList<TimePredictionResult> getResults(Predict.PredictTime predict, IList<IActivity> activities, double old_dist, TimeSpan old_time, System.Windows.Forms.ProgressBar progressBar)
+        public static void getResults(IDictionary<double, PredictorData> predictorData, System.Windows.Forms.ProgressBar progressBar)
         {
-            IList<TimePredictionResult> reslist = new List<TimePredictionResult>();
-            foreach (double new_dist in Settings.Distances.Keys)
+            foreach (KeyValuePair<double, PredictorData> v in predictorData)
             {
-                double new_time = predict(new_dist, old_dist, old_time);
+                if (v.Value.hsResult != null)
+                {
+                    TimeSpan old_time = v.Value.hsResult.UsedTime;
+                    double old_dist = v.Value.hsResult.UsedDistance;
+                    double new_dist = old_dist * 100 / Settings.PercentOfDistance;
 
-                double length = new_dist;
-                Length.Units unitNominal;
-                if (Settings.Distances[length].Values[0])
-                {
-                    unitNominal = UnitUtil.Distance.Unit;
-                }
-                else
-                {
-                    unitNominal = Settings.Distances[length].Keys[0];
-                }
-                //row[ActivityIdColumn] = "";
-                if (activities != null && activities.Count > 0)
-                {
-                    reslist.Add(new TimePredictionResult(activities[0], new_dist, length, unitNominal, new_time));
+                    //length is the distance HighScore tried to get a prediction for, may differ to actual dist
+                    double length = v.Key;
+
+                    foreach (PredictionModel model in PredictionModelUtil.List)
+                    {
+                        double new_time = Predict.Predictor(model)(new_dist, old_dist, old_time);
+                        predictorData[length].result[model] = new TimePredictionResult(new_dist, new_time);
+                    }
                 }
             }
-            return reslist;
+        }
+
+        public static void getResults(IDictionary<double, PredictorData> predictorData, IActivity activity, double old_dist, TimeSpan old_time, System.Windows.Forms.ProgressBar progressBar)
+        {
+            foreach (KeyValuePair<double, PredictorData> v in predictorData)
+            {
+                double length = v.Key;
+                 v.Value.Activity = activity;
+                 foreach (PredictionModel model in PredictionModelUtil.List)
+                 {
+                     double new_time = Predict.Predictor(model)(length, old_dist, old_time);
+                     v.Value.result[model] = new TimePredictionResult(length, new_time);
+                 }
+            }
         }
 
         public void updateChartVisibility()
@@ -451,11 +445,11 @@ namespace GpsRunningPlugin.Source
                 object row;
                 //Note: As ST scrolls before Location is recorded, incorrect row may be selected...
                 row = summaryList.RowHitTest(((MouseEventArgs)e).Location, out hit);
-                if (row != null && hit == TreeList.RowHitState.Row && row is TimePredictionResult)
+                if (row != null && hit == TreeList.RowHitState.Row && row is PredictorData)
                 {
-                    TimePredictionResult result = (TimePredictionResult)row;
+                    PredictorData result = (PredictorData)row;
                     IActivity id = result.Activity;
-                    if (id != null)
+                    if (id != null && result.hsResult != null)
                     {
                         if (m_showPage)
                         {
@@ -470,15 +464,15 @@ namespace GpsRunningPlugin.Source
                         }
                         IValueRangeSeries<DateTime> t = new ValueRangeSeries<DateTime>();
                         DateTime endTime;
-                        if (result.UsedTime.TotalSeconds > 0)
+                        if (result.hsResult.UsedTime.TotalSeconds > 0)
                         {
-                            endTime = result.StartUsedTime.Add(result.UsedTime);
+                            endTime = result.hsResult.StartUsedTime.Add(result.hsResult.UsedTime);
                         }
                         else
                         {
                             endTime = ActivityInfoCache.Instance.GetInfo(id).ActualTrackEnd;
                         }
-                        t.Add(new ValueRange<DateTime>(result.StartUsedTime, endTime));
+                        t.Add(new ValueRange<DateTime>(result.hsResult.StartUsedTime, endTime));
                         IList<TrailResultMarked> aTrm = new List<TrailResultMarked>();
                         aTrm.Add(new TrailResultMarked(
                             new TrailResult(new ActivityWrapper(id, Plugin.GetApplication().SystemPreferences.RouteSettings.RouteSelectedColor)),
@@ -496,9 +490,9 @@ namespace GpsRunningPlugin.Source
             object row;
             TreeList.RowHitState hit;
             row = summaryList.RowHitTest(e.Location, out hit);
-            if (row != null  && hit == TreeList.RowHitState.Row && row is TimePredictionResult)
+            if (row != null && hit == TreeList.RowHitState.Row && row is PredictorData)
                 {
-                    TimePredictionResult tr = (TimePredictionResult)row;
+                    PredictorData tr = (PredictorData)row;
                 string bookmark = "id=" + tr.Activity;
                 Plugin.GetApplication().ShowView(view, bookmark);
             }
