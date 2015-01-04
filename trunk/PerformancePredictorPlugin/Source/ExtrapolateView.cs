@@ -574,6 +574,7 @@ namespace GpsRunningPlugin.Source
                 idealDistance = UnitUtil.Distance.Parse(this.distBox2.Text);
                 if (idealDistance != m_ppcontrol.Distance)
                 {
+                    Predict.SetAgeSexFromActivity(activity);
                     ideal = (Predict.Predictor(Settings.Model))(idealDistance, m_ppcontrol.Distance, TimeSpan.FromSeconds(ideal));
                 }
             }
@@ -771,6 +772,7 @@ namespace GpsRunningPlugin.Source
                 float actualAge = (float)(act.StartTime - Plugin.GetApplication().Logbook.Athlete.DateOfBirth).TotalDays / 365.24f;
                 Predict.Sex = Plugin.GetApplication().Logbook.Athlete.Sex;
                 ideal = PredictWavaTime.WavaPredict(dist, dist, ideal, idealAge, actualAge);
+                Predict.SetAgeSexFromActivity(act);
             }
             ideal = (Predict.Predictor(Settings.Model))(new_dist, dist, TimeSpan.FromSeconds(ideal));
 
