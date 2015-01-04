@@ -158,6 +158,7 @@ namespace GpsRunningPlugin.Source
             this.bannerContextMenuStrip.ShowCheckMargin = true;
             this.bannerContextMenuStrip.ShowImageMargin = false;
             this.bannerContextMenuStrip.Size = new System.Drawing.Size(212, 386);
+            this.bannerContextMenuStrip.Opening  += new System.ComponentModel.CancelEventHandler(bannerContextMenuStrip_Opening);
             this.actionBanner1.MenuClicked += actionBanner1_MenuClicked;
             // 
             // settingsMenuItem

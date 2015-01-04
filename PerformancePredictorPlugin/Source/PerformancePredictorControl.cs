@@ -176,9 +176,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
         void InitControls()
         {
             this.modelComboBox.ButtonImage = Properties.Resources.DropDown;
-            //menu set separately
             syncToolBarToState();
-            syncMenuToState();
 
             UpdateToolBar();
             //Correct possibly misaligned settings
@@ -531,8 +529,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             //Dependent
             chartButton.Checked = !tableButton.Checked;
             chartButton.Enabled = tableButton.Enabled;
-
-            syncMenuToState();
         }
 
         private void UpdateToolBar()
@@ -564,35 +560,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             chartButton.Enabled = tableButton.Enabled;
         }
 
-        private void syncMenuToState()
-        {
-            timePredictionMenuItem.Checked = timePredictionButton.Checked;
-            timePredictionMenuItem.Enabled = timePredictionButton.Enabled;
-            trainingMenuItem.Checked = trainingButton.Checked;
-            trainingMenuItem.Enabled = trainingButton.Enabled;
-            extrapolateMenuItem.Checked = extrapolateButton.Checked;
-            extrapolateMenuItem.Enabled = extrapolateButton.Enabled;
-
-            daveCameronMenuItem.Checked = Settings.Model == PredictionModel.DAVE_CAMERON;
-            peteRiegelMenuItem.Checked = Settings.Model == PredictionModel.PETE_RIEGEL;
-            wavaMenuItem.Checked = Settings.Model == PredictionModel.WAVA;
-
-            paceMenuItem.Checked = paceButton.Checked;
-            paceMenuItem.Enabled = paceButton.Enabled;
-            speedMenuItem.Checked = speedButton.Checked;
-            speedMenuItem.Enabled = speedButton.Enabled;
-
-            tableMenuItem.Checked = tableButton.Checked;
-            tableMenuItem.Enabled = tableButton.Enabled;
-            chartMenuItem.Checked = chartButton.Checked;
-            chartMenuItem.Enabled = chartButton.Enabled;
-
-            chkHighScoreMenuItem.Checked = chkHighScoreBox.Checked;
-            chkHighScoreMenuItem.Enabled = chkHighScoreBox.Enabled;
-
-            showToolBarMenuItem.Checked = Settings.ShowToolBar;
-        }
-
         public bool ChkHighScore
         {
             get
@@ -611,7 +578,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             {
                 Settings.PredictionView = PredictionView.TimePrediction;
                 syncToolBarToState();
-                syncMenuToState();
                 setView();
             }
         }
@@ -624,7 +590,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             {
                 Settings.PredictionView = PredictionView.Training;
                 syncToolBarToState();
-                syncMenuToState();
                 setView();
             }
         }
@@ -637,7 +602,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             {
                 Settings.PredictionView = PredictionView.Extrapolate;
                 syncToolBarToState();
-                syncMenuToState();
                 setView();
             }
         }
@@ -646,7 +610,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
         {
             Settings.Model = pred;
             syncToolBarToState();
-            syncMenuToState();
             //setView();
             predictorView.setData();
             trainingView.RefreshData();
@@ -680,6 +643,36 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             }
         }
 
+        private void bannerContextMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            timePredictionMenuItem.Checked = timePredictionButton.Checked;
+            timePredictionMenuItem.Enabled = timePredictionButton.Enabled;
+            trainingMenuItem.Checked = trainingButton.Checked;
+            trainingMenuItem.Enabled = trainingButton.Enabled;
+            extrapolateMenuItem.Checked = extrapolateButton.Checked;
+            extrapolateMenuItem.Enabled = extrapolateButton.Enabled;
+
+            modelMenuItem.Text += Settings.Model.ToString();
+            daveCameronMenuItem.Checked = Settings.Model == PredictionModel.DAVE_CAMERON;
+            peteRiegelMenuItem.Checked = Settings.Model == PredictionModel.PETE_RIEGEL;
+            wavaMenuItem.Checked = Settings.Model == PredictionModel.WAVA;
+
+            paceMenuItem.Checked = paceButton.Checked;
+            paceMenuItem.Enabled = paceButton.Enabled;
+            speedMenuItem.Checked = speedButton.Checked;
+            speedMenuItem.Enabled = speedButton.Enabled;
+
+            tableMenuItem.Checked = tableButton.Checked;
+            tableMenuItem.Enabled = tableButton.Enabled;
+            chartMenuItem.Checked = chartButton.Checked;
+            chartMenuItem.Enabled = chartButton.Enabled;
+
+            chkHighScoreMenuItem.Checked = chkHighScoreBox.Checked;
+            chkHighScoreMenuItem.Enabled = chkHighScoreBox.Enabled;
+
+            showToolBarMenuItem.Checked = Settings.ShowToolBar;
+        }
+
         private void table_Click(object sender, EventArgs e)
         {
             if (m_showPage && (
@@ -688,7 +681,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             {
                 Settings.ShowChart = false;
                 syncToolBarToState();
-                syncMenuToState();
                 predictorView.updateChartVisibility();
                 //No effect for Training
             }
@@ -702,7 +694,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             {
                 Settings.ShowChart = true;
                 syncToolBarToState();
-                syncMenuToState();
                 predictorView.updateChartVisibility();
                 //No effect for Training
             }
@@ -716,7 +707,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             {
                 Settings.ShowPace = true;
                 syncToolBarToState();
-                syncMenuToState();
                 predictorView.RefreshData();
             }
         }
@@ -729,7 +719,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             {
                 Settings.ShowPace = false;
                 syncToolBarToState();
-                syncMenuToState();
                 predictorView.RefreshData();
             }
         }
