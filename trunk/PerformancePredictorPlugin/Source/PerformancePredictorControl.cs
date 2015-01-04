@@ -506,7 +506,15 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             if (timePredictionButton.Checked)
             {
                 this.actionBanner1.Text = Properties.Resources.TimePrediction;
-                this.chkHighScoreBox.Enabled |= Settings.HighScore != null;
+                if (this.Activities.Count > 1)
+                {
+                    this.chkHighScoreBox.Enabled = false;
+                    this.chkHighScoreBox.Checked = true;
+                }
+                else
+                {
+                    this.chkHighScoreBox.Enabled |= Settings.HighScore != null;
+                }
                 this.tableButton.Enabled = true;
                 this.tableButton.Checked = !Settings.ShowChart;
                 if (this.m_showPage)
