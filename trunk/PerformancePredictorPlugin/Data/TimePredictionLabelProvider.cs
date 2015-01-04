@@ -64,14 +64,14 @@ namespace GpsRunningPlugin.Source
                 default:
                     if (column.Id.StartsWith(ResultColumnIds.PredictedTimeModel))
                     {
-                        string s = column.Id.Substring(ResultColumnIds.PredictedTime.Length + 1);
+                        string s = column.Id.Substring(ResultColumnIds.PredictedTimeModel.Length + 1);
                         PredictionModel model = (PredictionModel)Enum.Parse(typeof(PredictionModel), s);
                         double time = wrapper.result[model].PredictedTime;
                         return UnitUtil.Time.ToString(time);
                     }
                     else if (column.Id.StartsWith(ResultColumnIds.SpeedModel))
                     {
-                        string s = column.Id.Substring(ResultColumnIds.Speed.Length + 1);
+                        string s = column.Id.Substring(ResultColumnIds.SpeedModel.Length + 1);
                         PredictionModel model = (PredictionModel)Enum.Parse(typeof(PredictionModel), s);
                         double time = wrapper.result[model].PredictedTime;
                         return UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, wrapper.Distance / time);
