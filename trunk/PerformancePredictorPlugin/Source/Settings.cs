@@ -54,6 +54,20 @@ namespace GpsRunningPlugin.Source
             }
         }
 
+        private static TimeSpan elinderBreakEvenTime;
+        public static TimeSpan ElinderBreakEvenTime
+        {
+            get { return elinderBreakEvenTime; }
+            set { elinderBreakEvenTime = value; }
+        }
+
+        private static float riegelFatigueFactor;
+        public static float RiegelFatigueFactor
+        {
+            get { return riegelFatigueFactor; }
+            set { riegelFatigueFactor = value; }
+        }
+
         private static float idealBmi;
         public static float IdealBmi
         {
@@ -162,12 +176,14 @@ namespace GpsRunningPlugin.Source
             showChart = false;//show chart by default
             percentOfDistance = 40;
             model = PredictionModelUtil.Default;
+            elinderBreakEvenTime = TimeSpan.FromHours(2);
+            riegelFatigueFactor = 1.06f;
             showToolBar = true;
             distances.Clear();
             //Some distances removed by default
             //addDistance(100, Length.Units.Meter, false);
             //addDistance(200, Length.Units.Meter, false);
-            addDistance(400, Length.Units.Meter, false);
+            //addDistance(400, Length.Units.Meter, false);
             //addDistance(500, Length.Units.Meter, false);
             //addDistance(800, Length.Units.Meter, false);
             addDistance(1, Length.Units.Kilometer, false);
@@ -233,6 +249,10 @@ namespace GpsRunningPlugin.Source
             //        }
             //    }
             //}
+            attr = pluginNode.GetAttribute(xmlTags.elinderBreakEvenTime);
+            if (attr.Length > 0) { elinderBreakEvenTime = TimeSpan.FromSeconds(Settings.parseFloat(attr)); }
+            attr = pluginNode.GetAttribute(xmlTags.riegelFatigueFactor);
+            if (attr.Length > 0) { riegelFatigueFactor = Settings.parseFloat(attr); }
             attr = pluginNode.GetAttribute(xmlTags.idealBmi);
             if (attr.Length > 0) { idealBmi = Settings.parseFloat(attr); }
             attr = pluginNode.GetAttribute(xmlTags.idealShoe);
@@ -264,6 +284,8 @@ namespace GpsRunningPlugin.Source
             pluginNode.SetAttribute(xmlTags.settingsVersion, XmlConvert.ToString(settingsVersionCurrent));
 
             pluginNode.SetAttribute(xmlTags.predictionView, predictionView.ToString());
+            pluginNode.SetAttribute(xmlTags.elinderBreakEvenTime, XmlConvert.ToString(elinderBreakEvenTime.TotalSeconds));
+            pluginNode.SetAttribute(xmlTags.riegelFatigueFactor, XmlConvert.ToString(riegelFatigueFactor));
             pluginNode.SetAttribute(xmlTags.idealBmi, XmlConvert.ToString(idealBmi));
             pluginNode.SetAttribute(xmlTags.idealShoe, XmlConvert.ToString(idealShoe));
             pluginNode.SetAttribute(xmlTags.showPace, XmlConvert.ToString(showPace));
@@ -295,13 +317,15 @@ namespace GpsRunningPlugin.Source
             public const string settingsVersion = "settingsVersion";
             public const string predictionView = "predictionView";
             //public const string showPrediction = "showPrediction";// old
-            public const string idealBmi = "idealBmi";
-            public const string idealShoe = "idealShoe";
             public const string showPace = "showPace";
             public const string showChart = "showChart";
             public const string model = "model";
             public const string showToolBar = "showToolBar";
             public const string percentOfDistance = "percentOfDistance";
+            public const string elinderBreakEvenTime = "elinderBreakEvenTime";
+            public const string riegelFatigueFactor = "riegelFatigueFactor";
+            public const string idealBmi = "idealBmi";
+            public const string idealShoe = "idealShoe";
             public const string distances = "distances";
 
             public const string viewWidth = "viewWidth";

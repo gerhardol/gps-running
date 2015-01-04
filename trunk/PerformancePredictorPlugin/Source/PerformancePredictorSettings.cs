@@ -53,6 +53,8 @@ namespace GpsRunningPlugin.Source
         public void ThemeChanged(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme)
         {
             this.distanceBox.ThemeChanged(visualTheme);
+            this.elinderBreakEvenBox.ThemeChanged(visualTheme);
+            this.riegelFatigueFactorBox.ThemeChanged(visualTheme);
             this.bmiBox.ThemeChanged(visualTheme);
             this.shoeBox.ThemeChanged(visualTheme);
         }
@@ -67,7 +69,10 @@ namespace GpsRunningPlugin.Source
             removeDistance.Text = Resources.RemoveDistance + " ->";
             groupBox2.Text = Resources.HighScorePluginIntegration;
             label1.Text = StringResources.Use;
-            label2.Text = Resources.ProcDistUsed;
+            percentHSLabel.Text = Resources.ProcDistUsed;
+            this.modelGroupBox.Text = "Prediction Model"; //TBD
+            this.elinderBreakEvenLabel.Text = "Elinder BreakEven";
+            this.riegelFatigueFactorLabel.Text = "Riegel FatigueFactor";
             this.idealGroupBox.Text = Resources.IdealTab;
             this.bmiLabel.Text = "BMI";
             this.shoeLabel.Text = Resources.ShoeTab;
@@ -75,8 +80,10 @@ namespace GpsRunningPlugin.Source
 
         private void RefreshData()
         {
-            this.bmiBox.Text = ((float)Settings.IdealBmi).ToString("F1");
-            this.shoeBox.Text = UnitUtil.Weight.ToString((float)Settings.IdealShoe, ShoeLabelProvider.shoeUnit, "u");
+            this.elinderBreakEvenBox.Text = UnitUtil.Time.ToString(Settings.ElinderBreakEvenTime);
+            this.riegelFatigueFactorBox.Text = (Settings.RiegelFatigueFactor).ToString("F3");
+            this.bmiBox.Text = (Settings.IdealBmi).ToString("F1");
+            this.shoeBox.Text = UnitUtil.Weight.ToString(Settings.IdealShoe, ShoeLabelProvider.shoeUnit, "u");
             updateList();
         }
 
@@ -158,16 +165,31 @@ namespace GpsRunningPlugin.Source
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             Settings.PercentOfDistance = (int)numericUpDown1.Value;
+            RefreshData();
+        }
+
+        void elinderBreakEvenBox_LostFocus(object sender, System.EventArgs e)
+        {
+            Settings.ElinderBreakEvenTime = TimeSpan.FromSeconds(UnitUtil.Time.Parse(this.elinderBreakEvenBox.Text));
+            RefreshData();
+        }
+
+        void riegelFatigueFactorBox_LostFocus(object sender, System.EventArgs e)
+        {
+            Settings.RiegelFatigueFactor = Settings.parseFloat(this.riegelFatigueFactorBox.Text);
+            RefreshData();
         }
 
         void bmiBox_LostFocus(object sender, System.EventArgs e)
         {
-            Settings.IdealBmi = float.Parse(bmiBox.Text, NumberFormatInfo.InvariantInfo);
+            Settings.IdealBmi = Settings.parseFloat(bmiBox.Text);
+            RefreshData();
         }
 
         void shoeBox_LostFocus(object sender, System.EventArgs e)
         {
             Settings.IdealShoe = (float)UnitUtil.Weight.Parse(shoeBox.Text, ShoeLabelProvider.shoeUnit);
+            RefreshData();
         }
     }
 }
