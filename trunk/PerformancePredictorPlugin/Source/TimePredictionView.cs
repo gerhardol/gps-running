@@ -243,29 +243,34 @@ namespace GpsRunningPlugin.Source
                     }
                 }
             }
+
             foreach (PredictionModel model in PredictionModelUtil.List)
             {
-                IListColumnDefinition columnDef = ResultColumnIds.PredictedTimeModelColumn();
-                //The id suffix is used to get the model for the results (
-                //It may be possible to use comn.Tag, but no description to do that
-                string nameSuffix = " (" + PredictionModelUtil.Name(model) + ")";
-                string idSuffix = "_" + model.ToString();
-                TreeList.Column column = new TreeList.Column(
-                    columnDef.Id + idSuffix,
-                    columnDef.Text(columnDef.Id) + nameSuffix,
-                    columnDef.Width,
-                    columnDef.Align
-                );
-                summaryList.Columns.Add(column);
+                //List all but the primary model after the other
+                if (model != Settings.Model)
+                {
+                    IListColumnDefinition columnDef = ResultColumnIds.PredictedTimeModelColumn();
+                    //The id suffix is used to get the model for the results (
+                    //It may be possible to use comn.Tag, but no description to do that
+                    string nameSuffix = " (" + PredictionModelUtil.Name(model) + ")";
+                    string idSuffix = "_" + model.ToString();
+                    TreeList.Column column = new TreeList.Column(
+                        columnDef.Id + idSuffix,
+                        columnDef.Text(columnDef.Id) + nameSuffix,
+                        columnDef.Width,
+                        columnDef.Align
+                    );
+                    summaryList.Columns.Add(column);
 
-                columnDef = ResultColumnIds.SpeedModelColumn();
-                column = new TreeList.Column(
-                    columnDef.Id + idSuffix,
-                    columnDef.Text(columnDef.Id) + nameSuffix,
-                    columnDef.Width,
-                    columnDef.Align
-                );
-                summaryList.Columns.Add(column);
+                    columnDef = ResultColumnIds.SpeedModelColumn();
+                    column = new TreeList.Column(
+                        columnDef.Id + idSuffix,
+                        columnDef.Text(columnDef.Id) + nameSuffix,
+                        columnDef.Width,
+                        columnDef.Align
+                    );
+                    summaryList.Columns.Add(column);
+                }
             }
             //summaryList.NumLockedColumns = Data.Settings.ActivityPageNumFixedColumns;
         }
