@@ -38,8 +38,7 @@ namespace GpsRunningPlugin.Source
 
         //Current distance to switch distance algorithm
         private static double BreakEvenDist;
-        private static double BreakEvenTime; //should be close to BreakEvenTimeTarget
-        private const double BreakEvenTimeTarget = 2*3600;
+        private static double BreakEvenTime; //should be close to Settings.ElinderBreakEvenTime.TotalSeconds
         //Current values for BreakEvenDist
         private static double currBreakDist = 0;
         private static double currBreakTime = 0;
@@ -48,35 +47,62 @@ namespace GpsRunningPlugin.Source
         {
             if(dist != currBreakDist || time != currBreakTime)
             {
-                double pTime = BreakEvenTimeTarget;
+                double pTime = Settings.ElinderBreakEvenTime.TotalSeconds;
                 EstimateBreakEven(pTime, dist, time);
                 //TBD get closer to 2h
                 //int i = 10;
                 //while(i-->0 && Math.Abs(BreakEvenTime -BreakEvenTimeTarget) > 60)
                 //{
                 //}
+                //Either Infra or Ultra should work here
+                //double new_time;
+                //if (dist <= BreakEvenDist)
+                //{
+                //    new_time = PredictInfra(dist, BreakEvenDist, BreakEvenTime);
+                //}
+                //else
+                //{
+                //    new_time = PredictUltra(dist, BreakEvenDist, BreakEvenTime);
+                //}
+                //if (Math.Abs(new_time - time) / time > 0.001)
+                //{ }
+                currBreakDist = dist;
+                currBreakTime = time;
             }
             return BreakEvenDist;
         }
 
-        private static void EstimateBreakEven(double time2h, double dist, double time)
+        private static void EstimateBreakEven(double timeBreakEven, double dist, double time)
         {
-            BreakEvenDist = dist * Math.Pow(BreakEvenTimeTarget / time, 1 / GpsRunningPlugin.Source.Predict.RiegelFatigueFactor);
-            BreakEvenTime = PredictBefore(BreakEvenDist, dist, time);
+            if (time <= timeBreakEven)
+            {
+                //From private conversation with Elinder
+                //562,9 / (t1/s1 *  (7.313 - lg(s1)))^0,9307
+                BreakEvenDist = 562900 / Math.Pow((time/60 * 1000 / dist * (10.313 - Math.Log10(dist))), 0.9307);
+                //This should be very close, but may differ if ElinderBreakEvenTime is modified
+                BreakEvenTime = PredictInfra(BreakEvenDist, dist, time);
+            }
+            else
+            {
+                //Use Riegel reversed - may use iterations to get better data or a separate algorithm
+                BreakEvenDist = dist * Math.Pow(timeBreakEven / time, 1 / Settings.RiegelFatigueFactor);
+                BreakEvenTime = PredictUltra(BreakEvenDist, dist, time);
+            }
         }
 
-        private static float PredictBefore(double new_dist, double old_dist, double old_time)
+        //Infra: The algorithm valid before BreakEven (named from the article)
+        private static float PredictInfra(double new_dist, double bDist, double bTime)
         {
-            //v=b0/7.2*(7.313 – lg(s0)) / (7.313 – lg(b0)) , t=s0 * 1000 /v (s0 in km)´-> 
+            //v=b0/7.2*(7.313 – lg(s0)) / (7.313 – lg(b0)) , t=s0 * 1000 /v (s0 in km) -> 
             //t=7.2*s/b*(7.313-log(b/1000))/(7.313-(log(s)-log(1000)))=7.2*s/b*(10,313-log(b))/(10.313-log(s))
-            return (float)(old_time * new_dist / old_dist * (10.313 - Math.Log10(old_dist)) / (10.313 - Math.Log10(new_dist)));
+            return (float)(new_dist * bTime / bDist * (10.313 - Math.Log10(bDist)) / (10.313 - Math.Log10(new_dist)));
         }
 
-        private static float PredictAfter(double new_dist, double old_dist, double old_time)
+        //Ultra: Valid after BreakEven
+        private static float PredictUltra(double new_dist, double bDist, double bTime)
         {
             //v=b/7.2*(7.313 – 2.697*lg(s) + 1.697*lg(b)) / (7.313 – lg(b)) 
-            //return (float)(old_time * new_dist / old_dist * (10.313 - Math.Log10(old_dist)) / (7.313 - 2.697 * (Math.Log10(new_dist) - 3) + 1.687 * (Math.Log10(new_dist) - 3)));
-            return (float)(old_time * new_dist / old_dist * (10.313 - Math.Log10(old_dist)) / (7.313 - 2.697 * (Math.Log10(new_dist) - 3) + 1.697 * (Math.Log10(old_dist) - 3)));
+            return (float)(new_dist * bTime / bDist * (10.313 - Math.Log10(bDist)) / (7.313 - 2.697 * (Math.Log10(new_dist) - 3) + 1.697 * (Math.Log10(bDist) - 3)));
         }
 
         public static double Predict(double new_dist, double old_dist, TimeSpan old_time)
@@ -86,11 +112,11 @@ namespace GpsRunningPlugin.Source
 
             if (new_dist <= BreakEvenDist)
             {
-                new_time = PredictBefore(new_dist, BreakEvenDist, BreakEvenTime);
+                new_time = PredictInfra(new_dist, BreakEvenDist, BreakEvenTime);
             }
             else
             {
-                new_time = PredictAfter(new_dist, BreakEvenDist, BreakEvenTime);
+                new_time = PredictUltra(new_dist, BreakEvenDist, BreakEvenTime);
             }
             return new_time;
         }
