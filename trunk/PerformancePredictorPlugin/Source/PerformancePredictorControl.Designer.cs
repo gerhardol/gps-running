@@ -56,9 +56,6 @@ namespace GpsRunningPlugin.Source
             this.extrapolateMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.modelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.daveCameronMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.peteRiegelMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.wavaMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.resultMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -139,9 +136,6 @@ namespace GpsRunningPlugin.Source
             this.extrapolateMenuItem,
             this.toolStripSeparator1,
             this.modelMenuItem,
-            this.daveCameronMenuItem,
-            this.peteRiegelMenuItem,
-            this.wavaMenuItem,
             this.toolStripSeparator2,
             this.resultMenuItem,
             this.tableMenuItem,
@@ -200,27 +194,6 @@ namespace GpsRunningPlugin.Source
             this.modelMenuItem.Name = "modelMenuItem";
             this.modelMenuItem.Size = new System.Drawing.Size(211, 22);
             this.modelMenuItem.Text = "<modelMenuItem";
-            // 
-            // daveCameronMenuItem
-            // 
-            this.daveCameronMenuItem.Name = "daveCameronMenuItem";
-            this.daveCameronMenuItem.Size = new System.Drawing.Size(211, 22);
-            this.daveCameronMenuItem.Text = "<daveCameronMenuItem";
-            this.daveCameronMenuItem.Click += new System.EventHandler(this.daveCameron_Click);
-            // 
-            // peteRiegelMenuItem
-            // 
-            this.peteRiegelMenuItem.Name = "peteRiegelMenuItem";
-            this.peteRiegelMenuItem.Size = new System.Drawing.Size(211, 22);
-            this.peteRiegelMenuItem.Text = "<peteRiegelMenuItem";
-            this.peteRiegelMenuItem.Click += new System.EventHandler(this.peteRiegel_Click);
-            // 
-            // wavaMenuItem
-            // 
-            this.wavaMenuItem.Name = "wavaMenuItem";
-            this.wavaMenuItem.Size = new System.Drawing.Size(211, 22);
-            this.wavaMenuItem.Text = "<wavaMenuItem";
-            this.wavaMenuItem.Click += new System.EventHandler(this.wava_Click);
             // 
             // toolStripSeparator2
             // 
@@ -560,9 +533,6 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.ToolStripMenuItem extrapolateMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem modelMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem daveCameronMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem peteRiegelMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem wavaMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem resultMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tableMenuItem;

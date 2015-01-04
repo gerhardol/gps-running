@@ -179,8 +179,17 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             syncToolBarToState();
 
             UpdateToolBar();
-            //Correct possibly misaligned settings
-            //setView();
+            int i = this.bannerContextMenuStrip.Items.IndexOf(this.modelMenuItem);
+            foreach (PredictionModel m in PredictionModelUtil.List)
+            {
+                System.Windows.Forms.ToolStripMenuItem menuItem = new ToolStripMenuItem();
+                menuItem.Name = m.ToString();
+                menuItem.Size = new System.Drawing.Size(211, 22);
+                menuItem.Text = menuItem.Name; //Set in UICultureChanged
+                menuItem.Tag = m;
+                menuItem.Click += new System.EventHandler(predictModelMenuItem_Click);
+                this.bannerContextMenuStrip.Items.Insert(++i, menuItem );
+            }
         }
 
         private static ITheme m_visualTheme;
@@ -212,9 +221,14 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
             modelBox.Text = Resources.PredictionModel;
             this.modelMenuItem.Text = modelBox.Text;
-            this.daveCameronMenuItem.Text = PredictionModelUtil.Name(PredictionModel.DAVE_CAMERON);
-            this.peteRiegelMenuItem.Text = PredictionModelUtil.Name(PredictionModel.PETE_RIEGEL);
-            this.wavaMenuItem.Text = PredictionModelUtil.Name(PredictionModel.WAVA);
+            foreach (ToolStripItem t in this.bannerContextMenuStrip.Items)
+            {
+                if (t.Tag is PredictionModel)
+                {
+                    PredictionModel m = (PredictionModel)t.Tag;
+                    t.Text = PredictionModelUtil.Name(m);
+                }
+            }
             
             velocityBox.Text = Resources.Velocity;
             velocityMenuItem.Text = velocityBox.Text;
@@ -616,30 +630,13 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             extrapolateView.RefreshData();
         }
 
-        private void daveCameron_Click(object sender, EventArgs e)
+        private void predictModelMenuItem_Click(object sender, EventArgs e)
         {
             if (m_showPage && (
-                sender is ToolStripMenuItem && !daveCameronMenuItem.Checked))
+                        sender is ToolStripMenuItem && !((ToolStripMenuItem)sender).Checked) &&
+                ((ToolStripMenuItem)sender).Tag is PredictionModel)
             {
-                predict_Click(PredictionModel.DAVE_CAMERON);
-            }
-        }
-
-        private void peteRiegel_Click(object sender, EventArgs e)
-        {
-            if (m_showPage && (
-                sender is ToolStripMenuItem && !peteRiegelMenuItem.Checked))
-            {
-                predict_Click(PredictionModel.PETE_RIEGEL);
-            }
-        }
-
-        private void wava_Click(object sender, EventArgs e)
-        {
-            if (m_showPage && (
-                sender is ToolStripMenuItem && !wavaMenuItem.Checked))
-            {
-                predict_Click(PredictionModel.WAVA);
+                predict_Click((PredictionModel)((ToolStripMenuItem)sender).Tag);
             }
         }
 
@@ -652,10 +649,14 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             extrapolateMenuItem.Checked = extrapolateButton.Checked;
             extrapolateMenuItem.Enabled = extrapolateButton.Enabled;
 
-            modelMenuItem.Text += Settings.Model.ToString();
-            daveCameronMenuItem.Checked = Settings.Model == PredictionModel.DAVE_CAMERON;
-            peteRiegelMenuItem.Checked = Settings.Model == PredictionModel.PETE_RIEGEL;
-            wavaMenuItem.Checked = Settings.Model == PredictionModel.WAVA;
+            foreach (ToolStripItem t in this.bannerContextMenuStrip.Items)
+            {
+                if (t.Tag is PredictionModel)
+                {
+                    PredictionModel m = (PredictionModel)t.Tag;
+                    ((ToolStripMenuItem)t).Checked = (Settings.Model == m);
+                }
+            }
 
             paceMenuItem.Checked = paceButton.Checked;
             paceMenuItem.Enabled = paceButton.Enabled;
