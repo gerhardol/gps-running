@@ -106,6 +106,10 @@ namespace GpsRunningPlugin.Source
         public const string UsedTime = "UsedTime";
         public const string StartDistance = "StartDistance";
         public const string UsedDistance = "UsedDistance";
+        //field per model
+        public const string Model = "Model";
+        public const string PredictedTimeModel = PredictedTime + Model;
+        public const string SpeedModel = Speed + Model;
 
         //Training
         public const string ZoneDistance = "ZoneDistance";
@@ -138,6 +142,10 @@ namespace GpsRunningPlugin.Source
         public static IList<string> WeightColumns = new List<string> { Weight, AdjustedVDOT, EstimatedTime, EstimatedSpeed };
         public static IList<string> ShoeColumns = new List<string> { ShoeWeight, AdjustedVDOT, EstimatedTime, EstimatedSpeed };
         public static IList<string> AgeColumns = new List<string> { Age, EstimatedTime, EstimatedSpeed };
+
+        public static IListColumnDefinition PredictedTimeModelColumn() { return new ListColumnDefinition(ResultColumnIds.PredictedTimeModel, Resources.PredictedTime, "", 70, StringAlignment.Far); }
+        public static IListColumnDefinition SpeedModelColumn() { return new ListColumnDefinition(ResultColumnIds.SpeedModel, UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace), "", 60, StringAlignment.Far); }
+
 
         public static ICollection<IListColumnDefinition> ColumnDefs()
         {

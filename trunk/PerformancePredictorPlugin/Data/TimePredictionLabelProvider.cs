@@ -31,7 +31,7 @@ namespace GpsRunningPlugin.Source
 
         public override string GetText(object element, ZoneFiveSoftware.Common.Visuals.TreeList.Column column)
         {
-            TimePredictionResult wrapper = (TimePredictionResult)element;
+            PredictorData wrapper = (PredictorData)element;
             if (wrapper.Activity == null && column.Id != ResultColumnIds.DistanceNominal && column.Id != ResultColumnIds.DistanceNominal)
             {
                 if (column.Id == ResultColumnIds.StartDate)
@@ -45,35 +45,51 @@ namespace GpsRunningPlugin.Source
                 case ResultColumnIds.Distance:
                     return UnitUtil.Distance.ToString(wrapper.Distance);
                 case ResultColumnIds.DistanceNominal:
-                    return UnitUtil.Distance.ToString(wrapper.DistanceNominal, wrapper.UnitNominal, "u");
+                    return UnitUtil.Distance.ToString(wrapper.Distance, wrapper.Unit, "u");
                 case ResultColumnIds.PredictedTime:
-                    return UnitUtil.Time.ToString(wrapper.PredictedTime);
+                    return UnitUtil.Time.ToString(wrapper.result[Settings.Model].PredictedTime);
                 case ResultColumnIds.Speed:
-                    return UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, wrapper.Speed);
+                    return UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, wrapper.Distance/wrapper.result[Settings.Model].PredictedTime);
                 case ResultColumnIds.StartDate:
-                    return wrapper.StartDate.ToLocalTime().ToShortDateString();
+                    return wrapper.hsResult.StartDate.ToLocalTime().ToShortDateString();
                 case ResultColumnIds.StartTime:
-                    return wrapper.StartUsedTime.ToLocalTime().ToShortTimeString();
+                    return wrapper.hsResult.StartUsedTime.ToLocalTime().ToShortTimeString();
                 case ResultColumnIds.UsedTime:
-                    return UnitUtil.Time.ToString(wrapper.UsedTime);
+                    return UnitUtil.Time.ToString(wrapper.hsResult.UsedTime);
                 case ResultColumnIds.StartDistance:
-                    return UnitUtil.Distance.ToString(wrapper.StartDistance);
+                    return UnitUtil.Distance.ToString(wrapper.hsResult.StartDistance);
                 case ResultColumnIds.UsedDistance:
-                    return UnitUtil.Distance.ToString(wrapper.UsedDistance);
-                 default:
-            ActivityInfo actInfo = ActivityInfoCache.Instance.GetInfo(wrapper.Activity);
+                    return UnitUtil.Distance.ToString(wrapper.hsResult.UsedDistance);
+
+                default:
+                    if (column.Id.StartsWith(ResultColumnIds.PredictedTimeModel))
+                    {
+                        string s = column.Id.Substring(ResultColumnIds.PredictedTime.Length + 1);
+                        PredictionModel model = (PredictionModel)Enum.Parse(typeof(PredictionModel), s);
+                        double time = wrapper.result[model].PredictedTime;
+                        return UnitUtil.Time.ToString(time);
+                    }
+                    else if (column.Id.StartsWith(ResultColumnIds.SpeedModel))
+                    {
+                        string s = column.Id.Substring(ResultColumnIds.Speed.Length + 1);
+                        PredictionModel model = (PredictionModel)Enum.Parse(typeof(PredictionModel), s);
+                        double time = wrapper.result[model].PredictedTime;
+                        return UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, wrapper.Distance / time);
+                    }
+                    ActivityInfo actInfo = ActivityInfoCache.Instance.GetInfo(wrapper.Activity);
                     string text = base.GetText(actInfo, column);
                     if (text != "")
                         return text;
                     else
-                        return base.GetText(wrapper.Activity, column);                    
+                        return base.GetText(wrapper.Activity, column);
             }
         }
 
         public override Image GetImage(object element, TreeList.Column column)
         {
-            TimePredictionResult wrapper = (TimePredictionResult)element;
-            return base.GetImage(wrapper.Activity, column);
+            PredictorData wrapper = (PredictorData)element;
+            if (wrapper.Activity == null) { return base.GetImage(wrapper.Activity, column); }
+            else { return null; }
         }
 
         #endregion
