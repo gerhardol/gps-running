@@ -375,7 +375,6 @@ namespace GpsRunningPlugin.Source
 
                 if (old_time.TotalSeconds > 0)
                 {
-                    predictorData[length].Activity = foundActivity;
                     predictorData[length].source = new TimePredictionSource(foundActivity, old_dist, old_time, meterStart, timeStart);
                 }
                 index++;
@@ -409,12 +408,12 @@ namespace GpsRunningPlugin.Source
             foreach (KeyValuePair<double, PredictorData> v in predictorData)
             {
                 double length = v.Key;
-                 v.Value.Activity = activity;
-                 foreach (PredictionModel model in PredictionModelUtil.List)
-                 {
-                     double new_time = Predict.Predictor(model)(length, old_dist, old_time);
-                     v.Value.result[model] = new TimePredictionResult(length, new_time);
-                 }
+                predictorData[length].source = new TimePredictionSource(activity, old_dist, old_time);
+                foreach (PredictionModel model in PredictionModelUtil.List)
+                {
+                    double new_time = Predict.Predictor(model)(length, old_dist, old_time);
+                    v.Value.result[model] = new TimePredictionResult(length, new_time);
+                }
             }
         }
 
@@ -453,7 +452,7 @@ namespace GpsRunningPlugin.Source
                 if (row != null && hit == TreeList.RowHitState.Row && row is PredictorData)
                 {
                     PredictorData result = (PredictorData)row;
-                    IActivity id = result.Activity;
+                    IActivity id = result.source.Activity;
                     if (id != null && result.source != null)
                     {
                         if (m_showPage)
@@ -496,9 +495,9 @@ namespace GpsRunningPlugin.Source
             TreeList.RowHitState hit;
             row = summaryList.RowHitTest(e.Location, out hit);
             if (row != null && hit == TreeList.RowHitState.Row && row is PredictorData)
-                {
-                    PredictorData tr = (PredictorData)row;
-                string bookmark = "id=" + tr.Activity;
+            {
+                PredictorData tr = (PredictorData)row;
+                string bookmark = "id=" + tr.source.Activity;
                 Plugin.GetApplication().ShowView(view, bookmark);
             }
         }
