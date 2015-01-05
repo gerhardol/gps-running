@@ -44,15 +44,13 @@ namespace GpsRunningPlugin.Source
         {
             this.Distance = distanceNominal;
             this.Unit = unitNominal;
-            Activity = null;
             result = new Dictionary<PredictionModel, TimePredictionResult>();
-            hsResult = null;
+            source = null;
         }
         public double Distance;
         public Length.Units Unit;
-        public IActivity Activity;
         public IDictionary<PredictionModel, TimePredictionResult> result;
-        public TimePredictionHSResult hsResult;
+        public TimePredictionSource source;
 
         public static void getChartSeries(IDictionary<double, PredictorData> predictorData, PredictionModel model, ChartDataSeries tseries, ChartDataSeries pseries, bool isPace)
         {
