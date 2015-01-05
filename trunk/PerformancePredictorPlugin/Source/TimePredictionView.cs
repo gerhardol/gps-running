@@ -55,6 +55,7 @@ namespace GpsRunningPlugin.Source
         private bool m_showPage = false;
 
         private IDictionary<double, PredictorData> m_predictorData = new Dictionary<double, PredictorData>();
+        private IList<TimePredictionSource> m_predictorSource = new List<TimePredictionSource>();
 
         public TimePredictionView()
         {
@@ -134,6 +135,7 @@ namespace GpsRunningPlugin.Source
             {
                 //Reset calculations - all calculated
                 m_predictorData.Clear();
+                m_predictorSource.Clear();
 
                 setData();
             }
@@ -303,8 +305,8 @@ namespace GpsRunningPlugin.Source
                 RefreshColumns(true);
                 Predict.SetAgeSexFromActivity(m_ppcontrol.Activities[0]);
                 //Predict using one or many activities (check done that HS enabled prior)
-                getHSResults(m_predictorData, m_ppcontrol.Activities, progressBar);
-                getResults(m_predictorData, progressBar);
+                getHSResults(m_predictorSource, m_ppcontrol.Activities, progressBar);
+                getResults(m_predictorSource, m_predictorData, progressBar);
             }
             else if (m_ppcontrol.IsPartial && m_ppcontrol.Activities.Count > 0 || m_ppcontrol.SingleActivity != null)
             {
@@ -322,13 +324,14 @@ namespace GpsRunningPlugin.Source
                 if (m_ppcontrol.Distance > 0 && m_ppcontrol.Time.TotalSeconds > 0)
                 {
                     Predict.SetAgeSexFromActivity(activity);
-                    getResults(m_predictorData, activity, m_ppcontrol.Distance, m_ppcontrol.Time, progressBar);
+                    m_predictorSource.Add(new TimePredictionSource(activity, m_ppcontrol.Distance, m_ppcontrol.Time));
+                    getResults(m_predictorSource, m_predictorData, progressBar);
                 }
             }
             //else: no activity selected
         }
 
-        public static void getHSResults(IDictionary<double, PredictorData> predictorData, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
+        public static void getHSResults(IList<TimePredictionSource> predictorSource, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
         {
             IList<IList<Object>> results = new List<IList<Object>>();
             if (Settings.HighScore != null)
@@ -375,44 +378,39 @@ namespace GpsRunningPlugin.Source
 
                 if (old_time.TotalSeconds > 0)
                 {
-                    predictorData[length].source = new TimePredictionSource(foundActivity, old_dist, old_time, meterStart, timeStart);
+                    predictorSource.Add(new TimePredictionSource(foundActivity, old_dist, old_time, meterStart, timeStart));
                 }
                 index++;
             }
         }
 
-        public static void getResults(IDictionary<double, PredictorData> predictorData, System.Windows.Forms.ProgressBar progressBar)
-        {
-            foreach (KeyValuePair<double, PredictorData> v in predictorData)
-            {
-                if (v.Value.source != null)
-                {
-                    TimeSpan old_time = v.Value.source.UsedTime;
-                    double old_dist = v.Value.source.UsedDistance;
-                    double new_dist = old_dist * 100 / Settings.PercentOfDistance;
-
-                    //length is the distance HighScore tried to get a prediction for, may differ to actual dist
-                    double length = v.Key;
-
-                    foreach (PredictionModel model in PredictionModelUtil.List)
-                    {
-                        double new_time = Predict.Predictor(model)(new_dist, old_dist, old_time);
-                        predictorData[length].result[model] = new TimePredictionResult(new_dist, new_time);
-                    }
-                }
-            }
-        }
-
-        public static void getResults(IDictionary<double, PredictorData> predictorData, IActivity activity, double old_dist, TimeSpan old_time, System.Windows.Forms.ProgressBar progressBar)
+        public static void getResults(IList<TimePredictionSource> predictorSource, IDictionary<double, PredictorData> predictorData, System.Windows.Forms.ProgressBar progressBar)
         {
             foreach (KeyValuePair<double, PredictorData> v in predictorData)
             {
                 double length = v.Key;
-                predictorData[length].source = new TimePredictionSource(activity, old_dist, old_time);
-                foreach (PredictionModel model in PredictionModelUtil.List)
+
+                foreach (TimePredictionSource s in predictorSource)
                 {
-                    double new_time = Predict.Predictor(model)(length, old_dist, old_time);
-                    v.Value.result[model] = new TimePredictionResult(length, new_time);
+                    double new_time = Predict.Predictor(Settings.Model)(length, s.UsedDistance, s.UsedTime);
+                    if (!v.Value.result.ContainsKey(Settings.Model) ||
+                        v.Value.result[Settings.Model].PredictedTime > new_time)
+                    {
+                        v.Value.result[Settings.Model] = new TimePredictionResult(new_time);
+                        v.Value.source = new TimePredictionSource(s.Activity, s.UsedDistance, s.UsedTime);
+                    }
+                }
+
+                if (v.Value.source != null)
+                {
+                    foreach (PredictionModel model in PredictionModelUtil.List)
+                    {
+                        if (model != Settings.Model)
+                        {
+                            double new_time = Predict.Predictor(model)(length, v.Value.source.UsedDistance, v.Value.source.UsedTime);
+                            v.Value.result[model] = new TimePredictionResult(new_time);
+                        }
+                    }
                 }
             }
         }

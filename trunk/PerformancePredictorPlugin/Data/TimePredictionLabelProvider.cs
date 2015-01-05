@@ -32,7 +32,40 @@ namespace GpsRunningPlugin.Source
         public override string GetText(object element, ZoneFiveSoftware.Common.Visuals.TreeList.Column column)
         {
             PredictorData wrapper = (PredictorData)element;
-            if (wrapper.source.Activity == null && column.Id != ResultColumnIds.DistanceNominal && column.Id != ResultColumnIds.DistanceNominal)
+
+            //The time/speed fields
+            if (column.Id == ResultColumnIds.PredictedTime)
+            {
+                PredictionModel model = Settings.Model;
+                if (!wrapper.result.ContainsKey(model)) return null;
+                return UnitUtil.Time.ToString(wrapper.result[Settings.Model].PredictedTime);
+            }
+            else if (column.Id == ResultColumnIds.Speed)
+            {
+                PredictionModel model = Settings.Model;
+                if (!wrapper.result.ContainsKey(model)) return null;
+                return UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, wrapper.Distance / wrapper.result[Settings.Model].PredictedTime);
+            }
+            else if (column.Id.StartsWith(ResultColumnIds.PredictedTimeModel))
+            {
+                string s = column.Id.Substring(ResultColumnIds.PredictedTimeModel.Length + 1);
+                PredictionModel model = (PredictionModel)Enum.Parse(typeof(PredictionModel), s);
+                if (!wrapper.result.ContainsKey(model)) return null;
+                double time = wrapper.result[model].PredictedTime;
+                return UnitUtil.Time.ToString(time);
+            }
+            else if (column.Id.StartsWith(ResultColumnIds.SpeedModel))
+            {
+                string s = column.Id.Substring(ResultColumnIds.SpeedModel.Length + 1);
+                PredictionModel model = (PredictionModel)Enum.Parse(typeof(PredictionModel), s);
+                if (!wrapper.result.ContainsKey(model)) return null;
+                double time = wrapper.result[model].PredictedTime;
+                return UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, wrapper.Distance / time);
+            }
+
+            if (wrapper.source == null ||
+                wrapper.source.Activity == null &&
+                (column.Id == ResultColumnIds.StartDate || column.Id == ResultColumnIds.StartTime))
             {
                 if (column.Id == ResultColumnIds.StartDate)
                 {
@@ -40,16 +73,13 @@ namespace GpsRunningPlugin.Source
                 }
                 return null;
             }
-            switch(column.Id)
+
+            switch (column.Id)
             {
                 case ResultColumnIds.Distance:
                     return UnitUtil.Distance.ToString(wrapper.Distance);
                 case ResultColumnIds.DistanceNominal:
                     return UnitUtil.Distance.ToString(wrapper.Distance, wrapper.Unit, "u");
-                case ResultColumnIds.PredictedTime:
-                    return UnitUtil.Time.ToString(wrapper.result[Settings.Model].PredictedTime);
-                case ResultColumnIds.Speed:
-                    return UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, wrapper.Distance/wrapper.result[Settings.Model].PredictedTime);
                 case ResultColumnIds.StartDate:
                     return wrapper.source.StartDate.ToLocalTime().ToShortDateString();
                 case ResultColumnIds.StartTime:
@@ -62,20 +92,6 @@ namespace GpsRunningPlugin.Source
                     return UnitUtil.Distance.ToString(wrapper.source.UsedDistance);
 
                 default:
-                    if (column.Id.StartsWith(ResultColumnIds.PredictedTimeModel))
-                    {
-                        string s = column.Id.Substring(ResultColumnIds.PredictedTimeModel.Length + 1);
-                        PredictionModel model = (PredictionModel)Enum.Parse(typeof(PredictionModel), s);
-                        double time = wrapper.result[model].PredictedTime;
-                        return UnitUtil.Time.ToString(time);
-                    }
-                    else if (column.Id.StartsWith(ResultColumnIds.SpeedModel))
-                    {
-                        string s = column.Id.Substring(ResultColumnIds.SpeedModel.Length + 1);
-                        PredictionModel model = (PredictionModel)Enum.Parse(typeof(PredictionModel), s);
-                        double time = wrapper.result[model].PredictedTime;
-                        return UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, wrapper.Distance / time);
-                    }
                     ActivityInfo actInfo = ActivityInfoCache.Instance.GetInfo(wrapper.source.Activity);
                     string text = base.GetText(actInfo, column);
                     if (text != "")

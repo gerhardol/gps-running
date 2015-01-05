@@ -61,13 +61,8 @@ namespace GpsRunningPlugin.Source
         }
 
         public TimePredictionSource(IActivity activity, double UsedDistance, TimeSpan UsedTime)
+            : this(activity, UsedDistance, UsedTime, 0, 0)
         {
-            this.Activity = activity;
-            //this.Distance = Distance;
-            this.UsedDistance = UsedDistance;
-            this.UsedTime = UsedTime;
-            this.StartDistance = 0;
-            this.StartTime = 0;
         }
     }
 }
