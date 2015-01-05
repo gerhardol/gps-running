@@ -23,8 +23,8 @@
     <Compile Include="Data\ShoeLabelProvider.cs" />
     <Compile Include="Data\PaceTempoLabelProvider.cs" />
     <Compile Include="Data\PaceTempoResult.cs" />
-    <Compile Include="Data\TimePredictionHSResult.cs" />
     <Compile Include="Data\PredictorData.cs" />
+    <Compile Include="Data\TimePredictionSource.cs" />
     <Compile Include="Data\TrainingLabelProvider.cs" />
     <Compile Include="Data\TrainingResult.cs" />
     <Compile Include="Data\IntervalLabelProvider.cs" />
