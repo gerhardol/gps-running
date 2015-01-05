@@ -389,7 +389,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 this.setView();
             }
         }
-        internal bool IsPartial { get { return (this.m_time != null && this.m_distance != null); } }
+        internal bool IsOverridden { get { return (this.m_time != null && this.m_distance != null); } }
 
 #if ST_2_1
         private void dataChanged(object sender, ZoneFiveSoftware.Common.Data.NotifyDataChangedEventArgs e)
@@ -467,9 +467,12 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
         private void setView()
         {
+            bool show = this.m_showPage;
+            this.m_showPage = false;
             this.predictorView.HidePage();
             this.trainingView.HidePage();
             this.extrapolateView.HidePage();
+            this.m_showPage = show;
 
             //Disable all but timePredictionButton (always active)
             //timePredictionButton.Enabled = true;
@@ -506,15 +509,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             if (timePredictionButton.Checked)
             {
                 this.actionBanner1.Text = Properties.Resources.TimePrediction;
-                if (this.Activities.Count > 1)
-                {
-                    this.chkHighScoreBox.Enabled = false;
-                    this.chkHighScoreBox.Checked = true;
-                }
-                else
-                {
-                    this.chkHighScoreBox.Enabled |= Settings.HighScore != null;
-                }
+                this.chkHighScoreBox.Enabled |= Settings.HighScore != null;
                 this.tableButton.Enabled = true;
                 this.tableButton.Checked = !Settings.ShowChart;
                 if (this.m_showPage)

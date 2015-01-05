@@ -132,7 +132,7 @@ namespace GpsRunningPlugin.Source
         public const string AdjustedVDOT = "AdjustedVDOT";
         public const string Age = "Age";
 
-        public static IList<string> TimePredictHsColumns = new List<string> { Distance, DistanceNominal, PredictedTime, Speed, StartDate, StartTime, UsedTime, StartDistance, UsedDistance};
+        public static IList<string> TimePredictMultiColumns = new List<string> { Distance, DistanceNominal, PredictedTime, Speed, StartDate, StartTime, UsedTime, StartDistance, UsedDistance};
         public static IList<string> TimePredictSingleColumns = new List<string>{ Distance, DistanceNominal, PredictedTime, Speed};
 
         public static IList<string> TrainingColumns = new List<string> { ZoneDistance, PercentOfMax, TrainRaceHR, Speed};

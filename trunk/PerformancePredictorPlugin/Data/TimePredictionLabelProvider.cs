@@ -104,7 +104,7 @@ namespace GpsRunningPlugin.Source
         public override Image GetImage(object element, TreeList.Column column)
         {
             PredictorData wrapper = (PredictorData)element;
-            if (wrapper.source.Activity == null) { return base.GetImage(wrapper.source.Activity, column); }
+            if (wrapper.source != null && wrapper.source.Activity != null) { return base.GetImage(wrapper.source.Activity, column); }
             else { return null; }
         }
 
