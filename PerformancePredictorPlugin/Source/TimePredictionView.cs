@@ -216,13 +216,13 @@ namespace GpsRunningPlugin.Source
             updateChartVisibility();
         }
 
-        private void RefreshColumns(bool isHighScore)
+        private void RefreshColumns(bool multi)
         {
             summaryList.Columns.Clear();
             IList<string> cols;
-            if (isHighScore)
+            if (multi)
             {
-                cols = ResultColumnIds.TimePredictHsColumns;
+                cols = ResultColumnIds.TimePredictMultiColumns;
             }
             else
             {
@@ -283,6 +283,7 @@ namespace GpsRunningPlugin.Source
             {
                 return;
             }
+
             foreach (double distance in Settings.Distances.Keys)
             {
                 if (!m_predictorData.ContainsKey(distance))
@@ -299,36 +300,37 @@ namespace GpsRunningPlugin.Source
                     m_predictorData.Add(distance, new PredictorData(distance, unitNominal));
                 }
             }
-            if (!m_ppcontrol.IsPartial && (m_ppcontrol.Activities.Count > 1 ||
-                (m_ppcontrol.Activities.Count == 1 && m_ppcontrol.ChkHighScore)))
-            {
-                RefreshColumns(true);
-                Predict.SetAgeSexFromActivity(m_ppcontrol.Activities[0]);
-                //Predict using one or many activities (check done that HS enabled prior)
-                getHSResults(m_predictorSource, m_ppcontrol.Activities, progressBar);
-                getResults(m_predictorSource, m_predictorData, progressBar);
-            }
-            else if (m_ppcontrol.IsPartial && m_ppcontrol.Activities.Count > 0 || m_ppcontrol.SingleActivity != null)
+
+            if (m_ppcontrol.IsOverridden)
             {
                 RefreshColumns(false);
-                IActivity activity;
-                if (m_ppcontrol.IsPartial)
+                IActivity activity = m_ppcontrol.SingleActivity;
+                if (m_ppcontrol.Activities.Count > 0)
                 {
                     activity = m_ppcontrol.Activities[0];
                 }
-                else
+                Predict.SetAgeSexFromActivity(activity);
+                m_predictorSource.Add(new TimePredictionSource(activity, m_ppcontrol.Distance, m_ppcontrol.Time));
+            }
+            else if (m_ppcontrol.Activities.Count > 0)
+            {
+                RefreshColumns(m_ppcontrol.ChkHighScore || m_ppcontrol.Activities.Count > 1);
+                Predict.SetAgeSexFromActivity(m_ppcontrol.Activities[0]);
+                foreach (IActivity activity in m_ppcontrol.Activities)
                 {
-                    activity = m_ppcontrol.SingleActivity;
+                    ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
+                    m_predictorSource.Add(new TimePredictionSource(m_ppcontrol.SingleActivity, info.DistanceMeters, info.Time));
                 }
 
-                if (m_ppcontrol.Distance > 0 && m_ppcontrol.Time.TotalSeconds > 0)
+                if (m_ppcontrol.ChkHighScore)
                 {
-                    Predict.SetAgeSexFromActivity(activity);
-                    m_predictorSource.Add(new TimePredictionSource(activity, m_ppcontrol.Distance, m_ppcontrol.Time));
-                    getResults(m_predictorSource, m_predictorData, progressBar);
+                    //Add HS results
+                    getHSResults(m_predictorSource, m_ppcontrol.Activities, progressBar);
                 }
             }
             //else: no activity selected
+
+            getResults(m_predictorSource, m_predictorData, progressBar);
         }
 
         public static void getHSResults(IList<TimePredictionSource> predictorSource, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
@@ -392,12 +394,15 @@ namespace GpsRunningPlugin.Source
 
                 foreach (TimePredictionSource s in predictorSource)
                 {
-                    double new_time = Predict.Predictor(Settings.Model)(length, s.UsedDistance, s.UsedTime);
-                    if (!v.Value.result.ContainsKey(Settings.Model) ||
-                        v.Value.result[Settings.Model].PredictedTime > new_time)
+                    if (s.UsedDistance > length * 0.1)
                     {
-                        v.Value.result[Settings.Model] = new TimePredictionResult(new_time);
-                        v.Value.source = new TimePredictionSource(s.Activity, s.UsedDistance, s.UsedTime);
+                        double new_time = Predict.Predictor(Settings.Model)(length, s.UsedDistance, s.UsedTime);
+                        if (!v.Value.result.ContainsKey(Settings.Model) ||
+                            v.Value.result[Settings.Model].PredictedTime > new_time)
+                        {
+                            v.Value.result[Settings.Model] = new TimePredictionResult(new_time);
+                            v.Value.source = new TimePredictionSource(s.Activity, s.UsedDistance, s.UsedTime);
+                        }
                     }
                 }
 
@@ -450,9 +455,9 @@ namespace GpsRunningPlugin.Source
                 if (row != null && hit == TreeList.RowHitState.Row && row is PredictorData)
                 {
                     PredictorData result = (PredictorData)row;
-                    IActivity id = result.source.Activity;
-                    if (id != null && result.source != null)
+                    if (result.source != null && result.source.Activity != null)
                     {
+                        IActivity id = result.source.Activity;
                         if (m_showPage)
                         {
                             IDictionary<string, MapPolyline> routes = new Dictionary<string, MapPolyline>();
