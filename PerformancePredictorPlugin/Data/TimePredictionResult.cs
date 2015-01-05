@@ -40,7 +40,7 @@ namespace GpsRunningPlugin.Source
         //    }
         //}
 
-        public TimePredictionResult(double Distance, double PredictedTime)
+        public TimePredictionResult(double PredictedTime)
         {
             //this.Distance = Distance;
             this.PredictedTime = PredictedTime;
