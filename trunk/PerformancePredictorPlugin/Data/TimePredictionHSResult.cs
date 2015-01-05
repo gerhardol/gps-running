@@ -26,9 +26,9 @@ using GpsRunningPlugin.Util;
 
 namespace GpsRunningPlugin.Source
 {
-    public class TimePredictionHSResult
+    public class TimePredictionSource
     {
-        private IActivity Activity;
+        public IActivity Activity;
 
         public DateTime StartDate
         {
@@ -45,13 +45,12 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        //TODO: Protect these, only in multiresults
         public double UsedDistance;
         public TimeSpan UsedTime;
         public double StartDistance;
         private double StartTime;
 
-        public TimePredictionHSResult(IActivity activity, double UsedDistance, TimeSpan UsedTime, double StartDistance, double StartTime)
+        public TimePredictionSource(IActivity activity, double UsedDistance, TimeSpan UsedTime, double StartDistance, double StartTime)
         {
             this.Activity = activity;
             //this.Distance = Distance;
@@ -60,13 +59,15 @@ namespace GpsRunningPlugin.Source
             this.StartDistance = StartDistance;
             this.StartTime = StartTime;
         }
-//NoSeed results
-        /*
-        public TimePredictionHSResult(double Distance, double DistanceNominal, Length.Units UnitNominal)
+
+        public TimePredictionSource(IActivity activity, double UsedDistance, TimeSpan UsedTime)
         {
-            this.activity = null;
-            this.Distance = Distance;
+            this.Activity = activity;
+            //this.Distance = Distance;
+            this.UsedDistance = UsedDistance;
+            this.UsedTime = UsedTime;
+            this.StartDistance = 0;
+            this.StartTime = 0;
         }
-         * */
     }
 }

@@ -32,7 +32,7 @@ namespace GpsRunningPlugin.Source
         public override string GetText(object element, ZoneFiveSoftware.Common.Visuals.TreeList.Column column)
         {
             PredictorData wrapper = (PredictorData)element;
-            if (wrapper.Activity == null && column.Id != ResultColumnIds.DistanceNominal && column.Id != ResultColumnIds.DistanceNominal)
+            if (wrapper.source.Activity == null && column.Id != ResultColumnIds.DistanceNominal && column.Id != ResultColumnIds.DistanceNominal)
             {
                 if (column.Id == ResultColumnIds.StartDate)
                 {
@@ -51,15 +51,15 @@ namespace GpsRunningPlugin.Source
                 case ResultColumnIds.Speed:
                     return UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, wrapper.Distance/wrapper.result[Settings.Model].PredictedTime);
                 case ResultColumnIds.StartDate:
-                    return wrapper.hsResult.StartDate.ToLocalTime().ToShortDateString();
+                    return wrapper.source.StartDate.ToLocalTime().ToShortDateString();
                 case ResultColumnIds.StartTime:
-                    return wrapper.hsResult.StartUsedTime.ToLocalTime().ToShortTimeString();
+                    return wrapper.source.StartUsedTime.ToLocalTime().ToShortTimeString();
                 case ResultColumnIds.UsedTime:
-                    return UnitUtil.Time.ToString(wrapper.hsResult.UsedTime);
+                    return UnitUtil.Time.ToString(wrapper.source.UsedTime);
                 case ResultColumnIds.StartDistance:
-                    return UnitUtil.Distance.ToString(wrapper.hsResult.StartDistance);
+                    return UnitUtil.Distance.ToString(wrapper.source.StartDistance);
                 case ResultColumnIds.UsedDistance:
-                    return UnitUtil.Distance.ToString(wrapper.hsResult.UsedDistance);
+                    return UnitUtil.Distance.ToString(wrapper.source.UsedDistance);
 
                 default:
                     if (column.Id.StartsWith(ResultColumnIds.PredictedTimeModel))
@@ -76,19 +76,19 @@ namespace GpsRunningPlugin.Source
                         double time = wrapper.result[model].PredictedTime;
                         return UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, wrapper.Distance / time);
                     }
-                    ActivityInfo actInfo = ActivityInfoCache.Instance.GetInfo(wrapper.Activity);
+                    ActivityInfo actInfo = ActivityInfoCache.Instance.GetInfo(wrapper.source.Activity);
                     string text = base.GetText(actInfo, column);
                     if (text != "")
                         return text;
                     else
-                        return base.GetText(wrapper.Activity, column);
+                        return base.GetText(wrapper.source.Activity, column);
             }
         }
 
         public override Image GetImage(object element, TreeList.Column column)
         {
             PredictorData wrapper = (PredictorData)element;
-            if (wrapper.Activity == null) { return base.GetImage(wrapper.Activity, column); }
+            if (wrapper.source.Activity == null) { return base.GetImage(wrapper.Activity, column); }
             else { return null; }
         }
 

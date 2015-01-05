@@ -376,7 +376,7 @@ namespace GpsRunningPlugin.Source
                 if (old_time.TotalSeconds > 0)
                 {
                     predictorData[length].Activity = foundActivity;
-                    predictorData[length].hsResult = new TimePredictionHSResult(foundActivity, old_dist, old_time, meterStart, timeStart);
+                    predictorData[length].source = new TimePredictionSource(foundActivity, old_dist, old_time, meterStart, timeStart);
                 }
                 index++;
             }
@@ -386,10 +386,10 @@ namespace GpsRunningPlugin.Source
         {
             foreach (KeyValuePair<double, PredictorData> v in predictorData)
             {
-                if (v.Value.hsResult != null)
+                if (v.Value.source != null)
                 {
-                    TimeSpan old_time = v.Value.hsResult.UsedTime;
-                    double old_dist = v.Value.hsResult.UsedDistance;
+                    TimeSpan old_time = v.Value.source.UsedTime;
+                    double old_dist = v.Value.source.UsedDistance;
                     double new_dist = old_dist * 100 / Settings.PercentOfDistance;
 
                     //length is the distance HighScore tried to get a prediction for, may differ to actual dist
@@ -454,7 +454,7 @@ namespace GpsRunningPlugin.Source
                 {
                     PredictorData result = (PredictorData)row;
                     IActivity id = result.Activity;
-                    if (id != null && result.hsResult != null)
+                    if (id != null && result.source != null)
                     {
                         if (m_showPage)
                         {
@@ -469,15 +469,15 @@ namespace GpsRunningPlugin.Source
                         }
                         IValueRangeSeries<DateTime> t = new ValueRangeSeries<DateTime>();
                         DateTime endTime;
-                        if (result.hsResult.UsedTime.TotalSeconds > 0)
+                        if (result.source.UsedTime.TotalSeconds > 0)
                         {
-                            endTime = result.hsResult.StartUsedTime.Add(result.hsResult.UsedTime);
+                            endTime = result.source.StartUsedTime.Add(result.source.UsedTime);
                         }
                         else
                         {
                             endTime = ActivityInfoCache.Instance.GetInfo(id).ActualTrackEnd;
                         }
-                        t.Add(new ValueRange<DateTime>(result.hsResult.StartUsedTime, endTime));
+                        t.Add(new ValueRange<DateTime>(result.source.StartUsedTime, endTime));
                         IList<TrailResultMarked> aTrm = new List<TrailResultMarked>();
                         aTrm.Add(new TrailResultMarked(
                             new TrailResult(new ActivityWrapper(id, Plugin.GetApplication().SystemPreferences.RouteSettings.RouteSelectedColor)),
