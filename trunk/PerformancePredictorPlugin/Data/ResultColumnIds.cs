@@ -155,8 +155,8 @@ namespace GpsRunningPlugin.Source
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.PredictedTime, Resources.PredictedTime, "", 70, StringAlignment.Far));
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Speed, UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace), "", 60, StringAlignment.Far));
             //columnDefs.Add(new ListColumnDefinition(ResultColumnIds.StartDate, Resources.UsedActivityStartDate, "", 70, StringAlignment.Near));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.StartTime, Resources.UsedActivityStartTime, "", 50, StringAlignment.Far));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.UsedTime, Resources.UsedTimeOfActivity, "", 80, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.StartTime, Resources.UsedActivityStartTime, "", 110, StringAlignment.Far));
+            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.UsedTime, Resources.UsedTimeOfActivity, "", 60, StringAlignment.Far));
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.StartDistance, Resources.StartOfPart + UnitUtil.Distance.LabelAbbr2, "", 80, StringAlignment.Far));
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.UsedDistance, Resources.UsedLengthOfActivity + UnitUtil.Distance.LabelAbbr2, "", 80, StringAlignment.Far));
 

@@ -242,15 +242,6 @@ namespace GpsRunningPlugin.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Predicting using several activities requires High Score plugin.
-        /// </summary>
-        internal static string HighScoreRequired {
-            get {
-                return ResourceManager.GetString("HighScoreRequired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to What could have been....
         /// </summary>
         internal static string IdealNotification {
@@ -376,15 +367,6 @@ namespace GpsRunningPlugin.Properties {
         internal static string PositiveNumber {
             get {
                 return ResourceManager.GetString("PositiveNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Performance Predictor with High Score plugin.
-        /// </summary>
-        internal static string PPHS {
-            get {
-                return ResourceManager.GetString("PPHS", resourceCulture);
             }
         }
         
