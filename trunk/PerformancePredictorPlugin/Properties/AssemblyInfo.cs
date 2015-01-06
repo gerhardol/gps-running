@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SportTracks Performance Predictor Plugin")]
 [assembly: AssemblyDescription("Use well-known models to predict your performance at various distances.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Kristian Helkjaer Lassen")]
+[assembly: AssemblyCompany("Kristian Helkjaer Lassen, Gerhard Olsson")]
 [assembly: AssemblyProduct("SportTracks Performance Predictor Plugin")]
-[assembly: AssemblyCopyright("Copyright © 2008, 2010")]
+[assembly: AssemblyCopyright("Copyright © 2008, 2010, 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
