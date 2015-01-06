@@ -200,6 +200,8 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             //Set color for non ST controls
             this.splitContainer1.Panel1.BackColor = visualTheme.Control;
             this.splitContainer1.Panel2.BackColor = visualTheme.Control;
+            this.distanceTextBox.ThemeChanged(visualTheme);
+            this.timeTextBox.ThemeChanged(visualTheme);
             this.modelComboBox.ThemeChanged(visualTheme);
 
             this.actionBanner1.ThemeChanged(visualTheme);
@@ -247,6 +249,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             this.chkHighScoreBox.Text = Properties.Resources.HighScorePrediction;
             this.chkHighScoreMenuItem.Text = this.chkHighScoreBox.Text;
             showToolBarMenuItem.Text = StringResources.Menu_ShowToolBar;
+            this.overrideGroupBox.Text = "Override"; //TBD
 
             predictorView.UICultureChanged(culture);
             trainingView.UICultureChanged(culture);
@@ -318,6 +321,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                     m_layer.ClearOverlays();
                 }
                 setView();
+                syncToolBarToState();
             }
         }
 
@@ -349,6 +353,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
         //The following are a little more permissive than SingleActivity, but seem to be OK
         internal ActivityInfo SingleInfo { get { return ActivityInfoCache.Instance.GetInfo(this.m_lastActivity); } }
+
         internal TimeSpan Time
         {
             get
@@ -365,10 +370,15 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             }
             set
             {
-                this.m_time = value;
-                this.setView();
+                if (!this.m_time.Equals(value))
+                {
+                    this.m_time = value;
+                    this.setView();
+                    syncToolBarToState();
+                }
             }
         }
+
         internal double Distance
         {
             get
@@ -385,10 +395,15 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             }
             set
             {
-                this.m_distance = value;
-                this.setView();
+                if (!this.m_distance.Equals(value))
+                {
+                    this.m_distance = value;
+                    this.setView();
+                    syncToolBarToState();
+                }
             }
         }
+
         internal bool IsOverridden { get { return (this.m_time != null && this.m_distance != null); } }
 
 #if ST_2_1
@@ -486,7 +501,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             this.tableButton.Checked = true;
             this.chkHighScoreBox.Enabled = false;
 
-            if (this.SingleActivity != null && !this.ChkHighScore)
+            if (this.IsOverridden || this.SingleActivity != null && !this.ChkHighScore)
             {
                 this.trainingButton.Enabled = true;
                 this.extrapolateButton.Enabled = true;
@@ -568,6 +583,24 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             extrapolateButton.Checked = (Settings.PredictionView == PredictionView.Extrapolate);
 
             this.modelComboBox.Text = PredictionModelUtil.Name(Settings.Model);
+            if (this.Time.TotalSeconds > 0)
+            {
+                this.timeTextBox.Text = UnitUtil.Time.ToString(this.Time, "u");
+            }
+            if (this.Distance > 0)
+            {
+                this.distanceTextBox.Text = UnitUtil.Distance.ToString(this.Distance, "u");
+            }
+            if (!this.IsOverridden)
+            {
+                this.timeTextBox.Font = new System.Drawing.Font(this.timeTextBox.Font, FontStyle.Italic);
+                this.distanceTextBox.Font = new System.Drawing.Font(this.timeTextBox.Font, FontStyle.Italic);
+            }
+            else
+            {
+                this.timeTextBox.Font = new System.Drawing.Font(this.timeTextBox.Font, FontStyle.Regular);
+                this.distanceTextBox.Font = new System.Drawing.Font(this.timeTextBox.Font, FontStyle.Regular);
+            }
 
             paceButton.Checked = Settings.ShowPace;
             speedButton.Checked = !Settings.ShowPace;
@@ -809,6 +842,16 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 }
             };
             treeListPopup.Popup(this.modelComboBox.Parent.RectangleToScreen(this.modelComboBox.Bounds));
+        }
+
+        void timeTextBox_LostFocus(object sender, System.EventArgs e)
+        {
+            this.Time = TimeSpan.FromSeconds(UnitUtil.Time.Parse(this.timeTextBox.Text));
+        }
+
+        void distanceTextBox_LostFocus(object sender, System.EventArgs e)
+        {
+            this.Distance = UnitUtil.Distance.Parse(this.distanceTextBox.Text);
         }
 
         //Adapted from ApplyRoutes
