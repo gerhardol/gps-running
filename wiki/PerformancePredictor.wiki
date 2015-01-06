@@ -39,11 +39,12 @@ The WAVA algorithm works quite well for activities shorter than 2h, see [Perform
 ==Elinder==
 Most athletes get a quite distinct performance drop for activities longer than 2 hours. The world records have a distinguished "knee" around 2h. The Elinder model has separate algorithms for activities shorter than the "knee" (infra distances) and longer (ultra distances), the knee is at the break even point.
 
-Most algorithms compares to world records. So for instance for marathons where the worl record is just over 2h, the world record is at limit, most normal athletes will require more time than the estimations. The algorithm was developed by Fredrik Elinder and presented in a Swedish number of Runners World in May 2009, some information including tables are available here: http://www.ultradistans.se/wp-content/uploads/2014/05/FORMLER-F%C3%96R-BER%C3%84KNING-AV-L%C3%96PRESULTAT.pdf
+Most algorithms compares to world records. So for instance for marathons where the world record is just over 2h, the world record is at the limit, most normal athletes will require more time than the estimations. The Elinder algorithm is developed by Fredrik Elinder and presented in a Swedish number of Runners World in May 2009. Some information including tables (in Swedish) are available here: http://www.ultradistans.se/wp-content/uploads/2014/05/FORMLER-F%C3%96R-BER%C3%84KNING-AV-L%C3%96PRESULTAT.pdf
 
 The formula is designed for estimations longer than 2 km.
 
-It is possible to adjust the break even time in the plugin settings.
+It is possible to adjust the break even time in the plugin settings. Note however that the implementation has limitations if the break even time is changed, the break even point may not be correctly selected and the prediction may be for a slightly different time than requested. The slope is correct, but the formula may not predict the same time/distance it was based on.
+A similar issue may occur if the based time is longer than 2h.
 
 =Training=
 Besides predicting times the plugin also give suggestions regards to training. These suggestions are based on Jack Daniels's training philosophies. Currently, the plugin suggests training paces, pace for tempo races and interval split times.
@@ -66,25 +67,24 @@ The default shoe weight is derived from the activity Equipment, the first device
 Extrapolate the result to other ages, to see how you could have performed as younger or may perform as older. The calculation uses the WAVA tables that also can be used for prediction.
 
 ===Ideal===
-If the ideal conditions had occurred in your prime age... Your true personal best, when there is no other explanation. This tab has some assumptions about defaults, that can be adjusted. It is also possible to adjust the time/distance to estimate for other distances.
+If the ideal conditions had occurred in your prime age... Your true personal best, when there is no other explanation. This tab has some assumptions about defaults. It is also possible to adjust the time/distance to estimate for other distances, to give an estimate or compare to others.
 
 Something that is not included is Hills. This is included in Trails plugin, using Performance prediction integration.
 
-Another factor is Wind. Some estimations can be done using Weather and Power plugins.
+Another unknown factor is Wind. Some estimations can be done using Weather and Power plugins.
 
 Note: It is possible to change both the actual ("activity") and ideal ("optimized") values. These values are then used for prediction, training and extrapolation.
 
 =How do I use it?=
-The predictor works in two modes:
-  * Single activity in [PerformancePredictor#Activity_Page Activity Page]. This uses the complete activity to predict other distances.
-  * One or more activities from [PerformancePredictor#Activity_Page Activity Page] or [PerformancePredictor#Edit_menu Edit]. This mode uses High Score plugin to get the fastest parts, then scales them up to predict other distances.
+The plugin uses the "best" prediction for all selected activities. The complete time and distance for the activities is used. If HighScore plugin is used, the fastest time for some distances is used in addition to the complete distances. The distances that HS searches for is 40% (by default) of the distances to predict for. This will give faster predictions if the activity has warmup/cooldowns.
 
-The modes give slightly different results. For instance, if you want to use a half marathon to predict other distances, using a single activity in the [PerformancePredictor#Activity_Page Activity Page] uses the complete activity scaling up and down the distance to other distances. This is using the predictor formulas in the way they are designed for and gives most optimistic predictions for steady activities. Note though that the base activity and the distance to predict for should be similar. Using a 1km activity to predict a marathon is not reliable.
+The plugin can be used in both in the [PerformancePredictor#Activity_Page Activity Page] and from [PerformancePredictor#Edit_menu Edit]. The result is the same. (The Edit menu remains from ST2 where an Activity page only could select one activity at a time.)
 
-On the other hand, using many activities (select many activities or invoke the popup from the [PerformancePredictor#Edit_menu Edit], can be explicitly selected for single activities too) will get the fastest stretches from many activities to get the potentially most optimistic prediction. The distance to use is configurable, by default 40%. So by default to predict a 10km, HighScore plugin is used to get the fastest 4km, for a marathon the fastest 16.878km is used. The 4km is then scaled to 10km with the selected formula, and 16.9km to a marathon. In general, this gives more optimistic predictions for activities where the pace varies, it can be seen as "what would happen if the pace was steadier". For consistent performances though, the predictions are less optimistic than using 100% of a single activity.
-If you click the table when several activities are used to predict, the activity and the corresponding used part of the activity is marked on the Route view.
+It is possible to manually override the source for the prediction. The time/distance can be manually changed in the activity page. The plugin displays one source for calculation, when manually overridden the font for the time/distance values changes from italics to regular.
 
-Note: With Highscore prediction, the longest activity most be at least 40% (by default) of the longest distance to predict. So if no activity is at least 16.9 km, the plugin cannot predict a result and will display "No seed activity" in the table.
+Note though that the base activity and the distance to predict for should be similar. Using a 1km activity to predict a marathon is not reliable. To avoid to predict marathons from short runs, the plugin excludes activities shorter than than a certain percentage (default 10%), configurable in Settings.
+
+If you click the prediction table (except when manually overriding), the activity and the corresponding used part of the activity is marked on the Route view. Double clicking the row will open the activity itself.
 
 =Activity Page=
 Go to the activity detail view and select the Performance Predictor plugin from the Analyze menu as shown [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/ActivityDetailView.png here].
@@ -107,27 +107,38 @@ Here is a couple of images of the plugin in action:
 
 ==Extrapolate==
 
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/performancepredictor-extrapolate-ideal.png]
+
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/performancepredictor-extrapolate-temperature.png]
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/performancepredictor-extrapolate-weight.png]
 
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/performancepredictor-extrapolate-age.png]
+
 =Edit menu=
 
-Select one or more activities in Daily Activity or Report View, go to the Analyze menu and select the "Performance Predictor with High Score" item. The information is the same as the Predictor View when invoked as an Activity Page. 
+Select one or more activities in Daily Activity or Report View, go to the Analyze menu and select the "Performance Predictor" item. The information is the same as the Predictor View when invoked as an Activity Page. 
 
-[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/EditFunctionResults.png]
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/EditFunction.png]
 
 =Settings=
 
-It is possibe to add and remove the distances that the plugin use in its calculation by going to the settings panel for the Performance Predictor plugin as shown in this figure:
+It is possible to add and remove the distances that the plugin use in its calculation by going to the settings panel for the Performance Predictor plugin as shown in this figure:
 
 [http://gps-running.googlecode.com/svn/wiki/images/plugins/performancepredictor/Settings.png]
+
+=Other Plugins=
+==Trails==
+Analyze the trails in Performance Predictor.
+
+==Unique Routes==
+Display the selected results.
 
 =Todo=
  * Extrapolation based on more scenarios:
   * Elevation [http://runningtimes.com/Article.aspx?ArticleID=10507&PageNum=3 RunningTimes]. See Trails plugin for a solution.
   * Weather?
- * HighScore based on "best estimation", extracting the best part of activities.
+ * HighScore based on "best estimation", extracting the best part of activities. This can be calculation intensive, without giving much information.
  * Other algorithms like Purdy or Vdot? http://run-down.com/statistics/calcs_explained.php
  
 =Feedback=

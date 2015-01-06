@@ -3,8 +3,17 @@
 
 <wiki:toc max_depth="3" />
 
-More or less official beta releases are available in the Downloads section. See each plugin for detailed description of functions.
-
+(Unreleased)
+PerformancePredictor:
+ * Add [PerformancePredictor#Elinder] predicting. Works very well, especially for activities longer than 2h.
+ * Predicting on many activities no longer requires High Score Plugin, it uses the "best" activity to predict.
+ * Possibility to override the time/distance directly in the toolbar (this was possible in the Extrapolate - Ideal tab previously.
+ * Show all predictor models in the table. The selected model is shown first and used in training suggestions etc.
+ * Reenable chart, show pace/speed in addition to time over distance.
+ * Riegel factor is configurable - possibly usable for other activities than running
+ * Many minor updates and bugfixes.
+ 
+ 
 2.0.419 2014-10-10 (Plugin Catalog)
 
 HighScore:
