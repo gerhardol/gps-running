@@ -173,8 +173,17 @@ namespace GpsRunningPlugin.Source
         public static float DefaultAge = 25f;
         public static void SetAgeSexFromActivity(IActivity act)
         {
-            float age = (float)(act.StartTime - Plugin.GetApplication().Logbook.Athlete.DateOfBirth).TotalDays / 365.24f;
             Predict.Sex = Plugin.GetApplication().Logbook.Athlete.Sex;
+            DateTime d;
+            if (act == null)
+            {
+                d = DateTime.Now;
+            }
+            else
+            {
+                d = act.StartTime;
+            }
+            float age = (float)(d - Plugin.GetApplication().Logbook.Athlete.DateOfBirth).TotalDays / 365.24f;
             if (!float.IsNaN(age))
             {
                 Predict.CurrentAge = age;
