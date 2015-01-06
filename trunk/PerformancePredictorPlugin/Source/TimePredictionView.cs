@@ -129,14 +129,19 @@ namespace GpsRunningPlugin.Source
             Plugin.GetApplication().SystemPreferences.PropertyChanged -= new PropertyChangedEventHandler(SystemPreferences_PropertyChanged);
         }
 
+        public void ClearCalculations()
+        {
+            //Reset calculations - all calculated
+            m_predictorData.Clear();
+            m_predictorSource.Clear();
+        }
+
         public void RefreshData()
         {
+            ClearCalculations();
+
             if (m_showPage)
             {
-                //Reset calculations - all calculated
-                m_predictorData.Clear();
-                m_predictorSource.Clear();
-
                 setData();
             }
         }
@@ -149,10 +154,7 @@ namespace GpsRunningPlugin.Source
             }
             else
             {
-                if (m_showPage)
-                {
-                    RefreshData();
-                }
+                RefreshData();
             }
         }
 
@@ -163,9 +165,13 @@ namespace GpsRunningPlugin.Source
 
             //Get the (cached?) list/chart
             makeData();
-            summaryList.RowData = m_predictorData.Values;
 
-            if (chart != null)
+            if (!Settings.ShowChart)
+            {
+                RefreshColumns(!m_ppcontrol.IsOverridden && (m_ppcontrol.ChkHighScore || m_ppcontrol.Activities.Count > 1));
+                summaryList.RowData = m_predictorData.Values;
+            }
+            else
             {
                 chart.YAxis.Formatter = new Formatter.SecondsToTime();
                 chart.XAxis.Formatter = new Formatter.General(UnitUtil.Distance.DefaultDecimalPrecision);
@@ -303,18 +309,12 @@ namespace GpsRunningPlugin.Source
 
             if (m_ppcontrol.IsOverridden)
             {
-                RefreshColumns(false);
                 IActivity activity = m_ppcontrol.SingleActivity;
-                if (m_ppcontrol.Activities.Count > 0)
-                {
-                    activity = m_ppcontrol.Activities[0];
-                }
                 Predict.SetAgeSexFromActivity(activity);
                 m_predictorSource.Add(new TimePredictionSource(activity, m_ppcontrol.Distance, m_ppcontrol.Time));
             }
             else if (m_ppcontrol.Activities.Count > 0)
             {
-                RefreshColumns(m_ppcontrol.ChkHighScore || m_ppcontrol.Activities.Count > 1);
                 Predict.SetAgeSexFromActivity(m_ppcontrol.Activities[0]);
                 foreach (IActivity activity in m_ppcontrol.Activities)
                 {
@@ -330,7 +330,7 @@ namespace GpsRunningPlugin.Source
             }
             //else: no activity selected
 
-            getResults(m_predictorSource, m_predictorData, progressBar);
+            getResults(m_predictorSource, m_predictorData, m_ppcontrol.IsOverridden, progressBar);
         }
 
         public static void getHSResults(IList<TimePredictionSource> predictorSource, IList<IActivity> activities, System.Windows.Forms.ProgressBar progressBar)
@@ -386,7 +386,7 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        public static void getResults(IList<TimePredictionSource> predictorSource, IDictionary<double, PredictorData> predictorData, System.Windows.Forms.ProgressBar progressBar)
+        public static void getResults(IList<TimePredictionSource> predictorSource, IDictionary<double, PredictorData> predictorData, bool noSourceDistCheck, System.Windows.Forms.ProgressBar progressBar)
         {
             foreach (KeyValuePair<double, PredictorData> v in predictorData)
             {
@@ -394,7 +394,7 @@ namespace GpsRunningPlugin.Source
 
                 foreach (TimePredictionSource s in predictorSource)
                 {
-                    if (s.UsedDistance > length * Settings.MinPercentOfDistance / 100.0)
+                    if (noSourceDistCheck || s.UsedDistance > length * Settings.MinPercentOfDistance / 100.0)
                     {
                         double new_time = Predict.Predictor(Settings.Model)(length, s.UsedDistance, s.UsedTime);
                         if (!v.Value.result.ContainsKey(Settings.Model) ||
@@ -417,6 +417,43 @@ namespace GpsRunningPlugin.Source
                         }
                     }
                 }
+            }
+        }
+
+        //get the time/distance for the last predicted distance (used to display, to override)
+        public double Distance
+        {
+            get
+            {
+                double res = 0;
+                ICollection<PredictorData> list = this.m_predictorData.Values;
+                foreach (PredictorData p in list)
+                {
+                    if (p.source != null)
+                    {
+                        //Get the last value - dont bother reversing
+                        res = p.source.UsedDistance;
+                    }
+                }
+                return res;
+            }
+        }
+
+        public TimeSpan Time
+        {
+            get
+            {
+                TimeSpan res = TimeSpan.Zero;
+                ICollection<PredictorData> list = this.m_predictorData.Values;
+                foreach (PredictorData p in list)
+                {
+                    if (p.source != null)
+                    {
+                        //Get the last value - dont bother reversing
+                        res = p.source.UsedTime;
+                    }
+                }
+                return res;
             }
         }
 
@@ -497,11 +534,14 @@ namespace GpsRunningPlugin.Source
             object row;
             TreeList.RowHitState hit;
             row = summaryList.RowHitTest(e.Location, out hit);
-            if (row != null && hit == TreeList.RowHitState.Row && row is PredictorData)
+            if (row != null && hit == TreeList.RowHitState.Row && row is PredictorData && !m_ppcontrol.IsOverridden)
             {
                 PredictorData tr = (PredictorData)row;
-                string bookmark = "id=" + tr.source.Activity;
-                Plugin.GetApplication().ShowView(view, bookmark);
+                if (tr.source != null && tr.source.Activity != null)
+                {
+                    string bookmark = "id=" + tr.source.Activity;
+                    Plugin.GetApplication().ShowView(view, bookmark);
+                }
             }
         }
 
