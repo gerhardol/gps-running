@@ -1,6 +1,5 @@
 /*
-Copyright (C) 2007, 2008 Kristian Bisgaard Lassen
-Copyright (C) 2010 Kristian Helkjaer Lassen
+Copyright (C) 2015 Gerhard Olsson
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
