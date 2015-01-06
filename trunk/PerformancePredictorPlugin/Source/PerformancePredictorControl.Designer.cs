@@ -85,6 +85,9 @@ namespace GpsRunningPlugin.Source
             this.predictorView = new GpsRunningPlugin.Source.TimePredictionView();
             this.trainingView = new GpsRunningPlugin.Source.TrainingView();
             this.extrapolateView = new GpsRunningPlugin.Source.ExtrapolateView();
+            this.overrideGroupBox = new System.Windows.Forms.GroupBox();
+            this.distanceTextBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
+            this.timeTextBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.bannerContextMenuStrip.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -94,6 +97,7 @@ namespace GpsRunningPlugin.Source
             this.settingsBox.SuspendLayout();
             this.resultBox.SuspendLayout();
             this.modelBox.SuspendLayout();
+            this.overrideGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -151,8 +155,8 @@ namespace GpsRunningPlugin.Source
             this.bannerContextMenuStrip.Name = "bannerContextMenuStrip";
             this.bannerContextMenuStrip.ShowCheckMargin = true;
             this.bannerContextMenuStrip.ShowImageMargin = false;
-            this.bannerContextMenuStrip.Size = new System.Drawing.Size(212, 386);
-            this.bannerContextMenuStrip.Opening  += new System.ComponentModel.CancelEventHandler(bannerContextMenuStrip_Opening);
+            this.bannerContextMenuStrip.Size = new System.Drawing.Size(212, 320);
+            this.bannerContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.bannerContextMenuStrip_Opening);
             this.actionBanner1.MenuClicked += actionBanner1_MenuClicked;
             // 
             // settingsMenuItem
@@ -280,7 +284,7 @@ namespace GpsRunningPlugin.Source
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.velocityBox);
+            this.splitContainer1.Panel1.Controls.Add(this.overrideGroupBox);
             this.splitContainer1.Panel1.Controls.Add(this.settingsBox);
             this.splitContainer1.Panel1.Controls.Add(this.resultBox);
             this.splitContainer1.Panel1.Controls.Add(this.modelBox);
@@ -288,6 +292,7 @@ namespace GpsRunningPlugin.Source
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.velocityBox);
             this.splitContainer1.Panel2.Controls.Add(this.predictorView);
             this.splitContainer1.Panel2.Controls.Add(this.trainingView);
             this.splitContainer1.Panel2.Controls.Add(this.extrapolateView);
@@ -300,12 +305,13 @@ namespace GpsRunningPlugin.Source
             // 
             this.velocityBox.Controls.Add(this.speedButton);
             this.velocityBox.Controls.Add(this.paceButton);
-            this.velocityBox.Location = new System.Drawing.Point(4, 145);
+            this.velocityBox.Location = new System.Drawing.Point(20, 239);
             this.velocityBox.Name = "velocityBox";
             this.velocityBox.Size = new System.Drawing.Size(138, 69);
             this.velocityBox.TabIndex = 11;
             this.velocityBox.TabStop = false;
             this.velocityBox.Text = "<Velocity";
+            this.velocityBox.Visible = false;
             // 
             // speedButton
             // 
@@ -384,7 +390,7 @@ namespace GpsRunningPlugin.Source
             this.resultBox.Controls.Add(this.chkHighScoreBox);
             this.resultBox.Controls.Add(this.tableButton);
             this.resultBox.Controls.Add(this.chartButton);
-            this.resultBox.Location = new System.Drawing.Point(4, 220);
+            this.resultBox.Location = new System.Drawing.Point(3, 152);
             this.resultBox.Name = "resultBox";
             this.resultBox.Size = new System.Drawing.Size(138, 91);
             this.resultBox.TabIndex = 5;
@@ -492,6 +498,57 @@ namespace GpsRunningPlugin.Source
             this.extrapolateView.Size = new System.Drawing.Size(184, 371);
             this.extrapolateView.TabIndex = 9;
             // 
+            // overrideGroupBox
+            // 
+            this.overrideGroupBox.Controls.Add(this.timeTextBox);
+            this.overrideGroupBox.Controls.Add(this.distanceTextBox);
+            this.overrideGroupBox.Location = new System.Drawing.Point(0, 249);
+            this.overrideGroupBox.Name = "overrideGroupBox";
+            this.overrideGroupBox.Size = new System.Drawing.Size(138, 69);
+            this.overrideGroupBox.TabIndex = 6;
+            this.overrideGroupBox.TabStop = false;
+            this.overrideGroupBox.Text = "<Override";
+            // 
+            // timeTextBox
+            // 
+            this.timeTextBox.AcceptsReturn = false;
+            this.timeTextBox.AcceptsTab = false;
+            this.timeTextBox.BackColor = System.Drawing.Color.White;
+            this.timeTextBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.timeTextBox.ButtonImage = null;
+            this.timeTextBox.Location = new System.Drawing.Point(4, 19);
+            this.timeTextBox.MaxLength = 32767;
+            this.timeTextBox.Multiline = false;
+            this.timeTextBox.Name = "timeTextBox";
+            this.timeTextBox.ReadOnly = false;
+            this.timeTextBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.timeTextBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.timeTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.timeTextBox.Size = new System.Drawing.Size(128, 21);
+            this.timeTextBox.TabIndex = 6;
+            this.timeTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.timeTextBox.LostFocus += timeTextBox_LostFocus;
+            // 
+            // distanceTextBox
+            // 
+            this.distanceTextBox.AcceptsReturn = false;
+            this.distanceTextBox.AcceptsTab = false;
+            this.distanceTextBox.BackColor = System.Drawing.Color.White;
+            this.distanceTextBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.distanceTextBox.ButtonImage = null;
+            this.distanceTextBox.Location = new System.Drawing.Point(4, 45);
+            this.distanceTextBox.MaxLength = 32767;
+            this.distanceTextBox.Multiline = false;
+            this.distanceTextBox.Name = "distanceTextBox";
+            this.distanceTextBox.ReadOnly = false;
+            this.distanceTextBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.distanceTextBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.distanceTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.distanceTextBox.Size = new System.Drawing.Size(128, 21);
+            this.distanceTextBox.TabIndex = 5;
+            this.distanceTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.distanceTextBox.LostFocus += distanceTextBox_LostFocus;
+            // 
             // PerformancePredictorControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -513,6 +570,7 @@ namespace GpsRunningPlugin.Source
             this.resultBox.ResumeLayout(false);
             this.resultBox.PerformLayout();
             this.modelBox.ResumeLayout(false);
+            this.overrideGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -559,6 +617,9 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.RadioButton paceButton;
         private System.Windows.Forms.CheckBox chkHighScoreBox;
         private ZoneFiveSoftware.Common.Visuals.TextBox modelComboBox;
+        private System.Windows.Forms.GroupBox overrideGroupBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox timeTextBox;
+        private ZoneFiveSoftware.Common.Visuals.TextBox distanceTextBox;
 
 
 
