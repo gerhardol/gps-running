@@ -352,7 +352,7 @@ namespace GpsRunningPlugin.Source
 
         public void RefreshData()
         {
-            if (m_showPage && m_ppcontrol.SingleActivity != null && Predict.Predictor(Settings.Model) != null)
+            if (m_showPage && m_ppcontrol.SingleActivity != null)
             {
                 if (this.m_activity != this.m_ppcontrol.SingleActivity)
                 {
@@ -574,7 +574,7 @@ namespace GpsRunningPlugin.Source
                 idealDistance = UnitUtil.Distance.Parse(this.distBox2.Text);
                 if (idealDistance != m_ppcontrol.Distance)
                 {
-                    Predict.SetAgeSexFromActivity(this.m_ppcontrol.FirstActivity);
+                    Predict.SetAgeSexFromActivity(this.m_ppcontrol.SingleActivity);
                     ideal = (Predict.Predictor(Settings.Model))(idealDistance, m_ppcontrol.Distance, TimeSpan.FromSeconds(ideal));
                 }
             }

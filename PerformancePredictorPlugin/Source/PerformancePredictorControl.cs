@@ -315,6 +315,8 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                     m_popupForm.Text = title;
                 }
 
+                this.predictorView.ClearCalculations();
+
                 activateListeners();
                 if (m_layer != null)
                 {
@@ -325,34 +327,28 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             }
         }
 
-        //For extrapolate view, where a single activity is extrapolated
+        //For extrapolate/training view, where certain data is dependent on an activity, nothing major if it is changed
         public IActivity SingleActivity
         {
             get
             {
-                if (!this.ChkHighScore)
-                {
+                if (m_lastActivity != null)
+                    {
                     return m_lastActivity;
                 }
-                return null;
-            }
-        }
-
-        //For training view, where certain data is depenedent on an activity, nothing major if it is changed
-        public IActivity FirstActivity
-        {
-            get
-            {
-                if (m_activities.Count > 0 && m_activities[0] != null && !this.ChkHighScore)
+                else if (m_activities.Count > 0)
                 {
                     return m_activities[0];
                 }
+                else if (Plugin.GetApplication().Logbook.Activities.Count > 0)
+                {
+                    //The last - maybe latest
+                    return Plugin.GetApplication().Logbook.Activities[Plugin.GetApplication().Logbook.Activities.Count-1];
+                }
+
                 return null;
             }
         }
-
-        //The following are a little more permissive than SingleActivity, but seem to be OK
-        internal ActivityInfo SingleInfo { get { return ActivityInfoCache.Instance.GetInfo(this.m_lastActivity); } }
 
         internal TimeSpan Time
         {
@@ -362,16 +358,25 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 {
                     return (TimeSpan)this.m_time;
                 }
-                else if (this.m_lastActivity != null)
+                else if(predictorView.Time > TimeSpan.Zero)
                 {
-                    return this.SingleInfo.Time;
+                    return predictorView.Time;
+                }
+                else if (this.SingleActivity != null)
+                {
+                    ActivityInfo info = ActivityInfoCache.Instance.GetInfo(this.SingleActivity);
+                    return info.Time;
                 }
                 return TimeSpan.FromSeconds(0);
             }
             set
             {
-                if (!this.m_time.Equals(value))
+                if (value.TotalSeconds > 0 && !this.m_time.Equals(value))
                 {
+                    if (this.m_distance == null)
+                    {
+                        this.m_distance = this.Distance;
+                    }
                     this.m_time = value;
                     this.setView();
                     syncToolBarToState();
@@ -387,16 +392,26 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 {
                     return (double)this.m_distance;
                 }
-                else if (this.m_lastActivity != null)
+                else if (predictorView.Distance>0)
                 {
-                    return this.SingleInfo.DistanceMeters;
+                    return predictorView.Distance;
+                }
+                else if (this.SingleActivity != null)
+                {
+                    ActivityInfo info = ActivityInfoCache.Instance.GetInfo(this.SingleActivity);
+                    return info.DistanceMeters;
                 }
                 return 0;
             }
             set
             {
-                if (!this.m_distance.Equals(value))
+                if (!double.IsNaN(value) && value > 0)
                 {
+                    if (this.m_time == null)
+                    {
+                        //Setting will recalc, need to set current value..
+                        this.m_time = this.Time;
+                    }
                     this.m_distance = value;
                     this.setView();
                     syncToolBarToState();
@@ -404,7 +419,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             }
         }
 
-        internal bool IsOverridden { get { return (this.m_time != null && this.m_distance != null); } }
+        internal bool IsOverridden { get { return (this.m_time != null || this.m_distance != null); } }
 
 #if ST_2_1
         private void dataChanged(object sender, ZoneFiveSoftware.Common.Data.NotifyDataChangedEventArgs e)
@@ -489,42 +504,15 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             this.extrapolateView.HidePage();
             this.m_showPage = show;
 
-            //Disable all but timePredictionButton (always active)
-            //timePredictionButton.Enabled = true;
-            this.trainingButton.Enabled = false;
-            this.extrapolateButton.Enabled = false;
-            this.timePredictionButton.Checked = false;
-            this.trainingButton.Checked = false;
-            this.extrapolateButton.Checked = false;
-
             this.tableButton.Enabled = false;
             this.tableButton.Checked = true;
             this.chkHighScoreBox.Enabled = false;
 
-            if (this.IsOverridden || this.SingleActivity != null && !this.ChkHighScore)
-            {
-                this.trainingButton.Enabled = true;
-                this.extrapolateButton.Enabled = true;
-
-                this.timePredictionButton.Checked = Settings.PredictionView == PredictionView.TimePrediction;
-            }
-            else if (this.FirstActivity != null && !this.ChkHighScore)
-            {
-                //timePredictionButton.Enabled = true;
-                this.trainingButton.Enabled = true;
-
-                this.timePredictionButton.Checked = Settings.PredictionView == PredictionView.TimePrediction ||
-                    Settings.PredictionView == PredictionView.Extrapolate;
-            }
-            else
+            if (Settings.PredictionView == PredictionView.TimePrediction)
             {
                 this.timePredictionButton.Checked = true;
-            }
-
-            if (timePredictionButton.Checked)
-            {
                 this.actionBanner1.Text = Properties.Resources.TimePrediction;
-                this.chkHighScoreBox.Enabled |= Settings.HighScore != null;
+                this.chkHighScoreBox.Enabled |= Settings.HighScore != null && !this.IsOverridden;
                 this.tableButton.Enabled = true;
                 this.tableButton.Checked = !Settings.ShowChart;
                 if (this.m_showPage)
@@ -532,9 +520,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                     this.predictorView.ShowPage("");
                 }
             }
-            else
-            {
-                if (this.trainingButton.Enabled && Settings.PredictionView == PredictionView.Training)
+            else if (Settings.PredictionView == PredictionView.Training)
                 {
                     this.actionBanner1.Text = StringResources.Training;
                     this.trainingButton.Checked = true;
@@ -543,19 +529,18 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                         this.trainingView.ShowPage("");
                     }
                 }
-                else if (Settings.PredictionView == PredictionView.Extrapolate)
+            else if (Settings.PredictionView == PredictionView.Extrapolate)
+            {
+                this.actionBanner1.Text = Properties.Resources.Extrapolate;
+                this.extrapolateButton.Checked = true;
+                if (this.m_showPage)
                 {
-                    this.actionBanner1.Text = Properties.Resources.Extrapolate;
-                    this.extrapolateButton.Checked = true;
-                    if (this.m_showPage)
-                    {
-                        this.extrapolateView.ShowPage("");
-                    }
+                    this.extrapolateView.ShowPage("");
                 }
-                else
-                {
-                    this.actionBanner1.Text = "Unknown";
-                }
+            }
+            else
+            {
+                this.actionBanner1.Text = "Unknown";
             }
 
             //Dependent
@@ -587,9 +572,17 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             {
                 this.timeTextBox.Text = UnitUtil.Time.ToString(this.Time, "u");
             }
+            else
+            {
+                this.timeTextBox.Text = "";
+            }
             if (this.Distance > 0)
             {
                 this.distanceTextBox.Text = UnitUtil.Distance.ToString(this.Distance, "u");
+            }
+            else
+            {
+                this.distanceTextBox.Text = "";
             }
             if (!this.IsOverridden)
             {
@@ -846,12 +839,32 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
         void timeTextBox_LostFocus(object sender, System.EventArgs e)
         {
-            this.Time = TimeSpan.FromSeconds(UnitUtil.Time.Parse(this.timeTextBox.Text));
+            if (!string.IsNullOrEmpty(this.timeTextBox.Text))
+            {
+               string s = UnitUtil.Time.ToString(this.Time, "u");
+               if (!s.Equals(this.distanceTextBox.Text))
+               {
+                   double time = UnitUtil.Time.Parse(this.timeTextBox.Text);
+                   if (!double.IsNaN(time))
+                   {
+                       this.Time = TimeSpan.FromSeconds(time);
+                   }
+               }
+            }
         }
 
         void distanceTextBox_LostFocus(object sender, System.EventArgs e)
         {
-            this.Distance = UnitUtil.Distance.Parse(this.distanceTextBox.Text);
+            if (!string.IsNullOrEmpty(this.distanceTextBox.Text))
+            {
+                //This is called at view changes. Compare if changed
+                //IsNan, 0: check in assignment
+                string s = UnitUtil.Distance.ToString(this.Distance, "u");
+                if (!s.Equals(this.distanceTextBox.Text))
+                {
+                    this.Distance = UnitUtil.Distance.Parse(this.distanceTextBox.Text);
+                }
+            }
         }
 
         //Adapted from ApplyRoutes

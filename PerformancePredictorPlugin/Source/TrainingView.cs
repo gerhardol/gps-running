@@ -272,7 +272,7 @@ namespace GpsRunningPlugin.Source
 
         public void RefreshData()
         {
-            if (m_showPage && Predict.Predictor(Settings.Model) != null && m_ppcontrol.FirstActivity != null)
+            if (m_showPage && m_ppcontrol.SingleActivity != null)
             {
                 setTraining();
                 setPaceTempo();
@@ -284,11 +284,11 @@ namespace GpsRunningPlugin.Source
         {
             double[] distances = new double[] { 100, 200, 300, 400, 800, 1000, 1609.344 };
             IList<IntervalResult> result = new List<IntervalResult>();
-            Predict.SetAgeSexFromActivity(m_ppcontrol.FirstActivity);
+            Predict.SetAgeSexFromActivity(m_ppcontrol.SingleActivity);
             IntervalResultCache resultCache = new IntervalResultCache(m_ppcontrol.Distance, m_ppcontrol.Time);
             for (int i = 0; i < distances.Length; i++)
             {
-                IntervalResult t = new IntervalResult(m_ppcontrol.FirstActivity, resultCache, distances[i]);
+                IntervalResult t = new IntervalResult(m_ppcontrol.SingleActivity, resultCache, distances[i]);
                 result.Add(t);
             }
 
@@ -306,7 +306,7 @@ namespace GpsRunningPlugin.Source
             IList<PaceTempoResult> result = new List<PaceTempoResult>();
             for (int i = 0; i < durations.Length; i++)
             {
-                PaceTempoResult t = new PaceTempoResult(m_ppcontrol.FirstActivity, durations[i], speed / factors[i]);
+                PaceTempoResult t = new PaceTempoResult(m_ppcontrol.SingleActivity, durations[i], speed / factors[i]);
                 result.Add(t);
             }
             paceTempoList.RowData = result;
@@ -314,7 +314,7 @@ namespace GpsRunningPlugin.Source
 
         private void setTraining()
         {
-            double maxHr = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(m_ppcontrol.FirstActivity.StartTime).MaximumHeartRatePerMinute;
+            double maxHr = Plugin.GetApplication().Logbook.Athlete.InfoEntries.LastEntryAsOfDate(m_ppcontrol.SingleActivity.StartTime).MaximumHeartRatePerMinute;
             if (double.IsNaN(maxHr))
             {
                 trainingLabel.Text = Resources.NoMaxHR;
@@ -324,11 +324,11 @@ namespace GpsRunningPlugin.Source
             double vo2max = Predict.getVo2max(m_ppcontrol.Time);
             double vdot = Predict.getVdot(m_ppcontrol.Time, m_ppcontrol.Distance);
             trainingLabel.Text = String.Format(Resources.VO2MaxVDOT, 100 * vo2max, vdot);
-            TrainingResult.Calculate(m_ppcontrol.FirstActivity, vdot, m_ppcontrol.Time, m_ppcontrol.Distance, maxHr);
+            TrainingResult.Calculate(m_ppcontrol.SingleActivity, vdot, m_ppcontrol.Time, m_ppcontrol.Distance, maxHr);
             IList<TrainingResult> result = new List<TrainingResult>();
             for (int i = 0; i < 15; i++)
             {
-                TrainingResult t = new TrainingResult(m_ppcontrol.FirstActivity, i);
+                TrainingResult t = new TrainingResult(m_ppcontrol.SingleActivity, i);
                 result.Add(t);
             }
             trainingList.RowData = result;
