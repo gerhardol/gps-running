@@ -39,6 +39,7 @@ namespace GpsRunningPlugin.Source
         //Current distance to switch distance algorithm
         private static double BreakEvenDist;
         private static double BreakEvenTime; //should be close to Settings.ElinderBreakEvenTime.TotalSeconds
+        private static double ElinderBreakEvenTimeMax = 2*3600; //cannot change too much, formula has valid
         //Current values for BreakEvenDist
         private static double currBreakDist = 0;
         private static double currBreakTime = 0;
@@ -74,7 +75,7 @@ namespace GpsRunningPlugin.Source
 
         private static void EstimateBreakEven(double timeBreakEven, double dist, double time)
         {
-            if (time <= timeBreakEven)
+            if (time < timeBreakEven && timeBreakEven == ElinderBreakEvenTimeMax)
             {
                 //From private conversation with Elinder
                 //562,9 / (t1/s1 *  (7.313 - lg(s1)))^0,9307
