@@ -63,14 +63,8 @@ namespace GpsRunningPlugin.Source
                 return UnitUtil.PaceOrSpeed.ToString(Settings.ShowPace, wrapper.Distance / time);
             }
 
-            if (wrapper.source == null ||
-                wrapper.source.Activity == null &&
-                (column.Id == ResultColumnIds.StartDate || column.Id == ResultColumnIds.StartTime))
+            if (wrapper.source == null)
             {
-                if (column.Id == ResultColumnIds.StartDate)
-                {
-                    return Resources.NoSeedActivity;
-                }
                 return null;
             }
 
@@ -80,10 +74,8 @@ namespace GpsRunningPlugin.Source
                     return UnitUtil.Distance.ToString(wrapper.Distance);
                 case ResultColumnIds.DistanceNominal:
                     return UnitUtil.Distance.ToString(wrapper.Distance, wrapper.Unit, "u");
-                case ResultColumnIds.StartDate:
-                    return wrapper.source.StartDate.ToLocalTime().ToShortDateString();
                 case ResultColumnIds.StartTime:
-                    return wrapper.source.StartUsedTime.ToLocalTime().ToShortTimeString();
+                    return wrapper.source.StartTime;
                 case ResultColumnIds.UsedTime:
                     return UnitUtil.Time.ToString(wrapper.source.UsedTime);
                 case ResultColumnIds.StartDistance:
