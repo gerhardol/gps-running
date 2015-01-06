@@ -1,6 +1,5 @@
 /*
-Copyright (C) 2007, 2008 Kristian Bisgaard Lassen
-Copyright (C) 2010 Kristian Helkjaer Lassen
+Copyright (C) 2015 Gerhard Olsson
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -39,34 +38,47 @@ namespace GpsRunningPlugin.Source
         //Current distance to switch distance algorithm
         private static double BreakEvenDist;
         private static double BreakEvenTime; //should be close to Settings.ElinderBreakEvenTime.TotalSeconds
-        private static double ElinderBreakEvenTimeMax = 2*3600; //cannot change too much, formula has valid
+        private static double ElinderBreakEvenTimeMax = 2*3600; //cannot change much, formula has valid range
         //Current values for BreakEvenDist
         private static double currBreakDist = 0;
         private static double currBreakTime = 0;
 
         private static double getBreakEven(double dist, double time)
         {
-            if(dist != currBreakDist || time != currBreakTime)
+            if (dist != currBreakDist || time != currBreakTime)
             {
-                double pTime = Settings.ElinderBreakEvenTime.TotalSeconds;
-                EstimateBreakEven(pTime, dist, time);
-                //TBD get closer to 2h
-                //int i = 10;
-                //while(i-->0 && Math.Abs(BreakEvenTime -BreakEvenTimeTarget) > 60)
-                //{
-                //}
-                //Either Infra or Ultra should work here
-                //double new_time;
-                //if (dist <= BreakEvenDist)
-                //{
-                //    new_time = PredictInfra(dist, BreakEvenDist, BreakEvenTime);
-                //}
-                //else
-                //{
-                //    new_time = PredictUltra(dist, BreakEvenDist, BreakEvenTime);
-                //}
-                //if (Math.Abs(new_time - time) / time > 0.001)
-                //{ }
+                double timeBreakEven = Settings.ElinderBreakEvenTime.TotalSeconds;
+
+                //Get initial seed for dist, time should be close to timeBreakEven
+                EstimateBreakEven(timeBreakEven, dist, time);
+                double bestTime = BreakEvenTime;
+                double bestDist = BreakEvenDist;
+                //TBD get closer to target time, especially for Ultra
+                int i = 3;
+                while (i-- > 0 && Math.Abs(BreakEvenTime - timeBreakEven) > 10)
+                {
+                    double t2 = Predict(dist);
+                    double t3 = time * (1 + 0.7 * (time - t2) / time);
+                    BreakEvenDist = dist * Math.Pow(timeBreakEven / t3, 1 / Settings.RiegelFatigueFactor);
+                    if (time <= timeBreakEven)
+                    {
+                        BreakEvenTime = PredictInfra(BreakEvenDist, dist, time);
+                    }
+                    else
+                    {
+                        BreakEvenTime = PredictUltra(BreakEvenDist, dist, time);
+                    }
+
+                    if (Math.Abs(timeBreakEven - BreakEvenTime) < Math.Abs(timeBreakEven - bestTime))
+                    {
+                        bestTime = BreakEvenTime;
+                        bestDist = BreakEvenDist;
+                    }
+                }
+
+                BreakEvenTime = bestTime;
+                BreakEvenDist = bestDist;
+
                 currBreakDist = dist;
                 currBreakTime = time;
             }
@@ -75,18 +87,26 @@ namespace GpsRunningPlugin.Source
 
         private static void EstimateBreakEven(double timeBreakEven, double dist, double time)
         {
-            if (time < timeBreakEven && timeBreakEven == ElinderBreakEvenTimeMax)
+            if (time <= ElinderBreakEvenTimeMax*1.3)
             {
                 //From private conversation with Elinder
                 //562,9 / (t1/s1 *  (7.313 - lg(s1)))^0,9307
-                BreakEvenDist = 562900 / Math.Pow((time/60 * 1000 / dist * (10.313 - Math.Log10(dist))), 0.9307);
-                //This should be very close, but may differ if ElinderBreakEvenTime is modified
+                BreakEvenDist = 562900 / Math.Pow((time * ElinderBreakEvenTimeMax / timeBreakEven / 60 * 1000 / dist * (10.313 - Math.Log10(dist))), 0.9307);
+                //This should be very close to 2h if timeBreakEven is not changed...
                 BreakEvenTime = PredictInfra(BreakEvenDist, dist, time);
             }
             else
             {
                 //Use Riegel reversed - may use iterations to get better data or a separate algorithm
                 BreakEvenDist = dist * Math.Pow(timeBreakEven / time, 1 / Settings.RiegelFatigueFactor);
+            }
+
+            if (time <= timeBreakEven)
+            {
+                BreakEvenTime = PredictInfra(BreakEvenDist, dist, time);
+            }
+            else
+            {
                 BreakEvenTime = PredictUltra(BreakEvenDist, dist, time);
             }
         }
@@ -106,10 +126,10 @@ namespace GpsRunningPlugin.Source
             return (float)(new_dist * bTime / bDist * (10.313 - Math.Log10(bDist)) / (7.313 - 2.697 * (Math.Log10(new_dist) - 3) + 1.697 * (Math.Log10(bDist) - 3)));
         }
 
-        public static double Predict(double new_dist, double old_dist, TimeSpan old_time)
+        //Use latest cached break even factors
+        private static double Predict(double new_dist)
         {
             double new_time;
-            getBreakEven(old_dist, old_time.TotalSeconds);
 
             if (new_dist <= BreakEvenDist)
             {
@@ -120,6 +140,14 @@ namespace GpsRunningPlugin.Source
                 new_time = PredictUltra(new_dist, BreakEvenDist, BreakEvenTime);
             }
             return new_time;
+        }
+
+        //Predict, check the factors first
+        public static double Predict(double new_dist, double old_dist, TimeSpan old_time)
+        {
+            getBreakEven(old_dist, old_time.TotalSeconds);
+
+            return Predict(new_dist);
         }
     }
 }

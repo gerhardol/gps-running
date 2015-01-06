@@ -25,8 +25,8 @@ namespace GpsRunningPlugin.Source
         public static double Predict(double new_dist, double old_dist, TimeSpan old_time)
         {
             throw new Exception("Not implemented yet");
-            double new_time = old_time.TotalSeconds;
-            return new_time;
+            //double new_time = old_time.TotalSeconds;
+            //return new_time;
         }
     }
 
