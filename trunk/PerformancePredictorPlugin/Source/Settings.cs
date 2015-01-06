@@ -147,13 +147,23 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        private static int percentOfDistance;
-        public static int PercentOfDistance
+        private static int minPercentOfDistance;
+        public static int MinPercentOfDistance
         {
-            get { return percentOfDistance; }
+            get { return minPercentOfDistance; }
             set
             {
-                percentOfDistance = value;
+                minPercentOfDistance = value;
+            }
+        }
+
+        private static int hsPercentOfDistance;
+        public static int HsPercentOfDistance
+        {
+            get { return hsPercentOfDistance; }
+            set
+            {
+                hsPercentOfDistance = value;
             }
         }
 
@@ -174,7 +184,8 @@ namespace GpsRunningPlugin.Source
             idealShoe = 0.100f;
             showPace = true;
             showChart = false;//show chart by default
-            percentOfDistance = 40;
+            minPercentOfDistance = 10;
+            hsPercentOfDistance = 40;
             model = PredictionModelUtil.Default;
             elinderBreakEvenTime = TimeSpan.FromHours(2);
             riegelFatigueFactor = 1.06f;
@@ -261,8 +272,10 @@ namespace GpsRunningPlugin.Source
             if (attr.Length > 0) { showPace = XmlConvert.ToBoolean(attr); }
             attr = pluginNode.GetAttribute(xmlTags.showChart);
             if (attr.Length > 0) { showChart = XmlConvert.ToBoolean(attr); }
-            attr = pluginNode.GetAttribute(xmlTags.percentOfDistance);
-            if (attr.Length > 0) { percentOfDistance = XmlConvert.ToInt16(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.minPercentOfDistance);
+            if (attr.Length > 0) { minPercentOfDistance = XmlConvert.ToInt16(attr); }
+            attr = pluginNode.GetAttribute(xmlTags.hsPercentOfDistance);
+            if (attr.Length > 0) { hsPercentOfDistance = XmlConvert.ToInt16(attr); }
 
             attr = pluginNode.GetAttribute(xmlTags.model);
             if (attr.Length > 0) { model = (PredictionModel)Enum.Parse(typeof(PredictionModel), attr); }
@@ -290,7 +303,8 @@ namespace GpsRunningPlugin.Source
             pluginNode.SetAttribute(xmlTags.idealShoe, XmlConvert.ToString(idealShoe));
             pluginNode.SetAttribute(xmlTags.showPace, XmlConvert.ToString(showPace));
             pluginNode.SetAttribute(xmlTags.showChart, XmlConvert.ToString(showChart));
-            pluginNode.SetAttribute(xmlTags.percentOfDistance, XmlConvert.ToString(percentOfDistance));
+            pluginNode.SetAttribute(xmlTags.minPercentOfDistance, XmlConvert.ToString(minPercentOfDistance));
+            pluginNode.SetAttribute(xmlTags.hsPercentOfDistance, XmlConvert.ToString(hsPercentOfDistance));
 
             pluginNode.SetAttribute(xmlTags.model, model.ToString());
             pluginNode.SetAttribute(xmlTags.showToolBar, XmlConvert.ToString(showToolBar));
@@ -321,7 +335,8 @@ namespace GpsRunningPlugin.Source
             public const string showChart = "showChart";
             public const string model = "model";
             public const string showToolBar = "showToolBar";
-            public const string percentOfDistance = "percentOfDistance";
+            public const string minPercentOfDistance = "minPercentOfDistance";
+            public const string hsPercentOfDistance = "percentOfDistance"; //legacy
             public const string elinderBreakEvenTime = "elinderBreakEvenTime";
             public const string riegelFatigueFactor = "riegelFatigueFactor";
             public const string idealBmi = "idealBmi";
@@ -361,7 +376,8 @@ namespace GpsRunningPlugin.Source
                 model = (PredictionModel) Enum.Parse(typeof(PredictionModel), elm.Attributes["metric"].Value);
                 showChart = bool.Parse(elm.Attributes["showChart"].Value);
                 parseDistances(elm.Attributes["distances"].Value.Split(';'));
-                percentOfDistance = int.Parse(elm.Attributes["percentOfDistance"].Value);
+                hsPercentOfDistance = int.Parse(elm.Attributes["percentOfDistance"].Value);
+                minPercentOfDistance = int.Parse(elm.Attributes["minPercentOfDistance"].Value);
                 //showPrediction = bool.Parse(elm.Attributes["showPrediction"].Value);
                 showPace = bool.Parse(elm.Attributes["showPace"].Value);
             }

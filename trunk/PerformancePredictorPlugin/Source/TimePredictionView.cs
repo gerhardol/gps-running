@@ -319,7 +319,7 @@ namespace GpsRunningPlugin.Source
                 foreach (IActivity activity in m_ppcontrol.Activities)
                 {
                     ActivityInfo info = ActivityInfoCache.Instance.GetInfo(activity);
-                    m_predictorSource.Add(new TimePredictionSource(m_ppcontrol.SingleActivity, info.DistanceMeters, info.Time));
+                    m_predictorSource.Add(new TimePredictionSource(activity, info.DistanceMeters, info.Time));
                 }
 
                 if (m_ppcontrol.ChkHighScore)
@@ -342,7 +342,7 @@ namespace GpsRunningPlugin.Source
                 foreach (double distance in Settings.Distances.Keys)
                 {
                     //Scale down the distances, so we get the high scores
-                    partialDistances.Add(distance * Settings.PercentOfDistance / 100.0);
+                    partialDistances.Add(distance * Settings.HsPercentOfDistance / 100.0);
                 }
                 //chart.Visible = false;
                 //summaryList.Visible = false;
@@ -394,14 +394,14 @@ namespace GpsRunningPlugin.Source
 
                 foreach (TimePredictionSource s in predictorSource)
                 {
-                    if (s.UsedDistance > length * 0.1)
+                    if (s.UsedDistance > length * Settings.MinPercentOfDistance / 100.0)
                     {
                         double new_time = Predict.Predictor(Settings.Model)(length, s.UsedDistance, s.UsedTime);
                         if (!v.Value.result.ContainsKey(Settings.Model) ||
                             v.Value.result[Settings.Model].PredictedTime > new_time)
                         {
                             v.Value.result[Settings.Model] = new TimePredictionResult(new_time);
-                            v.Value.source = new TimePredictionSource(s.Activity, s.UsedDistance, s.UsedTime);
+                            v.Value.source = s;
                         }
                     }
                 }

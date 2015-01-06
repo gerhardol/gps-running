@@ -47,7 +47,8 @@ namespace GpsRunningPlugin.Source
                 unitBox.Items.Add(Length.Label(s));
             }
 
-            numericUpDown1.Value = Settings.PercentOfDistance;
+            minPercentUpDown.Value = Settings.MinPercentOfDistance;
+            hsPercentUpDown.Value = Settings.HsPercentOfDistance;
         }
 
         public void ThemeChanged(ZoneFiveSoftware.Common.Visuals.ITheme visualTheme)
@@ -64,12 +65,14 @@ namespace GpsRunningPlugin.Source
             unitBox.SelectedItem = UnitUtil.Distance.Label;
             linkLabel1.Text = Resources.Webpage;
             resetSettings.Text = StringResources.ResetAllSettings;
-            groupBox1.Text = Resources.DistancesUsed;
+            distancesGroupBox.Text = Resources.DistancesUsed;
             addDistance.Text = "<- " + Resources.AddDistance;
             removeDistance.Text = Resources.RemoveDistance + " ->";
-            groupBox2.Text = Resources.HighScorePluginIntegration;
-            label1.Text = StringResources.Use;
-            percentHSLabel.Text = Resources.ProcDistUsed;
+            hsGroupBox.Text = Resources.HighScorePluginIntegration;
+            minPercentLabel1.Text = StringResources.Minimal;
+            minPercentLabel2.Text = Resources.ProcDistUsed;
+            hsPercentLabel1.Text = StringResources.Use;
+            hsPercentLabel2.Text = Resources.ProcDistUsed;
             this.modelGroupBox.Text = "Prediction Model"; //TBD
             this.elinderBreakEvenLabel.Text = "Elinder BreakEven";
             this.riegelFatigueFactorLabel.Text = "Riegel FatigueFactor";
@@ -162,9 +165,15 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        private void hsPercentUpDown_ValueChanged(object sender, EventArgs e)
         {
-            Settings.PercentOfDistance = (int)numericUpDown1.Value;
+            Settings.HsPercentOfDistance = (int)hsPercentUpDown.Value;
+            RefreshData();
+        }
+
+        private void minPercentUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            Settings.MinPercentOfDistance = (int)minPercentUpDown.Value;
             RefreshData();
         }
 
