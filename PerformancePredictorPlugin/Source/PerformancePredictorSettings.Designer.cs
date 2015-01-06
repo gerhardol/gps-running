@@ -48,16 +48,16 @@ namespace GpsRunningPlugin.Source
         {
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.resetSettings = new ZoneFiveSoftware.Common.Visuals.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.distancesGroupBox = new System.Windows.Forms.GroupBox();
             this.removeDistance = new ZoneFiveSoftware.Common.Visuals.Button();
             this.unitBox = new System.Windows.Forms.ComboBox();
             this.distanceBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.addDistance = new ZoneFiveSoftware.Common.Visuals.Button();
             this.distanceList = new System.Windows.Forms.ListBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.percentHSLabel = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
+            this.hsGroupBox = new System.Windows.Forms.GroupBox();
+            this.hsPercentLabel2 = new System.Windows.Forms.Label();
+            this.hsPercentUpDown = new System.Windows.Forms.NumericUpDown();
+            this.hsPercentLabel1 = new System.Windows.Forms.Label();
             this.idealGroupBox = new System.Windows.Forms.GroupBox();
             this.bmiBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.bmiLabel = new System.Windows.Forms.Label();
@@ -68,11 +68,17 @@ namespace GpsRunningPlugin.Source
             this.riegelFatigueFactorLabel = new System.Windows.Forms.Label();
             this.elinderBreakEvenBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.elinderBreakEvenLabel = new System.Windows.Forms.Label();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.predictionGroupBox = new System.Windows.Forms.GroupBox();
+            this.minPercentLabel2 = new System.Windows.Forms.Label();
+            this.minPercentUpDown = new System.Windows.Forms.NumericUpDown();
+            this.minPercentLabel1 = new System.Windows.Forms.Label();
+            this.distancesGroupBox.SuspendLayout();
+            this.hsGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.hsPercentUpDown)).BeginInit();
             this.idealGroupBox.SuspendLayout();
             this.modelGroupBox.SuspendLayout();
+            this.predictionGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.minPercentUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // linkLabel1
@@ -107,19 +113,19 @@ namespace GpsRunningPlugin.Source
             this.resetSettings.TextRightMargin = 2;
             this.resetSettings.Click += new System.EventHandler(this.resetSettings_Click);
             // 
-            // groupBox1
+            // distancesGroupBox
             // 
-            this.groupBox1.Controls.Add(this.removeDistance);
-            this.groupBox1.Controls.Add(this.unitBox);
-            this.groupBox1.Controls.Add(this.distanceBox);
-            this.groupBox1.Controls.Add(this.addDistance);
-            this.groupBox1.Controls.Add(this.distanceList);
-            this.groupBox1.Location = new System.Drawing.Point(6, 45);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(326, 162);
-            this.groupBox1.TabIndex = 2;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "<Distances used in models";
+            this.distancesGroupBox.Controls.Add(this.removeDistance);
+            this.distancesGroupBox.Controls.Add(this.unitBox);
+            this.distancesGroupBox.Controls.Add(this.distanceBox);
+            this.distancesGroupBox.Controls.Add(this.addDistance);
+            this.distancesGroupBox.Controls.Add(this.distanceList);
+            this.distancesGroupBox.Location = new System.Drawing.Point(6, 45);
+            this.distancesGroupBox.Name = "distancesGroupBox";
+            this.distancesGroupBox.Size = new System.Drawing.Size(326, 161);
+            this.distancesGroupBox.TabIndex = 2;
+            this.distancesGroupBox.TabStop = false;
+            this.distancesGroupBox.Text = "<Distances used in models";
             // 
             // removeDistance
             // 
@@ -199,59 +205,181 @@ namespace GpsRunningPlugin.Source
             this.distanceList.Size = new System.Drawing.Size(120, 134);
             this.distanceList.TabIndex = 0;
             // 
-            // groupBox2
+            // predictionGroupBox
             // 
-            this.groupBox2.Controls.Add(this.percentHSLabel);
-            this.groupBox2.Controls.Add(this.numericUpDown1);
-            this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Location = new System.Drawing.Point(6, 213);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(326, 48);
-            this.groupBox2.TabIndex = 3;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "<High Score plugin integration";
+            this.predictionGroupBox.Controls.Add(this.minPercentLabel2);
+            this.predictionGroupBox.Controls.Add(this.minPercentUpDown);
+            this.predictionGroupBox.Controls.Add(this.minPercentLabel1);
+            this.predictionGroupBox.Location = new System.Drawing.Point(6, 212);
+            this.predictionGroupBox.Name = "predictionGroupBox";
+            this.predictionGroupBox.Size = new System.Drawing.Size(326, 48);
+            this.predictionGroupBox.TabIndex = 4;
+            this.predictionGroupBox.TabStop = false;
             // 
-            // percentHSLabel
+            // minPercentLabel1
             // 
-            this.percentHSLabel.AutoSize = true;
-            this.percentHSLabel.Location = new System.Drawing.Point(76, 21);
-            this.percentHSLabel.Name = "percentHSLabel";
-            this.percentHSLabel.Size = new System.Drawing.Size(145, 13);
-            this.percentHSLabel.TabIndex = 2;
-            this.percentHSLabel.Text = "<% of distance to predict time";
+            this.minPercentLabel1.AutoSize = true;
+            this.minPercentLabel1.Location = new System.Drawing.Point(6, 21);
+            this.minPercentLabel1.Name = "minPercentLabel1";
+            this.minPercentLabel1.Size = new System.Drawing.Size(54, 13);
+            this.minPercentLabel1.TabIndex = 0;
+            this.minPercentLabel1.Text = "<Minimum";
             // 
-            // numericUpDown1
+            // minPercentUpDown
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(38, 19);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+            this.minPercentUpDown.Location = new System.Drawing.Point(66, 19);
+            this.minPercentUpDown.Maximum = new decimal(new int[] {
             99,
             0,
             0,
             0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
+            this.minPercentUpDown.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(36, 20);
-            this.numericUpDown1.TabIndex = 1;
-            this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDown1.Value = new decimal(new int[] {
+            this.minPercentUpDown.Name = "minPercentUpDown";
+            this.minPercentUpDown.Size = new System.Drawing.Size(36, 20);
+            this.minPercentUpDown.TabIndex = 1;
+            this.minPercentUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.minPercentUpDown.Value = new decimal(new int[] {
             20,
             0,
             0,
             0});
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            this.minPercentUpDown.ValueChanged += new System.EventHandler(this.minPercentUpDown_ValueChanged);
             // 
-            // label1
+            // minPercentLabel2
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 21);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(32, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "<Use";
+            this.minPercentLabel2.AutoSize = true;
+            this.minPercentLabel2.Location = new System.Drawing.Point(108, 21);
+            this.minPercentLabel2.Name = "minPercentLabel2";
+            this.minPercentLabel2.Size = new System.Drawing.Size(145, 13);
+            this.minPercentLabel2.TabIndex = 2;
+            this.minPercentLabel2.Text = "<% of distance to predict time";
+            // 
+            // hsGroupBox
+            // 
+            this.hsGroupBox.Controls.Add(this.hsPercentLabel2);
+            this.hsGroupBox.Controls.Add(this.hsPercentUpDown);
+            this.hsGroupBox.Controls.Add(this.hsPercentLabel1);
+            this.hsGroupBox.Location = new System.Drawing.Point(6, 266);
+            this.hsGroupBox.Name = "hsGroupBox";
+            this.hsGroupBox.Size = new System.Drawing.Size(326, 48);
+            this.hsGroupBox.TabIndex = 3;
+            this.hsGroupBox.TabStop = false;
+            this.hsGroupBox.Text = "<High Score plugin integration";
+            // 
+            // hsPercentLabel2
+            // 
+            this.hsPercentLabel2.AutoSize = true;
+            this.hsPercentLabel2.Location = new System.Drawing.Point(76, 21);
+            this.hsPercentLabel2.Name = "hsPercentLabel2";
+            this.hsPercentLabel2.Size = new System.Drawing.Size(145, 13);
+            this.hsPercentLabel2.TabIndex = 2;
+            this.hsPercentLabel2.Text = "<% of distance to predict time";
+            // 
+            // hsPercentUpDown
+            // 
+            this.hsPercentUpDown.Location = new System.Drawing.Point(38, 19);
+            this.hsPercentUpDown.Maximum = new decimal(new int[] {
+            99,
+            0,
+            0,
+            0});
+            this.hsPercentUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.hsPercentUpDown.Name = "hsPercentUpDown";
+            this.hsPercentUpDown.Size = new System.Drawing.Size(36, 20);
+            this.hsPercentUpDown.TabIndex = 1;
+            this.hsPercentUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.hsPercentUpDown.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.hsPercentUpDown.ValueChanged += new System.EventHandler(this.hsPercentUpDown_ValueChanged);
+            // 
+            // hsPercentLabel1
+            // 
+            this.hsPercentLabel1.AutoSize = true;
+            this.hsPercentLabel1.Location = new System.Drawing.Point(6, 21);
+            this.hsPercentLabel1.Name = "hsPercentLabel1";
+            this.hsPercentLabel1.Size = new System.Drawing.Size(32, 13);
+            this.hsPercentLabel1.TabIndex = 0;
+            this.hsPercentLabel1.Text = "<Use";
+            // 
+            // idealGroupBox
+            // 
+            this.idealGroupBox.Controls.Add(this.bmiBox);
+            this.idealGroupBox.Controls.Add(this.bmiLabel);
+            this.idealGroupBox.Controls.Add(this.shoeBox);
+            this.idealGroupBox.Controls.Add(this.shoeLabel);
+            this.idealGroupBox.Location = new System.Drawing.Point(3, 396);
+            this.idealGroupBox.Name = "idealGroupBox";
+            this.idealGroupBox.Size = new System.Drawing.Size(326, 71);
+            this.idealGroupBox.TabIndex = 4;
+            this.idealGroupBox.TabStop = false;
+            this.idealGroupBox.Text = "<ideal";
+            // 
+            // bmiBox
+            // 
+            this.bmiBox.AcceptsReturn = false;
+            this.bmiBox.AcceptsTab = false;
+            this.bmiBox.BackColor = System.Drawing.Color.White;
+            this.bmiBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.bmiBox.ButtonImage = null;
+            this.bmiBox.Location = new System.Drawing.Point(54, 45);
+            this.bmiBox.MaxLength = 32767;
+            this.bmiBox.Multiline = false;
+            this.bmiBox.Name = "bmiBox";
+            this.bmiBox.ReadOnly = false;
+            this.bmiBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.bmiBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.bmiBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.bmiBox.Size = new System.Drawing.Size(82, 20);
+            this.bmiBox.TabIndex = 5;
+            this.bmiBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
+            // bmiLabel
+            // 
+            this.bmiLabel.AutoSize = true;
+            this.bmiLabel.Location = new System.Drawing.Point(6, 48);
+            this.bmiLabel.Name = "bmiLabel";
+            this.bmiLabel.Size = new System.Drawing.Size(32, 13);
+            this.bmiLabel.TabIndex = 4;
+            this.bmiLabel.Text = "<BMI";
+            // 
+            // shoeBox
+            // 
+            this.shoeBox.AcceptsReturn = false;
+            this.shoeBox.AcceptsTab = false;
+            this.shoeBox.BackColor = System.Drawing.Color.White;
+            this.shoeBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
+            this.shoeBox.ButtonImage = null;
+            this.shoeBox.Location = new System.Drawing.Point(54, 19);
+            this.shoeBox.MaxLength = 32767;
+            this.shoeBox.Multiline = false;
+            this.shoeBox.Name = "shoeBox";
+            this.shoeBox.ReadOnly = false;
+            this.shoeBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
+            this.shoeBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
+            this.shoeBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.shoeBox.Size = new System.Drawing.Size(82, 20);
+            this.shoeBox.TabIndex = 3;
+            this.shoeBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
+            // shoeLabel
+            // 
+            this.shoeLabel.AutoSize = true;
+            this.shoeLabel.Location = new System.Drawing.Point(6, 21);
+            this.shoeLabel.Name = "shoeLabel";
+            this.shoeLabel.Size = new System.Drawing.Size(38, 13);
+            this.shoeLabel.TabIndex = 0;
+            this.shoeLabel.Text = "<Shoe";
             // 
             // modelGroupBox
             // 
@@ -259,7 +387,7 @@ namespace GpsRunningPlugin.Source
             this.modelGroupBox.Controls.Add(this.riegelFatigueFactorLabel);
             this.modelGroupBox.Controls.Add(this.elinderBreakEvenBox);
             this.modelGroupBox.Controls.Add(this.elinderBreakEvenLabel);
-            this.modelGroupBox.Location = new System.Drawing.Point(6, 267);
+            this.modelGroupBox.Location = new System.Drawing.Point(3, 320);
             this.modelGroupBox.Name = "modelGroupBox";
             this.modelGroupBox.Size = new System.Drawing.Size(326, 71);
             this.modelGroupBox.TabIndex = 6;
@@ -284,7 +412,6 @@ namespace GpsRunningPlugin.Source
             this.riegelFatigueFactorBox.Size = new System.Drawing.Size(82, 20);
             this.riegelFatigueFactorBox.TabIndex = 5;
             this.riegelFatigueFactorBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.riegelFatigueFactorBox.LostFocus += riegelFatigueFactorBox_LostFocus;
             // 
             // riegelFatigueFactorLabel
             // 
@@ -313,7 +440,6 @@ namespace GpsRunningPlugin.Source
             this.elinderBreakEvenBox.Size = new System.Drawing.Size(82, 20);
             this.elinderBreakEvenBox.TabIndex = 3;
             this.elinderBreakEvenBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.elinderBreakEvenBox.LostFocus += elinderBreakEvenBox_LostFocus;
             // 
             // elinderBreakEvenLabel
             // 
@@ -324,97 +450,30 @@ namespace GpsRunningPlugin.Source
             this.elinderBreakEvenLabel.TabIndex = 0;
             this.elinderBreakEvenLabel.Text = "<Elinder BreakEven";
             // 
-            // idealGroupBox
-            // 
-            this.idealGroupBox.Controls.Add(this.bmiBox);
-            this.idealGroupBox.Controls.Add(this.bmiLabel);
-            this.idealGroupBox.Controls.Add(this.shoeBox);
-            this.idealGroupBox.Controls.Add(this.shoeLabel);
-            this.idealGroupBox.Location = new System.Drawing.Point(6, 344);
-            this.idealGroupBox.Name = "idealGroupBox";
-            this.idealGroupBox.Size = new System.Drawing.Size(326, 71);
-            this.idealGroupBox.TabIndex = 4;
-            this.idealGroupBox.TabStop = false;
-            this.idealGroupBox.Text = "<ideal";
-            // 
-            // bmiBox
-            // 
-            this.bmiBox.AcceptsReturn = false;
-            this.bmiBox.AcceptsTab = false;
-            this.bmiBox.BackColor = System.Drawing.Color.White;
-            this.bmiBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
-            this.bmiBox.ButtonImage = null;
-            this.bmiBox.Location = new System.Drawing.Point(54, 45);
-            this.bmiBox.MaxLength = 32767;
-            this.bmiBox.Multiline = false;
-            this.bmiBox.Name = "bmiBox";
-            this.bmiBox.ReadOnly = false;
-            this.bmiBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
-            this.bmiBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
-            this.bmiBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.bmiBox.Size = new System.Drawing.Size(82, 20);
-            this.bmiBox.TabIndex = 5;
-            this.bmiBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.bmiBox.LostFocus += bmiBox_LostFocus;
-            // 
-            // bmiLabel
-            // 
-            this.bmiLabel.AutoSize = true;
-            this.bmiLabel.Location = new System.Drawing.Point(6, 48);
-            this.bmiLabel.Name = "bmiLabel";
-            this.bmiLabel.Size = new System.Drawing.Size(38, 13);
-            this.bmiLabel.TabIndex = 4;
-            this.bmiLabel.Text = "<BMI";
-            // 
-            // shoeBox
-            // 
-            this.shoeBox.AcceptsReturn = false;
-            this.shoeBox.AcceptsTab = false;
-            this.shoeBox.BackColor = System.Drawing.Color.White;
-            this.shoeBox.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(114)))), ((int)(((byte)(108)))));
-            this.shoeBox.ButtonImage = null;
-            this.shoeBox.Location = new System.Drawing.Point(54, 19);
-            this.shoeBox.MaxLength = 32767;
-            this.shoeBox.Multiline = false;
-            this.shoeBox.Name = "shoeBox";
-            this.shoeBox.ReadOnly = false;
-            this.shoeBox.ReadOnlyColor = System.Drawing.SystemColors.Control;
-            this.shoeBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
-            this.shoeBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.shoeBox.Size = new System.Drawing.Size(82, 20);
-            this.shoeBox.TabIndex = 3;
-            this.shoeBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.shoeBox.LostFocus += shoeBox_LostFocus;
-            // 
-            // shoeLabel
-            // 
-            this.shoeLabel.AutoSize = true;
-            this.shoeLabel.Location = new System.Drawing.Point(6, 21);
-            this.shoeLabel.Name = "shoeLabel";
-            this.shoeLabel.Size = new System.Drawing.Size(32, 13);
-            this.shoeLabel.TabIndex = 0;
-            this.shoeLabel.Text = "<Shoe";
-            // 
             // PerformancePredictorSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.predictionGroupBox);
             this.Controls.Add(this.modelGroupBox);
             this.Controls.Add(this.idealGroupBox);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.hsGroupBox);
+            this.Controls.Add(this.distancesGroupBox);
             this.Controls.Add(this.resetSettings);
             this.Controls.Add(this.linkLabel1);
             this.Name = "PerformancePredictorSettings";
             this.Size = new System.Drawing.Size(342, 470);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            this.distancesGroupBox.ResumeLayout(false);
+            this.hsGroupBox.ResumeLayout(false);
+            this.hsGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.hsPercentUpDown)).EndInit();
             this.idealGroupBox.ResumeLayout(false);
             this.idealGroupBox.PerformLayout();
             this.modelGroupBox.ResumeLayout(false);
             this.modelGroupBox.PerformLayout();
+            this.predictionGroupBox.ResumeLayout(false);
+            this.predictionGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.minPercentUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -424,16 +483,16 @@ namespace GpsRunningPlugin.Source
 
         private System.Windows.Forms.LinkLabel linkLabel1;
         private ZoneFiveSoftware.Common.Visuals.Button resetSettings;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox distancesGroupBox;
         private ZoneFiveSoftware.Common.Visuals.Button removeDistance;
         private System.Windows.Forms.ComboBox unitBox;
         private ZoneFiveSoftware.Common.Visuals.TextBox distanceBox;
         private ZoneFiveSoftware.Common.Visuals.Button addDistance;
         private System.Windows.Forms.ListBox distanceList;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.Label percentHSLabel;
+        private System.Windows.Forms.GroupBox hsGroupBox;
+        private System.Windows.Forms.Label hsPercentLabel1;
+        private System.Windows.Forms.NumericUpDown hsPercentUpDown;
+        private System.Windows.Forms.Label hsPercentLabel2;
         private System.Windows.Forms.GroupBox idealGroupBox;
         private ZoneFiveSoftware.Common.Visuals.TextBox bmiBox;
         private System.Windows.Forms.Label bmiLabel;
@@ -444,5 +503,9 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.Label riegelFatigueFactorLabel;
         private ZoneFiveSoftware.Common.Visuals.TextBox elinderBreakEvenBox;
         private System.Windows.Forms.Label elinderBreakEvenLabel;
+        private System.Windows.Forms.GroupBox predictionGroupBox;
+        private System.Windows.Forms.Label minPercentLabel2;
+        private System.Windows.Forms.NumericUpDown minPercentUpDown;
+        private System.Windows.Forms.Label minPercentLabel1;
     }
 }
