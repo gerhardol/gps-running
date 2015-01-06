@@ -22,6 +22,7 @@ using System.Drawing;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using ZoneFiveSoftware.Common.Visuals.Chart;
+using GpsRunningPlugin.Properties;
 using GpsRunningPlugin.Util;
 
 namespace GpsRunningPlugin.Source
@@ -30,34 +31,40 @@ namespace GpsRunningPlugin.Source
     {
         public IActivity Activity;
 
-        public DateTime StartDate
+        public String StartTime
         {
             get
             {
-                return Activity==null ? DateTime.MinValue : Activity.StartTime;
+                if (Activity == null)
+                {
+                    return Resources.NoSeedActivity;
+                }
+                DateTime t = Activity.StartTime.AddSeconds(offsetTime).ToLocalTime();
+                return t.ToShortDateString() + " " + t.ToShortTimeString();
             }
         }
+
         public DateTime StartUsedTime
         {
             get
             {
-                return Activity == null ? DateTime.MinValue : Activity.StartTime.AddSeconds(StartTime);
+                return Activity == null ? DateTime.MinValue : Activity.StartTime.AddSeconds(offsetTime);
             }
         }
 
         public double UsedDistance;
         public TimeSpan UsedTime;
         public double StartDistance;
-        private double StartTime;
+        private double offsetTime;
 
-        public TimePredictionSource(IActivity activity, double UsedDistance, TimeSpan UsedTime, double StartDistance, double StartTime)
+        public TimePredictionSource(IActivity activity, double UsedDistance, TimeSpan UsedTime, double StartDistance, double offsetTime)
         {
             this.Activity = activity;
             //this.Distance = Distance;
             this.UsedDistance = UsedDistance;
             this.UsedTime = UsedTime;
             this.StartDistance = StartDistance;
-            this.StartTime = StartTime;
+            this.offsetTime = offsetTime;
         }
 
         public TimePredictionSource(IActivity activity, double UsedDistance, TimeSpan UsedTime)

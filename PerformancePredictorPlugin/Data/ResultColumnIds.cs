@@ -101,7 +101,7 @@ namespace GpsRunningPlugin.Source
         public const string DistanceNominal = "DistanceNominal";
         public const string PredictedTime = "PredictedTime";
         public const string Speed = "Speed";
-        public const string StartDate = "StartDate";
+        //public const string StartDate = "StartDate";
         public const string StartTime = "StartTime";
         public const string UsedTime = "UsedTime";
         public const string StartDistance = "StartDistance";
@@ -132,7 +132,7 @@ namespace GpsRunningPlugin.Source
         public const string AdjustedVDOT = "AdjustedVDOT";
         public const string Age = "Age";
 
-        public static IList<string> TimePredictMultiColumns = new List<string> { Distance, DistanceNominal, PredictedTime, Speed, StartDate, StartTime, UsedTime, StartDistance, UsedDistance};
+        public static IList<string> TimePredictMultiColumns = new List<string> { Distance, DistanceNominal, PredictedTime, Speed, StartTime, UsedTime, StartDistance, UsedDistance};
         public static IList<string> TimePredictSingleColumns = new List<string>{ Distance, DistanceNominal, PredictedTime, Speed};
 
         public static IList<string> TrainingColumns = new List<string> { ZoneDistance, PercentOfMax, TrainRaceHR, Speed};
@@ -154,7 +154,7 @@ namespace GpsRunningPlugin.Source
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.DistanceNominal, CommonResources.Text.LabelDistance, "", 70, StringAlignment.Far));
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.PredictedTime, Resources.PredictedTime, "", 70, StringAlignment.Far));
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.Speed, UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace), "", 60, StringAlignment.Far));
-            columnDefs.Add(new ListColumnDefinition(ResultColumnIds.StartDate, Resources.UsedActivityStartDate, "", 70, StringAlignment.Near));
+            //columnDefs.Add(new ListColumnDefinition(ResultColumnIds.StartDate, Resources.UsedActivityStartDate, "", 70, StringAlignment.Near));
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.StartTime, Resources.UsedActivityStartTime, "", 50, StringAlignment.Far));
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.UsedTime, Resources.UsedTimeOfActivity, "", 80, StringAlignment.Far));
             columnDefs.Add(new ListColumnDefinition(ResultColumnIds.StartDistance, Resources.StartOfPart + UnitUtil.Distance.LabelAbbr2, "", 80, StringAlignment.Far));
