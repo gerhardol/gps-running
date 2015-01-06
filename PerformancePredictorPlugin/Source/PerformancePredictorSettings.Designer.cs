@@ -343,6 +343,7 @@ namespace GpsRunningPlugin.Source
             this.bmiBox.Size = new System.Drawing.Size(82, 20);
             this.bmiBox.TabIndex = 5;
             this.bmiBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.bmiBox.LostFocus += bmiBox_LostFocus;
             // 
             // bmiLabel
             // 
@@ -371,6 +372,7 @@ namespace GpsRunningPlugin.Source
             this.shoeBox.Size = new System.Drawing.Size(82, 20);
             this.shoeBox.TabIndex = 3;
             this.shoeBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.shoeBox.LostFocus += shoeBox_LostFocus;
             // 
             // shoeLabel
             // 
@@ -412,6 +414,7 @@ namespace GpsRunningPlugin.Source
             this.riegelFatigueFactorBox.Size = new System.Drawing.Size(82, 20);
             this.riegelFatigueFactorBox.TabIndex = 5;
             this.riegelFatigueFactorBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.riegelFatigueFactorBox.LostFocus += riegelFatigueFactorBox_LostFocus;
             // 
             // riegelFatigueFactorLabel
             // 
@@ -440,6 +443,7 @@ namespace GpsRunningPlugin.Source
             this.elinderBreakEvenBox.Size = new System.Drawing.Size(82, 20);
             this.elinderBreakEvenBox.TabIndex = 3;
             this.elinderBreakEvenBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.elinderBreakEvenBox.LostFocus += elinderBreakEvenBox_LostFocus;
             // 
             // elinderBreakEvenLabel
             // 
