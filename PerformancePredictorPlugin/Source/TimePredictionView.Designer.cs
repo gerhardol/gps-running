@@ -52,7 +52,7 @@ namespace GpsRunningPlugin.Source
             this.listMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyTableMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chart = new ZoneFiveSoftware.Common.Visuals.Chart.LineChart();
-            this.lblHighScoreRequired = new System.Windows.Forms.Label();
+            //this.lblHighScoreRequired = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.panel1.SuspendLayout();
             this.listMenu.SuspendLayout();
@@ -64,7 +64,7 @@ namespace GpsRunningPlugin.Source
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panel1.Controls.Add(this.summaryList);
             this.panel1.Controls.Add(this.chart);
-            this.panel1.Controls.Add(this.lblHighScoreRequired);
+            //this.panel1.Controls.Add(this.lblHighScoreRequired);
             this.panel1.Controls.Add(this.progressBar);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
@@ -134,13 +134,13 @@ namespace GpsRunningPlugin.Source
             // 
             // lblHighScoreRequired
             // 
-            this.lblHighScoreRequired.AutoSize = true;
-            this.lblHighScoreRequired.Location = new System.Drawing.Point(3, 14);
-            this.lblHighScoreRequired.Name = "lblHighScoreRequired";
-            this.lblHighScoreRequired.Size = new System.Drawing.Size(219, 13);
-            this.lblHighScoreRequired.TabIndex = 9;
-            this.lblHighScoreRequired.Text = "HS required to predict using several activities";
-            this.lblHighScoreRequired.Visible = false;
+            //this.lblHighScoreRequired.AutoSize = true;
+            //this.lblHighScoreRequired.Location = new System.Drawing.Point(3, 14);
+            //this.lblHighScoreRequired.Name = "lblHighScoreRequired";
+            //this.lblHighScoreRequired.Size = new System.Drawing.Size(219, 13);
+            //this.lblHighScoreRequired.TabIndex = 9;
+            //this.lblHighScoreRequired.Text = "HS required to predict using several activities";
+            //this.lblHighScoreRequired.Visible = false;
             // 
             // progressBar
             // 
@@ -177,7 +177,7 @@ namespace GpsRunningPlugin.Source
         private System.Windows.Forms.ContextMenuStrip listMenu;
         private System.Windows.Forms.ToolStripMenuItem copyTableMenuItem;
         private ZoneFiveSoftware.Common.Visuals.Chart.LineChart chart;
-        private System.Windows.Forms.Label lblHighScoreRequired;
+        //private System.Windows.Forms.Label lblHighScoreRequired;
         private System.Windows.Forms.ProgressBar progressBar;
     }
 }

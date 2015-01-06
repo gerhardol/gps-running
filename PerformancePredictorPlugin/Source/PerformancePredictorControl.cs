@@ -123,21 +123,7 @@ namespace GpsRunningPlugin.Source
         {
             InitializeComponent();
             InitControls();
-
-            //if (Parent != null)
-            //{
-            //    Parent.Resize += new EventHandler(Parent_Resize);
-            //}
-            //Resize += new EventHandler(PerformancePredictorView_Resize);
-            //Settings settings = new Settings();
         }
-
-        //Compatibility with old UniqueRoutes send to
-        //public PerformancePredictorControl(IList<IActivity> aAct, bool showDialog)
-        //    : this(showDialog)
-        //{
-        //    this.Activities = aAct;
-        //}
 
         private PerformancePredictorControl(bool showDialog)
             : this()
@@ -277,24 +263,6 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 {
                     m_lastActivity = null;
                 }
-
-                //No settings for HS, separate check in makeData(), enabled in setView
-                //For Activity page use Predict/Training by default for single activities
-                //Enabling/disabling is done based on settings
-                if (Settings.HighScore != null && (m_activities.Count > 1/* || m_popupForm != null*/))
-                {
-                    chkHighScoreBox.Checked = true;
-                }
-                else
-                {
-                    chkHighScoreBox.Checked = false;
-                }
-
-                //if (m_activities.Count != 1 || (m_activities.Count == 1 && null != m_activities[0]))
-                //{
-                //    trainingView.Activity = null;
-                //}
-                //predictorView.Activities = m_activities;
 
                 //title cant be set directly on activity page
                 if (null != m_popupForm)
@@ -459,6 +427,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             m_showPage = true;
             //Show views active
             setView();
+            syncToolBarToState();
             activateListeners();
             if (m_layer != null)
             {
@@ -512,7 +481,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             {
                 this.timePredictionButton.Checked = true;
                 this.actionBanner1.Text = Properties.Resources.TimePrediction;
-                this.chkHighScoreBox.Enabled |= Settings.HighScore != null && !this.IsOverridden;
+                this.chkHighScoreBox.Enabled = Settings.HighScore != null && !this.IsOverridden;
                 this.tableButton.Enabled = true;
                 this.tableButton.Checked = !Settings.ShowChart;
                 if (this.m_showPage)
@@ -711,7 +680,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             {
                 Settings.ShowChart = false;
                 syncToolBarToState();
-                predictorView.updateChartVisibility();
+                predictorView.setData();
                 //No effect for Training
             }
         }
@@ -724,7 +693,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             {
                 Settings.ShowChart = true;
                 syncToolBarToState();
-                predictorView.updateChartVisibility();
+                predictorView.setData();
                 //No effect for Training
             }
         }
@@ -839,10 +808,10 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
         void timeTextBox_LostFocus(object sender, System.EventArgs e)
         {
-            if (!string.IsNullOrEmpty(this.timeTextBox.Text))
+            if (m_showPage && !string.IsNullOrEmpty(this.timeTextBox.Text))
             {
                string s = UnitUtil.Time.ToString(this.Time, "u");
-               if (!s.Equals(this.distanceTextBox.Text))
+               if (!s.Equals(this.timeTextBox.Text))
                {
                    double time = UnitUtil.Time.Parse(this.timeTextBox.Text);
                    if (!double.IsNaN(time))
@@ -855,7 +824,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
         void distanceTextBox_LostFocus(object sender, System.EventArgs e)
         {
-            if (!string.IsNullOrEmpty(this.distanceTextBox.Text))
+            if (m_showPage && !string.IsNullOrEmpty(this.distanceTextBox.Text))
             {
                 //This is called at view changes. Compare if changed
                 //IsNan, 0: check in assignment

@@ -87,7 +87,7 @@ namespace GpsRunningPlugin.Source
 
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
-            lblHighScoreRequired.Text = Properties.Resources.HighScoreRequired;
+            //lblHighScoreRequired.Text = Properties.Resources.HighScoreRequired;
             copyTableMenuItem.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
         }
 
@@ -166,8 +166,12 @@ namespace GpsRunningPlugin.Source
             //Get the (cached?) list/chart
             makeData();
 
+            summaryList.Visible = !Settings.ShowChart;
+            chart.Visible = Settings.ShowChart;
+
             if (!Settings.ShowChart)
             {
+                summaryList.Visible = true;
                 RefreshColumns(!m_ppcontrol.IsOverridden && (m_ppcontrol.ChkHighScore || m_ppcontrol.Activities.Count > 1));
                 summaryList.RowData = m_predictorData.Values;
             }
@@ -219,8 +223,7 @@ namespace GpsRunningPlugin.Source
                 chart.AutozoomToData(true);
             }
             m_showPage = showPage;
-            updateChartVisibility();
-        }
+         }
 
         private void RefreshColumns(bool multi)
         {
@@ -457,26 +460,6 @@ namespace GpsRunningPlugin.Source
             }
         }
 
-        public void updateChartVisibility()
-        {
-            if (m_showPage)
-            {
-                //Note: Should possibly be checking for data in table/chart
-                if (Settings.HighScore == null &&
-                    (m_ppcontrol.Activities.Count > 1 /*|| m_ppcontrol.ChkHighScore*/))
-                {
-                    lblHighScoreRequired.Visible = true;
-                    chart.Visible = false;
-                    summaryList.Visible = false;
-                }
-                else
-                {
-                    lblHighScoreRequired.Visible = false;
-                    summaryList.Visible = !Settings.ShowChart;
-                    chart.Visible = Settings.ShowChart;
-                }
-            }
-        }
         /**************************************************/
 
         void summaryList_Click(object sender, System.EventArgs e)

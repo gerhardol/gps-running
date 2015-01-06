@@ -484,7 +484,7 @@ namespace GpsRunningPlugin.Source
             this.trainingView.Margin = new System.Windows.Forms.Padding(0);
             this.trainingView.Name = "trainingView";
             this.trainingView.Size = new System.Drawing.Size(184, 371);
-            this.trainingView.TabIndex = 9;
+            this.trainingView.TabIndex = 2;
             // 
             // extrapolateView
             // 
@@ -496,7 +496,7 @@ namespace GpsRunningPlugin.Source
             this.extrapolateView.Margin = new System.Windows.Forms.Padding(0);
             this.extrapolateView.Name = "extrapolateView";
             this.extrapolateView.Size = new System.Drawing.Size(184, 371);
-            this.extrapolateView.TabIndex = 9;
+            this.extrapolateView.TabIndex = 3;
             // 
             // overrideGroupBox
             // 
@@ -505,7 +505,7 @@ namespace GpsRunningPlugin.Source
             this.overrideGroupBox.Location = new System.Drawing.Point(0, 249);
             this.overrideGroupBox.Name = "overrideGroupBox";
             this.overrideGroupBox.Size = new System.Drawing.Size(138, 69);
-            this.overrideGroupBox.TabIndex = 8;
+            this.overrideGroupBox.TabIndex = 14;
             this.overrideGroupBox.TabStop = false;
             this.overrideGroupBox.Text = "<Override";
             // 
@@ -525,7 +525,7 @@ namespace GpsRunningPlugin.Source
             this.timeTextBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
             this.timeTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.timeTextBox.Size = new System.Drawing.Size(128, 21);
-            this.timeTextBox.TabIndex = 9;
+            this.timeTextBox.TabIndex = 15;
             this.timeTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.timeTextBox.LostFocus += timeTextBox_LostFocus;
             // 
@@ -545,7 +545,7 @@ namespace GpsRunningPlugin.Source
             this.distanceTextBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
             this.distanceTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.distanceTextBox.Size = new System.Drawing.Size(128, 21);
-            this.distanceTextBox.TabIndex = 10;
+            this.distanceTextBox.TabIndex = 16;
             this.distanceTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.distanceTextBox.LostFocus += distanceTextBox_LostFocus;
             // 

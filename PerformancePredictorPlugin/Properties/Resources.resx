@@ -257,10 +257,6 @@
     <value>Suggested short interval times training for certain race distances.</value>
     <comment>pp</comment>
   </data>
-  <data name="PPHS" xml:space="preserve">
-    <value>Performance Predictor with High Score plugin</value>
-    <comment>ppx</comment>
-  </data>
   <data name="ProjectedWeight" xml:space="preserve">
     <value>Projected weight</value>
     <comment>ppx</comment>
@@ -288,9 +284,6 @@
   </data>
   <data name="HighScorePrediction" xml:space="preserve">
     <value>High Score Prediction</value>
-  </data>
-  <data name="HighScoreRequired" xml:space="preserve">
-    <value>Predicting using several activities requires High Score plugin</value>
   </data>
   <data name="Extrapolate" xml:space="preserve">
     <value>Extrapolate</value>
