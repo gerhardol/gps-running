@@ -319,7 +319,7 @@ namespace GpsRunningPlugin.Source
             this.speedButton.Location = new System.Drawing.Point(7, 44);
             this.speedButton.Name = "speedButton";
             this.speedButton.Size = new System.Drawing.Size(90, 17);
-            this.speedButton.TabIndex = 1;
+            this.speedButton.TabIndex = 12;
             this.speedButton.TabStop = true;
             this.speedButton.Text = "<Show speed";
             this.speedButton.UseVisualStyleBackColor = true;
@@ -331,7 +331,7 @@ namespace GpsRunningPlugin.Source
             this.paceButton.Location = new System.Drawing.Point(7, 20);
             this.paceButton.Name = "paceButton";
             this.paceButton.Size = new System.Drawing.Size(85, 17);
-            this.paceButton.TabIndex = 0;
+            this.paceButton.TabIndex = 13;
             this.paceButton.TabStop = true;
             this.paceButton.Text = "<Show pace";
             this.paceButton.UseVisualStyleBackColor = true;
@@ -379,7 +379,7 @@ namespace GpsRunningPlugin.Source
             this.extrapolateButton.Location = new System.Drawing.Point(7, 66);
             this.extrapolateButton.Name = "extrapolateButton";
             this.extrapolateButton.Size = new System.Drawing.Size(114, 17);
-            this.extrapolateButton.TabIndex = 1;
+            this.extrapolateButton.TabIndex = 3;
             this.extrapolateButton.TabStop = true;
             this.extrapolateButton.Text = "<extrapolateButton";
             this.extrapolateButton.UseVisualStyleBackColor = true;
@@ -393,7 +393,7 @@ namespace GpsRunningPlugin.Source
             this.resultBox.Location = new System.Drawing.Point(3, 152);
             this.resultBox.Name = "resultBox";
             this.resultBox.Size = new System.Drawing.Size(138, 91);
-            this.resultBox.TabIndex = 5;
+            this.resultBox.TabIndex = 6;
             this.resultBox.TabStop = false;
             this.resultBox.Text = "<Prediction results";
             // 
@@ -404,7 +404,7 @@ namespace GpsRunningPlugin.Source
             this.chkHighScoreBox.Location = new System.Drawing.Point(6, 65);
             this.chkHighScoreBox.Name = "chkHighScoreBox";
             this.chkHighScoreBox.Size = new System.Drawing.Size(85, 17);
-            this.chkHighScoreBox.TabIndex = 12;
+            this.chkHighScoreBox.TabIndex = 8;
             this.chkHighScoreBox.Text = "<High Score";
             this.chkHighScoreBox.UseVisualStyleBackColor = true;
             this.chkHighScoreBox.Click += new System.EventHandler(this.chkHighScore_Click);
@@ -427,7 +427,7 @@ namespace GpsRunningPlugin.Source
             this.chartButton.Location = new System.Drawing.Point(6, 42);
             this.chartButton.Name = "chartButton";
             this.chartButton.Size = new System.Drawing.Size(92, 17);
-            this.chartButton.TabIndex = 0;
+            this.chartButton.TabIndex = 7;
             this.chartButton.TabStop = true;
             this.chartButton.Text = "<View in chart";
             this.chartButton.UseVisualStyleBackColor = true;
@@ -472,7 +472,7 @@ namespace GpsRunningPlugin.Source
             this.predictorView.Location = new System.Drawing.Point(0, 0);
             this.predictorView.Name = "predictorView";
             this.predictorView.Size = new System.Drawing.Size(184, 371);
-            this.predictorView.TabIndex = 9;
+            this.predictorView.TabIndex = 1;
             // 
             // trainingView
             // 
@@ -505,7 +505,7 @@ namespace GpsRunningPlugin.Source
             this.overrideGroupBox.Location = new System.Drawing.Point(0, 249);
             this.overrideGroupBox.Name = "overrideGroupBox";
             this.overrideGroupBox.Size = new System.Drawing.Size(138, 69);
-            this.overrideGroupBox.TabIndex = 6;
+            this.overrideGroupBox.TabIndex = 8;
             this.overrideGroupBox.TabStop = false;
             this.overrideGroupBox.Text = "<Override";
             // 
@@ -525,7 +525,7 @@ namespace GpsRunningPlugin.Source
             this.timeTextBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
             this.timeTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.timeTextBox.Size = new System.Drawing.Size(128, 21);
-            this.timeTextBox.TabIndex = 6;
+            this.timeTextBox.TabIndex = 9;
             this.timeTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.timeTextBox.LostFocus += timeTextBox_LostFocus;
             // 
@@ -545,7 +545,7 @@ namespace GpsRunningPlugin.Source
             this.distanceTextBox.ReadOnlyTextColor = System.Drawing.SystemColors.ControlLight;
             this.distanceTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.distanceTextBox.Size = new System.Drawing.Size(128, 21);
-            this.distanceTextBox.TabIndex = 5;
+            this.distanceTextBox.TabIndex = 10;
             this.distanceTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.distanceTextBox.LostFocus += distanceTextBox_LostFocus;
             // 
