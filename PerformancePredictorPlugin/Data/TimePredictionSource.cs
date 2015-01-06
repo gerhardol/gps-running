@@ -34,14 +34,14 @@ namespace GpsRunningPlugin.Source
         {
             get
             {
-                return Activity.StartTime;
+                return Activity==null ? DateTime.MinValue : Activity.StartTime;
             }
         }
         public DateTime StartUsedTime
         {
             get
             {
-                return Activity.StartTime.AddSeconds(StartTime);
+                return Activity == null ? DateTime.MinValue : Activity.StartTime.AddSeconds(StartTime);
             }
         }
 
