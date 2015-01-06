@@ -24,6 +24,7 @@ using System.Xml;
 using System.Drawing;
 
 using ZoneFiveSoftware.Common.Visuals.Fitness;
+using GpsRunningPlugin.Properties;
 using GpsRunningPlugin.Source;
 
 namespace GpsRunningPlugin
@@ -49,7 +50,7 @@ namespace GpsRunningPlugin
 
         public string Name
         {
-            get { return "Performance Predictor Plugin"; }
+            get { return Resources.ApplicationName; }
         }
 
         public string Version

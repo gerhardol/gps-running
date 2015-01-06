@@ -299,17 +299,17 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 //title cant be set directly on activity page
                 if (null != m_popupForm)
                 {
-                    string title = Resources.PPHS;
+                    string title = Resources.ApplicationName;
                     if (m_activities.Count > 0)
                     {
                         if (m_activities.Count == 1)
                         {
-                            title = Resources.PPHS + " " + StringResources.ForOneActivity;
+                            title += " " + StringResources.ForOneActivity;
                         }
                         else
                         {
                             //TODO: Trails can have many "activities" but only one used activity
-                            title = Resources.PPHS + " " + String.Format(StringResources.ForManyActivities, m_activities.Count);
+                            title += " " + String.Format(StringResources.ForManyActivities, m_activities.Count);
                         }
                     }
                     m_popupForm.Text = title;

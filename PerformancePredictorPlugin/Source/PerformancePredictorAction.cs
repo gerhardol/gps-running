@@ -100,8 +100,8 @@ namespace GpsRunningPlugin.Source
         {
             get
             {
-                if (activities.Count == 1) return Resources.PPHS + " " + StringResources.ForOneActivity;
-                return Resources.PPHS + " " + String.Format(StringResources.ForManyActivities,activities.Count);
+                if (activities.Count == 1) return Resources.ApplicationName + " " + StringResources.ForOneActivity;
+                return Resources.ApplicationName + " " + String.Format(StringResources.ForManyActivities,activities.Count);
             }
         }
         private bool m_firstRun = true;
