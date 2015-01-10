@@ -19,11 +19,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using ZoneFiveSoftware.Common.Data;
 using ZoneFiveSoftware.Common.Data.Fitness;
 using ZoneFiveSoftware.Common.Data.Measurement;
 using ZoneFiveSoftware.Common.Visuals.Chart;
+using ZoneFiveSoftware.Common.Visuals.Fitness;
 using GpsRunningPlugin.Properties;
 using GpsRunningPlugin.Util;
+using TrailsPlugin.Data;
 
 namespace GpsRunningPlugin.Source
 {
@@ -70,6 +73,47 @@ namespace GpsRunningPlugin.Source
         public TimePredictionSource(IActivity activity, double UsedDistance, TimeSpan UsedTime)
             : this(activity, UsedDistance, UsedTime, 0, 0)
         {
+        }
+
+        public TimePredictionSource(IItemTrackSelectionInfo info)
+        {
+            if (info is TrailsItemTrackSelectionInfo)
+            {
+                //Assume format is Trails for now, all info in MarkedTimes
+                //The times could be used too, converting back and forward now...
+                TrailsItemTrackSelectionInfo tinfo = info as TrailsItemTrackSelectionInfo;
+
+                this.Activity = tinfo.Activity;
+                this.UsedDistance = 0;
+                this.UsedTime = TimeSpan.Zero;
+
+                bool first = true;
+                IDistanceDataTrack distanceTrack =
+                        ActivityInfoCache.Instance.GetInfo(Activity).MovingDistanceMetersTrack;
+                foreach (ValueRange<DateTime> t in tinfo.MarkedTimes)
+                {
+                    TimeSpan lowerTime = ZoneFiveSoftware.Common.Data.Algorithm.DateTimeRangeSeries.TimeNotPaused(
+                      Activity.StartTime, t.Lower, Activity.TimerPauses);
+                    TimeSpan upperTime = ZoneFiveSoftware.Common.Data.Algorithm.DateTimeRangeSeries.TimeNotPaused(
+                      Activity.StartTime, t.Upper, Activity.TimerPauses);
+
+                    float lowerDist = distanceTrack.GetInterpolatedValue(t.Lower).Value;
+                    float upperDist = distanceTrack.GetInterpolatedValue(t.Upper).Value;
+                    if (first)
+                    {
+                        this.StartDistance = lowerDist;
+                        this.offsetTime = lowerTime.TotalSeconds;
+                        first = false;
+                    }
+                    this.UsedTime += upperTime - lowerTime;
+                    this.UsedDistance += upperDist - lowerDist;
+                }
+            }
+            else
+            {
+                //Need to get activity from logbook, adjust distances etc
+                throw new NotImplementedException("Expects IItemTrackSelectionInfo as TrailsItemTrackSelectionInfo");
+            }
         }
     }
 }

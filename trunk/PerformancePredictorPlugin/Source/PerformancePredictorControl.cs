@@ -59,6 +59,7 @@ namespace GpsRunningPlugin.Source
         //override used part
         private TimeSpan? m_time = null;
         private double? m_distance = null;
+        private bool m_insertedSources = false;
 
 #if !ST_2_1
         //Activity page
@@ -109,13 +110,22 @@ namespace GpsRunningPlugin.Source
             this.Activities = activities;
             ShowPage("");
         }
+
         //Trails sendto
-        internal PerformancePredictorControl(IList<IActivity> activities, IDailyActivityView view, TimeSpan time, double distance, System.Windows.Forms.ProgressBar progressBar)
+        internal PerformancePredictorControl(IList<IActivity> activities, IList<IItemTrackSelectionInfo> selections, IDailyActivityView view, System.Windows.Forms.ProgressBar progressBar)
             : this(view)
         {
+            this.m_insertedSources = true;
             this.Activities = activities;
-            this.m_time = time;
-            this.m_distance = distance;
+            IList<IItemTrackSelectionInfo> sels = TrailsItemTrackSelectionInfo.SetAndAdjustFromSelectionFromST(selections, activities);
+            IList<TimePredictionSource> source = new List<TimePredictionSource>();
+            foreach(IItemTrackSelectionInfo t in sels)
+            {
+                source.Add(new TimePredictionSource(t));
+            }
+            this.predictorView.SetCalculation(source);
+            //Set the time / distance displayed
+            this.predictorView.setData();
             ShowPage("");
         }
 #endif
@@ -360,7 +370,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
                 {
                     return (double)this.m_distance;
                 }
-                else if (predictorView.Distance>0)
+                else if (predictorView.Distance > 0)
                 {
                     return predictorView.Distance;
                 }
@@ -389,6 +399,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
 
         internal bool IsOverridden { get { return (this.m_time != null || this.m_distance != null); } }
 
+        internal bool IsExternalSource { get { return m_insertedSources; } }
 #if ST_2_1
         private void dataChanged(object sender, ZoneFiveSoftware.Common.Data.NotifyDataChangedEventArgs e)
 #else
@@ -481,7 +492,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             {
                 this.timePredictionButton.Checked = true;
                 this.actionBanner1.Text = Properties.Resources.TimePrediction;
-                this.chkHighScoreBox.Enabled = Settings.HighScore != null && !this.IsOverridden;
+                this.chkHighScoreBox.Enabled = Settings.HighScore != null && !this.IsOverridden && !this.IsExternalSource;
                 this.tableButton.Enabled = true;
                 this.tableButton.Checked = !Settings.ShowChart;
                 if (this.m_showPage)

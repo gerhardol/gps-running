@@ -116,6 +116,11 @@ namespace GpsRunningPlugin.Source
             }
         }
 
+        public void SetCalculation(IList<TimePredictionSource> predictorSource)
+        {
+            this.m_predictorSource = predictorSource;
+        }
+
         private void activateListeners()
         {
             if (m_showPage)
@@ -133,7 +138,10 @@ namespace GpsRunningPlugin.Source
         {
             //Reset calculations - all calculated
             m_predictorData.Clear();
-            m_predictorSource.Clear();
+            if (!m_ppcontrol.IsExternalSource || m_ppcontrol.IsOverridden)
+            {
+                m_predictorSource.Clear();
+            }
         }
 
         public void RefreshData()
@@ -316,7 +324,7 @@ namespace GpsRunningPlugin.Source
                 Predict.SetAgeSexFromActivity(activity);
                 m_predictorSource.Add(new TimePredictionSource(activity, m_ppcontrol.Distance, m_ppcontrol.Time));
             }
-            else if (m_ppcontrol.Activities.Count > 0)
+            else if (!m_ppcontrol.IsExternalSource && m_ppcontrol.Activities.Count > 0)
             {
                 Predict.SetAgeSexFromActivity(m_ppcontrol.Activities[0]);
                 foreach (IActivity activity in m_ppcontrol.Activities)
@@ -331,7 +339,7 @@ namespace GpsRunningPlugin.Source
                     getHSResults(m_predictorSource, m_ppcontrol.Activities, progressBar);
                 }
             }
-            //else: no activity selected
+            //else: trails popup or no activity selected
 
             getResults(m_predictorSource, m_predictorData, m_ppcontrol.IsOverridden, progressBar);
         }
@@ -589,7 +597,7 @@ namespace GpsRunningPlugin.Source
                 {
                     //Only one activity, OK to merge selections on one track
                     TrailsItemTrackSelectionInfo result = TrailResultMarked.SelInfoUnion(atrST);
-                    m_view.RouteSelectionProvider.SelectedItems = TrailsItemTrackSelectionInfo.SetAndAdjustFromSelection(new IItemTrackSelectionInfo[] { result }, null, false);
+                    m_view.RouteSelectionProvider.SelectedItems = TrailsItemTrackSelectionInfo.SetAndAdjustFromSelectionToST(result);
                 }
 
                 //Zoom
