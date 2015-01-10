@@ -536,10 +536,12 @@ namespace GpsRunningPlugin.Source
                     m_progressBar.Visible = true;
                     m_urRoute.Clear();
 #if !ST_2_1
-                    IList<IItemTrackSelectionInfo> selectedGPS = TrailsItemTrackSelectionInfo.SetAndAdjustFromSelection(m_view.RouteSelectionProvider.SelectedItems, new List<IActivity>{m_refActivity}, true);
+                    IList<IItemTrackSelectionInfo> selectedGPS = TrailsItemTrackSelectionInfo.SetAndAdjustFromSelectionFromST(m_view.RouteSelectionProvider.SelectedItems, new List<IActivity>{m_refActivity});
                     if (useSelection && selectedGPS.Count > 0)
                     {
-                        IList<IList<IGPSPoint>> routes = TrailsItemTrackSelectionInfo.GpsPoints(m_refActivity.GPSRoute, m_refActivity.TimerPauses, selectedGPS[0].MarkedTimes);
+                        //TBD pauses removed from TrailsItemTrackSelectionInfo, add again?
+                        //IList<IList<IGPSPoint>> routes = TrailsItemTrackSelectionInfo.GpsPoints(m_refActivity.GPSRoute, m_refActivity.TimerPauses, selectedGPS[0].MarkedTimes);
+                        IList<IList<IGPSPoint>> routes = TrailsItemTrackSelectionInfo.GpsPoints(m_refActivity.GPSRoute, selectedGPS[0].MarkedTimes);
                         int i = 0;
                         foreach (IList<IGPSPoint> t in routes)
                         {
@@ -717,7 +719,7 @@ namespace GpsRunningPlugin.Source
                 {
                     //Only one activity, OK to merge selections on one track
                     TrailsItemTrackSelectionInfo result = TrailResultMarked.SelInfoUnion(atrST);
-                    m_view.RouteSelectionProvider.SelectedItems = TrailsItemTrackSelectionInfo.SetAndAdjustFromSelection(new IItemTrackSelectionInfo[] { result }, null, false);
+                    m_view.RouteSelectionProvider.SelectedItems = TrailsItemTrackSelectionInfo.SetAndAdjustFromSelectionToST(result);
                 }
 
                 //Zoom
