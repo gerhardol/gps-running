@@ -86,12 +86,10 @@ namespace PerformancePredictor.Export
         /// </summary>
         /// <param name="activities"></param>
         /// <param name="view"></param>
-        /// <param name="time"></param>
-        /// <param name="distance"></param>
         /// <param name="progressBar"></param>
-        public static void PerformancePredictorPopup(IList<IActivity> activities, IDailyActivityView view, TimeSpan time, double distance, System.Windows.Forms.ProgressBar progressBar)
+        public static void PerformancePredictorPopup(IList<IActivity> activities, IList<IItemTrackSelectionInfo> selections, IDailyActivityView view, System.Windows.Forms.ProgressBar progressBar)
         {
-            new PerformancePredictorControl(activities, view, time, distance, progressBar);
+            new PerformancePredictorControl(activities, selections, view, progressBar);
         }
 
         /// <summary>
