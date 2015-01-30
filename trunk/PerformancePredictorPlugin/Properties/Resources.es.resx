@@ -199,10 +199,6 @@
     <comment>pp</comment>
     <value>Tiempos sugeridos para repeticiones según la distancia de la competencia.</value>
   </data>
-  <data name="PPHS" xml:space="preserve">
-    <comment>ppx</comment>
-    <value>Predicción de Rendimiento usando plugin &quot;High Score&quot;</value>
-  </data>
   <data name="ProjectedWeight" xml:space="preserve">
     <comment>ppx</comment>
     <value>Peso proyectado</value>
@@ -216,8 +212,5 @@
   </data>
   <data name="HighScorePrediction" xml:space="preserve">
     <value>Predicción de mejores marcas</value>
-  </data>
-  <data name="HighScoreRequired" xml:space="preserve">
-    <value>Predecir basado en varias actividades requiere del plugin Hig Score</value>
   </data>
 </root>

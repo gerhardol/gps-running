@@ -201,10 +201,6 @@ wurde angepasst, um die richtige Intensität zu erhalten.</value>
     <comment>pp</comment>
     <value>Vorgeschlagenes Intervalltraining für bestimmte Wettkampfstrecken</value>
   </data>
-  <data name="PPHS" xml:space="preserve">
-    <comment>ppx</comment>
-    <value>Performance Predictor - High Score Hochrechnung</value>
-  </data>
   <data name="ProjectedWeight" xml:space="preserve">
     <comment>ppx</comment>
     <value>Prognostiziertes Gewicht</value>
@@ -218,8 +214,5 @@ wurde angepasst, um die richtige Intensität zu erhalten.</value>
   </data>
   <data name="HighScorePrediction" xml:space="preserve">
     <value>Highscore-Vorhersage</value>
-  </data>
-  <data name="HighScoreRequired" xml:space="preserve">
-    <value>Die Vorhersage verschiedener Aktivitäten benötigt das High Score-Plugin.</value>
   </data>
 </root>

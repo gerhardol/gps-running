@@ -199,10 +199,6 @@
     <comment>pp</comment>
     <value>Föreslagna intervalltider vid träning för några tävlingsdistanser.</value>
   </data>
-  <data name="PPHS" xml:space="preserve">
-    <comment>ppx</comment>
-    <value>Performance Predictor med High Score plugin</value>
-  </data>
   <data name="ProjectedWeight" xml:space="preserve">
     <comment>ppx</comment>
     <value>Antagen vikt</value>
@@ -216,9 +212,6 @@
   </data>
   <data name="HighScorePrediction" xml:space="preserve">
     <value>High Score prognos</value>
-  </data>
-  <data name="HighScoreRequired" xml:space="preserve">
-    <value>Prognos med flera aktiviteter kräver High Score plugin</value>
   </data>
   <data name="Extrapolate" xml:space="preserve">
     <value>Extrapolera</value>
