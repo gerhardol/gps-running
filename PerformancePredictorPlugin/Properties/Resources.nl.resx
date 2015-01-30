@@ -195,10 +195,6 @@
     <comment>ppx</comment>
     <value>Geschatte snelheid</value>
   </data>
-  <data name="PPHS" xml:space="preserve">
-    <comment>ppx</comment>
-    <value>Performance predictor via High Score plugin</value>
-  </data>
   <data name="ProjectedWeight" xml:space="preserve">
     <comment>ppx</comment>
     <value>Geprojecteerd gewicht</value>

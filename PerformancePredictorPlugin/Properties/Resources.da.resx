@@ -195,10 +195,6 @@
     <comment>ppx</comment>
     <value>Estimeret speed</value>
   </data>
-  <data name="PPHS" xml:space="preserve">
-    <comment>ppx</comment>
-    <value>Performance Predictor med High Score plugin</value>
-  </data>
   <data name="ProjectedWeight" xml:space="preserve">
     <comment>ppx</comment>
     <value>Projekteret vægt</value>

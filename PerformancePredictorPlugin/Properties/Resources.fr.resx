@@ -199,10 +199,6 @@
     <comment>pp</comment>
     <value>Suggérées de court intervalle de temps d'entrainement pour certaine distances de course.</value>
   </data>
-  <data name="PPHS" xml:space="preserve">
-    <comment>ppx</comment>
-    <value>Estimation des performances avec le plugin High Score</value>
-  </data>
   <data name="ProjectedWeight" xml:space="preserve">
     <comment>ppx</comment>
     <value>Projection du poids</value>
@@ -216,8 +212,5 @@
   </data>
   <data name="HighScorePrediction" xml:space="preserve">
     <value>Prédiction de High Score</value>
-  </data>
-  <data name="HighScoreRequired" xml:space="preserve">
-    <value>Prédire en utilisant plusieurs activités exige le plugin High Score</value>
   </data>
 </root>
