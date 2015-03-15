@@ -1,0 +1,34 @@
+#summary Overlay User's Guide
+#labels Featured
+
+===What does it do?===
+
+This is a simple plugin that easily lets you compare the heart rate, pace, and speed tracks of two or more activities. It does so by presenting each of these in the same graph, so you may visually see how well your form is progressing. 
+
+One way of monitoring improvement in fitness is by comparing your heart rate tracks of two similar activities (same distance, speed, time of day, and other parameters that may influence the heart rate) but with some time in between. So lets say there are four weeks between the two similar activities you are considering, and you then overlay the two heart rate graph using the plugin. If the graph of the latter is below the first, your form is improving, and vice versa if it is above. 
+
+Another way of seeing form improvement is to check how fast you heart rate drops after an exercise. I always get this information after a run, by reseting the laps, and starting it again to record my heart rate when I just walk around a bit and stretch before I go inside. So if you also do this, you can check you form progression using these stretch out sessions. 
+
+Currently, it is possible to compare heart rate, speed, pace, power, cadence, and elevation track, of a single, two, or more activities.
+
+===Category average===
+It is possible to see a category average for a collection of activities. Average is basically the average of each activity in some category, so, e.g., if you have three activities chosen and selected the heart rate track, then the category average is the average of each point of the three graphs. The category average is displayed as a black line.
+
+===Moving average===
+The moving average is the average of a single graph. If it is set to 0 seconds or 0 meters it will show the average from the start of the activity; i.e., each point is the average of all the preceding points on the graph. This is similar to looking at your average speed or average heart rate on your watch. If you set the moving average to something bigger than 0, then the average is the average over the past XX seconds or meters. If the moving average is set to 120 seconds then the average of each point, will be the average of the last two minutes. 
+
+===How do I use it?===
+First go to the activity reports and the activities that you wish to compare. You do this either by pressing down control and then select some activities, or by holding down shift and then select a range of activities by clicking the start and end element. Once you have selected at least one activity you are able to apply the Overlay plugin as shown in the figure below.
+
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/ActivityReportView.png]
+Once you have applied the plugin a new window appear with the overlayed activities; see the two figures below to see the results. 
+
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/Overlay1.png]
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/Overlay2.png]
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/Overlay3.png]
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/Overlay4.png]
+[http://gps-running.googlecode.com/svn/wiki/images/plugins/overlay/Overlay5.png]
+
+===Feedback===
+For patches, bugreports or feature suggestions, use the Google Code issue list.
+For feedback please use the thread for this plugin at !SportTracks forum [http://www.zonefivesoftware.com/SportTracks/Forums/viewforum.php?f=31 here].
