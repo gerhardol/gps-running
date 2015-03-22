@@ -48,9 +48,9 @@ This plugin lets you predict your performance on various distances by using well
 ### [Accumulated Summary](http://github.com/gerhardol/gps-running/wiki/AccumulatedSummary) ###
 The intention of this plugin is simply to allow the user to get some aggregated values of a collection of activities that are selected in the activity report view. The plugin will report combined distance, time, climbs, and more. The idea is that it should give the same type information as the activity view, but for a collection of activities instead.
 
-Last build on Google Code: [SportTracks Plugin Catalog](https://code.google.com/p/gps-running/downloads/detail?name=AccumulatedSummaryPlugin-1.9.321.st3plugin&can=2&q=)
+[Last build on Google Code](https://code.google.com/p/gps-running/downloads/detail?name=AccumulatedSummaryPlugin-1.9.321.st3plugin&can=2&q=)
  
-![](/gerhardol/gps-running/wiki/images/plugins/accumulatedsummary/accumulatedsummary.png)
+![](http://github.com/gerhardol/gps-running/wiki/images/plugins/accumulatedsummary/accumulatedsummary.png)
 
 
 ### [TRIMP](http://github.com/gerhardol/gps-running/wiki/TRIMP) ###

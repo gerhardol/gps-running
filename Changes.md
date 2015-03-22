@@ -2,7 +2,7 @@
 
 2.0.467 2015-01-30 (Plugin Catalog)
 PerformancePredictor:
-  * Add [Elinder](PerformancePredictor#elinder) predicting. Works very well, especially for activities longer than 2h.
+  * Add [Elinder](http://github.com/gerhardol/gps-running/wiki/PerformancePredictor#elinder) predicting. Works very well, especially for activities longer than 2h.
   * Predicting on many activities no longer requires High Score Plugin, it uses the "best" activity to predict.
   * Possibility to override the time/distance directly in the toolbar (this was possible in the Extrapolate - Ideal tab previously).
   * Show all predictor models in the table. The selected model is shown first and used in training suggestions etc.
@@ -46,8 +46,8 @@ PerformancePredictor:
 2.0.395 2013-06-22 (Plugin Catalog)
 
 PerformancePredictor:
-  * Age grading as PredictionModel. See the updated documentation: [WAVA](PerformancePredictor#wava).
-  * ExtraPolation new tabs. The effects of Shoes, Age and Utopia (everything combined) can be seen. [Extrapolation](PerformancePredictor#extrapolation).
+  * Age grading as PredictionModel. See the updated documentation: [WAVA](http://github.com/gerhardol/gps-running/wiki/PerformancePredictor#wava).
+  * ExtraPolation new tabs. The effects of Shoes, Age and Utopia (everything combined) can be seen. [Extrapolation](http://github.com/gerhardol/gps-running/wiki/PerformancePredictor#extrapolation).
 
 Other changes:
   * Do not show Weight results below lowest possible "Ideal" weight at 18.5. (The actual limit is likely higher).
