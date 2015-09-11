@@ -83,7 +83,7 @@
     <value>por</value>
   </data>
   <data name="Question" xml:space="preserve">
-    <value>Pregunta?</value>
+    <value>¿Pregunta?</value>
   </data>
   <data name="Reset" xml:space="preserve">
     <value>Restaurar…</value>
@@ -116,7 +116,7 @@
     <value>Número de zonas:</value>
   </data>
   <data name="ResetQuestion" xml:space="preserve">
-    <value>Esta usted seguro de querer restaurar todas las configuraciones? Esto no se puede deshacer.</value>
+    <value>¿Está usted seguro de querer restaurar todas las configuraciones? Esto no se puede deshacer.</value>
   </data>
   <data name="StartZone" xml:space="preserve">
     <value>Zona inicial:</value>
@@ -146,7 +146,7 @@
     <value>Usar todas las categorías</value>
   </data>
   <data name="ClimbSummary" xml:space="preserve">
-    <value>Ascenso/descenso</value>
+    <value>Ascenso/Descenso</value>
   </data>
   <data name="ClimbZones" xml:space="preserve">
     <value>Zonas de ascenso</value>
@@ -191,7 +191,7 @@
     <value>máximo</value>
   </data>
   <data name="Minimal" xml:space="preserve">
-    <value>mínimo</value>
+    <value>Mínimo</value>
   </data>
   <data name="Marathon" xml:space="preserve">
     <value>Maratón</value>
@@ -200,7 +200,7 @@
     <value>min</value>
   </data>
   <data name="Training" xml:space="preserve">
-    <value>RC entrenamiento / competencia</value>
+    <value>Entrenamiento</value>
   </data>
   <data name="Unit" xml:space="preserve">
     <value>Unidad</value>
@@ -218,7 +218,7 @@
     <value>Velocidad/Paso</value>
   </data>
   <data name="ListSettings" xml:space="preserve">
-    <value>Configuración…</value>
+    <value>Configuración de la lista</value>
   </data>
   <data name="Colour" xml:space="preserve">
     <value>Color</value>
@@ -227,20 +227,20 @@
     <value>Visible</value>
   </data>
   <data name="Offset" xml:space="preserve">
-    <value>Desplazado</value>
+    <value>Desplazamiento</value>
   </data>
   <data name="Difference" xml:space="preserve">
-    <value>dif</value>
+    <value>diferencias</value>
   </data>
   <data name="Width" xml:space="preserve">
     <value>Ancho</value>
   </data>
   <data name="SetRefActivity" xml:space="preserve">
-    <value>Actividad Referente</value>
+    <value>Actividad de referencia</value>
   </data>
   <data name="OtherPluginExceptionText" xml:space="preserve">
     <value>Problemas de comunicación con {0}
-Asegurese de que {1} este instalado en su maquina</value>
+Asegúrese de que {1} esté instalado en su máquina</value>
   </data>
   <data name="OtherPluginVersion" xml:space="preserve">
     <value>Detectada la versión {0} de {1}.</value>
@@ -262,5 +262,8 @@ Asegurese de que {1} este instalado en su maquina</value>
   </data>
   <data name="UI_Activity_List_URSelect" xml:space="preserve">
     <value>Agrega actividades similares por medio del plugin Unique Routes {0}</value>
+  </data>
+  <data name="Menu_ShowToolBar" xml:space="preserve">
+    <value>Mostrar barra herramientas</value>
   </data>
 </root>

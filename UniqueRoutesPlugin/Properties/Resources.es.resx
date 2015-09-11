@@ -58,7 +58,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="AllowPointsOutsideBand" xml:space="preserve">
     <value>Puntos permitidos fuera de la banda</value>
   </data>
@@ -66,26 +66,26 @@
     <value>Radio</value>
   </data>
   <data name="RadiusWarning" xml:space="preserve">
-    <value>Radio debe ser numerico</value>
+    <value>El radio debe ser un número.</value>
   </data>
   <data name="BeginningMeterWarning" xml:space="preserve">
-    <value>Ignorar principio debe de ser un número</value>
+    <value>El valor de ignorar metros iniciales debe de ser un número.</value>
   </data>
   <data name="CommonStretches" xml:space="preserve">
     <value>Estiramientos comunes</value>
   </data>
   <data name="ctxActiveLaps" xml:space="preserve">
-    <value>Solo secciones activas</value>
+    <value>Sólo secciones activas</value>
   </data>
   <data name="DidNotFindAnyRoutes" xml:space="preserve">
-    <value>No se encontró ninguna actividad en la misma ruta. si crees que debería, por favor ajusta las configuraciones y trata de nuevo.</value>
+    <value>No se encontró ninguna actividad en la misma ruta. Si crees que debería, por favor ajusta las configuraciones y prueba de nuevo.</value>
   </data>
   <data name="DoIt" xml:space="preserve">
     <comment>NoLongerVisible</comment>
     <value>Procesar</value>
   </data>
   <data name="EndMeterWarning" xml:space="preserve">
-    <value>Ignorar final debe se un número</value>
+    <value>El valor de ignorar metros finales debe ser un número.</value>
   </data>
   <data name="FoundActivities" xml:space="preserve">
     <value>Se encontraron {0} actividades en la misma ruta.</value>
@@ -101,10 +101,10 @@
     <value>Incluir todas las actividades en la búsqueda</value>
   </data>
   <data name="IncludeOnlyCategory" xml:space="preserve">
-    <value>Incluir solo actividades en la categoría '{0}' en la búsqueda.</value>
+    <value>Incluir sólo actividades en la categoría '{0}' en la búsqueda.</value>
   </data>
   <data name="PluginApplicationError" xml:space="preserve">
-    <value>Un error ocurrió al aplica el plugin {0}. Mensaje del error: {1}</value>
+    <value>Un error ocurrió al aplicar el plugin {0}. Mensaje del error: {1}</value>
   </data>
   <data name="RoutesHaveDirection" xml:space="preserve">
     <value>Las rutas tienen dirección</value>
@@ -124,12 +124,12 @@
     <value>todas</value>
   </data>
   <data name="LimitingToSelected" xml:space="preserve">
-    <value>Usando {0} actividades deleccionadas</value>
+    <value>Usando {0} actividades seleccionadas</value>
   </data>
   <data name="UI_Activity_List_LimitSelection" xml:space="preserve">
-    <value>Seleccione marcadso en la lista de actividades </value>
+    <value>Seleccione marcando en la lista de actividades</value>
   </data>
   <data name="NoGpsActivitiesSelected" xml:space="preserve">
-    <value>No selecciono actividades con datos  GPS</value>
+    <value>No seleccionó actividades con datos GPS</value>
   </data>
 </root>

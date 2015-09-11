@@ -5,10 +5,3 @@ obj/
 bin/
 _UpgradeReport_Files/
 *.csproj.user
-/AccumulatedSummaryPlugin/Util
-/HighScorePlugin/Util
-#/OverlayPlugin/Util
-/OverlayPlugin/Integration
-/PerformancePredictorPlugin/Util
-/TRIMPPlugin/Util
-/UniqueRoutesPlugin/Util

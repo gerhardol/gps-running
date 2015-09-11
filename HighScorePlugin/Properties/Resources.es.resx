@@ -58,18 +58,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="BiggestElevationDifference" xml:space="preserve">
     <value>Máxima diferencia en elevación</value>
   </data>
   <data name="CannotAddToDistances" xml:space="preserve">
-    <value>No se puede agregar a distancias</value>
+    <value>No se puede agregar a distancias.</value>
   </data>
   <data name="CannotAddToElevations" xml:space="preserve">
-    <value>No se puede agregar a elevaciones</value>
+    <value>No se puede agregar a elevaciones.</value>
   </data>
   <data name="CannotAddToHRZones" xml:space="preserve">
-    <value>No se puede agregar a Zona de RC. &quot;de&quot; y &quot;hasta&quot; LPM deben ser números positivos, y &quot;de&quot; debe ser mas pequeño que &quot;hasta&quot;.</value>
+    <value>Se ignora una actividad ya que no cuenta con datos de RC.</value>
   </data>
   <data name="CannotAddToPaceZones" xml:space="preserve">
     <value>No se puede agregar a pasos. &quot;de&quot; y &quot;hasta&quot; deben ser tiempo en formato mm:ss, Y el paso &quot;de&quot; debe ser más rápido que &quot;hasta&quot;.</value>
@@ -102,10 +102,10 @@
     <value>Máximo tiempo invertido</value>
   </data>
   <data name="NoResultsForSettings" xml:space="preserve">
-    <value>Sin resultados para esta configuración</value>
+    <value>Sin resultados para esta configuración.</value>
   </data>
   <data name="NothingToDisplay" xml:space="preserve">
-    <value>Nada que mostrar para esta configuración</value>
+    <value>Nada que mostrar para esta configuración.</value>
   </data>
   <data name="OnADistanceOf" xml:space="preserve">
     <value>en una distancia de</value>
@@ -114,22 +114,22 @@
     <value>en una elevación de</value>
   </data>
   <data name="ResetAllSettingsWarning" xml:space="preserve">
-    <value>¿Esta seguro de querer borrar la configuración actual y usar la configuración original?</value>
+    <value>¿Está seguro de querer borrar la configuración actual y usar la configuración original?</value>
   </data>
   <data name="ResetDistancesWarning" xml:space="preserve">
-    <value>Esta seguro de querer borrar las distancias actuales y usar las distancias originales?</value>
+    <value>¿Está seguro de querer borrar las distancias actuales y usar las distancias originales?</value>
   </data>
   <data name="ResetElevationsWarning" xml:space="preserve">
-    <value>Esta seguro de querer borrar las elevaciones actuales y usar las elevaciones originales?</value>
+    <value>¿Está seguro de querer borrar las elevaciones actuales y usar las elevaciones originales?</value>
   </data>
   <data name="ResetHRZonesWarning" xml:space="preserve">
-    <value>Esta seguro de querer borrar las zonas de RC actuales y usar las zonas de RC originales?</value>
+    <value>¿Está seguro de querer borrar las zonas de RC actuales y usar las zonas de RC originales?</value>
   </data>
   <data name="ResetPaceZonesWarning" xml:space="preserve">
-    <value>Esta seguro de querer borrar las zonas de paso actuales y usar las zonas de paso originales?</value>
+    <value>¿Está seguro de querer borrar las zonas de paso actuales y usar las zonas de paso originales?</value>
   </data>
   <data name="ResetTimesWarning" xml:space="preserve">
-    <value>Esta seguro de querer borrar los tiempos actuales y usar los tiempos originales?</value>
+    <value>¿Está seguro de querer borrar los tiempos actuales y usar los tiempos originales?</value>
   </data>
   <data name="ShortestDistanceTraveled" xml:space="preserve">
     <value>Distancia más corta cubierta</value>
@@ -149,7 +149,7 @@
   </data>
   <data name="HSV" xml:space="preserve">
     <comment>hsx</comment>
-    <value>High Score</value>
+    <value>Vista High Score</value>
   </data>
   <data name="OnATimeOf" xml:space="preserve">
     <comment>hsx</comment>

@@ -101,7 +101,7 @@
     <value>Zona aeróbica moderada</value>
   </data>
   <data name="NoMaxHR" xml:space="preserve">
-    <value>Por favor establezca su RC máximo en configuraciones para ver resultados</value>
+    <value>Por favor establezca su RC máximo en configuraciones para ver resultados.</value>
   </data>
   <data name="PaceForTempoRuns" xml:space="preserve">
     <value>Paso para &quot;Tempo&quot;</value>
@@ -135,10 +135,10 @@
     <value>Recuperación</value>
   </data>
   <data name="RemoveDistance" xml:space="preserve">
-    <value>Quitar distancia...</value>
+    <value>Eliminar distancia</value>
   </data>
   <data name="WeightUndefined" xml:space="preserve">
-    <value>Por favor establezca su peso en configuraciones para ver resultados</value>
+    <value>Por favor establezca su peso en configuraciones para ver resultados.</value>
   </data>
   <data name="StartOfPart" xml:space="preserve">
     <comment>ppx</comment>
@@ -152,7 +152,7 @@
     <value>Predicción de tiempo</value>
   </data>
   <data name="TrainRaceHR" xml:space="preserve">
-    <value>RC entrenamiento / competencia</value>
+    <value>RC Entrenamiento / Competencia</value>
   </data>
   <data name="UsedActivityStartDate" xml:space="preserve">
     <value>Fecha de inicio de actividad usada</value>
@@ -182,7 +182,7 @@
     <value>Tiempos y pasos estimados son +/- {0} por {1}.</value>
   </data>
   <data name="ZoneDistance" xml:space="preserve">
-    <value>Zona / distancia</value>
+    <value>Zona / Distancia</value>
   </data>
   <data name="NoSeedActivity" xml:space="preserve">
     <value>Ninguna actividad</value>
@@ -212,5 +212,35 @@
   </data>
   <data name="HighScorePrediction" xml:space="preserve">
     <value>Predicción de mejores marcas</value>
+  </data>
+  <data name="Extrapolate" xml:space="preserve">
+    <value>Extrapolar</value>
+  </data>
+  <data name="AgeNotification" xml:space="preserve">
+    <value>Efecto de las tablas de edad</value>
+  </data>
+  <data name="AgeProjectedImpact" xml:space="preserve">
+    <value>Impacto previsto sobre la edad</value>
+  </data>
+  <data name="AgeUndefined" xml:space="preserve">
+    <value>Por favor, vaya a la vista atleta y fije su fecha de nacimiento para ver los resultados.</value>
+  </data>
+  <data name="ShoeTab" xml:space="preserve">
+    <value>Calzado</value>
+  </data>
+  <data name="ShoeNotification" xml:space="preserve">
+    <value>Peso por zapatilla</value>
+  </data>
+  <data name="ShoeProjectedImpact" xml:space="preserve">
+    <value>Impacto previsto sobre el peso del calzado</value>
+  </data>
+  <data name="ShoeUndefined" xml:space="preserve">
+    <value>El peso del calzado no se adivina desde el equipo</value>
+  </data>
+  <data name="IdealTab" xml:space="preserve">
+    <value>Ideal</value>
+  </data>
+  <data name="IdealNotification" xml:space="preserve">
+    <value>Lo que pudo ser...</value>
   </data>
 </root>

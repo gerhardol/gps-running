@@ -58,21 +58,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="AOP" xml:space="preserve">
     <value>Promedio sobre Periodo</value>
   </data>
   <data name="BCA" xml:space="preserve">
-    <value>Negro prom. categoría</value>
+    <value>Mostrar media actividades seleccionadas</value>
   </data>
   <data name="BMA" xml:space="preserve">
-    <value>Remarcar prom. Movil</value>
+    <value>Mostrar media en movimiento</value>
   </data>
   <data name="MAToolTip" xml:space="preserve">
-    <value>Fijar a 0 el prom. Para el inicio de la actividad</value>
+    <value>Fijar a 0 el promedio para el inicio de la actividad</value>
   </data>
   <data name="NonNegativeNumber" xml:space="preserve">
-    <value>Valor debe de ser un número no negativo</value>
+    <value>¡El valor debe de ser un número no negativo!</value>
   </data>
   <data name="O1" xml:space="preserve">
     <value>Ovarlay de una actividad</value>
@@ -87,16 +87,16 @@
     <value>Muestra gráfica de barras</value>
   </data>
   <data name="Menu_ShowToolBar" xml:space="preserve">
-    <value>Muestra herramientas de gráficos</value>
+    <value>Muestra herramientas de gráficas</value>
   </data>
   <data name="MovingAverage" xml:space="preserve">
-    <value>Promedio movil</value>
+    <value>Promedio en movimiento</value>
   </data>
   <data name="OverlayChart" xml:space="preserve">
     <value>Gráfica Overlay</value>
   </data>
   <data name="SetMovingAveragePeriod" xml:space="preserve">
-    <value>Fijar filtro de ancho</value>
+    <value>Fijar ancho del filtro</value>
   </data>
   <data name="SetOffset" xml:space="preserve">
     <value>Fijar Compensación de actividad</value>
