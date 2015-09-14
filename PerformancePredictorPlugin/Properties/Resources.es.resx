@@ -125,7 +125,7 @@
     <value>Predicción de resultados</value>
   </data>
   <data name="ProcDistUsed" xml:space="preserve">
-    <value>% de distancia para predecir tiempo</value>
+    <value>% de la distancia para predecir el tiempo</value>
   </data>
   <data name="TemperatureProjectedImpact" xml:space="preserve">
     <comment>ppx</comment>

@@ -84,10 +84,10 @@
     <value>Link a WEB del plugin &quot;Overlay&quot;</value>
   </data>
   <data name="Menu_ShowChartBar" xml:space="preserve">
-    <value>Muestra gráfica de barras</value>
+    <value>Mostrar barra de opciones gráficas</value>
   </data>
   <data name="Menu_ShowToolBar" xml:space="preserve">
-    <value>Muestra herramientas de gráficas</value>
+    <value>Mostrar herramientas de gráficas</value>
   </data>
   <data name="MovingAverage" xml:space="preserve">
     <value>Promedio en movimiento</value>
@@ -99,10 +99,10 @@
     <value>Fijar ancho del filtro</value>
   </data>
   <data name="SetOffset" xml:space="preserve">
-    <value>Fijar Compensación de actividad</value>
+    <value>Fijar desplazamiento de la actividad</value>
   </data>
   <data name="TableSettings" xml:space="preserve">
-    <value>Tabla de configuraciones</value>
+    <value>Configuración de la lista</value>
   </data>
   <data name="SetOffsetWithUR" xml:space="preserve">
     <value>Establecer la actividad compensado con Unique Routes los desplazamientos comunes</value>

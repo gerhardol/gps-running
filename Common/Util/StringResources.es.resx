@@ -188,7 +188,7 @@
     <value>para una actividad</value>
   </data>
   <data name="Maximal" xml:space="preserve">
-    <value>máximo</value>
+    <value>Máximo</value>
   </data>
   <data name="Minimal" xml:space="preserve">
     <value>Mínimo</value>
@@ -258,7 +258,7 @@ Asegúrese de que {1} esté instalado en su máquina</value>
     <value>Avanzado</value>
   </data>
   <data name="UI_Activity_List_LimitSelection" xml:space="preserve">
-    <value>Límite de actividades a las seleccionadas en la lista</value>
+    <value>Configuración de la lista</value>
   </data>
   <data name="UI_Activity_List_URSelect" xml:space="preserve">
     <value>Agrega actividades similares por medio del plugin Unique Routes {0}</value>
