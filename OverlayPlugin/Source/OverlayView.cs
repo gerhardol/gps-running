@@ -335,21 +335,21 @@ namespace GpsRunningPlugin.Source
             xAxisTimeMenuItem.Text = CommonResources.Text.LabelTime;
             xAxisDistanceMenuItem.Text = CommonResources.Text.LabelDistance;
             
-            showMenuItem.Text = StringResources.Show;
-            showDiffMenuItem.Text = StringResources.Show + " " + StringResources.Difference.ToLower();
+            showMenuItem.Text = StringResources.YAxis;
+            showDiffMenuItem.Text = StringResources.Difference;
 
-            showHRMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelHeartRate;
-            showPaceMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelPace;
-            showSpeedMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelSpeed;
-            showPowerMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelPower;
-            showCadenceMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelCadence;
-            showElevationMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelElevation;
-            showTimeMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelTime;
-            showDistanceMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelDistance;
+            showHRMenuItem.Text = CommonResources.Text.LabelHeartRate;
+            showPaceMenuItem.Text = CommonResources.Text.LabelPace;
+            showSpeedMenuItem.Text = CommonResources.Text.LabelSpeed;
+            showPowerMenuItem.Text = CommonResources.Text.LabelPower;
+            showCadenceMenuItem.Text = CommonResources.Text.LabelCadence;
+            showElevationMenuItem.Text = CommonResources.Text.LabelElevation;
+            showTimeMenuItem.Text = CommonResources.Text.LabelTime;
+            showDistanceMenuItem.Text = CommonResources.Text.LabelDistance;
 
-            showHRDiffMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelHeartRate.ToLower() + " " + StringResources.Difference;
-            showTimeDiffMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelTime.ToLower() + " " + StringResources.Difference;
-            showDistDiffMenuItem.Text = StringResources.Show + " " + CommonResources.Text.LabelDistance.ToLower() + " " + StringResources.Difference;
+            showHRDiffMenuItem.Text = CommonResources.Text.LabelHeartRate;
+            showTimeDiffMenuItem.Text = CommonResources.Text.LabelTime;
+            showDistDiffMenuItem.Text = CommonResources.Text.LabelDistance;
 
             offsetMenuItem.Text = Resources.SetOffset;
             setRollAvgWidthMenuItem.Text = Resources.SetMovingAveragePeriod;

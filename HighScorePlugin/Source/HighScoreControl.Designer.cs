@@ -71,7 +71,7 @@ namespace GpsRunningPlugin.Source
             this.boundsBox.FormattingEnabled = true;
             this.boundsBox.Location = new System.Drawing.Point(55, 3);
             this.boundsBox.Name = "boundsBox";
-            this.boundsBox.Size = new System.Drawing.Size(66, 21);
+            this.boundsBox.Size = new System.Drawing.Size(72, 21);
             this.boundsBox.TabIndex = 4;
             // 
             // label2
@@ -94,9 +94,9 @@ namespace GpsRunningPlugin.Source
             // domainBox
             // 
             this.domainBox.FormattingEnabled = true;
-            this.domainBox.Location = new System.Drawing.Point(127, 3);
+            this.domainBox.Location = new System.Drawing.Point(133, 3);
             this.domainBox.Name = "domainBox";
-            this.domainBox.Size = new System.Drawing.Size(63, 21);
+            this.domainBox.Size = new System.Drawing.Size(69, 21);
             this.domainBox.TabIndex = 8;
             // 
             // minGradeLbl

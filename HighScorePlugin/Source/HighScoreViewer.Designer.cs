@@ -127,7 +127,7 @@ namespace GpsRunningPlugin.Source
             this.paceBox.FormattingEnabled = true;
             this.paceBox.Location = new System.Drawing.Point(55, 27);
             this.paceBox.Name = "paceBox";
-            this.paceBox.Size = new System.Drawing.Size(66, 21);
+            this.paceBox.Size = new System.Drawing.Size(72, 21);
             this.paceBox.TabIndex = 10;
             // 
             // progressBar
@@ -152,9 +152,9 @@ namespace GpsRunningPlugin.Source
             // viewBox
             // 
             this.viewBox.FormattingEnabled = true;
-            this.viewBox.Location = new System.Drawing.Point(127, 27);
+            this.viewBox.Location = new System.Drawing.Point(133, 27);
             this.viewBox.Name = "viewBox";
-            this.viewBox.Size = new System.Drawing.Size(63, 21);
+            this.viewBox.Size = new System.Drawing.Size(69, 21);
             this.viewBox.TabIndex = 15;
             // 
             // chart
