@@ -43,7 +43,7 @@ namespace GpsRunningPlugin.Source
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(new ProcessStartInfo(
-                "http://code.google.com/p/gps-running/wiki/Overlay"));
+                "https://github.com/gerhardol/gps-running/wiki/Overlay"));
         }
         public bool HidePage()
         {

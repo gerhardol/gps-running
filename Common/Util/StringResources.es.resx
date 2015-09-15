@@ -230,7 +230,7 @@
     <value>Desplazamiento</value>
   </data>
   <data name="Difference" xml:space="preserve">
-    <value>diferencias</value>
+    <value>Diferencias</value>
   </data>
   <data name="Width" xml:space="preserve">
     <value>Ancho</value>
@@ -258,7 +258,7 @@ Asegúrese de que {1} esté instalado en su máquina</value>
     <value>Avanzado</value>
   </data>
   <data name="UI_Activity_List_LimitSelection" xml:space="preserve">
-    <value>Configuración de la lista</value>
+    <value>Límite de actividades a las seleccionadas en la lista</value>
   </data>
   <data name="UI_Activity_List_URSelect" xml:space="preserve">
     <value>Agrega actividades similares por medio del plugin Unique Routes {0}</value>

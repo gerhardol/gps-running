@@ -60,7 +60,7 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="AllowPointsOutsideBand" xml:space="preserve">
-    <value>Puntos permitidos fuera de la banda</value>
+    <value>Puntos permitidos fuera de la ruta</value>
   </data>
   <data name="Radius" xml:space="preserve">
     <value>Radio</value>
@@ -91,10 +91,10 @@
     <value>Se encontraron {0} actividades en la misma ruta.</value>
   </data>
   <data name="IgnoreBeginningOfRoute" xml:space="preserve">
-    <value>Ignorar principio de ruta</value>
+    <value>Ignorar principio de la ruta</value>
   </data>
   <data name="IgnoreEndOfRoute" xml:space="preserve">
-    <value>Ignorar final de ruta</value>
+    <value>Ignorar final de la ruta</value>
   </data>
   <data name="IncludeAllActivitiesInSearch" xml:space="preserve">
     <comment>NoLongerVisible</comment>
@@ -127,7 +127,7 @@
     <value>Usando {0} actividades seleccionadas</value>
   </data>
   <data name="UI_Activity_List_LimitSelection" xml:space="preserve">
-    <value>Seleccione marcando en la lista de actividades</value>
+    <value>Seleccionar marcando en la lista de actividades</value>
   </data>
   <data name="NoGpsActivitiesSelected" xml:space="preserve">
     <value>No seleccionó actividades con datos GPS</value>

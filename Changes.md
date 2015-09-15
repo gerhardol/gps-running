@@ -1,7 +1,8 @@
 
-2.1.2 2015-09-14
+2.1.3 2015-09-
 Overlay, HighScore, UniqueRoutes, PerformancePredictor
   * Updated version numbering after move to GitHub
+  * Updated URL for documentation links to github from Google Code
   * Updated Spanish translation
   * Updated some layout, to work better with translations like Spanish
   * Merge from Trails: Custom pace/speed where distance was other than 1 (like min/100m) was not calc correctly

@@ -73,11 +73,11 @@ namespace GpsRunningPlugin.Source
             minPercentLabel2.Text = Resources.ProcDistUsed;
             hsPercentLabel1.Text = StringResources.Use;
             hsPercentLabel2.Text = Resources.ProcDistUsed;
-            this.modelGroupBox.Text = "Prediction Model"; //TBD
+            this.modelGroupBox.Text = Resources.PredictionModel;
             this.elinderBreakEvenLabel.Text = "Elinder BreakEven";
             this.riegelFatigueFactorLabel.Text = "Riegel FatigueFactor";
             this.idealGroupBox.Text = Resources.IdealTab;
-            this.bmiLabel.Text = "BMI";
+            this.bmiLabel.Text = Resources.BMI;
             this.shoeLabel.Text = Resources.ShoeTab;
         }
 
@@ -114,7 +114,7 @@ namespace GpsRunningPlugin.Source
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(new ProcessStartInfo(
-                "http://code.google.com/p/gps-running/wiki/PerformancePredictor"));
+                "https://github.com/gerhardol/gps-running/wiki/PerformancePredictor"));
         }
 
         private void resetSettings_Click(object sender, EventArgs e)

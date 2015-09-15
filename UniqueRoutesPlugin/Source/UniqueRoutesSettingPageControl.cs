@@ -199,7 +199,7 @@ namespace GpsRunningPlugin.Source
         {
             try
             {
-                ProcessStartInfo procStartInfo = new ProcessStartInfo("http://code.google.com/p/gps-running/wiki/UniqueRoutes");
+                ProcessStartInfo procStartInfo = new ProcessStartInfo("https://github.com/gerhardol/gps-running/wiki/UniqueRoutes");
                 Process.Start(procStartInfo);
             }
             catch(Exception ex)

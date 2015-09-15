@@ -245,7 +245,7 @@ Plugin.GetApplication().SystemPreferences.UICulture);
             this.chkHighScoreBox.Text = Properties.Resources.HighScorePrediction;
             this.chkHighScoreMenuItem.Text = this.chkHighScoreBox.Text;
             showToolBarMenuItem.Text = StringResources.Menu_ShowToolBar;
-            this.overrideGroupBox.Text = "Override"; //TBD
+            this.overrideGroupBox.Text =Resources.Override;
 
             predictorView.UICultureChanged(culture);
             trainingView.UICultureChanged(culture);

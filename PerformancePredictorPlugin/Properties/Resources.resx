@@ -177,7 +177,7 @@
     <value>Predicted time</value>
   </data>
   <data name="PredictionModel" xml:space="preserve">
-    <value>Prediction model</value>
+    <value>Prediction Model</value>
   </data>
   <data name="PredictionResults" xml:space="preserve">
     <value>Prediction results</value>
@@ -317,5 +317,14 @@
   </data>
   <data name="DropDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DropDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BMI" xml:space="preserve">
+    <value>BMI</value>
+  </data>
+  <data name="Override" xml:space="preserve">
+    <value>Override</value>
+  </data>
+  <data name="POfWorldClass" xml:space="preserve">
+    <value>{0:P1} of world class</value>
   </data>
 </root>

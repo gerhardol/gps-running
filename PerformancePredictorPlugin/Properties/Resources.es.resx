@@ -243,4 +243,7 @@
   <data name="IdealNotification" xml:space="preserve">
     <value>Lo que pudo ser...</value>
   </data>
+  <data name="Override" xml:space="preserve">
+    <value>Modo manual</value>
+  </data>
 </root>

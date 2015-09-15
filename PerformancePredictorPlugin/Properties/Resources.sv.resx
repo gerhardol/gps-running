@@ -243,4 +243,7 @@
   <data name="IdealNotification" xml:space="preserve">
     <value>Hur det kunde ha gått...</value>
   </data>
+  <data name="POfWorldClass" xml:space="preserve">
+    <value>{0:P1} av världsklass</value>
+  </data>
 </root>

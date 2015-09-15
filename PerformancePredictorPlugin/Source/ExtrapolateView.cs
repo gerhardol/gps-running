@@ -295,7 +295,7 @@ namespace GpsRunningPlugin.Source
             copyTableMenuItem.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.ActionCopy;
 
             idealActualLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelActivity;
-            idealIdealLabel.Text = "Ideal"; //TBD
+            idealIdealLabel.Text = Resources.IdealTab;
             idealTimeLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelTime;
             idealDistLabel.Text = ZoneFiveSoftware.Common.Visuals.CommonResources.Text.LabelDistance;
             idealPaceLabel.Text = UnitUtil.PaceOrSpeed.LabelAxis(Settings.ShowPace);
@@ -530,7 +530,7 @@ namespace GpsRunningPlugin.Source
             float agePerf = PredictWavaTime.IdealTime((float)m_ppcontrol.Distance, (float)this.m_actualAge)/(float)m_ppcontrol.Time.TotalSeconds;
             ageLabel2.Visible = true;
             ageLabel.Text = Resources.AgeProjectedImpact + " " +
-                UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + agePerf.ToString("P1")+" of world class)";
+                UnitUtil.Distance.ToString(m_ppcontrol.Distance, "u") + " (" + String.Format(Resources.POfWorldClass, agePerf)+ ")";
 
             IList<AgeResult> result = new List<AgeResult>();
             AgeResult sel = null;
@@ -567,7 +567,7 @@ namespace GpsRunningPlugin.Source
             ideal *= TemperatureResult.getTemperatureFactor(this.m_idealTemp) / TemperatureResult.getTemperatureFactor((float)this.m_actualTemp);
             ideal = PredictWavaTime.WavaPredict((float)m_ppcontrol.Distance, this.m_oldDistance, ideal, this.m_idealAge, (float)this.m_actualAge);
             double idealP = idealAgeTime / ideal;
-            idealLabel.Text = idealP.ToString("P1")+" of world class";  //TBD
+            idealLabel.Text = String.Format(Resources.POfWorldClass, idealP);
             double idealDistance = m_ppcontrol.Distance;
             if (this.distBox2.Text != "")
             {
