@@ -209,7 +209,6 @@ namespace GpsRunningPlugin.Source
                         popupForm.Text = Resources.HSV + " " + StringResources.OfNoActivities;
                 }
                 bool includeLocationAndDate = (m_activities.Count > 1);
-                RefreshColumns(includeLocationAndDate);
 
                 if (m_activities.Count > 0)
                 {
@@ -218,6 +217,7 @@ namespace GpsRunningPlugin.Source
                     paceBox.SelectedItem = speedUnit;
                     paceBox.SelectedIndexChanged += new EventHandler(paceBox_SelectedIndexChanged);
                 }
+                RefreshColumns(includeLocationAndDate);
                 showResults(true);
                 if (m_layer != null)
                 {
