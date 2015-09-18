@@ -264,6 +264,6 @@ Asegúrese de que {1} esté instalado en su máquina</value>
     <value>Agrega actividades similares por medio del plugin Unique Routes {0}</value>
   </data>
   <data name="Menu_ShowToolBar" xml:space="preserve">
-    <value>Mostrar barra herramientas</value>
+    <value>Mostrar barra de herramientas</value>
   </data>
 </root>
