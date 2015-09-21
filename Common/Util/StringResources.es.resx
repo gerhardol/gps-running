@@ -236,7 +236,7 @@
     <value>Ancho</value>
   </data>
   <data name="SetRefActivity" xml:space="preserve">
-    <value>Actividad de referencia</value>
+    <value>Establecer actividad de referencia</value>
   </data>
   <data name="OtherPluginExceptionText" xml:space="preserve">
     <value>Problemas de comunicación con {0}
