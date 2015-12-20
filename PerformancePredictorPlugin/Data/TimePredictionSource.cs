@@ -97,16 +97,21 @@ namespace GpsRunningPlugin.Source
                     TimeSpan upperTime = ZoneFiveSoftware.Common.Data.Algorithm.DateTimeRangeSeries.TimeNotPaused(
                       Activity.StartTime, t.Upper, Activity.TimerPauses);
 
-                    float lowerDist = distanceTrack.GetInterpolatedValue(t.Lower).Value;
-                    float upperDist = distanceTrack.GetInterpolatedValue(t.Upper).Value;
-                    if (first)
+                    try
                     {
-                        this.StartDistance = lowerDist;
-                        this.offsetTime = lowerTime.TotalSeconds;
-                        first = false;
+                        //GetInterpolated will fail if time is outside the interval, dont care
+                        float lowerDist = distanceTrack.GetInterpolatedValue(t.Lower).Value;
+                        float upperDist = distanceTrack.GetInterpolatedValue(t.Upper).Value;
+                        if (first)
+                        {
+                            this.StartDistance = lowerDist;
+                            this.offsetTime = lowerTime.TotalSeconds;
+                            first = false;
+                        }
+                        this.UsedTime += upperTime - lowerTime;
+                        this.UsedDistance += upperDist - lowerDist;
                     }
-                    this.UsedTime += upperTime - lowerTime;
-                    this.UsedDistance += upperDist - lowerDist;
+                    catch { }
                 }
             }
             else
