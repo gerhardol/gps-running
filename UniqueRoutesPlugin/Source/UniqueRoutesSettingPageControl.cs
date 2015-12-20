@@ -74,18 +74,18 @@ namespace GpsRunningPlugin.Source
         public void UICultureChanged(System.Globalization.CultureInfo culture)
         {
             resetSettings.Text = StringResources.ResetAllSettings;
-            linkLabel1.Text = Resources.Webpage;
+            linkLabelWebpage.Text = Resources.Webpage;
             //groupBox1.Text = StringResources.Settings;
-            label1.Text = Resources.Radius + ":";
-            precedeControl(label1, bandwidthBox);
-            label2.Text = Resources.AllowPointsOutsideBand + ":";
-            precedeControl(label2, percentageOff);
-            label3.Text = Resources.RoutesHaveDirection + ":";
-            precedeControl(label3, hasDirectionBox);
-            label5.Text = Resources.IgnoreBeginningOfRoute + ":";
-            precedeControl(label5, ignoreBeginningBox);
-            label8.Text = Resources.IgnoreEndOfRoute + ":";
-            precedeControl(label8, ignoreEndBox);
+            labelRadius.Text = Resources.Radius + ":";
+            precedeControl(labelRadius, bandwidthBox);
+            labelAllowPointsOutsideBand.Text = Resources.AllowPointsOutsideBand + ":";
+            precedeControl(labelAllowPointsOutsideBand, percentageOff);
+            labelRoutesHaveDirection.Text = Resources.RoutesHaveDirection + ":";
+            precedeControl(labelRoutesHaveDirection, hasDirectionBox);
+            labelIgnoreBeginningOfRoute.Text = Resources.IgnoreBeginningOfRoute + ":";
+            precedeControl(labelIgnoreBeginningOfRoute, ignoreBeginningBox);
+            labelIgnoreEndOfRoute.Text = Resources.IgnoreEndOfRoute + ":";
+            precedeControl(labelIgnoreEndOfRoute, ignoreEndBox);
             //labelPercentOutsideUnit.Text = CommonResources.Text.LabelPercent;
             UniqueRoutesActivityDetailView.setCategoryLabel(this.categoryLabel, this.boxCategory, 0);
             this.boxCategory.Location = new Point(categoryLabel.Location.X + categoryLabel.Width + 3,

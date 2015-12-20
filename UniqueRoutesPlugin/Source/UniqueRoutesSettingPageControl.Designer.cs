@@ -47,19 +47,19 @@ namespace GpsRunningPlugin.Source
         private void InitializeComponent()
         {
             this.resetSettings = new ZoneFiveSoftware.Common.Visuals.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelRadius = new System.Windows.Forms.Label();
+            this.labelAllowPointsOutsideBand = new System.Windows.Forms.Label();
+            this.labelRoutesHaveDirection = new System.Windows.Forms.Label();
             this.hasDirectionBox = new System.Windows.Forms.CheckBox();
             this.percentageOff = new System.Windows.Forms.NumericUpDown();
             this.bandwidthBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.labelPercentOutsideUnit = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.ignoreEndBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
+            this.labelIgnoreEndOfRoute = new System.Windows.Forms.Label();
             this.ignoreBeginningBox = new ZoneFiveSoftware.Common.Visuals.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.labelIgnoreBeginningOfRoute = new System.Windows.Forms.Label();
+            this.linkLabelWebpage = new System.Windows.Forms.LinkLabel();
             this.categoryLabel = new System.Windows.Forms.Label();
             this.boxCategory = new ZoneFiveSoftware.Common.Visuals.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -89,32 +89,32 @@ namespace GpsRunningPlugin.Source
             this.resetSettings.TextRightMargin = 2;
             this.resetSettings.Click += new System.EventHandler(this.resetSettings_Click);
             // 
-            // label1
+            // labelRadius
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(174, 16);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Bandwidth:";
+            this.labelRadius.AutoSize = true;
+            this.labelRadius.Location = new System.Drawing.Point(174, 16);
+            this.labelRadius.Name = "labelRadius";
+            this.labelRadius.Size = new System.Drawing.Size(60, 13);
+            this.labelRadius.TabIndex = 2;
+            this.labelRadius.Text = "Bandwidth:";
             // 
-            // label2
+            // labelAllowPointsOutsideBand
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(92, 41);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(142, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Allowed points outside band:";
+            this.labelAllowPointsOutsideBand.AutoSize = true;
+            this.labelAllowPointsOutsideBand.Location = new System.Drawing.Point(92, 41);
+            this.labelAllowPointsOutsideBand.Name = "labelAllowPointsOutsideBand";
+            this.labelAllowPointsOutsideBand.Size = new System.Drawing.Size(142, 13);
+            this.labelAllowPointsOutsideBand.TabIndex = 3;
+            this.labelAllowPointsOutsideBand.Text = "<Allowed points outside band:";
             // 
-            // label3
+            // labelRoutesHaveDirection
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(120, 65);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(114, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Routes have direction:";
+            this.labelRoutesHaveDirection.AutoSize = true;
+            this.labelRoutesHaveDirection.Location = new System.Drawing.Point(120, 65);
+            this.labelRoutesHaveDirection.Name = "labelRoutesHaveDirection";
+            this.labelRoutesHaveDirection.Size = new System.Drawing.Size(114, 13);
+            this.labelRoutesHaveDirection.TabIndex = 4;
+            this.labelRoutesHaveDirection.Text = "Routes have direction:";
             // 
             // hasDirectionBox
             // 
@@ -164,13 +164,13 @@ namespace GpsRunningPlugin.Source
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.ignoreEndBox);
-            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.labelIgnoreEndOfRoute);
             this.groupBox1.Controls.Add(this.ignoreBeginningBox);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.labelIgnoreBeginningOfRoute);
+            this.groupBox1.Controls.Add(this.labelRadius);
             this.groupBox1.Controls.Add(this.labelPercentOutsideUnit);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.labelAllowPointsOutsideBand);
+            this.groupBox1.Controls.Add(this.labelRoutesHaveDirection);
             this.groupBox1.Controls.Add(this.bandwidthBox);
             this.groupBox1.Controls.Add(this.hasDirectionBox);
             this.groupBox1.Controls.Add(this.percentageOff);
@@ -201,12 +201,12 @@ namespace GpsRunningPlugin.Source
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(134, 110);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(100, 13);
-            this.label8.TabIndex = 14;
-            this.label8.Text = "Ignore end of route:";
+            this.labelIgnoreEndOfRoute.AutoSize = true;
+            this.labelIgnoreEndOfRoute.Location = new System.Drawing.Point(134, 110);
+            this.labelIgnoreEndOfRoute.Name = "label8";
+            this.labelIgnoreEndOfRoute.Size = new System.Drawing.Size(100, 13);
+            this.labelIgnoreEndOfRoute.TabIndex = 14;
+            this.labelIgnoreEndOfRoute.Text = "Ignore end of route:";
             // 
             // ignoreBeginningBox
             // 
@@ -229,23 +229,23 @@ namespace GpsRunningPlugin.Source
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(106, 87);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(128, 13);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Ignore beginning of route:";
+            this.labelIgnoreBeginningOfRoute.AutoSize = true;
+            this.labelIgnoreBeginningOfRoute.Location = new System.Drawing.Point(106, 87);
+            this.labelIgnoreBeginningOfRoute.Name = "label5";
+            this.labelIgnoreBeginningOfRoute.Size = new System.Drawing.Size(128, 13);
+            this.labelIgnoreBeginningOfRoute.TabIndex = 11;
+            this.labelIgnoreBeginningOfRoute.Text = "Ignore beginning of route:";
             // 
             // linkLabel1
             // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(174, 8);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(156, 13);
-            this.linkLabel1.TabIndex = 12;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Unique Routes plugin webpage";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            this.linkLabelWebpage.AutoSize = true;
+            this.linkLabelWebpage.Location = new System.Drawing.Point(174, 8);
+            this.linkLabelWebpage.Name = "linkLabel1";
+            this.linkLabelWebpage.Size = new System.Drawing.Size(156, 13);
+            this.linkLabelWebpage.TabIndex = 12;
+            this.linkLabelWebpage.TabStop = true;
+            this.linkLabelWebpage.Text = "Unique Routes plugin webpage";
+            this.linkLabelWebpage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // categoryLabel
             // 
@@ -294,7 +294,7 @@ namespace GpsRunningPlugin.Source
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.linkLabelWebpage);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.resetSettings);
             this.Name = "UniqueRoutesSettingPageControl";
@@ -312,19 +312,19 @@ namespace GpsRunningPlugin.Source
         #endregion
 
         private ZoneFiveSoftware.Common.Visuals.Button resetSettings;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelRadius;
+        private System.Windows.Forms.Label labelAllowPointsOutsideBand;
+        private System.Windows.Forms.Label labelRoutesHaveDirection;
         private System.Windows.Forms.CheckBox hasDirectionBox;
         private System.Windows.Forms.NumericUpDown percentageOff;
         private ZoneFiveSoftware.Common.Visuals.TextBox bandwidthBox;
         private System.Windows.Forms.Label labelPercentOutsideUnit;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.LinkLabel linkLabelWebpage;
+        private System.Windows.Forms.Label labelIgnoreBeginningOfRoute;
         private ZoneFiveSoftware.Common.Visuals.TextBox ignoreBeginningBox;
         private ZoneFiveSoftware.Common.Visuals.TextBox ignoreEndBox;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label labelIgnoreEndOfRoute;
         private System.Windows.Forms.Label categoryLabel;
         private ZoneFiveSoftware.Common.Visuals.TextBox boxCategory;
         private System.Windows.Forms.GroupBox groupBox2;
