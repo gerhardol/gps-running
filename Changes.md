@@ -1,11 +1,11 @@
 
-2.1.3 2015-09-
+2.1.3 2015-12-27
 Overlay, HighScore, UniqueRoutes, PerformancePredictor
   * Updated version numbering after move to GitHub
-  * Updated URL for documentation links to github from Google Code
-  * Updated Spanish translation
+  * Updated URL for documentation links from Google Code to GitHub
+  * Updated Spanish translation, thanks to AlexMTB
   * Updated some layout, to work better with translations like Spanish
-  * Merge from Trails: Custom pace/speed where distance was other than 1 (like min/100m) was not calc correctly
+  * Merge from Trails: Custom pace/speed where distance was other than 1 (like min/100m) was not calculated correctly
 
 2.0.467 2015-01-30 (Plugin Catalog)
 PerformancePredictor:
