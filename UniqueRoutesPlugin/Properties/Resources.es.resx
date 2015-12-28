@@ -72,7 +72,7 @@
     <value>El valor de ignorar metros iniciales debe de ser un número.</value>
   </data>
   <data name="CommonStretches" xml:space="preserve">
-    <value>Estiramientos comunes</value>
+    <value>Tramos Comunes</value>
   </data>
   <data name="ctxActiveLaps" xml:space="preserve">
     <value>Sólo secciones activas</value>

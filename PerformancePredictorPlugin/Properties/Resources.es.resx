@@ -246,4 +246,7 @@
   <data name="Override" xml:space="preserve">
     <value>Modo manual</value>
   </data>
+  <data name="POfWorldClass" xml:space="preserve">
+    <value>{0: P1} de nivel mundial</value>
+  </data>
 </root>
