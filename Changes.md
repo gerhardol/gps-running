@@ -1,5 +1,6 @@
 
-2.1.3 2015-12-27
+2.1.4 2015-12-28  (Plugin Catalog)
+
 Overlay, HighScore, UniqueRoutes, PerformancePredictor
   * Updated version numbering after move to GitHub
   * Updated URL for documentation links from Google Code to GitHub
@@ -8,6 +9,7 @@ Overlay, HighScore, UniqueRoutes, PerformancePredictor
   * Merge from Trails: Custom pace/speed where distance was other than 1 (like min/100m) was not calculated correctly
 
 2.0.467 2015-01-30 (Plugin Catalog)
+
 PerformancePredictor:
   * Add [Elinder](http://github.com/gerhardol/gps-running/wiki/PerformancePredictor#elinder) predicting. Works very well, especially for activities longer than 2h.
   * Predicting on many activities no longer requires High Score Plugin, it uses the "best" activity to predict.
