@@ -83,12 +83,14 @@ namespace GpsRunningPlugin.Source
             m_layer = TrailPointsLayer.Instance((IView)view);
             ShowPage("");
         }
+
         public OverlayView(IActivityReportsView view)
             : this(true)
         {
             m_layer = TrailPointsLayer.Instance((IView)view);
             ShowPage("");
         }
+
         //UniqueRoutes sendto
         public OverlayView(IList<IActivity> activities, IDailyActivityView view)
             : this(view)
@@ -1594,7 +1596,7 @@ namespace GpsRunningPlugin.Source
 				Settings.SavedImageFormat = siiPage.ImageFormat;
 #if ST_2_1
                 if ((!System.IO.File.Exists(siiPage.FileName)) ||
-                    (MessageBox.Show(String.Format(SaveImageResources.FileAlreadyExists, siiPage.FileName),
+                    (MessageDialog.Show(String.Format(SaveImageResources.FileAlreadyExists, siiPage.FileName),
                                         SaveImageResources.SaveImage, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes))
 					chart.SaveImage( siiPage.ImageSize, siiPage.FileName, siiPage.ImageFormat ); 
 #else
