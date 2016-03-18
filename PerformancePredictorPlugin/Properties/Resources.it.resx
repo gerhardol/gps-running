@@ -213,4 +213,40 @@
   <data name="HighScorePrediction" xml:space="preserve">
     <value>Previsione “High Score”</value>
   </data>
+  <data name="Extrapolate" xml:space="preserve">
+    <value>Estrapola</value>
+  </data>
+  <data name="AgeNotification" xml:space="preserve">
+    <value>Effetto delle tavole d'età</value>
+  </data>
+  <data name="AgeProjectedImpact" xml:space="preserve">
+    <value>Calcolo dell'impatto dell'età su</value>
+  </data>
+  <data name="AgeUndefined" xml:space="preserve">
+    <value>Vai alla pagina atleta e imposta la tua data di nascita per vedere i risultati</value>
+  </data>
+  <data name="ShoeTab" xml:space="preserve">
+    <value>Scarpa</value>
+  </data>
+  <data name="ShoeNotification" xml:space="preserve">
+    <value>Peso della scarpa</value>
+  </data>
+  <data name="ShoeProjectedImpact" xml:space="preserve">
+    <value>Impatto previsto del peso della scarpa su</value>
+  </data>
+  <data name="ShoeUndefined" xml:space="preserve">
+    <value>Peso della scarpa non rilevato dall'equipaggiamento</value>
+  </data>
+  <data name="IdealNotification" xml:space="preserve">
+    <value>Ideale</value>
+  </data>
+  <data name="BMI" xml:space="preserve">
+    <value>Indice di massa corporea</value>
+  </data>
+  <data name="Override" xml:space="preserve">
+    <value>Ignorare</value>
+  </data>
+  <data name="POfWorldClass" xml:space="preserve">
+    <value>{0:P1} di world class</value>
+  </data>
 </root>
