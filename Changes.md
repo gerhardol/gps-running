@@ -1,4 +1,10 @@
 
+2.1.5 2016-04-10  (Plugin Catalog)
+
+PerformancePredictor
+  * Updated Italian translation, thanks to Z74
+  
+
 2.1.4 2015-12-28  (Plugin Catalog)
 
 Overlay, HighScore, UniqueRoutes, PerformancePredictor
@@ -8,6 +14,7 @@ Overlay, HighScore, UniqueRoutes, PerformancePredictor
   * Updated some layout, to work better with translations like Spanish
   * Merge from Trails: Custom pace/speed where distance was other than 1 (like min/100m) was not calculated correctly
 
+  
 2.0.467 2015-01-30 (Plugin Catalog)
 
 PerformancePredictor:
